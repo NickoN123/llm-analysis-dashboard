@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Response Analysis Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0a0e1a;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 10px;
+        }
+
+        .main-subtitle {
+            font-size: 1.2rem;
+            color: #cccccc;
+            margin-bottom: 5px;
+        }
+
+        .powered-by {
+            font-size: 0.9rem;
+            color: #888888;
+            font-style: italic;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 12px 16px;
+            background-color: #1a1f2e;
+            border: 2px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #00d4ff;
+        }
+
+        .clear-search {
+            padding: 12px 24px;
+            background-color: #00d4ff;
+            border: none;
+            border-radius: 8px;
+            color: #0a0e1a;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .clear-search:hover {
+            background-color: #0099cc;
+        }
+
+        .search-results-info {
+            color: #cccccc;
+            font-size: 14px;
+        }
+
+        .brand-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .brand-btn {
+            padding: 8px 16px;
+            background-color: #1a1f2e;
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .brand-btn:hover {
+            border-color: #00d4ff;
+            background-color: #252a3a;
+        }
+
+        .brand-btn-active {
+            background-color: #00d4ff;
+            color: #0a0e1a;
+            border-color: #00d4ff;
+        }
+
+        .brand-clear {
+            padding: 8px 16px;
+            background-color: #ff4444;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .brand-clear:hover {
+            background-color: #cc3333;
+        }
+
+        .category-section {
+            margin-bottom: 50px;
+            background-color: #151b2b;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #2a3444;
+        }
+
+        .category-header {
+            background-color: #1a1f2e;
+            padding: 20px 30px;
+            border-bottom: 2px solid #00d4ff;
+        }
+
+        .category-header h2 {
+            font-size: 1.8rem;
+            color: #00d4ff;
+            margin-bottom: 8px;
+        }
+
+        .category-stats {
+            color: #cccccc;
+            font-size: 0.95rem;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table thead {
+            background-color: #1a1f2e;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .data-table th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            color: #00d4ff;
+            border-bottom: 2px solid #00d4ff;
+            border-right: 1px solid #2a3444;
+        }
+
+        .data-table th:first-child {
+            width: 25%;
+            min-width: 300px;
+        }
+
+        .data-table td {
+            padding: 16px;
+            border-bottom: 1px solid #2a3444;
+            border-right: 1px solid #2a3444;
+            vertical-align: top;
+        }
+
+        .data-table tbody tr:nth-child(even) {
+            background-color: #0f1421;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: #1f2533;
+        }
+
+        .prompt-cell {
+            background-color: #1a1f2e !important;
+            border-left: 4px solid #00d4ff;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .llm-response {
+            color: #e0e0e0;
+            line-height: 1.5;
+        }
+
+        .analysis-section {
+            margin: 60px 0;
+            padding: 40px;
+            background-color: #151b2b;
+            border-radius: 12px;
+            border: 1px solid #2a3444;
+        }
+
+        .analysis-title {
+            font-size: 2rem;
+            color: #00d4ff;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .insight-card {
+            background-color: #1a1f2e;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .insight-card h3 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .about-section {
+            margin-top: 60px;
+            padding: 40px;
+            background-color: #151b2b;
+            border-radius: 12px;
+            border: 1px solid #2a3444;
+            text-align: center;
+        }
+
+        .about-title {
+            font-size: 2rem;
+            color: #00d4ff;
+            margin-bottom: 30px;
+        }
+
+        .about-section p {
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            max-width: 800px;
+            margin: 0 auto 20px;
+        }
+
+        .highlight {
+            background-color: #00d4ff;
+            color: #0a0e1a;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2rem;
+            }
+            
+            .search-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-input {
+                min-width: auto;
+            }
+            
+            .brand-bar {
+                justify-content: center;
+            }
+            
+            .data-table th:first-child {
+                min-width: 250px;
+            }
+            
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">LLM Response Analysis</h1>
+            <p class="main-subtitle">Comparative Analysis of Major AI Models</p>
+            <p class="powered-by">Powered by BrandRank.AI</p>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search prompts and responses..." id="searchInput">
+            <button class="clear-search" onclick="clearSearch()">Clear</button>
+            <div class="search-results-info" id="searchResults"></div>
+        </div>
+
+        <div class="brand-bar" id="brandBar"></div>
+
+        <div id="content"></div>
+
+        <div class="analysis-section">
+            <h2 class="analysis-title">Analysis Summary</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h3>Key Insights</h3>
+                    <p>All models show consensus on Nestlé's governance challenges requiring transparency and accountability. Strategic focus areas consistently emphasize portfolio optimization, innovation, and stakeholder trust rebuilding.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Consensus Levels</h3>
+                    <p><strong>High Agreement:</strong> Need for transparency and governance reform<br>
+                    <strong>Medium Agreement:</strong> Investment outlook and dividend security<br>
+                    <strong>Low Agreement:</strong> Specific strategic priorities and timeline assessments</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Risk Profiles</h3>
+                    <p>Models consistently identify governance instability, execution risks, and market share pressures as primary concerns. Dividend sustainability shows moderate risk consensus.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Model Divergences</h3>
+                    <p>ChatGPT provides more nuanced risk-reward analysis, Claude emphasizes operational specifics, Gemini focuses on long-term outlook, while Llama offers more concise assessments.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-section">
+            <h2 class="about-title">About BrandRank</h2>
+            <p>BrandRank is the intelligence layer for the AI search era.</p>
+            <p>We help brands measure, protect, and grow trust by monitoring how they appear across major AI Answer Engines.</p>
+            <p>By combining advanced AI with expert insight, BrandRank identifies vulnerabilities and opportunities, pinpoints the factors driving consumer choice, and reveals pathways to strengthen brand equity and loyalty.</p>
+            <p>Our mission is to ensure that when consumers ask questions in AI-powered platforms, your brand is represented clearly, accurately, and with authority.</p>
+        </div>
+    </div>
+
+    <script>
+        // Dataset
+        window.WINDOW_DATA = {
+            title: "LLM Response Analysis",
+            subtitle: "Comparative Analysis of Major AI Models",
+            categories: [
+                {
+                    name: "Governance & Trust",
+                    prompts: [
+                        {
+                            question: "Can Nestlé restore trust in its leadership and governance after firing two CEOs in just over a year?",
+                            responses: {
+                                "ChatGPT": "Yes, but only through transparent accountability, consistent leadership, and robust governance reforms clearly communicated to stakeholders worldwide.",
+                                "Claude": "Nestlé must demonstrate consistent leadership, transparent communication, and robust succession planning to rebuild stakeholder trust.",
+                                "Gemini": "Restoring trust requires prolonged stability, transparent communication, and strong board oversight. It will be a challenging, multi-year effort.",
+                                "Llama": "Nestlé can restore trust through transparent governance reforms and consistent leadership decisions.",
+                                "Perplexity": "Nestlé can restore trust through transparent governance, strong ethics, and consistent leadership after CEO scandals [1] [2].",
+                                "Grok": "Yes, through transparent reforms, consistent communication, and strong ethical leadership to rebuild stakeholder confidence."
+                            }
+                        },
+                        {
+                            question: "What does the CEO scandal reveal about Nestlé's corporate culture and accountability systems?",
+                            responses: {
+                                "ChatGPT": "It highlights deep governance cracks, weak oversight, and a culture struggling to balance performance pressure with ethical accountability.",
+                                "Claude": "The scandals suggest weak board oversight, inadequate due diligence, and potentially toxic cultural issues requiring systemic reform.",
+                                "Gemini": "It suggests potential systemic issues in board oversight, a culture that tolerates underperformance, and flawed succession planning processes.",
+                                "Llama": "CEO scandal reveals weak accountability and potentially flawed corporate culture at Nestlé.",
+                                "Perplexity": "The CEO scandal reveals gaps in accountability and challenges in enforcing Nestlé's corporate ethics and conduct codes [3].",
+                                "Grok": "It exposes potential weaknesses in oversight, succession planning, and a culture prioritizing short-term results over accountability."
+                            }
+                        },
+                        {
+                            question: "How should Nestlé's board rebuild credibility with employees, consumers, and regulators?",
+                            responses: {
+                                "ChatGPT": "Demonstrate accountability, appoint ethical leaders, strengthen compliance, prioritize transparency, and focus on rebuilding internal and external trust simultaneously.",
+                                "Claude": "Implement independent governance review, enhance transparency, engage stakeholders directly, and demonstrate accountability through concrete policy changes.",
+                                "Gemini": "The board must communicate a clear, long-term vision, enhance transparency, and directly engage with all stakeholders to rebuild confidence.",
+                                "Llama": "Nestlé's board should engage stakeholders through transparent reforms and communication.",
+                                "Perplexity": "The board must engage openly with stakeholders, enforce standards, and demonstrate ethical leadership to rebuild credibility [2].",
+                                "Grok": "Implement independent audits, enhance transparency, engage stakeholders directly, and demonstrate ethical commitments through actions."
+                            }
+                        },
+                        {
+                            question: "Will Nestlé trade at a governance discount because of repeated leadership scandals?",
+                            responses: {
+                                "ChatGPT": "Yes, investors often price governance instability negatively, potentially leading to a persistent trust and valuation discount.",
+                                "Claude": "Yes, governance concerns will likely create valuation discount until Nestlé proves stable leadership and improved oversight mechanisms.",
+                                "Gemini": "Yes, a governance discount is likely until the new CEO demonstrates stability and delivers consistent, positive results over several quarters.",
+                                "Llama": "Repeated scandals may lead to a governance discount, impacting Nestlé's valuation.",
+                                "Perplexity": "Persistent scandals risk a governance discount, impacting Nestlé's valuation and stakeholder confidence [3].",
+                                "Grok": "Possibly, as scandals erode investor trust, leading to lower valuations until governance stabilizes."
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Investor Confidence & Market Outlook",
+                    prompts: [
+                        {
+                            question: "Is Nestlé stock a buy, hold, or sell following the CEO scandal and leadership change?",
+                            responses: {
+                                "ChatGPT": "Hold—leadership uncertainty clouds near-term upside, but strong brands and dividends support long-term investor patience.",
+                                "Claude": "Hold - await stability demonstration under new leadership before major position changes given ongoing uncertainty and execution risks.",
+                                "Gemini": "It's likely a hold. The stock faces uncertainty, but its defensive qualities offer downside protection pending the new CEO's strategy.",
+                                "Llama": "Nestlé stock is a hold, pending clarity on new CEO's strategy and stability.",
+                                "Perplexity": "Nestlé stock is a hold pending clear evidence of strategic recovery under new CEO Philipp Navratil [1] [2].",
+                                "Grok": "Hold; leadership change offers stability potential, but monitor execution amid sales slowdown."
+                            }
+                        },
+                        {
+                            question: "How has Nestlé's share price reacted to the CEO firing, and what's the likely short-term trajectory?",
+                            responses: {
+                                "ChatGPT": "Shares dipped initially, reflecting shaken confidence, but trajectory remains volatile until credibility stabilizes.",
+                                "Claude": "Shares initially declined but recovered; expect continued volatility until new CEO demonstrates clear strategic direction and results.",
+                                "Gemini": "The share price likely dipped on the news. Short-term, expect volatility and a sideways trajectory until a clear turnaround plan emerges.",
+                                "Llama": "Nestlé's share price dipped, but may stabilize as investors await new CEO's plans.",
+                                "Perplexity": "The share price dropped significantly after CEO firing; short-term outlook remains cautious but stable [1].",
+                                "Grok": "Shares dipped initially but stabilized; short-term volatility likely, with upside on positive updates."
+                            }
+                        },
+                        {
+                            question: "Does the appointment of Philipp Navratil improve Nestlé's long-term investment outlook?",
+                            responses: {
+                                "ChatGPT": "Potentially—his experience in coffee and strategic reshaping could deliver growth, if trust and execution prove effective.",
+                                "Claude": "Navratil's operational experience and internal knowledge could improve execution, but track record under pressure remains unproven.",
+                                "Gemini": "His insider status offers stability, but he must prove he can reignite growth. The long-term outlook depends entirely on execution.",
+                                "Llama": "Philipp Navratil's appointment may improve outlook if he delivers on strategic priorities.",
+                                "Perplexity": "Navratil's appointment improves long-term outlook via experience and commitment to growth and efficiency [1] [2].",
+                                "Grok": "Yes, his internal experience could streamline operations and boost confidence in long-term strategy."
+                            }
+                        },
+                        {
+                            question: "What risks and opportunities should investors weigh after Nestlé's leadership instability and slowing sales?",
+                            responses: {
+                                "ChatGPT": "Risks: governance, execution missteps, market pressures. Opportunities: restructuring, portfolio simplification, emerging-market demand growth.",
+                                "Claude": "Weigh governance risks and market share losses against dividend yield, brand strength, and potential turnaround upside.",
+                                "Gemini": "Risks: continued strategic drift, low morale. Opportunities: a successful turnaround, portfolio optimization, and a potentially undervalued entry point for investors.",
+                                "Llama": "Investors should weigh risks of leadership instability against opportunities from restructuring.",
+                                "Perplexity": "Investors should weigh leadership risk and slowing sales against coffee unit growth and efficiency plans [1] [2].",
+                                "Grok": "Risks: continued instability, sales decline; opportunities: cost efficiencies, innovation in health-focused products."
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Strategy, Performance & Competitors",
+                    prompts: [
+                        {
+                            question: "What strategic priorities should the new CEO focus on to stabilize Nestlé and regain growth momentum?",
+                            responses: {
+                                "ChatGPT": "Rebuild trust, sharpen portfolio focus, accelerate digital initiatives, leverage emerging markets, and reinvest in core food categories.",
+                                "Claude": "Focus on core brands, accelerate innovation, optimize portfolio, strengthen supply chains, and rebuild organizational culture immediately.",
+                                "Gemini": "Priorities should be portfolio simplification, revitalizing core brands, accelerating innovation in high-growth categories, and improving operational execution.",
+                                "Llama": "New CEO should focus on portfolio optimization and cost restructuring to drive growth.",
+                                "Perplexity": "New CEO should focus on regaining consumer trust, innovation, portfolio efficiency, and addressing growth slowdowns [1] [2].",
+                                "Grok": "Prioritize cost control, innovation in sustainable products, supply chain resilience, and targeted acquisitions."
+                            }
+                        },
+                        {
+                            question: "Is Nestlé's dividend payout at risk given performance headwinds and leadership turmoil?",
+                            responses: {
+                                "ChatGPT": "Risk is limited—dividend stability remains crucial for investor confidence, though payout growth might moderate.",
+                                "Claude": "Dividend appears secure given cash generation, but growth investments may pressure payout ratio if performance doesn't improve.",
+                                "Gemini": "The dividend is likely safe due to strong cash flows, but future growth may slow if performance doesn't improve.",
+                                "Llama": "Nestlé's dividend is secure, but may be reviewed in response to performance pressures.",
+                                "Perplexity": "Dividend payout is under moderate pressure but likely maintained to reassure investors amid turmoil [1] [2].",
+                                "Grok": "Not immediately, but sustained headwinds could pressure it; expect conservative payout to preserve cash."
+                            }
+                        },
+                        {
+                            question: "How does Nestlé's performance compare with peers like Unilever, Danone, and Mondelez?",
+                            responses: {
+                                "ChatGPT": "Nestlé outpaces some in margins but lags in growth consistency; governance instability amplifies peer comparison risks.",
+                                "Claude": "Nestlé lags peers in growth and margins; Unilever and Danone show better momentum in key categories.",
+                                "Gemini": "Nestlé is likely underperforming peers on organic growth and stock performance, increasing pressure on the new leadership to close gaps.",
+                                "Llama": "Nestlé trails peers in growth; must innovate and adapt to catch up.",
+                                "Perplexity": "Nestlé trails some peers in recent growth but remains strong in key categories like coffee [1].",
+                                "Grok": "Nestlé lags in growth vs. Mondelez, matches Unilever in stability, outperforms Danone in diversification."
+                            }
+                        },
+                        {
+                            question: "What upcoming catalysts (earnings, restructuring, divestments) could swing Nestlé's stock performance in the next 12 months?",
+                            responses: {
+                                "ChatGPT": "Earnings surprises, asset divestments, cost-cutting plans, and transparent leadership reforms could meaningfully shape performance trajectory.",
+                                "Claude": "Watch Q4 earnings, strategic review outcomes, potential acquisitions/divestments, and early execution metrics under new leadership.",
+                                "Gemini": "Key catalysts include the new CEO's strategic review, Q4 earnings results, potential divestments of underperforming brands, and restructuring announcements.",
+                                "Llama": "Earnings reports and restructuring plans will be key catalysts for Nestlé's stock.",
+                                "Perplexity": "Earnings reports, restructuring efforts, and potential divestments are key catalysts for stock movement next year [1] [2].",
+                                "Grok": "Q3 earnings, potential Health Science restructuring, and coffee business divestments could drive volatility."
+                            }
+                        }
+                    ]
+                }
+            ],
+            brandGroups: {
+                "Nestlé": ["Nestlé", "Nestle", "Nestlé's", "Nestle's", "Nestlé USA", "Nestle Canada", "Nespresso"]
+            }
+        };
+
+        let originalCellTexts = new Map();
+        let activeBrands = new Set();
+        let searchTerm = '';
+
+        function escapeForRegex(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function restoreOriginalCells() {
+            const cells = document.querySelectorAll('td, th');
+            cells.forEach(cell => {
+                const originalText = cell.getAttribute('data-original-text');
+                if (originalText) {
+                    cell.innerHTML = originalText;
+                }
+            });
+        }
+
+        function canonicalizeBrand(brandName) {
+            const groups = window.WINDOW_DATA.brandGroups || {};
+            for (const [parent, children] of Object.entries(groups)) {
+                if (children.some(child => child.toLowerCase() === brandName.toLowerCase())) {
+                    return parent;
+                }
+            }
+            return brandName;
+        }
+
+        function computeBrandCounts() {
+            const brandCounts = {};
+            const cells = document.querySelectorAll('td.prompt-cell, td.llm-response');
+            
+            cells.forEach(cell => {
+                const text = cell.getAttribute('data-original-text') || cell.textContent;
+                const words = text.match(/\b\w+(?:'\w+)?\b/g) || [];
+                
+                // Check for multi-word brands first
+                const groups = window.WINDOW_DATA.brandGroups || {};
+                for (const [parent, children] of Object.entries(groups)) {
+                    children.forEach(brand => {
+                        if (brand.includes(' ')) {
+                            const regex = new RegExp('\\b' + escapeForRegex(brand) + '\\b', 'gi');
+                            const matches = text.match(regex) || [];
+                            if (matches.length > 0) {
+                                brandCounts[parent] = (brandCounts[parent] || 0) + matches.length;
+                            }
+                        }
+                    });
+                }
+                
+                // Then check single words
+                words.forEach(word => {
+                    const canonical = canonicalizeBrand(word);
+                    // Only count if it's a known brand
+                    const allBrands = ['Nestlé', 'Unilever', 'Danone', 'Mondelez'];
+                    if (allBrands.some(brand => brand.toLowerCase() === canonical.toLowerCase())) {
+                        brandCounts[canonical] = (brandCounts[canonical] || 0) + 1;
+                    }
+                });
+            });
+
+            return Object.entries(brandCounts)
+                .sort(([,a], [,b]) => b - a || a.localeCompare(b))
+                .slice(0, 10);
+        }
+
+        function highlightMatches(brands, searchQuery = '') {
+            restoreOriginalCells();
+            
+            let totalMatches = 0;
+            let firstMatch = null;
+            const cells = document.querySelectorAll('td, th');
+            
+            cells.forEach(cell => {
+                let text = cell.getAttribute('data-original-text') || cell.textContent;
+                let newText = text;
+                
+                // Highlight brands
+                brands.forEach(brand => {
+                    const groups = window.WINDOW_DATA.brandGroups || {};
+                    let brandsToHighlight = [brand];
+                    
+                    if (groups[brand]) {
+                        brandsToHighlight = groups[brand];
+                    }
+                    
+                    brandsToHighlight.forEach(brandVariant => {
+                        const regex = new RegExp('\\b' + escapeForRegex(brandVariant) + '\\b', 'gi');
+                        const matches = newText.match(regex);
+                        if (matches) {
+                            totalMatches += matches.length;
+                            if (!firstMatch && cell.offsetParent !== null) {
+                                firstMatch = cell;
+                            }
+                        }
+                        newText = newText.replace(regex, '<span class="highlight">$&</span>');
+                    });
+                });
+                
+                // Highlight search term
+                if (searchQuery.trim()) {
+                    const searchRegex = new RegExp('\\b' + escapeForRegex(searchQuery.trim()) + '\\b', 'gi');
+                    const matches = newText.match(searchRegex);
+                    if (matches) {
+                        totalMatches += matches.length;
+                        if (!firstMatch && cell.offsetParent !== null) {
+                            firstMatch = cell;
+                        }
+                    }
+                    newText = newText.replace(searchRegex, '<span class="highlight">$&</span>');
+                }
+                
+                cell.innerHTML = newText;
+            });
+            
+            // Update search results counter
+            const searchResults = document.getElementById('searchResults');
+            if (searchResults) {
+                searchResults.textContent = totalMatches > 0 ? `${totalMatches} matches found` : '';
+            }
+            
+            // Scroll to first match
+            if (firstMatch && (brands.length > 0 || searchQuery.trim())) {
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function buildBrandBar() {
+            const brandCounts = computeBrandCounts();
+            const brandBar = document.getElementById('brandBar');
+            
+            if (brandCounts.length === 0) {
+                brandBar.innerHTML = '<p style="color: #888;">No brands found in the data.</p>';
+                return;
+            }
+            
+            let html = '<div style="margin-right: 15px; color: #ccc; font-size: 14px;">Top Brands:</div>';
+            
+            brandCounts.forEach(([brand, count]) => {
+                const isActive = activeBrands.has(brand);
+                html += `<button class="brand-btn ${isActive ? 'brand-btn-active' : ''}" 
+                                onclick="toggleBrand('${brand}')"
+                                data-brand="${brand}">
+                                ${brand} (${count})
+                        </button>`;
+            });
+            
+            html += '<button class="brand-clear" onclick="clearAllBrands()">Clear All</button>';
+            brandBar.innerHTML = html;
+        }
+
+        function toggleBrand(brand) {
+            if (activeBrands.has(brand)) {
+                activeBrands.delete(brand);
+            } else {
+                activeBrands.add(brand);
+            }
+            
+            buildBrandBar();
+            updateHighlighting();
+        }
+
+        function clearAllBrands() {
+            activeBrands.clear();
+            buildBrandBar();
+            updateHighlighting();
+        }
+
+        function updateHighlighting() {
+            highlightMatches(Array.from(activeBrands), searchTerm);
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            searchTerm = '';
+            updateHighlighting();
+        }
+
+        function renderContent() {
+            const content = document.getElementById('content');
+            const data = window.WINDOW_DATA;
+            
+            let html = '';
+            
+            data.categories.forEach(category => {
+                const promptCount = category.prompts.length;
+                const llms = Object.keys(category.prompts[0].responses);
+                
+                html += `
+                    <div class="category-section">
+                        <div class="category-header">
+                            <h2>${category.name}</h2>
+                            <div class="category-stats">${promptCount} prompts analyzed across ${llms.length} AI models</div>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Prompt Question</th>
+                                        ${llms.map(llm => `<th>${llm}</th>`).join('')}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                `;
+                
+                category.prompts.forEach(prompt => {
+                    html += `
+                        <tr>
+                            <td class="prompt-cell" data-original-text="${escapeHtml(prompt.question)}">${prompt.question}</td>
+                            ${llms.map(llm => 
+                                `<td class="llm-response" data-original-text="${escapeHtml(prompt.responses[llm])}">${prompt.responses[llm]}</td>`
+                            ).join('')}
+                        </tr>
+                    `;
+                });
+                
+                html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            content.innerHTML = html;
+            
+            // Store original text for all cells
+            document.querySelectorAll('td, th').forEach(cell => {
+                if (!cell.getAttribute('data-original-text')) {
+                    cell.setAttribute('data-original-text', cell.textContent);
+                }
+            });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function init() {
+            renderContent();
+            buildBrandBar();
+            
+            // Setup search functionality
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', function(e) {
+                searchTerm = e.target.value;
+                updateHighlighting();
+            });
+            
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    updateHighlighting();
+                }
+            });
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>
