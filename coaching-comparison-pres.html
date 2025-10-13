@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Brand Leadership Scorecard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            max-width: 1920px;
+            max-height: 1080px;
+            aspect-ratio: 16 / 9;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            padding: 80px 100px;
+            display: none;
+            flex-direction: column;
+            opacity: 0;
+            animation: fadeIn 0.6s ease-in-out forwards;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .slide-header {
+            margin-bottom: 50px;
+        }
+
+        .slide-title {
+            font-size: 56px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+        }
+
+        .slide-subtitle {
+            font-size: 28px;
+            font-weight: 300;
+            color: #00d4ff;
+            letter-spacing: 0.5px;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+        }
+
+        .coach-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 35px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .coach-name {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .coach-title {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+
+        .coach-score {
+            font-size: 48px;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 15px;
+        }
+
+        .coach-tagline {
+            font-size: 17px;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.5;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .coach-archetype {
+            font-size: 24px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-top: 15px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background: rgba(0, 212, 255, 0.1);
+            padding: 16px;
+            text-align: left;
+            font-size: 16px;
+            font-weight: 600;
+            border-bottom: 2px solid #00d4ff;
+        }
+
+        .data-table td {
+            padding: 16px;
+            font-size: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .data-table tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .score-10 {
+            color: #4ecdc4;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .score-9 {
+            color: #4ecdc4;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .score-8 {
+            color: #ffd93d;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .score-7 {
+            color: #ffd93d;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .score-6 {
+            color: #ff6b6b;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .nav-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .nav-button:hover {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: #00d4ff;
+        }
+
+        .progress-indicator {
+            position: fixed;
+            top: 30px;
+            right: 50px;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+
+        .footer-branding {
+            position: fixed;
+            bottom: 100px;
+            left: 100px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.35);
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            z-index: 100;
+        }
+
+        .value-list {
+            font-size: 18px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .archetype-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .archetype-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .archetype-label {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .archetype-value {
+            font-size: 17px;
+            font-weight: 600;
+            color: #00d4ff;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th {
+            background: rgba(0, 212, 255, 0.1);
+            padding: 14px;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 600;
+            border-bottom: 2px solid #00d4ff;
+        }
+
+        .comparison-table td {
+            padding: 14px;
+            font-size: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .comparison-table td:first-child {
+            text-align: left;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="progress-indicator">
+            <span id="currentSlide">1</span> / <span id="totalSlides">9</span>
+        </div>
+
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                <h1 style="font-size: 80px; font-weight: 700; margin-bottom: 30px; letter-spacing: -1px;">BrandRank Sports Leadership Profiles</h1>
+                <p style="font-size: 38px; font-weight: 400; color: #00d4ff; margin-bottom: 50px;">2025 Evaluation</p>
+                <p style="font-size: 28px; color: rgba(255, 255, 255, 0.8); font-weight: 300; margin-bottom: 40px;">NCAA and NBA Coaching Comparison</p>
+                <div style="display: flex; gap: 60px; margin-top: 30px;">
+                    <div>
+                        <div style="font-size: 36px; font-weight: 600; color: #ffffff; margin-bottom: 10px;">Bill Self</div>
+                        <div style="font-size: 20px; color: rgba(255, 255, 255, 0.7);">Kansas Jayhawks</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 36px; font-weight: 600; color: #ffffff; margin-bottom: 10px;">Jon Scheyer</div>
+                        <div style="font-size: 20px; color: rgba(255, 255, 255, 0.7);">Duke Blue Devils</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 36px; font-weight: 600; color: #ffffff; margin-bottom: 10px;">Rick Carlisle</div>
+                        <div style="font-size: 20px; color: rgba(255, 255, 255, 0.7);">Indiana Pacers</div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-branding">BrandRank Sports Leadership Profiles</div>
+        </div>
+
+        <!-- Slide 2: Coach Overview -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Leadership Profiles</h2>
+                <p class="slide-subtitle">Three Distinct Coaching Archetypes</p>
+            </div>
+            <div class="slide-content">
+                <div class="three-column">
+                    <div class="coach-card">
+                        <div class="coach-name">Bill Self</div>
+                        <div class="coach-title">Kansas Jayhawks</div>
+                        <div class="coach-score">9.0</div>
+                        <div class="coach-tagline">Custodian of Jayhawk tradition and championship culture</div>
+                        <div class="coach-archetype">Elephant</div>
+                        <div style="font-size: 15px; color: rgba(255, 255, 255, 0.7); margin-top: 8px;">Wise, structured, memory-rich leader</div>
+                    </div>
+                    <div class="coach-card">
+                        <div class="coach-name">Jon Scheyer</div>
+                        <div class="coach-title">Duke Blue Devils</div>
+                        <div class="coach-score">8.6</div>
+                        <div class="coach-tagline">Carrying Duke's legacy with trust and a modern edge</div>
+                        <div class="coach-archetype">Fox</div>
+                        <div style="font-size: 15px; color: rgba(255, 255, 255, 0.7); margin-top: 8px;">Clever, adaptable, builds through intelligence</div>
+                    </div>
+                    <div class="coach-card">
+                        <div class="coach-name">Rick Carlisle</div>
+                        <div class="coach-title">Indiana Pacers</div>
+                        <div class="coach-score">9.3</div>
+                        <div class="coach-tagline">Evolving strategist who empowers and adapts</div>
+                        <div class="coach-archetype">Falcon</div>
+                        <div style="font-size: 15px; color: rgba(255, 255, 255, 0.7); margin-top: 8px;">High-vision leader, swift and strategic</div>
+                    </div>
+                </div>
+                <div class="card" style="margin-top: 30px;">
+                    <h3 style="font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #00d4ff;">Brand Essence</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; font-size: 17px; line-height: 1.7;">
+                        <div>
+                            <strong style="color: #ffffff;">Bill Self:</strong> Steward of tradition, institution builder, championship standard bearer
+                        </div>
+                        <div>
+                            <strong style="color: #ffffff;">Jon Scheyer:</strong> Legacy successor focused on culture, connection, and modern tools
+                        </div>
+                        <div>
+                            <strong style="color: #ffffff;">Rick Carlisle:</strong> Veteran tactician evolving into modern, empowered leadership model
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-branding">BrandRank Sports Leadership Profile</div>
+        </div>
+
+        <!-- Slide 3: Brand Promises -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Brand Promise Alignment</h2>
+                <p class="slide-subtitle">Core Commitments and Strategic Direction</p>
+            </div>
+            <div class="slide-content">
+                <div class="card">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left;">Promise Type</th>
+                                <th>Bill Self</th>
+                                <th>Jon Scheyer</th>
+                                <th>Rick Carlisle</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Overall Brand Promise</td>
+                                <td>Win with tradition, trust, and deep program roots</td>
+                                <td>Honor the past, shape the new Duke</td>
+                                <td>Adapt to win, empower the team, evolve</td>
+                            </tr>
+                            <tr>
+                                <td>Sustainability Promise</td>
+                                <td>Legacy-first stability that outlives trends</td>
+                                <td>Build a Duke era that outlives Coach K</td>
+                                <td>Success through era and personnel change</td>
+                            </tr>
+                            <tr>
+                                <td>Innovation Promise</td>
+                                <td>Selective tweaks to proven systems</td>
+                                <td>Modern recruiting, analytics, flexible rosters</td>
+                                <td>Systemic evolution, empowered athletes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="footer-branding">BrandRank Sports Leadership Profile</div>
+        </div>
+
+        <!-- Slide 4: Core Values -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Core Values Representation</h2>
+                <p class="slide-subtitle">Foundational Leadership Principles</p>
+            </div>
+            <div class="slide-content">
+                <div class="three-column">
+                    <div class="card">
+                        <h3 style="font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #00d4ff;">Bill Self</h3>
+                        <div class="value-list">
+                            <div style="margin-bottom: 12px;">Legacy</div>
+                            <div style="margin-bottom: 12px;">Stability</div>
+                            <div style="margin-bottom: 12px;">Accountability</div>
+                            <div style="margin-bottom: 12px;">Excellence</div>
+                            <div>Continuity</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3 style="font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #00d4ff;">Jon Scheyer</h3>
+                        <div class="value-list">
+                            <div style="margin-bottom: 12px;">Humility</div>
+                            <div style="margin-bottom: 12px;">Trust</div>
+                            <div style="margin-bottom: 12px;">Adaptability</div>
+                            <div style="margin-bottom: 12px;">Loyalty</div>
+                            <div>Growth</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3 style="font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #00d4ff;">Rick Carlisle</h3>
+                        <div class="value-list">
+                            <div style="margin-bottom: 12px;">Flexibility</div>
+                            <div style="margin-bottom: 12px;">Empowerment</div>
+                            <div style="margin-bottom: 12px;">Strategy</div>
+                            <div style="margin-bottom: 12px;">Precision</div>
+                            <div>Resilience</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-branding">BrandRank Sports Leadership Profile</div>
+        </div>
+
+        <!-- Slide 5: Vulnerabilities -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Brand Vulnerabilities</h2>
+                <p class="slide-subtitle">Key Risk Areas and Challenges</p>
+            </div>
+            <div class="slide-content">
+                <div class="three-column">
+                    <div class="card">
+                        <h3 style="font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #ff6b6b;">Bill Self</h3>
+                        <div style="font-size: 17px; line-height: 1.7; color: rgba(255, 255, 255, 0.85);">
+                            <div style="margin-bottom: 15px;">Rigid system</div>
+                            <div style="margin-bottom: 15px;">Legacy pressure</div>
+                            <div>Slower digital evolution</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3 style="font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #ff6b6b;">Jon Scheyer</h3>
+                        <div style="font-size: 17px; line-height: 1.7; color: rgba(255, 255, 255, 0.85);">
+                            <div style="margin-bottom: 15px;">Inexperience</div>
+                            <div style="margin-bottom: 15px;">Tournament questions</div>
+                            <div>Living in Coach K's shadow</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3 style="font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #ff6b6b;">Rick Carlisle</h3>
+                        <div style="font-size: 17px; line-height: 1.7; color: rgba(255, 255, 255, 0.85);">
+                            <div style="margin-bottom: 15px;">NBA volatility</div>
+                            <div style="margin-bottom: 15px;">Past rigidity</div>
+                            <div>Dependency on talent cohesion</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-branding">BrandRank Sports Leadership Profile</div>
+        </div>
+
+        <!-- Slide 6: Coaching Persona Scores -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Coaching Persona Scores</h2>
+                <p class="slide-subtitle">Comparative Performance Matrix</p>
+            </div>
+            <div class="slide-content">
+                <div class="card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left;">Persona</th>
+                                <th>Bill Self</th>
+                                <th>Jon Scheyer</th>
+                                <th>Rick Carlisle</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Culture Shaper</td>
+                                <td class="score-10">10</td>
+                                <td class="score-9">9</td>
+                                <td class="score-8">8</td>
+                            </tr>
+                            <tr>
+                                <td>Player Developer</td>
+                                <td class="score-9">9</td>
+                                <td class="score-8">8</td>
+                                <td class="score-9">9</td>
+                            </tr>
+                            <tr>
+                                <td>Game Strategist</td>
+                                <td class="score-8">8</td>
+                                <td class="score-7">7</td>
+                                <td class="score-10">10</td>
+                            </tr>
+                            <tr>
+                                <td>Motivator</td>
+                                <td class="score-8">8</td>
+                                <td class="score-8">8</td>
+                                <td class="score-9">9</td>
+                            </tr>
+                            <tr>
+                                <td>Talent Evaluator</td>
+                                <td class="score-9">9</td>
+                                <td class="score-8">8</td>
+                                <td class="score-9">9</td>
+                            </tr>
+                            <tr>
+                                <td>Communicator</td>
+                                <td class="score-8">8</td>
+                                <td class="score-9">9</td>
+                                <td class="score-9">9</td>
+                            </tr>
+                            <tr>
+                                <td>Adaptable Leader</td>
+                                <td class="score-6">6</td>
+                                <td class="score-8">8</td>
+                                <td class="score-10">10</td>
+                            </tr>
+                            <tr>
+                                <td>Respected Authority</td>
+                                <td class="score-10">10</td>
+                                <td class="score-8">8</td>
+                                <td class="score-9">9</td>
+                            </tr>
+                            <tr>
+                                <td>Staff Builder</td>
+                                <td class="score-9">9</td>
+                                <td class="score-7">7</td>
+                                <td class="score-9">9</td>
+                            </tr>
+                            <tr>
+                                <td>Big Stage Performer</td>
+                                <td class="score-9">9</td>
+                                <td class="score-6">6.5</td>
+                                <td class="score-9">9</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="footer-branding">BrandRank Sports Leadership Profile</div>
+        </div>
+
+        <!-- Slide 7: Archetype Mapping (Part 1) -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Archetype Mapping</h2>
+                <p class="slide-subtitle">Multi-Dimensional Brand Associations</p>
+            </div>
+            <div class="slide-content">
+                <div class="three-column">
+                    <div class="card">
+                        <h3 style="font-size: 22px; margin-bottom: 20px; font-weight: 600; color: #00d4ff; text-align: center;">Bill Self</h3>
+                        <div class="archetype-grid">
+                            <div class="archetype-item">
+                                <div class="archetype-label">Animal</div>
+                                <div class="archetype-value">Elephant</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">Technology</div>
+                                <div class="archetype-value">Power Grid</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">Movie</div>
+                                <div class="archetype-value">Godfather</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">Tree</div>
+                                <div class="archetype-value">Sequoia</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">App</div>
+                                <div class="archetype-value">Evernote</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">Mythical</div>
+                                <div class="archetype-value">Titan</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">Vehicle</div>
+                                <div class="archetype-value">Classic Sedan</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">Historical</div>
+                                <div class="archetype-value">A. Lincoln</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">Hashtag</div>
+                                <div class="archetype-value">#HonorTheLegacy</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3 style="font-size: 22px; margin-bottom: 20px; font-weight: 600; color: #00d4ff; text-align: center;">Jon Scheyer</h3>
+                        <div class="archetype-grid">
+                            <div class="archetype-item">
+                                <div class="archetype-label">Animal</div>
+                                <div class="archetype-value">Fox</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">Technology</div>
+                                <div class="archetype-value">Slack</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">Movie</div>
+                                <div class="archetype-value">Lion King</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">Tree</div>
+                                <div class="archetype-value">Maple</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">App</div>
+                                <div class="archetype-value">Discord</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">Mythical</div>
+                                <div class="archetype-value">Phoenix</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">Vehicle</div>
+                                <div class="archetype-value">Hybrid SUV</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">Historical</div>
+                                <div class="archetype-value">T. Roosevelt</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">Hashtag</div>
+                                <div class="archetype-value">#NextEraDuke</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3 style="font-size: 22px; margin-bottom: 20px; font-weight: 600; color: #00d4ff; text-align: center;">Rick Carlisle</h3>
+                        <div class="archetype-grid">
+                            <div class="archetype-item">
+                                <div class="archetype-label">Animal</div>
+                                <div class="archetype-value">Falcon</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">Technology</div>
+                                <div class="archetype-value">Neural Network</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">Movie</div>
+                                <div class="archetype-value">The Matrix</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">Tree</div>
+                                <div class="archetype-value">Banyan</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">App</div>
+                                <div class="archetype-value">Spotify</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">Mythical</div>
+                                <div class="archetype-value">Dragon</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">Vehicle</div>
+                                <div class="archetype-value">Jet</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">Historical</div>
+                                <div class="archetype-value">Da Vinci</div>
+                            </div>
+                            <div class="archetype-item">
+                                <div class="archetype-label">Hashtag</div>
+                                <div class="archetype-value">#AdaptAndLead</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-branding">BrandRank Sports Leadership Profile</div>
+        </div>
+
+        <!-- Slide 8: Organizational Alignment -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Organizational Brand Alignment</h2>
+                <p class="slide-subtitle">Program Integration and Synergy</p>
+            </div>
+            <div class="slide-content">
+                <div class="three-column">
+                    <div class="card">
+                        <h3 style="font-size: 28px; margin-bottom: 15px; font-weight: 600; color: #00d4ff; text-align: center;">Bill Self</h3>
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <div style="font-size: 56px; font-weight: 700; color: #4ecdc4;">10</div>
+                            <div style="font-size: 16px; color: rgba(255, 255, 255, 0.7);">out of 10</div>
+                        </div>
+                        <div style="font-size: 17px; line-height: 1.7; color: rgba(255, 255, 255, 0.85);">
+                            Perfectly integrated into Kansas's brand and history
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3 style="font-size: 28px; margin-bottom: 15px; font-weight: 600; color: #00d4ff; text-align: center;">Jon Scheyer</h3>
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <div style="font-size: 56px; font-weight: 700; color: #4ecdc4;">9</div>
+                            <div style="font-size: 16px; color: rgba(255, 255, 255, 0.7);">out of 10</div>
+                        </div>
+                        <div style="font-size: 17px; line-height: 1.7; color: rgba(255, 255, 255, 0.85);">
+                            Seamless heir, though full legacy still developing
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3 style="font-size: 28px; margin-bottom: 15px; font-weight: 600; color: #00d4ff; text-align: center;">Rick Carlisle</h3>
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <div style="font-size: 56px; font-weight: 700; color: #4ecdc4;">9</div>
+                            <div style="font-size: 16px; color: rgba(255, 255, 255, 0.7);">out of 10</div>
+                        </div>
+                        <div style="font-size: 17px; line-height: 1.7; color: rgba(255, 255, 255, 0.85);">
+                            Strong synergy with Pacers' direction and growth strategy
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="margin-top: 35px;">
+                    <h3 style="font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #00d4ff;">Public Declarations vs External Perception</h3>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left;">Area</th>
+                                <th>Bill Self</th>
+                                <th>Jon Scheyer</th>
+                                <th>Rick Carlisle</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Overall Brand Promise</td>
+                                <td class="score-9">9</td>
+                                <td class="score-8">8.5</td>
+                                <td class="score-9">9</td>
+                            </tr>
+                            <tr>
+                                <td>Sustainability Promise</td>
+                                <td class="score-9">9</td>
+                                <td class="score-8">8</td>
+                                <td class="score-9">9</td>
+                            </tr>
+                            <tr>
+                                <td>Innovation Promise</td>
+                                <td class="score-6">6.5</td>
+                                <td class="score-8">8</td>
+                                <td class="score-9">9</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="footer-branding">BrandRank Sports Leadership Profile</div>
+        </div>
+
+        <!-- Slide 9: Summary -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Executive Summary</h2>
+                <p class="slide-subtitle">Three Archetypes of Excellence</p>
+            </div>
+            <div class="slide-content">
+                <div class="three-column">
+                    <div class="card" style="background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.2);">
+                        <h3 style="font-size: 32px; margin-bottom: 15px; font-weight: 700; color: #00d4ff; text-align: center;">Elephant</h3>
+                        <h4 style="font-size: 24px; margin-bottom: 20px; font-weight: 600; text-align: center;">Bill Self</h4>
+                        <div style="font-size: 18px; line-height: 1.8; color: rgba(255, 255, 255, 0.9);">
+                            A towering symbol of legacy and power, deeply entrenched in Kansas history. The Elephant represents institutional memory, unwavering standards, and the ability to carry the weight of tradition while delivering championships.
+                        </div>
+                    </div>
+                    <div class="card" style="background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.2);">
+                        <h3 style="font-size: 32px; margin-bottom: 15px; font-weight: 700; color: #00d4ff; text-align: center;">Fox</h3>
+                        <h4 style="font-size: 24px; margin-bottom: 20px; font-weight: 600; text-align: center;">Jon Scheyer</h4>
+                        <div style="font-size: 18px; line-height: 1.8; color: rgba(255, 255, 255, 0.9);">
+                            Agile, calculated, and working to shape a dynasty that is both familiar and future-ready. The Fox represents strategic intelligence, adaptability, and the clever navigation of building a new era while honoring the past.
+                        </div>
+                    </div>
+                    <div class="card" style="background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.2);">
+                        <h3 style="font-size: 32px; margin-bottom: 15px; font-weight: 700; color: #00d4ff; text-align: center;">Falcon</h3>
+                        <h4 style="font-size: 24px; margin-bottom: 20px; font-weight: 600; text-align: center;">Rick Carlisle</h4>
+                        <div style="font-size: 18px; line-height: 1.8; color: rgba(255, 255, 255, 0.9);">
+                            Sharp, evolutionary, and always ready to adapt altitude and approach to win. The Falcon represents high-perspective strategic vision, swift decision-making, and the ability to empower others while maintaining precision.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-branding">BrandRank Sports Leadership Profile</div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" onclick="previousSlide()">Previous</button>
+            <button class="nav-button" onclick="nextSlide()">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        document.getElementById('totalSlides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            document.getElementById('currentSlide').textContent = currentSlide + 1;
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+        });
+    </script>
+</body>
+</html>

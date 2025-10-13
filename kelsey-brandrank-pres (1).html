@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pat Kelsey BrandRank Leadership Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            max-width: 1920px;
+            max-height: 1080px;
+            aspect-ratio: 16 / 9;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            padding: 80px 100px;
+            display: none;
+            flex-direction: column;
+            opacity: 0;
+            animation: fadeIn 0.6s ease-in-out forwards;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .slide-header {
+            margin-bottom: 50px;
+        }
+
+        .slide-title {
+            font-size: 56px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+        }
+
+        .slide-subtitle {
+            font-size: 28px;
+            font-weight: 300;
+            color: #00d4ff;
+            letter-spacing: 0.5px;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+        }
+
+        .metric-card {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .metric-value {
+            font-size: 64px;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 10px;
+        }
+
+        .metric-label {
+            font-size: 20px;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background: rgba(0, 212, 255, 0.1);
+            padding: 18px;
+            text-align: left;
+            font-size: 17px;
+            font-weight: 600;
+            border-bottom: 2px solid #00d4ff;
+        }
+
+        .data-table td {
+            padding: 18px;
+            font-size: 17px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .data-table tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .score-high {
+            color: #4ecdc4;
+            font-weight: 700;
+            font-size: 19px;
+        }
+
+        .score-medium {
+            color: #ffd93d;
+            font-weight: 700;
+            font-size: 19px;
+        }
+
+        .score-low {
+            color: #ff6b6b;
+            font-weight: 700;
+            font-size: 19px;
+        }
+
+        .bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .bar-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .bar-label {
+            min-width: 220px;
+            font-size: 17px;
+            font-weight: 500;
+        }
+
+        .bar-container {
+            flex: 1;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #0099cc);
+            transition: width 1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 15px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .nav-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .nav-button:hover {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: #00d4ff;
+        }
+
+        .progress-indicator {
+            position: fixed;
+            top: 30px;
+            right: 50px;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+
+        .footer-branding {
+            position: fixed;
+            bottom: 100px;
+            left: 100px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.35);
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            z-index: 100;
+        }
+
+        .content-section {
+            font-size: 19px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .content-section h3 {
+            font-size: 30px;
+            margin-bottom: 20px;
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .content-section p {
+            margin-bottom: 18px;
+        }
+
+        .highlight {
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .list-item {
+            padding: 22px 28px;
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 3px solid #00d4ff;
+            margin-bottom: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .list-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateX(5px);
+        }
+
+        .list-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .list-description {
+            font-size: 17px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        .archetype-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .archetype-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .archetype-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: #00d4ff;
+        }
+
+        .archetype-label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .archetype-value {
+            font-size: 19px;
+            font-weight: 600;
+            color: #00d4ff;
+            margin-bottom: 6px;
+        }
+
+        .archetype-desc {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.4;
+        }
+
+        .vulnerability-item {
+            padding: 25px;
+            background: rgba(255, 107, 107, 0.08);
+            border-left: 3px solid #ff6b6b;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+        .vulnerability-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #ff6b6b;
+            margin-bottom: 10px;
+        }
+
+        .vulnerability-desc {
+            font-size: 17px;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.6;
+        }
+
+        .value-item {
+            padding: 25px;
+            background: rgba(78, 205, 196, 0.08);
+            border-left: 3px solid #4ecdc4;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+        .value-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #4ecdc4;
+            margin-bottom: 10px;
+        }
+
+        .value-desc {
+            font-size: 17px;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="progress-indicator">
+            <span id="currentSlide">1</span> / <span id="totalSlides">8</span>
+        </div>
+
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                <h1 style="font-size: 76px; font-weight: 700; margin-bottom: 30px; letter-spacing: -1px;">Pat Kelsey</h1>
+                <p style="font-size: 38px; font-weight: 400; color: #00d4ff; margin-bottom: 50px;">BrandRank Sports Leadership Profile</p>
+                <p style="font-size: 28px; color: rgba(255, 255, 255, 0.8); font-weight: 300; margin-bottom: 20px;">Restoring excellence through relationships, grit, and relentless improvement</p>
+                <div style="display: flex; gap: 50px; margin-top: 40px;">
+                    <div>
+                        <div style="font-size: 20px; color: rgba(255, 255, 255, 0.6); margin-bottom: 8px;">BrandRank Score</div>
+                        <div style="font-size: 56px; font-weight: 700; color: #00d4ff;">8.3 / 10</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 20px; color: rgba(255, 255, 255, 0.6); margin-bottom: 8px;">Brand Archetype</div>
+                        <div style="font-size: 40px; font-weight: 600; color: #ffffff;">Wolf</div>
+                        <div style="font-size: 20px; color: rgba(255, 255, 255, 0.7);">Pack-builder, loyal, fierce with structure</div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-branding">BrandRank Sports Leadership Profile</div>
+        </div>
+
+        <!-- Slide 2: Brand Essence -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Brand Essence</h2>
+                <p class="slide-subtitle">Leadership Philosophy and Positioning</p>
+            </div>
+            <div class="slide-content">
+                <div class="content-section" style="font-size: 21px; line-height: 1.8;">
+                    <p>Pat Kelsey has rapidly repositioned Louisville basketball in his first season, turning a struggling program into a conference contender and earning <span class="highlight">ACC Coach of the Year</span> honors. He is a high-energy, relational leader whose consistency, program-building track record, and player-first reputation are real strengths.</p>
+                    <p>His brand revolves around <span class="highlight">restoration, relational leadership, competitive resilience, and careful program architecture</span>. He approaches leadership by investing deeply in players, staff, and culture first, rather than shortcuts.</p>
+                    <p>He positions himself as a <span class="highlight">coach-builder</span> rather than just a recruiter or tactician — someone who develops systems, structures, and character over time, while holding everyone to high standards.</p>
+                </div>
+                <div class="card" style="background: rgba(0, 212, 255, 0.08); border-color: #00d4ff;">
+                    <h3 style="font-size: 26px; margin-bottom: 15px; font-weight: 600;">Overall Brand Promise</h3>
+                    <p style="font-size: 24px; color: rgba(255, 255, 255, 0.95); line-height: 1.6;">Win the right way through culture and relentless effort</p>
+                </div>
+            </div>
+            <div class="footer-branding">BrandRank Sports Leadership Profile</div>
+        </div>
+
+        <!-- Slide 3: Core Values -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Core Values</h2>
+                <p class="slide-subtitle">Foundation of Leadership Excellence</p>
+            </div>
+            <div class="slide-content">
+                <div class="value-item">
+                    <div class="value-title">Relational Authenticity</div>
+                    <div class="value-desc">Fosters personal connection, mutual trust, and open communication with players, staff, and the broader community</div>
+                </div>
+                <div class="value-item">
+                    <div class="value-title">Accountability and Discipline</div>
+                    <div class="value-desc">Demands high standards, consistency, and accountability in execution, preparation, and behavior</div>
+                </div>
+                <div class="value-item">
+                    <div class="value-title">Growth Mindset</div>
+                    <div class="value-desc">Emphasis on continuous improvement, learning from adversity, and incremental gains</div>
+                </div>
+                <div class="value-item">
+                    <div class="value-title">Sustainable Program-Building</div>
+                    <div class="value-desc">Favors structures and staff models that endure beyond single recruiting cycles</div>
+                </div>
+                <div class="value-item">
+                    <div class="value-title">Competitive Integrity</div>
+                    <div class="value-desc">Winning matters, but prioritizes doing so with character, not cutting corners</div>
+                </div>
+            </div>
+            <div class="footer-branding">BrandRank Sports Leadership Profile</div>
+        </div>
+
+        <!-- Slide 4: Persona Mapping -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Coaching Persona Scores</h2>
+                <p class="slide-subtitle">Leadership Attributes and Capabilities</p>
+            </div>
+            <div class="slide-content">
+                <div class="card">
+                    <div class="bar-chart">
+                        <div class="bar-item">
+                            <div class="bar-label">Culture Shaper</div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 90%;">9</div>
+                            </div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-label">Motivator</div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 90%;">9</div>
+                            </div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-label">Communicator</div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 90%;">9</div>
+                            </div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-label">Staff Builder</div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 90%;">9</div>
+                            </div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-label">Player Developer</div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 80%;">8</div>
+                            </div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-label">Talent Evaluator</div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 80%;">8</div>
+                            </div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-label">Adaptable Leader</div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 80%;">8</div>
+                            </div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-label">Respected Authority</div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 80%;">8</div>
+                            </div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-label">Game Strategist</div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 70%;">7</div>
+                            </div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-label">Big Stage Performer</div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 65%;">6.5</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-branding">BrandRank Sports Leadership Profile</div>
+        </div>
+
+        <!-- Slide 5: Brand Vulnerabilities -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Brand Vulnerability</h2>
+                <p class="slide-subtitle">Key Risk Areas and Challenges</p>
+            </div>
+            <div class="slide-content">
+                <div class="vulnerability-item">
+                    <div class="vulnerability-title">March Madness Performance Pressure</div>
+                    <div class="vulnerability-desc">His teams have a 0-5 record in NCAA tournaments, which fuels scrutiny when expectations are high at a premier program like Louisville</div>
+                </div>
+                <div class="vulnerability-item">
+                    <div class="vulnerability-title">Transition Risk at Premier Level</div>
+                    <div class="vulnerability-desc">Success in mid-major settings at Winthrop and Charleston may not fully scale in the ACC environment under elite competition</div>
+                </div>
+                <div class="vulnerability-item">
+                    <div class="vulnerability-title">High Relational Expectations</div>
+                    <div class="vulnerability-desc">Because his brand leans heavily on personal connectivity, any perceived relational missteps may be magnified by players, alumni, or media</div>
+                </div>
+                <div class="vulnerability-item">
+                    <div class="vulnerability-title">Roster Turnover and Portal Risks</div>
+                    <div class="vulnerability-desc">Modern college basketball volatility with transfers and NIL pressures can challenge his long-term culture commitments</div>
+                </div>
+            </div>
+            <div class="footer-branding">BrandRank Sports Leadership Profile</div>
+        </div>
+
+        <!-- Slide 6: Archetype Mapping -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Archetype Mapping</h2>
+                <p class="slide-subtitle">Multi-Dimensional Brand Associations</p>
+            </div>
+            <div class="slide-content">
+                <div class="archetype-grid">
+                    <div class="archetype-item">
+                        <div class="archetype-label">Animal</div>
+                        <div class="archetype-value">Wolf</div>
+                        <div class="archetype-desc">Pack-builder, loyal, fierce with structure</div>
+                    </div>
+                    <div class="archetype-item">
+                        <div class="archetype-label">Technology</div>
+                        <div class="archetype-value">Smart Grid</div>
+                        <div class="archetype-desc">Dynamic structure, adapts under pressure</div>
+                    </div>
+                    <div class="archetype-item">
+                        <div class="archetype-label">Movie</div>
+                        <div class="archetype-value">Rocky</div>
+                        <div class="archetype-desc">Relentless underdog with heart and discipline</div>
+                    </div>
+                    <div class="archetype-item">
+                        <div class="archetype-label">Tree</div>
+                        <div class="archetype-value">Oak</div>
+                        <div class="archetype-desc">Deep roots, slow to shake, strong foundation</div>
+                    </div>
+                    <div class="archetype-item">
+                        <div class="archetype-label">App</div>
+                        <div class="archetype-value">Strava</div>
+                        <div class="archetype-desc">Performance-driven, tracks incremental gains</div>
+                    </div>
+                    <div class="archetype-item">
+                        <div class="archetype-label">Mythical</div>
+                        <div class="archetype-value">Phoenix</div>
+                        <div class="archetype-desc">Rebuilds, resurrects failing programs</div>
+                    </div>
+                    <div class="archetype-item">
+                        <div class="archetype-label">Vehicle</div>
+                        <div class="archetype-value">All-Terrain SUV</div>
+                        <div class="archetype-desc">Reliable, adaptable to varied terrain</div>
+                    </div>
+                    <div class="archetype-item">
+                        <div class="archetype-label">Historical</div>
+                        <div class="archetype-value">Abraham Lincoln</div>
+                        <div class="archetype-desc">Unifier, humble, principled under adversity</div>
+                    </div>
+                    <div class="archetype-item">
+                        <div class="archetype-label">Sport</div>
+                        <div class="archetype-value">Rowing</div>
+                        <div class="archetype-desc">Coordinated team effort, synchronicity matters</div>
+                    </div>
+                    <div class="archetype-item">
+                        <div class="archetype-label">Cuisine</div>
+                        <div class="archetype-value">Hearty Stew</div>
+                        <div class="archetype-desc">Many ingredients working in harmony</div>
+                    </div>
+                    <div class="archetype-item">
+                        <div class="archetype-label">Game</div>
+                        <div class="archetype-value">Chess</div>
+                        <div class="archetype-desc">Strategy, patience, move planning over time</div>
+                    </div>
+                    <div class="archetype-item">
+                        <div class="archetype-label">Hashtag</div>
+                        <div class="archetype-value">#BuildTheProgram</div>
+                        <div class="archetype-desc">Priority and public messaging focus</div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-branding">BrandRank Sports Leadership Profile</div>
+        </div>
+
+        <!-- Slide 7: Program Alignment -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Internal Program Alignment</h2>
+                <p class="slide-subtitle">Organizational Coherence Assessment</p>
+            </div>
+            <div class="slide-content">
+                <div class="card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Program Area</th>
+                                <th>Alignment Score</th>
+                                <th>Assessment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Player Development and Culture</td>
+                                <td class="score-high">9 / 10</td>
+                                <td>Core to his identity and strongest alignment area</td>
+                            </tr>
+                            <tr>
+                                <td>Staff Structure and Succession</td>
+                                <td class="score-high">8 / 10</td>
+                                <td>Promoting long-time assistants like Brian Kloman</td>
+                            </tr>
+                            <tr>
+                                <td>Alumni and Fan Engagement</td>
+                                <td class="score-high">8 / 10</td>
+                                <td>Relational outreach is key in his operating model</td>
+                            </tr>
+                            <tr>
+                                <td>NIL and Transfer Strategy</td>
+                                <td class="score-medium">7 / 10</td>
+                                <td>Risk area requiring alignment with cultural promises</td>
+                            </tr>
+                            <tr>
+                                <td>In-Game Innovation</td>
+                                <td class="score-medium">7 / 10</td>
+                                <td>Strong but under greater pressure in ACC competition</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card" style="margin-top: 30px;">
+                    <h3 style="font-size: 24px; margin-bottom: 15px; font-weight: 600; color: #ffd93d;">Key Friction Point</h3>
+                    <p style="font-size: 19px; color: rgba(255, 255, 255, 0.9); line-height: 1.7;">Greatest tension exists between short-term pressure for wins and tournament success versus long-term culture-building. Stakeholders may demand instant tournament results even when the infrastructure is not yet fully mature.</p>
+                </div>
+            </div>
+            <div class="footer-branding">BrandRank Sports Leadership Profile</div>
+        </div>
+
+        <!-- Slide 8: Strategic Recommendations -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Strategic Recommendations</h2>
+                <p class="slide-subtitle">Elevating Brand and Credibility</p>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div>
+                        <div class="list-item">
+                            <div class="list-title">Tournament Validation</div>
+                            <div class="list-description">Prioritize deep NCAA tournament runs to validate that culture-driven leadership can win on the biggest stage</div>
+                        </div>
+                        <div class="list-item">
+                            <div class="list-title">Continued Staff Innovation</div>
+                            <div class="list-description">Keep innovating staff roles in analytics, recruitment, and roster architecture to stay ahead of the curve</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="list-item">
+                            <div class="list-title">Transparent Resilience</div>
+                            <div class="list-description">Be transparent about failures and cultivate narrative around rebounding from setbacks, aligning with adversity leadership</div>
+                        </div>
+                        <div class="list-item">
+                            <div class="list-title">Stakeholder Alignment</div>
+                            <div class="list-description">Strengthen external outreach with alumni, boosters, and media to align stakeholder expectations with long-term vision</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="margin-top: 30px; background: rgba(0, 212, 255, 0.08); border-color: #00d4ff;">
+                    <h3 style="font-size: 28px; margin-bottom: 15px; font-weight: 600;">Summary</h3>
+                    <p style="font-size: 20px; color: rgba(255, 255, 255, 0.95); line-height: 1.7;">Pat Kelsey's leadership brand is strong. He is a relational, disciplined, culture-driven builder who has delivered a dramatic performance boost at Louisville. His highs include program turnaround, ACC Coach of the Year recognition, and staff restructuring that underscore his ability to deliver sustainable success. His vulnerabilities lie primarily in tournament performance and scaling into elite competition while maintaining relational integrity under pressure.</p>
+                </div>
+            </div>
+            <div class="footer-branding">BrandRank Sports Leadership Profile</div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" onclick="previousSlide()">Previous</button>
+            <button class="nav-button" onclick="nextSlide()">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        document.getElementById('totalSlides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            document.getElementById('currentSlide').textContent = currentSlide + 1;
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+        });
+    </script>
+</body>
+</html>
