@@ -1,406 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index Hub - Data Intelligence Center</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Index Hub - Data Intelligence Center</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0a0e1a;
-            color: #e0e0e0;
-            line-height: 1.6;
-        }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0a0e1a;
+      color: #e0e0e0;
+      line-height: 1.6;
+    }
 
-        .hero {
-            background: linear-gradient(135deg, #0a0e1a 0%, #141822 100%);
-            padding: 80px 20px;
-            text-align: center;
-            border-bottom: 3px solid #00d4ff;
-        }
+    /* NAVBAR */
+    .navbar {
+      background-color: #0d1220;
+      border-bottom: 1px solid #00d4ff;
+      padding: 15px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
 
-        .hero-title {
-            font-size: 3.5rem;
-            font-weight: 700;
-            color: #00d4ff;
-            margin-bottom: 20px;
-            text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-        }
+    .navbar-title {
+      color: #00d4ff;
+      font-weight: 700;
+      font-size: 1.3rem;
+      text-decoration: none;
+    }
 
-        .hero-subtitle {
-            font-size: 1.3rem;
-            color: #b0b0b0;
-            font-weight: 300;
-            max-width: 700px;
-            margin: 0 auto 40px;
-        }
+    .navbar-links a {
+      color: #e0e0e0;
+      margin-left: 20px;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.2s ease;
+    }
 
-        .hero-description {
-            font-size: 1rem;
-            color: #909090;
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.8;
-        }
+    .navbar-links a:hover {
+      color: #00d4ff;
+    }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 60px 20px;
-        }
+    .hero {
+      background: linear-gradient(135deg, #0a0e1a 0%, #141822 100%);
+      padding: 80px 20px;
+      text-align: center;
+      border-bottom: 3px solid #00d4ff;
+    }
 
-        .section-title {
-            font-size: 2rem;
-            color: #00d4ff;
-            margin-bottom: 40px;
-            text-align: center;
-            font-weight: 600;
-        }
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: #00d4ff;
+      margin-bottom: 20px;
+      text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    }
 
-        .index-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-            margin-bottom: 60px;
-        }
+    .hero-subtitle {
+      font-size: 1.3rem;
+      color: #b0b0b0;
+      font-weight: 300;
+      max-width: 700px;
+      margin: 0 auto 40px;
+    }
 
-        .index-card {
-            background: #141822;
-            border: 1px solid #1a2030;
-            border-radius: 12px;
-            padding: 30px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
+    .hero-description {
+      font-size: 1rem;
+      color: #909090;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
 
-        .index-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: #00d4ff;
-            transform: scaleY(0);
-            transition: transform 0.3s ease;
-        }
+    .container { max-width: 1400px; margin: 0 auto; padding: 60px 20px; }
 
-        .index-card:hover {
-            transform: translateY(-5px);
-            border-color: #00d4ff;
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
-        }
+    .section-title {
+      font-size: 2rem;
+      color: #00d4ff;
+      margin-bottom: 40px;
+      text-align: center;
+      font-weight: 600;
+    }
 
-        .index-card:hover::before {
-            transform: scaleY(1);
-        }
+    .index-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+      margin-bottom: 60px;
+    }
 
-        .index-card-icon {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            color: #00d4ff;
-        }
+    .index-card {
+      background: #141822;
+      border: 1px solid #1a2030;
+      border-radius: 12px;
+      padding: 30px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
 
-        .index-card-title {
-            font-size: 1.5rem;
-            color: #00d4ff;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
+    .index-card:hover {
+      transform: translateY(-5px);
+      border-color: #00d4ff;
+      box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+    }
 
-        .index-card-description {
-            color: #b0b0b0;
-            margin-bottom: 20px;
-            line-height: 1.7;
-        }
+    .index-card-icon { font-size: 2.5rem; margin-bottom: 20px; color: #00d4ff; }
+    .index-card-title { font-size: 1.5rem; color: #00d4ff; margin-bottom: 15px; font-weight: 600; }
+    .index-card-description { color: #b0b0b0; margin-bottom: 20px; line-height: 1.7; }
 
-        .index-card-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #1a2030;
-        }
+    .index-card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #1a2030;
+    }
 
-        .index-card-date {
-            color: #707070;
-            font-size: 0.85rem;
-        }
+    .index-card-date { color: #707070; font-size: 0.85rem; }
+    .index-card-badge {
+      background: #1a2030;
+      color: #00d4ff;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
 
-        .index-card-badge {
-            background: #1a2030;
-            color: #00d4ff;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
+    .footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: #707070;
+      border-top: 1px solid #1a2030;
+      margin-top: 60px;
+    }
 
-        .stats-section {
-            background: #141822;
-            border-radius: 12px;
-            padding: 40px;
-            margin-bottom: 60px;
-            border: 1px solid #1a2030;
-        }
+    .footer a { color: #00d4ff; text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            text-align: center;
-        }
+    @media (max-width: 768px) {
+      .hero-title { font-size: 2.5rem; }
+      .hero-subtitle { font-size: 1.1rem; }
+      .index-grid { grid-template-columns: 1fr; }
+    }
 
-        .stat-item {
-            padding: 20px;
-        }
-
-        .stat-number {
-            font-size: 3rem;
-            color: #00d4ff;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .stat-label {
-            color: #b0b0b0;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .cta-section {
-            background: linear-gradient(135deg, #1a2030 0%, #141822 100%);
-            border-radius: 12px;
-            padding: 50px;
-            text-align: center;
-            border: 1px solid #00d4ff;
-        }
-
-        .cta-title {
-            font-size: 2rem;
-            color: #00d4ff;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .cta-text {
-            color: #b0b0b0;
-            margin-bottom: 30px;
-            font-size: 1.1rem;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: #00d4ff;
-            color: #0a0e1a;
-            padding: 15px 40px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            border: 2px solid #00d4ff;
-        }
-
-        .cta-button:hover {
-            background: transparent;
-            color: #00d4ff;
-            transform: scale(1.05);
-        }
-
-        .footer {
-            text-align: center;
-            padding: 40px 20px;
-            color: #707070;
-            border-top: 1px solid #1a2030;
-            margin-top: 60px;
-        }
-
-        .footer a {
-            color: #00d4ff;
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.5rem;
-            }
-
-            .hero-subtitle {
-                font-size: 1.1rem;
-            }
-
-            .index-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .cta-section {
-                padding: 30px 20px;
-            }
-        }
-
-        /* Link styling for cards */
-        a.index-card-link {
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-    </style>
+    a.index-card-link { text-decoration: none; color: inherit; display: block; }
+  </style>
 </head>
 <body>
-    <div class="hero">
-        <h1 class="hero-title">Index Hub</h1>
-        <p class="hero-subtitle">Data Intelligence & Analytics Center</p>
-        <p class="hero-description">
-            Explore comprehensive datasets, market analysis, and intelligence reports across multiple industries and categories.
-        </p>
+
+  <!-- NAVBAR -->
+  <div class="navbar">
+    <a href="index.html" class="navbar-title">Index Hub</a>
+    <div class="navbar-links">
+      <a href="index.html">Home</a>
+      <a href="coaching-comparison-pres.html">Coaching Comparison</a>
+      <a href="kelsey-brandrank-pres.html">Kelsey BrandRank</a>
     </div>
+  </div>
 
-    <div class="container">
-        <h2 class="section-title">Available Indexes</h2>
-        
-        <div class="index-grid">
-            <a href="healthcare-analysis.html" class="index-card-link">
-                <div class="index-card">
-                    <div class="index-card-icon">🏥</div>
-                    <h3 class="index-card-title">Healthcare Provider Analysis</h3>
-                    <p class="index-card-description">
-                        Regional healthcare provider intelligence report analyzing AI model responses across major hospital networks in the Midwest.
-                    </p>
-                    <div class="index-card-meta">
-                        <span class="index-card-date">Updated Oct 2025</span>
-                        <span class="index-card-badge">10 Prompts</span>
-                    </div>
-                </div>
-            </a>
+  <div class="hero">
+    <h1 class="hero-title">Index Hub</h1>
+    <p class="hero-subtitle">Data Intelligence & Analytics Center</p>
+    <p class="hero-description">
+      Explore comprehensive datasets, market analysis, and intelligence reports across multiple industries and categories.
+    </p>
+  </div>
 
-            <a href="#" class="index-card-link">
-                <div class="index-card">
-                    <div class="index-card-icon">💼</div>
-                    <h3 class="index-card-title">Financial Services Index</h3>
-                    <p class="index-card-description">
-                        Comprehensive analysis of banking institutions, investment firms, and financial technology providers across regional markets.
-                    </p>
-                    <div class="index-card-meta">
-                        <span class="index-card-date">Coming Soon</span>
-                        <span class="index-card-badge">New</span>
-                    </div>
-                </div>
-            </a>
+  <div class="container">
+    <h2 class="section-title">Available Indexes</h2>
 
-            <a href="#" class="index-card-link">
-                <div class="index-card">
-                    <div class="index-card-icon">🎓</div>
-                    <h3 class="index-card-title">Education Institution Report</h3>
-                    <p class="index-card-description">
-                        Detailed comparison of universities, colleges, and educational programs including rankings, specializations, and research output.
-                    </p>
-                    <div class="index-card-meta">
-                        <span class="index-card-date">Coming Soon</span>
-                        <span class="index-card-badge">New</span>
-                    </div>
-                </div>
-            </a>
-
-            <a href="#" class="index-card-link">
-                <div class="index-card">
-                    <div class="index-card-icon">🏪</div>
-                    <h3 class="index-card-title">Retail & Consumer Brands</h3>
-                    <p class="index-card-description">
-                        Market analysis of retail chains, consumer products, and brand perception across AI platforms and search engines.
-                    </p>
-                    <div class="index-card-meta">
-                        <span class="index-card-date">Coming Soon</span>
-                        <span class="index-card-badge">New</span>
-                    </div>
-                </div>
-            </a>
-
-            <a href="#" class="index-card-link">
-                <div class="index-card">
-                    <div class="index-card-icon">🏗️</div>
-                    <h3 class="index-card-title">Real Estate & Development</h3>
-                    <p class="index-card-description">
-                        Property market insights, developer reputation analysis, and regional real estate trend tracking across major metropolitan areas.
-                    </p>
-                    <div class="index-card-meta">
-                        <span class="index-card-date">Coming Soon</span>
-                        <span class="index-card-badge">New</span>
-                    </div>
-                </div>
-            </a>
-
-            <a href="#" class="index-card-link">
-                <div class="index-card">
-                    <div class="index-card-icon">⚡</div>
-                    <h3 class="index-card-title">Technology & SaaS Providers</h3>
-                    <p class="index-card-description">
-                        Software platform comparisons, technology vendor analysis, and digital solution provider rankings across enterprise categories.
-                    </p>
-                    <div class="index-card-meta">
-                        <span class="index-card-date">Coming Soon</span>
-                        <span class="index-card-badge">New</span>
-                    </div>
-                </div>
-            </a>
+    <div class="index-grid">
+      <a href="coaching-comparison-pres.html" class="index-card-link">
+        <div class="index-card">
+          <div class="index-card-icon">📊</div>
+          <h3 class="index-card-title">Coaching Comparison Dashboard</h3>
+          <p class="index-card-description">
+            Compare AI model responses across coaching data segments and platform performance metrics.
+          </p>
+          <div class="index-card-meta">
+            <span class="index-card-date">Updated Oct 2025</span>
+            <span class="index-card-badge">Live</span>
+          </div>
         </div>
+      </a>
 
-        <div class="stats-section">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number">6</div>
-                    <div class="stat-label">Active Indexes</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">50+</div>
-                    <div class="stat-label">Data Sources</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">500+</div>
-                    <div class="stat-label">Entities Tracked</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">100%</div>
-                    <div class="stat-label">Open Data</div>
-                </div>
-            </div>
+      <a href="kelsey-brandrank-pres.html" class="index-card-link">
+        <div class="index-card">
+          <div class="index-card-icon">💼</div>
+          <h3 class="index-card-title">Kelsey BrandRank Presentation</h3>
+          <p class="index-card-description">
+            Brand visibility breakdown and answer-engine analytics for Kelsey BrandRank comparative model outputs.
+          </p>
+          <div class="index-card-meta">
+            <span class="index-card-date">Updated Oct 2025</span>
+            <span class="index-card-badge">Live</span>
+          </div>
         </div>
-
-        <div class="cta-section">
-            <h2 class="cta-title">Contribute to the Hub</h2>
-            <p class="cta-text">
-                Have data to share? Want to suggest a new index? We welcome contributions from the community.
-            </p>
-            <a href="https://github.com/yourusername/index-hub" class="cta-button">View on GitHub</a>
-        </div>
+      </a>
     </div>
+  </div>
 
-    <div class="footer">
-        <p>&copy; 2025 Index Hub. Built with data intelligence in mind.</p>
-        <p>
-            <a href="https://github.com/yourusername/index-hub">GitHub</a> • 
-            <a href="#">Documentation</a> • 
-            <a href="#">API</a> • 
-            <a href="#">Contact</a>
-        </p>
-    </div>
+  <div class="footer">
+    <p>&copy; 2025 Index Hub. Built with data intelligence in mind.</p>
+    <p>
+      <a href="https://github.com/NickoN123/llm-analysis-dashboard">GitHub</a>
+    </p>
+  </div>
 </body>
 </html>
