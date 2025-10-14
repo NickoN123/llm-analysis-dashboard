@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Philipp Navratil - Executive Leadership Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .slide {
+            width: 100%;
+            height: 100%;
+            padding: 60px 80px;
+            display: none;
+            flex-direction: column;
+            justify-content: flex-start;
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .slide.active {
+            display: flex;
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .slide-header {
+            border-bottom: 2px solid #00d4ff;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .slide-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+        
+        .slide-subtitle {
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+        }
+        
+        .content-grid {
+            display: grid;
+            gap: 30px;
+            height: 100%;
+        }
+        
+        .two-column {
+            grid-template-columns: 1fr 1fr;
+        }
+        
+        .three-column {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        
+        .content-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .content-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+        }
+        
+        .card-title {
+            font-size: 22px;
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .card-content {
+            font-size: 16px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .score-display {
+            font-size: 48px;
+            font-weight: 700;
+            color: #00d4ff;
+            text-align: center;
+            margin: 20px 0;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+        
+        .attributes-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .attributes-table th,
+        .attributes-table td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .attributes-table th {
+            background: rgba(0, 212, 255, 0.1);
+            color: #00d4ff;
+            font-weight: 500;
+        }
+        
+        .score-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4ecdc4, #00d4ff);
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+        
+        .archetype-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .archetype-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .archetype-item:hover {
+            background: rgba(0, 212, 255, 0.1);
+            transform: scale(1.05);
+        }
+        
+        .archetype-category {
+            font-size: 12px;
+            color: #00d4ff;
+            text-transform: uppercase;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .archetype-value {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .archetype-description {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+        
+        .nav-btn {
+            padding: 12px 24px;
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            border-radius: 6px;
+            color: #00d4ff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(0, 212, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: #00d4ff;
+            transition: width 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 1000;
+        }
+        
+        .tagline {
+            font-size: 32px;
+            color: #00d4ff;
+            text-align: center;
+            font-style: italic;
+            margin: 40px 0;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+        }
+        
+        .vulnerability-list {
+            list-style: none;
+        }
+        
+        .vulnerability-list li {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 107, 107, 0.1);
+            border-left: 4px solid #ff6b6b;
+            border-radius: 4px;
+        }
+        
+        .vulnerability-title {
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+        
+        .themes-list {
+            display: grid;
+            gap: 25px;
+        }
+        
+        .theme-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #00d4ff;
+            padding: 25px;
+            border-radius: 8px;
+        }
+        
+        .theme-title {
+            font-size: 20px;
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .theme-quote {
+            font-style: italic;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 15px;
+            padding-left: 20px;
+            border-left: 2px solid #00d4ff;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-in {
+            animation: slideIn 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-counter">
+            <span id="current-slide">1</span> / <span id="total-slides">12</span>
+        </div>
+        
+        <!-- Slide 1: Title Slide -->
+        <div class="slide active">
+            <div style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+                <h1 style="font-size: 64px; font-weight: 300; margin-bottom: 20px; color: #ffffff;">Philipp Navratil</h1>
+                <h2 style="font-size: 36px; color: #00d4ff; margin-bottom: 30px;">Executive Leadership Profile</h2>
+                <div class="score-display">8.6 / 10</div>
+                <p style="font-size: 18px; color: rgba(255, 255, 255, 0.7); margin-bottom: 40px;">BrandRank.AI Executive Score</p>
+                <div class="tagline">"Where Innovation Meets Intention—and Scale Follows."</div>
+                <p style="font-size: 20px; color: rgba(255, 255, 255, 0.8);">CEO of Nestlé S.A. | September 2025</p>
+                <p style="font-size: 16px; color: rgba(255, 255, 255, 0.6); margin-top: 30px;">Prepared by BrandRank.AI: Sourcing all Major Answer Engines + LinkedIn (September 1, 2025)</p>
+            </div>
+        </div>
+        
+        <!-- Slide 2: Leadership Overview -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Leadership Overview</h1>
+                <p class="slide-subtitle">Disciplined strength, enduring transformation, resilient forward motion</p>
+            </div>
+            <div class="content-grid two-column">
+                <div class="content-card">
+                    <h3 class="card-title">Brand Essence & Character</h3>
+                    <div class="card-content">
+                        <p>Navratil is a leader who builds enduring value from the inside out. His approach is grounded in disciplined growth, cultural fluency, and people-first innovation.</p>
+                        <br>
+                        <p>He is not a performer—he's a strategic operator who builds systems that quietly deliver impact.</p>
+                        <br>
+                        <p><strong>Archetype:</strong> Horse - disciplined strength, enduring transformation, resilient forward motion</p>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h3 class="card-title">Key Qualifications</h3>
+                    <div class="card-content">
+                        <p>• <strong>20+ years</strong> of experience within Nestlé</p>
+                        <p>• <strong>Fluent in 5 languages</strong> - global cultural intelligence</p>
+                        <p>• <strong>Global experience</strong> across Latin America, Europe, and category strategy</p>
+                        <p>• <strong>Nespresso legacy</strong> - positioned brand as premium experience and sustainability platform</p>
+                        <p>• <strong>Innovation focus</strong> - regenerative sourcing, B Corp alignment, inclusive employment</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 3: Brand Promise Alignment -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Brand Promise Alignment</h1>
+                <p class="slide-subtitle">Embodying Nestlé's shift toward service, purpose, and global trust</p>
+            </div>
+            <div class="content-grid three-column">
+                <div class="content-card">
+                    <h3 class="card-title">Overall Alignment</h3>
+                    <div class="card-content">
+                        <p>Embodies Nestlé's shift toward service, purpose, and global trust through consistent leadership across diverse markets and categories.</p>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h3 class="card-title">Sustainability Promise</h3>
+                    <div class="card-content">
+                        <p>"Drives regenerative sourcing and inclusive community uplift."</p>
+                        <br>
+                        <p>Proven track record in climate-resilient agriculture, ethical sourcing, and equitable job creation.</p>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h3 class="card-title">Innovation Promise</h3>
+                    <div class="card-content">
+                        <p>"Applies market intelligence to scale meaningful product breakthroughs."</p>
+                        <br>
+                        <p>Strategic operator with deep financial background and platform-building expertise.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 4: Core Values Representation -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Core Values Representation</h1>
+                <p class="slide-subtitle">How Navratil embodies Nestlé's fundamental principles</p>
+            </div>
+            <div class="content-grid">
+                <table class="attributes-table">
+                    <thead>
+                        <tr>
+                            <th>Core Value</th>
+                            <th>Executive Alignment Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Consumer Trust</strong></td>
+                            <td>Consistently delivers transparency, quality, and purpose in premium product ecosystems.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Global Responsibility</strong></td>
+                            <td>Champions climate-resilient agriculture, ethical sourcing, and equitable job creation.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Employee Well-being</strong></td>
+                            <td>Supports global leadership development through coaching, culture-building, and internal mobility.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Slide 5: Leadership Attributes -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Leadership Attribute Analytics</h1>
+                <p class="slide-subtitle">Comprehensive assessment across key executive competencies</p>
+            </div>
+            <table class="attributes-table">
+                <thead>
+                    <tr>
+                        <th>Leadership Attribute</th>
+                        <th>Description</th>
+                        <th>Score</th>
+                        <th>Performance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>The Ethical Entrepreneur</strong></td>
+                        <td>Operates with integrity, transparency, and deeply held values</td>
+                        <td><strong>9/10</strong></td>
+                        <td><div class="score-bar"><div class="score-fill" style="width: 90%;"></div></div></td>
+                    </tr>
+                    <tr>
+                        <td><strong>The Global Bridge Builder</strong></td>
+                        <td>Fluent in five languages; adapts across diverse markets</td>
+                        <td><strong>9/10</strong></td>
+                        <td><div class="score-bar"><div class="score-fill" style="width: 90%;"></div></div></td>
+                    </tr>
+                    <tr>
+                        <td><strong>The Insight Explorer</strong></td>
+                        <td>Strategic operator with deep financial and audit background</td>
+                        <td><strong>9/10</strong></td>
+                        <td><div class="score-bar"><div class="score-fill" style="width: 90%;"></div></div></td>
+                    </tr>
+                    <tr>
+                        <td><strong>The Sustainable Strategist</strong></td>
+                        <td>Leads ESG integration across sourcing, packaging, and operations</td>
+                        <td><strong>8/10</strong></td>
+                        <td><div class="score-bar"><div class="score-fill" style="width: 80%;"></div></div></td>
+                    </tr>
+                    <tr>
+                        <td><strong>The Innovation Catalyst</strong></td>
+                        <td>Builds scalable product platforms rooted in insight and impact</td>
+                        <td><strong>8/10</strong></td>
+                        <td><div class="score-bar"><div class="score-fill" style="width: 80%;"></div></div></td>
+                    </tr>
+                    <tr>
+                        <td><strong>The Culture Cultivator</strong></td>
+                        <td>Fosters inclusive, high-performance team environments</td>
+                        <td><strong>7/10</strong></td>
+                        <td><div class="score-bar"><div class="score-fill" style="width: 70%;"></div></div></td>
+                    </tr>
+                    <tr>
+                        <td><strong>The Digital Pioneer</strong></td>
+                        <td>Engages modestly; lacks storytelling dynamism</td>
+                        <td><strong>6/10</strong></td>
+                        <td><div class="score-bar"><div class="score-fill" style="width: 60%;"></div></div></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Slide 5: Archetype Mapping -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Executive Archetype Mapping</h1>
+                <p class="slide-subtitle">Multi-dimensional leadership personality assessment</p>
+            </div>
+            <div class="archetype-grid">
+                <div class="archetype-item">
+                    <div class="archetype-category">Animal</div>
+                    <div class="archetype-value">Horse</div>
+                    <div class="archetype-description">Purposeful, disciplined, always moving forward</div>
+                </div>
+                <div class="archetype-item">
+                    <div class="archetype-category">Tree</div>
+                    <div class="archetype-value">Bamboo</div>
+                    <div class="archetype-description">Flexible, resilient, responsive to environment</div>
+                </div>
+                <div class="archetype-item">
+                    <div class="archetype-category">App</div>
+                    <div class="archetype-value">TikTok</div>
+                    <div class="archetype-description">Agile, modern, needs broader communication flow</div>
+                </div>
+                <div class="archetype-item">
+                    <div class="archetype-category">Vehicle</div>
+                    <div class="archetype-value">Ferrari</div>
+                    <div class="archetype-description">Precision-built for performance and longevity</div>
+                </div>
+                <div class="archetype-item">
+                    <div class="archetype-category">Historical</div>
+                    <div class="archetype-value">Steve Jobs</div>
+                    <div class="archetype-description">Product purist with long-term user vision</div>
+                </div>
+                <div class="archetype-item">
+                    <div class="archetype-category">Instrument</div>
+                    <div class="archetype-value">Electric Guitar</div>
+                    <div class="archetype-description">Clean, powerful presence with strategic intensity</div>
+                </div>
+                <div class="archetype-item">
+                    <div class="archetype-category">Sport</div>
+                    <div class="archetype-value">Boxing</div>
+                    <div class="archetype-description">Resilient, adaptive, always calculating next move</div>
+                </div>
+                <div class="archetype-item">
+                    <div class="archetype-category">Cuisine</div>
+                    <div class="archetype-value">Street Food</div>
+                    <div class="archetype-description">Globally accessible, culturally responsive brand</div>
+                </div>
+                <div class="archetype-item">
+                    <div class="archetype-category">Game</div>
+                    <div class="archetype-value">Fortnite</div>
+                    <div class="archetype-description">Iterative, platform-based growth mindset</div>
+                </div>
+                <div class="archetype-item">
+                    <div class="archetype-category">Hashtag</div>
+                    <div class="archetype-value">#Hustle</div>
+                    <div class="archetype-description">Strategic grind toward lasting impact</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 6: Brand Vulnerabilities -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Brand Vulnerabilities</h1>
+                <p class="slide-subtitle">Key areas requiring attention and strategic development</p>
+            </div>
+            <div class="content-grid">
+                <ul class="vulnerability-list">
+                    <li>
+                        <div class="vulnerability-title">Understated Digital Presence</div>
+                        <div>While structured and professional, his social engagement lacks emotional resonance. His LinkedIn content favors structured brand messaging over personal reflection or emotional storytelling.</div>
+                    </li>
+                    <li>
+                        <div class="vulnerability-title">Post-Crisis Optics</div>
+                        <div>Appointed following a governance breach, he inherits elevated ethical scrutiny. This context requires careful navigation of stakeholder expectations and trust rebuilding.</div>
+                    </li>
+                    <li>
+                        <div class="vulnerability-title">Scaling Precision</div>
+                        <div>Translating Nespresso-like premium strategies across Nestlé's broader portfolio presents operational challenges. Success in one category doesn't guarantee scalability.</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Slide 7: Post-Announcement Themes -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Strategic Communication Themes</h1>
+                <p class="slide-subtitle">Building market and employee confidence through targeted messaging</p>
+            </div>
+            <div class="themes-list">
+                <div class="theme-card">
+                    <div class="theme-title">1. "Resilience Is Built Quietly—Until It Matters Most"</div>
+                    <div>Frames Philipp as a calm, steady leader focused on value-driven execution amid change.</div>
+                    <div class="theme-quote">"Resilience doesn't come from reacting quickly. It comes from preparing quietly. At Nestlé, our rhythm—not reaction—is what sustains us."</div>
+                </div>
+                <div class="theme-card">
+                    <div class="theme-title">2. "Reinventing Nestlé: From Food Company to Service Platform"</div>
+                    <div>Announces a shift from product-based thinking to service-led ecosystems.</div>
+                    <div class="theme-quote">"We're evolving from food delivery to life-enabling platforms—where service, sustainability, and digital meet."</div>
+                </div>
+                <div class="theme-card">
+                    <div class="theme-title">3. "What Five Languages Have Taught Me About Leadership"</div>
+                    <div>Adds human depth while reinforcing global leadership credentials.</div>
+                    <div class="theme-quote">"Language isn't just a skill—it's a way of listening. Leadership in five languages means leading with context, not just content."</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 12: Executive Summary -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Executive Brand Alignment Summary</h1>
+                <p class="slide-subtitle">A disciplined, purpose-driven evolution of Nestlé's leadership</p>
+            </div>
+            <div class="content-grid two-column">
+                <div class="content-card">
+                    <h3 class="card-title">Leadership Philosophy</h3>
+                    <div class="card-content">
+                        <p>Philipp Navratil represents a disciplined, purpose-driven evolution of Nestlé's leadership—a global strategist who leads through systems, not spectacle.</p>
+                        <br>
+                        <p>His style is calm but clear, globally fluent, and structurally sound. Navratil's leadership defines what it means to lead with depth, not volume.</p>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h3 class="card-title">Strategic Impact</h3>
+                    <div class="card-content">
+                        <p>From his work at Nespresso to his new role as CEO of Nestlé S.A., he has shown how precision, ethics, and quiet momentum can build trust at scale.</p>
+                        <br>
+                        <p>He delivers transformation by design, not disruption—building enduring value through disciplined execution and cultural empathy.</p>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 50px;">
+                <div class="score-display" style="font-size: 72px;">8.6 / 10</div>
+                <p style="font-size: 20px; color: #00d4ff;">BrandRank.AI Executive Score</p>
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <button class="nav-btn" onclick="previousSlide()">Previous</button>
+            <button class="nav-btn" onclick="nextSlide()">Next</button>
+        </div>
+        
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        document.getElementById('total-slides').textContent = totalSlides;
+        
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                }
+            });
+            
+            document.getElementById('current-slide').textContent = index + 1;
+            
+            const progressBar = document.getElementById('progress-bar');
+            const progressWidth = ((index + 1) / totalSlides) * 100;
+            progressBar.style.width = progressWidth + '%';
+            
+            // Animate score bars
+            setTimeout(() => {
+                const scoreFills = document.querySelectorAll('.score-fill');
+                scoreFills.forEach(fill => {
+                    const width = fill.style.width;
+                    fill.style.width = '0%';
+                    setTimeout(() => {
+                        fill.style.width = width;
+                    }, 100);
+                });
+            }, 300);
+        }
+        
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+        
+        function previousSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                previousSlide();
+            }
+        });
+        
+        // Initialize
+        showSlide(0);
+        
+        // Auto-advance option (uncomment to enable)
+        // setInterval(nextSlide, 10000);
+    </script>
+</body>
+</html>

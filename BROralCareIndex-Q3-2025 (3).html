@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrandRank.AI Oral Care Answer Monitor (Q3-2025)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 40px 60px;
+            min-height: 100vh;
+        }
+        
+        h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 50px;
+            letter-spacing: -2px;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+        }
+        
+        .controls-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .search-section {
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .search-section input {
+            padding: 16px 24px;
+            font-size: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            width: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .search-section input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .search-section input:focus {
+            border-color: #00d4ff;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+        }
+        
+        .search-section button {
+            padding: 16px 32px;
+            background: #00d4ff;
+            color: #0a0e1a;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .search-section button:hover {
+            background: #00b8e6;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
+        }
+        
+        .filter-section {
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .filter-section label {
+            font-weight: 600;
+            color: #ffffff;
+            font-size: 18px;
+            display: block;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .filter-btn {
+            margin: 8px 12px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #ffffff;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.2);
+        }
+        
+        .pg-btn {
+            background: #4ecdc4;
+            color: #0a0e1a;
+            border-color: #4ecdc4;
+        }
+        
+        .pg-btn:hover {
+            background: #3db5ad;
+            border-color: #3db5ad;
+            box-shadow: 0 8px 25px rgba(78, 205, 196, 0.4);
+        }
+        
+        .philips-btn {
+            background: #00d4ff;
+            color: #0a0e1a;
+            border-color: #00d4ff;
+        }
+        
+        .philips-btn:hover {
+            background: #00b8e6;
+            border-color: #00b8e6;
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.4);
+        }
+        
+        .toms-btn {
+            background: #ffd93d;
+            color: #0a0e1a;
+            border-color: #ffd93d;
+        }
+        
+        .toms-btn:hover {
+            background: #e6c235;
+            border-color: #e6c235;
+            box-shadow: 0 8px 25px rgba(255, 217, 61, 0.4);
+        }
+        
+        .private-btn {
+            background: #ff6b6b;
+            color: #ffffff;
+            border-color: #ff6b6b;
+        }
+        
+        .private-btn:hover {
+            background: #e55a5a;
+            border-color: #e55a5a;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+        
+        .crest-btn {
+            background: #00d4ff;
+            color: #0a0e1a;
+            border-color: #00d4ff;
+        }
+        
+        .crest-btn:hover {
+            background: #00b8e6;
+            border-color: #00b8e6;
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.4);
+        }
+        
+        .oralb-btn {
+            background: #4ecdc4;
+            color: #0a0e1a;
+            border-color: #4ecdc4;
+        }
+        
+        .oralb-btn:hover {
+            background: #3db5ad;
+            border-color: #3db5ad;
+            box-shadow: 0 8px 25px rgba(78, 205, 196, 0.4);
+        }
+        
+        .sensodyne-btn {
+            background: #9b59b6;
+            color: #ffffff;
+            border-color: #9b59b6;
+        }
+        
+        .sensodyne-btn:hover {
+            background: #8e44ad;
+            border-color: #8e44ad;
+            box-shadow: 0 8px 25px rgba(155, 89, 182, 0.4);
+        }
+        
+        .colgate-btn {
+            background: #e74c3c;
+            color: #ffffff;
+            border-color: #e74c3c;
+        }
+        
+        .colgate-btn:hover {
+            background: #c0392b;
+            border-color: #c0392b;
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+        }
+        
+        .clear-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .clear-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #ffffff;
+        }
+        
+        .stats-section {
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            text-align: center;
+        }
+        
+        .brand-counter {
+            font-weight: 500;
+            color: #ffffff;
+            font-size: 16px;
+        }
+        
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 40px;
+            height: 600px;
+            overflow-y: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            min-width: 1400px;
+        }
+        
+        thead {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 14, 26, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        
+        th {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            font-weight: 600;
+            padding: 20px 16px;
+            text-align: left;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 13px;
+        }
+        
+        th:first-child {
+            width: 80px;
+            text-align: center;
+        }
+        
+        th:nth-child(2) {
+            width: 350px;
+        }
+        
+        td {
+            padding: 18px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            vertical-align: top;
+            transition: all 0.3s ease;
+        }
+        
+        tr:hover {
+            background: rgba(0, 212, 255, 0.05);
+        }
+        
+        tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        tr:nth-child(even):hover {
+            background: rgba(0, 212, 255, 0.05);
+        }
+        
+        .question-number {
+            background: #00d4ff;
+            color: #0a0e1a;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            margin: 0 auto;
+        }
+        
+        .question {
+            font-weight: 500;
+            color: #ffffff;
+            line-height: 1.4;
+            font-size: 15px;
+        }
+        
+        .ai-response {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-weight: 500;
+            color: #ffffff;
+            border-left: 3px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .ai-response:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-left-color: #00d4ff;
+            transform: translateX(3px);
+        }
+        
+        .highlight-pg {
+            background: rgba(78, 205, 196, 0.35) !important;
+            border-left-color: #4ecdc4 !important;
+            border-left-width: 6px !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 20px rgba(78, 205, 196, 0.3), inset 0 0 20px rgba(78, 205, 196, 0.1) !important;
+            border-radius: 8px !important;
+        }
+        
+        .highlight-philips {
+            background: rgba(0, 212, 255, 0.35) !important;
+            border-left-color: #00d4ff !important;
+            border-left-width: 6px !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3), inset 0 0 20px rgba(0, 212, 255, 0.1) !important;
+            border-radius: 8px !important;
+        }
+        
+        .highlight-toms {
+            background: rgba(255, 217, 61, 0.35) !important;
+            border-left-color: #ffd93d !important;
+            border-left-width: 6px !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 20px rgba(255, 217, 61, 0.3), inset 0 0 20px rgba(255, 217, 61, 0.1) !important;
+            border-radius: 8px !important;
+        }
+        
+        .highlight-private {
+            background: rgba(255, 107, 107, 0.35) !important;
+            border-left-color: #ff6b6b !important;
+            border-left-width: 6px !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.3), inset 0 0 20px rgba(255, 107, 107, 0.1) !important;
+            border-radius: 8px !important;
+        }
+        
+        .highlight-search {
+            background: rgba(255, 217, 61, 0.4) !important;
+            border-left-color: #ffd93d !important;
+            border-left-width: 6px !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 25px rgba(255, 217, 61, 0.4), inset 0 0 20px rgba(255, 217, 61, 0.15) !important;
+            border-radius: 8px !important;
+        }
+        
+        .hidden-row {
+            display: none !important;
+        }
+        
+        .table-wrapper::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        .table-wrapper::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+        
+        .table-wrapper::-webkit-scrollbar-thumb {
+            background: #00d4ff;
+            border-radius: 4px;
+        }
+        
+        .table-wrapper::-webkit-scrollbar-thumb:hover {
+            background: #00b8e6;
+        }
+        
+        .stats {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
+            margin-top: 40px;
+        }
+        
+        .stats strong {
+            color: #00d4ff;
+        }
+        
+        .competitive-analysis {
+            margin-top: 40px;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 35px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .competitive-analysis h2 {
+            color: #ffffff;
+            font-size: 1.6rem;
+            font-weight: 500;
+            margin-bottom: 25px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .competitive-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .competitive-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 3px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .competitive-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.1);
+        }
+        
+        .competitive-card h4 {
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .competitive-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .competitive-card li {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 12px;
+            line-height: 1.5;
+            margin-bottom: 8px;
+            padding-left: 12px;
+            position: relative;
+        }
+        
+        .competitive-card li:before {
+            content: "•";
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        .amazon-analysis {
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 35px;
+            border: 1px solid rgba(0, 212, 255, 0.15);
+        }
+        
+        .amazon-analysis h2 {
+            color: #00d4ff;
+            font-size: 1.6rem;
+            font-weight: 500;
+            margin-bottom: 25px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .analysis-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 3px solid #00d4ff;
+            transition: all 0.3s ease;
+        }
+        
+        .analysis-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.15);
+        }
+        
+        .analysis-card h4 {
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .analysis-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .analysis-card li {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 12px;
+            line-height: 1.5;
+            margin-bottom: 8px;
+            padding-left: 12px;
+            position: relative;
+        }
+        
+        .analysis-card li:before {
+            content: "•";
+            color: #4ecdc4;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        @media (max-width: 1200px) {
+            .container {
+                padding: 20px 30px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .search-section {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .search-section input {
+                width: 100%;
+                max-width: 400px;
+            }
+            
+            table {
+                font-size: 13px;
+                min-width: 1200px;
+            }
+            
+            th, td {
+                padding: 12px 10px;
+            }
+            
+            .competitive-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .competitive-analysis {
+                padding: 20px;
+            }
+            
+            .competitive-analysis h2 {
+                font-size: 1.3rem;
+            }
+            
+            .analysis-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .amazon-analysis {
+                padding: 20px;
+            }
+            
+            .amazon-analysis h2 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BrandRank.AI Oral Care Answer Monitor (Q3-2025)</h1>
+        
+        <div class="controls-panel">
+            <div class="search-section">
+                <input type="text" id="brandSearch" placeholder="Search for brands..." />
+                <button onclick="clearAll()" class="filter-btn clear-btn">Clear All</button>
+            </div>
+            
+            <div class="filter-section">
+                <label>Brand Analysis</label>
+                <button onclick="highlightBrand('P&G')" class="filter-btn pg-btn">P&G Brands</button>
+                <button onclick="highlightBrand('Crest')" class="filter-btn crest-btn">Crest</button>
+                <button onclick="highlightBrand('Oral-B')" class="filter-btn oralb-btn">Oral-B</button>
+                <button onclick="highlightBrand('Philips')" class="filter-btn philips-btn">Philips</button>
+                <button onclick="highlightBrand('Toms')" class="filter-btn toms-btn">Tom's of Maine</button>
+                <button onclick="highlightBrand('Private Label')" class="filter-btn private-btn">Private Label</button>
+                <button onclick="highlightBrand('Sensodyne')" class="filter-btn sensodyne-btn">Sensodyne</button>
+                <button onclick="highlightBrand('Colgate')" class="filter-btn colgate-btn">Colgate</button>
+            </div>
+            
+            <div class="stats-section">
+                <div class="brand-counter">
+                    <span id="brandCount">Search for brands to see statistics</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Question Number</th>
+                        <th>Question</th>
+                        <th>ChatGPT</th>
+                        <th>Gemini</th>
+                        <th>Claude</th>
+                        <th>X/Grok</th>
+                        <th>Perplexity</th>
+                        <th>DeepSeek</th>
+                        <th>Meta/Llama</th>
+                        <th>Amazon Rufus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><div class="question-number">1</div></td>
+                        <td><div class="question">What is the best toothpaste for oral health?</div></td>
+                        <td><div class="ai-response">Crest</div></td>
+                        <td><div class="ai-response">Oral-B</div></td>
+                        <td><div class="ai-response">Crest</div></td>
+                        <td><div class="ai-response">Colgate</div></td>
+                        <td><div class="ai-response">Crest</div></td>
+                        <td><div class="ai-response">Colgate</div></td>
+                        <td><div class="ai-response">Colgate</div></td>
+                        <td><div class="ai-response">Crest</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">2</div></td>
+                        <td><div class="question">What is the best toothbrush brand for gum care?</div></td>
+                        <td><div class="ai-response">Oral-B</div></td>
+                        <td><div class="ai-response">Oral-B</div></td>
+                        <td><div class="ai-response">Oral-B</div></td>
+                        <td><div class="ai-response">Oral-B</div></td>
+                        <td><div class="ai-response">Oral-B</div></td>
+                        <td><div class="ai-response">Oral-B</div></td>
+                        <td><div class="ai-response">Oral-B</div></td>
+                        <td><div class="ai-response">Oral-B</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">3</div></td>
+                        <td><div class="question">What is the best whitening toothpaste?</div></td>
+                        <td><div class="ai-response">Crest</div></td>
+                        <td><div class="ai-response">Crest</div></td>
+                        <td><div class="ai-response">Crest</div></td>
+                        <td><div class="ai-response">Crest</div></td>
+                        <td><div class="ai-response">Crest 3D White</div></td>
+                        <td><div class="ai-response">Crest</div></td>
+                        <td><div class="ai-response">Crest</div></td>
+                        <td><div class="ai-response">Sensodyne</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">4</div></td>
+                        <td><div class="question">What is the best mouthwash for bad breath?</div></td>
+                        <td><div class="ai-response">Listerine</div></td>
+                        <td><div class="ai-response">Listerine</div></td>
+                        <td><div class="ai-response">Listerine</div></td>
+                        <td><div class="ai-response">TheraBreath</div></td>
+                        <td><div class="ai-response">TheraBreath</div></td>
+                        <td><div class="ai-response">Listerine</div></td>
+                        <td><div class="ai-response">Listerine</div></td>
+                        <td><div class="ai-response">TheraBreath</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">5</div></td>
+                        <td><div class="question">What is the best electric toothbrush brand?</div></td>
+                        <td><div class="ai-response">Oral-B</div></td>
+                        <td><div class="ai-response">Philips Sonicare</div></td>
+                        <td><div class="ai-response">Oral-B</div></td>
+                        <td><div class="ai-response">Philips Sonicare</div></td>
+                        <td><div class="ai-response">Oral-B</div></td>
+                        <td><div class="ai-response">Philips Sonicare</div></td>
+                        <td><div class="ai-response">Oral-B</div></td>
+                        <td><div class="ai-response">Oral-B</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">6</div></td>
+                        <td><div class="question">What is the best dental floss brand?</div></td>
+                        <td><div class="ai-response">Oral-B</div></td>
+                        <td><div class="ai-response">Glide</div></td>
+                        <td><div class="ai-response">Oral-B</div></td>
+                        <td><div class="ai-response">Glide</div></td>
+                        <td><div class="ai-response">Glide</div></td>
+                        <td><div class="ai-response">Oral-B Glide</div></td>
+                        <td><div class="ai-response">Johnson & Johnson</div></td>
+                        <td><div class="ai-response">Colgate</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">7</div></td>
+                        <td><div class="question">What is the best teeth whitening strips?</div></td>
+                        <td><div class="ai-response">Crest</div></td>
+                        <td><div class="ai-response">Crest Whitestrips</div></td>
+                        <td><div class="ai-response">Crest</div></td>
+                        <td><div class="ai-response">Crest 3D White</div></td>
+                        <td><div class="ai-response">Crest Whitestrips</div></td>
+                        <td><div class="ai-response">Crest 3D White</div></td>
+                        <td><div class="ai-response">Crest</div></td>
+                        <td><div class="ai-response">REACH</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">8</div></td>
+                        <td><div class="question">What is the best water flosser brand?</div></td>
+                        <td><div class="ai-response">Waterpik</div></td>
+                        <td><div class="ai-response">Waterpik</div></td>
+                        <td><div class="ai-response">Waterpik</div></td>
+                        <td><div class="ai-response">Waterpik</div></td>
+                        <td><div class="ai-response">Waterpik</div></td>
+                        <td><div class="ai-response">Waterpik</div></td>
+                        <td><div class="ai-response">Waterpik</div></td>
+                        <td><div class="ai-response">Crest</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">9</div></td>
+                        <td><div class="question">What is the best toothpaste for sensitive teeth?</div></td>
+                        <td><div class="ai-response">Sensodyne</div></td>
+                        <td><div class="ai-response">Sensodyne</div></td>
+                        <td><div class="ai-response">Sensodyne</div></td>
+                        <td><div class="ai-response">Sensodyne</div></td>
+                        <td><div class="ai-response">Sensodyne</div></td>
+                        <td><div class="ai-response">Sensodyne</div></td>
+                        <td><div class="ai-response">Sensodyne</div></td>
+                        <td><div class="ai-response">Aquafresh</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">10</div></td>
+                        <td><div class="question">What is the best children's toothpaste?</div></td>
+                        <td><div class="ai-response">Crest Kids</div></td>
+                        <td><div class="ai-response">Tom's of Maine</div></td>
+                        <td><div class="ai-response">Crest Kids</div></td>
+                        <td><div class="ai-response">Colgate Kids</div></td>
+                        <td><div class="ai-response">Tom's of Maine</div></td>
+                        <td><div class="ai-response">Crest Kids</div></td>
+                        <td><div class="ai-response">Colgate</div></td>
+                        <td><div class="ai-response">Crest</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">11</div></td>
+                        <td><div class="question">What is the best natural toothpaste brand?</div></td>
+                        <td><div class="ai-response">Tom's of Maine</div></td>
+                        <td><div class="ai-response">Tom's of Maine</div></td>
+                        <td><div class="ai-response">Tom's of Maine</div></td>
+                        <td><div class="ai-response">Dr. Bronner's</div></td>
+                        <td><div class="ai-response">Hello</div></td>
+                        <td><div class="ai-response">Jason Natural</div></td>
+                        <td><div class="ai-response">Tom's of Maine</div></td>
+                        <td><div class="ai-response">Waterpik</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">12</div></td>
+                        <td><div class="question">What is the best denture cleaner brand?</div></td>
+                        <td><div class="ai-response">Polident</div></td>
+                        <td><div class="ai-response">Polident</div></td>
+                        <td><div class="ai-response">Polident</div></td>
+                        <td><div class="ai-response">Efferdent</div></td>
+                        <td><div class="ai-response">Polident</div></td>
+                        <td><div class="ai-response">Polident</div></td>
+                        <td><div class="ai-response">Efferdent</div></td>
+                        <td><div class="ai-response">Crest</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">13</div></td>
+                        <td><div class="question">What is the best mouthguard for teeth grinding?</div></td>
+                        <td><div class="ai-response">DenTek</div></td>
+                        <td><div class="ai-response">Plackers</div></td>
+                        <td><div class="ai-response">DenTek</div></td>
+                        <td><div class="ai-response">SleepRight</div></td>
+                        <td><div class="ai-response">Plackers</div></td>
+                        <td><div class="ai-response">SleepRight</div></td>
+                        <td><div class="ai-response">DenTek</div></td>
+                        <td><div class="ai-response">Oral-B</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">14</div></td>
+                        <td><div class="question">What is the best breath spray brand?</div></td>
+                        <td><div class="ai-response">Binaca</div></td>
+                        <td><div class="ai-response">TheraBreath</div></td>
+                        <td><div class="ai-response">Binaca</div></td>
+                        <td><div class="ai-response">Listerine</div></td>
+                        <td><div class="ai-response">TheraBreath</div></td>
+                        <td><div class="ai-response">Listerine PocketPaks</div></td>
+                        <td><div class="ai-response">TheraBreath</div></td>
+                        <td><div class="ai-response">biotène</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">15</div></td>
+                        <td><div class="question">What is the best tongue scraper brand?</div></td>
+                        <td><div class="ai-response">DenTek</div></td>
+                        <td><div class="ai-response">Orabrush</div></td>
+                        <td><div class="ai-response">DenTek</div></td>
+                        <td><div class="ai-response">Dr. Tung's</div></td>
+                        <td><div class="ai-response">Orabrush</div></td>
+                        <td><div class="ai-response">Dr. Tung's</div></td>
+                        <td><div class="ai-response">Orabrush</div></td>
+                        <td><div class="ai-response">Crest</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">16</div></td>
+                        <td><div class="question">What is the best gum brand for oral health?</div></td>
+                        <td><div class="ai-response">Trident</div></td>
+                        <td><div class="ai-response">Xylitol Gum</div></td>
+                        <td><div class="ai-response">Trident</div></td>
+                        <td><div class="ai-response">Orbit</div></td>
+                        <td><div class="ai-response">Spry</div></td>
+                        <td><div class="ai-response">Epic Dental</div></td>
+                        <td><div class="ai-response">Extra</div></td>
+                        <td><div class="ai-response">ACT</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">17</div></td>
+                        <td><div class="question">What is the best travel-size oral care brand?</div></td>
+                        <td><div class="ai-response">Colgate</div></td>
+                        <td><div class="ai-response">Travel Size</div></td>
+                        <td><div class="ai-response">Colgate</div></td>
+                        <td><div class="ai-response">Oral-B</div></td>
+                        <td><div class="ai-response">Colgate</div></td>
+                        <td><div class="ai-response">Crest Travel</div></td>
+                        <td><div class="ai-response">Oral-B</div></td>
+                        <td><div class="ai-response">GUM</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">18</div></td>
+                        <td><div class="question">What is the best teeth whitening gel brand?</div></td>
+                        <td><div class="ai-response">Opalescence</div></td>
+                        <td><div class="ai-response">GLO Science</div></td>
+                        <td><div class="ai-response">Opalescence</div></td>
+                        <td><div class="ai-response">Crest</div></td>
+                        <td><div class="ai-response">GLO Science</div></td>
+                        <td><div class="ai-response">AuraGlow</div></td>
+                        <td><div class="ai-response">Crest</div></td>
+                        <td><div class="ai-response">Crest</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">19</div></td>
+                        <td><div class="question">What is the best fluoride-free toothpaste?</div></td>
+                        <td><div class="ai-response">Tom's of Maine</div></td>
+                        <td><div class="ai-response">Hello</div></td>
+                        <td><div class="ai-response">Tom's of Maine</div></td>
+                        <td><div class="ai-response">Jason Natural</div></td>
+                        <td><div class="ai-response">Desert Essence</div></td>
+                        <td><div class="ai-response">Hello Naturally</div></td>
+                        <td><div class="ai-response">Jason</div></td>
+                        <td><div class="ai-response">Listerine</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">20</div></td>
+                        <td><div class="question">What is the best prescription-strength toothpaste?</div></td>
+                        <td><div class="ai-response">Prevident</div></td>
+                        <td><div class="ai-response">PreviDent 5000</div></td>
+                        <td><div class="ai-response">Prevident</div></td>
+                        <td><div class="ai-response">Clinpro 5000</div></td>
+                        <td><div class="ai-response">Clinpro 5000</div></td>
+                        <td><div class="ai-response">PreviDent 5000</div></td>
+                        <td><div class="ai-response">3M Clinpro</div></td>
+                        <td><div class="ai-response">Tung</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">21</div></td>
+                        <td><div class="question">What is the best mint for fresh breath?</div></td>
+                        <td><div class="ai-response">Altoids</div></td>
+                        <td><div class="ai-response">Tic Tac</div></td>
+                        <td><div class="ai-response">Altoids</div></td>
+                        <td><div class="ai-response">Mentos</div></td>
+                        <td><div class="ai-response">Ice Breakers</div></td>
+                        <td><div class="ai-response">Tic Tac</div></td>
+                        <td><div class="ai-response">Altoids</div></td>
+                        <td><div class="ai-response">Crest</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">22</div></td>
+                        <td><div class="question">What is the best oral pain relief brand?</div></td>
+                        <td><div class="ai-response">Orajel</div></td>
+                        <td><div class="ai-response">Anbesol</div></td>
+                        <td><div class="ai-response">Orajel</div></td>
+                        <td><div class="ai-response">Anbesol</div></td>
+                        <td><div class="ai-response">Orajel</div></td>
+                        <td><div class="ai-response">Hurricaine</div></td>
+                        <td><div class="ai-response">Anbesol</div></td>
+                        <td><div class="ai-response">Chew</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">23</div></td>
+                        <td><div class="question">What is the best dry mouth remedy brand?</div></td>
+                        <td><div class="ai-response">Biotene</div></td>
+                        <td><div class="ai-response">Biotene</div></td>
+                        <td><div class="ai-response">Biotene</div></td>
+                        <td><div class="ai-response">TheraBreath</div></td>
+                        <td><div class="ai-response">Biotene</div></td>
+                        <td><div class="ai-response">ACT Dry Mouth</div></td>
+                        <td><div class="ai-response">Biotene</div></td>
+                        <td><div class="ai-response">Hello</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">24</div></td>
+                        <td><div class="question">What is the best canker sore treatment brand?</div></td>
+                        <td><div class="ai-response">Orajel</div></td>
+                        <td><div class="ai-response">Zilactin</div></td>
+                        <td><div class="ai-response">Orajel</div></td>
+                        <td><div class="ai-response">Kanka</div></td>
+                        <td><div class="ai-response">Zilactin</div></td>
+                        <td><div class="ai-response">Anbesol</div></td>
+                        <td><div class="ai-response">Zilactin</div></td>
+                        <td><div class="ai-response">Listerine</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">25</div></td>
+                        <td><div class="question">What is the best interdental brush brand?</div></td>
+                        <td><div class="ai-response">TePe</div></td>
+                        <td><div class="ai-response">GUM</div></td>
+                        <td><div class="ai-response">TePe</div></td>
+                        <td><div class="ai-response">Oral-B</div></td>
+                        <td><div class="ai-response">GUM Proxabrush</div></td>
+                        <td><div class="ai-response">Plackers</div></td>
+                        <td><div class="ai-response">GUM</div></td>
+                        <td><div class="ai-response">Efferdent</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">26</div></td>
+                        <td><div class="question">What is the best retainer cleaner brand?</div></td>
+                        <td><div class="ai-response">Retainer Brite</div></td>
+                        <td><div class="ai-response">Polident</div></td>
+                        <td><div class="ai-response">Retainer Brite</div></td>
+                        <td><div class="ai-response">DenTek</div></td>
+                        <td><div class="ai-response">Retainer Brite</div></td>
+                        <td><div class="ai-response">M3 Naturals</div></td>
+                        <td><div class="ai-response">Polident</div></td>
+                        <td><div class="ai-response">Retainer</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">27</div></td>
+                        <td><div class="question">What is the best electric toothbrush for kids?</div></td>
+                        <td><div class="ai-response">Oral-B Kids</div></td>
+                        <td><div class="ai-response">Philips Sonicare</div></td>
+                        <td><div class="ai-response">Oral-B Kids</div></td>
+                        <td><div class="ai-response">Fairywill</div></td>
+                        <td><div class="ai-response">Oral-B Kids</div></td>
+                        <td><div class="ai-response">Philips Sonicare Kids</div></td>
+                        <td><div class="ai-response">Arm & Hammer</div></td>
+                        <td><div class="ai-response">Colgate</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">28</div></td>
+                        <td><div class="question">What is the best dental pick brand?</div></td>
+                        <td><div class="ai-response">Plackers</div></td>
+                        <td><div class="ai-response">GUM</div></td>
+                        <td><div class="ai-response">Plackers</div></td>
+                        <td><div class="ai-response">DenTek</div></td>
+                        <td><div class="ai-response">GUM Soft-Picks</div></td>
+                        <td><div class="ai-response">Oral-B Glide</div></td>
+                        <td><div class="ai-response">DenTek</div></td>
+                        <td><div class="ai-response">ACT</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">29</div></td>
+                        <td><div class="question">What is the best toothpaste for gingivitis?</div></td>
+                        <td><div class="ai-response">Crest Gum Care</div></td>
+                        <td><div class="ai-response">Parodontax</div></td>
+                        <td><div class="ai-response">Crest Gum Care</div></td>
+                        <td><div class="ai-response">Parodontax</div></td>
+                        <td><div class="ai-response">Parodontax</div></td>
+                        <td><div class="ai-response">TheraBreath</div></td>
+                        <td><div class="ai-response">Parodontax</div></td>
+                        <td><div class="ai-response">BURST</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="question-number">30</div></td>
+                        <td><div class="question">What store brand oral care products offer the best value?</div></td>
+                        <td><div class="ai-response">CVS Health</div></td>
+                        <td><div class="ai-response">Equate (Walmart)</div></td>
+                        <td><div class="ai-response">CVS Health</div></td>
+                        <td><div class="ai-response">Up & Up</div></td>
+                        <td><div class="ai-response">Up & Up (Target)</div></td>
+                        <td><div class="ai-response">Walgreens Brand</div></td>
+                        <td><div class="ai-response">Amazon Basics</div></td>
+                        <td><div class="ai-response">REACH</div></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="stats">
+            <strong>Executive Summary:</strong> Comprehensive analysis of 30 oral care questions across 8 AI platforms | 
+            <strong>Key Findings:</strong> P&G brands demonstrate strong market presence with high consensus across platforms
+        </div>
+        
+        <div class="competitive-analysis">
+            <h2>Competitive Market Intelligence</h2>
+            
+            <div class="competitive-grid">
+                <div class="competitive-card">
+                    <h4>P&G Market Dominance</h4>
+                    <ul>
+                        <li>Crest dominates toothpaste, whitening, and specialty segments with clinical positioning</li>
+                        <li>Oral-B maintains premium manual toothbrush leadership through technology focus</li>
+                        <li>Premium pricing strategy sustained with 10K+ monthly sales volumes per product</li>
+                        <li>Bundle-first approach with multi-packs driving higher transaction values</li>
+                    </ul>
+                </div>
+                
+                <div class="competitive-card">
+                    <h4>Competitive Threats</h4>
+                    <ul>
+                        <li>Sensodyne challenges P&G in sensitivity segment with clinical differentiation</li>
+                        <li>Colgate competes on value pricing ($3-15 vs P&G's $15-25 range)</li>
+                        <li>TheraBreath owns bad breath category where P&G has no presence</li>
+                        <li>Amazon Basics gaining traction in mouthwash with significant price advantage</li>
+                    </ul>
+                </div>
+                
+                <div class="competitive-card">
+                    <h4>Strategic Opportunities</h4>
+                    <ul>
+                        <li>Category gaps in dry mouth remedies dominated by Biotene</li>
+                        <li>Limited natural/fluoride-free portfolio vs Tom's of Maine leadership</li>
+                        <li>Late entry into charcoal segment with recent Crest 3D White launch</li>
+                        <li>Strong Amazon partnership evidenced by consistent same-day delivery eligibility</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="amazon-analysis">
+            <h2>Amazon Rufus Call-Outs</h2>
+            
+            <div class="analysis-section">
+                <div class="analysis-grid">
+                    <div class="analysis-card">
+                        <h4>P&G Communication Advantages</h4>
+                        <ul>
+                            <li>Clinical authority positioning with "Clinically Proven" and "ADA Accepted" messaging</li>
+                            <li>Performance specificity using quantified benefits like "100% More Surface Stain Removal"</li>
+                            <li>Professional endorsement emphasis supporting premium pricing strategy</li>
+                            <li>Multi-benefit messaging positioning products as comprehensive solutions</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="analysis-card">
+                        <h4>Amazon's P&G-Favorable Approach</h4>
+                        <ul>
+                            <li>Feature-rich descriptions highlighting advanced technology like "CrossAction bristles"</li>
+                            <li>Ingredient transparency calling out active ingredients and formulation benefits</li>
+                            <li>Usage guidance with clear timelines like "Whiter Teeth in 3 Days"</li>
+                            <li>Safety messaging emphasizing "enamel-safe" and "gentle" positioning</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="analysis-card">
+                        <h4>Strategic Market Position</h4>
+                        <ul>
+                            <li>Premium justification through detailed explanations supporting higher price points</li>
+                            <li>Bundle promotion consistently featuring multi-packs increasing transaction values</li>
+                            <li>Category expertise positioning P&G brands as authoritative market leaders</li>
+                            <li>Cross-selling opportunities mentioning complementary benefits in single products</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Brand categories
+        const pgBrands = ['crest', 'oral-b', 'braun', 'crest kids', 'crest gum care', 'crest 3d white', 'crest whitestrips', 'crest travel', 'oral-b kids', 'oral-b glide'];
+        const philipsBrands = ['philips', 'sonicare', 'philips sonicare'];
+        const tomsBrands = ['tom\'s of maine', 'toms of maine', 'tom\'s', 'toms'];
+        const privateLabelBrands = ['equate', 'up & up', 'up&up', 'amazon basics', 'cvs health', 'walgreens brand', 'walgreens', 'target', 'walmart'];
+        
+        function highlightBrand(brand) {
+            clearHighlights();
+            const responses = document.querySelectorAll('.ai-response');
+            let count = 0;
+            let platformCounts = {};
+            
+            responses.forEach(response => {
+                const text = response.textContent.toLowerCase();
+                let isMatch = false;
+                let highlightClass = '';
+                
+                if (brand === 'P&G') {
+                    isMatch = pgBrands.some(pgBrand => text.includes(pgBrand));
+                    highlightClass = 'highlight-pg';
+                } else if (brand === 'Philips') {
+                    isMatch = philipsBrands.some(philipsBrand => text.includes(philipsBrand));
+                    highlightClass = 'highlight-philips';
+                } else if (brand === 'Toms') {
+                    isMatch = tomsBrands.some(tomsBrand => text.includes(tomsBrand));
+                    highlightClass = 'highlight-toms';
+                } else if (brand === 'Private Label') {
+                    isMatch = privateLabelBrands.some(privateBrand => text.includes(privateBrand));
+                    highlightClass = 'highlight-private';
+                } else {
+                    isMatch = text.includes(brand.toLowerCase());
+                    highlightClass = 'highlight-search';
+                }
+                
+                if (isMatch) {
+                    response.classList.add(highlightClass);
+                    count++;
+                    // Track platform counts
+                    const platformHeader = document.querySelectorAll('th')[Array.from(response.closest('tr').children).indexOf(response.closest('td'))];
+                    if (platformHeader) {
+                        const platformName = platformHeader.textContent;
+                        platformCounts[platformName] = (platformCounts[platformName] || 0) + 1;
+                    }
+                }
+            });
+            
+            updateBrandCounter(brand, count, platformCounts);
+        }
+        
+        function clearHighlights() {
+            document.querySelectorAll('.highlight-pg, .highlight-search, .highlight-philips, .highlight-toms, .highlight-private').forEach(el => {
+                el.classList.remove('highlight-pg', 'highlight-search', 'highlight-philips', 'highlight-toms', 'highlight-private');
+            });
+            document.querySelectorAll('tr').forEach(row => {
+                row.classList.remove('hidden-row');
+            });
+        }
+        
+        function clearAll() {
+            document.getElementById('brandSearch').value = '';
+            clearHighlights();
+            document.getElementById('brandCount').textContent = 'Search for brands to see statistics';
+        }
+        
+        function updateBrandCounter(brand, count, platformCounts) {
+            const counter = document.getElementById('brandCount');
+            let message = `Found ${count} mentions of "${brand}"`;
+            
+            if (Object.keys(platformCounts).length > 0) {
+                const topPlatforms = Object.entries(platformCounts)
+                    .sort(([,a], [,b]) => b - a)
+                    .slice(0, 3)
+                    .map(([platform, count]) => `${platform}: ${count}`)
+                    .join(', ');
+                message += ` | Top platforms: ${topPlatforms}`;
+            }
+            
+            counter.textContent = message;
+        }
+        
+        // Live search functionality
+        document.getElementById('brandSearch').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                clearHighlights();
+                document.getElementById('brandCount').textContent = 'Search for brands to see statistics';
+                return;
+            }
+            
+            clearHighlights();
+            const responses = document.querySelectorAll('.ai-response');
+            let count = 0;
+            let platformCounts = {};
+            let matchingRows = new Set();
+            
+            responses.forEach(response => {
+                const text = response.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    response.classList.add('highlight-search');
+                    matchingRows.add(response.closest('tr'));
+                    count++;
+                    
+                    // Track platform counts
+                    const platformHeader = document.querySelectorAll('th')[Array.from(response.closest('tr').children).indexOf(response.closest('td'))];
+                    if (platformHeader) {
+                        const platformName = platformHeader.textContent;
+                        platformCounts[platformName] = (platformCounts[platformName] || 0) + 1;
+                    }
+                }
+            });
+            
+            // Hide rows that don't contain the search term
+            document.querySelectorAll('tbody tr').forEach(row => {
+                if (!matchingRows.has(row)) {
+                    row.classList.add('hidden-row');
+                } else {
+                    row.classList.remove('hidden-row');
+                }
+            });
+            
+            updateBrandCounter(searchTerm, count, platformCounts);
+        });
+        
+        // Auto-highlight P&G brands on load
+        document.addEventListener('DOMContentLoaded', function() {
+            highlightBrand('P&G');
+        });
+    </script>
+</body>
+</html>

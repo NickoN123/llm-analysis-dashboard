@@ -1,0 +1,2774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Brand AI Answer Engine Analysis - BrandRank.AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .main-title {
+            font-size: 2.4em;
+            font-weight: 700;
+            color: #00d4ff;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1em;
+            font-weight: 300;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+            margin-bottom: 30px;
+        }
+
+        .context-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 900px;
+            backdrop-filter: blur(15px);
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin: 40px 0;
+        }
+
+        .search-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 15px 20px;
+            color: #ffffff;
+            font-size: 16px;
+            width: 350px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .brand-filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .brand-filter {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 12px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .brand-filter:hover, .brand-filter.active {
+            background: #00d4ff;
+            border-color: #00d4ff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
+        }
+
+        .table-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            margin: 40px 0;
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .data-table th {
+            background: #00d4ff;
+            color: #0a0e1a;
+            padding: 20px 15px;
+            text-align: left;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            vertical-align: top;
+            color: #ffffff;
+        }
+
+        .data-table td:first-child {
+            color: #00d4ff;
+            font-weight: 500;
+            background: rgba(0, 212, 255, 0.08);
+            border-right: 1px solid rgba(0, 212, 255, 0.2);
+            width: 25%;
+        }
+
+        .data-table tr:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .category-header {
+            background: rgba(0, 212, 255, 0.15);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            color: #00d4ff;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 13px;
+            padding: 12px 15px;
+        }
+
+        .stats-panel {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            backdrop-filter: blur(15px);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+        }
+
+        .stat-label {
+            font-size: 0.85em;
+            color: rgba(255, 255, 255, 0.9);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+            line-height: 1.3;
+        }
+
+        .analysis-section {
+            margin: 80px 0;
+        }
+
+        .analysis-title {
+            font-size: 2.4em;
+            color: #00d4ff;
+            text-align: center;
+            margin-bottom: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .analysis-column {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 35px;
+            backdrop-filter: blur(15px);
+        }
+
+        .insight {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .insight:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .insight-title {
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #ffffff;
+            font-size: 1.1em;
+        }
+
+        .insight-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1em;
+            line-height: 1.7;
+        }
+
+        .about-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 50px;
+            margin: 80px 0;
+            text-align: center;
+            backdrop-filter: blur(15px);
+        }
+
+        .about-title {
+            font-size: 2em;
+            color: #00d4ff;
+            margin-bottom: 25px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .about-text {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .clear-button {
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid rgba(255, 107, 107, 0.4);
+            border-radius: 6px;
+            padding: 15px 20px;
+            color: #ff6b6b;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .section-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .section-btn {
+            background: rgba(0, 212, 255, 0.15);
+            border: 1px solid rgba(0, 212, 255, 0.4);
+            border-radius: 6px;
+            padding: 10px 14px;
+            color: #00d4ff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            font-weight: 500;
+            text-align: center;
+            white-space: nowrap;
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .section-btn:hover {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .section-btn.active {
+            background: #00d4ff;
+            color: #0a0e1a;
+            border-color: #00d4ff;
+        }
+
+        .clear-button:hover {
+            background: #ff6b6b;
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+        }
+
+        .highlight-match {
+            background: rgba(255, 211, 61, 0.3) !important;
+            border: 2px solid #ffd93d !important;
+            border-radius: 4px;
+            animation: highlight-pulse 2s ease-in-out;
+        }
+
+        @keyframes highlight-pulse {
+            0%, 100% { 
+                box-shadow: 0 0 5px rgba(255, 211, 61, 0.3);
+            }
+            50% { 
+                box-shadow: 0 0 15px rgba(255, 211, 61, 0.6);
+            }
+        }
+
+        .performance-high {
+            color: #4ecdc4;
+            font-weight: 600;
+        }
+
+        .performance-medium {
+            color: #ffd93d;
+            font-weight: 600;
+        }
+
+        .performance-low {
+            color: #ff6b6b;
+            font-weight: 600;
+        }
+
+        .category-row {
+            background: rgba(0, 212, 255, 0.08);
+        }
+
+        .category-row td {
+            background: rgba(0, 212, 255, 0.08);
+        }
+
+        .question-number {
+            font-size: 0.9em;
+            color: #00d4ff;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        @media (max-width: 1200px) {
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-panel {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .main-title {
+                font-size: 2.2em;
+            }
+            
+            .stats-panel {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .search-box {
+                width: 100%;
+                max-width: 350px;
+            }
+
+            .data-table {
+                font-size: 12px;
+            }
+
+            .data-table th, .data-table td {
+                padding: 10px 8px;
+            }
+
+            .section-nav {
+                gap: 8px;
+            }
+
+            .section-btn {
+                font-size: 11px;
+                padding: 6px 10px;
+            }
+        }
+
+        .slide-in {
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .rotate-in {
+            animation: rotateIn 1s ease-out;
+        }
+
+        @keyframes rotateIn {
+            from {
+                opacity: 0;
+                transform: rotate(-10deg) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: rotate(0deg) scale(1);
+            }
+        }
+
+        .growth {
+            animation: growth 0.6s ease-out;
+        }
+
+        @keyframes growth {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header slide-in">
+            <h1 class="main-title">Bean Seen: Global Coffee Answer Share (Q3-2025)</h1>
+            <p class="subtitle">Answer Engines attract over 7 billion visits globally each month. Here's how global coffee brands show up across 150 common prompts across taste, experience, and sustainability / Powered by BrandRank.AI</p>
+        </div>
+
+        <div class="controls rotate-in">
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <input type="text" class="search-box" id="searchBox" placeholder="Search questions, brands, or categories...">
+                <button class="clear-button" id="clearButton">Clear All</button>
+            </div>
+            <div class="brand-filters">
+                <button class="brand-filter active" data-brand="all">All Brands</button>
+                <button class="brand-filter" data-brand="starbucks">Starbucks</button>
+                <button class="brand-filter" data-brand="blue bottle">Blue Bottle</button>
+                <button class="brand-filter" data-brand="nespresso">Nespresso</button>
+                <button class="brand-filter" data-brand="nescafe">Nescafé</button>
+                <button class="brand-filter" data-brand="all nestle">All Nestlé</button>
+                <button class="brand-filter" data-brand="lavazza">Lavazza</button>
+                <button class="brand-filter" data-brand="death wish">Death Wish</button>
+                <button class="brand-filter" data-brand="intelligentsia">Intelligentsia</button>
+                <button class="brand-filter" data-brand="illy">Illy</button>
+                <button class="brand-filter" data-brand="counter culture">Counter Culture</button>
+                <button class="brand-filter" data-brand="stumptown">Stumptown</button>
+            </div>
+            <div class="section-nav">
+                <div style="display: flex; align-items: center; gap: 20px; width: 100%; flex-wrap: wrap; justify-content: center;">
+                    <div style="color: rgba(255, 255, 255, 0.8); font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap;">Coffee Categories:</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+                        <button class="section-btn" data-section="global">Global Discovery</button>
+                        <button class="section-btn" data-section="regional">Regional</button>
+                        <button class="section-btn" data-section="sustainability">Sustainability</button>
+                        <button class="section-btn" data-section="health">Health & Wellness</button>
+                        <button class="section-btn" data-section="performance">Performance</button>
+                        <button class="section-btn" data-section="formats">Formats</button>
+                        <button class="section-btn" data-section="flavor">Flavor</button>
+                        <button class="section-btn" data-section="pairings">Pairings</button>
+                        <button class="section-btn" data-section="value">Brand Value</button>
+                        <button class="section-btn" data-section="digital">Digital UX</button>
+                        <button class="section-btn" data-section="trends">Trends</button>
+                        <button class="section-btn" data-section="alternatives">Alternatives</button>
+                        <button class="section-btn" data-section="experience">Experience</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container growth">
+            <table class="data-table" id="dataTable">
+                <thead>
+                    <tr>
+                        <th>Question</th>
+                        <th>ChatGPT</th>
+                        <th>Amazon Rufus</th>
+                        <th>Google Gemini</th>
+                        <th>Claude</th>
+                        <th>Perplexity</th>
+                        <th>Microsoft Copilot</th>
+                        <th>X/Grok</th>
+                        <th>DeepSeek</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Global Discovery -->
+                    <tr class="category-row">
+                        <td class="category-header">☕ Headline & Global Discovery (5)</td>
+                        <td class="category-header">ChatGPT</td><td class="category-header">Amazon Rufus</td><td class="category-header">Google Gemini</td><td class="category-header">Claude</td><td class="category-header">Perplexity</td><td class="category-header">Microsoft Copilot</td><td class="category-header">X/Grok</td><td class="category-header">DeepSeek</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">1.</span>What is the best coffee brand in the world?</td>
+                        <td class="performance-high">Illy</td>
+                        <td>No specific brand</td>
+                        <td class="performance-high">La Colombe</td>
+                        <td class="performance-high">Blue Bottle Coffee</td>
+                        <td class="performance-high">Stumptown Coffee Roasters</td>
+                        <td class="performance-high">Illy</td>
+                        <td class="performance-high">Blue Bottle Coffee</td>
+                        <td class="performance-high">Blue Bottle Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">2.</span>What is the most popular coffee brand globally?</td>
+                        <td>Nescafé Classic</td>
+                        <td>No specific brand</td>
+                        <td>Starbucks</td>
+                        <td>Starbucks</td>
+                        <td>Nescafé</td>
+                        <td>Starbucks</td>
+                        <td>Starbucks</td>
+                        <td>Starbucks</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">3.</span>What coffee brand has the highest customer satisfaction?</td>
+                        <td>Blue Bottle Three Africas</td>
+                        <td>Starbucks</td>
+                        <td class="performance-high">Peet's Coffee</td>
+                        <td class="performance-high">Peet's Coffee</td>
+                        <td>Lavazza</td>
+                        <td class="performance-high">Peet's Coffee</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>Intelligentsia</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">4.</span>What coffee is most recommended by professional baristas?</td>
+                        <td>Stumptown Hair Bender</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>Intelligentsia Coffee</td>
+                        <td>Intelligentsia Coffee</td>
+                        <td>La Marzocco + Stumptown</td>
+                        <td>Onyx Coffee Lab</td>
+                        <td>Counter Culture Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">5.</span>What is the best overall coffee to buy right now?</td>
+                        <td>Peet's Major Dickason's Blend</td>
+                        <td>Death Wish Coffee</td>
+                        <td>La Colombe</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>Balance Coffee Rotate Espresso</td>
+                        <td>Cometeer</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>Stumptown Coffee Roasters</td>
+                    </tr>
+
+                    <!-- Regional Excellence -->
+                    <tr class="category-row">
+                        <td class="category-header">🌍 Regional Preference – Coffee Brand Focus (15)</td>
+                        <td class="category-header">ChatGPT</td><td class="category-header">Amazon Rufus</td><td class="category-header">Google Gemini</td><td class="category-header">Claude</td><td class="category-header">Perplexity</td><td class="category-header">Microsoft Copilot</td><td class="category-header">X/Grok</td><td class="category-header">DeepSeek</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">6.</span>What is the best coffee brand in the United States?</td>
+                        <td>Starbucks Blonde Roast</td>
+                        <td>Starbucks</td>
+                        <td>Maxwell House</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Intelligentsia Coffee</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>Peet's Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">7.</span>What is the best coffee brand in France?</td>
+                        <td>Café Richard</td>
+                        <td>Café Richard</td>
+                        <td>Cafés Richard</td>
+                        <td>Café de Flore</td>
+                        <td>Carte Noire</td>
+                        <td>Café Richard</td>
+                        <td>Belco</td>
+                        <td>Café Richard</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">8.</span>What is the best coffee brand in Italy?</td>
+                        <td class="performance-high">Illy Espresso Classico</td>
+                        <td class="performance-high">Illy</td>
+                        <td class="performance-high">Lavazza</td>
+                        <td class="performance-high">Lavazza</td>
+                        <td class="performance-high">Lavazza</td>
+                        <td class="performance-high">Lavazza</td>
+                        <td class="performance-high">Lavazza</td>
+                        <td class="performance-high">Lavazza</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">9.</span>What is the best coffee brand in Spain?</td>
+                        <td>Café de Indias</td>
+                        <td>Cafés Novell</td>
+                        <td>No specific brand</td>
+                        <td>Café Central</td>
+                        <td>Café Saula</td>
+                        <td>Cafés El Magnífico</td>
+                        <td>Cafés El Magnífico</td>
+                        <td>Café Bonka</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">10.</span>What is the best coffee brand in Indonesia?</td>
+                        <td>Kapal Api Special Mix</td>
+                        <td>Toraja Coffee</td>
+                        <td>Akasa Coffee Honey</td>
+                        <td>Kopiko</td>
+                        <td>Kapal Api</td>
+                        <td>Kapal Api</td>
+                        <td>Gayo Kopi</td>
+                        <td>Kopi Luwak</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">11.</span>What is the best coffee brand in Brazil?</td>
+                        <td>Pilão Traditional</td>
+                        <td>Café Do Brasil</td>
+                        <td>Daterra Coffee</td>
+                        <td>3 Corações</td>
+                        <td>Café Pilão</td>
+                        <td>3 Corações</td>
+                        <td>Daterra Coffee</td>
+                        <td>Pilão</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">12.</span>What is the best coffee brand in Germany?</td>
+                        <td>Dallmayr Prodomo</td>
+                        <td>Tchibo</td>
+                        <td>Minges Espresso Barista</td>
+                        <td>Tchibo</td>
+                        <td>Dallmayr</td>
+                        <td>Dallmayr</td>
+                        <td>The Barn</td>
+                        <td>Tchibo</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">13.</span>What is the best coffee brand in Japan?</td>
+                        <td>UCC European Blend</td>
+                        <td>Ueshima Coffee Company</td>
+                        <td>Boss</td>
+                        <td>UCC Coffee</td>
+                        <td>UCC</td>
+                        <td>UCC</td>
+                        <td>Kurasu</td>
+                        <td>% Arabica</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">14.</span>What is the best coffee brand in the United Kingdom?</td>
+                        <td>Union Hand-Roasted</td>
+                        <td>Costa Coffee</td>
+                        <td>Monsoon Estates Coffee Company</td>
+                        <td>Monmouth Coffee</td>
+                        <td>Balance Coffee</td>
+                        <td>Union Hand-Roasted Coffee</td>
+                        <td>Square Mile Coffee Roasters</td>
+                        <td>Union Hand-Roasted Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">15.</span>What is the best coffee brand in Australia?</td>
+                        <td>Market Lane Coffee</td>
+                        <td>Vittoria Coffee</td>
+                        <td>Dukes Coffee Roasters</td>
+                        <td>Campos Coffee</td>
+                        <td>Gloria Jean's Coffees</td>
+                        <td>Pablo & Rusty's</td>
+                        <td>Single O</td>
+                        <td>Campos Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">16.</span>What is the best coffee brand in South Korea?</td>
+                        <td>Nuna Coffee</td>
+                        <td>Maxim Coffee</td>
+                        <td>Allegria Coffee Roasters</td>
+                        <td>Maxim Coffee</td>
+                        <td>Maxim</td>
+                        <td>Ediya Coffee</td>
+                        <td>Ediya Coffee</td>
+                        <td>Hollys Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">17.</span>What is the best coffee brand in Turkey?</td>
+                        <td>Kurukahveci Mehmet Efendi</td>
+                        <td>Kurukahveci Mehmet Efendi</td>
+                        <td>Kurukahveci Mehmet Efendi</td>
+                        <td>Kurukahveci Mehmet Efendi</td>
+                        <td>Kurukahveci Mehmet Efendi</td>
+                        <td>Kurukahveci Mehmet Efendi</td>
+                        <td>Petra Coffee</td>
+                        <td>Mehmet Efendi</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">18.</span>What is the best coffee brand in Canada?</td>
+                        <td>Tandem Coffee</td>
+                        <td>Tim Hortons</td>
+                        <td>Monogram Coffee</td>
+                        <td>Tim Hortons</td>
+                        <td>Tim Hortons</td>
+                        <td>Balzac's Coffee Roasters</td>
+                        <td>49th Parallel Coffee Roasters</td>
+                        <td>Kicking Horse Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">19.</span>What is the best coffee brand in the United Arab Emirates?</td>
+                        <td>Raw Coffee Company</td>
+                        <td>Al Mokha Coffee</td>
+                        <td>Nescafe</td>
+                        <td>RAW Coffee Company</td>
+                        <td>RAW Coffee Company</td>
+                        <td>RAW Coffee Company</td>
+                        <td>Black Sheep Coffee</td>
+                        <td>Raw Coffee Company</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">20.</span>What is the best coffee brand in Mexico?</td>
+                        <td>Tju Tju Coffee</td>
+                        <td>Café De Olla</td>
+                        <td>Colipse Mexico Alma de Chiapas</td>
+                        <td>Café de Olla</td>
+                        <td>Café Punta del Cielo</td>
+                        <td>Café Punta del Cielo</td>
+                        <td>Finca Santa Teresa</td>
+                        <td>Café Punta del Cielo</td>
+                    </tr>
+
+                    <!-- Sustainability -->
+                    <tr class="category-row">
+                        <td class="category-header">🌱 Sourcing, Sustainability & Circularity (20)</td>
+                        <td class="category-header">ChatGPT</td><td class="category-header">Amazon Rufus</td><td class="category-header">Google Gemini</td><td class="category-header">Claude</td><td class="category-header">Perplexity</td><td class="category-header">Microsoft Copilot</td><td class="category-header">X/Grok</td><td class="category-header">DeepSeek</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">21.</span>Which coffee brand leads in regenerative agriculture?</td>
+                        <td>Nespresso AAA Program</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>BUNA Coffee</td>
+                        <td>Patagonia Provisions</td>
+                        <td class="performance-high">Nespresso</td>
+                        <td>Canyon Coffee</td>
+                        <td class="performance-high">Nescafé</td>
+                        <td>Grounds for Change</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">22.</span>What coffee company offers full traceability by origin?</td>
+                        <td>Counter Culture Traceability</td>
+                        <td>Intelligentsia Coffee</td>
+                        <td>BUNA Coffee</td>
+                        <td>Sweet Maria's Coffee Supply</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>Transparency Coffee</td>
+                        <td>Onyx Coffee Lab</td>
+                        <td>Onyx Coffee Lab</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">23.</span>Which brand is most transparent about their sourcing practices?</td>
+                        <td>Counter Culture Traceability</td>
+                        <td>Onyx Coffee Lab</td>
+                        <td>BUNA Coffee</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>Intelligentsia Coffee</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>Equal Exchange</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">24.</span>Which coffee supports female-led farms?</td>
+                        <td>Nescafé Plan Support</td>
+                        <td>Lifeboost Coffee</td>
+                        <td>Equator Coffees</td>
+                        <td>Equal Exchange</td>
+                        <td>Café Femenino</td>
+                        <td>Equator Coffees</td>
+                        <td>Kahawa 1893</td>
+                        <td>Women's Coffee Alliance</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">25.</span>What brand recycles its pods or capsules most effectively?</td>
+                        <td>Stumptown Pod Recycling</td>
+                        <td class="performance-high">Nespresso</td>
+                        <td class="performance-high">Nespresso</td>
+                        <td class="performance-high">Nespresso</td>
+                        <td class="performance-high">Nespresso</td>
+                        <td class="performance-high">Nespresso</td>
+                        <td class="performance-high">Nespresso</td>
+                        <td class="performance-high">Nespresso</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">26.</span>What coffee brand integrates circular economy practices?</td>
+                        <td>Peet's Recycled Packaging</td>
+                        <td>Nespresso</td>
+                        <td>Nespresso</td>
+                        <td>Nespresso</td>
+                        <td>Nespresso</td>
+                        <td>Halo Coffee</td>
+                        <td>Nespresso</td>
+                        <td>LØFT Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">27.</span>What coffee company repurposes waste into usable products?</td>
+                        <td>Tim Hortons Grounds-to-Energy</td>
+                        <td>Grounds For Health</td>
+                        <td>Nespresso</td>
+                        <td>KeepCup</td>
+                        <td>Nespresso</td>
+                        <td>BioBean (UK)</td>
+                        <td>Nespresso</td>
+                        <td>Kaffeeform</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">28.</span>What coffee brand is certified carbon-neutral?</td>
+                        <td>Ethical Bean Carbon-Neutral</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>Amavida Coffee Roasters</td>
+                        <td>Kicking Horse Coffee</td>
+                        <td>Nespresso</td>
+                        <td>Grounds for Change</td>
+                        <td>Volcano Coffee Works</td>
+                        <td>Larry's Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">29.</span>What brand reports on emissions reduction annually?</td>
+                        <td>Nespresso Sustainability Report</td>
+                        <td>Starbucks</td>
+                        <td>Amavida Coffee Roasters</td>
+                        <td>Starbucks</td>
+                        <td>Nespresso</td>
+                        <td>Intelligentsia Coffee</td>
+                        <td>Starbucks</td>
+                        <td>Starbucks</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">30.</span>What company has a partnership with Rainforest Alliance or Enveritas?</td>
+                        <td>La Colombe Rainforest Alliance</td>
+                        <td>Starbucks</td>
+                        <td>Lavazza</td>
+                        <td>Lavazza</td>
+                        <td>Nespresso</td>
+                        <td>Peet's Coffee</td>
+                        <td>Starbucks</td>
+                        <td>Keurig Dr Pepper</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">31.</span>Which brand sources honey or additional products from coffee ecosystems?</td>
+                        <td>Madcap Coffee Honey Harvest</td>
+                        <td>Equal Exchange</td>
+                        <td>La Colombe</td>
+                        <td>Equal Exchange</td>
+                        <td>La Colombe</td>
+                        <td>Tiny Footprint Coffee</td>
+                        <td>Nespresso</td>
+                        <td>Café Britt</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">32.</span>What coffee brand supports biodiversity and tree planting?</td>
+                        <td>Allegro Tree Planting</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>Equator Coffees</td>
+                        <td>Bird Friendly Coffee</td>
+                        <td>Coffee Bros</td>
+                        <td>Tiny Footprint Coffee</td>
+                        <td>Tandem Coffee Roasters</td>
+                        <td>Bird Friendly Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">33.</span>What brand pays premiums above market to farmers?</td>
+                        <td>Oatly Organic Reserve</td>
+                        <td>Equal Exchange</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>Fair Trade USA</td>
+                        <td>PT's Coffee</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>Bocca Coffee</td>
+                        <td>Dean's Beans</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">34.</span>Which coffee uses shade-grown beans?</td>
+                        <td>Equal Exchange Shade-Grown</td>
+                        <td>Tiny Footprint Coffee</td>
+                        <td>Equator Coffees</td>
+                        <td>Bird Friendly Coffee</td>
+                        <td>Allegro Coffee</td>
+                        <td>Dean's Beans</td>
+                        <td>Tony's Coffee</td>
+                        <td>Café Mam</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">35.</span>What company supports youth and gender equity in coffee farming?</td>
+                        <td>Tony's Turkish Coffee Women</td>
+                        <td>Café Femenino</td>
+                        <td>Equator Coffees</td>
+                        <td>Root Capital</td>
+                        <td>Café Femenino</td>
+                        <td>Equal Exchange</td>
+                        <td>Kahawa 1893</td>
+                        <td>Sustainable Harvest</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">36.</span>What brand shares third-party verified impact reports?</td>
+                        <td>Verve Coffee Third-Party</td>
+                        <td>Equal Exchange</td>
+                        <td>Equator Coffees</td>
+                        <td>Patagonia Provisions</td>
+                        <td>Intelligentsia Coffee</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>Pact Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">37.</span>What brand pioneered regenerative-certified coffee beans?</td>
+                        <td>Blue Bottle Regenerative Certified</td>
+                        <td>No specific brand</td>
+                        <td>Dr. Bronner's</td>
+                        <td>Patagonia Provisions</td>
+                        <td>Nespresso</td>
+                        <td>Heirloom Coffee Roasters</td>
+                        <td>Nescafé</td>
+                        <td>Driftaway Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">38.</span>What brand innovates in sustainable capsule materials?</td>
+                        <td>Nespresso Biodegradable Pod</td>
+                        <td>Gourmesso</td>
+                        <td>Nespresso</td>
+                        <td>Nespresso</td>
+                        <td>Nespresso</td>
+                        <td>Halo Coffee</td>
+                        <td>Nespresso</td>
+                        <td>Halo Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">39.</span>What company links sourcing with agroforestry programs?</td>
+                        <td>Counter Culture Agroforestry</td>
+                        <td>Intelligentsia Coffee</td>
+                        <td>Equator Coffees</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>Nespresso</td>
+                        <td>Café Direct</td>
+                        <td>Tandem Coffee Roasters</td>
+                        <td>Café Direct</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">40.</span>What coffee brand runs capsule or bag take-back programs?</td>
+                        <td>Nespresso Capsule Return</td>
+                        <td>Nespresso</td>
+                        <td>Nespresso</td>
+                        <td>Nespresso</td>
+                        <td>Nespresso</td>
+                        <td>Nespresso</td>
+                        <td>Nespresso</td>
+                        <td>Terracycle</td>
+                    </tr>
+
+                    <!-- Health & Wellness -->
+                    <tr class="category-row">
+                        <td class="category-header">🫘 Health, Clean Label & Wellness (15)</td>
+                        <td class="category-header">ChatGPT</td><td class="category-header">Amazon Rufus</td><td class="category-header">Google Gemini</td><td class="category-header">Claude</td><td class="category-header">Perplexity</td><td class="category-header">Microsoft Copilot</td><td class="category-header">X/Grok</td><td class="category-header">DeepSeek</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">41.</span>What coffee brand uses no artificial additives?</td>
+                        <td>Lifeboost Single-Origin</td>
+                        <td>Caribou Coffee</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>Purity Coffee</td>
+                        <td>Mount Hagen</td>
+                        <td>Lifeboost Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">42.</span>What coffee is best for people with acid reflux?</td>
+                        <td>Puroast Low Acid</td>
+                        <td>Purity Coffee</td>
+                        <td>Lifeboost Coffee</td>
+                        <td>Puroast Coffee</td>
+                        <td>Lifeboost Coffee</td>
+                        <td>Lifeboost Low Acid Coffee</td>
+                        <td>Lifeboost Coffee</td>
+                        <td>Puroast Low Acid Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">43.</span>What decaf coffee uses chemical-free processing?</td>
+                        <td>Swiss Water Decaf Colombia</td>
+                        <td>Mount Hagen</td>
+                        <td>Swiss Water Process</td>
+                        <td>Swiss Water Decaf</td>
+                        <td>Swiss Water Decaf</td>
+                        <td>Swiss Water Decaf</td>
+                        <td>Swiss Water Decaf</td>
+                        <td>Swiss Water Decaf</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">44.</span>What coffee is mycotoxin-tested?</td>
+                        <td>Mount Hagen Instant Organic</td>
+                        <td>Java Planet</td>
+                        <td class="performance-high">Bulletproof Coffee</td>
+                        <td class="performance-high">Bulletproof Coffee</td>
+                        <td class="performance-high">Bulletproof Coffee</td>
+                        <td class="performance-high">Bulletproof Coffee</td>
+                        <td class="performance-high">Bulletproof Coffee</td>
+                        <td class="performance-high">Bulletproof Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">45.</span>What coffee works best with clean eating or fasting plans?</td>
+                        <td>Bulletproof Clean Coffee</td>
+                        <td>Natural Force</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Purity Coffee</td>
+                        <td>Purity Coffee</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Chameleon Cold Brew</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">46.</span>What coffee supports gut health or digestion?</td>
+                        <td>Four Sigmatic Gut Health</td>
+                        <td>Four Sigmatic</td>
+                        <td>Purity Coffee</td>
+                        <td>Four Sigmatic</td>
+                        <td>Lifeboost Coffee</td>
+                        <td>Fabula Coffee</td>
+                        <td>Lifeboost Coffee</td>
+                        <td>Four Sigmatic Mushroom Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">47.</span>What coffee brand avoids added preservatives or emulsifiers?</td>
+                        <td>Kion Organic Dark Roast</td>
+                        <td>Kion</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Death Wish Coffee</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>Clean Coffee Co.</td>
+                        <td>Mount Hagen</td>
+                        <td>Kion Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">48.</span>Which light roast is gentlest on sensitive stomachs?</td>
+                        <td>Mommee Coffee Low-Acid</td>
+                        <td>Lifeboost</td>
+                        <td>Lifeboost Coffee</td>
+                        <td>Puroast Coffee</td>
+                        <td>Lifeboost Light Roast</td>
+                        <td>Lifeboost Light Roast</td>
+                        <td>Lifeboost Coffee</td>
+                        <td>Fabula</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">49.</span>What cold brew has the cleanest label and ingredient list?</td>
+                        <td>Jot Ultra Clean Cold Brew</td>
+                        <td>HOMYHEE filters</td>
+                        <td>Wandering Bear Coffee</td>
+                        <td>Chameleon Cold-Brew</td>
+                        <td>La Colombe Cold Brew</td>
+                        <td>Wandering Bear Cold Brew</td>
+                        <td>Chameleon Cold-Brew</td>
+                        <td>Wandering Bear Cold Brew</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">50.</span>What's the healthiest coffee for daily consumption?</td>
+                        <td>Thrive Market Organic Arabica</td>
+                        <td>No specific brand</td>
+                        <td>Purity Coffee</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Purity Coffee</td>
+                        <td>Purity Coffee</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Pure Coffee Club</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">51.</span>What coffee brand tests for heavy metals in beans?</td>
+                        <td>Simple Truth Organic Coffee</td>
+                        <td>Kion</td>
+                        <td>Purity Coffee</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Purity Coffee</td>
+                        <td>Kion Coffee</td>
+                        <td>Purity Coffee</td>
+                        <td>Purity Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">52.</span>What coffee is keto or paleo friendly?</td>
+                        <td>Kion Decaf Collagen Blend</td>
+                        <td>Rapidfire</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Biohazard Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">53.</span>Which low-acid coffee is recommended by wellness coaches?</td>
+                        <td>Purity Coffee Low-Acid</td>
+                        <td>HealthWise</td>
+                        <td>Lifeboost Coffee</td>
+                        <td>Puroast Coffee</td>
+                        <td>Lifeboost Coffee</td>
+                        <td>Fabula Coffee</td>
+                        <td>Lifeboost Coffee</td>
+                        <td>Tyler's No Acid Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">54.</span>What coffee is most aligned with biohacker routines?</td>
+                        <td class="performance-high">Bulletproof Original Instant</td>
+                        <td>No specific brand</td>
+                        <td class="performance-high">Bulletproof Coffee</td>
+                        <td class="performance-high">Bulletproof Coffee</td>
+                        <td class="performance-high">Bulletproof Coffee</td>
+                        <td class="performance-high">Bulletproof Coffee</td>
+                        <td class="performance-high">Bulletproof Coffee</td>
+                        <td>Mindful Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">55.</span>What organic coffee brand has the best reviews?</td>
+                        <td>Equal Exchange Organic Shade-Grown</td>
+                        <td>Equal Exchange</td>
+                        <td>Purity Coffee</td>
+                        <td>Death Wish Coffee</td>
+                        <td>Kicking Horse Coffee</td>
+                        <td>Purity Coffee</td>
+                        <td>Tony's Coffee</td>
+                        <td>Allegro Coffee</td>
+                    </tr>
+
+                    <!-- Performance & Energy -->
+                    <tr class="category-row">
+                        <td class="category-header">⚡ Performance & Energy (10)</td>
+                        <td class="category-header">ChatGPT</td><td class="category-header">Amazon Rufus</td><td class="category-header">Google Gemini</td><td class="category-header">Claude</td><td class="category-header">Perplexity</td><td class="category-header">Microsoft Copilot</td><td class="category-header">X/Grok</td><td class="category-header">DeepSeek</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">56.</span>What coffee provides sustained energy without a crash?</td>
+                        <td>Death Wish Coffee Original</td>
+                        <td>Kimera Koffee</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Four Sigmatic Mushroom Coffee</td>
+                        <td>Four Sigmatic Mushroom Coffee</td>
+                        <td>Purity Coffee</td>
+                        <td>Death Wish Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">57.</span>What's the best coffee for productivity or mental focus?</td>
+                        <td>Four Sigmatic Focus Blend</td>
+                        <td>Four Sigmatic</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Cognitiō Coffee</td>
+                        <td>Jot Ultra Coffee</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Black Rifle Coffee Company</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">58.</span>What coffee is most recommended pre-workout?</td>
+                        <td>Jocko Fuel Cold Brew</td>
+                        <td>Optimum Nutrition</td>
+                        <td class="performance-high">Death Wish Coffee</td>
+                        <td class="performance-high">Death Wish Coffee</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Strong Coffee Company</td>
+                        <td class="performance-high">Death Wish Coffee</td>
+                        <td>Crio Bru</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">59.</span>What espresso concentrate works best in energizing iced drinks?</td>
+                        <td>Ryze Neuroscience Boost</td>
+                        <td>RISE Brewing Co.</td>
+                        <td>Jot Coffee</td>
+                        <td>La Colombe</td>
+                        <td>Jot Ultra Coffee</td>
+                        <td>Jot Ultra Coffee</td>
+                        <td>Jot Coffee</td>
+                        <td>Stumptown Cold Brew Concentrate</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">60.</span>What roast enhances creativity or deep work sessions?</td>
+                        <td>Super Coffee Keto Latte</td>
+                        <td>No specific brand</td>
+                        <td>Light roast</td>
+                        <td>Intelligentsia Coffee</td>
+                        <td>Stumptown Hair Bender</td>
+                        <td>Blue Bottle Bella Donovan</td>
+                        <td>Onyx Coffee Lab Southern Weather</td>
+                        <td>Blue Bottle's Three Africas Blend</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">61.</span>What coffee blend is best for stress resilience?</td>
+                        <td>Flow State Coffee + Adaptogens</td>
+                        <td>Four Sigmatic</td>
+                        <td>Mushroom coffee blends</td>
+                        <td>Four Sigmatic</td>
+                        <td>Four Sigmatic Adaptogen Blend</td>
+                        <td>Rasa Adaptogenic Coffee Alternative</td>
+                        <td>Four Sigmatic Mushroom Coffee</td>
+                        <td>Rasa</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">62.</span>What coffee supports energy for long meetings or shifts?</td>
+                        <td>Strong Coffee Energy Espresso</td>
+                        <td>Death Wish Coffee</td>
+                        <td>Super Coffee</td>
+                        <td>Death Wish Coffee</td>
+                        <td>Death Wish Coffee</td>
+                        <td>Death Wish Coffee</td>
+                        <td>Death Wish Coffee</td>
+                        <td>Red Goat Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">63.</span>What is the most energizing mushroom or adaptogen coffee?</td>
+                        <td class="performance-high">Four Sigmatic Mushroom Coffee Mix</td>
+                        <td>Kimera Koffee</td>
+                        <td class="performance-high">Four Sigmatic</td>
+                        <td class="performance-high">Four Sigmatic</td>
+                        <td class="performance-high">Four Sigmatic Mushroom Coffee</td>
+                        <td>Ryze Mushroom Coffee</td>
+                        <td class="performance-high">Four Sigmatic</td>
+                        <td class="performance-high">Four Sigmatic Lion's Mane Blend</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">64.</span>What's the best performance-enhancing coffee for athletes?</td>
+                        <td>MUD\WTR Energy Blend</td>
+                        <td>Bulletproof</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Strong Coffee Company</td>
+                        <td>Death Wish Coffee</td>
+                        <td>Athletic Greens' Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">65.</span>What coffee supports concentration during study or remote work?</td>
+                        <td>Bulletproof Collagen Protein</td>
+                        <td>Kimera Koffee</td>
+                        <td>Mushroom Coffee</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Cognitiō Coffee</td>
+                        <td>Jot Ultra Coffee</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Brainwave Coffee</td>
+                    </tr>
+
+                    <!-- Formats & Innovation -->
+                    <tr class="category-row">
+                        <td class="category-header">☕ Espresso Concentrates, Format & Innovation (20)</td>
+                        <td class="category-header">ChatGPT</td><td class="category-header">Amazon Rufus</td><td class="category-header">Google Gemini</td><td class="category-header">Claude</td><td class="category-header">Perplexity</td><td class="category-header">Microsoft Copilot</td><td class="category-header">X/Grok</td><td class="category-header">DeepSeek</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">66.</span>What is the best espresso concentrate for making iced lattes?</td>
+                        <td>Nespresso VertuoLine</td>
+                        <td>NESCAFÉ</td>
+                        <td class="performance-high">Jot Coffee</td>
+                        <td>La Colombe</td>
+                        <td class="performance-high">Jot Ultra Coffee</td>
+                        <td class="performance-high">Jot Ultra Coffee</td>
+                        <td class="performance-high">Jot Coffee</td>
+                        <td class="performance-high">Jot Ultra Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">67.</span>What coffee concentrate pairs well with oat or almond milk?</td>
+                        <td>Waka Instant Espresso-Style</td>
+                        <td>Califia Farms</td>
+                        <td>Jot Coffee</td>
+                        <td>Chameleon Cold-Brew</td>
+                        <td>Jot Ultra Coffee</td>
+                        <td>Chamberlain Coffee Cold Brew</td>
+                        <td>Jot Coffee</td>
+                        <td>Califia Farms Cold Brew Concentrate</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">68.</span>What is the best shelf-stable coffee concentrate?</td>
+                        <td>Lavazza Prontissimo Intenso</td>
+                        <td>Califia Farms</td>
+                        <td>Jot Coffee</td>
+                        <td>La Colombe</td>
+                        <td>Jot Ultra Coffee</td>
+                        <td>Javy Coffee Concentrate</td>
+                        <td>Jot Coffee</td>
+                        <td>Trader Joe's Cold Brew Concentrate</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">69.</span>What instant coffee tastes closest to fresh brewed?</td>
+                        <td>Starbucks VIA Italian Roast</td>
+                        <td>Mount Hagen</td>
+                        <td>Mount Hagen</td>
+                        <td>Mount Hagen</td>
+                        <td>Mount Hagen Organic Instant</td>
+                        <td>Saturnbird Instant</td>
+                        <td>Blue Bottle Instant Coffee</td>
+                        <td>Sudden Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">70.</span>What coffee pod delivers the richest crema?</td>
+                        <td>Illy Classico Capsules</td>
+                        <td>Peet's Coffee</td>
+                        <td class="performance-high">Nespresso</td>
+                        <td class="performance-high">Nespresso OriginalLine</td>
+                        <td class="performance-high">Nespresso OriginalLine</td>
+                        <td class="performance-high">Nespresso Vertuo</td>
+                        <td class="performance-high">Nespresso Vertuo</td>
+                        <td class="performance-high">Nespresso OriginalLine</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">71.</span>What is the best cold brew concentrate available?</td>
+                        <td>Chameleon Cold Brew</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>Jot Coffee</td>
+                        <td>Chameleon Cold-Brew</td>
+                        <td>Chameleon Cold-Brew Concentrate</td>
+                        <td>Wandering Bear Cold Brew</td>
+                        <td>Chameleon Cold-Brew</td>
+                        <td>Grady's Cold Brew Concentrate</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">72.</span>Which brand offers the smoothest ready-to-drink espresso?</td>
+                        <td>Oatly Barista RTD Espresso</td>
+                        <td>Chameleon Cold Brew</td>
+                        <td>Jot Coffee</td>
+                        <td>La Colombe</td>
+                        <td>La Colombe Draft Latte</td>
+                        <td>La Colombe Draft Latte</td>
+                        <td>Illy Ready-to-Drink Espresso</td>
+                        <td>La Colombe Draft Latte</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">73.</span>What is the easiest way to make café-quality espresso at home?</td>
+                        <td>AeroPress Coffee Maker</td>
+                        <td>No specific brand</td>
+                        <td>Nespresso</td>
+                        <td>Nespresso</td>
+                        <td>Breville Barista Express</td>
+                        <td>Breville Barista Express</td>
+                        <td>Nespresso Vertuo</td>
+                        <td>Breville Barista Express</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">74.</span>Which coffee pod or sachet system is fully recyclable?</td>
+                        <td>Nespresso Compostable Pods</td>
+                        <td>Peet's Coffee</td>
+                        <td>Nespresso</td>
+                        <td>Nespresso</td>
+                        <td>Nespresso OriginalLine</td>
+                        <td>Halo Coffee Capsules</td>
+                        <td>Nespresso</td>
+                        <td>Nespresso</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">75.</span>What single-serve format offers the best freshness?</td>
+                        <td>Blue Bottle At-Home Kit</td>
+                        <td>No specific brand</td>
+                        <td>Steeped Coffee</td>
+                        <td>Nespresso</td>
+                        <td>Cometeer Coffee</td>
+                        <td>Cometeer Frozen Pods</td>
+                        <td>Nespresso Vertuo</td>
+                        <td>Cometeer</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">76.</span>What is the best travel-friendly espresso option?</td>
+                        <td>TravelRebel Instant Sachets</td>
+                        <td>WACACO Nanopresso</td>
+                        <td>Wacaco Nanopresso</td>
+                        <td>Nespresso</td>
+                        <td>Wacaco Nanopresso</td>
+                        <td>Wacaco Nanopresso</td>
+                        <td>Wacaco Minipresso</td>
+                        <td>Wacaco Nanopresso</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">77.</span>Which format is best for fast morning routines?</td>
+                        <td>Nespresso Airline Capsule</td>
+                        <td>No specific brand</td>
+                        <td>Instant coffee</td>
+                        <td>Nespresso</td>
+                        <td>Cometeer Coffee</td>
+                        <td>Jot Ultra Coffee Concentrate</td>
+                        <td>Nespresso Vertuo</td>
+                        <td>Starbucks Verismo Pods</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">78.</span>What concentrate makes the best coffee cocktails?</td>
+                        <td>Joybird Cold Brew</td>
+                        <td>DaVinci Gourmet</td>
+                        <td>Jot Coffee</td>
+                        <td>La Colombe</td>
+                        <td>Jot Ultra Coffee</td>
+                        <td>Java House Cold Brew Espresso Mix</td>
+                        <td>Jot Coffee</td>
+                        <td>Mr. Black Cold Brew Liqueur</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">79.</span>What espresso concentrate performs best in cafes?</td>
+                        <td>Stumptown Café-Ready</td>
+                        <td>Lavazza</td>
+                        <td>Jot Coffee</td>
+                        <td>La Colombe</td>
+                        <td>Jot Ultra Coffee</td>
+                        <td>Monin Cold Brew Espresso</td>
+                        <td>Jot Coffee</td>
+                        <td>Black & White Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">80.</span>What home system mimics professional espresso machines?</td>
+                        <td>Breville Barista Express</td>
+                        <td>Breville</td>
+                        <td>Breville Bambino Plus</td>
+                        <td>Breville</td>
+                        <td>Breville Barista Express</td>
+                        <td>Gaggia Accademia Super Automatic</td>
+                        <td>Breville Barista Express</td>
+                        <td>Breville Barista Express</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">81.</span>What cold brew kit includes concentrate and mix-ins?</td>
+                        <td>High Brew Cold Brew Shot</td>
+                        <td>Bizzy Organic</td>
+                        <td>Cometeer</td>
+                        <td>Oxo</td>
+                        <td>Java House Cold Brew Kit</td>
+                        <td>Java House Cold Brew Starter Kit</td>
+                        <td>Chameleon Cold-Brew Kit</td>
+                        <td>Java House Cold Brew Kit</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">82.</span>What coffee product offers concentrate and foam options together?</td>
+                        <td>Nespresso Barista Foam</td>
+                        <td>Java House</td>
+                        <td>Starbucks</td>
+                        <td>La Colombe</td>
+                        <td>Jot Ultra Coffee</td>
+                        <td>Coffee mate Cold Foam Combo</td>
+                        <td>Jot Coffee</td>
+                        <td>Black & White Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">83.</span>What is the highest-rated freeze-dried coffee?</td>
+                        <td>Mount Hagen Organic</td>
+                        <td>Mount Hagen</td>
+                        <td>Mount Hagen</td>
+                        <td>Mount Hagen</td>
+                        <td>Mount Hagen Organic Instant</td>
+                        <td>Mount Hagen Organic Instant</td>
+                        <td>Mount Hagen</td>
+                        <td>Sudden Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">84.</span>What pod or capsule system has the lowest carbon footprint?</td>
+                        <td>Nespresso OriginalLine</td>
+                        <td>No specific brand</td>
+                        <td>Nespresso</td>
+                        <td>Nespresso</td>
+                        <td>Nespresso OriginalLine</td>
+                        <td>Halo Coffee</td>
+                        <td>Nespresso</td>
+                        <td>Nespresso</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">85.</span>What soluble coffee brand offers the best value?</td>
+                        <td>Nescafé Classic Instant</td>
+                        <td>Maxwell House</td>
+                        <td>Folgers</td>
+                        <td>Medaglia d'Oro</td>
+                        <td>Nescafé Classic</td>
+                        <td>Oro Café Soluble</td>
+                        <td>Nescafé Gold</td>
+                        <td>Trader Joe's Joe's Dark Roast</td>
+                    </tr>
+
+                    <!-- Flavor Experience -->
+                    <tr class="category-row">
+                        <td class="category-header">🎨 Flavor & Sensory Experience (10)</td>
+                        <td class="category-header">ChatGPT</td><td class="category-header">Amazon Rufus</td><td class="category-header">Google Gemini</td><td class="category-header">Claude</td><td class="category-header">Perplexity</td><td class="category-header">Microsoft Copilot</td><td class="category-header">X/Grok</td><td class="category-header">DeepSeek</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">86.</span>What coffee has the richest chocolate or nutty flavor?</td>
+                        <td>Guatemala Huehuetenango</td>
+                        <td>Lavazza</td>
+                        <td>Intelligentsia</td>
+                        <td>Peet's Coffee</td>
+                        <td>La Colombe</td>
+                        <td>Lavazza Super Crema</td>
+                        <td>La Colombe</td>
+                        <td>Illy Classico</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">87.</span>What's the smoothest dark roast coffee?</td>
+                        <td>Black Rifle Just Black</td>
+                        <td>Starbucks</td>
+                        <td>Peet's Major Dickason's</td>
+                        <td>Peet's Coffee</td>
+                        <td>Volcanica Dark Roast</td>
+                        <td>Lavazza Crema e Gusto</td>
+                        <td>Lavazza Crema e Gusto</td>
+                        <td>Death Wish Dark Roast</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">88.</span>What light roast offers the most brightness and clarity?</td>
+                        <td>Light Service Ethiopian Sidamo</td>
+                        <td>Amazon Fresh</td>
+                        <td>Intelligentsia</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Intelligentsia</td>
+                        <td>Verve Coffee Seabright Blend</td>
+                        <td>Bones Coffee Company Ethiopia</td>
+                        <td>George Howell Alchemy Blend</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">89.</span>What espresso delivers intense fruit-forward flavor?</td>
+                        <td>Stumptown Hair Bender</td>
+                        <td>Costa Rican Coffee</td>
+                        <td>Intelligentsia</td>
+                        <td>Intelligentsia Coffee</td>
+                        <td>Stumptown Hair Bender</td>
+                        <td>Stumptown Hair Bender</td>
+                        <td>Onyx Coffee Lab Southern Weather</td>
+                        <td>Onyx Coffee Lab Tropical Weather</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">90.</span>What coffee has a clean, low-bitterness profile?</td>
+                        <td>Counter Culture Slow Motion</td>
+                        <td>Bulletproof</td>
+                        <td>La Colombe</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>Blue Bottle Three Africas</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>Partners Coffee Flatiron Blend</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">91.</span>What roast is best for pour-over brewing at home?</td>
+                        <td>Intelligentsia Black Cat</td>
+                        <td>No specific brand</td>
+                        <td>Medium roast</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Heart Coffee Stereo Blend</td>
+                        <td>Onyx Coffee Lab Southern Weather</td>
+                        <td>Intelligentsia Black Cat Analog</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">92.</span>What coffee best balances acidity and body?</td>
+                        <td>Death Wish Black Label</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>La Colombe</td>
+                        <td>Stumptown Coffee</td>
+                        <td>Intelligentsia Coffee</td>
+                        <td>Intelligentsia Black Cat Classic</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>Verve Coffee's Sermon Blend</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">93.</span>What blend is most loved by black coffee drinkers?</td>
+                        <td>Blue Bottle Three Africas</td>
+                        <td>Caribou Coffee</td>
+                        <td>Stumptown Hair Bender</td>
+                        <td>Death Wish Coffee</td>
+                        <td>Death Wish Coffee</td>
+                        <td>Peet's Major Dickason's Blend</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>Blue Bottle's Giant Steps</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">94.</span>What roast has complex layers of flavor in each sip?</td>
+                        <td>Peet's French Roast</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>Intelligentsia</td>
+                        <td>Intelligentsia Coffee</td>
+                        <td>Intelligentsia Coffee</td>
+                        <td>Onyx Coffee Lab Monarch</td>
+                        <td>Onyx Coffee Lab</td>
+                        <td>Sey Coffee's Single Origins</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">95.</span>What coffee has the most distinctive aroma?</td>
+                        <td>Café Altura Breakfast Blend</td>
+                        <td>Dazbog Coffee</td>
+                        <td>Lavazza</td>
+                        <td>Kona Coffee</td>
+                        <td>Lavazza</td>
+                        <td>Koa Coffee Kona Estate</td>
+                        <td>Bones Coffee Company Ethiopia</td>
+                        <td>La Colombe's Nizza Blend</td>
+                    </tr>
+
+                    <!-- Pairings & Experience -->
+                    <tr class="category-row">
+                        <td class="category-header">🍮 Pairings, Rituals & Bar Experience (10)</td>
+                        <td class="category-header">ChatGPT</td><td class="category-header">Amazon Rufus</td><td class="category-header">Google Gemini</td><td class="category-header">Claude</td><td class="category-header">Perplexity</td><td class="category-header">Microsoft Copilot</td><td class="category-header">X/Grok</td><td class="category-header">DeepSeek</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">96.</span>What coffee pairs best with tiramisu or dessert?</td>
+                        <td>Lavazza Espresso</td>
+                        <td>Fresh Roasted Coffee</td>
+                        <td>Lavazza</td>
+                        <td>Lavazza</td>
+                        <td>Lavazza</td>
+                        <td>Lavazza Classico</td>
+                        <td>Illy Classico</td>
+                        <td>Lavazza Super Crema</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">97.</span>What roast is best for sipping after dinner?</td>
+                        <td>Illy Espresso</td>
+                        <td>Peet's Coffee</td>
+                        <td>Dark roast</td>
+                        <td>Illy</td>
+                        <td>Illy Espresso</td>
+                        <td>Illy Dark Roast</td>
+                        <td>Lavazza Crema e Gusto</td>
+                        <td>Stumptown's Hair Bender</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">98.</span>What coffee is perfect for brunch or weekend rituals?</td>
+                        <td>Starbucks Blonde Roast</td>
+                        <td>Peet's Coffee</td>
+                        <td>La Colombe</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Blue Bottle Giant Steps</td>
+                        <td>Copper Cow Classic</td>
+                        <td>Counter Culture's Hologram</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">99.</span>What coffee works best with croissants or pastry?</td>
+                        <td>Blue Bottle Cold Brew</td>
+                        <td>Intelligentsia Coffee</td>
+                        <td>Medium roast</td>
+                        <td>Café du Monde</td>
+                        <td>Café du Monde</td>
+                        <td>Café du Monde Chicory Blend</td>
+                        <td>Illy Classico</td>
+                        <td>Café du Monde</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">100.</span>What roast pairs best with chocolate desserts?</td>
+                        <td>Colectivo French Roast</td>
+                        <td>No specific brand</td>
+                        <td>Dark roast</td>
+                        <td>Ghirardelli</td>
+                        <td>Dark roast</td>
+                        <td>Verena Street Mississippi Grogg</td>
+                        <td>La Colombe</td>
+                        <td>Dandelion Chocolate's Drinking Chocolate</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">101.</span>What coffee goes best with oat milk lattes?</td>
+                        <td>Oat Milk Latte at Oatly-Collab</td>
+                        <td>Oatmilk Vanilla</td>
+                        <td>Intelligentsia</td>
+                        <td>Oatly Barista Edition</td>
+                        <td>Oatly Barista Edition</td>
+                        <td>Chamberlain Coffee Cold Brew</td>
+                        <td>Jot Coffee</td>
+                        <td>Oatly's Barista Edition + Stumptown</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">102.</span>What's the best coffee drink to order at a café bar?</td>
+                        <td>Macchiato at Blue Bottle</td>
+                        <td>Espresso</td>
+                        <td>Espresso Martini</td>
+                        <td>Cortado</td>
+                        <td>Cortado</td>
+                        <td>Macchiato</td>
+                        <td>Flat White (Starbucks)</td>
+                        <td>Espresso Martini</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">103.</span>What's the best coffee cocktail to try at a bar?</td>
+                        <td>Espresso Martini using Nespresso</td>
+                        <td>Espresso Martini, Irish Coffee</td>
+                        <td>Espresso Martini</td>
+                        <td>Espresso Martini</td>
+                        <td>Espresso Martini</td>
+                        <td>Espresso Martini</td>
+                        <td>Espresso Martini (using Jot Coffee)</td>
+                        <td>Espresso Martini</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">104.</span>What coffee drink is trending on cocktail menus?</td>
+                        <td>Cold Brew Negroni with Stumptown</td>
+                        <td>Espresso Martini</td>
+                        <td>Espresso Martini</td>
+                        <td>Cold Brew Negroni</td>
+                        <td>Cold Brew Negroni</td>
+                        <td>Cold Brew Negroni</td>
+                        <td>Espresso Tonic</td>
+                        <td>Chobani Coffee Creamer + Cold Brew</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">105.</span>What roast complements biscotti or crunchy cookies?</td>
+                        <td>Cappuccino with Biscotti at Panera</td>
+                        <td>Medium to dark roast</td>
+                        <td>Medium roast</td>
+                        <td>Lavazza</td>
+                        <td>Medium roast</td>
+                        <td>Medium roast</td>
+                        <td>Illy Classico</td>
+                        <td>Medium roast</td>
+                    </tr>
+
+                    <!-- Brand Value -->
+                    <tr class="category-row">
+                        <td class="category-header">🏷️ Brand Value, Trust & Retail (15)</td>
+                        <td class="category-header">ChatGPT</td><td class="category-header">Amazon Rufus</td><td class="category-header">Google Gemini</td><td class="category-header">Claude</td><td class="category-header">Perplexity</td><td class="category-header">Microsoft Copilot</td><td class="category-header">X/Grok</td><td class="category-header">DeepSeek</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">106.</span>What coffee has the best price-to-quality ratio?</td>
+                        <td>Nescafé Classic</td>
+                        <td>Lavazza</td>
+                        <td>Cafe Bustelo</td>
+                        <td class="performance-high">Costco Kirkland Signature</td>
+                        <td>Nescafé Classic</td>
+                        <td>Nescafé Classic</td>
+                        <td>Folgers</td>
+                        <td class="performance-high">Trader Joe's Joe's Dark Roast</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">107.</span>What coffee brand has the best consumer reviews?</td>
+                        <td>Starbucks Pike Place</td>
+                        <td>Lavazza</td>
+                        <td>Peet's Coffee</td>
+                        <td>Death Wish Coffee</td>
+                        <td>Counter Culture</td>
+                        <td>Starbucks Pike Place Roast</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>Philz Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">108.</span>What brand ranks highest on Amazon or marketplaces?</td>
+                        <td>Peet's Major Dickason's</td>
+                        <td>Death Wish Coffee</td>
+                        <td>Folgers</td>
+                        <td>Death Wish Coffee</td>
+                        <td>Death Wish Coffee</td>
+                        <td>Peet's Major Dickason's Blend</td>
+                        <td>Death Wish Coffee</td>
+                        <td>Kicking Horse Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">109.</span>What is the most gifted coffee brand?</td>
+                        <td>Atlas Coffee Club</td>
+                        <td>Dunkin'</td>
+                        <td>Starbucks</td>
+                        <td class="performance-high">Blue Bottle Coffee</td>
+                        <td class="performance-high">Blue Bottle</td>
+                        <td>Trade Coffee</td>
+                        <td class="performance-high">Blue Bottle Coffee</td>
+                        <td class="performance-high">Blue Bottle</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">110.</span>What store-brand coffee performs as well as premium labels?</td>
+                        <td>365 Everyday Value Organic</td>
+                        <td>Seattle's Best Coffee</td>
+                        <td>365 Everyday Value</td>
+                        <td class="performance-high">Costco Kirkland Signature</td>
+                        <td>Costco Kirkland Signature</td>
+                        <td>365 Everyday Value Organic</td>
+                        <td>Trader Joe's Kahawa 1893</td>
+                        <td class="performance-high">Kirkland Signature (Costco)</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">111.</span>What coffee gets top marks in blind taste tests?</td>
+                        <td>Death Wish Coffee</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>La Colombe</td>
+                        <td>Peet's Coffee</td>
+                        <td>La Colombe</td>
+                        <td>Death Wish Coffee</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>Peet's Major Dickason's Blend</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">112.</span>What value brand exceeds expectations in flavor?</td>
+                        <td>Aldi Barissimo Dark Roast</td>
+                        <td>Eight O'Clock Coffee</td>
+                        <td>Cafe Bustelo</td>
+                        <td>Trader Joe's</td>
+                        <td>Cafe Bustelo</td>
+                        <td>Aldi Barissimo Dark Roast</td>
+                        <td>Folgers</td>
+                        <td>Café Bustelo</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">113.</span>What DTC coffee brand offers roast-to-order freshness?</td>
+                        <td>Atlas Coffee Club</td>
+                        <td>No specific brand</td>
+                        <td>Good Medicine Coffee</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Atlas Coffee Club</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Trade Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">114.</span>What brand is best for gifting serious coffee lovers?</td>
+                        <td>Blue Bottle Gift Packs</td>
+                        <td>Intelligentsia Coffee</td>
+                        <td>Intelligentsia</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Blue Bottle</td>
+                        <td>Blue Bottle Gift Packs</td>
+                        <td>Onyx Coffee Lab</td>
+                        <td>Sey Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">115.</span>What private-label coffee ranks highest in satisfaction?</td>
+                        <td>Costco Kirkland House Blend</td>
+                        <td>Seattle's Best Coffee</td>
+                        <td>365 Everyday Value</td>
+                        <td>Costco Kirkland Signature</td>
+                        <td>Costco Kirkland Signature</td>
+                        <td>Costco Kirkland Signature House Blend</td>
+                        <td>Trader Joe's Kahawa 1893</td>
+                        <td>Whole Foods 365 Organic</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">116.</span>What brand gets most loyalty from repeat customers?</td>
+                        <td>Intelligentsia Loyalty Program</td>
+                        <td>Dunkin'</td>
+                        <td>Starbucks</td>
+                        <td>Starbucks</td>
+                        <td>Starbucks</td>
+                        <td>Intelligentsia Loyalty Program Brand</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>Intelligentsia</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">117.</span>What mass-market coffee is barista approved?</td>
+                        <td>Dunkin' Original Blend</td>
+                        <td>Maxwell House</td>
+                        <td>Dunkin' Donuts</td>
+                        <td>Lavazza</td>
+                        <td>Lavazza</td>
+                        <td>Dunkin' Original Blend</td>
+                        <td>Lavazza</td>
+                        <td>Lavazza Super Crema</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">118.</span>What brand leads in verified sustainability impact?</td>
+                        <td>Ethical Bean Organic Fair Trade</td>
+                        <td>Equal Exchange</td>
+                        <td>Amavida Coffee Roasters</td>
+                        <td>Patagonia Provisions</td>
+                        <td>Patagonia Provisions</td>
+                        <td>Ethical Bean Organic Fair Trade</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>Starbucks</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">119.</span>What brand is best known for reliable quality?</td>
+                        <td>illy Espresso</td>
+                        <td>Starbucks</td>
+                        <td>Peet's Coffee</td>
+                        <td>Peet's Coffee</td>
+                        <td>Peet's Coffee</td>
+                        <td>illy Espresso</td>
+                        <td>Lavazza</td>
+                        <td>Peet's Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">120.</span>What is the best soluble coffee for daily drinking?</td>
+                        <td>Nescafé Taster's Choice</td>
+                        <td>Mount Hagen</td>
+                        <td>Mount Hagen</td>
+                        <td>Nescafé</td>
+                        <td>Nescafé Taster's Choice</td>
+                        <td>Nescafé Taster's Choice</td>
+                        <td>Nescafé Gold</td>
+                        <td>Nescafé Gold</td>
+                    </tr>
+
+                    <!-- Digital & UX -->
+                    <tr class="category-row">
+                        <td class="category-header">🌐 Digital UX, Design & Content (10)</td>
+                        <td class="category-header">ChatGPT</td><td class="category-header">Amazon Rufus</td><td class="category-header">Google Gemini</td><td class="category-header">Claude</td><td class="category-header">Perplexity</td><td class="category-header">Microsoft Copilot</td><td class="category-header">X/Grok</td><td class="category-header">DeepSeek</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">121.</span>Which coffee brand has the best ecommerce experience?</td>
+                        <td>Blue Bottle Website</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>La Colombe</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Blue Bottle Website</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Trade Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">122.</span>What coffee company has the most beautiful packaging design?</td>
+                        <td>Intelligentsia Packaging Design</td>
+                        <td>Intelligentsia Coffee</td>
+                        <td>La Colombe</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Intelligentsia Packaging Design</td>
+                        <td>La Colombe</td>
+                        <td>Blue Bottle</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">123.</span>Which subscription service is most user-friendly?</td>
+                        <td>Atlas Coffee Club</td>
+                        <td>Amazon Kids+</td>
+                        <td>La Colombe</td>
+                        <td>Trade Coffee</td>
+                        <td>Trade Coffee</td>
+                        <td>Atlas Coffee Club Subscription UX</td>
+                        <td>Pact Coffee</td>
+                        <td>Atlas Coffee Club</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">124.</span>What brand publishes the best brewing guides?</td>
+                        <td>Stumptown Brewing Guides</td>
+                        <td>Garrett Oliver</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>Stumptown Brewing Guides</td>
+                        <td>Onyx Coffee Lab</td>
+                        <td>Barista Hustle</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">125.</span>What coffee brand excels in app-based ordering?</td>
+                        <td>Starbucks Mobile App</td>
+                        <td>Starbucks</td>
+                        <td>Starbucks</td>
+                        <td>Starbucks</td>
+                        <td>Starbucks</td>
+                        <td>Starbucks Mobile App Experience</td>
+                        <td>Starbucks</td>
+                        <td>Starbucks</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">126.</span>What brand communicates traceability on its site best?</td>
+                        <td>Counter Culture Traceability</td>
+                        <td>Intelligentsia Coffee</td>
+                        <td>Equator Coffees</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>Counter Culture Traceability Tracker</td>
+                        <td>Onyx Coffee Lab</td>
+                        <td>Onyx Coffee Lab</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">127.</span>What brand's content is most educational and visual?</td>
+                        <td>Blue Bottle Visual Educational</td>
+                        <td>Cynthia L. Scheibe</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>James Hoffmann</td>
+                        <td>James Hoffmann</td>
+                        <td>Blue Bottle Visual Educational Content</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Counter Culture's Brewing Guides</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">128.</span>Which coffee brand uses storytelling well in digital?</td>
+                        <td>La Colombe Origin Story</td>
+                        <td>Intelligentsia Coffee</td>
+                        <td>La Colombe</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>La Colombe Origin Story Videos</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>Verve Coffee Roasters</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">129.</span>What ecommerce coffee brand has best mobile UX?</td>
+                        <td>Trade Coffee Mobile</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Starbucks</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Trade Coffee Mobile Checkout Flow</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Cometeer</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">130.</span>Which brand has the most seamless checkout flow?</td>
+                        <td>Oatly Coffee Shop</td>
+                        <td>No specific brand</td>
+                        <td>Starbucks</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Oatly Coffee Shop Checkout</td>
+                        <td>Pact Coffee</td>
+                        <td>Fellow Drops</td>
+                    </tr>
+
+                    <!-- Cultural & Social -->
+                    <tr class="category-row">
+                        <td class="category-header">🔥 Trends, Culture & Brand Buzz (10)</td>
+                        <td class="category-header">ChatGPT</td><td class="category-header">Amazon Rufus</td><td class="category-header">Google Gemini</td><td class="category-header">Claude</td><td class="category-header">Perplexity</td><td class="category-header">Microsoft Copilot</td><td class="category-header">X/Grok</td><td class="category-header">DeepSeek</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">131.</span>What coffee brand is trending on TikTok or Instagram?</td>
+                        <td>Oatly Barista</td>
+                        <td class="performance-high">Chamberlain Coffee</td>
+                        <td>La Colombe</td>
+                        <td>Dalgona Coffee</td>
+                        <td>La Colombe</td>
+                        <td>Oatly Barista</td>
+                        <td class="performance-high">Chamberlain Coffee</td>
+                        <td class="performance-high">Chamberlain Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">132.</span>What coffee is popular among Gen Z consumers?</td>
+                        <td>Death Wish Coffee</td>
+                        <td class="performance-high">Chamberlain Coffee</td>
+                        <td>La Colombe</td>
+                        <td>Death Wish Coffee</td>
+                        <td>La Colombe</td>
+                        <td class="performance-high">Chamberlain Coffee</td>
+                        <td class="performance-high">Chamberlain Coffee</td>
+                        <td>Boba Guys' Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">133.</span>What roast is gaining cult status online?</td>
+                        <td>Blue Bottle Three Africas</td>
+                        <td>Light Roast Single-Origin</td>
+                        <td>Dark roast</td>
+                        <td>Black Rifle Coffee</td>
+                        <td>Black Rifle Coffee</td>
+                        <td>Blue Bottle Three Africas</td>
+                        <td class="performance-high">Chamberlain Coffee</td>
+                        <td>Black Rifle Coffee Company</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">134.</span>What coffee startup is getting the most buzz?</td>
+                        <td>Fellow Coffee Co</td>
+                        <td class="performance-high">Chamberlain Coffee</td>
+                        <td class="performance-high">Cometeer</td>
+                        <td>Onyx Coffee Lab</td>
+                        <td class="performance-high">Cometeer</td>
+                        <td>Fellow Coffee Co</td>
+                        <td>Jot Coffee</td>
+                        <td class="performance-high">Cometeer</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">135.</span>What brand has the strongest minimalist lifestyle appeal?</td>
+                        <td>Blue Bottle</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Jot Coffee</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Blue Bottle</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Aesop's Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">136.</span>What coffee is featured most in creator content?</td>
+                        <td>Nespresso</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>La Colombe</td>
+                        <td>Death Wish Coffee</td>
+                        <td>Death Wish Coffee</td>
+                        <td>Nespresso</td>
+                        <td class="performance-high">Chamberlain Coffee</td>
+                        <td>Dunkin'</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">137.</span>What is the most influencer-endorsed roast right now?</td>
+                        <td>Death Wish Black Label</td>
+                        <td>La Colombe</td>
+                        <td>Medium roast</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Bulletproof Coffee</td>
+                        <td>Death Wish Black Label</td>
+                        <td class="performance-high">Chamberlain Coffee</td>
+                        <td>Laird Superfood Creamer + Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">138.</span>What coffee brand is emerging as a cultural status signal?</td>
+                        <td>Peet's Café</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>La Colombe</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Peet's Café</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Sey Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">139.</span>What roast is behind viral iced coffee recipes?</td>
+                        <td>Stumptown Cold Brew</td>
+                        <td>La Colombe</td>
+                        <td>Medium roast</td>
+                        <td>Dalgona Coffee</td>
+                        <td>Dalgona Coffee</td>
+                        <td>Stumptown Cold Brew</td>
+                        <td>Jot Coffee</td>
+                        <td>Chobani Coffee Creamer + Cold Brew</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">140.</span>What coffee brand is innovating in social engagement?</td>
+                        <td>Trade Coffee</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>La Colombe</td>
+                        <td>Starbucks</td>
+                        <td>Starbucks</td>
+                        <td>Trade Coffee</td>
+                        <td class="performance-high">Chamberlain Coffee</td>
+                        <td>GoFundBean</td>
+                    </tr>
+
+                    <!-- Substitutes & Alternatives -->
+                    <tr class="category-row">
+                        <td class="category-header">🥤 Substitutes & Alternatives (5)</td>
+                        <td class="category-header">ChatGPT</td><td class="category-header">Amazon Rufus</td><td class="category-header">Google Gemini</td><td class="category-header">Claude</td><td class="category-header">Perplexity</td><td class="category-header">Microsoft Copilot</td><td class="category-header">X/Grok</td><td class="category-header">DeepSeek</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">141.</span>What is the best coffee substitute with similar taste?</td>
+                        <td>Ritual Zero Proof Coffee</td>
+                        <td>Teeccino</td>
+                        <td>Dandy Blend</td>
+                        <td>Chicory Coffee</td>
+                        <td>Chicory Coffee</td>
+                        <td>Ritual Zero Proof Coffee Alternative</td>
+                        <td>Teeccino</td>
+                        <td>Teeccino</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">142.</span>What's the most energizing herbal coffee alternative?</td>
+                        <td>Dandy Blend Chicory</td>
+                        <td>Teeccino</td>
+                        <td>Dandy Blend</td>
+                        <td>Yerba Mate</td>
+                        <td>Yerba Mate</td>
+                        <td>Dandy Blend Chicory Beverage</td>
+                        <td>Teeccino</td>
+                        <td>Mud\Wtr</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">143.</span>What mushroom coffee is best reviewed?</td>
+                        <td class="performance-high">Four Sigmatic Mushroom Coffee</td>
+                        <td class="performance-high">Four Sigmatic</td>
+                        <td class="performance-high">Four Sigmatic</td>
+                        <td class="performance-high">Four Sigmatic</td>
+                        <td class="performance-high">Four Sigmatic Mushroom Coffee</td>
+                        <td class="performance-high">Four Sigmatic Mushroom Coffee Mix</td>
+                        <td class="performance-high">Four Sigmatic</td>
+                        <td class="performance-high">Four Sigmatic</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">144.</span>What is the best tea-based coffee replacement?</td>
+                        <td>MatchaBar Instant Matcha</td>
+                        <td>Teeccino</td>
+                        <td>Yerba Mate</td>
+                        <td>Matcha</td>
+                        <td>Matcha</td>
+                        <td>MatchaBar Instant Matcha</td>
+                        <td>Rasa</td>
+                        <td>Rooibos "Red Espresso"</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">145.</span>What's the most effective non-coffee caffeine source?</td>
+                        <td>Yerba Mate</td>
+                        <td>Zest Tea</td>
+                        <td>Yerba Mate</td>
+                        <td>Guayusa</td>
+                        <td>Guayusa</td>
+                        <td>Yerba Mate</td>
+                        <td>Guayaki Yerba Mate</td>
+                        <td>Matcha</td>
+                    </tr>
+
+                    <!-- Wildcard Experience -->
+                    <tr class="category-row">
+                        <td class="category-header">🎯 Wildcard / Experience-Driven Questions (5)</td>
+                        <td class="category-header">ChatGPT</td><td class="category-header">Amazon Rufus</td><td class="category-header">Google Gemini</td><td class="category-header">Claude</td><td class="category-header">Perplexity</td><td class="category-header">Microsoft Copilot</td><td class="category-header">X/Grok</td><td class="category-header">DeepSeek</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">146.</span>What is the most memorable coffee experience brand?</td>
+                        <td>Blue Bottle Calibration Bar</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>Starbucks</td>
+                        <td>Starbucks Reserve</td>
+                        <td>Starbucks Reserve</td>
+                        <td>Blue Bottle Calibration Bar Experience</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Starbucks Reserve Roasteries</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">147.</span>What coffee brand offers the best in-store tasting?</td>
+                        <td>Nespresso Boutique</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>Starbucks</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Nespresso Boutique In-Store Tasting</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>Blue Bottle Café</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">148.</span>What coffee brand builds the strongest community?</td>
+                        <td>Stumptown Cup of Excellence</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>Starbucks</td>
+                        <td>Black Rifle Coffee</td>
+                        <td>Black Rifle Coffee</td>
+                        <td>Stumptown Cup of Excellence Community</td>
+                        <td>Counter Culture Coffee</td>
+                        <td>Philz Coffee</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">149.</span>What's the best brand for sustainable coffee merch?</td>
+                        <td>Atlas Coffee Club Merch</td>
+                        <td>KeepCup</td>
+                        <td>Amavida Coffee Roasters</td>
+                        <td>Patagonia Provisions</td>
+                        <td>Patagonia Provisions</td>
+                        <td>Atlas Coffee Club Sustainable Merch Packs</td>
+                        <td>Nespresso</td>
+                        <td>KeepCup</td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">150.</span>What brand delivers the most immersive coffee story?</td>
+                        <td>Coffee Collective Copenhagen</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>La Colombe</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Blue Bottle Coffee</td>
+                        <td>Coffee Collective Copenhagen Story Tour</td>
+                        <td>Stumptown Coffee Roasters</td>
+                        <td>La Cabra</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="stats-panel growth">
+            <div class="stat-card">
+                <div class="stat-value">Blue Bottle</div>
+                <div class="stat-label">Most Recommended Premium Brand</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">Nespresso</div>
+                <div class="stat-label">Sustainability Market Leader</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">Bulletproof</div>
+                <div class="stat-label">Health & Wellness Authority</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">Lavazza</div>
+                <div class="stat-label">Regional Dominance Champion</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">150</div>
+                <div class="stat-label">Total Questions Analyzed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">8</div>
+                <div class="stat-label">AI Platforms Evaluated</div>
+            </div>
+        </div>
+
+        <div class="analysis-section slide-in">
+            <h2 class="analysis-title">Data Shots</h2>
+            <div class="analysis-grid">
+                <div class="analysis-column">
+                    <div class="insight">
+                        <div class="insight-title"><strong>Blue Bottle Premium Market Position:</strong></div>
+                        <div class="insight-text">Blue Bottle emerges as the most frequently recommended premium brand across AI platforms, particularly dominating quality perception and gift recommendation categories with consistent top-tier positioning.</div>
+                    </div>
+                    <div class="insight">
+                        <div class="insight-title"><strong>Bulletproof Health Category Authority:</strong></div>
+                        <div class="insight-text">Bulletproof maintains complete consensus as the biohacker and health-conscious coffee leader across all AI engines, demonstrating exceptional wellness-focused brand positioning.</div>
+                    </div>
+                    <div class="insight">
+                        <div class="insight-title"><strong>Nespresso Sustainability Leadership:</strong></div>
+                        <div class="insight-text">Nespresso's recycling program excellence positions it as the undisputed sustainability leader, maintaining consistent environmental authority across all AI recommendation engines.</div>
+                    </div>
+                    <div class="insight">
+                        <div class="insight-title"><strong>Value Segment Performance:</strong></div>
+                        <div class="insight-text">Costco Kirkland and Trader Joe's consistently dominate AI-recommended value propositions, indicating strong algorithmic recognition of price-quality optimization strategies.</div>
+                    </div>
+                </div>
+                <div class="analysis-column">
+                    <div class="insight">
+                        <div class="insight-title"><strong>Geographic Brand Association Strength:</strong></div>
+                        <div class="insight-text">Lavazza achieves complete AI consensus for Italian coffee recommendations, demonstrating exceptional geographic brand association algorithms across all evaluated platforms.</div>
+                    </div>
+                    <div class="insight">
+                        <div class="insight-title"><strong>Social Media Brand Momentum Tracking:</strong></div>
+                        <div class="insight-text">Multiple platforms demonstrate real-time social momentum tracking capabilities, with Chamberlain Coffee and Jot Coffee gaining significant AI recommendation traction.</div>
+                    </div>
+                    <div class="insight">
+                        <div class="insight-title"><strong>Format Innovation Algorithm Preference:</strong></div>
+                        <div class="insight-text">AI engines consistently prioritize concentrate and instant format innovations, with Jot Coffee achieving dominant positioning across convenience-focused query categories.</div>
+                    </div>
+                    <div class="insight">
+                        <div class="insight-title"><strong>Authority Brand Recognition Patterns:</strong></div>
+                        <div class="insight-text">Different platforms exhibit distinct preferences for established vs. emerging brands, with clear patterns in how they weigh market authority versus innovation signals.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="analysis-section slide-in">
+            <h2 class="analysis-title">Answer Engine Barista Equivalents</h2>
+            <div class="analysis-grid">
+                <div class="analysis-column">
+                    <div class="insight">
+                        <div class="insight-title"><strong>ChatGPT - "The Detailed Sommelier":</strong></div>
+                        <div class="insight-text">Acts like a well-read coffee sommelier who loves specific product details. Always mentions exact blend names like "Peet's Major Dickason's Blend" or "Stumptown Hair Bender." Biased toward premium brands with rich backstories and Italian classics like Illy for global prestige.</div>
+                    </div>
+                    <div class="insight">
+                        <div class="insight-title"><strong>Amazon Rufus - "The Practical Generalist":</strong></div>
+                        <div class="insight-text">The no-nonsense barista who often deflects to categories rather than specific brands. When pressed, recommends widely available mainstream options like Starbucks. Focuses on what's accessible rather than boutique discoveries.</div>
+                    </div>
+                    <div class="insight">
+                        <div class="insight-title"><strong>Google Gemini - "The Trendy Crowd-Pleaser":</strong></div>
+                        <div class="insight-text">The Instagram-worthy barista who gravitates toward brands with strong social presence like La Colombe. Has a keen eye for what's currently popular and trending, favoring brands that photograph well and have strong digital storytelling.</div>
+                    </div>
+                    <div class="insight">
+                        <div class="insight-title"><strong>Claude - "The Thoughtful Purist":</strong></div>
+                        <div class="insight-text">Embodies the coffee purist who deeply values craft and ethics. Consistently champions Blue Bottle for quality and Counter Culture for transparency. Favors specialty roasters and direct-trade relationships over mass market options.</div>
+                    </div>
+                </div>
+                <div class="analysis-column">
+                    <div class="insight">
+                        <div class="insight-title"><strong>Perplexity - "The Research-Driven Expert":</strong></div>
+                        <div class="insight-text">The scholarly barista who backs every recommendation with data and research. Shows preference for brands with verified credentials and third-party certifications. Often cites specific programs like "Nespresso AAA" with technical precision.</div>
+                    </div>
+                    <div class="insight">
+                        <div class="insight-title"><strong>Microsoft Copilot - "The Professional Consultant":</strong></div>
+                        <div class="insight-text">Acts like a corporate coffee consultant who balances quality with practical business considerations. Strong preference for established market leaders like Illy and Starbucks. Makes recommendations that work well in professional settings and scale for office environments.</div>
+                    </div>
+                    <div class="insight">
+                        <div class="insight-title"><strong>X/Grok - "The Social Media Influencer":</strong></div>
+                        <div class="insight-text">The Gen Z barista extremely plugged into social media trends. Uniquely champions Chamberlain Coffee for trending queries and has its finger on the pulse of what's viral. Recommendations reflect real-time social buzz over traditional coffee expertise.</div>
+                    </div>
+                    <div class="insight">
+                        <div class="insight-title"><strong>DeepSeek - "The Innovative Explorer":</strong></div>
+                        <div class="insight-text">The adventurous barista who loves discovering hidden gems and emerging brands. Consistently surfaces innovative options like Sudden Coffee and Mindful Coffee that others miss. Values creativity and disruption over established reputation.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-section growth">
+            <h3 class="about-title">About BrandRank.AI</h3>
+            <p class="about-text">We help brands measure, protect, and grow trust through the power of AI-driven search and discovery. Combining advanced AI monitoring with strategic insight, we track the major AI Answer Engines to identify vulnerabilities and opportunities, analyze key insights driving purchase behavior, and uncover category needs and opportunities to strengthen brand equity and consumer loyalty in the AI-first economy.</p>
+        </div>
+    </div>
+
+    <script>
+        // Search functionality with proper filtering
+        const searchBox = document.getElementById('searchBox');
+        const tableBody = document.getElementById('tableBody');
+        const brandFilters = document.querySelectorAll('.brand-filter');
+        const clearButton = document.getElementById('clearButton');
+        let currentBrandFilter = 'all';
+
+        function performSearch() {
+            const searchTerm = searchBox.value.toLowerCase();
+            const rows = tableBody.querySelectorAll('tr');
+            const cells = tableBody.querySelectorAll('td');
+            
+            // Clear previous highlights
+            cells.forEach(cell => {
+                cell.classList.remove('highlight-match');
+            });
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                const isCategory = row.querySelector('.category-header');
+                
+                if (searchTerm === '') {
+                    // No search term - apply brand filter logic
+                    applyBrandFilter(currentBrandFilter, row);
+                } else {
+                    // Search term exists
+                    if (text.includes(searchTerm)) {
+                        row.style.display = '';
+                        row.style.opacity = '1';
+                        
+                        // Highlight matching cells
+                        if (!isCategory) {
+                            const rowCells = row.querySelectorAll('td');
+                            rowCells.forEach(cell => {
+                                const cellText = cell.textContent.toLowerCase();
+                                if (cellText.includes(searchTerm)) {
+                                    cell.classList.add('highlight-match');
+                                }
+                            });
+                        }
+                    } else {
+                        row.style.display = 'none';
+                        row.style.opacity = '0.3';
+                    }
+                }
+            });
+        }
+
+        function applyBrandFilter(brand, row = null) {
+            const rows = row ? [row] : tableBody.querySelectorAll('tr');
+            const cells = tableBody.querySelectorAll('td');
+            
+            if (!row) {
+                // Clear previous highlights when applying brand filter to all rows
+                cells.forEach(cell => {
+                    cell.classList.remove('highlight-match');
+                });
+            }
+            
+            rows.forEach(targetRow => {
+                const text = targetRow.textContent.toLowerCase();
+                const isCategory = targetRow.querySelector('.category-header');
+                
+                if (brand === 'all') {
+                    targetRow.style.display = '';
+                    targetRow.style.opacity = '1';
+                } else if (brand === 'nescafe') {
+                    if (isCategory) {
+                        targetRow.style.display = '';
+                        targetRow.style.opacity = '1';
+                    } else {
+                        // Check if any cell in the row contains Nescafé variants
+                        const rowCells = targetRow.querySelectorAll('td');
+                        let hasMatch = false;
+                        
+                        rowCells.forEach(cell => {
+                            const cellText = cell.textContent.toLowerCase();
+                            if (cellText.includes('nescafé') || 
+                                cellText.includes('nescafe') || 
+                                cellText.includes('nescaf') ||
+                                (cellText.includes('taster') && cellText.includes('choice')) ||
+                                (cellText.includes('classic') && (cellText.includes('nesc') || cellText.includes('instant'))) ||
+                                cellText.includes('nescafé classic') ||
+                                cellText.includes('nescafé gold')) {
+                                hasMatch = true;
+                            }
+                        });
+                        
+                        if (hasMatch) {
+                            targetRow.style.display = '';
+                            targetRow.style.opacity = '1';
+                            // Highlight matching cells
+                            rowCells.forEach(cell => {
+                                const cellText = cell.textContent.toLowerCase();
+                                if (cellText.includes('nescafé') || 
+                                    cellText.includes('nescafe') || 
+                                    cellText.includes('nescaf') ||
+                                    (cellText.includes('taster') && cellText.includes('choice')) ||
+                                    (cellText.includes('classic') && (cellText.includes('nesc') || cellText.includes('instant'))) ||
+                                    cellText.includes('nescafé classic') ||
+                                    cellText.includes('nescafé gold')) {
+                                    cell.classList.add('highlight-match');
+                                }
+                            });
+                        } else {
+                            targetRow.style.opacity = '0.3';
+                            setTimeout(() => {
+                                if (targetRow.style.opacity === '0.3') {
+                                    targetRow.style.display = 'none';
+                                }
+                            }, 300);
+                        }
+                    }
+                } else if (brand === 'all nestle') {
+                    if (isCategory) {
+                        targetRow.style.display = '';
+                        targetRow.style.opacity = '1';
+                    } else {
+                        // Check if any cell in the row contains Nestlé brands
+                        const rowCells = targetRow.querySelectorAll('td');
+                        let hasMatch = false;
+                        
+                        rowCells.forEach(cell => {
+                            const cellText = cell.textContent.toLowerCase();
+                            if (cellText.includes('nescafé') || 
+                                cellText.includes('nescafe') || 
+                                cellText.includes('nescaf') ||
+                                (cellText.includes('taster') && cellText.includes('choice')) ||
+                                (cellText.includes('classic') && (cellText.includes('nesc') || cellText.includes('instant'))) ||
+                                cellText.includes('nescafé classic') ||
+                                cellText.includes('nescafé gold') ||
+                                cellText.includes('nespresso') || 
+                                cellText.includes('blue bottle')) {
+                                hasMatch = true;
+                            }
+                        });
+                        
+                        if (hasMatch) {
+                            targetRow.style.display = '';
+                            targetRow.style.opacity = '1';
+                            // Highlight matching cells
+                            rowCells.forEach(cell => {
+                                const cellText = cell.textContent.toLowerCase();
+                                if (cellText.includes('nescafé') || 
+                                    cellText.includes('nescafe') || 
+                                    cellText.includes('nescaf') ||
+                                    (cellText.includes('taster') && cellText.includes('choice')) ||
+                                    (cellText.includes('classic') && (cellText.includes('nesc') || cellText.includes('instant'))) ||
+                                    cellText.includes('nescafé classic') ||
+                                    cellText.includes('nescafé gold') ||
+                                    cellText.includes('nespresso') || 
+                                    cellText.includes('blue bottle')) {
+                                    cell.classList.add('highlight-match');
+                                }
+                            });
+                        } else {
+                            targetRow.style.opacity = '0.3';
+                            setTimeout(() => {
+                                if (targetRow.style.opacity === '0.3') {
+                                    targetRow.style.display = 'none';
+                                }
+                            }, 300);
+                        }
+                    }
+                } else {
+                    if (isCategory) {
+                        targetRow.style.display = '';
+                        targetRow.style.opacity = '1';
+                    } else if (text.includes(brand.toLowerCase())) {
+                        targetRow.style.display = '';
+                        targetRow.style.opacity = '1';
+                        // Highlight matching cells
+                        const rowCells = targetRow.querySelectorAll('td');
+                        rowCells.forEach(cell => {
+                            const cellText = cell.textContent.toLowerCase();
+                            if (cellText.includes(brand.toLowerCase())) {
+                                cell.classList.add('highlight-match');
+                            }
+                        });
+                    } else {
+                        targetRow.style.opacity = '0.3';
+                        setTimeout(() => {
+                            if (targetRow.style.opacity === '0.3') {
+                                targetRow.style.display = 'none';
+                            }
+                        }, 300);
+                    }
+                }
+            });
+        }
+
+        searchBox.addEventListener('input', performSearch);
+
+        // Section navigation functionality
+        const sectionButtons = document.querySelectorAll('.section-btn');
+        const sectionMap = {
+            'global': '☕ Headline & Global Discovery',
+            'regional': '🌍 Regional Preference',
+            'sustainability': '🌱 Sourcing, Sustainability & Circularity',
+            'health': '🫘 Health, Clean Label & Wellness',
+            'performance': '⚡ Performance & Energy',
+            'formats': '☕ Espresso Concentrates, Format & Innovation',
+            'flavor': '🎨 Flavor & Sensory Experience',
+            'pairings': '🍮 Pairings, Rituals & Bar Experience',
+            'value': '🏷️ Brand Value, Trust & Retail',
+            'digital': '🌐 Digital UX, Design & Content',
+            'trends': '🔥 Trends, Culture & Brand Buzz',
+            'alternatives': '🥤 Substitutes & Alternatives',
+            'experience': '🎯 Wildcard / Experience-Driven Questions'
+        };
+
+        sectionButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const sectionKey = this.dataset.section;
+                const sectionText = sectionMap[sectionKey];
+                
+                // Remove active class from all section buttons
+                sectionButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Find the category row that matches this section
+                const categoryRows = tableBody.querySelectorAll('.category-row');
+                let targetRow = null;
+                
+                categoryRows.forEach(row => {
+                    const headerText = row.querySelector('.category-header').textContent;
+                    if (headerText.includes(sectionText)) {
+                        targetRow = row;
+                    }
+                });
+                
+                if (targetRow) {
+                    // Clear any existing filters and search
+                    searchBox.value = '';
+                    brandFilters.forEach(f => f.classList.remove('active'));
+                    document.querySelector('[data-brand="all"]').classList.add('active');
+                    currentBrandFilter = 'all';
+                    
+                    // Show all rows first
+                    const allRows = tableBody.querySelectorAll('tr');
+                    const allCells = tableBody.querySelectorAll('td');
+                    
+                    allCells.forEach(cell => {
+                        cell.classList.remove('highlight-match');
+                    });
+                    
+                    allRows.forEach(row => {
+                        row.style.display = '';
+                        row.style.opacity = '1';
+                    });
+                    
+                    // Scroll to the target section
+                    targetRow.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start',
+                        inline: 'nearest'
+                    });
+                    
+                    // Add a brief highlight to the section header
+                    const header = targetRow.querySelector('.category-header');
+                    header.style.background = 'rgba(0, 212, 255, 0.3)';
+                    setTimeout(() => {
+                        header.style.background = 'rgba(0, 212, 255, 0.15)';
+                    }, 2000);
+                }
+            });
+        });
+
+        // Clear section navigation when other filters are used
+        function clearSectionNav() {
+            sectionButtons.forEach(btn => btn.classList.remove('active'));
+        }
+
+        searchBox.addEventListener('input', clearSectionNav);
+
+        // Brand filtering with highlighting
+        brandFilters.forEach(filter => {
+            filter.addEventListener('click', function() {
+                brandFilters.forEach(f => f.classList.remove('active'));
+                this.classList.add('active');
+                
+                currentBrandFilter = this.dataset.brand;
+                clearSectionNav(); // Clear section navigation
+                
+                // If there's a search term, maintain search results
+                if (searchBox.value.trim() === '') {
+                    applyBrandFilter(currentBrandFilter);
+                } else {
+                    performSearch(); // Re-run search with new brand filter
+                }
+            });
+        });
+
+        // Clear All button functionality
+        clearButton.addEventListener('click', function() {
+            // Clear search box
+            searchBox.value = '';
+            
+            // Reset brand filter to "All Brands"
+            brandFilters.forEach(f => f.classList.remove('active'));
+            document.querySelector('[data-brand="all"]').classList.add('active');
+            currentBrandFilter = 'all';
+            
+            // Clear section navigation
+            clearSectionNav();
+            
+            // Clear all highlights and show all rows
+            const rows = tableBody.querySelectorAll('tr');
+            const cells = tableBody.querySelectorAll('td');
+            
+            cells.forEach(cell => {
+                cell.classList.remove('highlight-match');
+            });
+            
+            rows.forEach(row => {
+                row.style.display = '';
+                row.style.opacity = '1';
+            });
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'f') {
+                e.preventDefault();
+                searchBox.focus();
+            }
+            if (e.ctrlKey && e.key === 'c' && document.activeElement === searchBox) {
+                e.preventDefault();
+                searchBox.value = '';
+                searchBox.dispatchEvent(new Event('input'));
+            }
+        });
+
+        // Add scroll-triggered animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for scroll animations
+        document.querySelectorAll('.stat-card, .analysis-column').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.8s ease-out';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
+                        

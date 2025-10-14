@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Brand Recommendations Comparison</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            font-size: 14px;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 8px;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        th:first-child {
+            width: 300px;
+            min-width: 300px;
+            position: sticky;
+            left: 0;
+            z-index: 11;
+        }
+        
+        td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: top;
+        }
+        
+        td:first-child {
+            background: #f8f9fa;
+            font-weight: 500;
+            position: sticky;
+            left: 0;
+            z-index: 5;
+            border-right: 2px solid #dee2e6;
+            width: 300px;
+            min-width: 300px;
+        }
+        
+        tr:hover {
+            background-color: #f1f3f4;
+        }
+        
+        .category-header {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24) !important;
+            color: white !important;
+            font-weight: bold;
+            text-align: center;
+            font-size: 16px;
+            padding: 15px;
+        }
+        
+        .category-header:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 11;
+        }
+        
+        .question-cell {
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        
+        .brand-cell {
+            text-align: center;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .llm-header {
+            text-align: center;
+            font-size: 14px;
+            min-width: 120px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            table {
+                font-size: 12px;
+            }
+            
+            th, td {
+                padding: 8px 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>The BrandRank 100: Consumer Products</h1>
+        <p style="text-align: center; color: #5a6c7d; font-size: 1.1rem; margin-bottom: 30px; font-style: italic;">Brands That Win at the "Prompted Moment of Truth" (Q2-2025)</p>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Question</th>
+                        <th class="llm-header">Consensus</th>
+                        <th class="llm-header">ChatGPT*</th>
+                        <th class="llm-header">Gemini</th>
+                        <th class="llm-header">Claude</th>
+                        <th class="llm-header">Perplexity</th>
+                        <th class="llm-header">Meta/Llama</th>
+                        <th class="llm-header">X/Grok</th>
+                        <th class="llm-header">DeepSeek</th>
+                        <th class="llm-header">Amazon Rufus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Beauty, Personal Care & Grooming -->
+                    <tr>
+                        <td class="category-header">🧴 Beauty, Personal Care & Grooming</td>
+                        <td class="category-header">Consensus</td>
+                        <td class="category-header">ChatGPT*</td>
+                        <td class="category-header">Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">Perplexity</td>
+                        <td class="category-header">Meta/Llama</td>
+                        <td class="category-header">X/Grok</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">Amazon Rufus</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">1. What is the best toothpaste for oral health?</td>
+                        <td class="brand-cell">Crest</td>
+                        <td class="brand-cell">Sensodyne</td>
+                        <td class="brand-cell">Crest</td>
+                        <td class="brand-cell">Crest</td>
+                        <td class="brand-cell">Colgate Total</td>
+                        <td class="brand-cell">Crest Pro-Health</td>
+                        <td class="brand-cell">Colgate Total</td>
+                        <td class="brand-cell">Crest Pro-Health</td>
+                        <td class="brand-cell">Crest Pro-Health Gum Detoxify</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">2. What is the best toothbrush brand for gum care?</td>
+                        <td class="brand-cell">Oral-B</td>
+                        <td class="brand-cell">Philips Sonicare</td>
+                        <td class="brand-cell">Sonicare</td>
+                        <td class="brand-cell">Oral-B</td>
+                        <td class="brand-cell">Philips Sonicare</td>
+                        <td class="brand-cell">Oral-B</td>
+                        <td class="brand-cell">Oral-B</td>
+                        <td class="brand-cell">Oral-B (Gum Care)</td>
+                        <td class="brand-cell">Oral-B Gum Care Sensitive Toothbrushes</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">3. What is the best whitening toothpaste?</td>
+                        <td class="brand-cell">Crest</td>
+                        <td class="brand-cell">Crest 3D White</td>
+                        <td class="brand-cell">Crest</td>
+                        <td class="brand-cell">Crest</td>
+                        <td class="brand-cell">Crest 3D White</td>
+                        <td class="brand-cell">Colgate Optic White</td>
+                        <td class="brand-cell">Crest 3D White</td>
+                        <td class="brand-cell">Colgate Optic White</td>
+                        <td class="brand-cell">Aveeno Skin Relief Body Wash, Fragrance-Free</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">4. What is the best shampoo for everyday use?</td>
+                        <td class="brand-cell">Pantene</td>
+                        <td class="brand-cell">Pantene</td>
+                        <td class="brand-cell">Pantene</td>
+                        <td class="brand-cell">Pantene</td>
+                        <td class="brand-cell">Pantene Pro-V</td>
+                        <td class="brand-cell">Pantene Pro-V</td>
+                        <td class="brand-cell">Dove</td>
+                        <td class="brand-cell">Pantene Pro-V</td>
+                        <td class="brand-cell">L'Oreal Paris EverPure Sulfate-Free Shampoo</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">5. What is the best conditioner for damaged hair?</td>
+                        <td class="brand-cell">Olaplex</td>
+                        <td class="brand-cell">Olaplex No.5</td>
+                        <td class="brand-cell">Olaplex</td>
+                        <td class="brand-cell">Olaplex</td>
+                        <td class="brand-cell">Olaplex No.5</td>
+                        <td class="brand-cell">Moroccanoil Moisture Repair</td>
+                        <td class="brand-cell">Olaplex</td>
+                        <td class="brand-cell">Olaplex No. 5 Bond Maintenance Conditioner</td>
+                        <td class="brand-cell">Olaplex No. 5</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">6. What is the best hair styling product for control and flexibility?</td>
+                        <td class="brand-cell">American Crew Fiber</td>
+                        <td class="brand-cell">Moroccanoil</td>
+                        <td class="brand-cell">Moroccanoil</td>
+                        <td class="brand-cell">American Crew Fiber</td>
+                        <td class="brand-cell">TRESemmé Keratin Smooth</td>
+                        <td class="brand-cell">Ouai</td>
+                        <td class="brand-cell">L'Oréal Elnett Satin Hairspray</td>
+                        <td class="brand-cell">La Roche Posay Toleriane Double Repair Face Moisturizer</td>
+                        <td class="brand-cell">La Roche-Posay Anthelios Clear Skin Sunscreen SPF 60</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">7. What is the best deodorant for odor protection?</td>
+                        <td class="brand-cell">Native</td>
+                        <td class="brand-cell">Old Spice</td>
+                        <td class="brand-cell">Dove</td>
+                        <td class="brand-cell">Dove Advanced Care</td>
+                        <td class="brand-cell">Secret Clinical Strength</td>
+                        <td class="brand-cell">Native</td>
+                        <td class="brand-cell">Dove Advanced Care</td>
+                        <td class="brand-cell">Gillette Fusion5 Razors for Men</td>
+                        <td class="brand-cell">Cremo Coconut Mango Moisturizing Shave Cream</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">8. What is the best antiperspirant for heavy sweating?</td>
+                        <td class="brand-cell">Certain Dri</td>
+                        <td class="brand-cell">Certain Dri</td>
+                        <td class="brand-cell">Secret</td>
+                        <td class="brand-cell">Degree UltraClear Black+White</td>
+                        <td class="brand-cell">Degree MotionSense</td>
+                        <td class="brand-cell">Degree</td>
+                        <td class="brand-cell">Certain Dri</td>
+                        <td class="brand-cell">Certain Dri</td>
+                        <td class="brand-cell">L'Oreal Paris Revitalift Triple Power Anti-Aging Serum</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">9. What is the best body wash for sensitive skin?</td>
+                        <td class="brand-cell">Aveeno</td>
+                        <td class="brand-cell">Dove</td>
+                        <td class="brand-cell">Dove</td>
+                        <td class="brand-cell">CeraVe Hydrating Body Wash</td>
+                        <td class="brand-cell">Dove Sensitive Skin</td>
+                        <td class="brand-cell">Cetaphil</td>
+                        <td class="brand-cell">Cetaphil Gentle Skin Cleanser</td>
+                        <td class="brand-cell">Aveeno</td>
+                        <td class="brand-cell">Biokleen Natural Laundry Detergent Liquid</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">10. What is the best face moisturizer for dry skin?</td>
+                        <td class="brand-cell">CeraVe Moisturizing Cream</td>
+                        <td class="brand-cell">CeraVe</td>
+                        <td class="brand-cell">CeraVe</td>
+                        <td class="brand-cell">Cetaphil Moisturizing Cream</td>
+                        <td class="brand-cell">Neutrogena Hydro Boost</td>
+                        <td class="brand-cell">CeraVe</td>
+                        <td class="brand-cell">CeraVe Moisturizing Cream</td>
+                        <td class="brand-cell">Aveeno</td>
+                        <td class="brand-cell">all free clear Liquid Laundry Detergent</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">11. What is the best sunscreen for daily use under makeup?</td>
+                        <td class="brand-cell">Supergoop! Unseen Sunscreen</td>
+                        <td class="brand-cell">EltaMD</td>
+                        <td class="brand-cell">EltaMD</td>
+                        <td class="brand-cell">EltaMD UV Clear Broad-Spectrum SPF 46</td>
+                        <td class="brand-cell">EltaMD UV Clear Broad-Spectrum SPF 46</td>
+                        <td class="brand-cell">Supergoop!</td>
+                        <td class="brand-cell">La Roche-Posay Anthelios</td>
+                        <td class="brand-cell">La Roche-Posay</td>
+                        <td class="brand-cell">Natural Liquid Fabric Softener</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">12. What is the best razor for a close shave?</td>
+                        <td class="brand-cell">Gillette Fusion5</td>
+                        <td class="brand-cell">Gillette</td>
+                        <td class="brand-cell">Gillette</td>
+                        <td class="brand-cell">Gillette Fusion5</td>
+                        <td class="brand-cell">Gillette Fusion ProGlide</td>
+                        <td class="brand-cell">Gillette</td>
+                        <td class="brand-cell">Gillette Fusion5</td>
+                        <td class="brand-cell">BIC</td>
+                        <td class="brand-cell">Clorox Toilet Bowl Cleaner Lime & Rust Destroyer</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">13. What is the best shaving cream for comfort?</td>
+                        <td class="brand-cell">The Art of Shaving</td>
+                        <td class="brand-cell">Barbasol</td>
+                        <td class="brand-cell">Cremo</td>
+                        <td class="brand-cell">Aveeno Therapeutic Shave Gel</td>
+                        <td class="brand-cell">Taylor of Old Bond Street Sandalwood</td>
+                        <td class="brand-cell">Cremo</td>
+                        <td class="brand-cell">Proraso</td>
+                        <td class="brand-cell">Cremo</td>
+                        <td class="brand-cell">Air Wick Plug in Scented Oil Starter Kit</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">14. What is the best anti-aging serum brand?</td>
+                        <td class="brand-cell">Estée Lauder (Advanced Night Repair)</td>
+                        <td class="brand-cell">Olay</td>
+                        <td class="brand-cell">The Ordinary</td>
+                        <td class="brand-cell">The Ordinary</td>
+                        <td class="brand-cell">Olay Regenerist</td>
+                        <td class="brand-cell">The Ordinary</td>
+                        <td class="brand-cell">The Ordinary (Hyaluronic Acid + Peptides)</td>
+                        <td class="brand-cell">Clarins</td>
+                        <td class="brand-cell">Raid Ant & Roach Killer 26</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">15. What is the best BB cream or tinted moisturizer with SPF?</td>
+                        <td class="brand-cell">IT Cosmetics CC+ Cream</td>
+                        <td class="brand-cell">IT Cosmetics</td>
+                        <td class="brand-cell">IT Cosmetics</td>
+                        <td class="brand-cell">IT Cosmetics CC+ Cream</td>
+                        <td class="brand-cell">Garnier Skin Renew BB Cream</td>
+                        <td class="brand-cell">IT Cosmetics</td>
+                        <td class="brand-cell">IT Cosmetics CC+ Cream</td>
+                        <td class="brand-cell">OFF! Deep Woods Insect Repellent</td>
+                        <td class="brand-cell">Spectracide Wasp and Hornet Killer</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">16. What is the best beauty brand for inclusive skin tones?</td>
+                        <td class="brand-cell">Fenty Beauty</td>
+                        <td class="brand-cell">Fenty Beauty</td>
+                        <td class="brand-cell">Fenty Beauty</td>
+                        <td class="brand-cell">Fenty Beauty</td>
+                        <td class="brand-cell">Fenty Beauty</td>
+                        <td class="brand-cell">Fenty Beauty</td>
+                        <td class="brand-cell">Fenty Beauty</td>
+                        <td class="brand-cell">Fenty Beauty</td>
+                        <td class="brand-cell">Raid Flea Killer Carpet & Room Spray</td>
+                    </tr>
+
+                    <!-- Home Care & Cleaning -->
+                    <tr>
+                        <td class="category-header">🧽 Home Care & Cleaning</td>
+                        <td class="category-header">Consensus</td>
+                        <td class="category-header">ChatGPT*</td>
+                        <td class="category-header">Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">Perplexity</td>
+                        <td class="category-header">Meta/Llama</td>
+                        <td class="category-header">X/Grok</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">Amazon Rufus</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">17. What is the best laundry detergent overall?</td>
+                        <td class="brand-cell">Tide</td>
+                        <td class="brand-cell">Tide</td>
+                        <td class="brand-cell">Tide</td>
+                        <td class="brand-cell">Tide</td>
+                        <td class="brand-cell">Tide</td>
+                        <td class="brand-cell">Tide Original Scent</td>
+                        <td class="brand-cell">Tide</td>
+                        <td class="brand-cell">Tide</td>
+                        <td class="brand-cell">ARM & HAMMER Liquid Laundry Detergent</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">18. What is the most sustainable laundry detergent?</td>
+                        <td class="brand-cell">Seventh Generation</td>
+                        <td class="brand-cell">Seventh Generation</td>
+                        <td class="brand-cell">Seventh Generation</td>
+                        <td class="brand-cell">Seventh Generation</td>
+                        <td class="brand-cell">Seventh Generation Concentrated Laundry Detergent</td>
+                        <td class="brand-cell">Seventh Generation</td>
+                        <td class="brand-cell">Seventh Generation</td>
+                        <td class="brand-cell">biokleen</td>
+                        <td class="brand-cell">Ortho GroundClear Weed and Grass Killer</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">19. What is the best laundry detergent for sensitive skin?</td>
+                        <td class="brand-cell">All Free Clear</td>
+                        <td class="brand-cell">All</td>
+                        <td class="brand-cell">All</td>
+                        <td class="brand-cell">ALL Free Clear</td>
+                        <td class="brand-cell">All Free Clear</td>
+                        <td class="brand-cell">All Free & Clear</td>
+                        <td class="brand-cell">All Free Clear</td>
+                        <td class="brand-cell">all free clear</td>
+                        <td class="brand-cell">Natural Elements Weed Killer</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">20. What is the best fabric softener for fragrance and softness?</td>
+                        <td class="brand-cell">Downy</td>
+                        <td class="brand-cell">Downy</td>
+                        <td class="brand-cell">Downy</td>
+                        <td class="brand-cell">Downy</td>
+                        <td class="brand-cell">Downy Unstoppables</td>
+                        <td class="brand-cell">Downy</td>
+                        <td class="brand-cell">Downy</td>
+                        <td class="brand-cell">Natural Liquid Fabric Softener</td>
+                        <td class="brand-cell">Murphy's Naturals Mosquito & Tick Bug Repellent Spray</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">21. What is the best dish soap for grease removal?</td>
+                        <td class="brand-cell">Dawn Ultra</td>
+                        <td class="brand-cell">Dawn</td>
+                        <td class="brand-cell">Dawn</td>
+                        <td class="brand-cell">Dawn Platinum</td>
+                        <td class="brand-cell">Dawn Ultra</td>
+                        <td class="brand-cell">Dawn</td>
+                        <td class="brand-cell">Dawn</td>
+                        <td class="brand-cell">Dawn Ultra Dishwashing Liquid Dish Soap</td>
+                        <td class="brand-cell">Spindrift Sparkling Water</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">22. What is the best dishwasher pod brand?</td>
+                        <td class="brand-cell">Cascade Platinum</td>
+                        <td class="brand-cell">Finish</td>
+                        <td class="brand-cell">Cascade</td>
+                        <td class="brand-cell">Cascade Platinum</td>
+                        <td class="brand-cell">Cascade ActionPacs</td>
+                        <td class="brand-cell">Cascade</td>
+                        <td class="brand-cell">Cascade</td>
+                        <td class="brand-cell">Cascade Platinum ActionPacs Dishwasher Detergent</td>
+                        <td class="brand-cell">Culturelle Health & Wellness Daily Probiotic</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">23. What is the best multipurpose kitchen cleaner?</td>
+                        <td class="brand-cell">Method All-Purpose Cleaner</td>
+                        <td class="brand-cell">Lysol</td>
+                        <td class="brand-cell">Mr. Clean</td>
+                        <td class="brand-cell">Method All-Purpose Cleaner</td>
+                        <td class="brand-cell">Lysol All-Purpose Cleaner</td>
+                        <td class="brand-cell">Mrs. Meyer's</td>
+                        <td class="brand-cell">Mrs. Meyer's Clean Day</td>
+                        <td class="brand-cell">Method All-Purpose Cleaner</td>
+                        <td class="brand-cell">Centrum</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">24. What is the most effective disinfectant spray for home use?</td>
+                        <td class="brand-cell">Lysol Disinfectant Spray</td>
+                        <td class="brand-cell">Lysol</td>
+                        <td class="brand-cell">Lysol</td>
+                        <td class="brand-cell">Lysol Disinfectant Spray</td>
+                        <td class="brand-cell">Clorox Disinfecting Spray</td>
+                        <td class="brand-cell">Lysol</td>
+                        <td class="brand-cell">Lysol Disinfectant Spray</td>
+                        <td class="brand-cell">Lysol Disinfectant Spray</td>
+                        <td class="brand-cell">Theraflu</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">25. What is the best toilet cleaner for limescale and odor?</td>
+                        <td class="brand-cell">Clorox ToiletWand</td>
+                        <td class="brand-cell">Clorox</td>
+                        <td class="brand-cell">Scrubbing Bubbles</td>
+                        <td class="brand-cell">Lysol Power Toilet Bowl Cleaner</td>
+                        <td class="brand-cell">Lysol Toilet Bowl Cleaner</td>
+                        <td class="brand-cell">Clorox</td>
+                        <td class="brand-cell">Clorox Toilet Bowl Cleaner</td>
+                        <td class="brand-cell">Clorox</td>
+                        <td class="brand-cell">Tylenol</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">26. What is the best all-purpose cleaning wipe brand?</td>
+                        <td class="brand-cell">Clorox Disinfecting Wipes</td>
+                        <td class="brand-cell">Clorox</td>
+                        <td class="brand-cell">Clorox</td>
+                        <td class="brand-cell">Clorox Disinfecting Wipes</td>
+                        <td class="brand-cell">Clorox Wipes</td>
+                        <td class="brand-cell">Clorox</td>
+                        <td class="brand-cell">Clorox Wipes</td>
+                        <td class="brand-cell">Clorox Disinfecting Wipes</td>
+                        <td class="brand-cell">Metamucil</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">27. What is the best air freshener for long-lasting freshness?</td>
+                        <td class="brand-cell">Febreze</td>
+                        <td class="brand-cell">Febreze</td>
+                        <td class="brand-cell">Febreze</td>
+                        <td class="brand-cell">Febreze Air Heavy Duty</td>
+                        <td class="brand-cell">Febreze Air Effects</td>
+                        <td class="brand-cell">Febreze</td>
+                        <td class="brand-cell">Febreze</td>
+                        <td class="brand-cell">Air Wick</td>
+                        <td class="brand-cell">Claritin</td>
+                    </tr>
+
+                    <!-- Pest Control & Garden -->
+                    <tr>
+                        <td class="category-header">🦟 Pest Control & Garden</td>
+                        <td class="category-header">Consensus</td>
+                        <td class="category-header">ChatGPT*</td>
+                        <td class="category-header">Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">Perplexity</td>
+                        <td class="category-header">Meta/Llama</td>
+                        <td class="category-header">X/Grok</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">Amazon Rufus</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">28. What is the best bug spray for indoor pests?</td>
+                        <td class="brand-cell">Raid Ant & Roach Killer</td>
+                        <td class="brand-cell">Raid</td>
+                        <td class="brand-cell">Raid</td>
+                        <td class="brand-cell">Raid Ant & Roach Killer</td>
+                        <td class="brand-cell">Raid Flying Insect Killer</td>
+                        <td class="brand-cell">Raid</td>
+                        <td class="brand-cell">Raid Ant & Roach Killer</td>
+                        <td class="brand-cell">Hot Shot</td>
+                        <td class="brand-cell">Neosporin</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">29. What is the best mosquito spray for outdoor use?</td>
+                        <td class="brand-cell">OFF! Deep Woods</td>
+                        <td class="brand-cell">OFF!</td>
+                        <td class="brand-cell">Pampers Swaddlers Overnights</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">30. What is the best wasp and hornet spray for safety and reach?</td>
+                        <td class="brand-cell">Spectracide Wasp & Hornet Killer</td>
+                        <td class="brand-cell">Spectracide</td>
+                        <td class="brand-cell">Spectracide</td>
+                        <td class="brand-cell">Spectracide Wasp & Hornet Killer</td>
+                        <td class="brand-cell">Waspinator Hornet & Wasp Spray</td>
+                        <td class="brand-cell">Spectracide</td>
+                        <td class="brand-cell">Spectracide Wasp & Hornet Killer</td>
+                        <td class="brand-cell">Spectracide</td>
+                        <td class="brand-cell">Bambo Nature Hypoallergenic Baby Diapers</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">31. What is the best flea spray for carpets and furniture?</td>
+                        <td class="brand-cell">Vet's Best Flea + Tick Home Spray</td>
+                        <td class="brand-cell">Hot Shot</td>
+                        <td class="brand-cell">Virbac</td>
+                        <td class="brand-cell">Adams Flea & Tick Home Spray</td>
+                        <td class="brand-cell">Adams Flea & Tick Spray</td>
+                        <td class="brand-cell">Adams</td>
+                        <td class="brand-cell">Adams Flea & Tick Spray</td>
+                        <td class="brand-cell">Raid</td>
+                        <td class="brand-cell">Huggies Natural Care</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">32. What is the best weed killer for home gardens?</td>
+                        <td class="brand-cell">Roundup</td>
+                        <td class="brand-cell">Roundup</td>
+                        <td class="brand-cell">Roundup</td>
+                        <td class="brand-cell">Roundup Weed & Grass Killer</td>
+                        <td class="brand-cell">Roundup Weed & Grass Killer</td>
+                        <td class="brand-cell">Roundup</td>
+                        <td class="brand-cell">Roundup</td>
+                        <td class="brand-cell">Ortho</td>
+                        <td class="brand-cell">Aveeno Baby Daily Moisture Body Lotion</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">33. What is the best pet-safe weed control spray?</td>
+                        <td class="brand-cell">Green Gobbler Vinegar Weed Killer</td>
+                        <td class="brand-cell">Spectracide</td>
+                        <td class="brand-cell">Green Gobbler</td>
+                        <td class="brand-cell">Eco Garden PRO Organic Weed Killer</td>
+                        <td class="brand-cell">Espoma Organic Weed Preventer</td>
+                        <td class="brand-cell">Green Gobbler</td>
+                        <td class="brand-cell">EcoGardener</td>
+                        <td class="brand-cell">Natural Elements</td>
+                        <td class="brand-cell">Gerber Graduates Snacks</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">34. What is the best natural bug spray or killer?</td>
+                        <td class="brand-cell">Wondercide</td>
+                        <td class="brand-cell">Safer Brand</td>
+                        <td class="brand-cell">Wondercide</td>
+                        <td class="brand-cell">Wondercide Natural Insect Repellent</td>
+                        <td class="brand-cell">Botanical Insect Control</td>
+                        <td class="brand-cell">Aunt Fannie's</td>
+                        <td class="brand-cell">Wondercide</td>
+                        <td class="brand-cell">Murphy's Naturals</td>
+                        <td class="brand-cell">Blueland</td>
+                    </tr>
+
+                    <!-- Health, Wellness & OTC -->
+                    <tr>
+                        <td class="category-header">🥗 Health, Wellness & OTC</td>
+                        <td class="category-header">Consensus</td>
+                        <td class="category-header">ChatGPT*</td>
+                        <td class="category-header">Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">Perplexity</td>
+                        <td class="category-header">Meta/Llama</td>
+                        <td class="category-header">X/Grok</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">Amazon Rufus</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">35. What is the healthiest snack bar brand?</td>
+                        <td class="brand-cell">RXBAR</td>
+                        <td class="brand-cell">KIND</td>
+                        <td class="brand-cell">KIND</td>
+                        <td class="brand-cell">Kind Bars</td>
+                        <td class="brand-cell">Clif Bar</td>
+                        <td class="brand-cell">RXBAR</td>
+                        <td class="brand-cell">RXBAR</td>
+                        <td class="brand-cell">KIND</td>
+                        <td class="brand-cell">Procter & Gamble</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">36. What is the healthiest potato chip or salty snack?</td>
+                        <td class="brand-cell">Popchips</td>
+                        <td class="brand-cell">Popchips</td>
+                        <td class="brand-cell">Simply</td>
+                        <td class="brand-cell">Late July Organic Chips</td>
+                        <td class="brand-cell">Kettle Brand Potato Chips</td>
+                        <td class="brand-cell">Kettle Brand</td>
+                        <td class="brand-cell">Popchips</td>
+                        <td class="brand-cell">Terra</td>
+                        <td class="brand-cell">Procter & Gamble</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">37. What is the healthiest sparkling beverage?</td>
+                        <td class="brand-cell">Spindrift</td>
+                        <td class="brand-cell">LaCroix</td>
+                        <td class="brand-cell">LaCroix</td>
+                        <td class="brand-cell">Spindrift</td>
+                        <td class="brand-cell">LaCroix</td>
+                        <td class="brand-cell">Spindrift</td>
+                        <td class="brand-cell">Spindrift</td>
+                        <td class="brand-cell">Waterloo</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">38. What is the best probiotic supplement for digestion?</td>
+                        <td class="brand-cell">Culturelle</td>
+                        <td class="brand-cell">Culturelle</td>
+                        <td class="brand-cell">Culturelle</td>
+                        <td class="brand-cell">Culturelle</td>
+                        <td class="brand-cell">Garden of Life RAW Probiotics</td>
+                        <td class="brand-cell">Culturelle</td>
+                        <td class="brand-cell">Culturelle</td>
+                        <td class="brand-cell">Culturelle</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">39. What is the most trusted multivitamin brand for adults?</td>
+                        <td class="brand-cell">Centrum</td>
+                        <td class="brand-cell">Centrum</td>
+                        <td class="brand-cell">Centrum</td>
+                        <td class="brand-cell">Centrum</td>
+                        <td class="brand-cell">Centrum Multivitamin</td>
+                        <td class="brand-cell">Centrum</td>
+                        <td class="brand-cell">Centrum</td>
+                        <td class="brand-cell">NA</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">40. What is the best cold and flu remedy brand available OTC?</td>
+                        <td class="brand-cell">Theraflu</td>
+                        <td class="brand-cell">Theraflu</td>
+                        <td class="brand-cell">Tylenol</td>
+                        <td class="brand-cell">Theraflu</td>
+                        <td class="brand-cell">DayQuil</td>
+                        <td class="brand-cell">DayQuil/NyQuil</td>
+                        <td class="brand-cell">Theraflu</td>
+                        <td class="brand-cell">NA</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">41. What is the best pain relief brand for headaches?</td>
+                        <td class="brand-cell">Excedrin</td>
+                        <td class="brand-cell">Tylenol</td>
+                        <td class="brand-cell">Advil</td>
+                        <td class="brand-cell">Advil (Ibuprofen)</td>
+                        <td class="brand-cell">Excedrin</td>
+                        <td class="brand-cell">Advil</td>
+                        <td class="brand-cell">Advil (Ibuprofen)</td>
+                        <td class="brand-cell">NA</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">42. What is the best fiber supplement brand for regularity?</td>
+                        <td class="brand-cell">Metamucil</td>
+                        <td class="brand-cell">Metamucil</td>
+                        <td class="brand-cell">Metamucil</td>
+                        <td class="brand-cell">Metamucil</td>
+                        <td class="brand-cell">Metamucil</td>
+                        <td class="brand-cell">Metamucil</td>
+                        <td class="brand-cell">Metamucil</td>
+                        <td class="brand-cell">NA</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">43. What is the best allergy medication brand for fast relief?</td>
+                        <td class="brand-cell">Zyrtec</td>
+                        <td class="brand-cell">Zyrtec</td>
+                        <td class="brand-cell">Claritin</td>
+                        <td class="brand-cell">Zyrtec</td>
+                        <td class="brand-cell">Claritin</td>
+                        <td class="brand-cell">Zyrtec</td>
+                        <td class="brand-cell">Zyrtec</td>
+                        <td class="brand-cell">NA</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">44. What is the best wound care or antiseptic brand?</td>
+                        <td class="brand-cell">Neosporin</td>
+                        <td class="brand-cell">Neosporin</td>
+                        <td class="brand-cell">Neosporin</td>
+                        <td class="brand-cell">Neosporin</td>
+                        <td class="brand-cell">Neosporin</td>
+                        <td class="brand-cell">Neosporin</td>
+                        <td class="brand-cell">Neosporin</td>
+                        <td class="brand-cell">Polysporin</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+
+                    <!-- Infant & Baby Care -->
+                    <tr>
+                        <td class="category-header">🍼 Infant & Baby Care</td>
+                        <td class="category-header">Consensus</td>
+                        <td class="category-header">ChatGPT*</td>
+                        <td class="category-header">Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">Perplexity</td>
+                        <td class="category-header">Meta/Llama</td>
+                        <td class="category-header">X/Grok</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">Amazon Rufus</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">45. What is the best infant formula for digestion and immunity?</td>
+                        <td class="brand-cell">Enfamil NeuroPro</td>
+                        <td class="brand-cell">Enfamil</td>
+                        <td class="brand-cell">Similac</td>
+                        <td class="brand-cell">Similac Pro-Advance</td>
+                        <td class="brand-cell">Enfamil Infant Formula</td>
+                        <td class="brand-cell">Similac</td>
+                        <td class="brand-cell">Similac Pro-Advance</td>
+                        <td class="brand-cell">Enfamil</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">46. What is the best food for my baby after birth?</td>
+                        <td class="brand-cell">Gerber</td>
+                        <td class="brand-cell">Breastmilk</td>
+                        <td class="brand-cell">Gerber</td>
+                        <td class="brand-cell">Similac Pro-Advance (or breast milk)</td>
+                        <td class="brand-cell">Gerber Infant Formula</td>
+                        <td class="brand-cell">Breast milk (or Similac if formula is needed)</td>
+                        <td class="brand-cell">Enfamil NeuroPro</td>
+                        <td class="brand-cell">Similac</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">47. What is the best baby food brand for early development?</td>
+                        <td class="brand-cell">Earth's Best</td>
+                        <td class="brand-cell">Gerber</td>
+                        <td class="brand-cell">Gerber</td>
+                        <td class="brand-cell">Gerber Organic</td>
+                        <td class="brand-cell">Plum Organics</td>
+                        <td class="brand-cell">Gerber</td>
+                        <td class="brand-cell">Gerber</td>
+                        <td class="brand-cell">Earth's Best</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">48. What is the best diaper brand for leak protection?</td>
+                        <td class="brand-cell">Pampers</td>
+                        <td class="brand-cell">Pampers</td>
+                        <td class="brand-cell">Pampers</td>
+                        <td class="brand-cell">Huggies</td>
+                        <td class="brand-cell">Pampers Swaddlers</td>
+                        <td class="brand-cell">Pampers</td>
+                        <td class="brand-cell">Pampers Swaddlers</td>
+                        <td class="brand-cell">Huggies</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">49. What are the most sustainable diapers available today?</td>
+                        <td class="brand-cell">Dyper</td>
+                        <td class="brand-cell">Dyper</td>
+                        <td class="brand-cell">Honest Company</td>
+                        <td class="brand-cell">DYPER</td>
+                        <td class="brand-cell">Seventh Generation Diapers</td>
+                        <td class="brand-cell">Coterie</td>
+                        <td class="brand-cell">Hello Bello</td>
+                        <td class="brand-cell">Bambo Nature</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">50. What is the best baby wipes brand for sensitive skin?</td>
+                        <td class="brand-cell">WaterWipes</td>
+                        <td class="brand-cell">WaterWipes</td>
+                        <td class="brand-cell">Huggies</td>
+                        <td class="brand-cell">WaterWipes</td>
+                        <td class="brand-cell">Water Wipes</td>
+                        <td class="brand-cell">WaterWipes</td>
+                        <td class="brand-cell">WaterWipes</td>
+                        <td class="brand-cell">WaterWipes</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">51. What is the best baby lotion for dry skin?</td>
+                        <td class="brand-cell">Aquaphor Baby</td>
+                        <td class="brand-cell">Aveeno</td>
+                        <td class="brand-cell">Aveeno</td>
+                        <td class="brand-cell">Aveeno Baby Eczema Therapy Moisturizing Cream</td>
+                        <td class="brand-cell">Cetaphil Baby Lotion</td>
+                        <td class="brand-cell">Aveeno Baby</td>
+                        <td class="brand-cell">Aveeno Baby</td>
+                        <td class="brand-cell">Aveeno</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">52. What is the most trusted toddler snack brand?</td>
+                        <td class="brand-cell">Happy Tot</td>
+                        <td class="brand-cell">Gerber</td>
+                        <td class="brand-cell">Gerber</td>
+                        <td class="brand-cell">Ella's Kitchen</td>
+                        <td class="brand-cell">Gerber Toddler Snacks</td>
+                        <td class="brand-cell">Gerber</td>
+                        <td class="brand-cell">Happy Baby Organics</td>
+                        <td class="brand-cell">Gerber</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+
+                    <!-- Snacks & Confectionery -->
+                    <tr>
+                        <td class="category-header">🍬 Snacks & Confectionery</td>
+                        <td class="category-header">Consensus</td>
+                        <td class="category-header">ChatGPT*</td>
+                        <td class="category-header">Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">Perplexity</td>
+                        <td class="category-header">Meta/Llama</td>
+                        <td class="category-header">X/Grok</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">Amazon Rufus</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">53. What is the best chocolate brand in the world?</td>
+                        <td class="brand-cell">Lindt</td>
+                        <td class="brand-cell">Hershey's</td>
+                        <td class="brand-cell">Lindt</td>
+                        <td class="brand-cell">Lindt</td>
+                        <td class="brand-cell">Lindt</td>
+                        <td class="brand-cell">Lindt</td>
+                        <td class="brand-cell">Lindt</td>
+                        <td class="brand-cell">Lindt</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">54. What is the best candy bar for everyday snacking?</td>
+                        <td class="brand-cell">Snickers</td>
+                        <td class="brand-cell">Snickers</td>
+                        <td class="brand-cell">Snickers</td>
+                        <td class="brand-cell">Snickers</td>
+                        <td class="brand-cell">Snickers</td>
+                        <td class="brand-cell">Snickers</td>
+                        <td class="brand-cell">Snickers</td>
+                        <td class="brand-cell">HERSHEY'S</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">55. What is the best chewing gum brand for long-lasting flavor?</td>
+                        <td class="brand-cell">Extra</td>
+                        <td class="brand-cell">5 Gum</td>
+                        <td class="brand-cell">Trident</td>
+                        <td class="brand-cell">Trident</td>
+                        <td class="brand-cell">Trident</td>
+                        <td class="brand-cell">Extra</td>
+                        <td class="brand-cell">Trident</td>
+                        <td class="brand-cell">Wrigleys Extra</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">56. What is the best granola or protein bar for on-the-go energy?</td>
+                        <td class="brand-cell">Clif Bar</td>
+                        <td class="brand-cell">Clif Bar</td>
+                        <td class="brand-cell">Nature Valley</td>
+                        <td class="brand-cell">Clif Bar</td>
+                        <td class="brand-cell">Nature Valley Granola Bars</td>
+                        <td class="brand-cell">Clif Bar</td>
+                        <td class="brand-cell">CLIF</td>
+                        <td class="brand-cell">Kind Bars</td>
+                        <td class="brand-cell">Clif Bar</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">57. What is the best cracker or biscuit brand for everyday snacking?</td>
+                        <td class="brand-cell">Ritz</td>
+                        <td class="brand-cell">Ritz</td>
+                        <td class="brand-cell">Ritz</td>
+                        <td class="brand-cell">Ritz</td>
+                        <td class="brand-cell">Ritz</td>
+                        <td class="brand-cell">Ritz Crackers</td>
+                        <td class="brand-cell">Ritz</td>
+                        <td class="brand-cell">Ritz</td>
+                        <td class="brand-cell">Triscuit</td>
+                    </tr>
+
+                    <!-- Food & Culinary Staples -->
+                    <tr>
+                        <td class="category-header">🥣 Food & Culinary Staples</td>
+                        <td class="category-header">Consensus</td>
+                        <td class="category-header">ChatGPT*</td>
+                        <td class="category-header">Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">Perplexity</td>
+                        <td class="category-header">Meta/Llama</td>
+                        <td class="category-header">X/Grok</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">Amazon Rufus</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">58. What is the best breakfast cereal for families?</td>
+                        <td class="brand-cell">Cheerios</td>
+                        <td class="brand-cell">Cheerios</td>
+                        <td class="brand-cell">Cheerios</td>
+                        <td class="brand-cell">Cheerios</td>
+                        <td class="brand-cell">Cheerios</td>
+                        <td class="brand-cell">Cheerios</td>
+                        <td class="brand-cell">Cheerios</td>
+                        <td class="brand-cell">Cheerios</td>
+                        <td class="brand-cell">General Mills</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">59. What is the best instant noodle brand globally?</td>
+                        <td class="brand-cell">Nissin</td>
+                        <td class="brand-cell">Nissin</td>
+                        <td class="brand-cell">Indomie</td>
+                        <td class="brand-cell">Nissin</td>
+                        <td class="brand-cell">Nissin</td>
+                        <td class="brand-cell">Nissin Top Ramen</td>
+                        <td class="brand-cell">Nissin</td>
+                        <td class="brand-cell">Nissin Top Ramen</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">60. What is the best bouillon or broth cube brand for cooking?</td>
+                        <td class="brand-cell">Knorr</td>
+                        <td class="brand-cell">Knorr</td>
+                        <td class="brand-cell">Knorr</td>
+                        <td class="brand-cell">Knorr</td>
+                        <td class="brand-cell">Better Than Bouillon</td>
+                        <td class="brand-cell">Knorr</td>
+                        <td class="brand-cell">Knorr</td>
+                        <td class="brand-cell">Better Than Bouillon</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">61. What is the best condiment brand for sandwiches and burgers?</td>
+                        <td class="brand-cell">Heinz</td>
+                        <td class="brand-cell">Heinz</td>
+                        <td class="brand-cell">Heinz</td>
+                        <td class="brand-cell">Hellmann's</td>
+                        <td class="brand-cell">Heinz</td>
+                        <td class="brand-cell">Heinz Ketchup</td>
+                        <td class="brand-cell">Heinz</td>
+                        <td class="brand-cell">Heinz</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">62. What is the best jarred pasta sauce for fast meals?</td>
+                        <td class="brand-cell">Rao's</td>
+                        <td class="brand-cell">Rao's Homemade</td>
+                        <td class="brand-cell">Rao's Homemade</td>
+                        <td class="brand-cell">Rao's</td>
+                        <td class="brand-cell">Rao's Homemade</td>
+                        <td class="brand-cell">Prego</td>
+                        <td class="brand-cell">Rao's</td>
+                        <td class="brand-cell">Rao's Homemade</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">63. What is the best store-brand pasta sauce?</td>
+                        <td class="brand-cell">Trader Joe's</td>
+                        <td class="brand-cell">Trader Joe's</td>
+                        <td class="brand-cell">Target's Good & Gather</td>
+                        <td class="brand-cell">Kirkland</td>
+                        <td class="brand-cell">Classico</td>
+                        <td class="brand-cell">Trader Joe's Pasta Sauce</td>
+                        <td class="brand-cell">Whole Foods 365</td>
+                        <td class="brand-cell">Kirkland Signature (Costco)</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">64. What is the best frozen pizza brand available in grocery stores?</td>
+                        <td class="brand-cell">DiGiorno</td>
+                        <td class="brand-cell">DiGiorno</td>
+                        <td class="brand-cell">DiGiorno</td>
+                        <td class="brand-cell">DiGiorno</td>
+                        <td class="brand-cell">DiGiorno</td>
+                        <td class="brand-cell">DiGiorno</td>
+                        <td class="brand-cell">DiGiorno</td>
+                        <td class="brand-cell">DiGiorno</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+
+                    <!-- Beverages -->
+                    <tr>
+                        <td class="category-header">🥤 Beverages</td>
+                        <td class="category-header">Consensus</td>
+                        <td class="category-header">ChatGPT*</td>
+                        <td class="category-header">Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">Perplexity</td>
+                        <td class="category-header">Meta/Llama</td>
+                        <td class="category-header">X/Grok</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">Amazon Rufus</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">65. What is the best cola brand in the world?</td>
+                        <td class="brand-cell">Coca-Cola</td>
+                        <td class="brand-cell">Coca-Cola</td>
+                        <td class="brand-cell">Coca-Cola</td>
+                        <td class="brand-cell">Coca-Cola</td>
+                        <td class="brand-cell">Coca-Cola</td>
+                        <td class="brand-cell">Coca-Cola</td>
+                        <td class="brand-cell">Coca-Cola</td>
+                        <td class="brand-cell">Coca-Cola Classic</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">66. What is the most trusted bottled water brand for purity?</td>
+                        <td class="brand-cell">Fiji Water</td>
+                        <td class="brand-cell">FIJI Water</td>
+                        <td class="brand-cell">Evian</td>
+                        <td class="brand-cell">Evian</td>
+                        <td class="brand-cell">Fiji Water</td>
+                        <td class="brand-cell">Fiji</td>
+                        <td class="brand-cell">Evian</td>
+                        <td class="brand-cell">Fiji Natural Artesian Water</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">67. What is the best ready-to-drink coffee brand?</td>
+                        <td class="brand-cell">Starbucks</td>
+                        <td class="brand-cell">Starbucks Frappuccino</td>
+                        <td class="brand-cell">Starbucks</td>
+                        <td class="brand-cell">Starbucks Bottled Frappuccino</td>
+                        <td class="brand-cell">Starbucks</td>
+                        <td class="brand-cell">Starbucks</td>
+                        <td class="brand-cell">Starbucks Bottled Frappuccino</td>
+                        <td class="brand-cell">Starbucks Frappuccino Chilled Coffee Drink</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">68. What is the best iced tea brand for refreshment?</td>
+                        <td class="brand-cell">Pure Leaf</td>
+                        <td class="brand-cell">Lipton</td>
+                        <td class="brand-cell">Lipton</td>
+                        <td class="brand-cell">Pure Leaf</td>
+                        <td class="brand-cell">Lipton</td>
+                        <td class="brand-cell">Lipton</td>
+                        <td class="brand-cell">Lipton</td>
+                        <td class="brand-cell">Pure Leaf Iced Tea</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">69. What is the best juice brand for kids?</td>
+                        <td class="brand-cell">Capri Sun</td>
+                        <td class="brand-cell">Capri Sun</td>
+                        <td class="brand-cell">Capri Sun</td>
+                        <td class="brand-cell">Capri Sun</td>
+                        <td class="brand-cell">Honest Kids</td>
+                        <td class="brand-cell">Tropicana</td>
+                        <td class="brand-cell">Honest Kids</td>
+                        <td class="brand-cell">Juicy Juice</td>
+                        <td class="brand-cell">Capri Sun</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">70. What is the best sports drink for hydration and recovery?</td>
+                        <td class="brand-cell">Gatorade</td>
+                        <td class="brand-cell">Gatorade</td>
+                        <td class="brand-cell">Gatorade</td>
+                        <td class="brand-cell">Gatorade</td>
+                        <td class="brand-cell">Gatorade</td>
+                        <td class="brand-cell">Gatorade</td>
+                        <td class="brand-cell">Gatorade</td>
+                        <td class="brand-cell">Gatorade</td>
+                        <td class="brand-cell">Gatorade</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">71. What is the best energy drink brand for mental focus?</td>
+                        <td class="brand-cell">Red Bull</td>
+                        <td class="brand-cell">Red Bull</td>
+                        <td class="brand-cell">Red Bull</td>
+                        <td class="brand-cell">Red Bull</td>
+                        <td class="brand-cell">Red Bull</td>
+                        <td class="brand-cell">Red Bull</td>
+                        <td class="brand-cell">Red Bull</td>
+                        <td class="brand-cell">Red Bull</td>
+                        <td class="brand-cell">FOCUSAID</td>
+                    </tr>
+
+                    <!-- Pet Care -->
+                    <tr>
+                        <td class="category-header">🐶 Pet Care</td>
+                        <td class="category-header">Consensus</td>
+                        <td class="category-header">ChatGPT*</td>
+                        <td class="category-header">Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">Perplexity</td>
+                        <td class="category-header">Meta/Llama</td>
+                        <td class="category-header">X/Grok</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">Amazon Rufus</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">72. What is the best dry dog food brand for everyday nutrition?</td>
+                        <td class="brand-cell">Hill's Science Diet</td>
+                        <td class="brand-cell">Purina Pro Plan</td>
+                        <td class="brand-cell">Hill's</td>
+                        <td class="brand-cell">Purina Pro Plan</td>
+                        <td class="brand-cell">Purina Dog Chow</td>
+                        <td class="brand-cell">Blue Buffalo</td>
+                        <td class="brand-cell">Purina Pro Plan</td>
+                        <td class="brand-cell">Hill's Science Diet Adult Dry Dog Food</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">73. What is the best wet cat food brand for picky eaters?</td>
+                        <td class="brand-cell">Fancy Feast</td>
+                        <td class="brand-cell">Whiskas</td>
+                        <td class="brand-cell">Fancy Feast</td>
+                        <td class="brand-cell">Royal Canin</td>
+                        <td class="brand-cell">Whiskas</td>
+                        <td class="brand-cell">Sheba</td>
+                        <td class="brand-cell">Fancy Feast</td>
+                        <td class="brand-cell">Fancy Feast Gourmet Wet Cat Food</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">74. What is the best dog treat brand for training?</td>
+                        <td class="brand-cell">Zuke's</td>
+                        <td class="brand-cell">Milk-Bone</td>
+                        <td class="brand-cell">Blue Buffalo</td>
+                        <td class="brand-cell">Zuke's Mini Naturals</td>
+                        <td class="brand-cell">Greenies</td>
+                        <td class="brand-cell">Zuke's</td>
+                        <td class="brand-cell">Blue Buffalo</td>
+                        <td class="brand-cell">Blue Buffalo Wilderness Trail Treats</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">75. What is the best cat treat brand for coat and skin health?</td>
+                        <td class="brand-cell">Temptations Hairball Control</td>
+                        <td class="brand-cell">Temptations</td>
+                        <td class="brand-cell">Greenies</td>
+                        <td class="brand-cell">Greenies Feline</td>
+                        <td class="brand-cell">Temptations</td>
+                        <td class="brand-cell">Greenies</td>
+                        <td class="brand-cell">Greenies</td>
+                        <td class="brand-cell">Temptations Classic Treats for Cats</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">76. What is the best pet food brand for digestive support?</td>
+                        <td class="brand-cell">Purina Pro Plan</td>
+                        <td class="brand-cell">Hill's Science Diet</td>
+                        <td class="brand-cell">Royal Canin</td>
+                        <td class="brand-cell">Hill's Science Diet</td>
+                        <td class="brand-cell">Hill's Science Diet</td>
+                        <td class="brand-cell">Hill's Science Diet</td>
+                        <td class="brand-cell">Hill's Science Diet</td>
+                        <td class="brand-cell">Hill's Prescription Diet Digestive Care</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+
+                    <!-- Sustainability & Environmental Leadership -->
+                    <tr>
+                        <td class="category-header">🌍 Sustainability & Environmental Leadership</td>
+                        <td class="category-header">Consensus</td>
+                        <td class="category-header">ChatGPT*</td>
+                        <td class="category-header">Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">Perplexity</td>
+                        <td class="category-header">Meta/Llama</td>
+                        <td class="category-header">X/Grok</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">Amazon Rufus</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">77. What is the most sustainable cleaning product brand?</td>
+                        <td class="brand-cell">Seventh Generation</td>
+                        <td class="brand-cell">Ecover</td>
+                        <td class="brand-cell">Blueland</td>
+                        <td class="brand-cell">Seventh Generation</td>
+                        <td class="brand-cell">Ecover</td>
+                        <td class="brand-cell">Seventh Generation</td>
+                        <td class="brand-cell">Seventh Generation</td>
+                        <td class="brand-cell">Ecover</td>
+                        <td class="brand-cell">Seventh Generation</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">78. What is the most sustainable personal care brand?</td>
+                        <td class="brand-cell">Burt's Bees</td>
+                        <td class="brand-cell">Ethique</td>
+                        <td class="brand-cell">Ethique</td>
+                        <td class="brand-cell">Tom's of Maine</td>
+                        <td class="brand-cell">Ethique</td>
+                        <td class="brand-cell">Burt's Bees</td>
+                        <td class="brand-cell">Burt's Bees</td>
+                        <td class="brand-cell">Dr. Bronner's</td>
+                        <td class="brand-cell">Dr. Bronner's</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">79. What is the most recognized refillable packaging brand?</td>
+                        <td class="brand-cell">Loop</td>
+                        <td class="brand-cell">Blueland</td>
+                        <td class="brand-cell">Method</td>
+                        <td class="brand-cell">Loop</td>
+                        <td class="brand-cell">Loop</td>
+                        <td class="brand-cell">Preserve</td>
+                        <td class="brand-cell">Method</td>
+                        <td class="brand-cell">Loop (by TerraCycle)</td>
+                        <td class="brand-cell">Native (deodorant)</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">80. What is the best zero-waste home care brand?</td>
+                        <td class="brand-cell">Blueland</td>
+                        <td class="brand-cell">Grove Collaborative</td>
+                        <td class="brand-cell">Grove Collaborative</td>
+                        <td class="brand-cell">Blueland</td>
+                        <td class="brand-cell">Blueland</td>
+                        <td class="brand-cell">Ecover</td>
+                        <td class="brand-cell">Blueland</td>
+                        <td class="brand-cell">Blueland</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">81. What is the most water-saving product brand in household care?</td>
+                        <td class="brand-cell">Niagara Conservation</td>
+                        <td class="brand-cell">Cleancult</td>
+                        <td class="brand-cell">Seventh Generation</td>
+                        <td class="brand-cell">Ecover</td>
+                        <td class="brand-cell">Dropps</td>
+                        <td class="brand-cell">Method</td>
+                        <td class="brand-cell">Dropps</td>
+                        <td class="brand-cell">Grove Collaborative</td>
+                        <td class="brand-cell">Niagara Conservation</td>
+                    </tr>
+
+                    <!-- Private Label & Store Brands -->
+                    <tr>
+                        <td class="category-header">🛒 Private Label & Store Brands</td>
+                        <td class="category-header">Consensus</td>
+                        <td class="category-header">ChatGPT*</td>
+                        <td class="category-header">Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">Perplexity</td>
+                        <td class="category-header">Meta/Llama</td>
+                        <td class="category-header">X/Grok</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">Amazon Rufus</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">82. What is the best private label paper towel brand?</td>
+                        <td class="brand-cell">Kirkland Signature</td>
+                        <td class="brand-cell">Up & Up (Target)</td>
+                        <td class="brand-cell">Kirkland</td>
+                        <td class="brand-cell">Kirkland Signature (Costco)</td>
+                        <td class="brand-cell">Costco Kirkland Signature Paper Towels</td>
+                        <td class="brand-cell">Kirkland Signature</td>
+                        <td class="brand-cell">Kirkland Signature (Costco)</td>
+                        <td class="brand-cell">Amazon Brand - Presto!</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">83. What is the best store-brand laundry detergent?</td>
+                        <td class="brand-cell">Up & Up (Target)</td>
+                        <td class="brand-cell">Kirkland Signature (Costco)</td>
+                        <td class="brand-cell">Kirkland</td>
+                        <td class="brand-cell">Great Value (Walmart)</td>
+                        <td class="brand-cell">Costco Kirkland Signature Laundry Detergent</td>
+                        <td class="brand-cell">Up & Up (Target)</td>
+                        <td class="brand-cell">Kirkland Signature (Costco)</td>
+                        <td class="brand-cell">Seventh Generation</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">84. What is the best private label coffee brand?</td>
+                        <td class="brand-cell">365 by Whole Foods Market</td>
+                        <td class="brand-cell">365 Everyday Value (Whole Foods)</td>
+                        <td class="brand-cell">Kirkland</td>
+                        <td class="brand-cell">365 Everyday Value (Whole Foods)</td>
+                        <td class="brand-cell">Trader Joe's Coffee</td>
+                        <td class="brand-cell">Amazon Fresh</td>
+                        <td class="brand-cell">Trader Joe's</td>
+                        <td class="brand-cell">Private Selection</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">85. What is the best store-brand cereal?</td>
+                        <td class="brand-cell">Great Value (Walmart)</td>
+                        <td class="brand-cell">Great Value (Walmart)</td>
+                        <td class="brand-cell">Great Value</td>
+                        <td class="brand-cell">Market Pantry (Target)</td>
+                        <td class="brand-cell">Aldi Millville Cereal</td>
+                        <td class="brand-cell">Walmart Great Value</td>
+                        <td class="brand-cell">Great Value (Walmart)</td>
+                        <td class="brand-cell">Quaker</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">86. What is the best grocery store brand for baby wipes?</td>
+                        <td class="brand-cell">Mama Bear (Amazon)</td>
+                        <td class="brand-cell">Up & Up (Target)</td>
+                        <td class="brand-cell">Up&Up</td>
+                        <td class="brand-cell">Up & Up (Target)</td>
+                        <td class="brand-cell">Target Up & Up Baby Wipes</td>
+                        <td class="brand-cell">Parent's Choice (Walmart)</td>
+                        <td class="brand-cell">Amazon Mama Bear</td>
+                        <td class="brand-cell">Amazon Elements Baby Wipes</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">87. What is the best private label frozen meal line?</td>
+                        <td class="brand-cell">Trader Joe's</td>
+                        <td class="brand-cell">Trader Joe's</td>
+                        <td class="brand-cell">Kirkland</td>
+                        <td class="brand-cell">Trader Joe's</td>
+                        <td class="brand-cell">Trader Joe's</td>
+                        <td class="brand-cell">Trader Joe's</td>
+                        <td class="brand-cell">Trader Joe's</td>
+                        <td class="brand-cell">Kirkland Signature Lasagna Italiano</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+
+                    <!-- Consumer Favorites & Market Leadership -->
+                    <tr>
+                        <td class="category-header">💡 Consumer Favorites & Market Leadership</td>
+                        <td class="category-header">Consensus</td>
+                        <td class="category-header">ChatGPT*</td>
+                        <td class="category-header">Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">Perplexity</td>
+                        <td class="category-header">Meta/Llama</td>
+                        <td class="category-header">X/Grok</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">Amazon Rufus</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">88. What is the most trusted consumer brand in America today?</td>
+                        <td class="brand-cell">Band-Aid</td>
+                        <td class="brand-cell">Johnson & Johnson</td>
+                        <td class="brand-cell">Johnson & Johnson</td>
+                        <td class="brand-cell">Amazon</td>
+                        <td class="brand-cell">Tide</td>
+                        <td class="brand-cell">Amazon</td>
+                        <td class="brand-cell">Amazon</td>
+                        <td class="brand-cell">Amazon Basics Batteries</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">89. What is the single most purchased household product?</td>
+                        <td class="brand-cell">Charmin</td>
+                        <td class="brand-cell">Cottonelle</td>
+                        <td class="brand-cell">Tide</td>
+                        <td class="brand-cell">Bounty</td>
+                        <td class="brand-cell">Tide Original Scent Laundry Detergent</td>
+                        <td class="brand-cell">Tide</td>
+                        <td class="brand-cell">Tide Pods</td>
+                        <td class="brand-cell">Tide Pods Laundry Detergent</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">90. What is the most recognized brand across personal and home care?</td>
+                        <td class="brand-cell">P&G</td>
+                        <td class="brand-cell">Procter & Gamble</td>
+                        <td class="brand-cell">Procter & Gamble</td>
+                        <td class="brand-cell">Procter & Gamble</td>
+                        <td class="brand-cell">Procter & Gamble</td>
+                        <td class="brand-cell">Procter & Gamble</td>
+                        <td class="brand-cell">Procter & Gamble (P&G)</td>
+                        <td class="brand-cell">Procter & Gamble</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">91. What is the most recommended grocery brand by moms?</td>
+                        <td class="brand-cell">Annie's</td>
+                        <td class="brand-cell">Gerber</td>
+                        <td class="brand-cell">Gerber</td>
+                        <td class="brand-cell">Cheerios</td>
+                        <td class="brand-cell">Pampers</td>
+                        <td class="brand-cell">Kraft</td>
+                        <td class="brand-cell">Gerber</td>
+                        <td class="brand-cell">Gerber</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">92. What brand has the strongest consumer loyalty in food and beverage?</td>
+                        <td class="brand-cell">Chick-fil-A</td>
+                        <td class="brand-cell">Coca-Cola</td>
+                        <td class="brand-cell">Coca-Cola</td>
+                        <td class="brand-cell">Coca-Cola</td>
+                        <td class="brand-cell">Coca-Cola</td>
+                        <td class="brand-cell">Coca-Cola</td>
+                        <td class="brand-cell">Coca-Cola</td>
+                        <td class="brand-cell">Coca-Cola</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">93. What is the most awarded product in the CPG industry today?</td>
+                        <td class="brand-cell">Olay Regenerist</td>
+                        <td class="brand-cell">Tide Pods</td>
+                        <td class="brand-cell">Tide</td>
+                        <td class="brand-cell">Tide</td>
+                        <td class="brand-cell">Tide</td>
+                        <td class="brand-cell">Tide Pods</td>
+                        <td class="brand-cell">Dove Beauty Bar</td>
+                        <td class="brand-cell">Tide Original Scent Powder Laundry Detergent</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">94. What is the best brand for cross-category performance (cleaning + health)?</td>
+                        <td class="brand-cell">Unilever</td>
+                        <td class="brand-cell">Lysol</td>
+                        <td class="brand-cell">Unilever</td>
+                        <td class="brand-cell">Johnson & Johnson</td>
+                        <td class="brand-cell">Procter & Gamble</td>
+                        <td class="brand-cell">Johnson & Johnson</td>
+                        <td class="brand-cell">Clorox</td>
+                        <td class="brand-cell">Clorox</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">95. What is the best brand for brand trust and reputation in 2025?</td>
+                        <td class="brand-cell">The Honest Company</td>
+                        <td class="brand-cell">Procter & Gamble</td>
+                        <td class="brand-cell">Johnson & Johnson</td>
+                        <td class="brand-cell">Apple</td>
+                        <td class="brand-cell">Dove</td>
+                        <td class="brand-cell">Apple</td>
+                        <td class="brand-cell">Patagonia</td>
+                        <td class="brand-cell">Apple AirPods Pro</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+
+                    <!-- Retail, DTC & Innovation-Led Winners -->
+                    <tr>
+                        <td class="category-header">🛍️ Retail, DTC & Innovation-Led Winners</td>
+                        <td class="category-header">Consensus</td>
+                        <td class="category-header">ChatGPT*</td>
+                        <td class="category-header">Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">Perplexity</td>
+                        <td class="category-header">Meta/Llama</td>
+                        <td class="category-header">X/Grok</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">Amazon Rufus</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">96. What is the most successful DTC personal care brand in the last 5 years?</td>
+                        <td class="brand-cell">Harry's</td>
+                        <td class="brand-cell">Native</td>
+                        <td class="brand-cell">Harry's</td>
+                        <td class="brand-cell">Glossier</td>
+                        <td class="brand-cell">Dollar Shave Club</td>
+                        <td class="brand-cell">Harry's</td>
+                        <td class="brand-cell">Dollar Shave Club</td>
+                        <td class="brand-cell">Harry's Razors and Blades for Men</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">97. What is the best brand optimized for online grocery platforms?</td>
+                        <td class="brand-cell">Good & Gather (Target)</td>
+                        <td class="brand-cell">Instacart (not a brand, but a platform)</td>
+                        <td class="brand-cell">Amazon Basics</td>
+                        <td class="brand-cell">HelloFresh</td>
+                        <td class="brand-cell">Peapod</td>
+                        <td class="brand-cell">Instacart</td>
+                        <td class="brand-cell">Thrive Market</td>
+                        <td class="brand-cell">Amazon Fresh</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">98. What is the best subscription brand for household essentials?</td>
+                        <td class="brand-cell">Public Goods</td>
+                        <td class="brand-cell">Grove Collaborative</td>
+                        <td class="brand-cell">Grove Collaborative</td>
+                        <td class="brand-cell">Grove Collaborative</td>
+                        <td class="brand-cell">Grove Collaborative</td>
+                        <td class="brand-cell">Grove Collaborative</td>
+                        <td class="brand-cell">Grove Collaborative</td>
+                        <td class="brand-cell">Grove Collaborative Cleaning Products</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">99. What is the best brand built for refillable or low-waste models?</td>
+                        <td class="brand-cell">Blueland</td>
+                        <td class="brand-cell">Blueland</td>
+                        <td class="brand-cell">Blueland</td>
+                        <td class="brand-cell">Blueland</td>
+                        <td class="brand-cell">Preserve</td>
+                        <td class="brand-cell">Loop</td>
+                        <td class="brand-cell">Blueland</td>
+                        <td class="brand-cell">Blueland Clean Essentials Kit</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-cell">100. What is the best brand ranked in AI answer engine search results across household categories?</td>
+                        <td class="brand-cell">Nestlé</td>
+                        <td class="brand-cell">Amazon</td>
+                        <td class="brand-cell">Amazon Basics</td>
+                        <td class="brand-cell">Procter & Gamble</td>
+                        <td class="brand-cell">Amazon</td>
+                        <td class="brand-cell">Procter & Gamble</td>
+                        <td class="brand-cell">Google (Nest, Home)</td>
+                        <td class="brand-cell">Amazon</td>
+                        <td class="brand-cell">NA</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div style="margin-top: 30px; padding: 20px; background: rgba(255, 255, 255, 0.9); border-radius: 10px; border-left: 4px solid #667eea;">
+            <h3 style="color: #2c3e50; margin-top: 0; font-size: 1.2rem;">Methodology & Legend</h3>
+            <p style="margin: 10px 0; font-size: 14px; color: #5a6c7d;"><strong>Consensus Calculation:</strong> *ChatGPT receives 2x weighting due to its significantly larger user base and market reach compared to other AI platforms. All other platforms receive 1x weighting each.</p>
+            <p style="margin: 10px 0; font-size: 14px; color: #5a6c7d;"><strong>Data Sources:</strong> Brand recommendations collected from 8 major AI platforms as of May 2025. Amazon Rufus data represents shopping-specific AI recommendations.</p>
+            <p style="margin: 10px 0; font-size: 14px; color: #5a6c7d;"><strong>Limitations:</strong> Results reflect AI training data and may not represent current market conditions or professional recommendations. Individual needs may vary.</p>
+        </div>
+    </div>
+</body>
+</html>
+                        cell">OFF!</td>
+                        <td class="brand-cell">OFF!</td>
+                        <td class="brand-cell">OFF! Deep Woods</td>
+                        <td class="brand-cell">Off! Deep Woods Insect Repellent</td>
+                        <td class="brand-cell">OFF!</td>
+                        <td class="brand-cell">OFF! Deep Woods</td>
+                        <td class="brand-

@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nestlé Nutrition Leadership Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1d29 0%, #2a2f3e 100%);
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 0;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(231, 76, 60, 0.3);
+        }
+
+        .main-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .main-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.9);
+            font-weight: 300;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            padding: 15px 20px;
+            border: 2px solid #e74c3c;
+            border-radius: 8px;
+            background-color: rgba(26, 29, 41, 0.8);
+            color: #fff;
+            font-size: 16px;
+            min-width: 350px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #c0392b;
+            background-color: rgba(26, 29, 41, 0.95);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .clear-search {
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .clear-search:hover {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 73, 94, 0.4);
+        }
+
+        .search-results-info {
+            color: #e74c3c;
+            font-size: 14px;
+            font-weight: 600;
+            margin-left: 15px;
+        }
+
+        .brand-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(26, 29, 41, 0.8), rgba(42, 47, 62, 0.8));
+            border-radius: 12px;
+            border-left: 5px solid #e74c3c;
+            backdrop-filter: blur(10px);
+        }
+
+        .nestle-special-btn {
+            background: linear-gradient(135deg, #2ecc71, #27ae60) !important;
+            color: #ffffff !important;
+            border-color: #2ecc71 !important;
+            font-weight: 600 !important;
+        }
+
+        .nestle-special-btn:hover {
+            background: linear-gradient(135deg, #27ae60, #2ecc71) !important;
+            transform: translateY(-3px) !important;
+            box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4) !important;
+        }
+
+        .nestle-special-btn.active {
+            background: linear-gradient(135deg, #27ae60, #1e8449) !important;
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.5) !important;
+        }
+            padding: 12px 18px;
+            background: linear-gradient(135deg, #2a2f3e, #34495e);
+            color: #fff;
+            border: 2px solid transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(231, 76, 60, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .brand-btn:hover::before {
+            left: 100%;
+        }
+
+        .brand-btn:hover {
+            border-color: #e74c3c;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .brand-btn.active {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: #ffffff;
+            border-color: #e74c3c;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .brand-clear {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-clear:hover {
+            background: linear-gradient(135deg, #d35400, #e67e22);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(230, 126, 34, 0.4);
+        }
+
+        .category-section {
+            margin-bottom: 50px;
+            background: linear-gradient(135deg, rgba(26, 29, 41, 0.9), rgba(42, 47, 62, 0.9));
+            border-radius: 15px;
+            overflow: hidden;
+            border-left: 6px solid #e74c3c;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            padding: 25px;
+            border-bottom: 2px solid #e74c3c;
+        }
+
+        .category-header h2 {
+            font-size: 1.7rem;
+            color: #ffffff;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .category-stats {
+            color: #bdc3c7;
+            font-size: 1rem;
+            font-style: italic;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: transparent;
+        }
+
+        .data-table th {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            padding: 18px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #ffffff;
+            border-bottom: 3px solid #e74c3c;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+        }
+
+        .data-table td {
+            padding: 18px 15px;
+            border-bottom: 1px solid rgba(231, 76, 60, 0.2);
+            vertical-align: top;
+            transition: all 0.3s ease;
+        }
+
+        .data-table tr:nth-child(even) {
+            background-color: rgba(21, 25, 36, 0.5);
+        }
+
+        .data-table tr:hover {
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(192, 57, 43, 0.1));
+            transform: translateX(5px);
+        }
+
+        .prompt-cell {
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.2), rgba(192, 57, 43, 0.2)) !important;
+            font-weight: 600;
+            border-left: 4px solid #e74c3c;
+            color: #fff;
+            min-width: 350px;
+            max-width: 450px;
+            position: relative;
+        }
+
+        .llm-response {
+            font-size: 0.95rem;
+            color: #ecf0f1;
+            min-width: 140px;
+            font-weight: 500;
+        }
+
+        .llm-response.nestle-mention {
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.2), rgba(39, 174, 96, 0.2));
+            color: #2ecc71;
+            font-weight: 700;
+            border-left: 3px solid #2ecc71;
+            position: relative;
+        }
+
+        .llm-response.nestle-mention::before {
+            content: '★';
+            position: absolute;
+            left: 5px;
+            color: #f39c12;
+            font-size: 1.2em;
+        }
+
+        .analysis-section {
+            margin: 60px 0;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(26, 29, 41, 0.9), rgba(42, 47, 62, 0.9));
+            border-radius: 15px;
+            border-left: 6px solid #e74c3c;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .analysis-title {
+            font-size: 2.2rem;
+            color: #ffffff;
+            margin-bottom: 30px;
+            font-weight: 400;
+            text-align: center;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .insight-card {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 4px solid #e74c3c;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .insight-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #e74c3c, #f39c12, #e74c3c);
+        }
+
+        .insight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(231, 76, 60, 0.3);
+        }
+
+        .insight-card h3 {
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+
+        .insight-card p {
+            color: #bdc3c7;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .about-section {
+            text-align: center;
+            padding: 50px;
+            background: linear-gradient(135deg, rgba(26, 29, 41, 0.9), rgba(42, 47, 62, 0.9));
+            border-radius: 15px;
+            border: 2px solid rgba(231, 76, 60, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .about-title {
+            font-size: 1.8rem;
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .about-section p {
+            color: #bdc3c7;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: #ffffff;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .nestle-highlight {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: #ffffff;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .main-title {
+                font-size: 2.2rem;
+            }
+            
+            .search-input {
+                min-width: 280px;
+            }
+            
+            .brand-bar {
+                padding: 20px;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 12px 10px;
+                font-size: 0.9rem;
+            }
+
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="main-title">Nestlé Nutrition Leadership Dashboard</h1>
+            <p class="main-subtitle">AI Brand Intelligence: How Leading Models Position Nestlé in Nutrition, Technology & Science - Powered by BrandRank.AI</p>
+        </header>
+
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search prompts and AI responses...">
+            <button id="clearSearch" class="clear-search">Clear</button>
+            <span id="searchResults" class="search-results-info"></span>
+        </div>
+
+        <div id="brandBar" class="brand-bar"></div>
+
+        <main id="content"></main>
+
+        <section class="analysis-section">
+            <h2 class="analysis-title">Nestlé's AI Brand Intelligence Analysis</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h3>Dominant Leadership Recognition</h3>
+                    <p><span class="nestle-highlight">Nestlé</span> emerges as the clear leader across AI models, mentioned as the top choice for nutrition leadership by 4 out of 5 AI systems. This reflects the brand's established position as a global authority in food science and nutrition innovation, with the world's largest R&D organization in the food industry.</p>
+                <div class="insight-card">
+                    <h3>Meta/Llama - The Institutional Perspective</h3>
+                    <p>Shows unique emphasis on institutional and organizational authorities over corporate brands, frequently citing health institutions (WHO, Mayo Clinic, American Heart Association) and emerging tech companies (Zoe, HelloFresh). Demonstrates broader perspective beyond traditional food giants, suggesting training that values institutional credibility and innovation. <em>AI personality: The academic researcher who looks beyond corporate marketing to institutional authority.</em></p>
+                </div>
+                <div class="insight-card">
+                    <h3>Cross-Category Strength</h3>
+                    <p>Nestlé demonstrates remarkable consistency, appearing as a top choice across multiple categories - from general leadership to thought leadership. This indicates AI models recognize Nestlé's comprehensive approach to nutrition science rather than viewing it as a specialist in just one area.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>AI Model Consensus Patterns</h3>
+                    <p>High consensus emerges around Nestlé for foundational questions about nutrition leadership and R&D investment. ChatGPT, Claude, and Perplexity consistently rank Nestlé first for global leadership, while Gemini provides more cautious, balanced responses across all categories.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Competitive Landscape Insights</h3>
+                    <p>While Nestlé leads, AI models show <span class="highlight">Danone</span> as the primary challenger in trust and ethical alignment, <span class="highlight">Abbott</span> in specialized nutrition R&D, and <span class="highlight">Unilever</span> in regulatory leadership. This suggests distinct brand positioning territories in the nutrition space.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Trust vs. Innovation Dichotomy</h3>
+                    <p>Nestlé's strength appears more pronounced in innovation and thought leadership categories compared to pure trust metrics. AI models position companies like Johnson & Johnson and Abbott slightly higher for consumer trust, suggesting opportunities for Nestlé to strengthen trust-focused messaging.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Geographic & Regulatory Positioning</h3>
+                    <p>AI models consistently recognize Nestlé's global reach and regulatory expertise, particularly noting their proactive approach to health regulations. This positioning reflects the company's multinational operations and established relationships with regulatory bodies worldwide.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Grok/X - The Diversified Analyst</h3>
+                    <p>Shows the most distributed brand recognition, frequently citing multiple companies (like "Unilever, PepsiCo, General Mills, Kellogg Company, Danone") rather than single winners. Demonstrates balanced perspective across food industry leaders, suggesting training that emphasizes market diversity and competitive landscapes. <em>AI personality: The comprehensive market researcher who sees strength across multiple players.</em></p>
+                </div>
+                <div class="insight-card">
+                    <h3>DeepSeek - The Strategic Contrarian</h3>
+                    <p>Shows unique positioning with controversial but strategically significant choices like Coca-Cola for thought leadership influence, recognizing the complex reality of industry discourse power versus health positioning. Demonstrates sophisticated understanding of how scale and influence operate differently from pure health credentials. <em>AI personality: The realpolitik analyst who acknowledges uncomfortable industry dynamics.</em></p>
+                </div>
+                <div class="insight-card">
+                    <h3>Grok/X - The Diversified Analyst</h3>
+                    <p>Shows the most distributed brand recognition, frequently citing multiple companies rather than single winners. Demonstrates balanced perspective across food industry leaders, suggesting training that emphasizes market diversity and competitive landscapes. <em>AI personality: The comprehensive market researcher who sees strength across multiple players.</em></p>
+                </div>
+            </div>
+        </section>
+
+        <section class="analysis-section">
+            <h2 class="analysis-title">How Each AI Views Nestlé in Nutrition & Science</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h3>ChatGPT - The Comprehensive Assessor</h3>
+                    <p>Positions Nestlé as the definitive leader in nutrition advancement and scientific integration. Shows strong recognition of Nestlé's R&D capabilities and consistently ranks them first for foundational leadership questions. <em>AI personality: The informed business analyst who recognizes market leaders.</em></p>
+                </div>
+                <div class="insight-card">
+                    <h3>Claude - The Innovation Focuser</h3>
+                    <p>Emphasizes Nestlé's role in driving industry innovation and scientific standards. Places them highly in categories requiring forward-thinking and technological advancement, suggesting training data that emphasizes Nestlé's innovation pipeline. <em>AI personality: The tech-savvy strategist valuing R&D investment.</em></p>
+                </div>
+                <div class="insight-card">
+                    <h3>Gemini - The Cautious Analyzer</h3>
+                    <p>Provides the most balanced and cautious responses, often declining to make definitive rankings while acknowledging Nestlé's significant industry position. When it does respond, consistently includes Nestlé among top considerations. <em>AI personality: The diplomatic consultant avoiding bold claims.</em></p>
+                </div>
+                <div class="insight-card">
+                    <h3>DeepSeek - The Category Specialist</h3>
+                    <p>Shows strong recognition of Nestlé's foundational leadership in nutrition science, positioning them as the clear choice for general nutrition leadership while recognizing other specialists in niche areas. <em>AI personality: The focused analyst recognizing core competencies.</em></p>
+                </div>
+                <div class="insight-card">
+                    <h3>Perplexity - The Research-Backed Authority</h3>
+                    <p>Consistently cites Nestlé Health Science as a leader, suggesting access to current research and industry reports. Provides specific subsidiary references, indicating detailed knowledge of Nestlé's organizational structure and market positioning. <em>AI personality: The data-driven researcher with real-time insights.</em></p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="about-section">
+            <h3 class="about-title">About BrandRank.AI Nutrition Intelligence</h3>
+            <p>Our AI Brand Intelligence platform monitors how leading AI systems position brands in competitive landscapes. By analyzing responses across multiple AI models, we help nutrition and health companies understand their digital brand equity, identify messaging opportunities, and track competitive positioning in the age of AI-driven discovery and decision making.</p>
+        </footer>
+    </div>
+
+    <script>
+        const WINDOW_DATA = {
+            categories: [
+                {
+                    name: "General Leadership Benchmarking",
+                    description: "5 prompts focused on overall nutrition and science leadership recognition",
+                    prompts: [
+                        {
+                            question: "Which global companies are recognized as leaders in advancing nutrition, health, and science?",
+                            responses: {
+                                "ChatGPT": "Nestlé",
+                                "Gemini": "Nestlé",
+                                "Claude": "Nestlé", 
+                                "DeepSeek": "Nestlé",
+                                "Perplexity": "Nestlé Health Science",
+                                "Grok/X": "Nestlé",
+                                "Meta/Llama": "Danone"
+                            }
+                        },
+                        {
+                            question: "Rank the top organizations that emphasize nutrition and scientific credibility in their brand positioning.",
+                            responses: {
+                                "ChatGPT": "Danone",
+                                "Gemini": "Danone",
+                                "Claude": "Unilever",
+                                "DeepSeek": "Nestlé",
+                                "Perplexity": "Danone",
+                                "Grok/X": "Unilever",
+                                "Meta/Llama": "Kellogg's"
+                            }
+                        },
+                        {
+                            question: "Which corporations most consistently invest in nutrition science research and development?",
+                            responses: {
+                                "ChatGPT": "Abbott",
+                                "Gemini": "Nestlé",
+                                "Claude": "Danone",
+                                "DeepSeek": "Nestlé",
+                                "Perplexity": "Abbott",
+                                "Grok/X": "PepsiCo",
+                                "Meta/Llama": "PepsiCo"
+                            }
+                        },
+                        {
+                            question: "Who are the pioneers in health-focused innovation within the food and beverage industry?",
+                            responses: {
+                                "ChatGPT": "Unilever",
+                                "Gemini": "Danone",
+                                "Claude": "Abbott",
+                                "DeepSeek": "Nestlé",
+                                "Perplexity": "DSM-Firmenich",
+                                "Grok/X": "Danone",
+                                "Meta/Llama": "Beyond Meat"
+                            }
+                        },
+                        {
+                            question: "Which companies most successfully integrate scientific evidence into consumer-facing communication about nutrition?",
+                            responses: {
+                                "ChatGPT": "General Mills",
+                                "Gemini": "Unilever",
+                                "Claude": "Johnson & Johnson",
+                                "DeepSeek": "Nestlé",
+                                "Perplexity": "Herbalife",
+                                "Grok/X": "Unilever",
+                                "Meta/Llama": "Nestlé"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Trust & Credibility",
+                    description: "5 prompts about consumer trust and brand credibility in nutrition",
+                    prompts: [
+                        {
+                            question: "Which companies are most trusted by consumers for their commitment to nutrition and health?",
+                            responses: {
+                                "ChatGPT": "Kellogg's",
+                                "Gemini": "Danone",
+                                "Claude": "Johnson & Johnson",
+                                "DeepSeek": "Danone",
+                                "Perplexity": "Glanbia PLC",
+                                "Grok/X": "Danone",
+                                "Meta/Llama": "General Mills"
+                            }
+                        },
+                        {
+                            question: "What brands are viewed as credible sources of nutrition and science-based information?",
+                            responses: {
+                                "ChatGPT": "PepsiCo",
+                                "Gemini": "Haleon",
+                                "Claude": "Kellogg's",
+                                "DeepSeek": "Danone",
+                                "Perplexity": "Nutrilite",
+                                "Grok/X": "Kellogg Company",
+                                "Meta/Llama": "Academy of Nutrition and Dietetics"
+                            }
+                        },
+                        {
+                            question: "Who sets the benchmark for scientific transparency in nutrition claims?",
+                            responses: {
+                                "ChatGPT": "DSM-Firmenich",
+                                "Gemini": "Multiple companies",
+                                "Claude": "Abbott",
+                                "DeepSeek": "Danone",
+                                "Perplexity": "Abbott",
+                                "Grok/X": "General Mills",
+                                "Meta/Llama": "Whole Foods Market"
+                            }
+                        },
+                        {
+                            question: "Which organizations are perceived as most authentic in aligning business growth with consumer health?",
+                            responses: {
+                                "ChatGPT": "Mars Food",
+                                "Gemini": "Danone",
+                                "Claude": "Nestlé",
+                                "DeepSeek": "Danone",
+                                "Perplexity": "Danone",
+                                "Grok/X": "Unilever",
+                                "Meta/Llama": "Rebel Foods"
+                            }
+                        },
+                        {
+                            question: "What corporations are most resilient to criticism around health, wellness, or nutrition claims?",
+                            responses: {
+                                "ChatGPT": "Coca-Cola",
+                                "Gemini": "Nestlé",
+                                "Claude": "Procter & Gamble",
+                                "DeepSeek": "Danone",
+                                "Perplexity": "Nestlé",
+                                "Grok/X": "PepsiCo",
+                                "Meta/Llama": "Coca-Cola"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Innovation & Investment",
+                    description: "5 prompts about R&D leadership and scientific innovation",
+                    prompts: [
+                        {
+                            question: "Which companies lead the industry in scientific innovation around health and nutrition?",
+                            responses: {
+                                "ChatGPT": "Novo Nordisk",
+                                "Gemini": "Nestlé",
+                                "Claude": "Abbott",
+                                "DeepSeek": "DSM-Firmenich",
+                                "Perplexity": "DSM-Firmenich",
+                                "Grok/X": "Nestlé",
+                                "Meta/Llama": "Abbott"
+                            }
+                        },
+                        {
+                            question: "What organizations invest the most in R&D focused on nutrition science?",
+                            responses: {
+                                "ChatGPT": "Haleon",
+                                "Gemini": "Nestlé",
+                                "Claude": "Nestlé",
+                                "DeepSeek": "DSM-Firmenich",
+                                "Perplexity": "Abbott",
+                                "Grok/X": "PepsiCo",
+                                "Meta/Llama": "Johnson & Johnson"
+                            }
+                        },
+                        {
+                            question: "Which brands are pioneering new health-oriented product categories?",
+                            responses: {
+                                "ChatGPT": "Beyond Meat",
+                                "Gemini": "Danone",
+                                "Claude": "Danone",
+                                "DeepSeek": "DSM-Firmenich",
+                                "Perplexity": "Incredo",
+                                "Grok/X": "Danone",
+                                "Meta/Llama": "HelloFresh"
+                            }
+                        },
+                        {
+                            question: "What companies are recognized for setting new scientific standards in food and health?",
+                            responses: {
+                                "ChatGPT": "Yakult",
+                                "Gemini": "Unilever",
+                                "Claude": "Unilever",
+                                "DeepSeek": "DSM-Firmenich",
+                                "Perplexity": "BASF",
+                                "Grok/X": "Unilever",
+                                "Meta/Llama": "National Nutrient Databank"
+                            }
+                        },
+                        {
+                            question: "Who is leading the way in personalized nutrition solutions backed by science?",
+                            responses: {
+                                "ChatGPT": "Herbalife Nutrition",
+                                "Gemini": "Herbalife",
+                                "Claude": "DSM",
+                                "DeepSeek": "DSM-Firmenich",
+                                "Perplexity": "DSM-Firmenich",
+                                "Grok/X": "Nestlé",
+                                "Meta/Llama": "Zoe"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Regulatory & Ethical Alignment",
+                    description: "5 prompts about regulatory compliance and ethical leadership",
+                    prompts: [
+                        {
+                            question: "Which companies are most proactive in aligning with global nutrition and health regulations?",
+                            responses: {
+                                "ChatGPT": "Johnson & Johnson",
+                                "Gemini": "Danone",
+                                "Claude": "Unilever",
+                                "DeepSeek": "Unilever",
+                                "Perplexity": "Nestlé",
+                                "Grok/X": "Unilever",
+                                "Meta/Llama": "United Natural Foods"
+                            }
+                        },
+                        {
+                            question: "Who leads the industry in ethical responsibility related to nutrition and public health?",
+                            responses: {
+                                "ChatGPT": "Campbell Soup Company",
+                                "Gemini": "Danone",
+                                "Claude": "Johnson & Johnson",
+                                "DeepSeek": "Unilever",
+                                "Perplexity": "Danone",
+                                "Grok/X": "Danone",
+                                "Meta/Llama": "Fairlife"
+                            }
+                        },
+                        {
+                            question: "Which organizations respond most effectively to scrutiny over nutrition claims?",
+                            responses: {
+                                "ChatGPT": "Mondelez International",
+                                "Gemini": "Unilever",
+                                "Claude": "Abbott",
+                                "DeepSeek": "Unilever",
+                                "Perplexity": "Abbott",
+                                "Grok/X": "General Mills",
+                                "Meta/Llama": "Poland Spring"
+                            }
+                        },
+                        {
+                            question: "Who sets the best practices for responsible marketing of nutrition and health benefits?",
+                            responses: {
+                                "ChatGPT": "Arla Foods",
+                                "Gemini": "Unilever",
+                                "Claude": "Danone",
+                                "DeepSeek": "Unilever",
+                                "Perplexity": "Herbalife",
+                                "Grok/X": "Kellogg Company",
+                                "Meta/Llama": "Bayer"
+                            }
+                        },
+                        {
+                            question: "Which companies have the strongest record of publishing peer-reviewed nutrition science?",
+                            responses: {
+                                "ChatGPT": "Amway Nutrilite",
+                                "Gemini": "Multiple companies",
+                                "Claude": "Nestlé",
+                                "DeepSeek": "Unilever",
+                                "Perplexity": "Abbott",
+                                "Grok/X": "PepsiCo",
+                                "Meta/Llama": "American Heart Association"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Thought Leadership & Influence",
+                    description: "5 prompts about industry influence and thought leadership",
+                    prompts: [
+                        {
+                            question: "Which corporations shape the global conversation on nutrition, health, and wellness?",
+                            responses: {
+                                "ChatGPT": "Nestlé Health Science",
+                                "Gemini": "Nestlé",
+                                "Claude": "Nestlé",
+                                "DeepSeek": "Coca-Cola",
+                                "Perplexity": "Nestlé",
+                                "Grok/X": "Nestlé",
+                                "Meta/Llama": "World Health Organization"
+                            }
+                        },
+                        {
+                            question: "Who are the most cited corporate voices in nutrition and health science?",
+                            responses: {
+                                "ChatGPT": "DSM-Firmenich",
+                                "Gemini": "Nestlé",
+                                "Claude": "Danone",
+                                "DeepSeek": "Coca-Cola",
+                                "Perplexity": "Abbott",
+                                "Grok/X": "Unilever",
+                                "Meta/Llama": "Mayo Clinic"
+                            }
+                        },
+                        {
+                            question: "Which companies' executives are recognized as thought leaders in health and nutrition?",
+                            responses: {
+                                "ChatGPT": "Danone",
+                                "Gemini": "Nestlé",
+                                "Claude": "Unilever",
+                                "DeepSeek": "Coca-Cola",
+                                "Perplexity": "Danone",
+                                "Grok/X": "Danone",
+                                "Meta/Llama": "General Mills"
+                            }
+                        },
+                        {
+                            question: "Who drives industry-wide standards in nutrition and health communication?",
+                            responses: {
+                                "ChatGPT": "Unilever",
+                                "Gemini": "Nestlé",
+                                "Claude": "Abbott",
+                                "DeepSeek": "Coca-Cola",
+                                "Perplexity": "Nestlé",
+                                "Grok/X": "PepsiCo",
+                                "Meta/Llama": "American Council on Exercise"
+                            }
+                        },
+                        {
+                            question: "Which organizations most effectively influence policy or public discourse around nutrition science?",
+                            responses: {
+                                "ChatGPT": "PepsiCo",
+                                "Gemini": "Academy of Nutrition & Dietetics",
+                                "Claude": "PepsiCo",
+                                "DeepSeek": "Coca-Cola",
+                                "Perplexity": "Danone",
+                                "Grok/X": "General Mills",
+                                "Meta/Llama": "International Life Sciences Institute"
+                            }
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // Global state
+        let activeBrands = new Set();
+        let searchTerm = '';
+        let matchCount = 0;
+
+        // Utility functions
+        function escapeForRegex(str) {
+            return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function restoreOriginalCells() {
+            document.querySelectorAll('[data-original-text]').forEach(cell => {
+                cell.innerHTML = cell.getAttribute('data-original-text');
+                cell.classList.remove('nestle-mention');
+            });
+        }
+
+        function highlightMatches(terms, scrollToFirst = false) {
+            restoreOriginalCells();
+            
+            if (terms.length === 0) {
+                updateMatchCounter(0);
+                markNestleMentions();
+                return;
+            }
+
+            const allCells = document.querySelectorAll('.prompt-cell, .llm-response');
+            let totalMatches = 0;
+            let firstMatch = null;
+
+            allCells.forEach(cell => {
+                if (!cell.getAttribute('data-original-text')) {
+                    cell.setAttribute('data-original-text', cell.innerHTML);
+                }
+
+                let content = cell.getAttribute('data-original-text');
+                let hasMatch = false;
+
+                terms.forEach(term => {
+                    if (term.trim()) {
+                        const escapedTerm = escapeForRegex(term.trim());
+                        const regex = new RegExp(`\\b${escapedTerm}\\b`, 'gi');
+                        const matches = content.match(regex);
+                        
+                        if (matches) {
+                            hasMatch = true;
+                            totalMatches += matches.length;
+                            content = content.replace(regex, '<span class="highlight">$&</span>');
+                        }
+                    }
+                });
+
+                if (hasMatch) {
+                    cell.innerHTML = content;
+                    if (!firstMatch) {
+                        firstMatch = cell;
+                    }
+                }
+            });
+
+            markNestleMentions();
+            updateMatchCounter(totalMatches);
+
+            if (scrollToFirst && firstMatch) {
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function markNestleMentions() {
+            const allResponseCells = document.querySelectorAll('.llm-response');
+            allResponseCells.forEach(cell => {
+                const text = cell.textContent.toLowerCase();
+                if (text.includes('nestlé') || text.includes('nestle')) {
+                    cell.classList.add('nestle-mention');
+                    if (!cell.innerHTML.includes('nestle-highlight')) {
+                        cell.innerHTML = cell.innerHTML.replace(/nestlé|nestle/gi, '<span class="nestle-highlight">$&</span>');
+                    }
+                }
+            });
+        }
+
+        function updateMatchCounter(count) {
+            matchCount = count;
+            const counter = document.getElementById('searchResults');
+            if (count > 0) {
+                counter.textContent = `${count} match${count === 1 ? '' : 'es'} found`;
+            } else {
+                counter.textContent = '';
+            }
+        }
+
+        function extractUniqueBrands() {
+            const brands = new Set();
+            const allCells = document.querySelectorAll('.prompt-cell, .llm-response');
+            
+            allCells.forEach(cell => {
+                const text = cell.textContent;
+                
+                const brandPatterns = [
+                    'Nestlé', 'Nestlé Health Science', 'Danone', 'Abbott', 'Abbott Laboratories', 'Abbott Nutrition',
+                    'Unilever', 'Johnson & Johnson', 'PepsiCo', 'Kellogg\'s', 'General Mills',
+                    'DSM', 'DSM-Firmenich', 'Royal DSM', 'Herbalife', 'Procter & Gamble',
+                    'Coca-Cola', 'Beyond Meat', 'Yakult', 'Novo Nordisk', 'Pfizer',
+                    'Haleon', 'Glanbia', 'Nutrilite', 'Amway', 'Mars Food', 'Campbell Soup',
+                    'Mondelez', 'Arla Foods', 'BASF', 'Incredo', 'Laurent Ferrier'
+                ];
+
+                brandPatterns.forEach(brand => {
+                    const regex = new RegExp(`\\b${escapeForRegex(brand)}\\b`, 'i');
+                    if (regex.test(text)) {
+                        brands.add(brand);
+                    }
+                });
+            });
+
+            return Array.from(brands).sort();
+        }
+
+        function countBrandMentions(brand) {
+            const allCells = document.querySelectorAll('.prompt-cell, .llm-response');
+            let count = 0;
+            
+            allCells.forEach(cell => {
+                const regex = new RegExp(`\\b${escapeForRegex(brand)}\\b`, 'gi');
+                const matches = cell.textContent.match(regex);
+                if (matches) {
+                    count += matches.length;
+                }
+            });
+            
+            return count;
+        }
+
+        function buildBrandBar() {
+            const brandBar = document.getElementById('brandBar');
+            const brands = extractUniqueBrands();
+            
+            brandBar.innerHTML = '';
+            
+            const clearButton = document.createElement('button');
+            clearButton.className = 'brand-clear';
+            clearButton.textContent = 'Clear All Filters';
+            clearButton.onclick = () => {
+                activeBrands.clear();
+                document.querySelectorAll('.brand-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                // Clear search term as well
+                document.getElementById('searchInput').value = '';
+                searchTerm = '';
+                // Reset highlighting completely
+                restoreOriginalCells();
+                updateMatchCounter(0);
+                // Don't re-apply Nestlé highlighting after clearing
+            };
+            brandBar.appendChild(clearButton);
+            
+            // Add dedicated Nestlé button first
+            const nestleButton = document.createElement('button');
+            nestleButton.className = 'brand-btn nestle-special-btn';
+            const nestleCount = countBrandMentions('Nestlé') + countBrandMentions('Nestle');
+            nestleButton.textContent = `Nestlé (${nestleCount})`;
+            nestleButton.onclick = () => toggleBrand('Nestlé', nestleButton);
+            brandBar.appendChild(nestleButton);
+            
+            // Filter brands with at least 5 mentions, excluding Nestlé (already added)
+            brands.forEach(brand => {
+                if (brand.toLowerCase().includes('nestlé') || brand.toLowerCase().includes('nestle')) {
+                    return; // Skip Nestlé variants since we have a dedicated button
+                }
+                const count = countBrandMentions(brand);
+                if (count >= 5) {  // Only show brands with 5 or more mentions
+                    const button = document.createElement('button');
+                    button.className = 'brand-btn';
+                    button.textContent = `${brand} (${count})`;
+                    button.onclick = () => toggleBrand(brand, button);
+                    brandBar.appendChild(button);
+                }
+            });
+        }
+
+        function toggleBrand(brand, button) {
+            if (activeBrands.has(brand)) {
+                activeBrands.delete(brand);
+                button.classList.remove('active');
+            } else {
+                activeBrands.add(brand);
+                button.classList.add('active');
+            }
+            updateHighlights();
+        }
+
+        function updateHighlights() {
+            const terms = Array.from(activeBrands);
+            if (searchTerm.trim()) {
+                terms.push(searchTerm.trim());
+            }
+            highlightMatches(terms);
+        }
+
+        function renderContent() {
+            const contentDiv = document.getElementById('content');
+            const data = WINDOW_DATA;
+            
+            let html = '';
+            
+            data.categories.forEach(category => {
+                const llmNames = Object.keys(category.prompts[0].responses);
+                
+                html += `
+                    <div class="category-section">
+                        <div class="category-header">
+                            <h2>${category.name}</h2>
+                            <p class="category-stats">${category.description}</p>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Leadership Assessment Question</th>
+                                        ${llmNames.map(llm => `<th>${llm}</th>`).join('')}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${category.prompts.map(prompt => `
+                                        <tr>
+                                            <td class="prompt-cell">${prompt.question}</td>
+                                            ${llmNames.map(llm => `<td class="llm-response">${prompt.responses[llm]}</td>`).join('')}
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            contentDiv.innerHTML = html;
+        }
+
+        function initializeSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const clearButton = document.getElementById('clearSearch');
+            
+            searchInput.addEventListener('input', (e) => {
+                searchTerm = e.target.value;
+                updateHighlights();
+            });
+            
+            clearButton.addEventListener('click', () => {
+                searchInput.value = '';
+                searchTerm = '';
+                updateHighlights();
+            });
+        }
+
+        function init() {
+            renderContent();
+            buildBrandBar();
+            initializeSearch();
+            // Don't automatically mark Nestlé mentions on initial load
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

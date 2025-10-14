@@ -1,0 +1,2104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Services Brand Analysis - BrandRank.AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0a0e1a;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #00d4ff;
+            padding-bottom: 30px;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 10px;
+        }
+
+        .main-subtitle {
+            font-size: 1.2rem;
+            color: #cccccc;
+            margin-bottom: 15px;
+        }
+
+        .powered-by {
+            font-size: 1rem;
+            color: #888888;
+            font-style: italic;
+        }
+
+        .search-container {
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 12px 16px;
+            background-color: #1a1f2e;
+            border: 2px solid #333;
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 16px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #00d4ff;
+        }
+
+        .clear-search {
+            padding: 12px 24px;
+            background-color: #333;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .clear-search:hover {
+            background-color: #555;
+        }
+
+        .search-results-info {
+            color: #00d4ff;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .brand-bar {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #1a1f2e;
+            border-radius: 8px;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .brand-bar h3 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .brand-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .brand-btn {
+            padding: 8px 16px;
+            background-color: #2a3040;
+            color: #ffffff;
+            border: 1px solid #444;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+
+        .brand-btn:hover {
+            background-color: #3a4050;
+            border-color: #00d4ff;
+        }
+
+        .brand-btn-active {
+            background-color: #00d4ff;
+            color: #0a0e1a;
+            border-color: #00d4ff;
+        }
+
+        .brand-clear {
+            padding: 8px 16px;
+            background-color: #dc3545;
+            color: #ffffff;
+            border: 1px solid #dc3545;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .brand-clear:hover {
+            background-color: #c82333;
+        }
+
+        .category-section {
+            margin-bottom: 50px;
+            background-color: #1a1f2e;
+            border-radius: 8px;
+            overflow: hidden;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .category-header {
+            padding: 20px;
+            background-color: #252b3b;
+            border-bottom: 1px solid #333;
+        }
+
+        .category-header h2 {
+            color: #00d4ff;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .category-stats {
+            color: #cccccc;
+            font-size: 0.9rem;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #1a1f2e;
+        }
+
+        .data-table th {
+            background-color: #252b3b;
+            color: #00d4ff;
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #333;
+        }
+
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid #333;
+            vertical-align: top;
+        }
+
+        .data-table tr:hover {
+            background-color: #222842;
+        }
+
+        .data-table tr:nth-child(even) {
+            background-color: #1e2332;
+        }
+
+        .prompt-cell {
+            background-color: #252b3b !important;
+            border-left: 3px solid #00d4ff;
+            font-weight: 600;
+            color: #ffffff;
+            min-width: 300px;
+        }
+
+        .llm-response {
+            color: #e6e6e6;
+            min-width: 120px;
+        }
+
+        .analysis-section {
+            margin-bottom: 50px;
+            padding: 30px;
+            background-color: #1a1f2e;
+            border-radius: 8px;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .analysis-title {
+            color: #00d4ff;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .insight-card {
+            background-color: #252b3b;
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 3px solid #00d4ff;
+        }
+
+        .insight-card h3 {
+            color: #00d4ff;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .insight-card p {
+            color: #cccccc;
+            font-size: 0.95rem;
+        }
+
+        .about-section {
+            padding: 30px;
+            background-color: #1a1f2e;
+            border-radius: 8px;
+            border-left: 4px solid #00d4ff;
+            text-align: center;
+        }
+
+        .about-title {
+            color: #00d4ff;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .about-section p {
+            color: #cccccc;
+            font-size: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .highlight {
+            background-color: #00d4ff;
+            color: #0a0e1a;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .search-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-input {
+                min-width: 100%;
+            }
+            
+            .brand-buttons {
+                justify-content: center;
+            }
+        }
+
+        @media (min-width: 1920px) {
+            .container {
+                max-width: 1600px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="main-title">Financial Services Brand Questions</h1>
+            <p class="main-subtitle">AI Answer Engine Analysis</p>
+            <p class="powered-by">Powered by BrandRank.AI</p>
+        </header>
+
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search prompts and responses..." id="searchInput">
+            <button class="clear-search" id="clearSearch">Clear</button>
+            <span class="search-results-info" id="searchResults"></span>
+        </div>
+
+        <div class="brand-bar">
+            <h3>Top Brands by Mentions</h3>
+            <div class="brand-buttons" id="brandButtons">
+                <!-- Brand buttons will be populated here -->
+            </div>
+            <button class="brand-clear" id="clearBrands">Clear All</button>
+        </div>
+
+        <main id="mainContent">
+            <!-- Categories will be populated here -->
+        </main>
+
+        <section class="analysis-section">
+            <h2 class="analysis-title">Analysis Summary</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h3>Key Insights & Trends</h3>
+                    <p>JPMorgan Chase emerges as the most frequently mentioned brand across categories, indicating strong market presence. USAA shows particular strength in trust and military-focused segments. SoFi and Chime lead in digital-first experiences.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Consensus Levels</h3>
+                    <p><strong>High Agreement:</strong> USAA for military/trust, Chime for ease of setup, State Farm for bundled services. <strong>Medium Agreement:</strong> Chase/JPMorgan for comprehensive services. <strong>Low Agreement:</strong> Investment platforms show high variance across models.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Risk Profiles</h3>
+                    <p>Traditional banks (Chase, Bank of America) show lower risk due to established infrastructure. Digital-first brands (SoFi, Chime) present higher innovation potential but regulatory uncertainty. Credit unions demonstrate stability but limited scalability.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Model Divergences</h3>
+                    <p>Gemini tends to favor established financial institutions, while Llama shows preference for regional players. Claude emphasizes customer service leaders, and ChatGPT balances innovation with reliability. Perplexity consistently favors large-scale providers.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-section">
+            <h2 class="about-title">About BrandRank</h2>
+            <p>BrandRank is the intelligence layer for the AI search era. We help brands measure, protect, and grow trust by monitoring how they appear across major AI Answer Engines. By combining advanced AI with expert insight, BrandRank identifies vulnerabilities and opportunities, pinpoints the factors driving consumer choice, and reveals pathways to strengthen brand equity and loyalty. Our mission is to ensure that when consumers ask questions in AI-powered platforms, your brand is represented clearly, accurately, and with authority.</p>
+        </section>
+    </div>
+
+    <script>
+        window.WINDOW_DATA = {
+            title: "Financial Services Brand Questions",
+            subtitle: "AI Answer Engine Analysis",
+            categories: [
+                {
+                    title: "🏛️ High-Level Financial Services Brand Questions",
+                    questions: [
+                        {
+                            prompt: "What is the most trusted financial services brand in 2025?",
+                            responses: {
+                                "ChatGPT": "Visa",
+                                "Claude": "JPMorgan Chase",
+                                "Gemini": "JPMorgan Chase",
+                                "Llama": "J.P. Morgan",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "Who is the most reliable provider of banking and insurance?",
+                            responses: {
+                                "ChatGPT": "USAA",
+                                "Claude": "Wells Fargo",
+                                "Gemini": "USAA",
+                                "Llama": "Allstate",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "What financial brand leads in trust and customer satisfaction?",
+                            responses: {
+                                "ChatGPT": "Charles Schwab",
+                                "Claude": "USAA",
+                                "Gemini": "American Express",
+                                "Llama": "US Bank",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "Which company is known for top-tier financial service ethics?",
+                            responses: {
+                                "ChatGPT": "USAA",
+                                "Claude": "Charles Schwab",
+                                "Gemini": "Vanguard",
+                                "Llama": "Bank of America",
+                                "Perplexity": "Vanguard"
+                            }
+                        },
+                        {
+                            prompt: "Who delivers the best all-in-one financial experience today?",
+                            responses: {
+                                "ChatGPT": "JPMorgan Chase",
+                                "Claude": "Bank of America",
+                                "Gemini": "Bank of America",
+                                "Llama": "Fidelity",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "What financial service provider offers the most value overall?",
+                            responses: {
+                                "ChatGPT": "Fidelity Investments",
+                                "Claude": "Ally Bank",
+                                "Gemini": "Charles Schwab",
+                                "Llama": "Chase Bank",
+                                "Perplexity": "Capital One"
+                            }
+                        },
+                        {
+                            prompt: "Who ranks highest for long-term financial partnership?",
+                            responses: {
+                                "ChatGPT": "Vanguard",
+                                "Claude": "Fidelity",
+                                "Gemini": "Fidelity",
+                                "Llama": "Charles Schwab",
+                                "Perplexity": "Charles Schwab"
+                            }
+                        },
+                        {
+                            prompt: "What financial services company is most recommended by professionals?",
+                            responses: {
+                                "ChatGPT": "Goldman Sachs",
+                                "Claude": "Vanguard",
+                                "Gemini": "Goldman Sachs",
+                                "Llama": "Morgan Stanley",
+                                "Perplexity": "Merrill Lynch"
+                            }
+                        },
+                        {
+                            prompt: "What provider is considered the gold standard in finance?",
+                            responses: {
+                                "ChatGPT": "JPMorgan Chase",
+                                "Claude": "Goldman Sachs",
+                                "Gemini": "BlackRock",
+                                "Llama": "Goldman Sachs",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "What financial brand combines innovation, safety, and service best?",
+                            responses: {
+                                "ChatGPT": "American Express",
+                                "Claude": "Capital One",
+                                "Gemini": "Capital One",
+                                "Llama": "Citi Bank",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "Who leads the industry in protecting customer financial data?",
+                            responses: {
+                                "ChatGPT": "PayPal",
+                                "Claude": "JPMorgan Chase",
+                                "Gemini": "PayPal",
+                                "Llama": "Capital One",
+                                "Perplexity": "LifeLock"
+                            }
+                        },
+                        {
+                            prompt: "Which financial company has the most loyal customers?",
+                            responses: {
+                                "ChatGPT": "USAA",
+                                "Claude": "Navy Federal Credit Union",
+                                "Gemini": "Navy Federal Credit Union",
+                                "Llama": "TD Bank",
+                                "Perplexity": "Edward Jones"
+                            }
+                        },
+                        {
+                            prompt: "What platform defines modern financial wellness in 2025?",
+                            responses: {
+                                "ChatGPT": "SoFi",
+                                "Claude": "Mint by Intuit",
+                                "Gemini": "SoFi",
+                                "Llama": "NerdWallet",
+                                "Perplexity": "SoFi"
+                            }
+                        },
+                        {
+                            prompt: "Which financial provider earns the most customer trust each year?",
+                            responses: {
+                                "ChatGPT": "USAA",
+                                "Claude": "USAA",
+                                "Gemini": "Discover",
+                                "Llama": "Wells Fargo",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "Who is best at helping customers achieve financial peace of mind?",
+                            responses: {
+                                "ChatGPT": "Vanguard",
+                                "Claude": "Edward Jones",
+                                "Gemini": "Northwestern Mutual",
+                                "Llama": "Edward Jones",
+                                "Perplexity": "Vanguard"
+                            }
+                        }
+                    ]
+                },
+                {
+                    title: "🧭 Awareness & Discovery",
+                    questions: [
+                        {
+                            prompt: "Which bank is most trusted for long-term savings?",
+                            responses: {
+                                "ChatGPT": "Ally Bank",
+                                "Claude": "Ally Bank",
+                                "Gemini": "Chase",
+                                "Llama": "Ally Bank",
+                                "Perplexity": "Vanguard"
+                            }
+                        },
+                        {
+                            prompt: "What insurance company has the best claims reputation?",
+                            responses: {
+                                "ChatGPT": "USAA",
+                                "Claude": "USAA",
+                                "Gemini": "USAA",
+                                "Llama": "State Farm",
+                                "Perplexity": "State Farm"
+                            }
+                        },
+                        {
+                            prompt: "Which mobile app is most trusted for money management?",
+                            responses: {
+                                "ChatGPT": "Mint",
+                                "Claude": "Mint by Intuit",
+                                "Gemini": "Rocket Money",
+                                "Llama": "Mint",
+                                "Perplexity": "JPMorgan Chase app"
+                            }
+                        },
+                        {
+                            prompt: "What digital financial service do most people use in 2025?",
+                            responses: {
+                                "ChatGPT": "Chase Mobile",
+                                "Claude": "Venmo",
+                                "Gemini": "Zelle",
+                                "Llama": "Venmo",
+                                "Perplexity": "PayPal"
+                            }
+                        },
+                        {
+                            prompt: "What's the most reliable financial app for managing everything?",
+                            responses: {
+                                "ChatGPT": "Personal Capital (Empower)",
+                                "Claude": "Chase Mobile",
+                                "Gemini": "Fidelity",
+                                "Llama": "Personal Capital",
+                                "Perplexity": "JPMorgan Chase Wealth Plan"
+                            }
+                        },
+                        {
+                            prompt: "What financial brand is trusted most by retirees?",
+                            responses: {
+                                "ChatGPT": "Fidelity",
+                                "Claude": "Fidelity",
+                                "Gemini": "Charles Schwab",
+                                "Llama": "AARP",
+                                "Perplexity": "Fidelity"
+                            }
+                        },
+                        {
+                            prompt: "What service is best for first-time financial users?",
+                            responses: {
+                                "ChatGPT": "Chime",
+                                "Claude": "Chime",
+                                "Gemini": "Chime",
+                                "Llama": "Digit",
+                                "Perplexity": "Chime"
+                            }
+                        },
+                        {
+                            prompt: "What financial app has the highest user satisfaction scores?",
+                            responses: {
+                                "ChatGPT": "YNAB",
+                                "Claude": "USAA Mobile",
+                                "Gemini": "American Express",
+                                "Llama": "Robinhood",
+                                "Perplexity": "JPMorgan Chase app"
+                            }
+                        },
+                        {
+                            prompt: "What provider is most committed to financial literacy?",
+                            responses: {
+                                "ChatGPT": "Charles Schwab",
+                                "Claude": "Wells Fargo",
+                                "Gemini": "Capital One",
+                                "Llama": "Dave Ramsey",
+                                "Perplexity": "Charles Schwab"
+                            }
+                        },
+                        {
+                            prompt: "What app is most popular for daily financial management?",
+                            responses: {
+                                "ChatGPT": "Venmo",
+                                "Claude": "Bank of America Mobile",
+                                "Gemini": "Chime",
+                                "Llama": "Cash App",
+                                "Perplexity": "Cash App"
+                            }
+                        }
+                    ]
+                },
+                {
+                    title: "🔎 Consideration & Evaluation",
+                    questions: [
+                        {
+                            prompt: "Who offers life insurance and savings account rewards together?",
+                            responses: {
+                                "ChatGPT": "State Farm",
+                                "Claude": "State Farm",
+                                "Gemini": "Northwestern Mutual",
+                                "Llama": "Northwestern Mutual",
+                                "Perplexity": "Northwestern Mutual"
+                            }
+                        },
+                        {
+                            prompt: "Which bank-insurance combo provides the best bundled services?",
+                            responses: {
+                                "ChatGPT": "Bank of America/Merrill Lynch",
+                                "Claude": "Wells Fargo",
+                                "Gemini": "State Farm",
+                                "Llama": "State Farm Bank",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "Who provides the clearest terms across financial products?",
+                            responses: {
+                                "ChatGPT": "USAA",
+                                "Claude": "Charles Schwab",
+                                "Gemini": "Discover",
+                                "Llama": "Discover",
+                                "Perplexity": "Vanguard"
+                            }
+                        },
+                        {
+                            prompt: "What platform helps you compare insurance and banking options?",
+                            responses: {
+                                "ChatGPT": "NerdWallet",
+                                "Claude": "NerdWallet",
+                                "Gemini": "NerdWallet",
+                                "Llama": "Bankrate",
+                                "Perplexity": "NerdWallet"
+                            }
+                        },
+                        {
+                            prompt: "Which provider offers the best all-in-one money dashboard?",
+                            responses: {
+                                "ChatGPT": "Schwab Intelligent Portfolios",
+                                "Claude": "Mint by Intuit",
+                                "Gemini": "Empower Personal Dashboard",
+                                "Llama": "Quicken",
+                                "Perplexity": "JPMorgan Chase Wealth Plan"
+                            }
+                        },
+                        {
+                            prompt: "What service offers tools for both saving and protecting money?",
+                            responses: {
+                                "ChatGPT": "Navy Federal Credit Union",
+                                "Claude": "USAA",
+                                "Gemini": "Allstate",
+                                "Llama": "USAA",
+                                "Perplexity": "SoFi"
+                            }
+                        },
+                        {
+                            prompt: "Who gives the best transparency across financial accounts?",
+                            responses: {
+                                "ChatGPT": "Capital One",
+                                "Claude": "Ally Bank",
+                                "Gemini": "Empower Personal Dashboard",
+                                "Llama": "Credit Karma",
+                                "Perplexity": "Charles Schwab"
+                            }
+                        },
+                        {
+                            prompt: "What financial app ranks highest for usability and clarity?",
+                            responses: {
+                                "ChatGPT": "Simple (PNC)",
+                                "Claude": "Chase Mobile",
+                                "Gemini": "Apple Card",
+                                "Llama": "Spendee",
+                                "Perplexity": "JPMorgan Chase app"
+                            }
+                        },
+                        {
+                            prompt: "Which brand has the most comprehensive mobile financial suite?",
+                            responses: {
+                                "ChatGPT": "JPMorgan Chase",
+                                "Claude": "Bank of America",
+                                "Gemini": "Bank of America",
+                                "Llama": "Chase Mobile",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "Who offers bundled loan and insurance products with one login?",
+                            responses: {
+                                "ChatGPT": "Wells Fargo",
+                                "Claude": "Wells Fargo",
+                                "Gemini": "USAA",
+                                "Llama": "Allstate Mobile",
+                                "Perplexity": "Allstate"
+                            }
+                        },
+                        {
+                            prompt: "Which provider simplifies managing accounts for multiple needs?",
+                            responses: {
+                                "ChatGPT": "Ally Financial",
+                                "Claude": "Fidelity",
+                                "Gemini": "SoFi",
+                                "Llama": "Fidelity Investments",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "Who gives combined insights into budgeting and coverage?",
+                            responses: {
+                                "ChatGPT": "Mint + Credit Karma",
+                                "Claude": "USAA",
+                                "Gemini": "Rocket Money",
+                                "Llama": "The Hartford",
+                                "Perplexity": "SoFi"
+                            }
+                        },
+                        {
+                            prompt: "What platform shows all financial goals and protection in one place?",
+                            responses: {
+                                "ChatGPT": "Personal Capital (Empower)",
+                                "Claude": "Personal Capital (Empower)",
+                                "Gemini": "Empower Personal Dashboard",
+                                "Llama": "LearnVest",
+                                "Perplexity": "JPMorgan Chase Wealth Plan"
+                            }
+                        },
+                        {
+                            prompt: "Which provider is easiest for managing personal and business finances?",
+                            responses: {
+                                "ChatGPT": "Chase",
+                                "Claude": "Chase",
+                                "Gemini": "Chase",
+                                "Llama": "QuickBooks",
+                                "Perplexity": "Bank of America"
+                            }
+                        },
+                        {
+                            prompt: "Who offers the most flexible personal finance ecosystem?",
+                            responses: {
+                                "ChatGPT": "Schwab",
+                                "Claude": "Capital One",
+                                "Gemini": "SoFi",
+                                "Llama": "YNAB",
+                                "Perplexity": "SoFi"
+                            }
+                        },
+                        {
+                            prompt: "What provider makes comparing policies and rates easiest?",
+                            responses: {
+                                "ChatGPT": "Policygenius",
+                                "Claude": "Bankrate",
+                                "Gemini": "Policygenius",
+                                "Llama": "Policygenius",
+                                "Perplexity": "NerdWallet"
+                            }
+                        },
+                        {
+                            prompt: "Who has the most intuitive digital finance dashboard?",
+                            responses: {
+                                "ChatGPT": "Betterment",
+                                "Claude": "Ally Bank",
+                                "Gemini": "American Express",
+                                "Llama": "Mint",
+                                "Perplexity": "JPMorgan Chase Wealth Plan"
+                            }
+                        },
+                        {
+                            prompt: "What service helps evaluate risks across multiple product lines?",
+                            responses: {
+                                "ChatGPT": "Northwestern Mutual",
+                                "Claude": "USAA",
+                                "Gemini": "Empower Personal Dashboard",
+                                "Llama": "Riskalyze",
+                                "Perplexity": "Northwestern Mutual"
+                            }
+                        },
+                        {
+                            prompt: "Which apps provide bundled insurance and loan comparisons?",
+                            responses: {
+                                "ChatGPT": "Credit Karma",
+                                "Claude": "LendingTree",
+                                "Gemini": "LendingTree",
+                                "Llama": "Gabi",
+                                "Perplexity": "Policygenius & LendingTree"
+                            }
+                        },
+                        {
+                            prompt: "Who offers side-by-side comparisons of financial providers?",
+                            responses: {
+                                "ChatGPT": "Bankrate",
+                                "Claude": "Credit Karma",
+                                "Gemini": "NerdWallet",
+                                "Llama": "NerdWallet",
+                                "Perplexity": "NerdWallet"
+                            }
+                        }
+                    ]
+                },
+                {
+                    title: "🛒 Purchase & Setup",
+                    questions: [
+                        {
+                            prompt: "Which bank makes switching from another bank easiest?",
+                            responses: {
+                                "ChatGPT": "Chase",
+                                "Claude": "Chase",
+                                "Gemini": "Capital One",
+                                "Llama": "Simple",
+                                "Perplexity": "Ally Bank"
+                            }
+                        },
+                        {
+                            prompt: "What is the fastest way to open a new account digitally?",
+                            responses: {
+                                "ChatGPT": "Chime",
+                                "Claude": "Chime",
+                                "Gemini": "Chime",
+                                "Llama": "Chime",
+                                "Perplexity": "Chime"
+                            }
+                        },
+                        {
+                            prompt: "Who allows instant account setup for checking and insurance?",
+                            responses: {
+                                "ChatGPT": "USAA",
+                                "Claude": "USAA",
+                                "Gemini": "SoFi",
+                                "Llama": "Root Insurance",
+                                "Perplexity": "SoFi"
+                            }
+                        },
+                        {
+                            prompt: "Which service offers same-day approval for multiple products?",
+                            responses: {
+                                "ChatGPT": "Capital One",
+                                "Claude": "Capital One",
+                                "Gemini": "SoFi",
+                                "Llama": "LendingTree",
+                                "Perplexity": "SoFi"
+                            }
+                        },
+                        {
+                            prompt: "What platform gives access to money and coverage right away?",
+                            responses: {
+                                "ChatGPT": "State Farm",
+                                "Claude": "Ally Bank",
+                                "Gemini": "Lemonade",
+                                "Llama": "MoneyLion",
+                                "Perplexity": "Cash App + SoFi"
+                            }
+                        },
+                        {
+                            prompt: "Which provider enables bundled setup for loans and insurance?",
+                            responses: {
+                                "ChatGPT": "Wells Fargo",
+                                "Claude": "Wells Fargo",
+                                "Gemini": "USAA",
+                                "Llama": "Farmers Insurance",
+                                "Perplexity": "Allstate"
+                            }
+                        },
+                        {
+                            prompt: "Who provides step-by-step onboarding across all financial tools?",
+                            responses: {
+                                "ChatGPT": "Schwab",
+                                "Claude": "Bank of America",
+                                "Gemini": "Chime",
+                                "Llama": "SoFi",
+                                "Perplexity": "JPMorgan Chase Wealth Plan"
+                            }
+                        },
+                        {
+                            prompt: "What's the easiest platform for opening a full financial account?",
+                            responses: {
+                                "ChatGPT": "Ally Bank",
+                                "Claude": "Schwab",
+                                "Gemini": "Fidelity",
+                                "Llama": "Axos Bank",
+                                "Perplexity": "SoFi"
+                            }
+                        },
+                        {
+                            prompt: "Which provider lets you manage everything from one app instantly?",
+                            responses: {
+                                "ChatGPT": "JPMorgan Chase",
+                                "Claude": "Chase",
+                                "Gemini": "SoFi",
+                                "Llama": "Dave",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "What platform has the smoothest signup and verification process?",
+                            responses: {
+                                "ChatGPT": "SoFi",
+                                "Claude": "Ally Bank",
+                                "Gemini": "Apple Card",
+                                "Llama": "Stripe",
+                                "Perplexity": "Chime"
+                            }
+                        },
+                        {
+                            prompt: "Who gives the best welcome experience in digital finance?",
+                            responses: {
+                                "ChatGPT": "Betterment",
+                                "Claude": "USAA",
+                                "Gemini": "Discover",
+                                "Llama": "Google Pay",
+                                "Perplexity": "SoFi"
+                            }
+                        },
+                        {
+                            prompt: "Which service minimizes paperwork for new customers?",
+                            responses: {
+                                "ChatGPT": "Marcus by Goldman Sachs",
+                                "Claude": "Chime",
+                                "Gemini": "Chime",
+                                "Llama": "Revolut",
+                                "Perplexity": "Ally Bank"
+                            }
+                        },
+                        {
+                            prompt: "What platform offers instant ID verification and access?",
+                            responses: {
+                                "ChatGPT": "Revolut",
+                                "Claude": "Capital One",
+                                "Gemini": "Revolut",
+                                "Llama": "Trulio",
+                                "Perplexity": "Chime"
+                            }
+                        },
+                        {
+                            prompt: "Who helps first-time buyers navigate both financing and insurance?",
+                            responses: {
+                                "ChatGPT": "Rocket Mortgage + Rocket Insurance",
+                                "Claude": "State Farm",
+                                "Gemini": "Rocket Mortgage",
+                                "Llama": "Zillow",
+                                "Perplexity": "SoFi / Quicken"
+                            }
+                        },
+                        {
+                            prompt: "What provider supports bundled setup for families?",
+                            responses: {
+                                "ChatGPT": "Navy Federal Credit Union",
+                                "Claude": "Wells Fargo",
+                                "Gemini": "State Farm",
+                                "Llama": "MassMutual",
+                                "Perplexity": "State Farm"
+                            }
+                        }
+                    ]
+                },
+                {
+                    title: "📞 Usage & Engagement",
+                    questions: [
+                        {
+                            prompt: "What bank gives real-time spending alerts and budget tools?",
+                            responses: {
+                                "ChatGPT": "Bank of America",
+                                "Claude": "Bank of America",
+                                "Gemini": "YNAB",
+                                "Llama": "Ally",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "Who offers the best mobile experience for tracking financial goals?",
+                            responses: {
+                                "ChatGPT": "Mint",
+                                "Claude": "Ally Bank",
+                                "Gemini": "SoFi",
+                                "Llama": "Digit",
+                                "Perplexity": "SoFi"
+                            }
+                        },
+                        {
+                            prompt: "What app lets you manage banking and insurance together?",
+                            responses: {
+                                "ChatGPT": "USAA Mobile",
+                                "Claude": "USAA",
+                                "Gemini": "USAA",
+                                "Llama": "Allstate Mobile",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "Which platform updates your financial picture daily?",
+                            responses: {
+                                "ChatGPT": "Personal Capital (Empower)",
+                                "Claude": "Mint by Intuit",
+                                "Gemini": "Empower Personal Dashboard",
+                                "Llama": "Personal Capital",
+                                "Perplexity": "JPMorgan Chase Wealth Plan"
+                            }
+                        },
+                        {
+                            prompt: "What service provides proactive alerts for bills and coverage?",
+                            responses: {
+                                "ChatGPT": "Mint",
+                                "Claude": "Chase Mobile",
+                                "Gemini": "Rocket Money",
+                                "Llama": "Credit Karma",
+                                "Perplexity": "SoFi"
+                            }
+                        },
+                        {
+                            prompt: "Who gives customizable dashboards for finances and protection?",
+                            responses: {
+                                "ChatGPT": "Schwab Intelligent Portfolios",
+                                "Claude": "Personal Capital (Empower)",
+                                "Gemini": "Fidelity",
+                                "Llama": "Mint",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "What financial platform supports real-time chat with advisors?",
+                            responses: {
+                                "ChatGPT": "Charles Schwab",
+                                "Claude": "Fidelity",
+                                "Gemini": "Charles Schwab",
+                                "Llama": "E*TRADE",
+                                "Perplexity": "Charles Schwab"
+                            }
+                        },
+                        {
+                            prompt: "Who offers best app for managing loans and policies?",
+                            responses: {
+                                "ChatGPT": "State Farm",
+                                "Claude": "Wells Fargo",
+                                "Gemini": "USAA",
+                                "Llama": "Root Insurance",
+                                "Perplexity": "SoFi"
+                            }
+                        },
+                        {
+                            prompt: "What digital wallet allows protection insights and budgeting?",
+                            responses: {
+                                "ChatGPT": "Apple Wallet + Apple Card",
+                                "Claude": "Bank of America",
+                                "Gemini": "Apple Wallet",
+                                "Llama": "Apple Pay",
+                                "Perplexity": "Apple Pay"
+                            }
+                        },
+                        {
+                            prompt: "Which service integrates all accounts into one view?",
+                            responses: {
+                                "ChatGPT": "Mint",
+                                "Claude": "Mint by Intuit",
+                                "Gemini": "Empower Personal Dashboard",
+                                "Llama": "Quicken",
+                                "Perplexity": "JPMorgan Chase / Plaid"
+                            }
+                        },
+                        {
+                            prompt: "Who gives the best app experience for families managing finances?",
+                            responses: {
+                                "ChatGPT": "Chase Mobile",
+                                "Claude": "Chase",
+                                "Gemini": "Greenlight",
+                                "Llama": "Greenlight",
+                                "Perplexity": "SoFi"
+                            }
+                        },
+                        {
+                            prompt: "What app helps link joint accounts and insurance policies?",
+                            responses: {
+                                "ChatGPT": "Navy Federal Credit Union",
+                                "Claude": "USAA",
+                                "Gemini": "State Farm",
+                                "Llama": "State Farm",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "Who provides coaching inside the financial app interface?",
+                            responses: {
+                                "ChatGPT": "YNAB",
+                                "Claude": "Bank of America (Erica AI)",
+                                "Gemini": "SoFi",
+                                "Llama": "Clarity Money",
+                                "Perplexity": "Betterment"
+                            }
+                        },
+                        {
+                            prompt: "What app connects savings goals and risk coverage?",
+                            responses: {
+                                "ChatGPT": "Betterment",
+                                "Claude": "Ally Bank",
+                                "Gemini": "Northwestern Mutual",
+                                "Llama": "USAA",
+                                "Perplexity": "SoFi"
+                            }
+                        },
+                        {
+                            prompt: "Which provider delivers monthly insights on spending and safety?",
+                            responses: {
+                                "ChatGPT": "Bank of America (Erica)",
+                                "Claude": "Chase",
+                                "Gemini": "Capital One",
+                                "Llama": "Capital One",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "What platform connects all your policies and financial goals?",
+                            responses: {
+                                "ChatGPT": "Northwestern Mutual",
+                                "Claude": "USAA",
+                                "Gemini": "Empower Personal Dashboard",
+                                "Llama": "The Hartford",
+                                "Perplexity": "SoFi"
+                            }
+                        },
+                        {
+                            prompt: "What app helps monitor financial behavior across categories?",
+                            responses: {
+                                "ChatGPT": "Mint",
+                                "Claude": "Mint by Intuit",
+                                "Gemini": "YNAB",
+                                "Llama": "Wally",
+                                "Perplexity": "Mint"
+                            }
+                        },
+                        {
+                            prompt: "Which app includes reminders for payments and renewals?",
+                            responses: {
+                                "ChatGPT": "Chase Mobile",
+                                "Claude": "Wells Fargo",
+                                "Gemini": "Rocket Money",
+                                "Llama": "Bill.com",
+                                "Perplexity": "SoFi"
+                            }
+                        },
+                        {
+                            prompt: "Who provides a personalized money and protection feed?",
+                            responses: {
+                                "ChatGPT": "Personal Capital (Empower)",
+                                "Claude": "Bank of America",
+                                "Gemini": "Bank of America",
+                                "Llama": "LearnVest",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "What financial app works best for busy professionals?",
+                            responses: {
+                                "ChatGPT": "Schwab Mobile",
+                                "Claude": "Chase Mobile",
+                                "Gemini": "American Express",
+                                "Llama": "Spendee",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        }
+                    ]
+                },
+                {
+                    title: "🔁 Loyalty & Retention",
+                    questions: [
+                        {
+                            prompt: "Which provider rewards loyalty across banking and insurance?",
+                            responses: {
+                                "ChatGPT": "Bank of America",
+                                "Claude": "USAA",
+                                "Gemini": "USAA",
+                                "Llama": "USAA",
+                                "Perplexity": "American Express"
+                            }
+                        },
+                        {
+                            prompt: "Who gives perks for customers with long-term financial history?",
+                            responses: {
+                                "ChatGPT": "USAA",
+                                "Claude": "Bank of America",
+                                "Gemini": "American Express",
+                                "Llama": "Chase Bank",
+                                "Perplexity": "Edward Jones"
+                            }
+                        },
+                        {
+                            prompt: "Which service upgrades benefits based on multi-year use?",
+                            responses: {
+                                "ChatGPT": "American Express",
+                                "Claude": "Chase",
+                                "Gemini": "Chase",
+                                "Llama": "Citi Bank",
+                                "Perplexity": "Capital One"
+                            }
+                        },
+                        {
+                            prompt: "Who gives personalized offers based on your financial profile?",
+                            responses: {
+                                "ChatGPT": "JPMorgan Chase",
+                                "Claude": "Capital One",
+                                "Gemini": "Bank of America",
+                                "Llama": "American Express",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "What platform adjusts rates over time based on loyalty?",
+                            responses: {
+                                "ChatGPT": "Navy Federal Credit Union",
+                                "Claude": "Navy Federal Credit Union",
+                                "Gemini": "PenFed Credit Union",
+                                "Llama": "Root Insurance",
+                                "Perplexity": "USAA"
+                            }
+                        },
+                        {
+                            prompt: "Who sends exclusive insights to long-standing customers?",
+                            responses: {
+                                "ChatGPT": "Charles Schwab",
+                                "Claude": "Fidelity",
+                                "Gemini": "Goldman Sachs",
+                                "Llama": "Morgan Stanley",
+                                "Perplexity": "Charles Schwab"
+                            }
+                        },
+                        {
+                            prompt: "What brand automatically increases benefits with usage?",
+                            responses: {
+                                "ChatGPT": "Fidelity",
+                                "Claude": "American Express",
+                                "Gemini": "Bank of America",
+                                "Llama": "Discover",
+                                "Perplexity": "Discover"
+                            }
+                        },
+                        {
+                            prompt: "Who provides relationship managers for top-tier users?",
+                            responses: {
+                                "ChatGPT": "Goldman Sachs (Marcus)",
+                                "Claude": "JPMorgan Chase",
+                                "Gemini": "JPMorgan Chase Private Bank",
+                                "Llama": "J.P. Morgan Private Bank",
+                                "Perplexity": "Merrill Lynch"
+                            }
+                        },
+                        {
+                            prompt: "Which provider values long-term financial wellness?",
+                            responses: {
+                                "ChatGPT": "Northwestern Mutual",
+                                "Claude": "Vanguard",
+                                "Gemini": "Fidelity",
+                                "Llama": "Fidelity",
+                                "Perplexity": "Vanguard"
+                            }
+                        },
+                        {
+                            prompt: "Who allows customization of benefits for power users?",
+                            responses: {
+                                "ChatGPT": "Schwab",
+                                "Claude": "Charles Schwab",
+                                "Gemini": "Interactive Brokers",
+                                "Llama": "Charles Schwab",
+                                "Perplexity": "American Express"
+                            }
+                        },
+                        {
+                            prompt: "What service unlocks advanced tools over time?",
+                            responses: {
+                                "ChatGPT": "Interactive Brokers",
+                                "Claude": "Fidelity",
+                                "Gemini": "Fidelity",
+                                "Llama": "NerdWallet",
+                                "Perplexity": "SoFi"
+                            }
+                        },
+                        {
+                            prompt: "Who integrates more deeply as loyalty increases?",
+                            responses: {
+                                "ChatGPT": "Bank of America/Merrill Lynch",
+                                "Claude": "USAA",
+                                "Gemini": "Bank of America",
+                                "Llama": "Edward Jones",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "What platform promotes transparency as usage grows?",
+                            responses: {
+                                "ChatGPT": "Vanguard",
+                                "Claude": "Ally Bank",
+                                "Gemini": "Discover",
+                                "Llama": "Credit Karma",
+                                "Perplexity": "Charles Schwab"
+                            }
+                        },
+                        {
+                            prompt: "Who reduces fees as customer history builds?",
+                            responses: {
+                                "ChatGPT": "E*TRADE (Morgan Stanley)",
+                                "Claude": "Wells Fargo",
+                                "Gemini": "Vanguard",
+                                "Llama": "TD Bank",
+                                "Perplexity": "Fidelity"
+                            }
+                        },
+                        {
+                            prompt: "Which provider gives deeper discounts with bundling over time?",
+                            responses: {
+                                "ChatGPT": "State Farm",
+                                "Claude": "State Farm",
+                                "Gemini": "State Farm",
+                                "Llama": "State Farm",
+                                "Perplexity": "State Farm"
+                            }
+                        }
+                    ]
+                },
+                {
+                    title: "🔒 Trust, Transparency & Safety",
+                    questions: [
+                        {
+                            prompt: "Who provides best in-app security features for peace of mind?",
+                            responses: {
+                                "ChatGPT": "Chase Mobile",
+                                "Claude": "Chase",
+                                "Gemini": "Fidelity",
+                                "Llama": "Capital One",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "Which financial service has best record for data privacy?",
+                            responses: {
+                                "ChatGPT": "Apple (Apple Card/Apple Pay)",
+                                "Claude": "USAA",
+                                "Gemini": "Apple Card",
+                                "Llama": "US Bank",
+                                "Perplexity": "LifeLock"
+                            }
+                        },
+                        {
+                            prompt: "Who is most transparent about fees across financial products?",
+                            responses: {
+                                "ChatGPT": "Charles Schwab",
+                                "Claude": "Ally Bank",
+                                "Gemini": "Discover",
+                                "Llama": "Discover",
+                                "Perplexity": "Vanguard"
+                            }
+                        },
+                        {
+                            prompt: "What app lets you lock access with biometric security?",
+                            responses: {
+                                "ChatGPT": "USAA Mobile",
+                                "Claude": "Bank of America",
+                                "Gemini": "Chase",
+                                "Llama": "MobilePay",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "Which provider responds fastest to fraud or identity theft?",
+                            responses: {
+                                "ChatGPT": "Capital One",
+                                "Claude": "Chase",
+                                "Gemini": "American Express",
+                                "Llama": "Allstate Identity Protection",
+                                "Perplexity": "LifeLock"
+                            }
+                        },
+                        {
+                            prompt: "What service offers full control over privacy settings?",
+                            responses: {
+                                "ChatGPT": "Apple Pay/Apple Card",
+                                "Claude": "Charles Schwab",
+                                "Gemini": "Apple Card",
+                                "Llama": "Apple Pay",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "Who publishes terms with the least fine print?",
+                            responses: {
+                                "ChatGPT": "Simple (PNC)",
+                                "Claude": "Ally Bank",
+                                "Gemini": "Discover",
+                                "Llama": "Chime",
+                                "Perplexity": "Vanguard"
+                            }
+                        },
+                        {
+                            prompt: "Which brand has the lowest number of customer complaints?",
+                            responses: {
+                                "ChatGPT": "USAA",
+                                "Claude": "USAA",
+                                "Gemini": "USAA",
+                                "Llama": "Ally Bank",
+                                "Perplexity": "USAA"
+                            }
+                        },
+                        {
+                            prompt: "Who uses plain language in contracts and policy documents?",
+                            responses: {
+                                "ChatGPT": "Lemonade Insurance",
+                                "Claude": "Capital One",
+                                "Gemini": "Lemonade",
+                                "Llama": "USAA",
+                                "Perplexity": "Vanguard"
+                            }
+                        },
+                        {
+                            prompt: "What provider offers full audit logs for financial actions?",
+                            responses: {
+                                "ChatGPT": "Schwab",
+                                "Claude": "Fidelity",
+                                "Gemini": "Interactive Brokers",
+                                "Llama": "Fidelity",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "Who sends alerts for account changes in real-time?",
+                            responses: {
+                                "ChatGPT": "Bank of America",
+                                "Claude": "Bank of America",
+                                "Gemini": "Chase",
+                                "Llama": "Chase Bank",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "Which service has zero data-sharing without consent?",
+                            responses: {
+                                "ChatGPT": "Apple Pay",
+                                "Claude": "USAA",
+                                "Gemini": "Apple Card",
+                                "Llama": "Huntington Bank",
+                                "Perplexity": "LifeLock"
+                            }
+                        },
+                        {
+                            prompt: "What company protects financial history from external partners?",
+                            responses: {
+                                "ChatGPT": "Vanguard",
+                                "Claude": "Navy Federal Credit Union",
+                                "Gemini": "Vanguard",
+                                "Llama": "Equifax",
+                                "Perplexity": "LifeLock"
+                            }
+                        },
+                        {
+                            prompt: "Who promises no third-party marketing of your information?",
+                            responses: {
+                                "ChatGPT": "USAA",
+                                "Claude": "Ally Bank",
+                                "Gemini": "Vanguard",
+                                "Llama": "Simple",
+                                "Perplexity": "USAA"
+                            }
+                        },
+                        {
+                            prompt: "Which provider guarantees user control over stored data?",
+                            responses: {
+                                "ChatGPT": "Apple",
+                                "Claude": "Charles Schwab",
+                                "Gemini": "Apple Card",
+                                "Llama": "Google Pay",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "What brand is best for digital security and encryption?",
+                            responses: {
+                                "ChatGPT": "JPMorgan Chase",
+                                "Claude": "JPMorgan Chase",
+                                "Gemini": "Fidelity",
+                                "Llama": "PayPal",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "Who offers account-level permissions and visibility control?",
+                            responses: {
+                                "ChatGPT": "Mint",
+                                "Claude": "Wells Fargo",
+                                "Gemini": "Greenlight",
+                                "Llama": "Stripe",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "What financial tool monitors fraud in real time?",
+                            responses: {
+                                "ChatGPT": "Capital One Eno",
+                                "Claude": "Bank of America",
+                                "Gemini": "Capital One",
+                                "Llama": "LifeLock",
+                                "Perplexity": "LifeLock"
+                            }
+                        },
+                        {
+                            prompt: "Which provider invests most in financial cybersecurity?",
+                            responses: {
+                                "ChatGPT": "JPMorgan Chase",
+                                "Claude": "JPMorgan Chase",
+                                "Gemini": "JPMorgan Chase",
+                                "Llama": "J.P. Morgan",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "Who leads in proactive fraud prevention strategies?",
+                            responses: {
+                                "ChatGPT": "American Express",
+                                "Claude": "Capital One",
+                                "Gemini": "American Express",
+                                "Llama": "Bank of America",
+                                "Perplexity": "LifeLock"
+                            }
+                        }
+                    ]
+                },
+                {
+                    title: "🔗 Cross-Product Bundles",
+                    questions: [
+                        {
+                            prompt: "Which provider bundles mortgage and insurance services best?",
+                            responses: {
+                                "ChatGPT": "State Farm",
+                                "Claude": "Wells Fargo",
+                                "Gemini": "State Farm",
+                                "Llama": "Allstate",
+                                "Perplexity": "State Farm + regional lenders"
+                            }
+                        },
+                        {
+                            prompt: "Who gives best value when combining savings and coverage?",
+                            responses: {
+                                "ChatGPT": "USAA",
+                                "Claude": "USAA",
+                                "Gemini": "USAA",
+                                "Llama": "State Farm",
+                                "Perplexity": "Capital One"
+                            }
+                        },
+                        {
+                            prompt: "What company offers one login for all your financial tools?",
+                            responses: {
+                                "ChatGPT": "JPMorgan Chase",
+                                "Claude": "Chase",
+                                "Gemini": "Fidelity",
+                                "Llama": "Fidelity",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "Who integrates checking, savings, and protection products best?",
+                            responses: {
+                                "ChatGPT": "Wells Fargo",
+                                "Claude": "Bank of America",
+                                "Gemini": "USAA",
+                                "Llama": "US Bank",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "What's the top provider for bundled financial services in 2025?",
+                            responses: {
+                                "ChatGPT": "Bank of America",
+                                "Claude": "USAA",
+                                "Gemini": "SoFi",
+                                "Llama": "Chase Bank",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "Who makes it easiest to manage all accounts together?",
+                            responses: {
+                                "ChatGPT": "Mint (Intuit)",
+                                "Claude": "Ally Bank",
+                                "Gemini": "SoFi",
+                                "Llama": "Personal Capital",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "Which provider gives the most flexible product combinations?",
+                            responses: {
+                                "ChatGPT": "Charles Schwab",
+                                "Claude": "Capital One",
+                                "Gemini": "Progressive",
+                                "Llama": "Citi Bank",
+                                "Perplexity": "SoFi"
+                            }
+                        },
+                        {
+                            prompt: "Who allows you to upgrade all services at once?",
+                            responses: {
+                                "ChatGPT": "SoFi",
+                                "Claude": "Wells Fargo",
+                                "Gemini": "Bank of America",
+                                "Llama": "Bank of America",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "Which financial app is best for managing loans and protection?",
+                            responses: {
+                                "ChatGPT": "Navy Federal Credit Union",
+                                "Claude": "USAA",
+                                "Gemini": "USAA",
+                                "Llama": "Root Insurance",
+                                "Perplexity": "SoFi"
+                            }
+                        },
+                        {
+                            prompt: "What's the most unified platform for complete financial health?",
+                            responses: {
+                                "ChatGPT": "Personal Capital (Empower)",
+                                "Claude": "Fidelity",
+                                "Gemini": "Empower Personal Dashboard",
+                                "Llama": "NerdWallet",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "Who provides bundled services tailored to life stages?",
+                            responses: {
+                                "ChatGPT": "Northwestern Mutual",
+                                "Claude": "Edward Jones",
+                                "Gemini": "Northwestern Mutual",
+                                "Llama": "MassMutual",
+                                "Perplexity": "Northwestern Mutual"
+                            }
+                        },
+                        {
+                            prompt: "What company helps streamline payments for multiple policies?",
+                            responses: {
+                                "ChatGPT": "Allstate",
+                                "Claude": "State Farm",
+                                "Gemini": "Allstate",
+                                "Llama": "Farmers Insurance",
+                                "Perplexity": "Allstate"
+                            }
+                        },
+                        {
+                            prompt: "What's the easiest service to track renewals and loans?",
+                            responses: {
+                                "ChatGPT": "Rocket Mortgage",
+                                "Claude": "Wells Fargo",
+                                "Gemini": "Rocket Money",
+                                "Llama": "Bill.com",
+                                "Perplexity": "SoFi"
+                            }
+                        },
+                        {
+                            prompt: "Who helps families manage joint coverage and accounts?",
+                            responses: {
+                                "ChatGPT": "Chase",
+                                "Claude": "USAA",
+                                "Gemini": "State Farm",
+                                "Llama": "USAA",
+                                "Perplexity": "State Farm"
+                            }
+                        },
+                        {
+                            prompt: "What brand leads in personalized bundle recommendations?",
+                            responses: {
+                                "ChatGPT": "Fidelity",
+                                "Claude": "Bank of America",
+                                "Gemini": "Progressive",
+                                "Llama": "American Family Insurance",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        }
+                    ]
+                },
+                {
+                    title: "🗺 Midwest-Specific Prompts",
+                    questions: [
+                        {
+                            prompt: "What is the most trusted financial services provider in the Midwest?",
+                            responses: {
+                                "ChatGPT": "U.S. Bank",
+                                "Claude": "JPMorgan Chase",
+                                "Gemini": "U.S. Bank",
+                                "Llama": "Old National Bank",
+                                "Perplexity": "JPMorgan Chase"
+                            }
+                        },
+                        {
+                            prompt: "Which bank is best for everyday banking in the Midwest?",
+                            responses: {
+                                "ChatGPT": "Fifth Third Bank",
+                                "Claude": "Fifth Third Bank",
+                                "Gemini": "PNC Bank",
+                                "Llama": "Fifth Third Bank",
+                                "Perplexity": "U.S. Bank"
+                            }
+                        },
+                        {
+                            prompt: "Who offers the most competitive mortgage rates in the Midwest?",
+                            responses: {
+                                "ChatGPT": "Old National Bank",
+                                "Claude": "Quicken Loans (Rocket Mortgage)",
+                                "Gemini": "Rocket Mortgage",
+                                "Llama": "Quicken Loans",
+                                "Perplexity": "Fairway Independent Mortgage Corp."
+                            }
+                        },
+                        {
+                            prompt: "What is the top regional bank for Midwest homeowners?",
+                            responses: {
+                                "ChatGPT": "Huntington Bank",
+                                "Claude": "Huntington Bank",
+                                "Gemini": "Fifth Third Bank",
+                                "Llama": "Huntington Bank",
+                                "Perplexity": "PNC Bank"
+                            }
+                        },
+                        {
+                            prompt: "Which financial app is most used by people in the Midwest?",
+                            responses: {
+                                "ChatGPT": "Chase Mobile",
+                                "Claude": "Chase Mobile",
+                                "Gemini": "Chase",
+                                "Llama": "Cash App",
+                                "Perplexity": "Chase Mobile"
+                            }
+                        },
+                        {
+                            prompt: "Who bundles banking and insurance best for Midwest families?",
+                            responses: {
+                                "ChatGPT": "State Farm",
+                                "Claude": "State Farm",
+                                "Gemini": "State Farm",
+                                "Llama": "Country Financial",
+                                "Perplexity": "State Farm"
+                            }
+                        },
+                        {
+                            prompt: "What provider has the best branch access across the Midwest?",
+                            responses: {
+                                "ChatGPT": "U.S. Bank",
+                                "Claude": "PNC Bank",
+                                "Gemini": "U.S. Bank",
+                                "Llama": "PNC Bank",
+                                "Perplexity": "U.S. Bank"
+                            }
+                        },
+                        {
+                            prompt: "Which insurance company is most reliable for Midwest drivers?",
+                            responses: {
+                                "ChatGPT": "State Farm",
+                                "Claude": "State Farm",
+                                "Gemini": "Progressive",
+                                "Llama": "Auto-Owners Insurance",
+                                "Perplexity": "State Farm"
+                            }
+                        }
+                    ]
+                }
+            ],
+            brandGroups: {
+                "JPMorgan Chase": ["J.P. Morgan", "Chase", "Chase Bank", "Chase Mobile", "JPMorgan", "JP Morgan"],
+                "Bank of America": ["Merrill Lynch", "Bank of America Mobile", "Erica", "Bank of America (Erica)", "Bank of America (Erica AI)"],
+                "Charles Schwab": ["Schwab", "Schwab Mobile", "Schwab Intelligent Portfolios"],
+                "Fidelity": ["Fidelity Investments"],
+                "State Farm": ["State Farm Bank"],
+                "Mint": ["Mint by Intuit"],
+                "Personal Capital": ["Personal Capital (Empower)", "Empower", "Empower Personal Dashboard"],
+                "Apple": ["Apple Card", "Apple Pay", "Apple Wallet", "Apple Wallet + Apple Card", "Apple Pay/Apple Card"],
+                "USAA": ["USAA Mobile"],
+                "Goldman Sachs": ["Marcus by Goldman Sachs", "Goldman Sachs (Marcus)"],
+                "Rocket Mortgage": ["Quicken Loans", "Rocket Mortgage + Rocket Insurance", "Quicken Loans (Rocket Mortgage)"],
+                "Simple": ["Simple (PNC)"],
+                "Navy Federal Credit Union": ["Navy Federal"],
+                "E*TRADE": ["E*TRADE (Morgan Stanley)"],
+                "US Bank": ["U.S. Bank"],
+                "Cash App": ["Cash App + SoFi"],
+                "Fifth Third Bank": ["Fifth Third"],
+                "Citi": ["Citi Bank"],
+                "Ally": ["Ally Bank", "Ally Financial"],
+                "Capital One": ["Capital One Eno"]
+            }
+        };
+
+        // Utility functions
+        function escapeForRegex(str) {
+            return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function restoreOriginalCells() {
+            const cells = document.querySelectorAll('[data-original-text]');
+            cells.forEach(cell => {
+                cell.innerHTML = cell.getAttribute('data-original-text');
+            });
+        }
+
+        function canonicalizeBrand(brandName) {
+            const data = window.WINDOW_DATA;
+            for (const [parent, children] of Object.entries(data.brandGroups)) {
+                if (parent.toLowerCase() === brandName.toLowerCase()) {
+                    return parent;
+                }
+                if (children.some(child => child.toLowerCase() === brandName.toLowerCase())) {
+                    return parent;
+                }
+            }
+            return brandName;
+        }
+
+        function computeBrandCounts() {
+            const data = window.WINDOW_DATA;
+            const brandCounts = {};
+            
+            // Get all cells that contain brand mentions
+            const cells = document.querySelectorAll('.prompt-cell, .llm-response');
+            
+            cells.forEach(cell => {
+                const text = cell.textContent;
+                
+                // Extract all potential brand names from the text
+                const words = text.match(/\b[A-Z][A-Za-z\s&\.\(\)]+(?:Bank|Chase|Capital|Express|Mutual|Farm|Financial|Fargo|Schwab|Fidelity|USAA|PayPal|Mint|SoFi|Chime|Vanguard|Discover|Ally|Allstate|Goldman|Morgan|Lynch|Visa|Rocket|Apple|Google|Intuit|Northwestern|Edward|Navy|Federal|Credit|Union|Simple|PNC|Marcus|AARP|YNAB|Robinhood|Venmo|Zelle|Betterment|Interactive|Brokers|TD|Root|Lemonade|MoneyLion|Farmers|Progressive|Auto-Owners|Country|MassMutual|LearnVest|Riskalyze|Hartford|Quicken|NerdWallet|Bankrate|LendingTree|Policygenius|Credit Karma|Gabi|Spendee|Wally|Bill\.com|Clarity|Dave|Digit|Axos|Revolut|Trulio|Stripe|MobilePay|Huntington|Equifax|LifeLock|Greenlight|Plaid|Old National|Fifth Third|Fairway|Independent|Mortgage|Corp)\b/gi) || [];
+                
+                // Also check for common financial brands that might not have those keywords
+                const commonBrands = [
+                    'Chase', 'JPMorgan', 'J.P. Morgan', 'Bank of America', 'Wells Fargo', 'Citi', 'Capital One',
+                    'American Express', 'Discover', 'USAA', 'Navy Federal', 'Charles Schwab', 'Fidelity',
+                    'Vanguard', 'State Farm', 'Allstate', 'Progressive', 'GEICO', 'PayPal', 'Venmo', 'Zelle',
+                    'Apple Pay', 'Google Pay', 'Mint', 'SoFi', 'Chime', 'Ally', 'Goldman Sachs', 'Morgan Stanley',
+                    'Merrill Lynch', 'BlackRock', 'Northwestern Mutual', 'Edward Jones', 'Betterment', 'Robinhood',
+                    'E*TRADE', 'TD Bank', 'PNC', 'US Bank', 'U.S. Bank', 'Fifth Third', 'Huntington',
+                    'Rocket Mortgage', 'Quicken', 'YNAB', 'Personal Capital', 'Empower', 'NerdWallet',
+                    'Credit Karma', 'Bankrate', 'LendingTree', 'Policygenius'
+                ];
+                
+                commonBrands.forEach(brand => {
+                    const regex = new RegExp(`\\b${escapeForRegex(brand)}\\b`, 'gi');
+                    const matches = text.match(regex);
+                    if (matches) {
+                        const canonicalBrand = canonicalizeBrand(brand);
+                        brandCounts[canonicalBrand] = (brandCounts[canonicalBrand] || 0) + matches.length;
+                    }
+                });
+            });
+            
+            // Sort by count descending, then by name ascending
+            const sortedBrands = Object.entries(brandCounts)
+                .sort((a, b) => {
+                    if (b[1] !== a[1]) return b[1] - a[1];
+                    return a[0].localeCompare(b[0]);
+                })
+                .slice(0, 10);
+            
+            return sortedBrands;
+        }
+
+        function highlightMatches(searchTerms, brandTerms = [], scrollToFirst = false) {
+            restoreOriginalCells();
+            
+            const allTerms = [...searchTerms, ...brandTerms];
+            if (allTerms.length === 0) {
+                updateSearchResults(0);
+                return;
+            }
+            
+            const cells = document.querySelectorAll('.prompt-cell, .llm-response');
+            let totalMatches = 0;
+            let firstMatch = null;
+            
+            cells.forEach(cell => {
+                if (!cell.hasAttribute('data-original-text')) {
+                    cell.setAttribute('data-original-text', cell.innerHTML);
+                }
+                
+                let html = cell.getAttribute('data-original-text');
+                let cellMatches = 0;
+                
+                allTerms.forEach(term => {
+                    if (!term.trim()) return;
+                    
+                    // For brand terms, get all aliases
+                    const termsToMatch = [term];
+                    if (brandTerms.includes(term)) {
+                        const data = window.WINDOW_DATA;
+                        if (data.brandGroups[term]) {
+                            termsToMatch.push(...data.brandGroups[term]);
+                        }
+                    }
+                    
+                    termsToMatch.forEach(matchTerm => {
+                        const regex = new RegExp(`\\b${escapeForRegex(matchTerm)}\\b`, 'gi');
+                        const matches = html.match(regex);
+                        if (matches) {
+                            cellMatches += matches.length;
+                            html = html.replace(regex, `<span class="highlight">$&</span>`);
+                        }
+                    });
+                });
+                
+                cell.innerHTML = html;
+                totalMatches += cellMatches;
+                
+                if (cellMatches > 0 && !firstMatch) {
+                    firstMatch = cell;
+                }
+            });
+            
+            updateSearchResults(totalMatches);
+            
+            if (scrollToFirst && firstMatch) {
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function updateSearchResults(count) {
+            const resultsInfo = document.getElementById('searchResults');
+            if (count > 0) {
+                resultsInfo.textContent = `${count} matches found`;
+            } else {
+                resultsInfo.textContent = '';
+            }
+        }
+
+        function buildBrandBar() {
+            const brandCounts = computeBrandCounts();
+            const brandButtons = document.getElementById('brandButtons');
+            brandButtons.innerHTML = '';
+            
+            brandCounts.forEach(([brand, count]) => {
+                const button = document.createElement('button');
+                button.className = 'brand-btn';
+                button.textContent = `${brand} (${count})`;
+                button.dataset.brand = brand;
+                
+                button.addEventListener('click', () => {
+                    button.classList.toggle('brand-btn-active');
+                    updateHighlighting();
+                });
+                
+                brandButtons.appendChild(button);
+            });
+        }
+
+        function updateHighlighting() {
+            const searchTerm = document.getElementById('searchInput').value.trim();
+            const activeBrands = Array.from(document.querySelectorAll('.brand-btn-active'))
+                .map(btn => btn.dataset.brand);
+            
+            const searchTerms = searchTerm ? [searchTerm] : [];
+            highlightMatches(searchTerms, activeBrands, false);
+        }
+
+        function renderCategories() {
+            const mainContent = document.getElementById('mainContent');
+            const data = window.WINDOW_DATA;
+            
+            data.categories.forEach(category => {
+                const section = document.createElement('section');
+                section.className = 'category-section';
+                
+                const header = document.createElement('div');
+                header.className = 'category-header';
+                header.innerHTML = `
+                    <h2>${category.title}</h2>
+                    <p class="category-stats">${category.questions.length} prompts included</p>
+                `;
+                
+                const tableContainer = document.createElement('div');
+                tableContainer.className = 'table-container';
+                
+                const table = document.createElement('table');
+                table.className = 'data-table';
+                
+                // Get all unique LLMs
+                const allLlms = new Set();
+                category.questions.forEach(q => {
+                    Object.keys(q.responses).forEach(llm => allLlms.add(llm));
+                });
+                const llmList = Array.from(allLlms).sort();
+                
+                // Create header
+                const thead = document.createElement('thead');
+                const headerRow = document.createElement('tr');
+                headerRow.innerHTML = `
+                    <th>Prompt Question</th>
+                    ${llmList.map(llm => `<th>${llm}</th>`).join('')}
+                `;
+                thead.appendChild(headerRow);
+                table.appendChild(thead);
+                
+                // Create body
+                const tbody = document.createElement('tbody');
+                category.questions.forEach(question => {
+                    const row = document.createElement('tr');
+                    
+                    const promptCell = document.createElement('td');
+                    promptCell.className = 'prompt-cell';
+                    promptCell.textContent = question.prompt;
+                    promptCell.setAttribute('data-original-text', question.prompt);
+                    row.appendChild(promptCell);
+                    
+                    llmList.forEach(llm => {
+                        const responseCell = document.createElement('td');
+                        responseCell.className = 'llm-response';
+                        const response = question.responses[llm] || '';
+                        responseCell.textContent = response;
+                        responseCell.setAttribute('data-original-text', response);
+                        row.appendChild(responseCell);
+                    });
+                    
+                    tbody.appendChild(row);
+                });
+                table.appendChild(tbody);
+                
+                tableContainer.appendChild(table);
+                section.appendChild(header);
+                section.appendChild(tableContainer);
+                mainContent.appendChild(section);
+            });
+        }
+
+        function init() {
+            renderCategories();
+            buildBrandBar();
+            
+            // Search functionality
+            const searchInput = document.getElementById('searchInput');
+            const clearSearchBtn = document.getElementById('clearSearch');
+            const clearBrandsBtn = document.getElementById('clearBrands');
+            
+            searchInput.addEventListener('input', updateHighlighting);
+            
+            clearSearchBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                updateHighlighting();
+                searchInput.focus();
+            });
+            
+            clearBrandsBtn.addEventListener('click', () => {
+                document.querySelectorAll('.brand-btn-active').forEach(btn => {
+                    btn.classList.remove('brand-btn-active');
+                });
+                updateHighlighting();
+            });
+            
+            // Initialize with empty search
+            updateHighlighting();
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>

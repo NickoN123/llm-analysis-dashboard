@@ -1,0 +1,2838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Trust & Health Index - Top 200 Companies</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: auto;
+        }
+
+        .container {
+            max-width: 100vw;
+            padding: 20px;
+            animation: slideIn 1s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            color: #00d4ff;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(0,212,255,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.8);
+            font-weight: 300;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .excellent { background: #4ecdc4; }
+        .good { background: #ffd93d; }
+        .poor { background: #ff6b6b; }
+
+        .table-container {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow-x: auto;
+        }
+
+        .brand-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .brand-table th {
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: #0a0e1a;
+            padding: 15px 12px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .brand-table td {
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .brand-table tr:nth-child(even) {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .brand-table tr:hover {
+            background: rgba(0,212,255,0.1);
+            transform: scale(1.002);
+            transition: all 0.3s ease;
+        }
+
+        .brand-name {
+            text-align: left;
+            font-weight: 600;
+            color: #00d4ff;
+            min-width: 180px;
+        }
+
+        .category {
+            text-align: left;
+            color: rgba(255,255,255,0.7);
+            font-style: italic;
+            min-width: 120px;
+        }
+
+        .score {
+            font-weight: 700;
+            font-size: 1rem;
+            min-width: 50px;
+        }
+
+        .score-excellent { color: #4ecdc4; }
+        .score-good { color: #ffd93d; }
+        .score-poor { color: #ff6b6b; }
+
+        .commentary {
+            text-align: left;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            color: rgba(255,255,255,0.8);
+            min-width: 300px;
+            max-width: 350px;
+        }
+
+        .rank {
+            font-weight: 800;
+            color: #00d4ff;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 1400px) {
+            .header h1 { font-size: 2.5rem; }
+            .brand-table { font-size: 0.8rem; }
+            .commentary { font-size: 0.75rem; }
+        }
+
+        @media (max-width: 1000px) {
+            .header h1 { font-size: 2rem; }
+            .legend { flex-direction: column; align-items: center; }
+            .container { padding: 15px; }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>BRAND TRUST & HEALTH INDEX</h1>
+            <p>Comprehensive Analysis of Top 200 Global Companies</p>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color excellent"></div>
+                <span>Excellent (9-10)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color good"></div>
+                <span>Good (7-8)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color poor"></div>
+                <span>Average/Poor (1-6)</span>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table class="brand-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Brand</th>
+                        <th>Category</th>
+                        <th>Overall Score</th>
+                        <th>Trust</th>
+                        <th>Product Superiority</th>
+                        <th>Sustainability</th>
+                        <th>Ethics</th>
+                        <th>Brand Vulnerability</th>
+                        <th>Customer Service</th>
+                        <th>Commentary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="rank">1</td>
+                        <td class="brand-name">Patagonia</td>
+                        <td class="category">Outdoor Apparel</td>
+                        <td class="score score-good">8.7</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-excellent">10</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Industry leader with exceptional trust through radical transparency, authentic environmental activism, and lifetime repair guarantees demonstrating superior quality commitment.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">2</td>
+                        <td class="brand-name">LEGO</td>
+                        <td class="category">Toys/Entertainment</td>
+                        <td class="score score-good">8.3</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">90+ year history with consistent quality, precision manufacturing, and innovative designs. Strong brand equity protects against most market risks effectively.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">3</td>
+                        <td class="brand-name">Costco</td>
+                        <td class="category">Retail</td>
+                        <td class="score score-good">8.2</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="commentary">Most trusted retailer with transparent pricing, generous returns, ethical employee treatment. Industry-leading customer service with membership loyalty model providing stability.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">4</td>
+                        <td class="brand-name">Apple</td>
+                        <td class="category">Technology</td>
+                        <td class="score score-good">6.7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Superior product design and ecosystem integration with strong customer satisfaction, but faces regular criticism over pricing, labor practices, and market dominance.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">5</td>
+                        <td class="brand-name">Toyota</td>
+                        <td class="category">Automotive</td>
+                        <td class="score score-good">7.7</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Decades-long reputation for reliability validated by industry ratings. Pioneer in hybrid technology with strong quality control processes and transparent recalls.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">6</td>
+                        <td class="brand-name">Samsung</td>
+                        <td class="category">Technology/Electronics</td>
+                        <td class="score score-poor">6.2</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Often first-to-market with new technologies and high-quality displays, but mixed trust due to Galaxy Note recalls and various legal issues affecting confidence.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">7</td>
+                        <td class="brand-name">Rolex</td>
+                        <td class="category">Luxury Watches</td>
+                        <td class="score score-good">7.5</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Century-plus history of precision and quality with excellent resale value retention. Industry benchmark for luxury mechanical watches with superior craftsmanship and materials.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">8</td>
+                        <td class="brand-name">Microsoft</td>
+                        <td class="category">Technology</td>
+                        <td class="score score-poor">6.7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong trust in enterprise solutions and cloud services with carbon negative commitments, but past antitrust issues and privacy concerns affect consumer perception.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">9</td>
+                        <td class="brand-name">Mercedes-Benz</td>
+                        <td class="category">Automotive</td>
+                        <td class="score score-poor">6.8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong heritage brand with engineering excellence reputation, but diesel emissions scandal and luxury automotive environmental impact create some trust and ethical concerns.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">10</td>
+                        <td class="brand-name">Disney</td>
+                        <td class="category">Entertainment/Media</td>
+                        <td class="score score-poor">6.7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong family brand trust with industry-leading theme park experiences, but recent political controversies and content decisions have affected perception among some consumers.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">11</td>
+                        <td class="brand-name">Nike</td>
+                        <td class="category">Sportswear/Apparel</td>
+                        <td class="score score-poor">6.7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Industry leader in athletic footwear innovation with strong athlete endorsements, but past labor practice issues and political stances create mixed consumer perceptions.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">12</td>
+                        <td class="brand-name">Sony</td>
+                        <td class="category">Electronics/Entertainment</td>
+                        <td class="score score-poor">6.8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong heritage in electronics and gaming with generally reliable products. Industry leader in gaming consoles, cameras, and audio equipment with refined implementations.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">13</td>
+                        <td class="brand-name">Ben & Jerry's</td>
+                        <td class="category">Food & Beverage</td>
+                        <td class="score score-good">7.7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust through authentic social activism and transparency. Industry leader in corporate activism with B-Corp certification and transparent values-driven decision making.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">14</td>
+                        <td class="brand-name">IKEA</td>
+                        <td class="category">Furniture/Home Goods</td>
+                        <td class="score score-poor">6.8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong design and value proposition with sustainability leadership in retail. Quality varies by price point but superior in design aesthetics and space efficiency.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">15</td>
+                        <td class="brand-name">Honda</td>
+                        <td class="category">Automotive</td>
+                        <td class="score score-good">8.0</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Exceptional reliability reputation validated by consumer reports. Industry leader in reliability and fuel efficiency with strong safety record and responsible corporate citizenship.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">16</td>
+                        <td class="brand-name">Canon</td>
+                        <td class="category">Photography/Imaging</td>
+                        <td class="score score-good">7.0</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong heritage in imaging with consistent product quality and professional trust. Industry leader in professional cameras and printers with high-quality optics and technology.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">17</td>
+                        <td class="brand-name">Starbucks</td>
+                        <td class="category">Food & Beverage</td>
+                        <td class="score score-poor">5.8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Mixed trust due to various controversies but significant sustainability commitments. Consistent product quality and experience across locations with ongoing reputation challenges.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">18</td>
+                        <td class="brand-name">Ferrari</td>
+                        <td class="category">Automotive</td>
+                        <td class="score score-poor">6.8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-poor">3</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Industry benchmark for luxury sports car performance with superior craftsmanship. Strong trust among enthusiasts but limited sustainability initiatives given high-performance focus.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">19</td>
+                        <td class="brand-name">Red Bull</td>
+                        <td class="category">Beverages</td>
+                        <td class="score score-poor">5.8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Industry leader in energy drinks with strong brand preference, but mixed trust due to health concerns and marketing controversies creating regulatory scrutiny.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">20</td>
+                        <td class="brand-name">Adidas</td>
+                        <td class="category">Sportswear/Apparel</td>
+                        <td class="score score-poor">6.8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong competitor in athletic wear with innovative technologies. Significant sustainability initiatives including ocean plastic recycling compared to industry peers with improving practices.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">21</td>
+                        <td class="brand-name">Glossier</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-poor">6.5</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Strong trust among millennial consumers through authentic social media presence. Direct-to-consumer model builds relationships but mixed product performance across categories.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">22</td>
+                        <td class="brand-name">Allbirds</td>
+                        <td class="category">Footwear/Apparel</td>
+                        <td class="score score-good">7.2</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Industry leader in sustainable footwear with carbon-neutral operations. Innovative sustainable materials development but mixed durability reviews compared to traditional athletic footwear.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">23</td>
+                        <td class="brand-name">Warby Parker</td>
+                        <td class="category">Eyewear/Retail</td>
+                        <td class="score score-good">7.2</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="commentary">Disrupted traditional eyewear industry with transparent pricing and social mission. Excellent customer service including home try-on program with high customer satisfaction scores.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">24</td>
+                        <td class="brand-name">Dr. Bronner's</td>
+                        <td class="category">Personal Care</td>
+                        <td class="score score-good">8.3</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-excellent">10</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Exceptional trust built over generations through consistent quality and authentic family business values. Industry leader in ethical practices with fair trade sourcing.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">25</td>
+                        <td class="brand-name">Chewy</td>
+                        <td class="category">Pet Care/E-commerce</td>
+                        <td class="score score-poor">6.8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-excellent">10</td>
+                        <td class="commentary">Industry-leading customer service with 24/7 support and personal touches. Strong trust through excellent customer service and genuine care for pet owners and satisfaction.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">26</td>
+                        <td class="brand-name">Blueland</td>
+                        <td class="category">Cleaning Products</td>
+                        <td class="score score-good">7.2</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Industry leader in sustainable cleaning with plastic-free packaging and core business model built around environmental sustainability. Innovative refillable packaging system with effective performance.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">27</td>
+                        <td class="brand-name">Thinx</td>
+                        <td class="category">Personal Care/Apparel</td>
+                        <td class="score score-poor">6.3</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Innovative period underwear technology with excellent performance, but trust damaged by past leadership scandals despite product quality and customer satisfaction improvements.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">28</td>
+                        <td class="brand-name">Burt's Bees</td>
+                        <td class="category">Personal Care</td>
+                        <td class="score score-good">7.0</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust through natural ingredient focus and consistent quality. Long brand history with generally positive consumer experiences and transparent ingredient labeling practices.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">29</td>
+                        <td class="brand-name">Oatly</td>
+                        <td class="category">Food & Beverage</td>
+                        <td class="score score-poor">6.0</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Superior taste in plant-based milk alternatives but mixed trust due to sustainability claims scrutiny and supply chain controversies affecting overall brand reputation.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">30</td>
+                        <td class="brand-name">Chobani</td>
+                        <td class="category">Food & Beverage</td>
+                        <td class="score score-good">7.2</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust through high-quality products and authentic founder story. Strong ethical reputation with refugee hiring programs and community investment demonstrating authentic social responsibility.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">31</td>
+                        <td class="brand-name">Public Goods</td>
+                        <td class="category">Consumer Goods</td>
+                        <td class="score score-poor">6.8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Building trust through transparent pricing and sustainable focus. Core business model built around environmental responsibility with plastic-free packaging and carbon-neutral shipping.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">32</td>
+                        <td class="brand-name">Hello Bello</td>
+                        <td class="category">Baby/Personal Care</td>
+                        <td class="score score-poor">6.3</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Building trust through celebrity endorsement and baby-safe products. Clean ingredient focus with attractive packaging, but limited track record compared to established baby care brands.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">33</td>
+                        <td class="brand-name">Ritual</td>
+                        <td class="category">Health/Supplements</td>
+                        <td class="score score-poor">6.5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Building trust through transparent ingredients and research-backed formulations. Strong scientific approach with third-party testing but supplement industry faces general consumer skepticism.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">34</td>
+                        <td class="brand-name">Pela</td>
+                        <td class="category">Phone Cases/Accessories</td>
+                        <td class="score score-good">7.2</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Industry leader in sustainable phone accessories with compostable materials. Core business model built around environmental responsibility but mixed durability reviews compared to traditional cases.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">35</td>
+                        <td class="brand-name">Goodr</td>
+                        <td class="category">Eyewear/Sports</td>
+                        <td class="score score-poor">6.7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Building strong trust through authentic brand personality and quality products at accessible prices. Excellent customer service with responsive support and customer-friendly policies creating loyalty.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">36</td>
+                        <td class="brand-name">Supergoop</td>
+                        <td class="category">Skincare/Sun Protection</td>
+                        <td class="score score-poor">6.8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Building trust through dermatologist recommendations and effective products. Superior sunscreen formulations with elegant textures receiving positive reviews from skincare experts and consumers.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">37</td>
+                        <td class="brand-name">Native</td>
+                        <td class="category">Personal Care</td>
+                        <td class="score score-poor">6.7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust through aluminum-free deodorants and clean products. Effective natural deodorants with superior performance compared to many natural alternatives and strong customer satisfaction rates.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">38</td>
+                        <td class="brand-name">Boom Supersonic</td>
+                        <td class="category">Aerospace/Transportation</td>
+                        <td class="score score-poor">4.8</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">3</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Limited trust due to early-stage company with no commercial products delivered yet. High vulnerability due to technical, regulatory, and financial risks of developing aircraft technology.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">39</td>
+                        <td class="brand-name">Ecovative</td>
+                        <td class="category">Sustainable Materials</td>
+                        <td class="score score-good">7.2</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-excellent">10</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Industry leader in sustainable materials innovation with revolutionary mycelium-based alternatives. Core business model focused entirely on environmental solutions but B2B focus limits awareness.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">40</td>
+                        <td class="brand-name">Vuori</td>
+                        <td class="category">Athletic Apparel</td>
+                        <td class="score score-poor">6.7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Building strong trust through high-quality athletic wear and authentic California lifestyle brand. Superior comfort and style compared to competitors with growing customer loyalty.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">41</td>
+                        <td class="brand-name">Erewhon</td>
+                        <td class="category">Grocery/Health Food</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong among health-conscious consumers but criticism for extremely high prices and exclusive positioning. Superior organic product selection but accessibility and elitist positioning concerns.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">42</td>
+                        <td class="brand-name">Maude</td>
+                        <td class="category">Sexual Wellness</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Building trust through sophisticated approach to sexual wellness with medical-grade products. Professional positioning reduces typical adult industry stigma with body-positive messaging and design.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">43</td>
+                        <td class="brand-name">Kinfield</td>
+                        <td class="category">Outdoor/Personal Care</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Building trust through effective natural insect repellent and outdoor care. Effective natural bug spray with superior performance compared to many natural alternatives and growing recognition.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">44</td>
+                        <td class="brand-name">Care/of</td>
+                        <td class="category">Health/Supplements</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Building trust through personalized vitamin approach but supplement industry faces skepticism. Acquisition by Bayer provides credibility but some authenticity concerns about startup values.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">45</td>
+                        <td class="brand-name">Magic Spoon</td>
+                        <td class="category">Food & Beverage</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Building trust through nostalgic cereal concept with adult nutrition. Higher protein, lower carb profile but mixed taste reviews compared to traditional cereals and high pricing.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">46</td>
+                        <td class="brand-name">Function of Beauty</td>
+                        <td class="category">Beauty/Personal Care</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">4</td>
+                        <td class="commentary">Personalized hair care approach with custom formulations but mixed effectiveness reviews. Significant customer service challenges with complaints about responsiveness and product issues affecting satisfaction.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">47</td>
+                        <td class="brand-name">Hims</td>
+                        <td class="category">Health/Telemedicine</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Mixed trust due to aggressive marketing and regulatory scrutiny of telemedicine practices. High vulnerability due to regulatory risks and marketing controversies in telemedicine space.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">48</td>
+                        <td class="brand-name">Beekeeper's Naturals</td>
+                        <td class="category">Health/Supplements</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust through natural bee-derived products and transparent sourcing. Strong sustainability focus with bee conservation initiatives and B-Corp certification with authentic values-driven approach.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">49</td>
+                        <td class="brand-name">Wild One</td>
+                        <td class="category">Pet Care</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Building trust through stylish, functional pet products and transparent practices. Superior design and functionality with durable materials compared to traditional pet products but premium pricing.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">50</td>
+                        <td class="brand-name">Fuzzy</td>
+                        <td class="category">Pet Care/Veterinary</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Building trust through modern veterinary care approach and technology integration. Superior customer service through modern facilities and customer-focused approach but limited long-term track record.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">51</td>
+                        <td class="brand-name">Amazon</td>
+                        <td class="category">E-commerce/Technology</td>
+                        <td class="score score-poor">5.8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Mixed trust due to market dominance concerns but strong delivery reliability. Superior logistics capabilities but ongoing concerns about worker conditions and competitive behavior affecting reputation.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">52</td>
+                        <td class="brand-name">Google</td>
+                        <td class="category">Technology/Internet</td>
+                        <td class="score score-poor">5.5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Mixed trust due to privacy concerns but strong search quality. Superior technology and innovation but significant concerns about privacy practices and market dominance affecting consumer confidence.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">53</td>
+                        <td class="brand-name">Tesla</td>
+                        <td class="category">Automotive/Electric Vehicles</td>
+                        <td class="score score-poor">6.0</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Mixed trust due to CEO controversies but strong electric vehicle innovation. Industry-leading technology but concerns about leadership behavior and quality control issues affecting reputation.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">54</td>
+                        <td class="brand-name">Coca-Cola</td>
+                        <td class="category">Beverages</td>
+                        <td class="score score-poor">5.8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong global trust built over more than a century with consistent quality. Superior brand recognition but concerns about health impacts and environmental practices affect overall reputation.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">55</td>
+                        <td class="brand-name">McDonald's</td>
+                        <td class="category">Food & Beverage/Fast Food</td>
+                        <td class="score score-poor">5.5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Reasonable trust in food safety and global consistency but health concerns affect perception. Superior convenience and operational efficiency but vulnerable to health criticism and changing preferences.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">56</td>
+                        <td class="brand-name">Walmart</td>
+                        <td class="category">Retail</td>
+                        <td class="score score-poor">4.8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Trust in low prices and availability but concerns about quality and worker treatment. Superior price and convenience but ongoing concerns about community impact and practices.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">57</td>
+                        <td class="brand-name">Netflix</td>
+                        <td class="category">Entertainment/Streaming</td>
+                        <td class="score score-poor">6.5</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in content delivery and streaming reliability with transparent pricing. Superior streaming technology and content production but faces competition and content controversies.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">58</td>
+                        <td class="brand-name">Intel</td>
+                        <td class="category">Technology/Semiconductors</td>
+                        <td class="score score-poor">6.5</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong trust in semiconductor technology and reliability built over decades. Industry leader in processor technology but faces competitive challenges and technology transition pressures affecting market position.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">59</td>
+                        <td class="brand-name">IBM</td>
+                        <td class="category">Technology/Enterprise Software</td>
+                        <td class="score score-poor">6.7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in enterprise technology built over more than a century. Reliable business partner reputation with strong sustainability commitments but faces technology transition challenges.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">60</td>
+                        <td class="brand-name">Oracle</td>
+                        <td class="category">Technology/Enterprise Software</td>
+                        <td class="score score-poor">5.7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Mixed trust due to aggressive licensing practices but strong database technology. Superior technical capabilities but aggressive business practices create reputational risks and customer concerns.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">61</td>
+                        <td class="brand-name">Visa</td>
+                        <td class="category">Financial Services</td>
+                        <td class="score score-good">7.0</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in payment security and global reliability with consistent service. Superior global payment network with excellent reliability but faces criticism about merchant fees.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">62</td>
+                        <td class="brand-name">Mastercard</td>
+                        <td class="category">Financial Services</td>
+                        <td class="score score-good">7.0</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in payment security similar to Visa with competitive network. Good technology innovation in payment solutions with positive financial inclusion programs and corporate governance.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">63</td>
+                        <td class="brand-name">JPMorgan Chase</td>
+                        <td class="category">Financial Services</td>
+                        <td class="score score-poor">6.0</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Mixed trust due to banking industry reputation but strong financial stability. Superior banking technology and comprehensive services but large bank ethical challenges affect consumer perception.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">64</td>
+                        <td class="brand-name">Johnson & Johnson</td>
+                        <td class="category">Healthcare/Pharmaceuticals</td>
+                        <td class="score score-poor">6.0</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Mixed trust due to recent legal issues but strong healthcare product quality. Superior pharmaceuticals and medical devices but significant legal issues affect ethical reputation and vulnerability.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">65</td>
+                        <td class="brand-name">Procter & Gamble</td>
+                        <td class="category">Consumer Goods</td>
+                        <td class="score score-poor">6.5</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong trust in consumer products built over decades with consistent quality. Superior consumer products in many categories with diverse brand portfolio providing market protection.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">66</td>
+                        <td class="brand-name">3M</td>
+                        <td class="category">Industrial/Consumer Products</td>
+                        <td class="score score-poor">5.0</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">3</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Trust significantly damaged by PFAS contamination lawsuits and environmental issues. Superior industrial products but major environmental challenges create extremely high vulnerability and reputation damage.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">67</td>
+                        <td class="brand-name">General Electric</td>
+                        <td class="category">Industrial/Technology</td>
+                        <td class="score score-poor">5.7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Trust damaged by financial difficulties and accounting issues in recent years. Superior industrial technology but financial challenges and management problems affect overall market confidence.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">68</td>
+                        <td class="brand-name">Boeing</td>
+                        <td class="category">Aerospace/Defense</td>
+                        <td class="score score-poor">4.2</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">3</td>
+                        <td class="score score-poor">2</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Trust severely damaged by 737 MAX crashes and safety revelations. Still produces advanced aircraft but extremely high vulnerability due to ongoing safety scrutiny and reputation challenges.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">69</td>
+                        <td class="brand-name">Ford</td>
+                        <td class="category">Automotive</td>
+                        <td class="score score-poor">6.2</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Generally strong trust in automotive reliability and American manufacturing heritage. Competitive products with some superior models but faces challenges from EV transition and competitive pressures.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">70</td>
+                        <td class="brand-name">General Motors</td>
+                        <td class="category">Automotive</td>
+                        <td class="score score-poor">6.2</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Mixed trust due to past bankruptcy and recall issues but improving with electric investments. Strong electric vehicle commitments including all-electric plan providing competitive advantage in transition.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">71</td>
+                        <td class="brand-name">Pfizer</td>
+                        <td class="category">Pharmaceuticals</td>
+                        <td class="score score-poor">5.7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Mixed trust due to COVID-19 vaccine controversies and pharmaceutical industry skepticism. Superior pharmaceutical research but political polarization and pricing debates create ongoing reputation risks.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">72</td>
+                        <td class="brand-name">Merck</td>
+                        <td class="category">Pharmaceuticals</td>
+                        <td class="score score-poor">6.3</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Generally better trust than industry average with strong scientific reputation. Superior pharmaceutical products with strong research capabilities but faces typical pharmaceutical industry challenges including pricing.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">73</td>
+                        <td class="brand-name">AT&T</td>
+                        <td class="category">Telecommunications</td>
+                        <td class="score score-poor">4.8</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">4</td>
+                        <td class="commentary">Mixed trust due to service quality issues and billing problems. Essential telecommunications services provide some stability but poor customer service reputation creates significant satisfaction challenges.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">74</td>
+                        <td class="brand-name">Verizon</td>
+                        <td class="category">Telecommunications</td>
+                        <td class="score score-poor">5.8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Generally better trust than AT&T with stronger network reliability reputation. Superior network quality and coverage with strong 5G deployment but typical telecommunications industry challenges remain.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">75</td>
+                        <td class="brand-name">Home Depot</td>
+                        <td class="category">Retail/Home Improvement</td>
+                        <td class="score score-poor">6.3</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust among contractors and DIY customers with reliable product availability. Good product selection and knowledgeable staff but economic sensitivity affects resilient business model.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">76</td>
+                        <td class="brand-name">Lowe's</td>
+                        <td class="category">Retail/Home Improvement</td>
+                        <td class="score score-poor">6.3</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust similar to Home Depot with reliable home improvement shopping experience. Competitive product selection with generally good customer service and knowledgeable staff support.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">77</td>
+                        <td class="brand-name">Target</td>
+                        <td class="category">Retail</td>
+                        <td class="score score-poor">6.7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust among consumers with better reputation than Walmart for quality. Good product curation with superior store design and better ethical reputation than large retailers.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">78</td>
+                        <td class="brand-name">Best Buy</td>
+                        <td class="category">Retail/Electronics</td>
+                        <td class="score score-poor">6.3</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Strong trust in electronics retail with knowledgeable staff and reliable service. Excellent technical customer service with Geek Squad support but faces online competition challenges.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">79</td>
+                        <td class="brand-name">FedEx</td>
+                        <td class="category">Logistics/Shipping</td>
+                        <td class="score score-good">7.2</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in shipping reliability and package delivery with consistent service quality. Superior logistics network with reliable overnight shipping and essential services providing market stability.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">80</td>
+                        <td class="brand-name">UPS</td>
+                        <td class="category">Logistics/Shipping</td>
+                        <td class="score score-good">7.2</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>-poor">6</td>
+                        <td class="commentary">Mixed trust due to COVID-19 vaccine controversies and pharmaceutical industry skepticism. Superior pharmaceutical research but political polarization and pricing debates create ongoing reputation risks.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">72</td>
+                        <td class="brand-name">Merck</td>
+                        <td class="category">Pharmaceuticals</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Generally better trust than industry average with strong scientific reputation. Superior pharmaceutical products with strong research capabilities but faces typical pharmaceutical industry challenges including pricing.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">73</td>
+                        <td class="brand-name">AT&T</td>
+                        <td class="category">Telecommunications</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">4</td>
+                        <td class="commentary">Mixed trust due to service quality issues and billing problems. Essential telecommunications services provide some stability but poor customer service reputation creates significant satisfaction challenges.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">74</td>
+                        <td class="brand-name">Verizon</td>
+                        <td class="category">Telecommunications</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Generally better trust than AT&T with stronger network reliability reputation. Superior network quality and coverage with strong 5G deployment but typical telecommunications industry challenges remain.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">75</td>
+                        <td class="brand-name">Home Depot</td>
+                        <td class="category">Retail/Home Improvement</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust among contractors and DIY customers with reliable product availability. Good product selection and knowledgeable staff but economic sensitivity affects resilient business model.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">76</td>
+                        <td class="brand-name">Lowe's</td>
+                        <td class="category">Retail/Home Improvement</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust similar to Home Depot with reliable home improvement shopping experience. Competitive product selection with generally good customer service and knowledgeable staff support.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">77</td>
+                        <td class="brand-name">Target</td>
+                        <td class="category">Retail</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust among consumers with better reputation than Walmart for quality. Good product curation with superior store design and better ethical reputation than large retailers.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">78</td>
+                        <td class="brand-name">Best Buy</td>
+                        <td class="category">Retail/Electronics</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Strong trust in electronics retail with knowledgeable staff and reliable service. Excellent technical customer service with Geek Squad support but faces online competition challenges.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">79</td>
+                        <td class="brand-name">FedEx</td>
+                        <td class="category">Logistics/Shipping</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in shipping reliability and package delivery with consistent service quality. Superior logistics network with reliable overnight shipping and essential services providing market stability.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">80</td>
+                        <td class="brand-name">UPS</td>
+                        <td class="category">Logistics/Shipping</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in shipping reliability similar to FedEx with consistent delivery service. Competitive logistics services with good sustainability initiatives and positive labor relations providing stability.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">81</td>
+                        <td class="brand-name">American Express</td>
+                        <td class="category">Financial Services</td>
+                        <td class="score score-poor">6.8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="commentary">Strong trust among premium customers with excellent fraud protection and customer service. Industry-leading customer service but limited accessibility creates economic downturn vulnerability.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">82</td>
+                        <td class="brand-name">Goldman Sachs</td>
+                        <td class="category">Financial Services</td>
+                        <td class="score score-poor">5.5</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Low trust due to Wall Street reputation and financial crisis issues. Superior investment banking capabilities but high visibility and controversial reputation create significant regulatory risks.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">83</td>
+                        <td class="brand-name">Morgan Stanley</td>
+                        <td class="category">Financial Services</td>
+                        <td class="score score-poor">5.8</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Slightly better trust than Goldman Sachs but faces Wall Street skepticism. Strong investment banking services but typical Wall Street risks from regulation and criticism affecting reputation.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">84</td>
+                        <td class="brand-name">Wells Fargo</td>
+                        <td class="category">Financial Services</td>
+                        <td class="score score-poor">4.2</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">3</td>
+                        <td class="score score-poor">3</td>
+                        <td class="score score-poor">4</td>
+                        <td class="commentary">Trust severely damaged by fake accounts scandal and regulatory issues. Extremely vulnerable due to ongoing regulatory scrutiny with customer service reputation damaged by aggressive practices.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">85</td>
+                        <td class="brand-name">Bank of America</td>
+                        <td class="category">Financial Services</td>
+                        <td class="score score-poor">5.5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Mixed trust due to financial crisis history and large bank issues. Competitive banking products with good digital capabilities but mixed customer service experience and satisfaction.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">86</td>
+                        <td class="brand-name">Citigroup</td>
+                        <td class="category">Financial Services</td>
+                        <td class="score score-poor">5.5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Mixed trust similar to other large banks with financial crisis legacy. Strong international banking capabilities but faces regulatory scrutiny and competitive pressures affecting customer satisfaction.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">87</td>
+                        <td class="brand-name">Berkshire Hathaway</td>
+                        <td class="category">Financial Services/Conglomerate</td>
+                        <td class="score score-poor">6.7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">High trust due to Warren Buffett's reputation and long-term investment approach. Superior investment management with strong long-term performance but dependent on leadership transition and market conditions.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">88</td>
+                        <td class="brand-name">Exxon Mobil</td>
+                        <td class="category">Energy/Oil & Gas</td>
+                        <td class="score score-poor">4.2</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">3</td>
+                        <td class="score score-poor">3</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Low trust due to climate change issues and environmental concerns. Superior technical capabilities but faces significant environmental criticism and regulatory risks from climate policies.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">89</td>
+                        <td class="brand-name">Chevron</td>
+                        <td class="category">Energy/Oil & Gas</td>
+                        <td class="score score-poor">4.8</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Slightly better trust than Exxon with some environmental improvements but oil industry challenges. Better positioned than some peers but faces climate policy risks and environmental concerns.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">90</td>
+                        <td class="brand-name">Delta Air Lines</td>
+                        <td class="category">Transportation/Airlines</td>
+                        <td class="score score-poor">6.2</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Generally good trust among airlines with better customer service reputation. Superior airline service and operational performance but vulnerable to economic downturns and health crises.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">91</td>
+                        <td class="brand-name">United Airlines</td>
+                        <td class="category">Transportation/Airlines</td>
+                        <td class="score score-poor">5.2</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Mixed trust due to various customer service incidents and operational issues. Competitive airline services but faces reputation risks from past incidents and customer satisfaction challenges.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">92</td>
+                        <td class="brand-name">American Airlines</td>
+                        <td class="category">Transportation/Airlines</td>
+                        <td class="score score-poor">5.0</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Mixed trust similar to other major airlines with operational concerns. Competitive airline services but faces financial pressures and typical industry challenges affecting customer satisfaction and reliability.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">93</td>
+                        <td class="brand-name">Southwest Airlines</td>
+                        <td class="category">Transportation/Airlines</td>
+                        <td class="score score-poor">6.5</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Generally strong trust with better customer service reputation and transparent pricing. Superior customer service reputation with customer-friendly policies and positive employee culture creating high satisfaction.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">94</td>
+                        <td class="brand-name">Airbnb</td>
+                        <td class="category">Hospitality/Technology</td>
+                        <td class="score score-poor">5.8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Mixed trust due to safety and quality concerns but confidence in platform reliability. Superior accommodation variety but regulatory risks and community opposition create ongoing challenges.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">95</td>
+                        <td class="brand-name">Uber</td>
+                        <td class="category">Transportation/Technology</td>
+                        <td class="score score-poor">4.8</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Low trust due to various scandals and safety concerns despite superior ride-hailing technology. High vulnerability due to regulatory risks and reputation issues from past leadership problems.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">96</td>
+                        <td class="brand-name">Lyft</td>
+                        <td class="category">Transportation/Technology</td>
+                        <td class="score score-poor">5.8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Better trust than Uber with fewer scandals and better corporate reputation. Competitive ride-hailing service with good sustainability initiatives but faces typical ride-sharing industry challenges.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">97</td>
+                        <td class="brand-name">Spotify</td>
+                        <td class="category">Entertainment/Music Streaming</td>
+                        <td class="score score-poor">6.5</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong trust in music streaming reliability and playlist algorithms. Superior music streaming technology with excellent personalization but faces competition from tech giants and content licensing challenges.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">98</td>
+                        <td class="brand-name">Adobe</td>
+                        <td class="category">Technology/Software</td>
+                        <td class="score score-poor">6.3</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Mixed trust due to subscription model changes but strong software quality. Superior creative software with industry-leading capabilities but faces customer dissatisfaction with subscription pricing.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">99</td>
+                        <td class="brand-name">Salesforce</td>
+                        <td class="category">Technology/Enterprise Software</td>
+                        <td class="score score-good">7.7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Strong trust in business technology with reliable cloud services and security. Strong sustainability leadership with comprehensive environmental programs and excellent customer service for business clients.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">100</td>
+                        <td class="brand-name">LinkedIn</td>
+                        <td class="category">Technology/Social Media</td>
+                        <td class="score score-poor">6.3</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong trust in professional networking with good privacy practices and business focus. Superior professional networking platform but faces typical social media regulation risks and competitive pressure.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">101</td>
+                        <td class="brand-name">Twitter/X</td>
+                        <td class="category">Technology/Social Media</td>
+                        <td class="score score-poor">3</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">3</td>
+                        <td class="score score-poor">2</td>
+                        <td class="score score-poor">3</td>
+                        <td class="commentary">Trust severely damaged by ownership changes and content moderation controversies. Extremely high vulnerability due to ongoing controversies and user exodus creating platform instability concerns.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">102</td>
+                        <td class="brand-name">Meta (Facebook)</td>
+                        <td class="category">Technology/Social Media</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">3</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">4</td>
+                        <td class="commentary">Low trust due to privacy scandals and misinformation concerns. Strong technology capabilities but significant ethical concerns and regulatory scrutiny affect overall brand reputation.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">103</td>
+                        <td class="brand-name">TikTok</td>
+                        <td class="category">Technology/Social Media</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Mixed trust due to data privacy and national security concerns. Superior short-form video platform with excellent engagement but high vulnerability due to regulatory risks.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">104</td>
+                        <td class="brand-name">YouTube</td>
+                        <td class="category">Technology/Video Platform</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Reasonable trust in video platform reliability but content moderation concerns. Superior video platform with excellent streaming technology but faces ongoing ethical challenges and creator relations.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">105</td>
+                        <td class="brand-name">Instagram</td>
+                        <td class="category">Technology/Social Media</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">4</td>
+                        <td class="commentary">Mixed trust as part of Meta with privacy concerns but strong engagement. Superior photo and video sharing platform but faces similar ethical challenges to Meta.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">106</td>
+                        <td class="brand-name">WhatsApp</td>
+                        <td class="category">Technology/Messaging</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Better trust than other Meta platforms due to encryption focus. Superior messaging platform with excellent reliability but faces some regulatory scrutiny and competition challenges.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">107</td>
+                        <td class="brand-name">Zoom</td>
+                        <td class="category">Technology/Communications</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust built during pandemic with reliable video conferencing. Superior video conferencing technology with excellent reliability but faces competition from tech giants and market changes.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">108</td>
+                        <td class="brand-name">Slack</td>
+                        <td class="category">Technology/Communications</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in business communication with good security and reliability. Superior workplace communication platform but faces competition from Microsoft Teams and changing work dynamics.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">109</td>
+                        <td class="brand-name">Dropbox</td>
+                        <td class="category">Technology/Cloud Storage</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong trust in file storage and security with good privacy practices. Reliable service but faces intense competition from tech giants with integrated cloud services.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">110</td>
+                        <td class="brand-name">Box</td>
+                        <td class="category">Technology/Cloud Storage</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in enterprise cloud storage with good security features. Superior enterprise cloud storage but faces competition from cloud giants and changing enterprise technology needs.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">111</td>
+                        <td class="brand-name">Shopify</td>
+                        <td class="category">Technology/E-commerce</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust among small businesses with reliable e-commerce platform. Superior e-commerce platform with excellent functionality but faces competition from Amazon and other platforms.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">112</td>
+                        <td class="brand-name">Square</td>
+                        <td class="category">Financial Technology</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust among small businesses with reliable payment processing. Superior payment processing technology with innovative solutions but faces competition from established processors and fintech companies.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">113</td>
+                        <td class="brand-name">PayPal</td>
+                        <td class="category">Financial Technology</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong consumer trust in digital payments with reliable fraud protection. Superior digital payment platform but faces intense competition from tech giants and newer fintech companies.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">114</td>
+                        <td class="brand-name">Stripe</td>
+                        <td class="category">Financial Technology</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Exceptional trust among developers with reliable API and transparent approach. Superior payment infrastructure with excellent developer experience and industry-leading technology and integration capabilities.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">115</td>
+                        <td class="brand-name">Coinbase</td>
+                        <td class="category">Financial Technology/Cryptocurrency</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Mixed trust due to cryptocurrency volatility and regulatory uncertainty. Good cryptocurrency exchange platform but high vulnerability due to regulatory risks and market speculation challenges.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">116</td>
+                        <td class="brand-name">Robinhood</td>
+                        <td class="category">Financial Technology</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">4</td>
+                        <td class="commentary">Trust damaged by trading restrictions and payment controversies. Superior mobile trading app with accessibility but high vulnerability due to regulatory scrutiny and trust issues.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">117</td>
+                        <td class="brand-name">Charles Schwab</td>
+                        <td class="category">Financial Services</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Strong trust built over decades with reliable investment services. Good investment platform with excellent customer service but faces competition from fintech and changing market dynamics.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">118</td>
+                        <td class="brand-name">Fidelity</td>
+                        <td class="category">Financial Services</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Exceptional trust in investment management with long track record. Superior investment products with excellent fund management and industry leadership in retirement planning and investment services.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">119</td>
+                        <td class="brand-name">Vanguard</td>
+                        <td class="category">Financial Services</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Exceptional trust due to mutual ownership structure and low-cost investing. Superior low-cost index funds with exceptional ethical reputation and fiduciary responsibility creating strong investor loyalty.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">120</td>
+                        <td class="brand-name">BlackRock</td>
+                        <td class="category">Financial Services</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Mixed trust due to massive size concerns but confidence in capabilities. Superior investment management with industry-leading ETFs but massive scale creates regulatory and reputational risks.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">121</td>
+                        <td class="brand-name">Whole Foods</td>
+                        <td class="category">Retail/Grocery</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in organic food quality with good sourcing standards. Superior organic and natural food selection but premium positioning and Amazon ownership create some reputation concerns.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">122</td>
+                        <td class="brand-name">Trader Joe's</td>
+                        <td class="category">Retail/Grocery</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Exceptional trust among customers with unique product curation. Superior private label products with unique flavors and excellent customer service creating strong loyalty and resilient positioning.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">123</td>
+                        <td class="brand-name">Kroger</td>
+                        <td class="category">Retail/Grocery</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Reasonable trust as major grocery chain with consistent availability. Competitive grocery products but faces competition from Walmart, Amazon, and specialty retailers with variable customer satisfaction.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">124</td>
+                        <td class="brand-name">Louis Vuitton</td>
+                        <td class="category">Luxury/Fashion</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Strong trust in luxury goods quality with centuries-old reputation. Superior luxury goods with exceptional craftsmanship but vulnerable to economic downturns affecting luxury spending patterns.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">125</td>
+                        <td class="brand-name">Chanel</td>
+                        <td class="category">Luxury/Fashion</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="commentary">Exceptional trust in luxury fashion with timeless designs. Superior luxury products with iconic designs and exceptional customer service providing strong protection against fashion industry challenges.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">126</td>
+                        <td class="brand-name">Hermès</td>
+                        <td class="category">Luxury/Fashion</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-excellent">10</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="commentary">Exceptional trust in luxury craftsmanship with centuries-old reputation. Superior luxury goods with unmatched craftsmanship providing maximum protection against criticism and industry challenges generally.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">127</td>
+                        <td class="brand-name">Gucci</td>
+                        <td class="category">Luxury/Fashion</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Strong trust in luxury fashion with design innovation and quality. Superior luxury fashion with excellent customer service but faces challenges from changing consumer preferences and sustainability demands.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">128</td>
+                        <td class="brand-name">Prada</td>
+                        <td class="category">Luxury/Fashion</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Strong trust in luxury fashion with minimalist design excellence. Superior luxury products with distinctive aesthetic and excellent customer service but faces typical luxury industry economic sensitivity challenges.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">129</td>
+                        <td class="brand-name">Versace</td>
+                        <td class="category">Luxury/Fashion</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Strong trust in luxury fashion with distinctive Italian design. Superior luxury fashion with excellent customer service but vulnerable to changing fashion trends and limited sustainability initiatives.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">130</td>
+                        <td class="brand-name">H&M</td>
+                        <td class="category">Fashion/Apparel</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Mixed trust due to fast fashion environmental concerns and quality issues. Competitive fast fashion but faces increasing criticism and regulatory pressure from sustainability concerns and practices.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">131</td>
+                        <td class="brand-name">Zara</td>
+                        <td class="category">Fashion/Apparel</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Better trust than some fast fashion competitors with higher design standards. Superior fast fashion with better design capabilities but faces typical fast fashion criticism and regulatory pressure.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">132</td>
+                        <td class="brand-name">Uniqlo</td>
+                        <td class="category">Fashion/Apparel</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong trust in basic clothing quality with Japanese quality reputation. Superior basic clothing with innovative fabrics providing some protection against typical fast fashion criticism through quality focus.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">133</td>
+                        <td class="brand-name">Forever 21</td>
+                        <td class="category">Fashion/Apparel</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">3</td>
+                        <td class="score score-poor">2</td>
+                        <td class="score score-poor">3</td>
+                        <td class="score score-poor">2</td>
+                        <td class="score score-poor">3</td>
+                        <td class="commentary">Low trust due to quality concerns and business difficulties. Poor quality fast fashion with high vulnerability due to bankruptcy and reputation problems creating existential business challenges.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">134</td>
+                        <td class="brand-name">Victoria's Secret</td>
+                        <td class="category">Fashion/Apparel</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Trust damaged by outdated brand image and leadership controversies. Good quality products but high vulnerability due to changing consumer preferences and competition from inclusive brands.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">135</td>
+                        <td class="brand-name">Bath & Body Works</td>
+                        <td class="category">Beauty/Personal Care</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in fragrance products with consistent quality and seasonal offerings. Good fragrance products with appealing packaging but faces competition from clean beauty brands and sustainability concerns.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">136</td>
+                        <td class="brand-name">Sephora</td>
+                        <td class="category">Beauty/Retail</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Strong trust in beauty retail with good product curation. Superior beauty retail experience with excellent customer service and knowledgeable staff but faces competition from online brands.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">137</td>
+                        <td class="brand-name">Ulta Beauty</td>
+                        <td class="category">Beauty/Retail</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in beauty retail with good product variety and accessible pricing. Good beauty retail selection but faces competition from specialty retailers and online beauty brands.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">138</td>
+                        <td class="brand-name">L'Oréal</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong trust in cosmetics with good safety record and quality standards. Superior cosmetics and beauty products with strong research capabilities but faces typical beauty industry ingredient safety concerns.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">139</td>
+                        <td class="brand-name">Estée Lauder</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Strong trust in premium cosmetics with high quality standards. Superior premium cosmetics with excellent customer service and premium positioning providing protection against most beauty industry challenges.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">140</td>
+                        <td class="brand-name">MAC Cosmetics</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in professional-quality cosmetics with good reputation among makeup artists. Superior professional cosmetics but faces competition from newer inclusive beauty brands and changing preferences.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">141</td>
+                        <td class="brand-name">Urban Decay</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Good trust in edgy cosmetics brand with quality products. Superior cosmetics with distinctive brand aesthetic but faces competition in saturated cosmetics market with changing consumer preferences.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">142</td>
+                        <td class="brand-name">Too Faced</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Good trust in playful cosmetics brand with quality products. Good cosmetics with appealing packaging but faces intense competition and changing consumer preferences in beauty market.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">143</td>
+                        <td class="brand-name">Benefit Cosmetics</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in specialty cosmetics with distinctive products. Superior specialty cosmetics with excellent customer service but faces competition from comprehensive beauty brands and changing market dynamics.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">144</td>
+                        <td class="brand-name">NARS</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in artistic cosmetics brand with high quality products. Superior cosmetics with excellent formulations but faces competition in premium cosmetics market from emerging brands.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">145</td>
+                        <td class="brand-name">Fenty Beauty</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust built through inclusive shade range and authentic mission. Superior cosmetics with exceptional ethical reputation and revolutionary impact on beauty industry inclusivity standards and representation.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">146</td>
+                        <td class="brand-name">Rare Beauty</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust through mental health advocacy and authentic celebrity positioning. Good quality cosmetics with strong ethical reputation but celebrity brand dependence creates some vulnerability concerns.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">147</td>
+                        <td class="brand-name">KKW Beauty</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Mixed trust due to celebrity brand skepticism and market saturation concerns. Competitive cosmetics but high vulnerability due to celebrity dependence and authenticity questions affecting brand credibility.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">148</td>
+                        <td class="brand-name">Kylie Cosmetics</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">3</td>
+                        <td class="score score-poor">3</td>
+                        <td class="score score-poor">3</td>
+                        <td class="score score-poor">4</td>
+                        <td class="commentary">Low trust due to various controversies and quality concerns. Competitive cosmetics but high vulnerability due to quality issues, celebrity dependence, and ongoing reputation challenges affecting customer satisfaction.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">149</td>
+                        <td class="brand-name">Morphe</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Mixed trust due to influencer marketing dependence and some quality concerns. Competitive affordable cosmetics but high vulnerability due to influencer dependence and authenticity concerns.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">150</td>
+                        <td class="brand-name">ColourPop</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Good trust in affordable cosmetics with consistent product releases. Good affordable cosmetics with superior value proposition but fast beauty model faces sustainability criticism and intense competition.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">151</td>
+                        <td class="brand-name">e.l.f. Cosmetics</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong trust in affordable cosmetics with consistent quality improvements. Superior affordable cosmetics with impressive quality and good ethical reputation providing protection against premium competition challenges.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">152</td>
+                        <td class="brand-name">Maybelline</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Good trust in mass market cosmetics with consistent availability. Competitive mass market cosmetics but faces competition from indie brands and changing consumer preferences toward clean beauty.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">153</td>
+                        <td class="brand-name">Revlon</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">3</td>
+                        <td class="score score-poor">3</td>
+                        <td class="score score-poor">2</td>
+                        <td class="score score-poor">3</td>
+                        <td class="commentary">Trust significantly damaged by bankruptcy and business difficulties. Competitive cosmetics historically but extremely high vulnerability due to bankruptcy and business instability affecting product availability and customer confidence.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">154</td>
+                        <td class="brand-name">CoverGirl</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Reasonable trust in mass market cosmetics with drugstore accessibility. Competitive mass market cosmetics but faces challenges from premium and indie brands with limited innovation and changing preferences.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">155</td>
+                        <td class="brand-name">Neutrogena</td>
+                        <td class="category">Beauty/Skincare</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong trust in skincare products with dermatologist recommendations. Superior skincare products with clinical research but faces competition from clean beauty brands and ingredient transparency demands.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">156</td>
+                        <td class="brand-name">Olay</td>
+                        <td class="category">Beauty/Skincare</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong trust in anti-aging skincare with long brand history. Good skincare products with accessible pricing but faces competition from premium and clean skincare brands focusing on transparency.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">157</td>
+                        <td class="brand-name">Dove</td>
+                        <td class="category">Beauty/Personal Care</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong trust in personal care with gentle formulations and positive messaging. Superior personal care products with strong brand loyalty providing protection against typical industry challenges and competitive pressure.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">158</td>
+                        <td class="brand-name">Nivea</td>
+                        <td class="category">Beauty/Personal Care</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong global trust in skincare products with consistent quality and heritage. Good skincare products but faces competition from premium and natural skincare brands emphasizing ingredient innovation and transparency.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">159</td>
+                        <td class="brand-name">Aveeno</td>
+                        <td class="category">Beauty/Skincare</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong trust in gentle skincare with dermatologist recommendations and natural ingredients. Superior gentle skincare products but faces competition from clean beauty brands and ingredient transparency movement demands.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">160</td>
+                        <td class="brand-name">Cetaphil</td>
+                        <td class="category">Beauty/Skincare</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Exceptional trust in gentle skincare with strong dermatologist recommendations. Superior gentle skincare products with clinical reputation providing excellent protection against most skincare industry challenges and competitive threats.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">161</td>
+                        <td class="brand-name">CeraVe</td>
+                        <td class="category">Beauty/Skincare</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in therapeutic skincare with dermatologist development. Superior therapeutic skincare with innovative technology and strong clinical positioning providing excellent protection against industry challenges and competition.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">162</td>
+                        <td class="brand-name">The Ordinary</td>
+                        <td class="category">Beauty/Skincare</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Strong trust through transparent formulations and honest ingredient communication. Superior skincare actives with revolutionary transparency approach but faces competition as larger brands adopt similar approaches and strategies.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">163</td>
+                        <td class="brand-name">Drunk Elephant</td>
+                        <td class="category">Beauty/Skincare</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in clean skincare with biocompatible philosophy and ingredient transparency. Superior clean skincare with excellent clinical results but faces competition from other clean beauty brands.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">164</td>
+                        <td class="brand-name">Tatcha</td>
+                        <td class="category">Beauty/Skincare</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Strong trust in luxury skincare with Japanese-inspired formulations. Superior luxury skincare with excellent customer service and unique cultural approach providing differentiation but faces luxury market competition.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">165</td>
+                        <td class="brand-name">Fresh</td>
+                        <td class="category">Beauty/Skincare</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in natural luxury skincare with high-quality ingredients. Superior luxury skincare with natural focus but faces competition from other luxury and clean beauty brands in competitive market.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">166</td>
+                        <td class="brand-name">Kiehl's</td>
+                        <td class="category">Beauty/Skincare</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Exceptional trust in apothecary skincare with long heritage and pharmaceutical approach. Superior skincare products providing excellent protection against most industry challenges through heritage and quality positioning.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">167</td>
+                        <td class="brand-name">Origins</td>
+                        <td class="category">Beauty/Skincare</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in natural skincare with plant-based formulations and environmental consciousness. Superior natural skincare with strong sustainability leadership providing good protection against clean beauty competition and environmental concerns.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">168</td>
+                        <td class="brand-name">Lush</td>
+                        <td class="category">Beauty/Personal Care</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in handmade cosmetics with natural ingredients and ethical practices. Superior handmade cosmetics with exceptional sustainability and ethics but controversial stances create some vulnerability risks.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">169</td>
+                        <td class="brand-name">The Body Shop</td>
+                        <td class="category">Beauty/Personal Care</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong trust in natural beauty with ethical trading heritage. Good natural beauty products with strong ethical heritage but faces competition from newer brands with similar values and innovation.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">170</td>
+                        <td class="brand-name">Aesop</td>
+                        <td class="category">Beauty/Personal Care</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Strong trust in luxury natural personal care with sophisticated formulations. Superior luxury personal care products with excellent customer service providing strong protection against most industry challenges through premium positioning.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">171</td>
+                        <td class="brand-name">Le Labo</td>
+                        <td class="category">Beauty/Fragrance</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Strong trust in artisanal fragrance with handcrafted approach and premium positioning. Superior artisanal fragrances with excellent customer service providing strong protection in niche fragrance market through unique offerings.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">172</td>
+                        <td class="brand-name">Byredo</td>
+                        <td class="category">Beauty/Fragrance</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Strong trust in luxury fragrance with innovative compositions. Superior luxury fragrances with excellent customer service and strong luxury positioning providing good protection in competitive fragrance market.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">173</td>
+                        <td class="brand-name">Diptyque</td>
+                        <td class="category">Beauty/Fragrance</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="commentary">Exceptional trust in luxury fragrance with French heritage and artisanal quality. Superior luxury fragrances with outstanding customer service providing strong protection against most fragrance industry challenges through exceptional positioning.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">174</td>
+                        <td class="brand-name">Jo Malone</td>
+                        <td class="category">Beauty/Fragrance</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Strong trust in British luxury fragrance with elegant simplicity. Superior luxury fragrances with excellent customer service and British heritage providing good protection in competitive fragrance market through positioning.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">175</td>
+                        <td class="brand-name">Tom Ford Beauty</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Strong trust in luxury beauty with sophisticated positioning. Superior luxury beauty products with excellent customer service and designer association providing good protection in premium beauty market through brand strength.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">176</td>
+                        <td class="brand-name">Charlotte Tilbury</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Strong trust in luxury makeup with professional expertise and glamorous positioning. Superior luxury cosmetics with excellent customer service and professional reputation providing good protection in competitive beauty market.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">177</td>
+                        <td class="brand-name">Pat McGrath Labs</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Exceptional trust in artistic makeup with legendary professional reputation. Superior artistic cosmetics with industry leadership and legendary reputation providing strong protection through innovation and professional credibility in makeup industry.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">178</td>
+                        <td class="brand-name">Anastasia Beverly Hills</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in brow and beauty products with professional expertise. Superior brow products with professional quality but dependent on beauty trends and social media influence creating some market vulnerability.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">179</td>
+                        <td class="brand-name">Huda Beauty</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Good trust in influencer beauty brand with strong social media presence. Good cosmetics with appealing formulations but influencer dependence and social media focus create vulnerability to changing trends.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">180</td>
+                        <td class="brand-name">Jeffree Star Cosmetics</td>
+                        <td class="category">Beauty/Cosmetics</td>
+                        <td class="score score-poor">3</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">3</td>
+                        <td class="score score-poor">2</td>
+                        <td class="score score-poor">1</td>
+                        <td class="score score-poor">3</td>
+                        <td class="commentary">Low trust due to various controversies and scandals surrounding founder. Good cosmetics quality but extremely high vulnerability due to ongoing controversies and reputation damage affecting brand credibility.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">181</td>
+                        <td class="brand-name">PepsiCo</td>
+                        <td class="category">Beverages/Snacks</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Good trust in beverage and snack brands with consistent quality. Diversified product portfolio with good sustainability initiatives but faces health concerns typical of large food companies.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">182</td>
+                        <td class="brand-name">Nestlé</td>
+                        <td class="category">Food & Beverage</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Mixed trust due to various controversies including water rights and marketing practices. Good food products with strong portfolio but high visibility creates reputation risks from controversies.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">183</td>
+                        <td class="brand-name">Kellogg's</td>
+                        <td class="category">Food & Beverage</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="commentary">Good trust in breakfast cereals with brand recognition. Competitive cereal products but vulnerable to health concerns and changing breakfast preferences toward healthier options and alternatives.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">184</td>
+                        <td class="brand-name">Unilever</td>
+                        <td class="category">Consumer Goods</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong global trust in consumer brands with consistent quality. Good consumer products with strong sustainability leadership and diverse global brand portfolio providing market protection and resilience.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">185</td>
+                        <td class="brand-name">Colgate-Palmolive</td>
+                        <td class="category">Consumer Goods</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong trust in oral care products with reliable quality and heritage. Superior oral care products with strong market leadership providing protection against competitive threats through established market position.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">186</td>
+                        <td class="brand-name">Kimberly-Clark</td>
+                        <td class="category">Consumer Goods</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Good trust in personal care and hygiene products with reliable quality. Competitive personal care products but faces competitive pressure and changing consumer preferences in hygiene categories and markets.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">187</td>
+                        <td class="brand-name">Puma</td>
+                        <td class="category">Sportswear/Apparel</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Good trust in athletic wear with decent reputation for quality. Competitive athletic products but faces intense competition from Nike, Adidas, and other athletic brands in saturated market.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">188</td>
+                        <td class="brand-name">New Balance</td>
+                        <td class="category">Footwear/Sportswear</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in athletic footwear with good reputation for quality and fit. Superior athletic footwear with excellent domestic manufacturing ethics but faces competition from larger athletic brands.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">189</td>
+                        <td class="brand-name">Converse</td>
+                        <td class="category">Footwear</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong trust in classic sneaker designs with iconic brand heritage. Superior in classic style and cultural significance but generally resilient classic positioning despite limited athletic performance.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">190</td>
+                        <td class="brand-name">Vans</td>
+                        <td class="category">Footwear/Apparel</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong trust in skateboarding and lifestyle footwear with authentic heritage. Superior in skateboarding footwear but faces competition from other lifestyle and athletic footwear brands in competitive market.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">191</td>
+                        <td class="brand-name">Timberland</td>
+                        <td class="category">Footwear/Apparel</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong trust in outdoor footwear with good reputation for durability. Superior outdoor footwear with good sustainability initiatives providing protection but faces competition from other outdoor brands.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">192</td>
+                        <td class="brand-name">UGG</td>
+                        <td class="category">Footwear</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">4</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Good trust in comfort footwear with consistent quality. Superior comfort in sheepskin footwear but fashion-dependent brand vulnerable to trend changes and seasonal sales variations.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">193</td>
+                        <td class="brand-name">Crocs</td>
+                        <td class="category">Footwear</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Mixed trust due to polarizing design but confidence in comfort. Superior comfort and functionality but polarizing design creates vulnerability to fashion criticism despite strong functional benefits.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">194</td>
+                        <td class="brand-name">Birkenstock</td>
+                        <td class="category">Footwear</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in comfort footwear with long heritage of health benefits. Superior comfort and foot health benefits with generally resilient positioning based on comfort and health functionality.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">195</td>
+                        <td class="brand-name">Columbia Sportswear</td>
+                        <td class="category">Outdoor Apparel</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">6</td>
+                        <td class="commentary">Strong trust in outdoor apparel with good reputation for weather protection. Good outdoor apparel but faces competition from premium and specialized outdoor brands in competitive market segments.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">196</td>
+                        <td class="brand-name">L.L.Bean</td>
+                        <td class="category">Outdoor Apparel</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="commentary">Exceptional trust built through lifetime guarantee and consistent quality. Superior outdoor apparel with outstanding customer service providing excellent protection and industry benchmark for satisfaction.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">197</td>
+                        <td class="brand-name">Arc'teryx</td>
+                        <td class="category">Outdoor Apparel</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-excellent">9</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Strong trust in premium outdoor gear with exceptional quality reputation. Superior outdoor apparel with excellent customer service and premium positioning providing strong protection against most outdoor industry challenges.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">198</td>
+                        <td class="brand-name">Erewhon</td>
+                        <td class="category">Grocery/Health Food</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-poor">5</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong among health-conscious consumers but criticism for extremely high prices. Superior organic product selection but economic sensitivity due to luxury positioning and accessibility concerns affecting broader market appeal.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">199</td>
+                        <td class="brand-name">Whole Foods</td>
+                        <td class="category">Retail/Grocery</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="commentary">Strong trust in organic food quality with good sourcing standards. Superior organic and natural food selection with strong sustainability leadership but premium positioning creates some reputation concerns.</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">200</td>
+                        <td class="brand-name">Trader Joe's</td>
+                        <td class="category">Retail/Grocery</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-good">8</td>
+                        <td class="score score-poor">6</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">7</td>
+                        <td class="score score-good">8</td>
+                        <td class="commentary">Exceptional trust among customers with unique product curation and consistent quality. Superior private label products with excellent customer service creating exceptionally strong loyalty and resilient market positioning.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            <p>Data compiled from comprehensive brand analysis covering trust, product quality, sustainability, ethics, vulnerability, and customer service metrics.</p>
+            <p>Rankings based on weighted average scores across all six key performance indicators.</p>
+            <p><strong>Total Brands Analyzed:</strong> 200 | <strong>Analysis Period:</strong> 2024-2025 | <strong>Last Updated:</strong> August 2025</p>
+        </div>
+    </div>
+</body>
+</html>

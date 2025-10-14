@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cognitive Processing Time Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #00d4ff, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .query-selector {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid transparent;
+            border-radius: 25px;
+            padding: 12px 24px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .query-selector.active {
+            border-color: #00d4ff;
+            background: rgba(0,212,255,0.2);
+            color: #00d4ff;
+        }
+
+        .chart-container {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        .racing-chart {
+            height: 500px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-row {
+            display: flex;
+            align-items: center;
+            height: 45px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .ai-label {
+            width: 120px;
+            font-weight: 600;
+            color: #ffffff;
+            text-align: right;
+            padding-right: 15px;
+        }
+
+        .bar-container {
+            flex: 1;
+            height: 35px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 17px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .time-bar {
+            height: 100%;
+            border-radius: 17px;
+            transition: width 2s ease-out;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            font-weight: 700;
+            font-size: 0.8em;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(0,0,0,0.8);
+        }
+
+        .bar-claude { background: linear-gradient(90deg, #ff6b6b, #ff8a80); }
+        .bar-chatgpt { background: linear-gradient(90deg, #00d4ff, #40e0d0); }
+        .bar-gemini { background: linear-gradient(90deg, #ffd93d, #fff176); color: #333 !important; }
+        .bar-grok { background: linear-gradient(90deg, #66bb6a, #81c784); }
+        .bar-llama { background: linear-gradient(90deg, #9c27b0, #ba68c8); }
+        .bar-copilot { background: linear-gradient(90deg, #4caf50, #66bb6a); }
+        .bar-perplexity { background: linear-gradient(90deg, #ff9800, #ffb74d); }
+        .bar-deepseek { background: linear-gradient(90deg, #607d8b, #78909c); }
+        .bar-openaidr { background: linear-gradient(90deg, #e91e63, #f06292); }
+
+        .time-value {
+            position: absolute;
+            right: -60px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: 700;
+            color: #00d4ff;
+            font-size: 0.9em;
+        }
+
+        .play-button {
+            background: #00d4ff;
+            color: #0a0e1a;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .play-button:hover {
+            background: #4ecdc4;
+            transform: scale(1.1);
+        }
+
+        .analysis-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .speed-analysis, .quality-correlation {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .panel-title {
+            color: #00d4ff;
+            font-weight: 700;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+
+        .speed-category {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+        }
+
+        .category-title {
+            color: #4ecdc4;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .category-ais {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .correlation-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .correlation-item:last-child {
+            border-bottom: none;
+        }
+
+        .ai-name {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .speed-quality {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9em;
+        }
+
+        .speed-score {
+            color: #00d4ff;
+        }
+
+        .quality-score {
+            color: #4ecdc4;
+        }
+
+        .query-description {
+            background: rgba(0,212,255,0.1);
+            border: 1px solid #00d4ff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .complexity-indicator {
+            display: inline-block;
+            background: rgba(255,217,61,0.3);
+            color: #ffd93d;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .leaderboard {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            border: 2px solid #00d4ff;
+            border-radius: 10px;
+            padding: 15px;
+            min-width: 150px;
+        }
+
+        .leaderboard-title {
+            color: #00d4ff;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.8em;
+        }
+
+        @media (max-width: 768px) {
+            .analysis-panel {
+                grid-template-columns: 1fr;
+            }
+            .ai-row {
+                flex-direction: column;
+                height: auto;
+                margin-bottom: 15px;
+            }
+            .ai-label {
+                width: 100%;
+                text-align: center;
+                padding-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Cognitive Processing Time Analysis</h1>
+            <p>Response times across different query complexities - Speed vs. Thoroughness trade-offs</p>
+        </div>
+
+        <div class="controls">
+            <div class="query-selector active" data-query="simple">Simple Query</div>
+            <div class="query-selector" data-query="complex">Complex Analysis</div>
+            <div class="query-selector" data-query="ethical">Ethical Dilemma</div>
+            <div class="query-selector" data-query="research">Research Task</div>
+        </div>
+
+        <div class="query-description" id="queryDescription">
+            <strong>"What's a good laptop for college?"</strong>
+            <span class="complexity-indicator">Low Complexity</span>
+            <div style="margin-top: 10px; font-size: 0.9em; color: rgba(255,255,255,0.8);">
+                Basic recommendation request with standard parameters
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="racing-chart">
+                <div class="leaderboard" id="leaderboard">
+                    <div class="leaderboard-title">🏆 Speed Ranking</div>
+                    <!-- Leaderboard items will be populated -->
+                </div>
+
+                <div class="ai-row">
+                    <div class="ai-label">Claude</div>
+                    <div class="bar-container">
+                        <div class="time-bar bar-claude" id="bar-claude">0.0s</div>
+                        <div class="time-value" id="time-claude">0.0s</div>
+                    </div>
+                </div>
+
+                <div class="ai-row">
+                    <div class="ai-label">ChatGPT</div>
+                    <div class="bar-container">
+                        <div class="time-bar bar-chatgpt" id="bar-chatgpt">0.0s</div>
+                        <div class="time-value" id="time-chatgpt">0.0s</div>
+                    </div>
+                </div>
+
+                <div class="ai-row">
+                    <div class="ai-label">Gemini</div>
+                    <div class="bar-container">
+                        <div class="time-bar bar-gemini" id="bar-gemini">0.0s</div>
+                        <div class="time-value" id="time-gemini">0.0s</div>
+                    </div>
+                </div>
+
+                <div class="ai-row">
+                    <div class="ai-label">Grok</div>
+                    <div class="bar-container">
+                        <div class="time-bar bar-grok" id="bar-grok">0.0s</div>
+                        <div class="time-value" id="time-grok">0.0s</div>
+                    </div>
+                </div>
+
+                <div class="ai-row">
+                    <div class="ai-label">Llama</div>
+                    <div class="bar-container">
+                        <div class="time-bar bar-llama" id="bar-llama">0.0s</div>
+                        <div class="time-value" id="time-llama">0.0s</div>
+                    </div>
+                </div>
+
+                <div class="ai-row">
+                    <div class="ai-label">Copilot</div>
+                    <div class="bar-container">
+                        <div class="time-bar bar-copilot" id="bar-copilot">0.0s</div>
+                        <div class="time-value" id="time-copilot">0.0s</div>
+                    </div>
+                </div>
+
+                <div class="ai-row">
+                    <div class="ai-label">Perplexity</div>
+                    <div class="bar-container">
+                        <div class="time-bar bar-perplexity" id="bar-perplexity">0.0s</div>
+                        <div class="time-value" id="time-perplexity">0.0s</div>
+                    </div>
+                </div>
+
+                <div class="ai-row">
+                    <div class="ai-label">DeepSeek</div>
+                    <div class="bar-container">
+                        <div class="time-bar bar-deepseek" id="bar-deepseek">0.0s</div>
+                        <div class="time-value" id="time-deepseek">0.0s</div>
+                    </div>
+                </div>
+
+                <div class="ai-row">
+                    <div class="ai-label">OpenAI DR</div>
+                    <div class="bar-container">
+                        <div class="time-bar bar-openaidr" id="bar-openaidr">0.0s</div>
+                        <div class="time-value" id="time-openaidr">0.0s</div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="play-button" id="playButton" onclick="animateRace()">▶</button>
+        </div>
+
+        <div class="analysis-panel">
+            <div class="speed-analysis">
+                <div class="panel-title">Speed Categories</div>
+                
+                <div class="speed-category">
+                    <div class="category-title">⚡ Lightning Fast (< 2s)</div>
+                    <div class="category-ais" id="fast-thinkers">Grok, Llama, Gemini</div>
+                </div>
+
+                <div class="speed-category">
+                    <div class="category-title">🎯 Balanced (2-4s)</div>
+                    <div class="category-ais" id="balanced-thinkers">ChatGPT, Copilot, DeepSeek</div>
+                </div>
+
+                <div class="speed-category">
+                    <div class="category-title">🔍 Deep Processors (> 4s)</div>
+                    <div class="category-ais" id="deep-thinkers">Claude, Perplexity, OpenAI DR</div>
+                </div>
+            </div>
+
+            <div class="quality-correlation">
+                <div class="panel-title">Speed vs. Quality Correlation</div>
+                
+                <div class="correlation-item">
+                    <span class="ai-name">Claude</span>
+                    <div class="speed-quality">
+                        <span class="speed-score">Slow</span>
+                        <span class="quality-score">High Quality</span>
+                    </div>
+                </div>
+
+                <div class="correlation-item">
+                    <span class="ai-name">ChatGPT</span>
+                    <div class="speed-quality">
+                        <span class="speed-score">Medium</span>
+                        <span class="quality-score">High Quality</span>
+                    </div>
+                </div>
+
+                <div class="correlation-item">
+                    <span class="ai-name">Gemini</span>
+                    <div class="speed-quality">
+                        <span class="speed-score">Fast</span>
+                        <span class="quality-score">Medium Quality</span>
+                    </div>
+                </div>
+
+                <div class="correlation-item">
+                    <span class="ai-name">Perplexity</span>
+                    <div class="speed-quality">
+                        <span class="speed-score">Slow</span>
+                        <span class="quality-score">Very High</span>
+                    </div>
+                </div>
+
+                <div class="correlation-item">
+                    <span class="ai-name">OpenAI DR</span>
+                    <div class="speed-quality">
+                        <span class="speed-score">Very Slow</span>
+                        <span class="quality-score">Very High</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const queryData = {
+            simple: {
+                title: "What's a good laptop for college?",
+                complexity: "Low Complexity",
+                description: "Basic recommendation request with standard parameters",
+                times: {
+                    claude: 3.2,
+                    chatgpt: 2.1,
+                    gemini: 1.8,
+                    grok: 1.2,
+                    llama: 1.5,
+                    copilot: 2.8,
+                    perplexity: 4.1,
+                    deepseek: 2.9,
+                    openaidr: 5.2
+                }
+            },
+            complex: {
+                title: "Compare enterprise software solutions for supply chain management",
+                complexity: "High Complexity",
+                description: "Multi-factor analysis requiring extensive research and comparison",
+                times: {
+                    claude: 8.7,
+                    chatgpt: 6.3,
+                    gemini: 4.9,
+                    grok: 3.8,
+                    llama: 4.2,
+                    copilot: 7.1,
+                    perplexity: 12.4,
+                    deepseek: 6.8,
+                    openaidr: 15.6
+                }
+            },
+            ethical: {
+                title: "Should I recommend a brand with labor practice concerns but great products?",
+                complexity: "Ethical Complexity",
+                description: "Moral reasoning requiring careful consideration of competing values",
+                times: {
+                    claude: 12.3,
+                    chatgpt: 5.7,
+                    gemini: 3.1,
+                    grok: 2.8,
+                    llama: 3.5,
+                    copilot: 8.9,
+                    perplexity: 7.2,
+                    deepseek: 9.1,
+                    openaidr: 8.8
+                }
+            },
+            research: {
+                title: "Analyze the market position of sustainable tech companies vs traditional leaders",
+                complexity: "Research Intensive",
+                description: "Comprehensive analysis requiring multiple sources and deep investigation",
+                times: {
+                    claude: 6.9,
+                    chatgpt: 8.4,
+                    gemini: 5.2,
+                    grok: 4.1,
+                    llama: 4.8,
+                    copilot: 7.6,
+                    perplexity: 18.3,
+                    deepseek: 7.9,
+                    openaidr: 22.1
+                }
+            }
+        };
+
+        let currentQuery = 'simple';
+        let isAnimating = false;
+
+        function updateQueryDescription(queryType) {
+            const data = queryData[queryType];
+            const description = document.getElementById('queryDescription');
+            
+            let complexityColor = '#4ecdc4';
+            if (data.complexity.includes('High') || data.complexity.includes('Research')) {
+                complexityColor = '#ff6b6b';
+            } else if (data.complexity.includes('Ethical')) {
+                complexityColor = '#ffd93d';
+            }
+            
+            description.innerHTML = `
+                <strong>"${data.title}"</strong>
+                <span class="complexity-indicator" style="background: rgba(${complexityColor === '#ff6b6b' ? '255,107,107' : complexityColor === '#ffd93d' ? '255,217,61' : '76,205,196'},0.3); color: ${complexityColor};">${data.complexity}</span>
+                <div style="margin-top: 10px; font-size: 0.9em; color: rgba(255,255,255,0.8);">
+                    ${data.description}
+                </div>
+            `;
+        }
+
+        function animateRace() {
+            if (isAnimating) return;
+            
+            isAnimating = true;
+            const playButton = document.getElementById('playButton');
+            playButton.textContent = '⏸';
+            
+            const data = queryData[currentQuery];
+            const maxTime = Math.max(...Object.values(data.times));
+            
+            // Reset all bars
+            Object.keys(data.times).forEach(ai => {
+                const bar = document.getElementById(`bar-${ai}`);
+                const timeValue = document.getElementById(`time-${ai}`);
+                bar.style.width = '0%';
+                bar.textContent = '0.0s';
+                timeValue.textContent = '0.0s';
+            });
+
+            // Animate bars
+            setTimeout(() => {
+                Object.entries(data.times).forEach(([ai, time]) => {
+                    const bar = document.getElementById(`bar-${ai}`);
+                    const timeValue = document.getElementById(`time-${ai}`);
+                    const percentage = (time / maxTime) * 100;
+                    
+                    bar.style.width = percentage + '%';
+                    bar.textContent = time + 's';
+                    timeValue.textContent = time + 's';
+                });
+
+                updateLeaderboard(data.times);
+                updateSpeedCategories(data.times);
+                
+                setTimeout(() => {
+                    isAnimating = false;
+                    playButton.textContent = '▶';
+                }, 2500);
+            }, 100);
+        }
+
+        function updateLeaderboard(times) {
+            const leaderboard = document.getElementById('leaderboard');
+            const sortedAIs = Object.entries(times)
+                .sort(([,a], [,b]) => a - b)
+                .slice(0, 5);
+
+            let leaderboardHTML = '<div class="leaderboard-title">🏆 Speed Ranking</div>';
+            sortedAIs.forEach(([ai, time], index) => {
+                const medals = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣'];
+                leaderboardHTML += `
+                    <div class="leaderboard-item">
+                        <span>${medals[index]} ${ai.charAt(0).toUpperCase() + ai.slice(1)}</span>
+                        <span>${time}s</span>
+                    </div>
+                `;
+            });
+            
+            leaderboard.innerHTML = leaderboardHTML;
+        }
+
+        function updateSpeedCategories(times) {
+            const fastThinkers = [];
+            const balancedThinkers = [];
+            const deepThinkers = [];
+
+            Object.entries(times).forEach(([ai, time]) => {
+                const aiName = ai.charAt(0).toUpperCase() + ai.slice(1);
+                if (time < 2) {
+                    fastThinkers.push(aiName);
+                } else if (time < 4) {
+                    balancedThinkers.push(aiName);
+                } else {
+                    deepThinkers.push(aiName);
+                }
+            });
+
+            document.getElementById('fast-thinkers').textContent = fastThinkers.join(', ') || 'None';
+            document.getElementById('balanced-thinkers').textContent = balancedThinkers.join(', ') || 'None';
+            document.getElementById('deep-thinkers').textContent = deepThinkers.join(', ') || 'None';
+        }
+
+        // Event listeners
+        document.querySelectorAll('.query-selector').forEach(selector => {
+            selector.addEventListener('click', (e) => {
+                currentQuery = e.target.dataset.query;
+                
+                document.querySelectorAll('.query-selector').forEach(s => s.classList.remove('active'));
+                e.target.classList.add('active');
+                
+                updateQueryDescription(currentQuery);
+                
+                if (!isAnimating) {
+                    animateRace();
+                }
+            });
+        });
+
+        // Initialize
+        updateQueryDescription(currentQuery);
+        setTimeout(animateRace, 1000);
+    </script>
+</body>
+</html>

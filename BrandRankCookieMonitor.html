@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Cookie Brand Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 60px 80px;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 0;
+        }
+
+        .main-title {
+            font-size: 4.5em;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+            text-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .main-subtitle {
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+            max-width: 800px;
+            margin: 0 auto 50px;
+        }
+
+        .search-container {
+            max-width: 800px;
+            margin: 40px auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 20px 25px;
+            font-size: 1.1em;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            color: #ffffff;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #00d4ff;
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .clear-search {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            font-size: 1.2em;
+            padding: 5px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .clear-search:hover {
+            color: #00d4ff;
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .quick-search {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .quick-search-btn {
+            padding: 12px 24px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 25px;
+            color: #00d4ff;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .quick-search-btn:hover {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+        }
+
+        .quick-search-btn.active {
+            background: #00d4ff;
+            color: #0a0e1a;
+            border-color: #00d4ff;
+        }
+
+        .mondelez-btn {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            color: #ff6b6b;
+        }
+
+        .mondelez-btn:hover {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: #ff6b6b;
+            transform: translateY(-2px);
+        }
+
+        .mondelez-btn.active {
+            background: #ff6b6b;
+            color: #0a0e1a;
+            border-color: #ff6b6b;
+        }
+
+        .mondelez-highlight {
+            background: #ff6b6b !important;
+            color: #ffffff !important;
+            font-weight: 600;
+            padding: 2px 4px;
+            border-radius: 4px;
+            animation: mondelezPulse 1s ease-in-out;
+        }
+
+        @keyframes mondelezPulse {
+            0%, 100% { background-color: #ff6b6b; }
+            50% { background-color: #ff8e8e; }
+        }
+
+        .search-results-info {
+            text-align: center;
+            margin: 20px 0;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9em;
+            display: none;
+        }
+
+        .search-results-info.no-results {
+            color: #ff6b6b;
+        }
+
+        .highlight {
+            background: #00d4ff !important;
+            color: #0a0e1a !important;
+            font-weight: 600;
+            padding: 2px 4px;
+            border-radius: 4px;
+            animation: highlightPulse 1s ease-in-out;
+        }
+
+        @keyframes highlightPulse {
+            0%, 100% { background-color: #00d4ff; }
+            50% { background-color: #4ecdc4; }
+        }
+
+        .category-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            margin-bottom: 60px;
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .category-section:nth-child(2) { animation-delay: 0.1s; }
+        .category-section:nth-child(3) { animation-delay: 0.2s; }
+        .category-section:nth-child(4) { animation-delay: 0.3s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: #0a0e1a;
+            padding: 25px 40px;
+            font-size: 1.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .category-stats {
+            padding: 20px 40px;
+            background: rgba(0, 212, 255, 0.05);
+            font-size: 1.1em;
+            color: rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            padding: 0;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: transparent;
+        }
+
+        .data-table th {
+            background: rgba(0, 212, 255, 0.15);
+            padding: 20px 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.5);
+        }
+
+        .data-table th:first-child {
+            width: 30%;
+            min-width: 300px;
+        }
+
+        .data-table td {
+            padding: 18px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            vertical-align: top;
+        }
+
+        .data-table tr:hover td {
+            background: rgba(0, 212, 255, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .prompt-cell {
+            font-weight: 500;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid #00d4ff;
+        }
+
+        .llm-response {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9em;
+        }
+
+        .data-table tr:nth-child(even) td:not(.prompt-cell) {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+        }
+
+        .scroll-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #4ecdc4);
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        /* Analysis Section */
+        .analysis-section {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(78, 205, 196, 0.05));
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 20px;
+            margin: 80px 0 60px;
+            padding: 60px 50px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .analysis-header {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .analysis-header::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, #00d4ff, #4ecdc4);
+        }
+
+        .analysis-title {
+            font-size: 2.8em;
+            font-weight: 200;
+            color: #00d4ff;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            text-shadow: 0 4px 20px rgba(0, 212, 255, 0.2);
+        }
+
+        .analysis-subtitle {
+            font-size: 1.3em;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+        }
+
+        .insight-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 35px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .insight-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, #00d4ff, #4ecdc4);
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+        }
+
+        .insight-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .insight-card:hover {
+            transform: translateY(-8px);
+            background: rgba(0, 212, 255, 0.08);
+            border-color: rgba(0, 212, 255, 0.4);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.15);
+        }
+
+        .insight-title {
+            font-size: 1.5em;
+            color: #00d4ff;
+            margin-bottom: 25px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .insight-content p {
+            margin-bottom: 18px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1em;
+        }
+
+        .insight-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .insight-content p strong {
+            color: #ffffff;
+            font-weight: 600;
+            background: rgba(0, 212, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        /* About Section */
+        .about-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            margin: 60px 0 40px;
+            padding: 40px 50px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .about-title {
+            font-size: 1.8em;
+            color: #00d4ff;
+            margin-bottom: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .about-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.7;
+            font-size: 1em;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 40px 50px;
+            }
+            
+            .main-title {
+                font-size: 3.5em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 25px;
+            }
+            
+            .main-title {
+                font-size: 2.5em;
+            }
+            
+            .main-subtitle {
+                font-size: 1.1em;
+            }
+            
+            .quick-search {
+                gap: 10px;
+            }
+            
+            .quick-search-btn {
+                padding: 10px 18px;
+                font-size: 0.8em;
+            }
+            
+            .search-input {
+                padding: 15px 20px;
+                font-size: 1em;
+            }
+            
+            .category-header {
+                padding: 20px 25px;
+                font-size: 1.4em;
+            }
+            
+            .category-stats {
+                padding: 15px 25px;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 12px 8px;
+                font-size: 0.8em;
+            }
+            
+            .data-table th:first-child {
+                min-width: 200px;
+            }
+
+            .insights-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .analysis-title {
+                font-size: 2em;
+            }
+            
+            .insight-card {
+                padding: 20px;
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-indicator">
+        <div class="scroll-progress"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">The Cookie Litmus Test: AI Edition</h1>
+            <p class="main-subtitle">When AI evaluates cookie brands, surprising patterns emerge<br>Powered by BrandRank.AI</p>
+            
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search for any cookie brand..." id="searchInput">
+                <button class="clear-search" id="clearSearch">×</button>
+                <div class="quick-search">
+                    <button class="quick-search-btn mondelez-btn" data-mondelez="true">All Mondelez</button>
+                    <button class="quick-search-btn" data-company="Oreo">Oreo</button>
+                    <button class="quick-search-btn" data-company="Chips Ahoy">Chips Ahoy!</button>
+                    <button class="quick-search-btn" data-company="Simple Mills">Simple Mills</button>
+                    <button class="quick-search-btn" data-company="Enjoy Life">Enjoy Life</button>
+                    <button class="quick-search-btn" data-company="Pepperidge Farm">Pepperidge Farm</button>
+                    <button class="quick-search-btn" data-company="Annie's">Annie's</button>
+                    <button class="quick-search-btn" data-company="Back to Nature">Back to Nature</button>
+                    <button class="quick-search-btn" data-company="MadeGood">MadeGood</button>
+                    <button class="quick-search-btn" data-company="Tate's">Tate's Bake Shop</button>
+                </div>
+                <div class="search-results-info" id="searchResults"></div>
+            </div>
+        </div>
+
+        <!-- Visibility (Category & Discovery) -->
+        <div class="category-section">
+            <h2 class="category-header">Visibility (Category & Discovery)</h2>
+            <div class="category-stats">10 prompts focused on popularity, recognition, and market presence</div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Prompt Question</th>
+                            <th>ChatGPT</th>
+                            <th>Claude</th>
+                            <th>Gemini</th>
+                            <th>Llama</th>
+                            <th>Perplexity</th>
+                            <th>Grok</th>
+                            <th>Amazon Rufus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="prompt-cell">What is the most popular cookie in the U.S.?</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Which cookie brand sells the most worldwide?</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What is the most famous sandwich cookie?</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Which cookie is considered a classic across generations?</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Chocolate Chip Cookies</td>
+                            <td class="llm-response">Chips Ahoy!</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Chocolate Chip Cookies</td>
+                            <td class="llm-response">Chocolate Chip Cookies (Toll House)</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What cookie is most recognized globally?</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What cookie is most affordable and widely available?</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Chips Ahoy!</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Chips Ahoy!</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Amazon Brand – Happy Belly</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What cookie is most popular during the holidays?</td>
+                            <td class="llm-response">Gingerbread</td>
+                            <td class="llm-response">Sugar Cookies</td>
+                            <td class="llm-response">Pepperidge Farm</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Nilla Wafers</td>
+                            <td class="llm-response">Gingerbread Cookies</td>
+                            <td class="llm-response">Sugar cookies</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What cookie is most common at college dorms?</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Chips Ahoy!</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Chips Ahoy!</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Nabisco Sweet Treats (Oreo + Chips Ahoy)</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What cookie brand is most often featured in fast-food desserts?</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">McDonald's (Oreo in desserts)</td>
+                            <td class="llm-response">Oreo</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What cookie is most popular for school lunches?</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Chips Ahoy!</td>
+                            <td class="llm-response">Chips Ahoy!</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Vulnerability (Health, Lifestyle, Comparisons) -->
+        <div class="category-section">
+            <h2 class="category-header">Vulnerability (Health, Lifestyle, Comparisons)</h2>
+            <div class="category-stats">10 prompts targeting health concerns, dietary restrictions, and product comparisons</div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Prompt Question</th>
+                            <th>ChatGPT</th>
+                            <th>Claude</th>
+                            <th>Gemini</th>
+                            <th>Llama</th>
+                            <th>Perplexity</th>
+                            <th>Grok</th>
+                            <th>Amazon Rufus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="prompt-cell">What cookie has the least sugar?</td>
+                            <td class="llm-response">Simple Mills</td>
+                            <td class="llm-response">Simple Mills</td>
+                            <td class="llm-response">Annie's Homegrown</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Nilla Wafers</td>
+                            <td class="llm-response">Annie's Organic Bunny Grahams</td>
+                            <td class="llm-response">Murray Sugar Free</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What cookie brand has vegan options?</td>
+                            <td class="llm-response">Enjoy Life</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Newman's Own</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Enjoy Life</td>
+                            <td class="llm-response">Back to Nature</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What cookie brand is gluten-free?</td>
+                            <td class="llm-response">Tate's Bake Shop</td>
+                            <td class="llm-response">Enjoy Life</td>
+                            <td class="llm-response">Tate's Bake Shop</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">No mainstream</td>
+                            <td class="llm-response">Enjoy Life</td>
+                            <td class="llm-response">Oreo (gluten-free)</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What cookie is safe for people with nut allergies?</td>
+                            <td class="llm-response">Enjoy Life</td>
+                            <td class="llm-response">Enjoy Life</td>
+                            <td class="llm-response">Enjoy Life</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Enjoy Life</td>
+                            <td class="llm-response">MadeGood</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Which cookie brand is healthier overall?</td>
+                            <td class="llm-response">Simple Mills</td>
+                            <td class="llm-response">Kind</td>
+                            <td class="llm-response">Annie's Homegrown</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">BelVita</td>
+                            <td class="llm-response">Annie's</td>
+                            <td class="llm-response">Simple Mills</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What cookie brand offers the widest range of flavors?</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Pepperidge Farm</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Pepperidge Farm</td>
+                            <td class="llm-response">Pepperidge Farm</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Which cookie brand is best for people who want plant-based snacks?</td>
+                            <td class="llm-response">Enjoy Life</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Newman's Own</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Enjoy Life</td>
+                            <td class="llm-response">Back to Nature</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What is the difference between sandwich cookies and chocolate chip cookies?</td>
+                            <td class="llm-response">Structure (not a brand)</td>
+                            <td class="llm-response">Sandwich cookies are filled; chocolate chip cookies have chips mixed in</td>
+                            <td class="llm-response">Sandwich cookies = cream filling vs choc chip = chips in dough</td>
+                            <td class="llm-response">Definition</td>
+                            <td class="llm-response">Definition</td>
+                            <td class="llm-response">Sandwich vs choc chip diff (definition)</td>
+                            <td class="llm-response">Oreo (as example of sandwich cookies)</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What cookie brand is most transparent about ingredients?</td>
+                            <td class="llm-response">Simple Mills</td>
+                            <td class="llm-response">Annie's</td>
+                            <td class="llm-response">Simple Mills</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Insufficient data</td>
+                            <td class="llm-response">Annie's</td>
+                            <td class="llm-response">Simple Mills</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Which is better for you: sandwich cookies or graham crackers?</td>
+                            <td class="llm-response">Graham crackers</td>
+                            <td class="llm-response">Graham crackers</td>
+                            <td class="llm-response">Graham crackers</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Graham crackers</td>
+                            <td class="llm-response">Graham crackers</td>
+                            <td class="llm-response">Graham crackers</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Readiness (Pairings, Uses, Culture & Nostalgia) -->
+        <div class="category-section">
+            <h2 class="category-header">Readiness (Pairings, Uses, Culture & Nostalgia)</h2>
+            <div class="category-stats">10 prompts exploring cultural connections, uses, and emotional associations</div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Prompt Question</th>
+                            <th>ChatGPT</th>
+                            <th>Claude</th>
+                            <th>Gemini</th>
+                            <th>Llama</th>
+                            <th>Perplexity</th>
+                            <th>Grok</th>
+                            <th>Amazon Rufus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="prompt-cell">What cookie pairs best with a glass of milk?</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What cookie is most popular as an ice cream mix-in?</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Chocolate Chip Cookies</td>
+                            <td class="llm-response">Oreo</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What cookie makes the best ice cream sandwich?</td>
+                            <td class="llm-response">Chocolate chip cookie</td>
+                            <td class="llm-response">Chips Ahoy!</td>
+                            <td class="llm-response">Chips Ahoy!</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Nestlé Toll House (chocolate chip)</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What cookie is most often used in milkshakes?</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What cookie crumbles make the best pie crust?</td>
+                            <td class="llm-response">Graham cracker</td>
+                            <td class="llm-response">Graham crackers</td>
+                            <td class="llm-response">Nilla Wafers</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Nilla Wafers</td>
+                            <td class="llm-response">Graham crackers</td>
+                            <td class="llm-response">Graham crackers (Keebler mentioned)</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What cookie has the most creative seasonal flavors?</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Pepperidge Farm</td>
+                            <td class="llm-response">Oreo</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What cookie do people associate most with childhood memories?</td>
+                            <td class="llm-response">Chips Ahoy!</td>
+                            <td class="llm-response">Chocolate Chip Cookies</td>
+                            <td class="llm-response">Chips Ahoy!</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Chocolate chip cookies (Chips Ahoy first)</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What cookie is most iconic in advertising history?</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What cookie is most common at movie nights?</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Chips Ahoy!</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Popcorners / Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What cookie is most often given as a treat or reward?</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Chocolate Chip Cookies</td>
+                            <td class="llm-response">Chips Ahoy!</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                            <td class="llm-response">Oreo</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Analysis Section -->
+        <div class="analysis-section">
+            <div class="analysis-header">
+                <h2 class="analysis-title">Key Insights & Trends</h2>
+                <p class="analysis-subtitle">What the data reveals about AI cookie brand recommendations across 7 platforms</p>
+            </div>
+
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h3 class="insight-title">Oreo's Universal Dominance</h3>
+                    <div class="insight-content">
+                        <p><strong>Oreo:</strong> 147 total mentions across all 210 responses (7 AI models × 30 prompts), achieving complete consensus (7/7) in 12 categories including milk pairing, milkshakes, and global recognition.</p>
+                        <p><strong>Cross-platform consistency:</strong> Oreo maintains leadership across all visibility metrics and cultural applications, with even Llama showing heavy Oreo bias despite less structured responses.</p>
+                        <p><strong>Rufus alignment:</strong> Amazon's Rufus aligns with consensus 83% of the time, but shows unique private label awareness (Amazon Brand – Happy Belly for affordability).</p>
+                    </div>
+                </div>
+
+                <div class="insight-card">
+                    <h3 class="insight-title">Health Category Fragmentation</h3>
+                    <div class="insight-content">
+                        <p><strong>Simple Mills emergence:</strong> Consensus leader in health transparency (5/7 models) and healthiest overall (3/7), despite zero visibility presence across any platform.</p>
+                        <p><strong>Enjoy Life specialization:</strong> Dominates allergy-safe recommendations (5/7 consensus for nut allergies), showing AI models recognize specialized dietary positioning.</p>
+                        <p><strong>Annie's vs. alternatives:</strong> Strong health-conscious brand recognition (3 models) competing with Simple Mills for transparency leadership, while mainstream brands largely absent from health categories.</p>
+                    </div>
+                </div>
+
+                <div class="insight-card">
+                    <h3 class="insight-title">Platform-Specific Insights</h3>
+                    <div class="insight-content">
+                        <p><strong>Llama's Oreo bias:</strong> Most extreme brand consolidation, defaulting to Oreo across 80%+ of responses with minimal competitive recognition.</p>
+                        <p><strong>Grok's differentiation:</strong> Only platform to mention McDonald's specifically for fast-food desserts and Pepperidge Farm for seasonal creativity, showing contextual awareness.</p>
+                        <p><strong>Rufus retail intelligence:</strong> Unique mentions include Murray Sugar Free, MadeGood for allergies, and Keebler specification for pie crusts, reflecting e-commerce purchase data influence.</p>
+                    </div>
+                </div>
+
+                <div class="insight-card">
+                    <h3 class="insight-title">Cultural Memory Consensus</h3>
+                    <div class="insight-content">
+                        <p><strong>Perfect agreement achieved:</strong> 12 out of 30 prompts show complete 7/7 AI consensus, with Oreo commanding 10 of these unanimous recommendations.</p>
+                        <p><strong>Chocolate chip competition:</strong> Only consistent challenger to Oreo dominance in nostalgic/cultural contexts, achieving plurality recommendations for childhood memories and ice cream sandwiches.</p>
+                        <p><strong>Generic vs. branded responses:</strong> Holiday cookies show categorical thinking (sugar cookies, gingerbread) rather than brand focus, suggesting AI models distinguish between product types and commercial brands in seasonal contexts.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About BrandRank -->
+        <div class="about-section">
+            <div class="about-content">
+                <h3 class="about-title">About BrandRank</h3>
+                <p class="about-description">We help brands measure, protect, and grow trust through the power of AI-driven search and discovery. Combining AI with expert insight, we monitor the major AI "Answer Engines" to pinpoint vulnerabilities and opportunities, identify key insights driving purchase behavior, and uncover category needs and opportunities to strengthen brand equity and consumer loyalty.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const clearButton = document.getElementById('clearSearch');
+        const searchResults = document.getElementById('searchResults');
+        const quickSearchButtons = document.querySelectorAll('.quick-search-btn');
+        
+        let currentSearchTerm = '';
+
+        function highlightMatches(searchTerm) {
+            // Remove existing highlights
+            clearHighlights();
+            
+            if (!searchTerm) {
+                searchResults.style.display = 'none';
+                return;
+            }
+
+            const responses = document.querySelectorAll('.llm-response');
+            let matchCount = 0;
+            let firstMatch = null;
+            
+            responses.forEach(cell => {
+                const originalText = cell.getAttribute('data-original-text') || cell.textContent;
+                if (!cell.getAttribute('data-original-text')) {
+                    cell.setAttribute('data-original-text', originalText);
+                }
+                
+                const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                
+                if (regex.test(originalText)) {
+                    matchCount++;
+                    const highlightedText = originalText.replace(regex, '<span class="highlight">$1</span>');
+                    cell.innerHTML = highlightedText;
+                    
+                    if (!firstMatch) {
+                        firstMatch = cell;
+                    }
+                }
+            });
+
+            // Show results info
+            searchResults.style.display = 'block';
+            if (matchCount > 0) {
+                searchResults.textContent = `Found ${matchCount} matches for "${searchTerm}"`;
+                searchResults.className = 'search-results-info';
+                
+                // Scroll to first match
+                if (firstMatch) {
+                    setTimeout(() => {
+                        firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 100);
+                }
+            } else {
+                searchResults.textContent = `No matches found for "${searchTerm}"`;
+                searchResults.className = 'search-results-info no-results';
+            }
+        }
+
+        function highlightMondelezBrands() {
+            // Remove existing highlights
+            clearHighlights();
+            
+            // List of Mondelez brands to highlight
+            const mondelezBrands = ['Oreo', 'Chips Ahoy', 'BelVita', 'Tate\'s', 'Nilla Wafers', 'Ritz'];
+            
+            const responses = document.querySelectorAll('.llm-response');
+            let matchCount = 0;
+            let firstMatch = null;
+            
+            responses.forEach(cell => {
+                const originalText = cell.getAttribute('data-original-text') || cell.textContent;
+                if (!cell.getAttribute('data-original-text')) {
+                    cell.setAttribute('data-original-text', originalText);
+                }
+                
+                let highlightedText = originalText;
+                let hasMatch = false;
+                
+                mondelezBrands.forEach(brand => {
+                    const regex = new RegExp(`(${brand.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                    if (regex.test(highlightedText)) {
+                        hasMatch = true;
+                        highlightedText = highlightedText.replace(regex, '<span class="mondelez-highlight">$1</span>');
+                    }
+                });
+                
+                if (hasMatch) {
+                    matchCount++;
+                    cell.innerHTML = highlightedText;
+                    
+                    if (!firstMatch) {
+                        firstMatch = cell;
+                    }
+                }
+            });
+
+            // Show results info
+            searchResults.style.display = 'block';
+            if (matchCount > 0) {
+                searchResults.textContent = `Found ${matchCount} Mondelez brand mentions`;
+                searchResults.className = 'search-results-info';
+                
+                // Scroll to first match
+                if (firstMatch) {
+                    setTimeout(() => {
+                        firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 100);
+                }
+            } else {
+                searchResults.textContent = `No Mondelez brands found`;
+                searchResults.className = 'search-results-info no-results';
+            }
+        }
+
+        function clearHighlights() {
+            const responses = document.querySelectorAll('.llm-response');
+            responses.forEach(cell => {
+                const originalText = cell.getAttribute('data-original-text');
+                if (originalText) {
+                    cell.innerHTML = originalText;
+                }
+            });
+            
+            // Clear active states
+            quickSearchButtons.forEach(btn => btn.classList.remove('active'));
+        }
+
+        function clearSearch() {
+            searchInput.value = '';
+            currentSearchTerm = '';
+            clearHighlights();
+            searchResults.style.display = 'none';
+            clearButton.style.display = 'none';
+        }
+
+        // Search input event listeners
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.trim();
+            currentSearchTerm = searchTerm;
+            
+            if (searchTerm) {
+                clearButton.style.display = 'block';
+                // Check if it's a manual search or if we should use Mondelez highlighting
+                if (searchTerm.toLowerCase().includes('mondelez') || searchTerm === 'All Mondelez brands') {
+                    highlightMondelezBrands();
+                } else {
+                    highlightMatches(searchTerm);
+                }
+            } else {
+                clearSearch();
+            }
+        });
+
+        // Clear button
+        clearButton.addEventListener('click', clearSearch);
+
+        // Quick search buttons
+        quickSearchButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const company = this.getAttribute('data-company');
+                const isMondelez = this.getAttribute('data-mondelez');
+                
+                // Toggle active state
+                if (this.classList.contains('active')) {
+                    clearSearch();
+                } else {
+                    // Clear other active buttons
+                    quickSearchButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    if (isMondelez) {
+                        searchInput.value = 'All Mondelez brands';
+                        currentSearchTerm = 'mondelez';
+                        clearButton.style.display = 'block';
+                        highlightMondelezBrands();
+                    } else {
+                        searchInput.value = company;
+                        currentSearchTerm = company;
+                        clearButton.style.display = 'block';
+                        highlightMatches(company);
+                    }
+                }
+            });
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Escape to clear search
+            if (e.key === 'Escape') {
+                clearSearch();
+                searchInput.blur();
+            }
+            
+            // Ctrl/Cmd + F to focus search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+                e.preventDefault();
+                searchInput.focus();
+            }
+        });
+
+        // Scroll progress indicator
+        function updateScrollProgress() {
+            const scrollTop = window.pageYOffset;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            document.querySelector('.scroll-progress').style.width = scrollPercent + '%';
+        }
+
+        window.addEventListener('scroll', updateScrollProgress);
+        window.addEventListener('resize', updateScrollProgress);
+        
+        // Initialize
+        updateScrollProgress();
+    </script>
+</body>
+</html>

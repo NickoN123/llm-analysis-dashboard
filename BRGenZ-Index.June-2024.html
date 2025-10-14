@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrandRank.AI 100: Gen Z Culture</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+            position: sticky;
+            top: 20px;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        #searchInput:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 12px 8px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+
+        .question-col {
+            width: 400px;
+            min-width: 300px;
+            font-weight: 500;
+            color: #2d3748;
+        }
+
+        .llm-col {
+            width: 120px;
+            min-width: 100px;
+        }
+
+        tr:hover {
+            background-color: #f7fafc;
+        }
+
+        .response {
+            font-weight: 600;
+            color: #4a5568;
+            padding: 4px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            margin: 2px 0;
+        }
+
+        .chatgpt { background: #e6fffa; color: #00a6a6; }
+        .gemini { background: #fef5e7; color: #dd8500; }
+        .claude { background: #f0f4ff; color: #4c63d2; }
+        .llama { background: #fff5f5; color: #c53030; }
+        .perplexity { background: #f0fff4; color: #38a169; }
+        .deepseek { background: #f7fafc; color: #4a5568; }
+        .grok { background: #fdf2f8; color: #b83280; }
+
+        .category-header {
+            background: #f8fafc !important;
+            font-weight: bold;
+            color: #2d3748;
+            font-style: italic;
+        }
+
+        .question-number {
+            font-weight: bold;
+            color: #667eea;
+            margin-right: 8px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 120px;
+            backdrop-filter: blur(5px);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #4a5568;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .stats {
+                justify-content: center;
+            }
+            
+            table {
+                font-size: 12px;
+            }
+            
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BrandRank.AI 100: Gen Z Culture</h1>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">100</div>
+                <div class="stat-label">Questions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">7</div>
+                <div class="stat-label">LLMs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">700</div>
+                <div class="stat-label">Total Responses</div>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search questions or responses...">
+        </div>
+
+        <div class="table-container">
+            <table id="comparisonTable">
+                <thead>
+                    <tr>
+                        <th class="question-col">Question</th>
+                        <th class="llm-col">ChatGPT</th>
+                        <th class="llm-col">Gemini</th>
+                        <th class="llm-col">Claude</th>
+                        <th class="llm-col">LLAMA</th>
+                        <th class="llm-col">Perplexity</th>
+                        <th class="llm-col">DeepSeek</th>
+                        <th class="llm-col">X/Grok</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="category-header">
+                        <td colspan="8"><strong>Big-Picture Gen Z Questions</strong></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">1.</span>What brand makes Gen Z feel most authentic—and why does it resonate with this generation?</td>
+                        <td><span class="response chatgpt">Converse sneakers</span></td>
+                        <td><span class="response gemini">TikTok</span></td>
+                        <td><span class="response claude">Nike</span></td>
+                        <td><span class="response llama">Vans Authentic</span></td>
+                        <td><span class="response perplexity">Glossier</span></td>
+                        <td><span class="response deepseek">Patagonia</span></td>
+                        <td><span class="response grok">Patagonia - Sustainable values</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">2.</span>Which app is used daily by most Gen Z users—and why is it considered indispensable?</td>
+                        <td><span class="response chatgpt">TikTok</span></td>
+                        <td><span class="response gemini">TikTok</span></td>
+                        <td><span class="response claude">TikTok</span></td>
+                        <td><span class="response llama">TikTok Indispensable</span></td>
+                        <td><span class="response perplexity">TikTok</span></td>
+                        <td><span class="response deepseek">TikTok (entertainment/connection)</span></td>
+                        <td><span class="response grok">TikTok - Social connection</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">3.</span>What was the last thing Gen Z searched for on TikTok or ChatGPT—and what does that reveal about how they learn or make decisions?</td>
+                        <td><span class="response chatgpt">AI hair tips</span></td>
+                        <td><span class="response gemini">Life hacks</span></td>
+                        <td><span class="response claude">Study tips</span></td>
+                        <td><span class="response llama">Plant care tips</span></td>
+                        <td><span class="response perplexity">Life hacks</span></td>
+                        <td><span class="response deepseek">Recipe hack</span></td>
+                        <td><span class="response grok">Skincare - Trend-driven learning</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">4.</span>Which creator or influencer has had the biggest impact on Gen Z's opinions or beliefs—and how did they build that trust?</td>
+                        <td><span class="response chatgpt">Emma Chamberlain</span></td>
+                        <td><span class="response gemini">MrBeast</span></td>
+                        <td><span class="response claude">MrBeast</span></td>
+                        <td><span class="response llama">Charli D'Amelio</span></td>
+                        <td><span class="response perplexity">Emma Chamberlain</span></td>
+                        <td><span class="response deepseek">MrBeast</span></td>
+                        <td><span class="response grok">MrBeast - Authentic engagement</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">5.</span>How does Gen Z use avatars, Bitmojis, or digital profiles to express identity—and what does that say about their values?</td>
+                        <td><span class="response chatgpt">Self-curated avatars</span></td>
+                        <td><span class="response gemini">Self-expression</span></td>
+                        <td><span class="response claude">Bitmoji customization</span></td>
+                        <td><span class="response llama">Digital Self-Expression</span></td>
+                        <td><span class="response perplexity">Bitmojis</span></td>
+                        <td><span class="response deepseek">Bitmoji outfits</span></td>
+                        <td><span class="response grok">Bitmoji - Creative self-expression</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">6.</span>What product does Gen Z continue to buy even if it's not sustainable—and what trade-offs are they making?</td>
+                        <td><span class="response chatgpt">Shein clothes</span></td>
+                        <td><span class="response gemini">Fast fashion</span></td>
+                        <td><span class="response claude">Fast fashion</span></td>
+                        <td><span class="response llama">Instant noodles</span></td>
+                        <td><span class="response perplexity">Shein</span></td>
+                        <td><span class="response deepseek">Fast fashion</span></td>
+                        <td><span class="response grok">Fast fashion - Affordability trade-off</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">7.</span>Which TikTok trend or product best reflects how Gen Z balances individualism and belonging?</td>
+                        <td><span class="response chatgpt">BookTok recs</span></td>
+                        <td><span class="response gemini">De-influencing</span></td>
+                        <td><span class="response claude">Stanley cups</span></td>
+                        <td><span class="response llama">ASMR relaxation</span></td>
+                        <td><span class="response perplexity">"Corecore"</span></td>
+                        <td><span class="response deepseek">Stanley cups</span></td>
+                        <td><span class="response grok">Y2K fashion - Unique conformity</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">8.</span>What wearable tech or digital tool does Gen Z use to feel more in control of their health, body, or time?</td>
+                        <td><span class="response chatgpt">Apple Watch</span></td>
+                        <td><span class="response gemini">Smartwatch</span></td>
+                        <td><span class="response claude">Apple Watch</span></td>
+                        <td><span class="response llama">Fitbit Tracker</span></td>
+                        <td><span class="response perplexity">Apple Watch</span></td>
+                        <td><span class="response deepseek">Oura Ring</span></td>
+                        <td><span class="response grok">Apple Watch - Health tracking</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">9.</span>What brand, band, or game do Gen Z consumers feel like they "discovered first"—and why does that matter to them?</td>
+                        <td><span class="response chatgpt">Bandcamp find</span></td>
+                        <td><span class="response gemini">BeReal</span></td>
+                        <td><span class="response claude">Indie bands</span></td>
+                        <td><span class="response llama">Stranger Things</span></td>
+                        <td><span class="response perplexity">Mitski</span></td>
+                        <td><span class="response deepseek">Underground artists</span></td>
+                        <td><span class="response grok">Depop - Vintage discovery</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">10.</span>What's one thing older generations consistently misunderstand about Gen Z's lifestyle, shopping behavior, or mindset?</td>
+                        <td><span class="response chatgpt">Digital hustle</span></td>
+                        <td><span class="response gemini">Work-life balance</span></td>
+                        <td><span class="response claude">Mental health</span></td>
+                        <td><span class="response llama">Remote work flexibility</span></td>
+                        <td><span class="response perplexity">Hustle culture</span></td>
+                        <td><span class="response deepseek">Hustle culture</span></td>
+                        <td><span class="response grok">Digital nativity - Tech reliance</span></td>
+                    </tr>
+
+                    <tr class="category-header">
+                        <td colspan="8"><strong>Tech, Productivity & Learning</strong></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">11.</span>What budgeting app is Gen Z most likely to use to track savings and build financial independence?</td>
+                        <td><span class="response chatgpt">Rocket Money</span></td>
+                        <td><span class="response gemini">Mint</span></td>
+                        <td><span class="response claude">YNAB</span></td>
+                        <td><span class="response llama">Mint App</span></td>
+                        <td><span class="response perplexity">Mint</span></td>
+                        <td><span class="response deepseek">Mint</span></td>
+                        <td><span class="response grok">YNAB</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">12.</span>What app helps Gen Z plan trips, especially in groups or for spontaneous travel?</td>
+                        <td><span class="response chatgpt">Hopper</span></td>
+                        <td><span class="response gemini">TripIt</span></td>
+                        <td><span class="response claude">Splitwise</span></td>
+                        <td><span class="response llama">Google Trips</span></td>
+                        <td><span class="response perplexity">Airbnb</span></td>
+                        <td><span class="response deepseek">WanderGen</span></td>
+                        <td><span class="response grok">Wanderlog</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">13.</span>What AI tool or chatbot do Gen Z students use to help with essays or research?</td>
+                        <td><span class="response chatgpt">ChatGPT</span></td>
+                        <td><span class="response gemini">ChatGPT</span></td>
+                        <td><span class="response claude">ChatGPT</span></td>
+                        <td><span class="response llama">ChatGPT</span></td>
+                        <td><span class="response perplexity">ChatGPT</span></td>
+                        <td><span class="response deepseek">ChatGPT</span></td>
+                        <td><span class="response grok">Grammarly</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">14.</span>What wearable tech is most favored by Gen Z women for health, wellness, and cycle tracking?</td>
+                        <td><span class="response chatgpt">Oura Ring</span></td>
+                        <td><span class="response gemini">Fitbit</span></td>
+                        <td><span class="response claude">Apple Watch</span></td>
+                        <td><span class="response llama">Flo Period</span></td>
+                        <td><span class="response perplexity">Apple Watch</span></td>
+                        <td><span class="response deepseek">Apple Watch</span></td>
+                        <td><span class="response grok">Oura Ring</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">15.</span>What period or fertility tracking app is gaining traction as an alternative to hormonal birth control among Gen Z?</td>
+                        <td><span class="response chatgpt">Flo app</span></td>
+                        <td><span class="response gemini">Natural Cycles – cycle tracking</span></td>
+                        <td><span class="response claude">Natural Cycles</span></td>
+                        <td><span class="response llama">Natural Cycles</span></td>
+                        <td><span class="response perplexity">Clue</span></td>
+                        <td><span class="response deepseek">Natural Cycles</span></td>
+                        <td><span class="response grok">Clue</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">16.</span>What digital to-do list or planner app is Gen Z's go-to for organizing their week?</td>
+                        <td><span class="response chatgpt">Notion</span></td>
+                        <td><span class="response gemini">Notion – task management</span></td>
+                        <td><span class="response claude">Notion</span></td>
+                        <td><span class="response llama">Todoist</span></td>
+                        <td><span class="response perplexity">Notion</span></td>
+                        <td><span class="response deepseek">TickTick</span></td>
+                        <td><span class="response grok">Todoist</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">17.</span>What note-taking method or app (e.g., Notion, GoodNotes) do Gen Z students swear by?</td>
+                        <td><span class="response chatgpt">GoodNotes</span></td>
+                        <td><span class="response gemini">Notion – all-in-one</span></td>
+                        <td><span class="response claude">GoodNotes</span></td>
+                        <td><span class="response llama">Notion</span></td>
+                        <td><span class="response perplexity">GoodNotes</span></td>
+                        <td><span class="response deepseek">Notion</span></td>
+                        <td><span class="response grok">Notion</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">18.</span>What job or gig app feels most empowering for Gen Z freelancers or creators?</td>
+                        <td><span class="response chatgpt">Fiverr</span></td>
+                        <td><span class="response gemini">Fiverr – creative gigs</span></td>
+                        <td><span class="response claude">Fiverr</span></td>
+                        <td><span class="response llama">Upwork</span></td>
+                        <td><span class="response perplexity">Fiverr</span></td>
+                        <td><span class="response deepseek">Fiverr</span></td>
+                        <td><span class="response grok">Fiverr</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">19.</span>What Gen Z-founded learning or upskilling platform is making traditional college less essential?</td>
+                        <td><span class="response chatgpt">Skillshare</span></td>
+                        <td><span class="response gemini">Coursera – skill building</span></td>
+                        <td><span class="response claude">MasterClass</span></td>
+                        <td><span class="response llama">Masterclass</span></td>
+                        <td><span class="response perplexity">MasterClass</span></td>
+                        <td><span class="response deepseek">Skillshare</span></td>
+                        <td><span class="response grok">MasterClass</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">20.</span>What browser extension or tool does Gen Z use to find the best deals or save money when shopping online?</td>
+                        <td><span class="response chatgpt">Honey</span></td>
+                        <td><span class="response gemini">Honey – coupon finder</span></td>
+                        <td><span class="response claude">Honey</span></td>
+                        <td><span class="response llama">Honey</span></td>
+                        <td><span class="response perplexity">Honey</span></td>
+                        <td><span class="response deepseek">Honey</span></td>
+                        <td><span class="response grok">Honey</span></td>
+                    </tr>
+
+                    <tr class="category-header">
+                        <td colspan="8"><strong>Media, Content & Discovery</strong></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">21.</span>What book is most frequently recommended by Gen Z readers?</td>
+                        <td><span class="response chatgpt">"It Ends With Us"</span></td>
+                        <td><span class="response gemini">Colleen Hoover – emotional reads</span></td>
+                        <td><span class="response claude">Fourth Wing</span></td>
+                        <td><span class="response llama">"The Hate U Give"</span></td>
+                        <td><span class="response perplexity">"It Ends With Us"</span></td>
+                        <td><span class="response deepseek">"Atomic Habits"</span></td>
+                        <td><span class="response grok">"Tomorrow" - Social issues</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">22.</span>What nonfiction title is shaping Gen Z's views on the world?</td>
+                        <td><span class="response chatgpt">"Atomic Habits"</span></td>
+                        <td><span class="response gemini">Atomic Habits – self-improvement</span></td>
+                        <td><span class="response claude">Atomic Habits</span></td>
+                        <td><span class="response llama">"Sapiens"</span></td>
+                        <td><span class="response perplexity">"Atomic Habits"</span></td>
+                        <td><span class="response deepseek">"The Subtle Art"</span></td>
+                        <td><span class="response grok">"Sapiens" - Worldview shaper</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">23.</span>What Gen Z-favored news or content app blends entertainment and awareness?</td>
+                        <td><span class="response chatgpt">The News Movement</span></td>
+                        <td><span class="response gemini">TikTok – news, entertainment</span></td>
+                        <td><span class="response claude">BeReal</span></td>
+                        <td><span class="response llama">CNN News</span></td>
+                        <td><span class="response perplexity">YouTube</span></td>
+                        <td><span class="response deepseek">Snap Discover</span></td>
+                        <td><span class="response grok">TheSkimm - Fun news</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">24.</span>What comic or graphic novel is being redefined by Gen Z illustrators or fandoms?</td>
+                        <td><span class="response chatgpt">"Lore Olympus"</span></td>
+                        <td><span class="response gemini">Webtoons – diverse stories</span></td>
+                        <td><span class="response claude">Heartstopper</span></td>
+                        <td><span class="response llama">"Stranger Things"</span></td>
+                        <td><span class="response perplexity">"Heartstopper"</span></td>
+                        <td><span class="response deepseek">"Heartstopper"</span></td>
+                        <td><span class="response grok">"Heartstopper" - Queer representation</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">25.</span>What podcast/book hybrid is Gen Z's preferred form of deep learning?</td>
+                        <td><span class="response chatgpt">Blinkist</span></td>
+                        <td><span class="response gemini">Spotify – audio learning</span></td>
+                        <td><span class="response claude">Spotify podcasts</span></td>
+                        <td><span class="response llama">How I Built</span></td>
+                        <td><span class="response perplexity">Blinkist</span></td>
+                        <td><span class="response deepseek">Audible highlights</span></td>
+                        <td><span class="response grok">"Maintenance" - Reflective learning</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">26.</span>What YouTube channel do Gen Z viewers consider a must-subscribe for inspiration or life advice?</td>
+                        <td><span class="response chatgpt">Yes Theory</span></td>
+                        <td><span class="response gemini">Emma Chamberlain – relatable life</span></td>
+                        <td><span class="response claude">Emma Chamberlain</span></td>
+                        <td><span class="response llama">PewDiePie</span></td>
+                        <td><span class="response perplexity">Yes Theory</span></td>
+                        <td><span class="response deepseek">Matt D'Avella</span></td>
+                        <td><span class="response grok">Kurzgesagt - Visual insights</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">27.</span>What streaming platform has the best algorithm for Gen Z's taste in content?</td>
+                        <td><span class="response chatgpt">YouTube</span></td>
+                        <td><span class="response gemini">Netflix – diverse content</span></td>
+                        <td><span class="response claude">Netflix</span></td>
+                        <td><span class="response llama">Netflix</span></td>
+                        <td><span class="response perplexity">Netflix</span></td>
+                        <td><span class="response deepseek">Netflix</span></td>
+                        <td><span class="response grok">Netflix - Personalized algorithm</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">28.</span>What fictional character best reflects Gen Z's identity struggles or aspirations?</td>
+                        <td><span class="response chatgpt">Rue (Euphoria)</span></td>
+                        <td><span class="response gemini">Rue Bennett – identity struggles</span></td>
+                        <td><span class="response claude">Zuko</span></td>
+                        <td><span class="response llama">Eleven</span></td>
+                        <td><span class="response perplexity">Wednesday Addams</span></td>
+                        <td><span class="response deepseek">Wednesday Addams</span></td>
+                        <td><span class="response grok">Enola Holmes - Independent spirit</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">29.</span>What TV show does Gen Z binge not just for fun but for comfort or coping?</td>
+                        <td><span class="response chatgpt">"Gilmore Girls"</span></td>
+                        <td><span class="response gemini">The Office – comfort, humor</span></td>
+                        <td><span class="response claude">The Office</span></td>
+                        <td><span class="response llama">The Office</span></td>
+                        <td><span class="response perplexity">"Heartstopper"</span></td>
+                        <td><span class="response deepseek">"The Office"</span></td>
+                        <td><span class="response grok">"Euphoria" - Emotional resonance</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">30.</span>What's the most-watched nostalgic show from the 2000s making a Gen Z comeback?</td>
+                        <td><span class="response chatgpt">"Friends"</span></td>
+                        <td><span class="response gemini">Gilmore Girls – cozy, witty</span></td>
+                        <td><span class="response claude">Friends</span></td>
+                        <td><span class="response llama">Riverdale</span></td>
+                        <td><span class="response perplexity">"Wizards of Waverly Place"</span></td>
+                        <td><span class="response deepseek">"Avatar: TLA"</span></td>
+                        <td><span class="response grok">"Friends" - Nostalgic comfort</span></td>
+                    </tr>
+
+                    <tr class="category-header">
+                        <td colspan="8"><strong>Pets & Companion Culture</strong></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">31.</span>What pet breeds are most compatible with Gen Z's lifestyle (e.g., small spaces, social routines, flexible schedules)?</td>
+                        <td><span class="response chatgpt">French Bulldogs</span></td>
+                        <td><span class="response gemini">Small dogs – apartment friendly</span></td>
+                        <td><span class="response claude">French Bulldogs</span></td>
+                        <td><span class="response llama">Miniature Dachshund</span></td>
+                        <td><span class="response perplexity">French Bulldog</span></td>
+                        <td><span class="response deepseek">French Bulldogs</span></td>
+                        <td><span class="response grok">French Bulldog - Urban friendly</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">32.</span>What low-maintenance pets are most popular among Gen Z professionals or students living on their own?</td>
+                        <td><span class="response chatgpt">Betta fish</span></td>
+                        <td><span class="response gemini">Cats – independent</span></td>
+                        <td><span class="response claude">Cats</span></td>
+                        <td><span class="response llama">Fish</span></td>
+                        <td><span class="response perplexity">Betta fish</span></td>
+                        <td><span class="response deepseek">Leopard geckos</span></td>
+                        <td><span class="response grok">Betta fish - Low upkeep</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">33.</span>What pet adoption platform or app is Gen Z most likely to use?</td>
+                        <td><span class="response chatgpt">Petfinder</span></td>
+                        <td><span class="response gemini">Petfinder – adoption platform</span></td>
+                        <td><span class="response claude">Petfinder</span></td>
+                        <td><span class="response llama">Petfinder</span></td>
+                        <td><span class="response perplexity">Petfinder</span></td>
+                        <td><span class="response deepseek">Petfinder</span></td>
+                        <td><span class="response grok">Petfinder - Ethical adoption</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">34.</span>What Gen Z-focused pet accessories brand is thriving on Instagram or TikTok?</td>
+                        <td><span class="response chatgpt">Wild One</span></td>
+                        <td><span class="response gemini">Wild One – stylish pet gear</span></td>
+                        <td><span class="response claude">BarkBox</span></td>
+                        <td><span class="response llama">Pup Joy</span></td>
+                        <td><span class="response perplexity">Wild One</span></td>
+                        <td><span class="response deepseek">Wild One</span></td>
+                        <td><span class="response grok">Wild One - Stylish gear</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">35.</span>What traits define the perfect pet for a Gen Z student or solo renter?</td>
+                        <td><span class="response chatgpt">Loyal, low-drama</span></td>
+                        <td><span class="response gemini">Chill, cuddly</span></td>
+                        <td><span class="response claude">Low maintenance</span></td>
+                        <td><span class="response llama">Cuddly and low-maintenance</span></td>
+                        <td><span class="response perplexity">Adaptable</span></td>
+                        <td><span class="response deepseek">Low-energy</span></td>
+                        <td><span class="response grok">Affectionate - Social compatibility</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">36.</span>What dog breeds appear most often in Gen Z's dating profiles or social feeds?</td>
+                        <td><span class="response chatgpt">Golden Retrievers</span></td>
+                        <td><span class="response gemini">Golden Retriever – friendly</span></td>
+                        <td><span class="response claude">Golden Retrievers</span></td>
+                        <td><span class="response llama">French Bulldog</span></td>
+                        <td><span class="response perplexity">Corgi</span></td>
+                        <td><span class="response deepseek">Shiba Inu</span></td>
+                        <td><span class="response grok">Golden Retriever - Approachable vibe</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">37.</span>What pet names are trending among Gen Z—and what do they say about personality?</td>
+                        <td><span class="response chatgpt">Mochi</span></td>
+                        <td><span class="response gemini">Human names – unique, fun</span></td>
+                        <td><span class="response claude">Human names</span></td>
+                        <td><span class="response llama">Luna</span></td>
+                        <td><span class="response perplexity">Mochi</span></td>
+                        <td><span class="response deepseek">Human names</span></td>
+                        <td><span class="response grok">Luna - Playful identity</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">38.</span>What pet-centered TikTok trends are Gen Z driving?</td>
+                        <td><span class="response chatgpt">Talking dogs</span></td>
+                        <td><span class="response gemini">Pet POV – humorous videos</span></td>
+                        <td><span class="response claude">Pet reactions</span></td>
+                        <td><span class="response llama">Dog Reaction</span></td>
+                        <td><span class="response perplexity">"Pet routines"</span></td>
+                        <td><span class="response deepseek">Pet ASMR</span></td>
+                        <td><span class="response grok">Pet fashion - Creative expression</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">39.</span>What Gen Z-favorite meme animals are showing up on merch or stickers?</td>
+                        <td><span class="response chatgpt">Capybara memes</span></td>
+                        <td><span class="response gemini">Capybara – chill vibes</span></td>
+                        <td><span class="response claude">Capybaras</span></td>
+                        <td><span class="response llama">Corgis</span></td>
+                        <td><span class="response perplexity">Frog meme</span></td>
+                        <td><span class="response deepseek">Doge</span></td>
+                        <td><span class="response grok">Corgis - Quirky appeal</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">40.</span>What's the most viral 'starter pet' video among Gen Z first-time pet owners?</td>
+                        <td><span class="response chatgpt">Hamster dance</span></td>
+                        <td><span class="response gemini">Fish tank – easy start</span></td>
+                        <td><span class="response claude">Hamster videos</span></td>
+                        <td><span class="response llama">Cute kittens</span></td>
+                        <td><span class="response perplexity">Guinea pig</span></td>
+                        <td><span class="response deepseek">Hamster setups</span></td>
+                        <td><span class="response grok">Hamster - Easy starter</span></td>
+                    </tr>
+
+                    <tr class="category-header">
+                        <td colspan="8"><strong>TikTok, Trends & Digital Culture</strong></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">41.</span>What TikTok trending item or brand reflects Gen Z's values around community and individualism?</td>
+                        <td><span class="response chatgpt">Stanley Cup</span></td>
+                        <td><span class="response gemini">Stanley Cup – community, status</span></td>
+                        <td><span class="response claude">Stanley tumbler</span></td>
+                        <td><span class="response llama">Sustainable bags</span></td>
+                        <td><span class="response perplexity">Stanley Cup</span></td>
+                        <td><span class="response deepseek">eBay vintage</span></td>
+                        <td><span class="response grok">Allbirds</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">42.</span>What TikTok aesthetic (e.g., cottagecore, weirdcore) best represents Gen Z's mood or worldview?</td>
+                        <td><span class="response chatgpt">Indie sleaze</span></td>
+                        <td><span class="response gemini">Weirdcore – unique, abstract</span></td>
+                        <td><span class="response claude">Coquette</span></td>
+                        <td><span class="response llama">Pastel Goth</span></td>
+                        <td><span class="response perplexity">Clean Girl</span></td>
+                        <td><span class="response deepseek">Goblincore</span></td>
+                        <td><span class="response grok">Cottagecore</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">43.</span>What niche TikTok community holds major sway among Gen Z subgroups?</td>
+                        <td><span class="response chatgpt">BookTok</span></td>
+                        <td><span class="response gemini">BookTok – reading community</span></td>
+                        <td><span class="response claude">BookTok</span></td>
+                        <td><span class="response llama">Environmentalists</span></td>
+                        <td><span class="response perplexity">BookTok</span></td>
+                        <td><span class="response deepseek">BookTok</span></td>
+                        <td><span class="response grok">BookTok</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">44.</span>What TikTok filter or sound most symbolizes how Gen Z communicates emotions?</td>
+                        <td><span class="response chatgpt">Aging filter</span></td>
+                        <td><span class="response gemini">Sad audio – emotional sharing</span></td>
+                        <td><span class="response claude">Crying filter</span></td>
+                        <td><span class="response llama">Happy Tears</span></td>
+                        <td><span class="response perplexity">Aging filter</span></td>
+                        <td><span class="response deepseek">"Oh no" sound</span></td>
+                        <td><span class="response grok">CapCut</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">45.</span>What Gen Z TikTok skincare trend is challenging old beauty standards?</td>
+                        <td><span class="response chatgpt">Skin cycling</span></td>
+                        <td><span class="response gemini">Skin cycling – gentle care</span></td>
+                        <td><span class="response claude">Slugging</span></td>
+                        <td><span class="response llama">Acne-Fighting</span></td>
+                        <td><span class="response perplexity">Skin cycling</span></td>
+                        <td><span class="response deepseek">"Skin cycling"</span></td>
+                        <td><span class="response grok">Glass skin</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">46.</span>What TikTok product haul (e.g., Amazon, Shein, local) sparked a wider values debate among Gen Z?</td>
+                        <td><span class="response chatgpt">Amazon hauls</span></td>
+                        <td><span class="response gemini">Shein haul – ethics debate</span></td>
+                        <td><span class="response claude">Shein hauls</span></td>
+                        <td><span class="response llama">Amazon Finds</span></td>
+                        <td><span class="response perplexity">Shein hauls</span></td>
+                        <td><span class="response deepseek">Temu hauls</span></td>
+                        <td><span class="response grok">Shein haul</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">47.</span>Which TikTok personality or creator best encapsulates Gen Z humor?</td>
+                        <td><span class="response chatgpt">Brittany Broski</span></td>
+                        <td><span class="response gemini">Khaby Lame – relatable humor</span></td>
+                        <td><span class="response claude">Khaby Lame</span></td>
+                        <td><span class="response llama">King Bach</span></td>
+                        <td><span class="response perplexity">Brittany Broski</span></td>
+                        <td><span class="response deepseek">Noah Glenn</span></td>
+                        <td><span class="response grok">Brittany Broski</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">48.</span>What brand's TikTok page gets it right with Gen Z without trying too hard?</td>
+                        <td><span class="response chatgpt">Duolingo</span></td>
+                        <td><span class="response gemini">Duolingo – playful, engaging</span></td>
+                        <td><span class="response claude">Duolingo</span></td>
+                        <td><span class="response llama">Glossier</span></td>
+                        <td><span class="response perplexity">Duolingo</span></td>
+                        <td><span class="response deepseek">Duolingo</span></td>
+                        <td><span class="response grok">Glossier</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">49.</span>What TikTok 'duet' trend most reflects Gen Z's desire for community remix?</td>
+                        <td><span class="response chatgpt">Dance challenge</span></td>
+                        <td><span class="response gemini">Dance challenge – creative collab</span></td>
+                        <td><span class="response claude">Recipe duets</span></td>
+                        <td><span class="response llama">Sing-Along</span></td>
+                        <td><span class="response perplexity">Open Duets</span></td>
+                        <td><span class="response deepseek">POV stitching</span></td>
+                        <td><span class="response grok">Dance duets</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">50.</span>What TikTok category do Gen Z viewers most engage with late at night?</td>
+                        <td><span class="response chatgpt">ASMR</span></td>
+                        <td><span class="response gemini">True crime – suspenseful stories</span></td>
+                        <td><span class="response claude">ASMR</span></td>
+                        <td><span class="response llama">Gaming</span></td>
+                        <td><span class="response perplexity">ASMR</span></td>
+                        <td><span class="response deepseek">Relatable memes</span></td>
+                        <td><span class="response grok">ASMR</span></td>
+                    </tr>
+
+                    <tr class="category-header">
+                        <td colspan="8"><strong>Wellness, Beauty & Identity</strong></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">51.</span>What wellness app is popular among Gen Z for promoting mental health and clean, balanced living?</td>
+                        <td><span class="response chatgpt">Headspace</span></td>
+                        <td><span class="response gemini">Calm – mental well-being</span></td>
+                        <td><span class="response claude">Headspace</span></td>
+                        <td><span class="response llama">Headspace</span></td>
+                        <td><span class="response perplexity">Headspace</span></td>
+                        <td><span class="response deepseek">Finch</span></td>
+                        <td><span class="response grok">Headspace - Mental clarity</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">52.</span>What clean beauty product does Gen Z trust most—and why?</td>
+                        <td><span class="response chatgpt">Drunk Elephant</span></td>
+                        <td><span class="response gemini">Drunk Elephant – safe ingredients</span></td>
+                        <td><span class="response claude">Glossier</span></td>
+                        <td><span class="response llama">Burt's Bees</span></td>
+                        <td><span class="response perplexity">Cerave</span></td>
+                        <td><span class="response deepseek">Glossier (minimalism)</span></td>
+                        <td><span class="response grok">CeraVe - Trusted simplicity</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">53.</span>What self-care habit is most normalized among Gen Z but was stigmatized for older generations?</td>
+                        <td><span class="response chatgpt">Therapy</span></td>
+                        <td><span class="response gemini">Therapy – open discussion</span></td>
+                        <td><span class="response claude">Therapy</span></td>
+                        <td><span class="response llama">Meditation</span></td>
+                        <td><span class="response perplexity">Therapy</span></td>
+                        <td><span class="response deepseek">Therapy talk</span></td>
+                        <td><span class="response grok">Therapy - Mental health</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">54.</span>What Gen Z brand is redefining the beauty ideal through inclusivity and realism?</td>
+                        <td><span class="response chatgpt">Fenty Beauty</span></td>
+                        <td><span class="response gemini">Fenty Beauty – inclusivity</span></td>
+                        <td><span class="response claude">Fenty Beauty</span></td>
+                        <td><span class="response llama">Fenty Beauty</span></td>
+                        <td><span class="response perplexity">Fenty Beauty</span></td>
+                        <td><span class="response deepseek">Fenty Beauty</span></td>
+                        <td><span class="response grok">Fenty Beauty - Inclusive standards</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">55.</span>What's Gen Z's favorite skincare step—and how does it tie to identity expression?</td>
+                        <td><span class="response chatgpt">Sunscreen</span></td>
+                        <td><span class="response gemini">Sunscreen – skin protection</span></td>
+                        <td><span class="response claude">Skincare routine</span></td>
+                        <td><span class="response llama">Exfoliating</span></td>
+                        <td><span class="response perplexity">Serums</span></td>
+                        <td><span class="response deepseek">Serum layering</span></td>
+                        <td><span class="response grok">Serums - Personal expression</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">56.</span>What does Gen Z consider more important: sleep tracking, step counting, or screen detox?</td>
+                        <td><span class="response chatgpt">Screen detox</span></td>
+                        <td><span class="response gemini">Screen detox – mental health</span></td>
+                        <td><span class="response claude">Sleep tracking</span></td>
+                        <td><span class="response llama">Sleep tracking</span></td>
+                        <td><span class="response perplexity">Sleep tracking</span></td>
+                        <td><span class="response deepseek">Sleep tracking</span></td>
+                        <td><span class="response grok">Sleep tracking - Wellness priority</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">57.</span>What ingredient or food does Gen Z consider a 'wellness unlock'?</td>
+                        <td><span class="response chatgpt">Collagen</span></td>
+                        <td><span class="response gemini">Collagen – skin health</span></td>
+                        <td><span class="response claude">Matcha</span></td>
+                        <td><span class="response llama">Probiotics</span></td>
+                        <td><span class="response perplexity">Matcha</span></td>
+                        <td><span class="response deepseek">Matcha</span></td>
+                        <td><span class="response grok">Matcha - Health boost</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">58.</span>What online therapy or journaling tool is most popular with Gen Z?</td>
+                        <td><span class="response chatgpt">BetterHelp</span></td>
+                        <td><span class="response gemini">BetterHelp – accessible therapy</span></td>
+                        <td><span class="response claude">BetterHelp</span></td>
+                        <td><span class="response llama">Talkspace</span></td>
+                        <td><span class="response perplexity">BetterHelp</span></td>
+                        <td><span class="response deepseek">BetterHelp</span></td>
+                        <td><span class="response grok">BetterHelp - Accessible therapy</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">59.</span>What hair color trends are Gen Z using to signal transformation or reinvention?</td>
+                        <td><span class="response chatgpt">Bright colors</span></td>
+                        <td><span class="response gemini">Bright colors – bold statements</span></td>
+                        <td><span class="response claude">Wolf cuts</span></td>
+                        <td><span class="response llama">Vibrant Colors</span></td>
+                        <td><span class="response perplexity">Pastels</span></td>
+                        <td><span class="response deepseek">Money pieces</span></td>
+                        <td><span class="response grok">Pastels - Soft reinvention</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">60.</span>What wellness micro-ritual (e.g., face mist, affirmations) shows up in Gen Z's daily routines?</td>
+                        <td><span class="response chatgpt">Face mist</span></td>
+                        <td><span class="response gemini">Face mist – quick refresh</span></td>
+                        <td><span class="response claude">Gua sha</span></td>
+                        <td><span class="response llama">Face Mist</span></td>
+                        <td><span class="response perplexity">Face mist</span></td>
+                        <td><span class="response deepseek">Gratitude journaling</span></td>
+                        <td><span class="response grok">Gua sha - Mindful ritual</span></td>
+                    </tr>
+
+                    <tr class="category-header">
+                        <td colspan="8"><strong>Self-Expression, Style & Subculture</strong></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">61.</span>What fashion accessory or item is most likely to be worn by Gen Z as a form of protest or statement?</td>
+                        <td><span class="response chatgpt">Graphic tote</span></td>
+                        <td><span class="response gemini">Graphic tees – statement pieces</span></td>
+                        <td><span class="response claude">Safety pins</span></td>
+                        <td><span class="response llama">Protest Pins</span></td>
+                        <td><span class="response perplexity">Enamel pins</span></td>
+                        <td><span class="response deepseek">Pronoun pins</span></td>
+                        <td><span class="response grok">Pronoun pins - Social statement</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">62.</span>What piece of clothing best captures the Gen Z 'uniform' for self-expression?</td>
+                        <td><span class="response chatgpt">Baggy jeans</span></td>
+                        <td><span class="response gemini">Oversized hoodies – comfort, style</span></td>
+                        <td><span class="response claude">Baggy jeans</span></td>
+                        <td><span class="response llama">Oversized Jackets</span></td>
+                        <td><span class="response perplexity">Baggy jeans</span></td>
+                        <td><span class="response deepseek">Oversized blazers</span></td>
+                        <td><span class="response grok">Cargo pants - Versatile expression</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">63.</span>What thrift or resale platform is Gen Z's favorite for finding unique fashion?</td>
+                        <td><span class="response chatgpt">Depop</span></td>
+                        <td><span class="response gemini">Depop – unique finds</span></td>
+                        <td><span class="response claude">Depop</span></td>
+                        <td><span class="response llama">ThredUp</span></td>
+                        <td><span class="response perplexity">Depop</span></td>
+                        <td><span class="response deepseek">Depop</span></td>
+                        <td><span class="response grok">ThredUp - Sustainable finds</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">64.</span>What digital clothing or avatar style is Gen Z using in the metaverse or gaming platforms?</td>
+                        <td><span class="response chatgpt">Fortnite skins</span></td>
+                        <td><span class="response gemini">Avatars – personalized identity</span></td>
+                        <td><span class="response claude">Fortnite skins</span></td>
+                        <td><span class="response llama">Custom Avatars</span></td>
+                        <td><span class="response perplexity">Streetwear</span></td>
+                        <td><span class="response deepseek">Roblox fits</span></td>
+                        <td><span class="response grok">Streetwear - Virtual identity</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">65.</span>What makeup trend is being used by Gen Z to subvert traditional beauty norms?</td>
+                        <td><span class="response chatgpt">Soap brows</span></td>
+                        <td><span class="response gemini">Euphoria makeup – artistic expression</span></td>
+                        <td><span class="response claude">Soap brows</span></td>
+                        <td><span class="response llama">Bold Lip Colors</span></td>
+                        <td><span class="response perplexity">Euphoria makeup</span></td>
+                        <td><span class="response deepseek">Graphic eyeliner</span></td>
+                        <td><span class="response grok">Eyeliner wings - Bold subversion</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">66.</span>What slang word or phrase is uniquely Gen Z and changes meaning depending on context?</td>
+                        <td><span class="response chatgpt">Slay</span></td>
+                        <td><span class="response gemini">"Slay" – versatile approval</span></td>
+                        <td><span class="response claude">Slay</span></td>
+                        <td><span class="response llama">"Lit"</span></td>
+                        <td><span class="response perplexity">"Bet"</span></td>
+                        <td><span class="response deepseek">"Delulu"</span></td>
+                        <td><span class="response grok">Rizz - Contextual humor</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">67.</span>What emoji combination is now understood only by Gen Z?</td>
+                        <td><span class="response chatgpt">Skull emoji</span></td>
+                        <td><span class="response gemini">Skull, crying – dark humor</span></td>
+                        <td><span class="response claude">Skull emoji</span></td>
+                        <td><span class="response llama">🤣😂</span></td>
+                        <td><span class="response perplexity">🧃🫶</span></td>
+                        <td><span class="response deepseek">🍵🐸</span></td>
+                        <td><span class="response grok">💀🔥 - Inclusive vibes</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">68.</span>What fictional universe or fandom does Gen Z most identify with—and how does it shape their real-world identity?</td>
+                        <td><span class="response chatgpt">Avatar universe</span></td>
+                        <td><span class="response gemini">Marvel – escapism, community</span></td>
+                        <td><span class="response claude">Avatar universe</span></td>
+                        <td><span class="response llama">Harry Potter</span></td>
+                        <td><span class="response perplexity">Marvel</span></td>
+                        <td><span class="response deepseek">"Stranger Things"</span></td>
+                        <td><span class="response grok">MCU - Heroic aspirations</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">69.</span>What aesthetic (e.g., Y2K, grunge, clean girl) are Gen Z users switching to in 2025?</td>
+                        <td><span class="response chatgpt">Clean girl</span></td>
+                        <td><span class="response gemini">Clean girl – minimalist style</span></td>
+                        <td><span class="response claude">Clean girl</span></td>
+                        <td><span class="response llama">90s Revival</span></td>
+                        <td><span class="response perplexity">Grunge</span></td>
+                        <td><span class="response deepseek">Indie sleaze</span></td>
+                        <td><span class="response grok">Clean girl - Minimalist shift</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">70.</span>What accessory or color palette represents confidence or power for Gen Z?</td>
+                        <td><span class="response chatgpt">Gold jewelry</span></td>
+                        <td><span class="response gemini">Black – powerful, chic</span></td>
+                        <td><span class="response claude">Gold jewelry</span></td>
+                        <td><span class="response llama">Rainbow</span></td>
+                        <td><span class="response perplexity">Silver jewelry</span></td>
+                        <td><span class="response deepseek">Chrome accents</span></td>
+                        <td><span class="response grok">Neon - Bold confidence</span></td>
+                    </tr>
+
+                    <tr class="category-header">
+                        <td colspan="8"><strong>Values, Spending & Social Impact</strong></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">71.</span>What subscription service does Gen Z cancel first when budgeting gets tight—and what stays?</td>
+                        <td><span class="response chatgpt">Netflix</span></td>
+                        <td><span class="response gemini">Streaming – music, video</span></td>
+                        <td><span class="response claude">Netflix</span></td>
+                        <td><span class="response llama">Netflix</span></td>
+                        <td><span class="response perplexity">Spotify</span></td>
+                        <td><span class="response deepseek">Netflix (first cut)</span></td>
+                        <td><span class="response grok">Spotify - Music priority</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">72.</span>What brand has earned Gen Z's loyalty through activism, not just products?</td>
+                        <td><span class="response chatgpt">Patagonia</span></td>
+                        <td><span class="response gemini">Patagonia – ethical production</span></td>
+                        <td><span class="response claude">Patagonia</span></td>
+                        <td><span class="response llama">Patagonia</span></td>
+                        <td><span class="response perplexity">Patagonia</span></td>
+                        <td><span class="response deepseek">Ben & Jerry's</span></td>
+                        <td><span class="response grok">TOMS - Social impact</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">73.</span>What's one cause Gen Z will spend extra money to support, even during inflation?</td>
+                        <td><span class="response chatgpt">Climate change</span></td>
+                        <td><span class="response gemini">Climate change – environmental impact</span></td>
+                        <td><span class="response claude">Climate change</span></td>
+                        <td><span class="response llama">Racial Justice</span></td>
+                        <td><span class="response perplexity">Climate action</span></td>
+                        <td><span class="response deepseek">Climate action</span></td>
+                        <td><span class="response grok">Climate action - Ethical spending</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">74.</span>What does Gen Z consider "selling out"—and which brands cross that line?</td>
+                        <td><span class="response chatgpt">Amazon Basics</span></td>
+                        <td><span class="response gemini">Greenwashing – fake ethics</span></td>
+                        <td><span class="response claude">Greenwashing</span></td>
+                        <td><span class="response llama">Amazon Basics</span></td>
+                        <td><span class="response perplexity">Fast fashion</span></td>
+                        <td><span class="response deepseek">NFT brands</span></td>
+                        <td><span class="response grok">Greenwashing - Inauthentic claims</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">75.</span>What company does Gen Z distrust the most—and why?</td>
+                        <td><span class="response chatgpt">Facebook</span></td>
+                        <td><span class="response gemini">Fast Fashion – unethical practices</span></td>
+                        <td><span class="response claude">Amazon</span></td>
+                        <td><span class="response llama">Nike</span></td>
+                        <td><span class="response perplexity">Facebook</span></td>
+                        <td><span class="response deepseek">Meta (privacy)</span></td>
+                        <td><span class="response grok">Amazon - Convenience skepticism</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">76.</span>What local or indie brand is Gen Z putting on the map through social media?</td>
+                        <td><span class="response chatgpt">Jungle Scout</span></td>
+                        <td><span class="response gemini">Small businesses – unique products</span></td>
+                        <td><span class="response claude">Local coffee</span></td>
+                        <td><span class="response llama">Reformation</span></td>
+                        <td><span class="response perplexity">Local Bodega</span></td>
+                        <td><span class="response deepseek">Local coffee shops</span></td>
+                        <td><span class="response grok">Parade - Inclusive underwear</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">77.</span>What sustainability term or badge does Gen Z actually look for when shopping?</td>
+                        <td><span class="response chatgpt">B Corp</span></td>
+                        <td><span class="response gemini">Carbon neutral – eco-friendly</span></td>
+                        <td><span class="response claude">B-Corp</span></td>
+                        <td><span class="response llama">Eco-Friendly</span></td>
+                        <td><span class="response perplexity">"B Corp"</span></td>
+                        <td><span class="response deepseek">B Corp</span></td>
+                        <td><span class="response grok">B-Corp - Verified ethics</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">78.</span>What brand has surprised Gen Z by improving its environmental impact?</td>
+                        <td><span class="response chatgpt">Coca-Cola</span></td>
+                        <td><span class="response gemini">Starbucks – sustainable efforts</span></td>
+                        <td><span class="response claude">Adidas</span></td>
+                        <td><span class="response llama">IKEA</span></td>
+                        <td><span class="response perplexity">Coca-Cola</span></td>
+                        <td><span class="response deepseek">IKEA</span></td>
+                        <td><span class="response grok">Reformation - Transparent progress</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">79.</span>What reusable item or hack is most popular with Gen Z eco-shoppers?</td>
+                        <td><span class="response chatgpt">Reusable straw</span></td>
+                        <td><span class="response gemini">Reusable bags – eco-conscious</span></td>
+                        <td><span class="response claude">Tote bags</span></td>
+                        <td><span class="response llama">Reusable Water Bottle</span></td>
+                        <td><span class="response perplexity">Hydro Flask</span></td>
+                        <td><span class="response deepseek">Hydroflask</span></td>
+                        <td><span class="response grok">Reusable straws - Eco convenience</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">80.</span>What brand partnership (e.g., artist collab, nonprofit) felt most authentic to Gen Z in the past year?</td>
+                        <td><span class="response chatgpt">Adidas x Parley</span></td>
+                        <td><span class="response gemini">Nike x Off-White – cultural relevance</span></td>
+                        <td><span class="response claude">Ben Jerry's</span></td>
+                        <td><span class="response llama">Adidas x Pharrell</span></td>
+                        <td><span class="response perplexity">Crocs x Artists</span></td>
+                        <td><span class="response deepseek">Converse x LGBTQ+</span></td>
+                        <td><span class="response grok">Nike x Billie - Authentic collab</span></td>
+                    </tr>
+
+                    <tr class="category-header">
+                        <td colspan="8"><strong>Entertainment, Escapism & Joy</strong></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">81.</span>What mobile game do Gen Z players keep coming back to—and why?</td>
+                        <td><span class="response chatgpt">Among Us</span></td>
+                        <td><span class="response gemini">Roblox – creative freedom</span></td>
+                        <td><span class="response claude">Wordle</span></td>
+                        <td><span class="response llama">Fortnite</span></td>
+                        <td><span class="response perplexity">Candy Crush</span></td>
+                        <td><span class="response deepseek">Wordle</span></td>
+                        <td><span class="response grok">Among Us - Social fun</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">82.</span>What video game world best reflects Gen Z's view of society or escape?</td>
+                        <td><span class="response chatgpt">Minecraft</span></td>
+                        <td><span class="response gemini">Minecraft – open world</span></td>
+                        <td><span class="response claude">Animal Crossing</span></td>
+                        <td><span class="response llama">The Sims</span></td>
+                        <td><span class="response perplexity">Animal Crossing</span></td>
+                        <td><span class="response deepseek">"Sims 4"</span></td>
+                        <td><span class="response grok">Cyberpunk - Dystopian escape</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">83.</span>What fictional couple or character is most "shipped" by Gen Z online?</td>
+                        <td><span class="response chatgpt">Katniss/Peeta</span></td>
+                        <td><span class="response gemini">Enemies-to-lovers – passionate, complex</span></td>
+                        <td><span class="response claude">Zendaya Tom</span></td>
+                        <td><span class="response llama">Archie and Veronica</span></td>
+                        <td><span class="response perplexity">"Lumity & Amity"</span></td>
+                        <td><span class="response deepseek">Byler ("Stranger Things")</span></td>
+                        <td><span class="response grok">Stucky - Romantic ideals</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">84.</span>What meme or sound made Gen Z laugh hardest last year?</td>
+                        <td><span class="response chatgpt">"Corn Kid"</span></td>
+                        <td><span class="response gemini">"It's giving" – trending phrase</span></td>
+                        <td><span class="response claude">Ohio memes</span></td>
+                        <td><span class="response llama">Distracted Boyfriend</span></td>
+                        <td><span class="response perplexity">"Girl Dinner"</span></td>
+                        <td><span class="response deepseek">"It's corn!"</span></td>
+                        <td><span class="response grok">"Skibidi" - Absurd humor</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">85.</span>What reality show or competition series do Gen Z viewers watch ironically—or passionately?</td>
+                        <td><span class="response chatgpt">"Love Island"</span></td>
+                        <td><span class="response gemini">Love Island – dramatic fun</span></td>
+                        <td><span class="response claude">Love Island</span></td>
+                        <td><span class="response llama">The Bachelor</span></td>
+                        <td><span class="response perplexity">"Love Island"</span></td>
+                        <td><span class="response deepseek">"Love Island"</span></td>
+                        <td><span class="response grok">"Survivor" - Ironic enjoyment</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">86.</span>What music genre is undergoing a Gen Z-driven revival or reinvention?</td>
+                        <td><span class="response chatgpt">Pop punk</span></td>
+                        <td><span class="response gemini">Hyperpop – experimental, vibrant</span></td>
+                        <td><span class="response claude">Hyperpop</span></td>
+                        <td><span class="response llama">Emo</span></td>
+                        <td><span class="response perplexity">Hyperpop</span></td>
+                        <td><span class="response deepseek">Pop-punk revival</span></td>
+                        <td><span class="response grok">Hyperpop - Experimental revival</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">87.</span>What concert or festival brand feels most Gen Z in how it markets and runs?</td>
+                        <td><span class="response chatgpt">Rolling Loud</span></td>
+                        <td><span class="response gemini">Coachella – trendy, social</span></td>
+                        <td><span class="response claude">Coachella</span></td>
+                        <td><span class="response llama">Coachella</span></td>
+                        <td><span class="response perplexity">Coachella</span></td>
+                        <td><span class="response deepseek">Lollapalooza</span></td>
+                        <td><span class="response grok">Coachella - Immersive branding</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">88.</span>What artist is considered the "voice of Gen Z"—musically or lyrically?</td>
+                        <td><span class="response chatgpt">Billie Eilish</span></td>
+                        <td><span class="response gemini">Olivia Rodrigo – relatable angst</span></td>
+                        <td><span class="response claude">Billie Eilish</span></td>
+                        <td><span class="response llama">Billie Eilish</span></td>
+                        <td><span class="response perplexity">Olivia Rodrigo</span></td>
+                        <td><span class="response deepseek">Olivia Rodrigo</span></td>
+                        <td><span class="response grok">Chappell Roan - Emotional lyrics</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">89.</span>What karaoke song is Gen Z's go-to anthem?</td>
+                        <td><span class="response chatgpt">"Mr. Brightside"</span></td>
+                        <td><span class="response gemini">Bohemian Rhapsody – iconic classic</span></td>
+                        <td><span class="response claude">Good 4 U</span></td>
+                        <td><span class="response llama">"I Will Survive"</span></td>
+                        <td><span class="response perplexity">"Unwritten"</span></td>
+                        <td><span class="response deepseek">"Mr. Brightside"</span></td>
+                        <td><span class="response grok">"Anti-Hero" - Ironic anthem</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">90.</span>What unexpected hobby (e.g., crocheting, skateboarding, bird watching) is trending with Gen Z online?</td>
+                        <td><span class="response chatgpt">Crocheting</span></td>
+                        <td><span class="response gemini">Crocheting – creative outlet</span></td>
+                        <td><span class="response claude">Crocheting</span></td>
+                        <td><span class="response llama">Crocheting</span></td>
+                        <td><span class="response perplexity">Crocheting</span></td>
+                        <td><span class="response deepseek">Chess boom</span></td>
+                        <td><span class="response grok">Crocheting - Creative outlet</span></td>
+                    </tr>
+
+                    <tr class="category-header">
+                        <td colspan="8"><strong>Future, Growth & Identity Formation</strong></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">91.</span>What city or region does Gen Z dream of moving to—and why?</td>
+                        <td><span class="response chatgpt">Amsterdam</span></td>
+                        <td><span class="response gemini">NYC – opportunities, culture</span></td>
+                        <td><span class="response claude">Austin</span></td>
+                        <td><span class="response llama">New York</span></td>
+                        <td><span class="response perplexity">Seoul</span></td>
+                        <td><span class="response deepseek">Austin, TX</span></td>
+                        <td><span class="response grok">Austin - Vibrant culture</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">92.</span>What major or field of study feels most future-ready to Gen Z students?</td>
+                        <td><span class="response chatgpt">Data science</span></td>
+                        <td><span class="response gemini">Tech – innovation, growth</span></td>
+                        <td><span class="response claude">Computer science</span></td>
+                        <td><span class="response llama">Environmental Science</span></td>
+                        <td><span class="response perplexity">Data Science</span></td>
+                        <td><span class="response deepseek">AI ethics</span></td>
+                        <td><span class="response grok">Data science - Future-proof skills</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">93.</span>What side hustle or niche income stream is most popular among Gen Z creators?</td>
+                        <td><span class="response chatgpt">Etsy shops</span></td>
+                        <td><span class="response gemini">Content creation – digital income</span></td>
+                        <td><span class="response claude">Content creation</span></td>
+                        <td><span class="response llama">Freelance Writing</span></td>
+                        <td><span class="response perplexity">Dropshipping</span></td>
+                        <td><span class="response deepseek">Print-on-demand</span></td>
+                        <td><span class="response grok">Etsy shop - Creative income</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">94.</span>What personal finance or investment term is Gen Z learning earlier than Millennials?</td>
+                        <td><span class="response chatgpt">Roth IRA</span></td>
+                        <td><span class="response gemini">Crypto – digital assets</span></td>
+                        <td><span class="response claude">Index funds</span></td>
+                        <td><span class="response llama">Cryptocurrency</span></td>
+                        <td><span class="response perplexity">Roth IRA</span></td>
+                        <td><span class="response deepseek">Compound interest</span></td>
+                        <td><span class="response grok">Roth IRA - Early investing</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">95.</span>What aspect of adulthood is Gen Z most excited—or anxious—about?</td>
+                        <td><span class="response chatgpt">Remote work</span></td>
+                        <td><span class="response gemini">Financial independence – freedom</span></td>
+                        <td><span class="response claude">Housing costs</span></td>
+                        <td><span class="response llama">Buying a home</span></td>
+                        <td><span class="response perplexity">Remote work</span></td>
+                        <td><span class="response deepseek">Homeownership</span></td>
+                        <td><span class="response grok">Independence - Freedom vs. cost</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">96.</span>What milestone (first car, apartment, etc.) does Gen Z delay the longest—and what replaces it?</td>
+                        <td><span class="response chatgpt">First home</span></td>
+                        <td><span class="response gemini">Driving – rideshares</span></td>
+                        <td><span class="response claude">Car ownership</span></td>
+                        <td><span class="response llama">Getting married</span></td>
+                        <td><span class="response perplexity">First car</span></td>
+                        <td><span class="response deepseek">Car ownership (replaced by Uber)</span></td>
+                        <td><span class="response grok">Apartment - Experiences prioritized</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">97.</span>What family tradition is Gen Z most likely to reinvent or discontinue?</td>
+                        <td><span class="response chatgpt">Holiday parties</span></td>
+                        <td><span class="response gemini">Gender roles – outdated norms</span></td>
+                        <td><span class="response claude">Holiday traditions</span></td>
+                        <td><span class="response llama">Weekly Family Dinners</span></td>
+                        <td><span class="response perplexity">Holiday meals</span></td>
+                        <td><span class="response deepseek">Formal weddings</span></td>
+                        <td><span class="response grok">Holiday gatherings - Modern twists</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">98.</span>What kind of content does Gen Z trust more: expert-led, peer-created, or AI-generated?</td>
+                        <td><span class="response chatgpt">Peer-created</span></td>
+                        <td><span class="response gemini">Peer-created – relatable content</span></td>
+                        <td><span class="response claude">Peer created</span></td>
+                        <td><span class="response llama">Peer-created</span></td>
+                        <td><span class="response perplexity">Peer-created</span></td>
+                        <td><span class="response deepseek">Peer-created</span></td>
+                        <td><span class="response grok">Peer-created - Relatable trust</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">99.</span>What's Gen Z's definition of success—and how does it differ from their parents' generation?</td>
+                        <td><span class="response chatgpt">Freedom, balance</span></td>
+                        <td><span class="response gemini">Happiness – personal fulfillment</span></td>
+                        <td><span class="response claude">Work life balance</span></td>
+                        <td><span class="response llama">Happiness</span></td>
+                        <td><span class="response perplexity">Work-life balance</span></td>
+                        <td><span class="response deepseek">Work-life balance</span></td>
+                        <td><span class="response grok">Fulfillment - Purpose-driven life</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="question-number">100.</span>What type of community (online or offline) makes Gen Z feel the most seen and supported?</td>
+                        <td><span class="response chatgpt">Discord servers</span></td>
+                        <td><span class="response gemini">Online forums – shared interests</span></td>
+                        <td><span class="response claude">Discord servers</span></td>
+                        <td><span class="response llama">Online Forums</span></td>
+                        <td><span class="response perplexity">Discord server</span></td>
+                        <td><span class="response deepseek">Discord communities</span></td>
+                        <td><span class="response grok">Discord - Niche belonging</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const table = document.getElementById('comparisonTable');
+        const rows = table.getElementsByTagName('tr');
+
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+            
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                const cells = row.getElementsByTagName('td');
+                let found = false;
+                
+                // Skip category headers
+                if (row.classList.contains('category-header')) {
+                    row.style.display = '';
+                    continue;
+                }
+                
+                // Search through all cells in the row
+                for (let j = 0; j < cells.length; j++) {
+                    const cellText = cells[j].textContent.toLowerCase();
+                    if (cellText.includes(searchTerm)) {
+                        found = true;
+                        break;
+                    }
+                }
+                
+                row.style.display = found ? '' : 'none';
+            }
+        });
+
+        // Add smooth scrolling for better UX
+        document.addEventListener('DOMContentLoaded', function() {
+            // Highlight matching search terms
+            function highlightText(element, searchTerm) {
+                if (!searchTerm) return;
+                
+                const regex = new RegExp(`(${searchTerm})`, 'gi');
+                const content = element.textContent;
+                
+                if (regex.test(content)) {
+                    element.innerHTML = content.replace(regex, '<mark style="background: #ffeb3b; padding: 2px;">$1</mark>');
+                }
+            }
+            
+            // Enhanced search with highlighting
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+                
+                // Remove existing highlights
+                const marks = table.querySelectorAll('mark');
+                marks.forEach(mark => {
+                    const parent = mark.parentNode;
+                    parent.textContent = parent.textContent;
+                });
+                
+                if (searchTerm.length > 2) {
+                    // Add highlights for search terms
+                    for (let i = 1; i < rows.length; i++) {
+                        const row = rows[i];
+                        const cells = row.getElementsByTagName('td');
+                        
+                        for (let j = 0; j < cells.length; j++) {
+                            highlightText(cells[j], searchTerm);
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

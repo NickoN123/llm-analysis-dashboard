@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Recommendation Heat Map</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #00d4ff, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-label {
+            color: #00d4ff;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .filter-select {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 8px 16px;
+            color: #ffffff;
+            font-size: 0.9em;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #00d4ff;
+        }
+
+        .heatmap-container {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 30px;
+            overflow-x: auto;
+        }
+
+        .heatmap-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1200px;
+        }
+
+        .heatmap-table th,
+        .heatmap-table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+        }
+
+        .heatmap-table th {
+            background: rgba(0,212,255,0.2);
+            color: #00d4ff;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .ai-header {
+            background: rgba(255,255,255,0.1) !important;
+            color: #ffffff;
+            font-weight: 700;
+            writing-mode: vertical-lr;
+            text-orientation: mixed;
+            min-width: 80px;
+        }
+
+        .brand-header {
+            background: rgba(255,255,255,0.1) !important;
+            color: #ffffff;
+            font-weight: 700;
+            text-align: left;
+            min-width: 150px;
+        }
+
+        .heat-cell {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+
+        .heat-cell:hover {
+            transform: scale(1.1);
+            border-color: #00d4ff;
+            box-shadow: 0 0 20px rgba(0,212,255,0.5);
+        }
+
+        .heat-0 { background-color: #1a1f35; color: #666; }
+        .heat-1 { background-color: #2d1b1b; color: #ff6b6b; }
+        .heat-2 { background-color: #4a1f1f; color: #ff6b6b; }
+        .heat-3 { background-color: #662222; color: #ff6b6b; }
+        .heat-4 { background-color: #ff6b6b; color: #fff; }
+        .heat-5 { background-color: #ffa726; color: #fff; }
+        .heat-6 { background-color: #ffd93d; color: #333; }
+        .heat-7 { background-color: #66bb6a; color: #fff; }
+        .heat-8 { background-color: #4ecdc4; color: #fff; }
+        .heat-9 { background-color: #42a5f5; color: #fff; }
+        .heat-10 { background-color: #00d4ff; color: #fff; }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .legend-title {
+            color: #00d4ff;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.9);
+            border: 2px solid #00d4ff;
+            border-radius: 8px;
+            padding: 15px;
+            color: #ffffff;
+            font-size: 0.9em;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            max-width: 300px;
+        }
+
+        .tooltip.show {
+            opacity: 1;
+        }
+
+        .tooltip-brand {
+            color: #00d4ff;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .tooltip-ai {
+            color: #4ecdc4;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .stats-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: 700;
+            color: #00d4ff;
+        }
+
+        .stat-label {
+            color: rgba(255,255,255,0.8);
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .filters {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Brand Recommendation Heat Map</h1>
+            <p>AI recommendation patterns across brand categories and scenarios</p>
+        </div>
+
+        <div class="stats-panel">
+            <div class="stat-card">
+                <div class="stat-number">95%</div>
+                <div class="stat-label">Consensus on Tesla</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">67%</div>
+                <div class="stat-label">Ethical Brand Preference</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">23%</div>
+                <div class="stat-label">Premium Brand Variance</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">8.2</div>
+                <div class="stat-label">Avg Brands Considered</div>
+            </div>
+        </div>
+
+        <div class="filters">
+            <div class="filter-group">
+                <div class="filter-label">Category</div>
+                <select class="filter-select" id="categoryFilter">
+                    <option value="all">All Categories</option>
+                    <option value="tech">Technology</option>
+                    <option value="automotive">Automotive</option>
+                    <option value="fashion">Fashion</option>
+                    <option value="food">Food & Beverage</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <div class="filter-label">Price Range</div>
+                <select class="filter-select" id="priceFilter">
+                    <option value="all">All Prices</option>
+                    <option value="budget">Budget</option>
+                    <option value="mid">Mid-Range</option>
+                    <option value="premium">Premium</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <div class="filter-label">Values</div>
+                <select class="filter-select" id="valuesFilter">
+                    <option value="all">All Values</option>
+                    <option value="ethical">Ethical</option>
+                    <option value="performance">Performance</option>
+                    <option value="value">Value</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="heatmap-container">
+            <table class="heatmap-table" id="heatmapTable">
+                <!-- Table will be generated by JavaScript -->
+            </table>
+        </div>
+
+        <div class="legend">
+            <span class="legend-title">Recommendation Strength:</span>
+            <div class="legend-item">
+                <div class="legend-color heat-0"></div>
+                <span>Not Recommended</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color heat-1"></div>
+                <span>Avoid</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color heat-2"></div>
+                <span>Caution</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color heat-3"></div>
+                <span>Neutral</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color heat-4"></div>
+                <span>Recommend</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color heat-5"></div>
+                <span>Highly Recommend</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        const brandData = {
+            // Brand: [Claude, ChatGPT, Gemini, Grok, Llama, Copilot, Perplexity, DeepSeek, OpenAI-DR]
+            "Apple": [7, 9, 9, 6, 6, 7, 8, 7, 9],
+            "Tesla": [7, 9, 9, 7, 7, 8, 9, 7, 9],
+            "Patagonia": [10, 8, 6, 4, 6, 8, 8, 9, 8],
+            "Framework": [10, 8, 9, 8, 8, 8, 8, 8, 8],
+            "Amazon": [4, 7, 8, 9, 9, 6, 8, 6, 8],
+            "McDonald's": [2, 6, 6, 7, 8, 4, 6, 4, 6],
+            "Supreme": [2, 4, 4, 2, 2, 4, 4, 2, 4],
+            "Toyota": [8, 9, 8, 9, 9, 8, 8, 8, 8],
+            "Google": [6, 8, 9, 8, 8, 8, 8, 6, 8],
+            "Microsoft": [7, 8, 8, 8, 8, 9, 8, 8, 8],
+            "Ben & Jerry's": [9, 8, 6, 6, 6, 8, 6, 8, 8],
+            "Costco": [8, 9, 8, 9, 9, 8, 8, 8, 8],
+            "Nike": [6, 8, 8, 8, 8, 6, 8, 6, 8],
+            "IKEA": [8, 8, 6, 9, 9, 8, 8, 8, 8],
+            "Warby Parker": [9, 8, 6, 6, 6, 8, 6, 9, 8],
+            "Allbirds": [9, 8, 6, 4, 6, 8, 6, 8, 8],
+            "Volkswagen": [4, 6, 8, 8, 8, 4, 6, 4, 6],
+            "Meta": [4, 6, 8, 6, 6, 6, 6, 4, 6],
+            "SpaceX": [8, 8, 9, 8, 8, 8, 8, 8, 8],
+            "Trader Joe's": [8, 8, 6, 8, 8, 8, 8, 8, 8]
+        };
+
+        const aiNames = ["Claude", "ChatGPT", "Gemini", "Grok", "Llama", "Copilot", "Perplexity", "DeepSeek", "OpenAI DR"];
+        
+        const brandCategories = {
+            "Apple": "tech",
+            "Tesla": "automotive", 
+            "Patagonia": "fashion",
+            "Framework": "tech",
+            "Amazon": "tech",
+            "McDonald's": "food",
+            "Supreme": "fashion",
+            "Toyota": "automotive",
+            "Google": "tech",
+            "Microsoft": "tech",
+            "Ben & Jerry's": "food",
+            "Costco": "food",
+            "Nike": "fashion",
+            "IKEA": "fashion",
+            "Warby Parker": "fashion",
+            "Allbirds": "fashion",
+            "Volkswagen": "automotive",
+            "Meta": "tech",
+            "SpaceX": "tech",
+            "Trader Joe's": "food"
+        };
+
+        const brandPricing = {
+            "Apple": "premium",
+            "Tesla": "premium",
+            "Patagonia": "premium",
+            "Framework": "mid",
+            "Amazon": "mid",
+            "McDonald's": "budget",
+            "Supreme": "premium",
+            "Toyota": "mid",
+            "Google": "mid",
+            "Microsoft": "mid",
+            "Ben & Jerry's": "mid",
+            "Costco": "budget",
+            "Nike": "mid",
+            "IKEA": "budget",
+            "Warby Parker": "mid",
+            "Allbirds": "premium",
+            "Volkswagen": "mid",
+            "Meta": "mid",
+            "SpaceX": "premium",
+            "Trader Joe's": "budget"
+        };
+
+        const brandValues = {
+            "Apple": "performance",
+            "Tesla": "performance",
+            "Patagonia": "ethical",
+            "Framework": "ethical",
+            "Amazon": "value",
+            "McDonald's": "value",
+            "Supreme": "performance",
+            "Toyota": "value",
+            "Google": "performance",
+            "Microsoft": "performance",
+            "Ben & Jerry's": "ethical",
+            "Costco": "value",
+            "Nike": "performance",
+            "IKEA": "value",
+            "Warby Parker": "ethical",
+            "Allbirds": "ethical",
+            "Volkswagen": "value",
+            "Meta": "performance",
+            "SpaceX": "performance",
+            "Trader Joe's": "value"
+        };
+
+        const reasoningData = {
+            "Apple-Claude": "Strong ecosystem integration but concerns about labor practices and premium pricing accessibility.",
+            "Tesla-ChatGPT": "Leading EV technology with excellent safety ratings, though quality control inconsistencies noted.",
+            "Patagonia-Claude": "Exemplary environmental and labor practices. Company donates profits to climate causes.",
+            "Framework-Gemini": "Revolutionary modular design enabling user repairability and upgrades. Excellent technical specs.",
+            "Supreme-Grok": "Overpriced streetwear with no functional justification for premium pricing.",
+            // Add more reasoning as needed
+        };
+
+        function generateTable() {
+            const table = document.getElementById('heatmapTable');
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const priceFilter = document.getElementById('priceFilter').value;
+            const valuesFilter = document.getElementById('valuesFilter').value;
+            
+            // Filter brands
+            const filteredBrands = Object.keys(brandData).filter(brand => {
+                if (categoryFilter !== 'all' && brandCategories[brand] !== categoryFilter) return false;
+                if (priceFilter !== 'all' && brandPricing[brand] !== priceFilter) return false;
+                if (valuesFilter !== 'all' && brandValues[brand] !== valuesFilter) return false;
+                return true;
+            });
+
+            let html = '<thead><tr><th class="brand-header">Brand</th>';
+            aiNames.forEach(ai => {
+                html += `<th class="ai-header">${ai}</th>`;
+            });
+            html += '</tr></thead><tbody>';
+
+            filteredBrands.forEach(brand => {
+                html += `<tr><td class="brand-header">${brand}</td>`;
+                brandData[brand].forEach((score, index) => {
+                    const ai = aiNames[index];
+                    const key = `${brand}-${ai}`;
+                    html += `<td class="heat-cell heat-${score}" data-brand="${brand}" data-ai="${ai}" data-score="${score}">${score}</td>`;
+                });
+                html += '</tr>';
+            });
+
+            html += '</tbody>';
+            table.innerHTML = html;
+
+            // Add event listeners for tooltips
+            document.querySelectorAll('.heat-cell').forEach(cell => {
+                cell.addEventListener('mouseenter', showTooltip);
+                cell.addEventListener('mouseleave', hideTooltip);
+                cell.addEventListener('mousemove', moveTooltip);
+            });
+        }
+
+        function showTooltip(e) {
+            const tooltip = document.getElementById('tooltip');
+            const brand = e.target.dataset.brand;
+            const ai = e.target.dataset.ai;
+            const score = e.target.dataset.score;
+            const key = `${brand}-${ai}`;
+            
+            const scoreLabels = {
+                0: "Not Recommended",
+                1: "Avoid", 
+                2: "Caution",
+                3: "Neutral",
+                4: "Recommend",
+                5: "Highly Recommend"
+            };
+
+            let reasoning = reasoningData[key] || `${ai} evaluates ${brand} based on its cognitive framework and gives it a ${scoreLabels[score]} rating.`;
+
+            tooltip.innerHTML = `
+                <div class="tooltip-brand">${brand}</div>
+                <div class="tooltip-ai">${ai} Assessment</div>
+                <div><strong>Score:</strong> ${score}/5 (${scoreLabels[score]})</div>
+                <div style="margin-top: 10px;">${reasoning}</div>
+            `;
+            
+            tooltip.classList.add('show');
+        }
+
+        function hideTooltip() {
+            document.getElementById('tooltip').classList.remove('show');
+        }
+
+        function moveTooltip(e) {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.style.left = e.pageX + 15 + 'px';
+            tooltip.style.top = e.pageY - 10 + 'px';
+        }
+
+        // Event listeners
+        document.getElementById('categoryFilter').addEventListener('change', generateTable);
+        document.getElementById('priceFilter').addEventListener('change', generateTable);
+        document.getElementById('valuesFilter').addEventListener('change', generateTable);
+
+        // Initialize
+        generateTable();
+    </script>
+</body>
+</html>

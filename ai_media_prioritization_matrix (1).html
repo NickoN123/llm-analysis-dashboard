@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEO Decision Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d1b69 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #ffffff;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 0.9em;
+            color: #60a5fa;
+            font-weight: 600;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .control-group label {
+            font-size: 0.9em;
+            margin-bottom: 8px;
+            color: #60a5fa;
+            font-weight: 600;
+        }
+
+        .control-group select, .control-group input[type="range"] {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
+
+        .control-group select option {
+            background: #1a1a3a;
+            color: white;
+        }
+
+        .slider-container {
+            position: relative;
+        }
+
+        .slider-value {
+            position: absolute;
+            right: 0;
+            top: -25px;
+            color: #60a5fa;
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
+        }
+
+        .view-controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .view-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .view-btn:hover, .view-btn.active {
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            border-color: #60a5fa;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(96, 165, 250, 0.3);
+        }
+
+        .matrix-container {
+            position: relative;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .matrix {
+            position: relative;
+            width: 100%;
+            height: 800px;
+            border: 2px solid rgba(96, 165, 250, 0.4);
+            border-radius: 16px;
+            background: 
+                radial-gradient(circle at 85% 15%, rgba(96, 165, 250, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 15% 85%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                linear-gradient(135deg, rgba(15, 15, 35, 0.8) 0%, rgba(26, 26, 58, 0.9) 100%);
+            overflow: hidden;
+            box-shadow: inset 0 0 50px rgba(96, 165, 250, 0.1);
+        }
+
+        .axis-label {
+            position: absolute;
+            color: #60a5fa;
+            font-weight: 700;
+            font-size: 1.1em;
+            z-index: 10;
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
+        }
+
+        .x-axis-label {
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+
+        .y-axis-label {
+            left: -180px;
+            top: 50%;
+            transform: translateY(-50%) rotate(-90deg);
+            white-space: nowrap;
+        }
+
+        .quadrant-labels {
+            position: absolute;
+            font-size: 0.85em;
+            font-weight: 600;
+            z-index: 50;
+            pointer-events: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        .quadrant-label {
+            position: absolute;
+            text-align: center;
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.8em;
+            line-height: 1.3;
+            max-width: 160px;
+        }
+
+        .quadrant-label.top-right {
+            top: 15px;
+            right: 15px;
+            color: #4ade80;
+            text-shadow: 0 0 10px rgba(74, 222, 128, 0.6);
+            border-color: rgba(74, 222, 128, 0.4);
+            background: rgba(0, 0, 0, 0.85);
+        }
+
+        .quadrant-label.top-left {
+            top: 15px;
+            left: 15px;
+            color: #fbbf24;
+            text-shadow: 0 0 10px rgba(251, 191, 36, 0.6);
+            border-color: rgba(251, 191, 36, 0.4);
+            background: rgba(0, 0, 0, 0.85);
+        }
+
+        .quadrant-label.bottom-right {
+            bottom: 15px;
+            right: 15px;
+            color: #60a5fa;
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.6);
+            border-color: rgba(96, 165, 250, 0.4);
+            background: rgba(0, 0, 0, 0.85);
+        }
+
+        .quadrant-label.bottom-left {
+            bottom: 15px;
+            left: 15px;
+            color: #f87171;
+            text-shadow: 0 0 10px rgba(248, 113, 113, 0.6);
+            border-color: rgba(248, 113, 113, 0.4);
+            background: rgba(0, 0, 0, 0.85);
+        }
+
+        .quadrant-dividers {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .quadrant-divider-vertical, .quadrant-divider-horizontal {
+            position: absolute;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+        }
+
+        .quadrant-divider-vertical {
+            top: 0;
+            left: 50%;
+            width: 1px;
+            height: 100%;
+        }
+
+        .quadrant-divider-horizontal {
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+        }
+
+        .content-category {
+            position: absolute;
+            min-width: 140px;
+            max-width: 180px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            padding: 10px;
+            font-size: 0.8em;
+            backdrop-filter: blur(10px);
+            z-index: 20;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .content-category:hover {
+            transform: scale(1.15) translateY(-5px);
+            z-index: 30;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .content-category.priority-high {
+            background: rgba(74, 222, 128, 0.2);
+            border-color: #4ade80;
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
+        }
+
+        .content-category.priority-high:hover {
+            background: rgba(74, 222, 128, 0.3);
+            box-shadow: 0 0 30px rgba(74, 222, 128, 0.5), 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .content-category.priority-medium {
+            background: rgba(251, 191, 36, 0.2);
+            border-color: #fbbf24;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+        }
+
+        .content-category.priority-medium:hover {
+            background: rgba(251, 191, 36, 0.3);
+            box-shadow: 0 0 30px rgba(251, 191, 36, 0.5), 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .content-category.priority-low {
+            background: rgba(248, 113, 113, 0.2);
+            border-color: #f87171;
+            box-shadow: 0 0 20px rgba(248, 113, 113, 0.3);
+        }
+
+        .content-category.priority-low:hover {
+            background: rgba(248, 113, 113, 0.3);
+            box-shadow: 0 0 30px rgba(248, 113, 113, 0.5), 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .category-name {
+            font-weight: 700;
+            margin-bottom: 4px;
+            line-height: 1.1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 100%;
+        }
+
+        .category-score {
+            font-size: 0.9em;
+            opacity: 0.9;
+            font-weight: 600;
+        }
+
+        .category-time {
+            font-size: 0.7em;
+            opacity: 0.7;
+            margin-top: 2px;
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .legend-color.high { background: #4ade80; }
+        .legend-color.medium { background: #fbbf24; }
+        .legend-color.low { background: #f87171; }
+
+        .info-panel {
+            position: fixed;
+            top: 50%;
+            right: -500px;
+            transform: translateY(-50%);
+            width: 480px;
+            background: linear-gradient(135deg, rgba(15, 15, 35, 0.98) 0%, rgba(26, 26, 58, 0.95) 100%);
+            border: 2px solid rgba(96, 165, 250, 0.4);
+            border-radius: 20px;
+            padding: 30px;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(20px);
+            max-height: 90vh;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .info-panel.active {
+            right: 20px;
+        }
+
+        .info-panel h3 {
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .close-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #60a5fa;
+            font-size: 1.8em;
+            cursor: pointer;
+            padding: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .close-panel:hover {
+            transform: scale(1.1);
+            color: #ffffff;
+        }
+
+        .strategy-content {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+
+        .priority-indicator {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.8em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 20px;
+        }
+
+        .priority-high {
+            background: rgba(74, 222, 128, 0.2);
+            color: #4ade80;
+            border: 1px solid rgba(74, 222, 128, 0.4);
+        }
+
+        .priority-medium {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.4);
+        }
+
+        .priority-low {
+            background: rgba(248, 113, 113, 0.2);
+            color: #f87171;
+            border: 1px solid rgba(248, 113, 113, 0.4);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .metric-value {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #60a5fa;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            font-size: 0.8em;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sources-list {
+            margin-top: 20px;
+        }
+
+        .sources-list h4 {
+            color: #60a5fa;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .source-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 8px;
+        }
+
+        .source-name {
+            font-weight: 600;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AEO Decision Guide</h1>
+            <p>Strategic content category prioritization for AI Answer Engine optimization</p>
+            <div class="subtitle">Based on 7 Major AI Models' Source Rankings • Where To Focus Resources</div>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label>Business Goal</label>
+                <select id="goal">
+                    <option value="awareness">Brand Awareness</option>
+                    <option value="thought-leadership">Thought Leadership</option>
+                    <option value="crisis-response">Crisis Response</option>
+                    <option value="product-launch">Product Launch</option>
+                    <option value="investor-relations">Investor Relations</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>Company Stage</label>
+                <select id="stage">
+                    <option value="enterprise">Enterprise (1000+ employees)</option>
+                    <option value="growth">Growth Stage (100-1000 employees)</option>
+                    <option value="startup">Startup (<100 employees)</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>AEO Impact Priority</label>
+                <div class="slider-container">
+                    <span class="slider-value" id="aeo-priority-value">75%</span>
+                    <input type="range" id="aeo-priority" min="0" max="100" value="75" onchange="updateSlider('aeo-priority')">
+                    <div style="font-size: 0.75em; opacity: 0.7; margin-top: 5px;">Traditional PR ← → AI Answer focus</div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Speed vs Quality</label>
+                <div class="slider-container">
+                    <span class="slider-value" id="speed-quality-value">50%</span>
+                    <input type="range" id="speed-quality" min="0" max="100" value="50" onchange="updateSlider('speed-quality')">
+                    <div style="font-size: 0.75em; opacity: 0.7; margin-top: 5px;">Quick wins ← → Long-term authority</div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Resource Level</label>
+                <div class="slider-container">
+                    <span class="slider-value" id="resource-level-value">60%</span>
+                    <input type="range" id="resource-level" min="0" max="100" value="60" onchange="updateSlider('resource-level')">
+                    <div style="font-size: 0.75em; opacity: 0.7; margin-top: 5px;">Limited budget ← → Premium investment</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="view-controls">
+            <button class="view-btn active" onclick="setView('all')">All Categories</button>
+            <button class="view-btn" onclick="setView('top-tier')">Top Tier Only</button>
+            <button class="view-btn" onclick="setView('owned')">Owned Media Focus</button>
+            <button class="view-btn" onclick="setView('quick-wins')">Quick Wins</button>
+        </div>
+
+        <div class="matrix-container">
+            <div class="matrix" id="matrix">
+                <div class="axis-label x-axis-label">High Barriers ← → Low Barriers (Easier Access)</div>
+                <div class="axis-label y-axis-label">Higher AEO Impact</div>
+                
+                <div class="quadrant-dividers">
+                    <div class="quadrant-divider-vertical"></div>
+                    <div class="quadrant-divider-horizontal"></div>
+                </div>
+                
+                <div class="quadrant-labels">
+                    <div class="quadrant-label top-left">
+                        <strong>Premium Authority</strong><br>
+                        <span style="font-size: 0.9em;">High Impact • High Investment</span><br>
+                        <span style="font-size: 0.8em; opacity: 0.8;">Long-term Strategy</span>
+                    </div>
+                    <div class="quadrant-label top-right">
+                        <strong>Priority Focus</strong><br>
+                        <span style="font-size: 0.9em;">High Impact • Accessible</span><br>
+                        <span style="font-size: 0.8em; opacity: 0.8;">Maximum ROI Zone</span>
+                    </div>
+                    <div class="quadrant-label bottom-left">
+                        <strong>Avoid/Minimize</strong><br>
+                        <span style="font-size: 0.9em;">Lower Impact • High Barriers</span><br>
+                        <span style="font-size: 0.8em; opacity: 0.8;">Poor ROI</span>
+                    </div>
+                    <div class="quadrant-label bottom-right">
+                        <strong>Volume Strategy</strong><br>
+                        <span style="font-size: 0.9em;">Lower Impact • Easy Access</span><br>
+                        <span style="font-size: 0.8em; opacity: 0.8;">Bulk Content</span>
+                    </div>
+                </div>
+
+                <!-- All categories positioned with IDs for dynamic updates -->
+                <div id="cat-websites" class="content-category priority-high" style="left: 75%; top: 10%;" onclick="showCategoryInfo('websites')">
+                    <div class="category-name">Company Websites & Brand Sources</div>
+                    <div class="category-score">Score: 97</div>
+                    <div class="category-time">Same day • Rank 1.0</div>
+                </div>
+
+                <div id="cat-press" class="content-category priority-high" style="left: 70%; top: 20%;" onclick="showCategoryInfo('press')">
+                    <div class="category-name">Press Releases & Announcements</div>
+                    <div class="category-score">Score: 88</div>
+                    <div class="category-time">Same day • Rank 3.0</div>
+                </div>
+
+                <div id="cat-marketing" class="content-category priority-high" style="left: 68%; top: 35%;" onclick="showCategoryInfo('marketing')">
+                    <div class="category-name">Marketing Trade Publications</div>
+                    <div class="category-score">Score: 78</div>
+                    <div class="category-time">2m • Rank 6.5</div>
+                </div>
+
+                <div id="cat-social" class="content-category priority-high" style="left: 78%; top: 55%;" onclick="showCategoryInfo('social')">
+                    <div class="category-name">Social Media & Professional Networks</div>
+                    <div class="category-score">Score: 79</div>
+                    <div class="category-time">Same day • Rank 8.0</div>
+                </div>
+
+                <div id="cat-tier1" class="content-category priority-medium" style="left: 15%; top: 8%;" onclick="showCategoryInfo('tier1')">
+                    <div class="category-name">Business & Financial News Media</div>
+                    <div class="category-score">Score: 67</div>
+                    <div class="category-time">12m • Rank 2.1</div>
+                </div>
+
+                <div id="cat-research" class="content-category priority-medium" style="left: 25%; top: 20%;" onclick="showCategoryInfo('research')">
+                    <div class="category-name">Market Research & Data Platforms</div>
+                    <div class="category-score">Score: 62</div>
+                    <div class="category-time">6m • Rank 4.0</div>
+                </div>
+
+                <div id="cat-reviews" class="content-category priority-medium" style="left: 65%; top: 65%;" onclick="showCategoryInfo('reviews')">
+                    <div class="category-name">Review Platforms & Consumer Sentiment</div>
+                    <div class="category-score">Score: 58</div>
+                    <div class="category-time">6m • Rank 7.0</div>
+                </div>
+
+                <div id="cat-wikipedia" class="content-category priority-medium" style="left: 8%; top: 35%;" onclick="showCategoryInfo('wikipedia')">
+                    <div class="category-name">Wikipedia & Reference Sources</div>
+                    <div class="category-score">Score: 58</div>
+                    <div class="category-time">18m • Rank 4.5</div>
+                </div>
+
+                <div id="cat-reddit" class="content-category priority-medium" style="left: 15%; top: 55%;" onclick="showCategoryInfo('reddit')">
+                    <div class="category-name">Reddit & Online Communities</div>
+                    <div class="category-score">Score: 54</div>
+                    <div class="category-time">24m • Rank 8.5</div>
+                </div>
+
+                <div id="cat-academic" class="content-category priority-medium" style="left: 22%; top: 45%;" onclick="showCategoryInfo('academic')">
+                    <div class="category-name">Academic & Research Journals</div>
+                    <div class="category-score">Score: 65</div>
+                    <div class="category-time">9m • Rank 5.0</div>
+                </div>
+
+                <div id="cat-government" class="content-category priority-low" style="left: 12%; top: 68%;" onclick="showCategoryInfo('government')">
+                    <div class="category-name">Government & Regulatory Databases</div>
+                    <div class="category-score">Score: 48</div>
+                    <div class="category-time">3m • Rank 6.8</div>
+                </div>
+
+                <div id="cat-analytics" class="content-category priority-low" style="left: 45%; top: 75%;" onclick="showCategoryInfo('analytics')">
+                    <div class="category-name">Business Intelligence & Analytics</div>
+                    <div class="category-score">Score: 45</div>
+                    <div class="category-time">1m • Rank 8.3</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color high"></div>
+                <span>Tier 1 Priority - Focus 60-70% of Resources (Score 70+) - 4 categories</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color medium"></div>
+                <span>Tier 2 Priority - Allocate 20-30% of Resources (Score 50-69) - 5 categories</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color low"></div>
+                <span>Tier 3 Priority - Opportunistic Only (Score <50) - 3 categories</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-panel" id="info-panel">
+        <button class="close-panel" onclick="closePanel()">×</button>
+        <div id="panel-content">
+            <h3>Select a category to view details</h3>
+            <p>Click on any content category in the matrix to see strategic insights and detailed information.</p>
+        </div>
+    </div>
+
+    <script>
+        var categories = {
+            'websites': {
+                title: 'Company Websites & Brand Sources',
+                score: 97,
+                rank: '1.0',
+                time: 'Same day',
+                impact: 100,
+                accessibility: 100,
+                description: 'Consistently ranked #1 across all AI models. Company-controlled content with immediate publishing capability and maximum AI trust signals.',
+                strategy: 'Optimize for structured data, comprehensive information architecture, regular content updates, FAQ sections, leadership bios.',
+                investment: 'Content management system, SEO team, regular content creation, technical optimization.',
+                sources: ['Official Brand Websites', 'Company About Pages', 'Leadership Bios & Executive Pages', 'Product & Service Pages', 'Investor Relations Pages'],
+                aiModels: 'ChatGPT (Rank 1), Claude (Rank 1), Co-Pilot (Rank 1), Grok/X (Rank 1), DeepSeek (Rank 1), Llama (8.5%)'
+            },
+            'marketing': {
+                title: 'Marketing Trade Publications',
+                score: 78,
+                rank: '6.5',
+                time: '2 months',
+                impact: 78,
+                accessibility: 75,
+                description: 'Marketing and advertising industry trade publications with strong sector authority. These publications are highly accessible for thought leadership and have dedicated coverage of brand strategy.',
+                strategy: 'Campaign case studies, thought leadership articles, industry trend commentary, executive interviews, award submissions, agency relationship leveraging.',
+                investment: 'Marketing expertise, campaign documentation, industry relationship building, awards participation, content creation focused on marketing innovation.',
+                sources: ['Ad Age', 'Adweek', 'Brand Week', 'PR Week', 'The Drum', 'Campaign Magazine', 'Marketing Land', 'Digiday', 'Marketing Week'],
+                aiModels: 'Google Gemini (Rank 2), Claude (Rank 3), Co-Pilot (Rank 3), ChatGPT (Rank 5), DeepSeek (Rank 4)'
+            },
+            'press': {
+                title: 'Press Releases & Announcements',
+                score: 88,
+                rank: '3.0',
+                time: 'Same day',
+                impact: 92,
+                accessibility: 95,
+                description: 'Consistently ranked 3rd across models. Official company news with guaranteed AI indexing through wire services.',
+                strategy: 'Consistent release schedule, structured formatting for AI parsing, newsworthy content, keyword optimization.',
+                investment: 'Wire service fees, PR writing capability, approval processes, distribution strategy.',
+                sources: ['PR Newswire', 'Business Wire', 'GlobeNewswire', 'Company Press Centers', 'Earnings Announcements'],
+                aiModels: 'ChatGPT (Rank 3), Grok/X (Rank 5), DeepSeek (Rank 1 - combined with websites)'
+            },
+            'social': {
+                title: 'Social Media & Professional Networks',
+                score: 79,
+                rank: '8.0',
+                time: 'Same day',
+                impact: 75,
+                accessibility: 95,
+                description: 'Social platforms consistently ranked 8th. Real-time content with immediate AI accessibility and executive thought leadership potential.',
+                strategy: 'Executive personal branding, company page optimization, thought leadership content, professional networking.',
+                investment: 'Social media management, content creation, executive coaching, community management.',
+                sources: ['LinkedIn Company & Executive Pages', 'Twitter/X Corporate Accounts', 'Instagram Business', 'YouTube Corporate Channels'],
+                aiModels: 'ChatGPT (Rank 2 - LinkedIn), Co-Pilot (Rank 5), Llama (7.1%), Grok/X (Rank 8), DeepSeek (Rank 8)'
+            },
+            'tier1': {
+                title: 'Business & Financial News Media',
+                score: 67,
+                rank: '2.1',
+                time: '12+ months',
+                impact: 95,
+                accessibility: 25,
+                description: 'Tier-1 financial and business journalism, consistently ranked 2nd across AI models for authoritative business information.',
+                strategy: 'Long-term relationship building, major news positioning, executive commentary, financial results amplification.',
+                investment: 'Premium PR agencies, executive media training, analyst relations, relationship development.',
+                sources: ['Bloomberg', 'Reuters', 'Financial Times', 'Wall Street Journal', 'Forbes Business Coverage'],
+                aiModels: 'Claude (Rank 2), Co-Pilot (Rank 2), DeepSeek (Rank 2), Grok/X (Rank 3), Llama (10.3%)'
+            },
+            'research': {
+                title: 'Market Research & Data Platforms',
+                score: 62,
+                rank: '4.0',
+                time: '6 months',
+                impact: 88,
+                accessibility: 40,
+                description: 'Research firms and data platforms consistently ranked 4th. AI engines rely heavily on these for statistical and market insights.',
+                strategy: 'Data partnerships, proprietary research publishing, analyst relations, sponsored studies.',
+                investment: 'Research teams, data licensing, analyst relations programs, content partnerships.',
+                sources: ['Statista', 'Nielsen', 'Gartner', 'IBISWorld', 'Forrester Research', 'McKinsey Global Institute'],
+                aiModels: 'Google Gemini (Rank 1), Claude (Rank 4), Grok/X (Rank 4), DeepSeek (Rank 3), Llama (6.3%)'
+            },
+            'reviews': {
+                title: 'Review Platforms & Consumer Sentiment',
+                score: 58,
+                rank: '7.0',
+                time: '6 months',
+                impact: 78,
+                accessibility: 60,
+                description: 'Consumer review and rating platforms ranked 7th. AI systems use these for brand reputation and consumer sentiment analysis. Requires sustained customer experience improvements.',
+                strategy: 'Customer experience overhaul, review management, response strategy, product/service improvements, reputation monitoring.',
+                investment: 'Customer success focus, product improvements, review management tools, response processes, sentiment analysis.',
+                sources: ['Trustpilot', 'Google Business Reviews', 'Amazon Reviews', 'G2 (B2B Software)', 'Yelp'],
+                aiModels: 'Llama (12.5% - Product Reviews), Co-Pilot (Rank 4), ChatGPT (Rank 6), Claude (Rank 7), DeepSeek (Rank 9)'
+            },
+            'wikipedia': {
+                title: 'Wikipedia & Reference Sources',
+                score: 58,
+                rank: '4.5',
+                time: '18+ months',
+                impact: 88,
+                accessibility: 15,
+                description: 'Wikipedia ranks extremely highly across AI models (15.6% in Llama, foundational reference source). However, it has the lowest accessibility due to strict neutral POV policies, rigorous citation requirements, and active community oversight.',
+                strategy: 'Citation building from reliable third-party sources, neutral content creation by uninvolved editors, community relationship building, never direct editing by brand representatives.',
+                investment: 'Wikipedia expertise consultants, citation development, content coordination, community management, third-party content creation.',
+                sources: ['Wikipedia', 'Wikidata', 'Wikipedia Citations & References', 'Community-driven encyclopedia content'],
+                aiModels: 'Llama (Rank 1 - 15.6%), Other models use less explicitly but reference for background context'
+            },
+            'reddit': {
+                title: 'Reddit & Online Communities',
+                score: 54,
+                rank: '8.5',
+                time: '24+ months',
+                impact: 82,
+                accessibility: 8,
+                description: 'Reddit and online communities have significant influence on AI answer results for sentiment analysis, opinion mining, and real-world user experiences. However, they require the most extreme barriers - authentic community participation over years with zero tolerance for corporate manipulation or astroturfing.',
+                strategy: 'Authentic community participation by real employees using their actual names, value-first engagement with no promotional intent, transparent disclosure of company affiliation, genuine expertise sharing, building trust through consistent helpful contributions.',
+                investment: 'Long-term community management, authentic engagement strategy, subject matter experts with genuine passion for communities, employee advocacy programs, extreme patience and consistency, zero corporate marketing approaches.',
+                sources: ['Reddit Communities & Subreddits', 'Quora Q&A Platform', 'Stack Overflow (Technical)', 'Discord Communities', 'Industry-specific Forums', 'Professional Communities'],
+                aiModels: 'Google Gemini (Rank 10 - Crowdsourced Information), Llama (3.7% - Forums & Communities), ChatGPT (includes Reddit in review platforms), Growing influence across models for authentic user sentiment'
+            },
+            'academic': {
+                title: 'Academic & Research Journals',
+                score: 65,
+                rank: '5.0',
+                time: '9 months',
+                impact: 85,
+                accessibility: 35,
+                description: 'Academic journals and peer-reviewed research consistently ranked 4-6 across AI models. High credibility for authoritative insights but requires academic relationships and research collaboration.',
+                strategy: 'Research collaboration, white paper publishing, academic partnerships, case study participation, peer-reviewed publication, university relationships.',
+                investment: 'R&D teams, academic relations, research partnerships, university collaboration, peer review processes.',
+                sources: ['Google Scholar', 'Academic Business Journals', 'Harvard Business Review', 'MIT Sloan Management Review', 'Peer-reviewed Publications', 'University Research Centers'],
+                aiModels: 'Google Gemini (Rank 4 - Academic Journals), Claude (Rank 5 - Academic & Business Strategy), DeepSeek (Rank 6 - Google Scholar & Academic Journals)'
+            },
+            'government': {
+                title: 'Government & Regulatory Databases',
+                score: 48,
+                rank: '6.8',
+                time: '3 months',
+                impact: 70,
+                accessibility: 65,
+                description: 'Government databases and regulatory sources ranked 6-7 across models. Authoritative for regulatory and compliance information with moderate accessibility through proper filing and registration processes.',
+                strategy: 'Regulatory compliance optimization, government database registration, proper classification and filing, regulatory relationship building.',
+                investment: 'Legal and compliance teams, regulatory specialists, government affairs, filing fees.',
+                sources: ['USPTO Patent Database', 'FDA Regulatory Filings', 'SEC Edgar Database', 'Census Bureau Data', 'Trade Association Databases', 'Government Statistics'],
+                aiModels: 'Google Gemini (Rank 6 - Government & Trade Associations), Grok/X (Rank 7 - Government Databases), DeepSeek (Rank 10 - Government & Regulatory Filings)'
+            },
+            'analytics': {
+                title: 'Business Intelligence & Analytics Tools',
+                score: 45,
+                rank: '8.3',
+                time: '1 month',
+                impact: 60,
+                accessibility: 85,
+                description: 'Business analytics and social listening tools ranked 5-10 across models. Accessible tools for competitive intelligence and social sentiment analysis with immediate implementation capability.',
+                strategy: 'Tool optimization, competitive intelligence gathering, social listening setup, brand monitoring, SEO and traffic analysis.',
+                investment: 'Analytics tools subscriptions, social listening platforms, competitive intelligence software, data analysis expertise.',
+                sources: ['Brandwatch Social Listening', 'SimilarWeb Traffic Analysis', 'SEMrush SEO Tools', 'Sprout Social', 'Google Trends', 'Brand Ranking Services'],
+                aiModels: 'Google Gemini (Rank 5 - Social Listening Platforms), ChatGPT (Rank 10 - Social Listening Tools), Claude (Rank 10 - Competitive Intelligence), Co-Pilot (Rank 6 - Search Engine & SEO Tools)'
+            }
+        };
+
+        function updateSlider(id) {
+            var slider = document.getElementById(id);
+            var valueDisplay = document.getElementById(id + '-value');
+            valueDisplay.textContent = slider.value + '%';
+            updateMatrix();
+        }
+
+        function updateMatrix() {
+            var goal = document.getElementById('goal').value;
+            var stage = document.getElementById('stage').value;
+            var aeoPriority = parseInt(document.getElementById('aeo-priority').value);
+            var speedQuality = parseInt(document.getElementById('speed-quality').value);
+            var resourceLevel = parseInt(document.getElementById('resource-level').value);
+
+            // Get all category elements by ID
+            var categoryElements = {
+                websites: document.getElementById('cat-websites'),
+                marketing: document.getElementById('cat-marketing'),
+                press: document.getElementById('cat-press'),
+                social: document.getElementById('cat-social'),
+                tier1: document.getElementById('cat-tier1'),
+                research: document.getElementById('cat-research'),
+                reviews: document.getElementById('cat-reviews'),
+                wikipedia: document.getElementById('cat-wikipedia'),
+                reddit: document.getElementById('cat-reddit'),
+                academic: document.getElementById('cat-academic'),
+                government: document.getElementById('cat-government'),
+                analytics: document.getElementById('cat-analytics')
+            };
+
+            // Adjust positions and scores based on controls
+            Object.keys(categories).forEach(function(key) {
+                var cat = categories[key];
+                var element = categoryElements[key];
+                if (!element) return;
+
+                // Base values
+                var baseImpact = cat.impact;
+                var baseAccessibility = cat.accessibility;
+                
+                // Apply adjustments
+                var adjustedImpact = baseImpact;
+                var adjustedAccessibility = baseAccessibility;
+
+                // Goal-based adjustments
+                if (goal === 'crisis-response' && (key === 'websites' || key === 'press' || key === 'social')) {
+                    adjustedImpact += 10;
+                    adjustedAccessibility += 15;
+                }
+                if (goal === 'thought-leadership' && (key === 'marketing' || key === 'tier1' || key === 'research' || key === 'academic')) {
+                    adjustedImpact += 12;
+                }
+                if (goal === 'investor-relations' && (key === 'tier1' || key === 'research' || key === 'government')) {
+                    adjustedImpact += 8;
+                    adjustedAccessibility += 10;
+                }
+
+                // Stage adjustments
+                if (stage === 'startup' && (key === 'websites' || key === 'social' || key === 'marketing' || key === 'analytics')) {
+                    adjustedAccessibility += 15;
+                }
+                if (stage === 'enterprise' && (key === 'tier1' || key === 'research' || key === 'academic')) {
+                    adjustedAccessibility += 12;
+                }
+
+                // AEO priority weighting
+                var aeoBonus = (aeoPriority / 100) * 20;
+                adjustedImpact += aeoBonus;
+
+                // Speed vs quality
+                if (speedQuality < 40) { // Speed focus
+                    if (cat.time === 'Same day' || key === 'websites' || key === 'press' || key === 'social' || key === 'analytics') {
+                        adjustedAccessibility += 20;
+                    }
+                    if (key === 'tier1' || key === 'wikipedia' || key === 'reddit' || key === 'academic') {
+                        adjustedAccessibility -= 15;
+                    }
+                } else if (speedQuality > 60) { // Quality focus
+                    if (key === 'tier1' || key === 'research' || key === 'wikipedia' || key === 'academic') {
+                        adjustedImpact += 15;
+                    }
+                }
+
+                // Resource level
+                if (resourceLevel < 40) { // Low resources
+                    if (key === 'websites' || key === 'press' || key === 'social' || key === 'marketing' || key === 'analytics' || key === 'government') {
+                        adjustedAccessibility += 25;
+                    }
+                    if (key === 'tier1' || key === 'wikipedia' || key === 'reddit' || key === 'academic') {
+                        adjustedAccessibility -= 25;
+                    }
+                } else if (resourceLevel > 60) { // High resources
+                    if (key === 'tier1' || key === 'research' || key === 'wikipedia' || key === 'academic') {
+                        adjustedAccessibility += 18;
+                    }
+                }
+
+                // Keep within bounds
+                adjustedImpact = Math.min(100, Math.max(20, adjustedImpact));
+                adjustedAccessibility = Math.min(100, Math.max(5, adjustedAccessibility));
+
+                // Calculate new position (inverted Y for display)
+                var xPercent = Math.max(8, Math.min(85, (adjustedAccessibility / 100) * 75 + 8));
+                var yPercent = Math.max(8, Math.min(85, 92 - ((adjustedImpact / 100) * 75 + 8)));
+
+                // Update position
+                element.style.left = xPercent + '%';
+                element.style.top = yPercent + '%';
+
+                // Update score display
+                var newScore = Math.round((adjustedImpact * 0.7) + (adjustedAccessibility * 0.3));
+                var scoreElement = element.querySelector('.category-score');
+                if (scoreElement) {
+                    scoreElement.textContent = 'Score: ' + newScore;
+                }
+
+                // Update priority class
+                element.className = element.className.replace(/priority-\w+/, '');
+                if (newScore >= 70) {
+                    element.classList.add('priority-high');
+                } else if (newScore >= 50) {
+                    element.classList.add('priority-medium');
+                } else {
+                    element.classList.add('priority-low');
+                }
+
+                // Update stored data
+                categories[key].adjustedImpact = adjustedImpact;
+                categories[key].adjustedAccessibility = adjustedAccessibility;
+                categories[key].adjustedScore = newScore;
+            });
+        }
+
+        // Add change listeners to selects
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('goal').addEventListener('change', updateMatrix);
+            document.getElementById('stage').addEventListener('change', updateMatrix);
+            updateMatrix(); // Initial update
+        });
+
+        function setView(view) {
+            var buttons = document.querySelectorAll('.view-btn');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
+            }
+            event.target.classList.add('active');
+        }
+
+        function showCategoryInfo(categoryId) {
+            var panel = document.getElementById('info-panel');
+            var content = document.getElementById('panel-content');
+            var data = categories[categoryId];
+            
+            if (data) {
+                var priorityClass = data.score >= 70 ? 'high' : data.score >= 50 ? 'medium' : 'low';
+                var priorityLabel = data.score >= 70 ? 'Tier 1 Priority' : data.score >= 50 ? 'Tier 2 Priority' : 'Tier 3 Priority';
+                
+                var sourcesHtml = '';
+                for (var i = 0; i < data.sources.length; i++) {
+                    sourcesHtml += '<div class="source-item"><span class="source-name">' + data.sources[i] + '</span></div>';
+                }
+                
+                content.innerHTML = 
+                    '<h3>' + data.title + ' <span style="background: rgba(96, 165, 250, 0.2); color: #60a5fa; padding: 2px 6px; border-radius: 10px; font-size: 0.7em; font-weight: 700;">Avg Rank ' + data.rank + '</span></h3>' +
+                    '<div class="priority-indicator priority-' + priorityClass + '">' + priorityLabel + ' • Score: ' + data.score + '</div>' +
+                    '<div class="metrics-grid">' +
+                        '<div class="metric-card"><div class="metric-value">' + data.impact + '</div><div class="metric-label">AEO Impact</div></div>' +
+                        '<div class="metric-card"><div class="metric-value">' + data.accessibility + '</div><div class="metric-label">Accessibility</div></div>' +
+                        '<div class="metric-card"><div class="metric-value">' + data.time + '</div><div class="metric-label">Time to Impact</div></div>' +
+                        '<div class="metric-card"><div class="metric-value">#' + data.rank + '</div><div class="metric-label">AI Ranking</div></div>' +
+                    '</div>' +
+                    '<div class="strategy-content">' +
+                        '<h4>Category Overview</h4><p>' + data.description + '</p>' +
+                        '<h4 style="margin-top: 20px;">Strategic Approach</h4><p>' + data.strategy + '</p>' +
+                        '<h4 style="margin-top: 20px;">Investment Requirements</h4><p>' + data.investment + '</p>' +
+                    '</div>' +
+                    '<div class="sources-list">' +
+                        '<h4>Key Sources in This Category</h4>' + sourcesHtml +
+                    '</div>' +
+                    '<hr style="margin: 25px 0; border: none; border-top: 1px solid rgba(255, 255, 255, 0.2);">' +
+                    '<div><h4 style="color: #60a5fa; margin-bottom: 15px;">AI Model Rankings</h4><p style="font-size: 0.9em; line-height: 1.5;">' + data.aiModels + '</p></div>';
+                
+                panel.classList.add('active');
+            }
+        }
+
+        function closePanel() {
+            document.getElementById('info-panel').classList.remove('active');
+        }
+    </script>
+</body>
+</html>

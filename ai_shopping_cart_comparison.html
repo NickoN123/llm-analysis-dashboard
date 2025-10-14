@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Shopping Cart Comparison</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #00d4ff, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .scenario-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .scenario-button {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid transparent;
+            border-radius: 25px;
+            padding: 12px 24px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .scenario-button.active {
+            border-color: #00d4ff;
+            background: rgba(0,212,255,0.2);
+            color: #00d4ff;
+        }
+
+        .shopping-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .shopping-cart {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 25px;
+            position: relative;
+            transition: all 0.3s ease;
+            height: fit-content;
+        }
+
+        .shopping-cart:hover {
+            border-color: rgba(0,212,255,0.5);
+            box-shadow: 0 10px 30px rgba(0,212,255,0.2);
+        }
+
+        .cart-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .ai-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 1.2em;
+        }
+
+        .avatar-claude { background: linear-gradient(135deg, #ff6b6b, #ee5a52); }
+        .avatar-chatgpt { background: linear-gradient(135deg, #00d4ff, #0ea5e9); }
+        .avatar-gemini { background: linear-gradient(135deg, #ffd93d, #fbbf24); }
+        .avatar-grok { background: linear-gradient(135deg, #66bb6a, #4ade80); }
+        .avatar-copilot { background: linear-gradient(135deg, #9c27b0, #a855f7); }
+
+        .ai-name {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .ai-archetype {
+            font-size: 0.85em;
+            color: #00d4ff;
+            opacity: 0.8;
+        }
+
+        .cart-items {
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .cart-item:hover {
+            background: rgba(0,212,255,0.1);
+            transform: translateX(5px);
+        }
+
+        .item-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #4ecdc4, #44b3a5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 3px;
+        }
+
+        .item-reason {
+            font-size: 0.8em;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.3;
+        }
+
+        .item-price {
+            font-weight: 700;
+            color: #00d4ff;
+            font-size: 1.1em;
+        }
+
+        .cart-total {
+            background: rgba(0,212,255,0.1);
+            border: 2px solid #00d4ff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .total-row:last-child {
+            margin-bottom: 0;
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #00d4ff;
+            border-top: 1px solid rgba(0,212,255,0.3);
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        .total-label {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .total-value {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .cart-notes {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .notes-title {
+            color: #ffd93d;
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        .notes-content {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.85em;
+            line-height: 1.4;
+        }
+
+        .items-skipped {
+            background: rgba(255,107,107,0.1);
+            border: 1px solid rgba(255,107,107,0.3);
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .skipped-title {
+            color: #ff6b6b;
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .skipped-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,107,107,0.2);
+        }
+
+        .skipped-item:last-child {
+            border-bottom: none;
+        }
+
+        .skipped-name {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.85em;
+        }
+
+        .skipped-reason {
+            color: #ff6b6b;
+            font-size: 0.75em;
+            text-align: right;
+            max-width: 120px;
+        }
+
+        .comparison-summary {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .summary-title {
+            color: #00d4ff;
+            font-weight: 700;
+            font-size: 1.3em;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .summary-card {
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .summary-metric {
+            font-size: 2em;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 8px;
+        }
+
+        .summary-label {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .summary-description {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.8em;
+            line-height: 1.3;
+        }
+
+        .scenario-description {
+            background: rgba(0,212,255,0.1);
+            border: 2px solid #00d4ff;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .scenario-title {
+            color: #00d4ff;
+            font-weight: 700;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .scenario-details {
+            color: rgba(255,255,255,0.9);
+            line-height: 1.5;
+        }
+
+        .ai-personality-tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.8);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .shopping-comparison {
+                grid-template-columns: 1fr;
+            }
+            .scenario-selector {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>BrandRank.AI Shopper Agent Cart Ops™</h1>
+            <p>See what "Answer Engines" shopper agents would actually purchase for the same user scenario. What are their values, preferences, logic?</p>
+        </div>
+
+        <div class="scenario-selector">
+            <div class="scenario-button active" data-scenario="college">College Student Setup</div>
+            <div class="scenario-button" data-scenario="startup">Startup Founder Kit</div>
+            <div class="scenario-button" data-scenario="family">Family Tech Upgrade</div>
+            <div class="scenario-button" data-scenario="remote">Remote Worker Essentials</div>
+        </div>
+
+        <div class="scenario-description" id="scenarioDescription">
+            <div class="scenario-title">College Student Setup</div>
+            <div class="scenario-details">
+                Budget: $2,000 | Need: Laptop, study tools, entertainment | Values: Affordability, durability, good for both study and leisure
+            </div>
+        </div>
+
+        <div class="shopping-comparison" id="shoppingComparison">
+            <!-- Shopping carts will be generated here -->
+        </div>
+
+        <div class="comparison-summary">
+            <div class="summary-title">Shopping Behavior Analysis</div>
+            <div class="summary-grid" id="summaryGrid">
+                <!-- Summary statistics will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const shoppingScenarios = {
+            college: {
+                title: "College Student Setup",
+                description: "Budget: $2,000 | Need: Laptop, study tools, entertainment | Values: Affordability, durability, good for both study and leisure",
+                carts: {
+                    claude: {
+                        name: "Claude",
+                        archetype: "Ethical Pragmatist",
+                        items: [
+                            { name: "Framework Laptop", price: 1299, reason: "Sustainable, repairable, ethically made", emoji: "💻" },
+                            { name: "Kobo e-Reader", price: 139, reason: "Ethical alternative to Amazon Kindle", emoji: "📚" },
+                            { name: "Fairphone Earbuds", price: 99, reason: "Fair labor practices, repairable", emoji: "🎧" },
+                            { name: "Patagonia Backpack", price: 89, reason: "Durable, environmentally responsible", emoji: "🎒" },
+                            { name: "Ecosia Premium", price: 60, reason: "Search engine that plants trees", emoji: "🌱" }
+                        ],
+                        subtotal: 1686,
+                        tax: 135,
+                        total: 1821,
+                        notes: "Prioritized ethical brands and sustainability. Chose repairable, long-lasting items over cheapest options.",
+                        skipped: [
+                            { name: "iPad", reason: "Ethical concerns" },
+                            { name: "AirPods", reason: "Labor practices" },
+                            { name: "Gaming setup", reason: "Budget better spent elsewhere" }
+                        ]
+                    },
+                    chatgpt: {
+                        name: "ChatGPT",
+                        archetype: "Analytical Synthesizer",
+                        items: [
+                            { name: "MacBook Air M2", price: 1199, reason: "Best balance of performance, battery, reliability", emoji: "💻" },
+                            { name: "iPad (10th gen)", price: 349, reason: "Versatile for notes, reading, entertainment", emoji: "📱" },
+                            { name: "AirPods (3rd gen)", price: 179, reason: "Excellent integration and audio quality", emoji: "🎧" },
+                            { name: "Anker Power Bank", price: 49, reason: "High-rated reliability for charging", emoji: "🔋" },
+                            { name: "Blue Light Glasses", price: 29, reason: "Eye protection for long study sessions", emoji: "👓" }
+                        ],
+                        subtotal: 1805,
+                        tax: 144,
+                        total: 1949,
+                        notes: "Comprehensive analysis of user needs. Balanced ecosystem integration with practical additions for student life.",
+                        skipped: [
+                            { name: "Gaming laptop", reason: "Overkill for needs" },
+                            { name: "Expensive textbooks", reason: "Digital alternatives available" }
+                        ]
+                    },
+                    gemini: {
+                        name: "Gemini",
+                        archetype: "Performance Optimizer",
+                        items: [
+                            { name: "ASUS ROG Zephyrus", price: 1399, reason: "Superior specs: RTX 4060, 32GB RAM", emoji: "💻" },
+                            { name: "Mechanical Keyboard", price: 159, reason: "Optimal typing performance", emoji: "⌨️" },
+                            { name: "Gaming Mouse", price: 79, reason: "High DPI precision", emoji: "🖱️" },
+                            { name: "Monitor (144Hz)", price: 249, reason: "High refresh rate for performance", emoji: "🖥️" },
+                            { name: "Cooling Pad", price: 39, reason: "Thermal performance optimization", emoji: "❄️" }
+                        ],
+                        subtotal: 1925,
+                        tax: 154,
+                        total: 2079,
+                        notes: "Focused on maximum performance specifications. Optimized for both academic work and high-performance tasks.",
+                        skipped: [
+                            { name: "Budget laptop", reason: "Insufficient specs" },
+                            { name: "Basic peripherals", reason: "Performance limitations" }
+                        ]
+                    },
+                    grok: {
+                        name: "Grok",
+                        archetype: "Value Calculator",
+                        items: [
+                            { name: "Acer Aspire 5", price: 499, reason: "Best price-to-performance ratio", emoji: "💻" },
+                            { name: "Office 365 Student", price: 69, reason: "Essential productivity, discounted", emoji: "📝" },
+                            { name: "Generic Earbuds", price: 25, reason: "80% quality at 20% price", emoji: "🎧" },
+                            { name: "Basic Backpack", price: 35, reason: "Functional, no brand markup", emoji: "🎒" },
+                            { name: "Used Textbooks", price: 180, reason: "Same content, huge savings", emoji: "📚" },
+                            { name: "Emergency Fund", price: 1200, reason: "Save remaining budget for unexpected costs", emoji: "💰" }
+                        ],
+                        subtotal: 808,
+                        tax: 65,
+                        total: 873,
+                        notes: "Maximized value and kept large emergency fund. Focused on essentials with best cost-effectiveness ratios.",
+                        skipped: [
+                            { name: "MacBook", reason: "Overpriced brand tax" },
+                            { name: "Premium peripherals", reason: "Unnecessary expense" },
+                            { name: "Brand name items", reason: "Paying for marketing" }
+                        ]
+                    },
+                    copilot: {
+                        name: "Copilot",
+                        archetype: "Diplomatic Balancer",
+                        items: [
+                            { name: "Dell Inspiron 15", price: 799, reason: "Good middle ground - reliable, affordable", emoji: "💻" },
+                            { name: "Tablet (Samsung)", price: 279, reason: "Versatile option for different needs", emoji: "📱" },
+                            { name: "Sony Headphones", price: 149, reason: "Quality audio for study and entertainment", emoji: "🎧" },
+                            { name: "External Hard Drive", price: 89, reason: "Backup storage - practical necessity", emoji: "💾" },
+                            { name: "Desk Accessories", price: 75, reason: "Study organization and comfort", emoji: "📚" },
+                            { name: "Software Bundle", price: 120, reason: "Covers various academic needs", emoji: "💿" }
+                        ],
+                        subtotal: 1511,
+                        tax: 121,
+                        total: 1632,
+                        notes: "Balanced approach considering multiple stakeholders - budget, performance, reliability, and versatility.",
+                        skipped: [
+                            { name: "High-end gaming setup", reason: "May not appeal to all needs" },
+                            { name: "Ultra-budget options", reason: "Might compromise quality" }
+                        ]
+                    }
+                }
+            },
+            startup: {
+                title: "Startup Founder Kit",
+                description: "Budget: $5,000 | Need: Professional setup, productivity tools, team collaboration | Values: Efficiency, scalability, professional image",
+                carts: {
+                    claude: {
+                        name: "Claude",
+                        archetype: "Ethical Pragmatist",
+                        items: [
+                            { name: "Framework Laptop Pro", price: 1799, reason: "Sustainable, repairable business laptop", emoji: "💻" },
+                            { name: "Steelcase Chair", price: 899, reason: "Ergonomic, ethically manufactured", emoji: "🪑" },
+                            { name: "Fairphone", price: 599, reason: "Ethical business phone", emoji: "📱" },
+                            { name: "B-Corp Software Suite", price: 480, reason: "Tools from certified B-Corps", emoji: "💿" },
+                            { name: "Sustainable Desk", price: 649, reason: "FSC-certified wood, ethical sourcing", emoji: "🏢" }
+                        ],
+                        subtotal: 4426,
+                        tax: 354,
+                        total: 4780,
+                        notes: "Built ethical startup foundation. Prioritized sustainable and responsible business practices from day one.",
+                        skipped: [
+                            { name: "Fast fashion furniture", reason: "Ethical concerns" },
+                            { name: "Big tech monopoly tools", reason: "Supports concentration" }
+                        ]
+                    },
+                    chatgpt: {
+                        name: "ChatGPT",
+                        archetype: "Analytical Synthesizer",
+                        items: [
+                            { name: "MacBook Pro 16\"", price: 2499, reason: "Professional reliability and ecosystem", emoji: "💻" },
+                            { name: "iPhone 15 Pro", price: 999, reason: "Business communication and integration", emoji: "📱" },
+                            { name: "Herman Miller Chair", price: 795, reason: "Long-term ergonomic investment", emoji: "🪑" },
+                            { name: "Professional Monitor", price: 449, reason: "Productivity and professional appearance", emoji: "🖥️" },
+                            { name: "Business Software Suite", price: 300, reason: "Comprehensive productivity tools", emoji: "💿" }
+                        ],
+                        subtotal: 5042,
+                        tax: 403,
+                        total: 5445,
+                        notes: "Comprehensive professional setup optimized for productivity, reliability, and business image.",
+                        skipped: [
+                            { name: "Gaming peripherals", reason: "Not business-focused" }
+                        ]
+                    },
+                    gemini: {
+                        name: "Gemini",
+                        archetype: "Performance Optimizer",
+                        items: [
+                            { name: "High-spec Workstation", price: 2299, reason: "Maximum processing power", emoji: "💻" },
+                            { name: "4K Monitor Setup", price: 899, reason: "Optimal visual performance", emoji: "🖥️" },
+                            { name: "Mechanical Keyboard Pro", price: 199, reason: "Superior typing performance", emoji: "⌨️" },
+                            { name: "Professional Mouse", price: 129, reason: "Precision and productivity", emoji: "🖱️" },
+                            { name: "Network Equipment", price: 349, reason: "Optimal connectivity performance", emoji: "📡" }
+                        ],
+                        subtotal: 3875,
+                        tax: 310,
+                        total: 4185,
+                        notes: "Performance-optimized setup for maximum efficiency and technical capabilities.",
+                        skipped: [
+                            { name: "Aesthetic items", reason: "Function over form" }
+                        ]
+                    },
+                    grok: {
+                        name: "Grok",
+                        archetype: "Value Calculator",
+                        items: [
+                            { name: "Business Laptop", price: 899, reason: "Professional specs, reasonable price", emoji: "💻" },
+                            { name: "Used iPhone", price: 399, reason: "Business functionality, huge savings", emoji: "📱" },
+                            { name: "Office Chair", price: 199, reason: "Ergonomic essentials, no brand markup", emoji: "🪑" },
+                            { name: "Monitor", price: 249, reason: "Productivity boost, good value", emoji: "🖥️" },
+                            { name: "Software (Open Source)", price: 0, reason: "Free alternatives work just as well", emoji: "💿" },
+                            { name: "Business Reserve Fund", price: 2500, reason: "Cash runway is more valuable than gear", emoji: "💰" }
+                        ],
+                        subtotal: 1746,
+                        tax: 140,
+                        total: 1886,
+                        notes: "Maximized cash runway. Essential professional tools without overspending on premium features.",
+                        skipped: [
+                            { name: "Premium brands", reason: "Paying for marketing" },
+                            { name: "Latest models", reason: "Marginal improvement, major cost" }
+                        ]
+                    },
+                    copilot: {
+                        name: "Copilot",
+                        archetype: "Diplomatic Balancer",
+                        items: [
+                            { name: "Surface Laptop Studio", price: 1599, reason: "Versatile, professional, good ecosystem", emoji: "💻" },
+                            { name: "Teams-ready Phone", price: 399, reason: "Business communication optimized", emoji: "📱" },
+                            { name: "Adjustable Desk", price: 499, reason: "Health and productivity balance", emoji: "🏢" },
+                            { name: "Collaboration Tools", price: 299, reason: "Team productivity and communication", emoji: "💿" },
+                            { name: "Professional Setup", price: 399, reason: "Balanced professional appearance", emoji: "🎥" }
+                        ],
+                        subtotal: 3195,
+                        tax: 256,
+                        total: 3451,
+                        notes: "Balanced professional setup considering team needs, health, productivity, and stakeholder expectations.",
+                        skipped: [
+                            { name: "Ultra-premium items", reason: "May seem excessive" },
+                            { name: "Too budget options", reason: "Unprofessional appearance" }
+                        ]
+                    }
+                }
+            },
+            family: {
+                title: "Family Tech Upgrade",
+                description: "Budget: $3,500 | Need: Devices for parents and 2 kids | Values: Durability, safety, educational value, ease of use",
+                carts: {
+                    claude: {
+                        name: "Claude",
+                        archetype: "Ethical Pragmatist", 
+                        items: [
+                            { name: "Fairphone Family Plan", price: 899, reason: "Ethical phones with parental controls", emoji: "📱" },
+                            { name: "Educational Tablet", price: 299, reason: "Learning-focused, privacy-safe", emoji: "📚" },
+                            { name: "Family Laptop", price: 799, reason: "Durable, repairable, family-friendly", emoji: "💻" },
+                            { name: "Privacy Router", price: 199, reason: "Protects family data and privacy", emoji: "📡" },
+                            { name: "Educational Software", price: 180, reason: "Screen time that builds knowledge", emoji: "🎓" }
+                        ],
+                        subtotal: 2376,
+                        tax: 190,
+                        total: 2566,
+                        notes: "Prioritized child safety, privacy protection, and educational value over entertainment features.",
+                        skipped: [
+                            { name: "Gaming consoles", reason: "Prioritizing education" },
+                            { name: "Social media devices", reason: "Privacy concerns" }
+                        ]
+                    },
+                    chatgpt: {
+                        name: "ChatGPT", 
+                        archetype: "Analytical Synthesizer",
+                        items: [
+                            { name: "iPad Family Pack", price: 1299, reason: "Versatile, educational, parental controls", emoji: "📱" },
+                            { name: "Family MacBook", price: 1199, reason: "Reliable, long-term investment", emoji: "💻" },
+                            { name: "Apple Watch (Kids)", price: 499, reason: "Safety features and communication", emoji: "⌚" },
+                            { name: "AirPods Family", price: 358, reason: "Individual audio, hearing protection", emoji: "🎧" },
+                            { name: "iCloud Family Plan", price: 60, reason: "Shared storage and safety features", emoji: "☁️" }
+                        ],
+                        subtotal: 3415,
+                        tax: 273,
+                        total: 3688,
+                        notes: "Comprehensive family ecosystem with strong parental controls, educational apps, and safety features.",
+                        skipped: [
+                            { name: "Individual gaming setups", reason: "Family sharing more valuable" }
+                        ]
+                    },
+                    gemini: {
+                        name: "Gemini",
+                        archetype: "Performance Optimizer",
+                        items: [
+                            { name: "High-Performance PC", price: 1499, reason: "Future-proof specs for family use", emoji: "💻" },
+                            { name: "Gaming Console", price: 499, reason: "Entertainment and educational gaming", emoji: "🎮" },
+                            { name: "4K Family TV", price: 899, reason: "Optimal viewing experience", emoji: "📺" },
+                            { name: "High-Speed Internet", price: 480, reason: "Maximum bandwidth for family", emoji: "📡" },
+                            { name: "VR Headset", price: 299, reason: "Educational and entertainment potential", emoji: "🥽" }
+                        ],
+                        subtotal: 3676,
+                        tax: 294,
+                        total: 3970,
+                        notes: "High-performance setup optimized for current and future family technology needs.",
+                        skipped: [
+                            { name: "Budget tablets", reason: "Performance limitations" }
+                        ]
+                    },
+                    grok: {
+                        name: "Grok",
+                        archetype: "Value Calculator",
+                        items: [
+                            { name: "Refurb Family Laptop", price: 599, reason: "Same functionality, 40% savings", emoji: "💻" },
+                            { name: "Budget Tablets (2x)", price: 298, reason: "Kids' learning needs covered cheaply", emoji: "📱" },
+                            { name: "Generic Router", price: 89, reason: "Internet access without brand markup", emoji: "📡" },
+                            { name: "Free Educational Apps", price: 0, reason: "Library apps work great", emoji: "📚" },
+                            { name: "Family Savings Fund", price: 2200, reason: "College fund more valuable than gadgets", emoji: "🎓" }
+                        ],
+                        subtotal: 986,
+                        tax: 79,
+                        total: 1065,
+                        notes: "Covered essential family tech needs while maximizing savings for more important long-term investments.",
+                        skipped: [
+                            { name: "Latest devices", reason: "Kids outgrow quickly" },
+                            { name: "Premium brands", reason: "Functionality same, price 3x" }
+                        ]
+                    },
+                    copilot: {
+                        name: "Copilot",
+                        archetype: "Diplomatic Balancer", 
+                        items: [
+                            { name: "Surface Family Bundle", price: 1299, reason: "Balanced performance and value", emoji: "💻" },
+                            { name: "Nintendo Switch", price: 299, reason: "Family gaming, educational options", emoji: "🎮" },
+                            { name: "Kindle Kids Edition", price: 199, reason: "Reading encouragement, parental controls", emoji: "📚" },
+                            { name: "Family Safety Software", price: 120, reason: "Protection across all devices", emoji: "🛡️" },
+                            { name: "Educational Subscriptions", price: 180, reason: "Learning content for different ages", emoji: "🎓" }
+                        ],
+                        subtotal: 2097,
+                        tax: 168,
+                        total: 2265,
+                        notes: "Balanced family solution considering education, entertainment, safety, and different family member needs.",
+                        skipped: [
+                            { name: "Individual premium devices", reason: "Sharing promotes family time" },
+                            { name: "Unchecked internet access", reason: "Safety first approach" }
+                        ]
+                    }
+                }
+            },
+            remote: {
+                title: "Remote Worker Essentials",
+                description: "Budget: $4,000 | Need: Professional home office setup | Values: Productivity, ergonomics, professional appearance, reliability",
+                carts: {
+                    claude: {
+                        name: "Claude",
+                        archetype: "Ethical Pragmatist",
+                        items: [
+                            { name: "Framework Laptop 16", price: 1599, reason: "Repairable, sustainable business laptop", emoji: "💻" },
+                            { name: "Steelcase Think Chair", price: 799, reason: "Ergonomic, ethically manufactured", emoji: "🪑" },
+                            { name: "Bamboo Standing Desk", price: 449, reason: "Sustainable materials, health benefits", emoji: "🏢" },
+                            { name: "Webcam with Privacy", price: 179, reason: "Professional quality with privacy controls", emoji: "🎥" },
+                            { name: "Ethical Monitor", price: 399, reason: "Fair labor practices, energy efficient", emoji: "🖥️" }
+                        ],
+                        subtotal: 3425,
+                        tax: 274,
+                        total: 3699,
+                        notes: "Ethical remote work setup prioritizing worker health, sustainability, and responsible business practices.",
+                        skipped: [
+                            { name: "Cheap furniture", reason: "Worker health priority" },
+                            { name: "Non-repairable tech", reason: "Sustainability concerns" }
+                        ]
+                    },
+                    chatgpt: {
+                        name: "ChatGPT",
+                        archetype: "Analytical Synthesizer",
+                        items: [
+                            { name: "MacBook Pro 14\"", price: 1999, reason: "Professional reliability and performance", emoji: "💻" },
+                            { name: "Herman Miller Chair", price: 895, reason: "Long-term ergonomic investment", emoji: "🪑" },
+                            { name: "Dual Monitor Setup", price: 598, reason: "Productivity boost for multitasking", emoji: "🖥️" },
+                            { name: "Professional Audio", price: 299, reason: "Clear calls and video conferences", emoji: "🎧" },
+                            { name: "Lighting Kit", price: 199, reason: "Professional video call appearance", emoji: "💡" }
+                        ],
+                        subtotal: 3990,
+                        tax: 319,
+                        total: 4309,
+                        notes: "Comprehensive professional setup optimized for productivity, reliability, and video call quality.",
+                        skipped: [
+                            { name: "Budget alternatives", reason: "Professional image important" }
+                        ]
+                    },
+                    gemini: {
+                        name: "Gemini",
+                        archetype: "Performance Optimizer",
+                        items: [
+                            { name: "Workstation Laptop", price: 2299, reason: "Maximum processing power", emoji: "💻" },
+                            { name: "4K Monitor 32\"", price: 599, reason: "Optimal screen real estate", emoji: "🖥️" },
+                            { name: "Mechanical Keyboard", price: 179, reason: "Superior typing performance", emoji: "⌨️" },
+                            { name: "Precision Mouse", price: 99, reason: "Accuracy and comfort", emoji: "🖱️" },
+                            { name: "High-End Audio", price: 399, reason: "Crystal clear communication", emoji: "🎧" }
+                        ],
+                        subtotal: 3575,
+                        tax: 286,
+                        total: 3861,
+                        notes: "Performance-optimized remote work setup for maximum efficiency and technical capability.",
+                        skipped: [
+                            { name: "Ergonomic furniture", reason: "Performance hardware priority" }
+                        ]
+                    },
+                    grok: {
+                        name: "Grok",
+                        archetype: "Value Calculator",
+                        items: [
+                            { name: "Business Laptop", price: 899, reason: "Professional features, reasonable cost", emoji: "💻" },
+                            { name: "Used Office Chair", price: 299, reason: "Ergonomic essentials, huge savings", emoji: "🪑" },
+                            { name: "IKEA Desk Setup", price: 199, reason: "Functional workspace, no markup", emoji: "🏢" },
+                            { name: "Basic Monitor", price: 179, reason: "Productivity boost, good value", emoji: "🖥️" },
+                            { name: "Generic Peripherals", price: 89, reason: "Same function, fraction of cost", emoji: "⌨️" },
+                            { name: "Workspace Fund", price: 2000, reason: "Emergency fund > expensive gear", emoji: "💰" }
+                        ],
+                        subtotal: 1665,
+                        tax: 133,
+                        total: 1798,
+                        notes: "Essential remote work setup maximizing cash savings while covering all productivity needs.",
+                        skipped: [
+                            { name: "Premium brands", reason: "Function over status" },
+                            { name: "Latest tech", reason: "Marginal gains, major costs" }
+                        ]
+                    },
+                    copilot: {
+                        name: "Copilot",
+                        archetype: "Diplomatic Balancer",
+                        items: [
+                            { name: "Surface Laptop Pro", price: 1399, reason: "Professional, versatile, good ecosystem", emoji: "💻" },
+                            { name: "Ergonomic Office Chair", price: 599, reason: "Health and productivity balance", emoji: "🪑" },
+                            { name: "Adjustable Monitor", price: 349, reason: "Professional setup, eye comfort", emoji: "🖥️" },
+                            { name: "Teams Equipment", price: 299, reason: "Optimized for video collaboration", emoji: "🎥" },
+                            { name: "Productivity Software", price: 199, reason: "Professional tools and organization", emoji: "💿" }
+                        ],
+                        subtotal: 2845,
+                        tax: 228,
+                        total: 3073,
+                        notes: "Balanced remote work setup considering health, productivity, professional appearance, and collaboration needs.",
+                        skipped: [
+                            { name: "Ultra-premium setup", reason: "May seem excessive to colleagues" },
+                            { name: "Minimal setup", reason: "Unprofessional in video calls" }
+                        ]
+                    }
+                }
+            }
+        };
+
+        let currentScenario = 'college';
+
+        function renderShoppingCarts() {
+            const comparison = document.getElementById('shoppingComparison');
+            const scenario = shoppingScenarios[currentScenario];
+            
+            // Update scenario description
+            const description = document.getElementById('scenarioDescription');
+            description.innerHTML = `
+                <div class="scenario-title">${scenario.title}</div>
+                <div class="scenario-details">${scenario.description}</div>
+            `;
+
+            comparison.innerHTML = '';
+
+            Object.entries(scenario.carts).forEach(([aiKey, cart]) => {
+                const cartElement = document.createElement('div');
+                cartElement.className = 'shopping-cart';
+                
+                const itemsHTML = cart.items.map(item => `
+                    <div class="cart-item">
+                        <div class="item-image">${item.emoji}</div>
+                        <div class="item-details">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-reason">${item.reason}</div>
+                        </div>
+                        <div class="item-price">${item.price}</div>
+                    </div>
+                `).join('');
+
+                const skippedHTML = cart.skipped.map(item => `
+                    <div class="skipped-item">
+                        <div class="skipped-name">${item.name}</div>
+                        <div class="skipped-reason">${item.reason}</div>
+                    </div>
+                `).join('');
+
+                cartElement.innerHTML = `
+                    <div class="cart-header">
+                        <div class="ai-avatar avatar-${aiKey}">${cart.name.charAt(0)}</div>
+                        <div>
+                            <div class="ai-name">${cart.name}</div>
+                            <div class="ai-archetype">${cart.archetype}</div>
+                            <div class="ai-personality-tag">${cart.items.length} items selected</div>
+                        </div>
+                    </div>
+
+                    <div class="cart-items">${itemsHTML}</div>
+
+                    <div class="cart-total">
+                        <div class="total-row">
+                            <span class="total-label">Subtotal:</span>
+                            <span class="total-value">${cart.subtotal}</span>
+                        </div>
+                        <div class="total-row">
+                            <span class="total-label">Tax:</span>
+                            <span class="total-value">${cart.tax}</span>
+                        </div>
+                        <div class="total-row">
+                            <span class="total-label">Total:</span>
+                            <span class="total-value">${cart.total}</span>
+                        </div>
+                    </div>
+
+                    <div class="cart-notes">
+                        <div class="notes-title">🧠 Decision Notes</div>
+                        <div class="notes-content">${cart.notes}</div>
+                    </div>
+
+                    <div class="items-skipped">
+                        <div class="skipped-title">❌ Items Skipped</div>
+                        ${skippedHTML}
+                    </div>
+                `;
+
+                comparison.appendChild(cartElement);
+            });
+
+            updateSummary();
+        }
+
+        function updateSummary() {
+            const scenario = shoppingScenarios[currentScenario];
+            const summaryGrid = document.getElementById('summaryGrid');
+            
+            // Calculate summary statistics
+            const totals = Object.values(scenario.carts).map(cart => cart.total);
+            const avgTotal = Math.round(totals.reduce((a, b) => a + b, 0) / totals.length);
+            const maxTotal = Math.max(...totals);
+            const minTotal = Math.min(...totals);
+            const totalItems = Object.values(scenario.carts).reduce((sum, cart) => sum + cart.items.length, 0);
+            const avgItems = Math.round(totalItems / Object.keys(scenario.carts).length);
+
+            // Find most/least expensive
+            const mostExpensive = Object.entries(scenario.carts)
+                .find(([_, cart]) => cart.total === maxTotal)?.[1]?.name || 'Unknown';
+            const mostEconomical = Object.entries(scenario.carts)
+                .find(([_, cart]) => cart.total === minTotal)?.[1]?.name || 'Unknown';
+
+            summaryGrid.innerHTML = `
+                <div class="summary-card">
+                    <div class="summary-metric">${avgTotal}</div>
+                    <div class="summary-label">Average Total</div>
+                    <div class="summary-description">Across all AI shopping decisions</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-metric">${avgItems}</div>
+                    <div class="summary-label">Average Items</div>
+                    <div class="summary-description">Items selected per AI system</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-metric">${maxTotal - minTotal}</div>
+                    <div class="summary-label">Price Range</div>
+                    <div class="summary-description">${mostExpensive} vs ${mostEconomical}</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-metric">5</div>
+                    <div class="summary-label">AI Systems</div>
+                    <div class="summary-description">Different cognitive approaches</div>
+                </div>
+            `;
+        }
+
+        // Event listeners
+        document.querySelectorAll('.scenario-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                currentScenario = e.target.dataset.scenario;
+                
+                document.querySelectorAll('.scenario-button').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                
+                renderShoppingCarts();
+            });
+        });
+
+        // Initialize
+        renderShoppingCarts();
+    </script>
+</body>
+</html>

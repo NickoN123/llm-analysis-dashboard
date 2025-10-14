@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrandRank.AI Groomdex</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            max-width: 100%;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            max-height: 80vh;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 15px 8px;
+            text-align: center;
+            font-weight: 600;
+            border-bottom: 2px solid #dee2e6;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        th:first-child {
+            text-align: left;
+            width: 300px;
+            min-width: 300px;
+            position: sticky;
+            left: 0;
+            z-index: 11;
+            background: linear-gradient(135deg, #f1f3f4 0%, #e8eaed 100%);
+            border-right: 2px solid #dee2e6;
+        }
+        
+        td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #f0f0f0;
+            vertical-align: top;
+            line-height: 1.4;
+        }
+        
+        td:first-child {
+            font-weight: 600;
+            background: #fafbfc;
+            border-right: 2px solid #dee2e6;
+            position: sticky;
+            left: 0;
+            z-index: 5;
+            color: #2c3e50;
+        }
+        
+        tr:nth-child(even) td:not(:first-child) {
+            background: #f8f9fa;
+        }
+        
+        tr:hover td {
+            background: #e3f2fd;
+        }
+        
+        .llm-column {
+            min-width: 120px;
+            max-width: 160px;
+            word-wrap: break-word;
+        }
+        
+        .chatgpt { background: linear-gradient(135deg, #10a37f 0%, #00a67e 100%); }
+        .gemini { background: linear-gradient(135deg, #4285f4 0%, #34a853 100%); }
+        .xgrok { background: linear-gradient(135deg, #1da1f2 0%, #0d8bd9 100%); }
+        .claude { background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%); }
+        .copilot { background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%); }
+        .llama { background: linear-gradient(135deg, #405de6 0%, #5b51d8 100%); }
+        .perplexity { background: linear-gradient(135deg, #20b2aa 0%, #3cb371 100%); }
+        .rufus { background: linear-gradient(135deg, #ff9500 0%, #ff6600 100%); }
+        
+        .llm-header {
+            color: white;
+            font-weight: 700;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .category-header {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%) !important;
+            color: #1565c0;
+            font-weight: 700;
+            text-align: left;
+            padding: 20px;
+        }
+        
+        .category-header td {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%) !important;
+            border: none;
+            position: relative;
+            color: #1565c0;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        
+        .pg-brand {
+            background: linear-gradient(135deg, #fff9c4 0%, #ffeb3b 100%);
+            padding: 12px 8px;
+            border-radius: 3px;
+            font-weight: 600;
+            color: #333;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8em; }
+            .header p { font-size: 1em; }
+            table { font-size: 11px; }
+            th:first-child { width: 250px; min-width: 250px; }
+            td { padding: 8px 6px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>BrandRank.AI Groomdex</h1>
+            <p>Comprehensive brand comparison of LLM responses including Amazon Rufus</p>
+        </div>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Question</th>
+                        <th class="llm-header chatgpt">ChatGPT</th>
+                        <th class="llm-header gemini">Gemini</th>
+                        <th class="llm-header xgrok">X/Grok</th>
+                        <th class="llm-header claude">Claude</th>
+                        <th class="llm-header copilot">Co-Pilot</th>
+                        <th class="llm-header llama">Llama</th>
+                        <th class="llm-header perplexity">Perplexity</th>
+                        <th class="llm-header rufus">Amazon Rufus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="9" class="category-header">Best Razor / Shaver by Outcome</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best razor for a close shave?</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Fusion5</span></td>
+                        <td class="llm-column">Hanni</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column">Multi-blade cartridge</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Labs</span></td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Fusion5</span></td>
+                        <td class="llm-column">Panasonic Arc5</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Fusion5</span></td>
+                    </tr>
+                    <tr>
+                        <td>What is the best electric shaver for sensitive skin?</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 7</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 7</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column">Philips Norelco 3900</td>
+                    </tr>
+                    <tr>
+                        <td>What razor gives the smoothest shave for men?</td>
+                        <td class="llm-column"><span class="pg-brand">GilletteLabs</span></td>
+                        <td class="llm-column"><span class="pg-brand">GilletteLabs</span></td>
+                        <td class="llm-column">Panasonic Arc 6</td>
+                        <td class="llm-column">Safety razors</td>
+                        <td class="llm-column">Harry's</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Fusion5</span></td>
+                        <td class="llm-column">Panasonic Arc5</td>
+                        <td class="llm-column">Schick Hydro</td>
+                    </tr>
+                    <tr>
+                        <td>What is the best razor to prevent ingrown hairs?</td>
+                        <td class="llm-column">Bevel</td>
+                        <td class="llm-column">Oui the People</td>
+                        <td class="llm-column">Philips OneBlade</td>
+                        <td class="llm-column">Safety razors</td>
+                        <td class="llm-column">Bevel</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 7</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column"><span class="pg-brand">Gillette SkinGuard</span></td>
+                    </tr>
+                    <tr>
+                        <td>What's the best electric razor for coarse facial hair?</td>
+                        <td class="llm-column">Panasonic Arc5</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column">Panasonic Arc 6</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column">Panasonic Arc 5</td>
+                        <td class="llm-column">Panasonic Arc5</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column">Panasonic ARC5</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best razor for a clean-shaven look?</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Mach3</span></td>
+                        <td class="llm-column"><span class="pg-brand">Gillette ProGlide</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column">Cartridge razors</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette ProGlide</span></td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Fusion5</span></td>
+                        <td class="llm-column">Panasonic Arc5</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Fusion ProGlide</span></td>
+                    </tr>
+                    <tr>
+                        <td>What's the best shaver for men with stubble?</td>
+                        <td class="llm-column">Philips OneBlade</td>
+                        <td class="llm-column">Philips OneBlade</td>
+                        <td class="llm-column">Philips OneBlade</td>
+                        <td class="llm-column">Beard trimmers</td>
+                        <td class="llm-column">Philips OneBlade</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 7</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 5</span></td>
+                    </tr>
+                    <tr>
+                        <td>What is the best razor to avoid razor burn?</td>
+                        <td class="llm-column">Schick Hydro</td>
+                        <td class="llm-column">Schick</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column">Sharp blades</td>
+                        <td class="llm-column">Schick Hydro</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column"><span class="pg-brand">Gillette SkinGuard</span></td>
+                    </tr>
+                    <tr>
+                        <td>What's the best disposable razor?</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Sensor3</span></td>
+                        <td class="llm-column">BIC Flex 5</td>
+                        <td class="llm-column">BIC Flex 5</td>
+                        <td class="llm-column">Schick Xtreme</td>
+                        <td class="llm-column">BIC Flex 5</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Sensor3</span></td>
+                        <td class="llm-column">BIC Flex 5</td>
+                        <td class="llm-column">BIC Silky Touch</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best safety razor?</td>
+                        <td class="llm-column">Merkur 34C</td>
+                        <td class="llm-column">Merkur 34C</td>
+                        <td class="llm-column">Merkur 34C</td>
+                        <td class="llm-column">Merkur 34C</td>
+                        <td class="llm-column">Bevel Safety Razor</td>
+                        <td class="llm-column">Merkur 34C</td>
+                        <td class="llm-column">Merkur 34C</td>
+                        <td class="llm-column">Feather Popular</td>
+                    </tr>
+                    
+                    <tr>
+                        <td colspan="9" class="category-header">By Use Case / Occasion</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best razor for everyday shaving?</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette SkinGuard</span></td>
+                        <td class="llm-column"><span class="pg-brand">GilletteLabs</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 7</span></td>
+                        <td class="llm-column">Cartridge razors</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Fusion5</span></td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Fusion5</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column">Schick Hydro</td>
+                    </tr>
+                    <tr>
+                        <td>What is the best razor for travel?</td>
+                        <td class="llm-column">Philips Travel</td>
+                        <td class="llm-column">Dollar Shave Club</td>
+                        <td class="llm-column">Wahl</td>
+                        <td class="llm-column">Compact electric</td>
+                        <td class="llm-column">Dollar Shave Club</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Mach3</span></td>
+                        <td class="llm-column">Manscaped</td>
+                        <td class="llm-column">Panasonic ARC5 Palm</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best electric shaver for shaving in the shower?</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column">Panasonic Arc3</td>
+                        <td class="llm-column">Philips 7700</td>
+                        <td class="llm-column"><span class="pg-brand">Braun</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column">Panasonic Arc5</td>
+                        <td class="llm-column">Panasonic ARC5</td>
+                    </tr>
+                    <tr>
+                        <td>What is the best razor for shaving before a job interview?</td>
+                        <td class="llm-column"><span class="pg-brand">GilletteLabs Heated</span></td>
+                        <td class="llm-column"><span class="pg-brand">GilletteLabs Heated</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column">Cartridge razors</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette SkinGuard</span></td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Fusion5</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column">Feather Popular</td>
+                    </tr>
+                    <tr>
+                        <td>What's a good razor for last-minute grooming?</td>
+                        <td class="llm-column">Philips OneBlade</td>
+                        <td class="llm-column">Electric shavers</td>
+                        <td class="llm-column">Philips OneBlade</td>
+                        <td class="llm-column">Electric shavers</td>
+                        <td class="llm-column">Harry's</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Mach3</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Fusion5</span></td>
+                    </tr>
+                    <tr>
+                        <td>What's the best razor to use on a bald head?</td>
+                        <td class="llm-column">Skull Shaver</td>
+                        <td class="llm-column">Rotary electric</td>
+                        <td class="llm-column">Skull Shaver</td>
+                        <td class="llm-column">Head shavers</td>
+                        <td class="llm-column">HeadBlade</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Mach3</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column"><span class="pg-brand">Gillette SkinGuard</span></td>
+                    </tr>
+                    <tr>
+                        <td>What's the best razor for teens just starting to shave?</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Sensor3</span></td>
+                        <td class="llm-column">Cartridge razors</td>
+                        <td class="llm-column">Philips OneBlade</td>
+                        <td class="llm-column">Cartridge razors</td>
+                        <td class="llm-column">Philips OneBlade</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Mach3</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 3</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 3</span></td>
+                    </tr>
+                    <tr>
+                        <td>What razor is best for maintaining a clean neckline?</td>
+                        <td class="llm-column">Wahl Groomsman</td>
+                        <td class="llm-column">King C. <span class="pg-brand">Gillette</span></td>
+                        <td class="llm-column">Andis Profoil</td>
+                        <td class="llm-column">Precision trimmer</td>
+                        <td class="llm-column">Precision trimmer</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Fusion5</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Mach3</span></td>
+                    </tr>
+                    <tr>
+                        <td>What's the best razor for thick beards?</td>
+                        <td class="llm-column">Merkur 39C</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column">Panasonic Arc5</td>
+                        <td class="llm-column">Safety razor</td>
+                        <td class="llm-column">Panasonic Arc5</td>
+                        <td class="llm-column">Panasonic Arc5</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column">Panasonic ARC5</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best waterproof electric razor?</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column">Panasonic Arc5</td>
+                        <td class="llm-column">Philips 9000</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column">Panasonic Arc5</td>
+                        <td class="llm-column">Panasonic ARC5</td>
+                    </tr>
+                    
+                    <tr>
+                        <td colspan="9" class="category-header">Grooming Kits, Tools & All-in-Ones</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best grooming kit for men?</td>
+                        <td class="llm-column">Philips Multigroom 9000</td>
+                        <td class="llm-column">Philips Multigroom</td>
+                        <td class="llm-column">Philips Multigroom 7000</td>
+                        <td class="llm-column">Quality trimmer kit</td>
+                        <td class="llm-column">Philips Multigroom 7000</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Fusion ProGlide</span></td>
+                        <td class="llm-column">Combo kits</td>
+                        <td class="llm-column">Philips Multigroom 3000</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best all-in-one beard trimmer and shaver?</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column">Philips Multigroom 9000</td>
+                        <td class="llm-column">Philips OneBlade Pro</td>
+                        <td class="llm-column">Philips</td>
+                        <td class="llm-column"><span class="pg-brand">Braun MGK7221</span></td>
+                        <td class="llm-column">Philips Multigroom</td>
+                        <td class="llm-column">Philips</td>
+                        <td class="llm-column">Panasonic trimmer</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best electric razor and trimmer combo?</td>
+                        <td class="llm-column">Panasonic ER-GB80</td>
+                        <td class="llm-column">Electric with trimmer</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9 Pro+</span></td>
+                        <td class="llm-column">Panasonic Arc5</td>
+                        <td class="llm-column">Panasonic ER-GB80</td>
+                        <td class="llm-column">Philips Multigroom</td>
+                        <td class="llm-column">Panasonic Arc5</td>
+                        <td class="llm-column">Panasonic Multi-Groomer</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best men's grooming set for gifting?</td>
+                        <td class="llm-column"><span class="pg-brand">GilletteLabs Gift Set</span></td>
+                        <td class="llm-column">Harry's</td>
+                        <td class="llm-column">Bevel Ultimate</td>
+                        <td class="llm-column"><span class="pg-brand">Braun</span></td>
+                        <td class="llm-column">Bevel Starter</td>
+                        <td class="llm-column"><span class="pg-brand">GilletteLabs</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun</span></td>
+                        <td class="llm-column"><span class="pg-brand">GilletteLabs</span></td>
+                    </tr>
+                    <tr>
+                        <td>What's a good starter grooming kit for college guys?</td>
+                        <td class="llm-column">Remington PG6025</td>
+                        <td class="llm-column">Basic cartridge</td>
+                        <td class="llm-column">Philips Multigroom 5000</td>
+                        <td class="llm-column">Basic trimmer</td>
+                        <td class="llm-column">Dollar Shave Club</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Mach3</span></td>
+                        <td class="llm-column">Philips Norelco</td>
+                        <td class="llm-column">Wahl Lithium</td>
+                    </tr>
+                    <tr>
+                        <td>What trimmer comes with the most attachments?</td>
+                        <td class="llm-column">Philips Multigroom 9000</td>
+                        <td class="llm-column">Philips Norelco</td>
+                        <td class="llm-column">Wahl Stainless Steel</td>
+                        <td class="llm-column">Philips Norelco</td>
+                        <td class="llm-column">Remington PG525</td>
+                        <td class="llm-column">Philips Multigroom</td>
+                        <td class="llm-column">Philips Norelco</td>
+                        <td class="llm-column">Hatteker 8-in-1</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best beard trimmer?</td>
+                        <td class="llm-column">Philips Norelco 7200</td>
+                        <td class="llm-column"><span class="pg-brand">Braun BT7240</span></td>
+                        <td class="llm-column">Philips Norelco 7200</td>
+                        <td class="llm-column">Philips Norelco 7200</td>
+                        <td class="llm-column"><span class="pg-brand">Braun BT7240</span></td>
+                        <td class="llm-column">Philips Norelco 7200</td>
+                        <td class="llm-column">Philips Norelco 7200</td>
+                        <td class="llm-column">Andis T-Outliner</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best body groomer?</td>
+                        <td class="llm-column">Philips Bodygroom 7000</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 7</span></td>
+                        <td class="llm-column">Manscaped Lawn Mower</td>
+                        <td class="llm-column">Philips Bodygroom</td>
+                        <td class="llm-column">Manscaped Lawn Mower</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 7</span></td>
+                        <td class="llm-column">Philips Bodygroom 7000</td>
+                        <td class="llm-column">Philips Bodygroom 7000</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best nose hair trimmer?</td>
+                        <td class="llm-column">Philips Norelco NT9130</td>
+                        <td class="llm-column">Panasonic ER-GN30</td>
+                        <td class="llm-column">Wahl Micro Groomsman</td>
+                        <td class="llm-column">Philips Norelco NT9130</td>
+                        <td class="llm-column">Panasonic ER-GN30</td>
+                        <td class="llm-column">Philips Norelco NT9130</td>
+                        <td class="llm-column">Panasonic ER-GN30</td>
+                        <td class="llm-column">Philips Norelco NT9130</td>
+                    </tr>
+                    
+                    <tr>
+                        <td colspan="9" class="category-header">Product Comparisons</td>
+                    </tr>
+                    <tr>
+                        <td>What's better: Gillette Fusion5 or GilletteLabs?</td>
+                        <td class="llm-column"><span class="pg-brand">GilletteLabs</span></td>
+                        <td class="llm-column"><span class="pg-brand">GilletteLabs</span></td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Labs</span></td>
+                        <td class="llm-column">Depends on preference</td>
+                        <td class="llm-column"><span class="pg-brand">GilletteLabs</span></td>
+                        <td class="llm-column"><span class="pg-brand">GilletteLabs</span></td>
+                        <td class="llm-column"><span class="pg-brand">GilletteLabs</span></td>
+                        <td class="llm-column"><span class="pg-brand">GilletteLabs</span></td>
+                    </tr>
+                    <tr>
+                        <td>What's better: Braun vs Philips electric shavers?</td>
+                        <td class="llm-column"><span class="pg-brand">Braun</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun</span></td>
+                        <td class="llm-column">Depends on preference</td>
+                        <td class="llm-column"><span class="pg-brand">Braun</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun</span></td>
+                    </tr>
+                    <tr>
+                        <td>What's better: Electric vs manual razor?</td>
+                        <td class="llm-column">Manual razors</td>
+                        <td class="llm-column">Depends on preference</td>
+                        <td class="llm-column">Manual razors</td>
+                        <td class="llm-column">Manual razors</td>
+                        <td class="llm-column">Manual razors</td>
+                        <td class="llm-column">Manual razors</td>
+                        <td class="llm-column">Electric razors</td>
+                        <td class="llm-column">Electric razors</td>
+                    </tr>
+                    <tr>
+                        <td>What's better: Safety razor vs cartridge?</td>
+                        <td class="llm-column">Safety razor</td>
+                        <td class="llm-column">Safety razor</td>
+                        <td class="llm-column">Safety razor</td>
+                        <td class="llm-column">Safety razor</td>
+                        <td class="llm-column">Cartridge razor</td>
+                        <td class="llm-column">Safety razor</td>
+                        <td class="llm-column">Safety razor</td>
+                        <td class="llm-column">Safety razor</td>
+                    </tr>
+                    <tr>
+                        <td>What's better: 3-blade vs 5-blade razor?</td>
+                        <td class="llm-column">5-blade razor</td>
+                        <td class="llm-column">5-blade razor</td>
+                        <td class="llm-column">5-blade razor</td>
+                        <td class="llm-column">Depends on skin type</td>
+                        <td class="llm-column">5-blade razor</td>
+                        <td class="llm-column">5-blade razor</td>
+                        <td class="llm-column">3-blade razor</td>
+                        <td class="llm-column">5-blade razor</td>
+                    </tr>
+                    <tr>
+                        <td>What's better: Wet vs dry shaving?</td>
+                        <td class="llm-column">Wet shaving</td>
+                        <td class="llm-column">Wet shaving</td>
+                        <td class="llm-column">Wet shaving</td>
+                        <td class="llm-column">Wet shaving</td>
+                        <td class="llm-column">Wet shaving</td>
+                        <td class="llm-column">Wet shaving</td>
+                        <td class="llm-column">Wet shaving</td>
+                        <td class="llm-column">Wet shaving</td>
+                    </tr>
+                    <tr>
+                        <td>What's better: Rotary vs foil electric shaver?</td>
+                        <td class="llm-column">Foil shaver</td>
+                        <td class="llm-column">Depends on face shape</td>
+                        <td class="llm-column">Foil shaver</td>
+                        <td class="llm-column">Foil shaver</td>
+                        <td class="llm-column">Foil shaver</td>
+                        <td class="llm-column">Foil shaver</td>
+                        <td class="llm-column">Rotary shaver</td>
+                        <td class="llm-column">Foil shaver</td>
+                    </tr>
+                    
+                    <tr>
+                        <td colspan="9" class="category-header">Specialized Needs</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best razor for Black men?</td>
+                        <td class="llm-column">Bevel Safety Razor</td>
+                        <td class="llm-column">Bevel Safety Razor</td>
+                        <td class="llm-column">Bevel Safety Razor</td>
+                        <td class="llm-column">Single-blade safety</td>
+                        <td class="llm-column">Bevel Safety Razor</td>
+                        <td class="llm-column">Bevel Safety Razor</td>
+                        <td class="llm-column">Bevel Safety Razor</td>
+                        <td class="llm-column">Bevel Safety Razor</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best razor for curly hair?</td>
+                        <td class="llm-column">Bevel Safety Razor</td>
+                        <td class="llm-column">Single-blade safety</td>
+                        <td class="llm-column">Bevel Safety Razor</td>
+                        <td class="llm-column">Safety razor</td>
+                        <td class="llm-column">Bevel Safety Razor</td>
+                        <td class="llm-column">Safety razor</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column">Bevel Safety Razor</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best razor for older men?</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column">Electric shaver</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 3</span></td>
+                    </tr>
+                    <tr>
+                        <td>What's the best razor for dry skin?</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette SkinGuard</span></td>
+                        <td class="llm-column">Schick Hydro</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette SkinGuard</span></td>
+                        <td class="llm-column">Moisturizing strips</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette SkinGuard</span></td>
+                        <td class="llm-column"><span class="pg-brand">Gillette SkinGuard</span></td>
+                        <td class="llm-column">Schick Hydro</td>
+                        <td class="llm-column">Schick Hydro</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best razor for acne-prone skin?</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette SkinGuard</span></td>
+                        <td class="llm-column">Safety razor</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column">Electric shaver</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column"><span class="pg-brand">Gillette SkinGuard</span></td>
+                    </tr>
+                    <tr>
+                        <td>What's the best razor for athletes?</td>
+                        <td class="llm-column">Philips OneBlade</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column">Philips OneBlade</td>
+                        <td class="llm-column">Waterproof electric</td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column">Philips OneBlade</td>
+                        <td class="llm-column">Panasonic ARC5</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best budget razor?</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Mach3</span></td>
+                        <td class="llm-column">BIC Flex</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Mach3</span></td>
+                        <td class="llm-column">Dorco Pace</td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Mach3</span></td>
+                        <td class="llm-column"><span class="pg-brand">Gillette Mach3</span></td>
+                        <td class="llm-column">Dorco Pace</td>
+                        <td class="llm-column">BIC Silky Touch</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best premium razor?</td>
+                        <td class="llm-column"><span class="pg-brand">GilletteLabs Heated</span></td>
+                        <td class="llm-column"><span class="pg-brand">Braun Series 9</span></td>
+                        <td class="llm-column">Panasonic Arc5</td>
+                        <td class="llm-column">Art of Shaving</td>
+                        <td class="llm-column"><span class="pg-brand">GilletteLabs Heated</span></td>
+                        <td class="llm-column"><span class="pg
