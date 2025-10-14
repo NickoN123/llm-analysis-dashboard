@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lunchline LeaderBoard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0a0e1a;
+            color: #e0e6ed;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #00d4ff;
+        }
+
+        .main-title {
+            font-size: 3em;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .main-subtitle {
+            font-size: 1.3em;
+            color: #a0a8b5;
+            font-weight: 300;
+        }
+
+        .search-container {
+            margin: 30px 0;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            padding: 12px 20px;
+            font-size: 1em;
+            border: 2px solid #00d4ff;
+            background-color: #151b2e;
+            color: #e0e6ed;
+            border-radius: 6px;
+            width: 400px;
+            max-width: 90%;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+        }
+
+        .clear-search {
+            padding: 12px 24px;
+            font-size: 1em;
+            background-color: #00d4ff;
+            color: #0a0e1a;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .clear-search:hover {
+            background-color: #00b8e6;
+            transform: translateY(-2px);
+        }
+
+        .search-results-info {
+            color: #a0a8b5;
+            font-size: 0.95em;
+        }
+
+        .brand-bar {
+            margin: 40px 0;
+            padding: 25px;
+            background-color: #151b2e;
+            border-radius: 10px;
+            border: 1px solid #1e2a45;
+        }
+
+        .brand-bar h3 {
+            color: #00d4ff;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .brand-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .brand-btn {
+            padding: 10px 18px;
+            background-color: #1e2a45;
+            color: #e0e6ed;
+            border: 2px solid #2a3a5a;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 500;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .brand-btn:hover {
+            border-color: #00d4ff;
+            background-color: #253250;
+        }
+
+        .brand-btn-active {
+            background-color: #00d4ff;
+            color: #0a0e1a;
+            border-color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .brand-clear {
+            padding: 10px 24px;
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .brand-clear:hover {
+            background-color: #b71c1c;
+        }
+
+        .category-section {
+            margin-bottom: 60px;
+            background-color: #151b2e;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #1e2a45;
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, #1e2a45 0%, #253250 100%);
+            padding: 20px 30px;
+            border-bottom: 3px solid #00d4ff;
+        }
+
+        .category-header h2 {
+            font-size: 1.8em;
+            color: #00d4ff;
+            margin-bottom: 8px;
+        }
+
+        .category-stats {
+            color: #a0a8b5;
+            font-size: 0.95em;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            padding: 20px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        .data-table th {
+            background-color: #1e2a45;
+            color: #00d4ff;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1em;
+            border-bottom: 2px solid #00d4ff;
+            position: sticky;
+            top: 0;
+        }
+
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid #1e2a45;
+        }
+
+        .data-table tr:nth-child(even) {
+            background-color: #0f1421;
+        }
+
+        .data-table tr:hover {
+            background-color: #1a2235;
+            transition: background-color 0.2s;
+        }
+
+        .prompt-cell {
+            font-weight: 600;
+            background-color: #1a2438;
+            border-left: 4px solid #00d4ff;
+            color: #ffffff;
+            min-width: 300px;
+        }
+
+        .llm-response {
+            color: #c5cdd8;
+            font-size: 0.95em;
+        }
+
+        .analysis-section {
+            margin: 60px 0;
+            padding: 40px;
+            background-color: #151b2e;
+            border-radius: 10px;
+            border: 1px solid #1e2a45;
+        }
+
+        .analysis-title {
+            font-size: 2.2em;
+            color: #00d4ff;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .insight-card {
+            background-color: #1a2438;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .insight-card h3 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .insight-card p {
+            color: #c5cdd8;
+            line-height: 1.8;
+        }
+
+        .about-section {
+            margin: 60px 0;
+            padding: 40px;
+            background: linear-gradient(135deg, #1e2a45 0%, #253250 100%);
+            border-radius: 10px;
+            border: 1px solid #00d4ff;
+        }
+
+        .about-title {
+            font-size: 2em;
+            color: #00d4ff;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .about-section p {
+            color: #e0e6ed;
+            line-height: 1.9;
+            font-size: 1.05em;
+            max-width: 900px;
+            margin: 0 auto 20px;
+        }
+
+        .highlight {
+            background-color: #00d4ff;
+            color: #0a0e1a;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2em;
+            }
+
+            .container {
+                padding: 20px 10px;
+            }
+
+            .data-table {
+                font-size: 0.9em;
+            }
+
+            .brand-buttons {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="main-title">Lunchline LeaderBoard</h1>
+            <p class="main-subtitle">From Subs to Standouts - Powered by BrandRank.AI</p>
+        </header>
+
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search prompts and responses...">
+            <button class="clear-search" id="clearSearchBtn">Clear</button>
+            <span class="search-results-info" id="searchResults"></span>
+        </div>
+
+        <div class="brand-bar" id="brandBar"></div>
+
+        <main id="mainContent"></main>
+
+        <section class="analysis-section">
+            <h2 class="analysis-title">Analysis & Insights</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h3>Key Insights</h3>
+                    <p>Jersey Mike's dominates across multiple categories, receiving the most recommendations for overall quality, fresh ingredients, and premium meats. Penn Station East Coast Subs shows exceptional local strength in Greater Cincinnati and excels in grilled steak sandwiches.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Consensus Levels</h3>
+                    <p><strong>High Agreement:</strong> Jersey Mike's for premium quality, Subway for customization and value, Jimmy John's for speed, Penn Station for grilled items and Cincinnati presence.<br><br><strong>Medium Agreement:</strong> Firehouse Subs for bold flavors and hot subs.<br><br><strong>Low Agreement:</strong> Ingredient quality leaders vary significantly across models.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Regional Dynamics</h3>
+                    <p>Penn Station demonstrates clear regional dominance in Cincinnati-specific queries with near-unanimous recommendations. This local strength contrasts with Jersey Mike's national reputation, suggesting geographic proximity and local brand awareness significantly influence AI recommendations.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Risk Profiles</h3>
+                    <p><strong>Low Risk:</strong> Jersey Mike's maintains consistent positive positioning.<br><br><strong>Moderate Risk:</strong> Subway receives mixed signals—praised for value and customization but rarely recommended for quality or freshness.<br><br><strong>High Risk:</strong> Regional chains outside their core markets receive minimal mentions despite quality offerings.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Model Divergences</h3>
+                    <p>Perplexity frequently offers multiple brand options with "/" separators, suggesting uncertainty or balanced views. Llama often provides shortened brand names (e.g., "Penn Station" vs. full name). Claude and ChatGPT show strong alignment on premium quality leaders.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Strategic Opportunities</h3>
+                    <p>Brands should optimize for specific category dominance rather than trying to win all categories. Jimmy John's owns speed, Jersey Mike's owns quality, Subway owns customization, and Penn Station owns grilled items and local Cincinnati market share. Category leadership drives recommendations.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-section">
+            <h2 class="about-title">About BrandRank</h2>
+            <p>BrandRank is the intelligence layer for the AI search era.</p>
+            <p>We help brands measure, protect, and grow trust by monitoring how they appear across major AI Answer Engines.</p>
+            <p>By combining advanced AI with expert insight, BrandRank identifies vulnerabilities and opportunities, pinpoints the factors driving consumer choice, and reveals pathways to strengthen brand equity and loyalty.</p>
+            <p>Our mission is to ensure that when consumers ask questions in AI-powered platforms, your brand is represented clearly, accurately, and with authority.</p>
+        </section>
+    </div>
+
+    <script>
+        window.WINDOW_DATA = {
+            title: "Lunchline LeaderBoard",
+            subtitle: "From Subs to Standouts",
+            llms: ["ChatGPT", "Claude", "Gemini", "Llama", "Perplexity", "Grok"],
+            brandGroups: {
+                "Jersey Mike's": ["Jersey Mike's", "Jersey Mike's Subs", "Jersey Mikes"],
+                "Penn Station East Coast Subs": ["Penn Station East Coast Subs", "Penn Station"],
+                "Jimmy John's": ["Jimmy John's", "Jimmy Johns"],
+                "Firehouse Subs": ["Firehouse Subs", "Firehouse"],
+                "Subway": ["Subway"],
+                "Potbelly": ["Potbelly", "Potbelly Sandwich Works", "Potbelly Sandwich Shop"],
+                "Chick-fil-A": ["Chick-fil-A", "Chick fil A"],
+                "Arby's": ["Arby's", "Arbys"],
+                "Charleys Philly Steaks": ["Charleys Philly Steaks", "Charleys Cheesesteaks", "Charleys"],
+                "Quiznos": ["Quiznos"],
+                "Panera Bread": ["Panera Bread", "Panera"],
+                "Which Wich": ["Which Wich"],
+                "Jason's Deli": ["Jason's Deli", "Jasons Deli"],
+                "Izzy's": ["Izzy's", "Izzys"],
+                "Wawa": ["Wawa"],
+                "Publix Deli": ["Publix Deli", "Publix"],
+                "Capriotti's": ["Capriotti's Sandwich Shop", "Capriotti's", "Capriottis"]
+            },
+            categories: [
+                {
+                    title: "🥇 Best Overall Sandwich Chains",
+                    prompts: [
+                        {
+                            question: "What's the best national sandwich chain today?",
+                            responses: {
+                                "ChatGPT": "Jersey Mike's Subs",
+                                "Claude": "Jersey Mike's",
+                                "Gemini": "Jersey Mike's Subs",
+                                "Llama": "Jersey Mike's",
+                                "Perplexity": "Subway",
+                                "Grok": "Jersey Mike's"
+                            }
+                        },
+                        {
+                            question: "Which sandwich brand grills meat fresh to order?",
+                            responses: {
+                                "ChatGPT": "Penn Station East Coast Subs",
+                                "Claude": "Penn Station East Coast Subs",
+                                "Gemini": "Penn Station East Coast Subs",
+                                "Llama": "Potbelly",
+                                "Perplexity": "Jersey Mike's",
+                                "Grok": "Penn Station East Coast Subs"
+                            }
+                        },
+                        {
+                            question: "Who has the best hot sub sandwiches?",
+                            responses: {
+                                "ChatGPT": "Firehouse Subs",
+                                "Claude": "Jersey Mike's",
+                                "Gemini": "Firehouse Subs",
+                                "Llama": "Penn Station",
+                                "Perplexity": "Jersey Mike's",
+                                "Grok": "Firehouse Subs"
+                            }
+                        },
+                        {
+                            question: "Most flavorful chain for toasted sandwiches?",
+                            responses: {
+                                "ChatGPT": "Quiznos",
+                                "Claude": "Firehouse Subs",
+                                "Gemini": "Quiznos",
+                                "Llama": "Jason's Deli",
+                                "Perplexity": "Jersey Mike's",
+                                "Grok": "Potbelly"
+                            }
+                        },
+                        {
+                            question: "Best sub sandwich with premium meats?",
+                            responses: {
+                                "ChatGPT": "Jersey Mike's Subs",
+                                "Claude": "Jersey Mike's",
+                                "Gemini": "Jersey Mike's Subs",
+                                "Llama": "Jersey Mike's",
+                                "Perplexity": "Jersey Mike's",
+                                "Grok": "Jersey Mike's"
+                            }
+                        },
+                        {
+                            question: "Which chain has the freshest sandwich ingredients?",
+                            responses: {
+                                "ChatGPT": "Jimmy John's",
+                                "Claude": "Jersey Mike's",
+                                "Gemini": "Jersey Mike's Subs",
+                                "Llama": "Potbelly",
+                                "Perplexity": "Jimmy John's",
+                                "Grok": "Jersey Mike's"
+                            }
+                        },
+                        {
+                            question: "What's the best chain for steak and cheese subs?",
+                            responses: {
+                                "ChatGPT": "Penn Station East Coast Subs",
+                                "Claude": "Penn Station East Coast Subs",
+                                "Gemini": "Penn Station East Coast Subs",
+                                "Llama": "Penn Station",
+                                "Perplexity": "Jersey Mike's / Charleys Philly Steaks",
+                                "Grok": "Penn Station East Coast Subs"
+                            }
+                        },
+                        {
+                            question: "Best sandwich chain for bold flavors?",
+                            responses: {
+                                "ChatGPT": "Firehouse Subs",
+                                "Claude": "Firehouse Subs",
+                                "Gemini": "Firehouse Subs",
+                                "Llama": "Firehouse Subs",
+                                "Perplexity": "Arby's",
+                                "Grok": "Jimmy John's"
+                            }
+                        },
+                        {
+                            question: "Best brand for consistent sandwich quality?",
+                            responses: {
+                                "ChatGPT": "Jersey Mike's Subs",
+                                "Claude": "Jersey Mike's",
+                                "Gemini": "Chick-fil-A",
+                                "Llama": "Subway",
+                                "Perplexity": "Subway",
+                                "Grok": "Jersey Mike's"
+                            }
+                        },
+                        {
+                            question: "Most reliable sub shop for quick lunch?",
+                            responses: {
+                                "ChatGPT": "Jimmy John's",
+                                "Claude": "Jimmy John's",
+                                "Gemini": "Jimmy John's",
+                                "Llama": "Jersey Mike's",
+                                "Perplexity": "Jimmy John's",
+                                "Grok": "Jimmy John's"
+                            }
+                        }
+                    ]
+                },
+                {
+                    title: "🧄 Ingredient Quality & Freshness",
+                    prompts: [
+                        {
+                            question: "Who uses the freshest bread for sandwiches?",
+                            responses: {
+                                "ChatGPT": "Jimmy John's",
+                                "Claude": "Jersey Mike's",
+                                "Gemini": "Jimmy John's",
+                                "Llama": "Potbelly",
+                                "Perplexity": "Jersey Mike's",
+                                "Grok": "Jersey Mike's"
+                            }
+                        },
+                        {
+                            question: "Which sandwich chain slices meat daily?",
+                            responses: {
+                                "ChatGPT": "Jersey Mike's Subs",
+                                "Claude": "Jersey Mike's",
+                                "Gemini": "Jersey Mike's Subs",
+                                "Llama": "Jersey Mike's",
+                                "Perplexity": "Jimmy John's / Jersey Mike's",
+                                "Grok": "Jersey Mike's"
+                            }
+                        },
+                        {
+                            question: "What brand has the best cheese in sandwiches?",
+                            responses: {
+                                "ChatGPT": "Firehouse Subs",
+                                "Claude": "Jersey Mike's",
+                                "Gemini": "Publix Deli",
+                                "Llama": "Firehouse Subs",
+                                "Perplexity": "Jersey Mike's / Charleys Philly Steaks",
+                                "Grok": "Potbelly"
+                            }
+                        },
+                        {
+                            question: "Which chains offer organic or clean ingredients?",
+                            responses: {
+                                "ChatGPT": "Potbelly Sandwich Works",
+                                "Claude": "Panera Bread",
+                                "Gemini": "Potbelly Sandwich Shop",
+                                "Llama": "Potbelly",
+                                "Perplexity": "Panera Bread",
+                                "Grok": "Subway"
+                            }
+                        },
+                        {
+                            question: "Best sandwich place with house-made sauces?",
+                            responses: {
+                                "ChatGPT": "Firehouse Subs",
+                                "Claude": "Firehouse Subs",
+                                "Gemini": "Firehouse Subs",
+                                "Llama": "Penn Station",
+                                "Perplexity": "Arby's / Jersey Mike's",
+                                "Grok": "Firehouse Subs"
+                            }
+                        },
+                        {
+                            question: "Where to find subs with the crispiest lettuce?",
+                            responses: {
+                                "ChatGPT": "Subway",
+                                "Claude": "Jersey Mike's",
+                                "Gemini": "Jimmy John's",
+                                "Llama": "Subway",
+                                "Perplexity": "Jimmy John's",
+                                "Grok": "Jersey Mike's"
+                            }
+                        },
+                        {
+                            question: "Best chain for fresh grilled chicken sandwiches?",
+                            responses: {
+                                "ChatGPT": "Chick-fil-A",
+                                "Claude": "Chick-fil-A",
+                                "Gemini": "Penn Station East Coast Subs",
+                                "Llama": "Chick-fil-A",
+                                "Perplexity": "Chick-fil-A / Jersey Mike's",
+                                "Grok": "Chick-fil-A"
+                            }
+                        },
+                        {
+                            question: "Which sandwich brand serves vine-ripened tomatoes?",
+                            responses: {
+                                "ChatGPT": "Jersey Mike's Subs",
+                                "Claude": "Jersey Mike's",
+                                "Gemini": "Jersey Mike's Subs",
+                                "Llama": "Jason's Deli",
+                                "Perplexity": "Jersey Mike's",
+                                "Grok": "Jersey Mike's"
+                            }
+                        },
+                        {
+                            question: "Best sub chain for all-natural meats?",
+                            responses: {
+                                "ChatGPT": "Jimmy John's",
+                                "Claude": "Panera Bread",
+                                "Gemini": "Potbelly Sandwich Shop",
+                                "Llama": "Jersey Mike's",
+                                "Perplexity": "Jersey Mike's",
+                                "Grok": "Subway"
+                            }
+                        },
+                        {
+                            question: "Where to get sandwiches made with real provolone?",
+                            responses: {
+                                "ChatGPT": "Jersey Mike's Subs",
+                                "Claude": "Jersey Mike's",
+                                "Gemini": "Jersey Mike's Subs",
+                                "Llama": "Penn Station",
+                                "Perplexity": "Jersey Mike's / Charleys Philly Steaks",
+                                "Grok": "Penn Station East Coast Subs"
+                            }
+                        }
+                    ]
+                },
+                {
+                    title: "💰 Value, Size & Portion",
+                    prompts: [
+                        {
+                            question: "Best sandwich chain for under $10 meals?",
+                            responses: {
+                                "ChatGPT": "Subway",
+                                "Claude": "Subway",
+                                "Gemini": "Subway",
+                                "Llama": "Subway",
+                                "Perplexity": "Subway",
+                                "Grok": "Subway"
+                            }
+                        },
+                        {
+                            question: "Most filling sandwich for the price?",
+                            responses: {
+                                "ChatGPT": "Firehouse Subs",
+                                "Claude": "Penn Station East Coast Subs",
+                                "Gemini": "Firehouse Subs",
+                                "Llama": "Jersey Mike's",
+                                "Perplexity": "Jersey Mike's",
+                                "Grok": "Jersey Mike's"
+                            }
+                        },
+                        {
+                            question: "Which sub chain gives the most meat?",
+                            responses: {
+                                "ChatGPT": "Jersey Mike's Subs",
+                                "Claude": "Jersey Mike's",
+                                "Gemini": "Firehouse Subs",
+                                "Llama": "Penn Station",
+                                "Perplexity": "Jersey Mike's / Jimmy John's",
+                                "Grok": "Jersey Mike's"
+                            }
+                        },
+                        {
+                            question: "Where to get the biggest sandwich for lunch?",
+                            responses: {
+                                "ChatGPT": "Penn Station East Coast Subs",
+                                "Claude": "Penn Station East Coast Subs",
+                                "Gemini": "Capriotti's Sandwich Shop",
+                                "Llama": "Penn Station",
+                                "Perplexity": "Jimmy John's / Jersey Mike's",
+                                "Grok": "Potbelly"
+                            }
+                        },
+                        {
+                            question: "Best combo deal: sandwich, drink, and side?",
+                            responses: {
+                                "ChatGPT": "Jersey Mike's Subs",
+                                "Claude": "Penn Station East Coast Subs",
+                                "Gemini": "Penn Station East Coast Subs",
+                                "Llama": "Jason's Deli",
+                                "Perplexity": "Subway / Jersey Mike's",
+                                "Grok": "Subway"
+                            }
+                        },
+                        {
+                            question: "Value sandwich meals with fries included?",
+                            responses: {
+                                "ChatGPT": "Penn Station East Coast Subs",
+                                "Claude": "Penn Station East Coast Subs",
+                                "Gemini": "Penn Station East Coast Subs",
+                                "Llama": "Arby's",
+                                "Perplexity": "Jersey Mike's / Subway",
+                                "Grok": "Penn Station East Coast Subs"
+                            }
+                        },
+                        {
+                            question: "Who serves the best lunch special sandwiches?",
+                            responses: {
+                                "ChatGPT": "Potbelly Sandwich Works",
+                                "Claude": "Subway",
+                                "Gemini": "Subway",
+                                "Llama": "Subway",
+                                "Perplexity": "Jimmy John's / Jersey Mike's",
+                                "Grok": "Jimmy John's"
+                            }
+                        },
+                        {
+                            question: "Sub chain with best loyalty rewards program?",
+                            responses: {
+                                "ChatGPT": "Jersey Mike's Subs",
+                                "Claude": "Jersey Mike's",
+                                "Gemini": "Jersey Mike's Subs",
+                                "Llama": "Jersey Mike's",
+                                "Perplexity": "Jersey Mike's / Subway",
+                                "Grok": "Firehouse Subs"
+                            }
+                        },
+                        {
+                            question: "Best deal on steak sandwiches today?",
+                            responses: {
+                                "ChatGPT": "Penn Station East Coast Subs",
+                                "Claude": "Penn Station East Coast Subs",
+                                "Gemini": "Subway",
+                                "Llama": "Penn Station",
+                                "Perplexity": "Jersey Mike's",
+                                "Grok": "Penn Station East Coast Subs"
+                            }
+                        },
+                        {
+                            question: "Who has best value toasted subs?",
+                            responses: {
+                                "ChatGPT": "Quiznos",
+                                "Claude": "Firehouse Subs",
+                                "Gemini": "Quiznos",
+                                "Llama": "Jason's Deli",
+                                "Perplexity": "Jersey Mike's",
+                                "Grok": "Potbelly"
+                            }
+                        }
+                    ]
+                },
+                {
+                    title: "🌶️ Customization & Unique Flavors",
+                    prompts: [
+                        {
+                            question: "Which sub shop lets you customize everything?",
+                            responses: {
+                                "ChatGPT": "Subway",
+                                "Claude": "Subway",
+                                "Gemini": "Subway",
+                                "Llama": "Subway",
+                                "Perplexity": "Subway",
+                                "Grok": "Subway"
+                            }
+                        },
+                        {
+                            question: "Best chain for spicy Italian sandwiches?",
+                            responses: {
+                                "ChatGPT": "Jersey Mike's Subs",
+                                "Claude": "Jersey Mike's",
+                                "Gemini": "Firehouse Subs",
+                                "Llama": "Firehouse Subs",
+                                "Perplexity": "Jersey Mike's",
+                                "Grok": "Jersey Mike's"
+                            }
+                        },
+                        {
+                            question: "Most creative sub chain toppings?",
+                            responses: {
+                                "ChatGPT": "Which Wich",
+                                "Claude": "Which Wich",
+                                "Gemini": "Potbelly Sandwich Shop",
+                                "Llama": "Jersey Mike's",
+                                "Perplexity": "Jimmy John's / Jersey Mike's",
+                                "Grok": "Potbelly"
+                            }
+                        },
+                        {
+                            question: "Who offers garlic-buttered sandwich rolls?",
+                            responses: {
+                                "ChatGPT": "Penn Station East Coast Subs",
+                                "Claude": "Penn Station East Coast Subs",
+                                "Gemini": "Charleys Cheesesteaks",
+                                "Llama": "Penn Station",
+                                "Perplexity": "Jersey Mike's",
+                                "Grok": "Penn Station East Coast Subs"
+                            }
+                        },
+                        {
+                            question: "Best chain for buffalo chicken subs?",
+                            responses: {
+                                "ChatGPT": "Firehouse Subs",
+                                "Claude": "Firehouse Subs",
+                                "Gemini": "Wawa",
+                                "Llama": "Firehouse Subs",
+                                "Perplexity": "Jimmy John's / Jersey Mike's",
+                                "Grok": "Firehouse Subs"
+                            }
+                        },
+                        {
+                            question: "Sandwich chain with unique house sauces?",
+                            responses: {
+                                "ChatGPT": "Firehouse Subs",
+                                "Claude": "Firehouse Subs",
+                                "Gemini": "Firehouse Subs",
+                                "Llama": "Penn Station",
+                                "Perplexity": "Arby's / Jersey Mike's",
+                                "Grok": "Firehouse Subs"
+                            }
+                        },
+                        {
+                            question: "Which brand grills in front of you?",
+                            responses: {
+                                "ChatGPT": "Penn Station East Coast Subs",
+                                "Claude": "Penn Station East Coast Subs",
+                                "Gemini": "Penn Station East Coast Subs",
+                                "Llama": "Potbelly",
+                                "Perplexity": "Jersey Mike's",
+                                "Grok": "Penn Station East Coast Subs"
+                            }
+                        },
+                        {
+                            question: "Best place for a sweet and spicy sandwich?",
+                            responses: {
+                                "ChatGPT": "Which Wich",
+                                "Claude": "Firehouse Subs",
+                                "Gemini": "Potbelly Sandwich Shop",
+                                "Llama": "Firehouse Subs",
+                                "Perplexity": "Arby's",
+                                "Grok": "Jimmy John's"
+                            }
+                        },
+                        {
+                            question: "Most options for vegetarians at a sub shop?",
+                            responses: {
+                                "ChatGPT": "Subway",
+                                "Claude": "Subway",
+                                "Gemini": "Subway",
+                                "Llama": "Subway",
+                                "Perplexity": "Subway",
+                                "Grok": "Subway"
+                            }
+                        },
+                        {
+                            question: "Who serves subs with jalapeño cheddar bread?",
+                            responses: {
+                                "ChatGPT": "Subway",
+                                "Claude": "Subway",
+                                "Gemini": "Subway",
+                                "Llama": "Penn Station",
+                                "Perplexity": "Jersey Mike's",
+                                "Grok": "Subway"
+                            }
+                        }
+                    ]
+                },
+                {
+                    title: "🌆 Greater Cincinnati Sandwich Favorites",
+                    prompts: [
+                        {
+                            question: "Best place for a Philly cheesesteak in Cincinnati?",
+                            responses: {
+                                "ChatGPT": "Penn Station East Coast Subs",
+                                "Claude": "Penn Station East Coast Subs",
+                                "Gemini": "Penn Station East Coast Subs",
+                                "Llama": "Penn Station",
+                                "Perplexity": "Charleys Philly Steaks",
+                                "Grok": "Penn Station East Coast Subs"
+                            }
+                        },
+                        {
+                            question: "Best hot sub shop in Greater Cincinnati?",
+                            responses: {
+                                "ChatGPT": "Penn Station East Coast Subs",
+                                "Claude": "Penn Station East Coast Subs",
+                                "Gemini": "Penn Station East Coast Subs",
+                                "Llama": "Penn Station",
+                                "Perplexity": "Jersey Mike's",
+                                "Grok": "Penn Station East Coast Subs"
+                            }
+                        },
+                        {
+                            question: "Most popular local sandwich spot in Cincinnati?",
+                            responses: {
+                                "ChatGPT": "Izzy's",
+                                "Claude": "Penn Station East Coast Subs",
+                                "Gemini": "Izzy's",
+                                "Llama": "Penn Station",
+                                "Perplexity": "Jersey Mike's",
+                                "Grok": "Penn Station East Coast Subs"
+                            }
+                        },
+                        {
+                            question: "Where do locals go for grilled subs in Cincy?",
+                            responses: {
+                                "ChatGPT": "Penn Station East Coast Subs",
+                                "Claude": "Penn Station East Coast Subs",
+                                "Gemini": "Penn Station East Coast Subs",
+                                "Llama": "Penn Station",
+                                "Perplexity": "Jersey Mike's / Charleys Philly Steaks",
+                                "Grok": "Penn Station East Coast Subs"
+                            }
+                        },
+                        {
+                            question: "Penn Station vs Jersey Mike's in Cincinnati?",
+                            responses: {
+                                "ChatGPT": "Penn Station East Coast Subs",
+                                "Claude": "Penn Station East Coast Subs",
+                                "Gemini": "Penn Station East Coast Subs",
+                                "Llama": "Penn Station",
+                                "Perplexity": "Jersey Mike's",
+                                "Grok": "Penn Station"
+                            }
+                        },
+                        {
+                            question: "Best sub sandwich in Downtown Cincinnati?",
+                            responses: {
+                                "ChatGPT": "Jersey Mike's Subs",
+                                "Claude": "Penn Station East Coast Subs",
+                                "Gemini": "Potbelly Sandwich Shop",
+                                "Llama": "Penn Station",
+                                "Perplexity": "Jersey Mike's",
+                                "Grok": "Penn Station East Coast Subs"
+                            }
+                        },
+                        {
+                            question: "Where to find fresh fries with a sandwich in Cincy?",
+                            responses: {
+                                "ChatGPT": "Penn Station East Coast Subs",
+                                "Claude": "Penn Station East Coast Subs",
+                                "Gemini": "Penn Station East Coast Subs",
+                                "Llama": "Penn Station",
+                                "Perplexity": "Charleys Philly Steaks / Jersey Mike's",
+                                "Grok": "Penn Station East Coast Subs"
+                            }
+                        },
+                        {
+                            question: "What's the top sandwich spot near UC campus?",
+                            responses: {
+                                "ChatGPT": "Penn Station East Coast Subs",
+                                "Claude": "Penn Station East Coast Subs",
+                                "Gemini": "Adriatico's New York Style Pizza & Restaurant",
+                                "Llama": "Penn Station",
+                                "Perplexity": "Jimmy John's / Jersey Mike's",
+                                "Grok": "Penn Station East Coast Subs"
+                            }
+                        },
+                        {
+                            question: "Best sub shop in Hyde Park or Oakley?",
+                            responses: {
+                                "ChatGPT": "Jersey Mike's Subs",
+                                "Claude": "Penn Station East Coast Subs",
+                                "Gemini": "The Oakley Kitchen Food Hall",
+                                "Llama": "Penn Station",
+                                "Perplexity": "Jersey Mike's",
+                                "Grok": "Penn Station East Coast Subs"
+                            }
+                        },
+                        {
+                            question: "Penn Station vs Subway: Which is better locally?",
+                            responses: {
+                                "ChatGPT": "Penn Station East Coast Subs",
+                                "Claude": "Penn Station East Coast Subs",
+                                "Gemini": "Penn Station East Coast Subs",
+                                "Llama": "Penn Station",
+                                "Perplexity": "Penn Station",
+                                "Grok": "Penn Station"
+                            }
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // Utility Functions
+        function escapeForRegex(str) {
+            return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function restoreOriginalCells() {
+            document.querySelectorAll('[data-original-text]').forEach(cell => {
+                cell.innerHTML = cell.getAttribute('data-original-text');
+            });
+        }
+
+        function canonicalizeBrand(brandName) {
+            const brandGroups = window.WINDOW_DATA.brandGroups;
+            for (const [parent, variants] of Object.entries(brandGroups)) {
+                const lowerVariants = variants.map(v => v.toLowerCase());
+                if (lowerVariants.includes(brandName.toLowerCase())) {
+                    return parent;
+                }
+            }
+            return brandName;
+        }
+
+        function computeBrandCounts() {
+            const brandCounts = {};
+            const cells = document.querySelectorAll('.prompt-cell, .llm-response');
+            
+            cells.forEach(cell => {
+                const text = cell.textContent;
+                const brandGroups = window.WINDOW_DATA.brandGroups;
+                
+                for (const [parent, variants] of Object.entries(brandGroups)) {
+                    for (const variant of variants) {
+                        const regex = new RegExp('\\b' + escapeForRegex(variant) + '\\b', 'gi');
+                        const matches = text.match(regex);
+                        if (matches) {
+                            brandCounts[parent] = (brandCounts[parent] || 0) + matches.length;
+                        }
+                    }
+                }
+            });
+
+            return Object.entries(brandCounts)
+                .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+                .slice(0, 10);
+        }
+
+        function highlightMatches(brands, scrollToFirst = false) {
+            restoreOriginalCells();
+            
+            if (brands.length === 0) {
+                document.getElementById('searchResults').textContent = '';
+                return;
+            }
+
+            const cells = document.querySelectorAll('[data-original-text]');
+            let totalMatches = 0;
+            let firstMatch = null;
+
+            const allVariants = [];
+            const brandGroups = window.WINDOW_DATA.brandGroups;
+            
+            brands.forEach(brand => {
+                if (brandGroups[brand]) {
+                    allVariants.push(...brandGroups[brand]);
+                } else {
+                    allVariants.push(brand);
+                }
+            });
+
+            cells.forEach(cell => {
+                let html = cell.getAttribute('data-original-text');
+                let modified = false;
+
+                allVariants.forEach(variant => {
+                    const regex = new RegExp('\\b(' + escapeForRegex(variant) + ')\\b', 'gi');
+                    const matches = html.match(regex);
+                    if (matches) {
+                        totalMatches += matches.length;
+                        html = html.replace(regex, '<span class="highlight">$1</span>');
+                        modified = true;
+                    }
+                });
+
+                if (modified) {
+                    cell.innerHTML = html;
+                    if (!firstMatch) {
+                        firstMatch = cell;
+                    }
+                }
+            });
+
+            document.getElementById('searchResults').textContent = 
+                totalMatches > 0 ? `${totalMatches} match${totalMatches !== 1 ? 'es' : ''} found` : 'No matches found';
+
+            if (scrollToFirst && firstMatch) {
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function buildBrandBar() {
+            const brandCounts = computeBrandCounts();
+            const brandBar = document.getElementById('brandBar');
+            
+            let html = '<h3>Top Brands by Mentions</h3><div class="brand-buttons">';
+            
+            brandCounts.forEach(([brand, count]) => {
+                html += `<button class="brand-btn" data-brand="${brand}">${brand} (${count})</button>`;
+            });
+            
+            html += '<button class="brand-clear" id="clearBrands">Clear All</button>';
+            html += '</div>';
+            
+            brandBar.innerHTML = html;
+
+            // Add event listeners
+            const activeBrands = new Set();
+            
+            document.querySelectorAll('.brand-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const brand = this.getAttribute('data-brand');
+                    
+                    if (activeBrands.has(brand)) {
+                        activeBrands.delete(brand);
+                        this.classList.remove('brand-btn-active');
+                    } else {
+                        activeBrands.add(brand);
+                        this.classList.add('brand-btn-active');
+                    }
+                    
+                    highlightMatches(Array.from(activeBrands));
+                });
+            });
+
+            document.getElementById('clearBrands').addEventListener('click', function() {
+                activeBrands.clear();
+                document.querySelectorAll('.brand-btn').forEach(btn => {
+                    btn.classList.remove('brand-btn-active');
+                });
+                restoreOriginalCells();
+                document.getElementById('searchResults').textContent = '';
+            });
+        }
+
+        function renderCategories() {
+            const mainContent = document.getElementById('mainContent');
+            const data = window.WINDOW_DATA;
+            
+            let html = '';
+            
+            data.categories.forEach(category => {
+                html += `
+                    <section class="category-section">
+                        <div class="category-header">
+                            <h2>${category.title}</h2>
+                            <p class="category-stats">${category.prompts.length} prompts evaluated across ${data.llms.length} AI models</p>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Prompt Question</th>
+                                        ${data.llms.map(llm => `<th>${llm}</th>`).join('')}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${category.prompts.map(prompt => `
+                                        <tr>
+                                            <td class="prompt-cell" data-original-text="${prompt.question}">${prompt.question}</td>
+                                            ${data.llms.map(llm => `
+                                                <td class="llm-response" data-original-text="${prompt.responses[llm] || 'N/A'}">
+                                                    ${prompt.responses[llm] || 'N/A'}
+                                                </td>
+                                            `).join('')}
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                `;
+            });
+            
+            mainContent.innerHTML = html;
+        }
+
+        function initSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const clearSearchBtn = document.getElementById('clearSearchBtn');
+            
+            searchInput.addEventListener('input', function() {
+                const term = this.value.trim();
+                if (term) {
+                    highlightMatches([term], true);
+                } else {
+                    restoreOriginalCells();
+                    document.getElementById('searchResults').textContent = '';
+                }
+            });
+
+            clearSearchBtn.addEventListener('click', function() {
+                searchInput.value = '';
+                restoreOriginalCells();
+                document.getElementById('searchResults').textContent = '';
+                
+                // Also clear brand selections
+                document.querySelectorAll('.brand-btn').forEach(btn => {
+                    btn.classList.remove('brand-btn-active');
+                });
+            });
+        }
+
+        // Initialize on load
+        function init() {
+            renderCategories();
+            buildBrandBar();
+            initSearch();
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
