@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Index Hub - Data Intelligence Center</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #0a0e1a;
@@ -22,126 +21,59 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
+      position: sticky; top: 0; z-index: 1000;
     }
-
-    .navbar-title {
-      color: #00d4ff;
-      font-weight: 700;
-      font-size: 1.3rem;
-      text-decoration: none;
-    }
-
+    .navbar-title { color: #00d4ff; font-weight: 700; font-size: 1.3rem; text-decoration: none; }
     .navbar-links a {
-      color: #e0e0e0;
-      margin-left: 20px;
-      text-decoration: none;
-      font-size: 1rem;
-      transition: color 0.2s ease;
+      color: #e0e0e0; margin-left: 20px; text-decoration: none; font-size: 1rem; transition: color .2s ease;
     }
-
-    .navbar-links a:hover {
-      color: #00d4ff;
-    }
+    .navbar-links a:hover { color: #00d4ff; }
 
     .hero {
       background: linear-gradient(135deg, #0a0e1a 0%, #141822 100%);
-      padding: 80px 20px;
-      text-align: center;
-      border-bottom: 3px solid #00d4ff;
+      padding: 80px 20px; text-align: center; border-bottom: 3px solid #00d4ff;
     }
-
     .hero-title {
-      font-size: 3.5rem;
-      font-weight: 700;
-      color: #00d4ff;
-      margin-bottom: 20px;
-      text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+      font-size: 3.5rem; font-weight: 700; color: #00d4ff; margin-bottom: 20px;
+      text-shadow: 0 0 20px rgba(0,212,255,.3);
     }
-
-    .hero-subtitle {
-      font-size: 1.3rem;
-      color: #b0b0b0;
-      font-weight: 300;
-      max-width: 700px;
-      margin: 0 auto 40px;
-    }
-
-    .hero-description {
-      font-size: 1rem;
-      color: #909090;
-      max-width: 600px;
-      margin: 0 auto;
-      line-height: 1.8;
-    }
+    .hero-subtitle { font-size: 1.3rem; color: #b0b0b0; font-weight: 300; max-width: 700px; margin: 0 auto 40px; }
+    .hero-description { font-size: 1rem; color: #909090; max-width: 600px; margin: 0 auto; line-height: 1.8; }
 
     .container { max-width: 1400px; margin: 0 auto; padding: 60px 20px; }
+    .section-title { font-size: 2rem; color: #00d4ff; margin-bottom: 20px; text-align: center; font-weight: 600; }
 
-    .section-title {
-      font-size: 2rem;
-      color: #00d4ff;
-      margin-bottom: 40px;
-      text-align: center;
+    /* Subsection header */
+    .subsection-title {
+      margin: 30px 0 15px;
+      font-size: 1.25rem;
+      color: #b8eaff;
       font-weight: 600;
+      border-left: 4px solid #00d4ff;
+      padding-left: 12px;
     }
 
     .index-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 30px;
-      margin-bottom: 60px;
+      margin-bottom: 40px;
     }
 
     .index-card {
-      background: #141822;
-      border: 1px solid #1a2030;
-      border-radius: 12px;
-      padding: 30px;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
+      background: #141822; border: 1px solid #1a2030; border-radius: 12px;
+      padding: 30px; transition: all .3s ease; position: relative; overflow: hidden; cursor: pointer;
     }
-
-    .index-card:hover {
-      transform: translateY(-5px);
-      border-color: #00d4ff;
-      box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
-    }
-
+    .index-card:hover { transform: translateY(-5px); border-color: #00d4ff; box-shadow: 0 10px 30px rgba(0,212,255,.2); }
     .index-card-icon { font-size: 2.5rem; margin-bottom: 20px; color: #00d4ff; }
     .index-card-title { font-size: 1.5rem; color: #00d4ff; margin-bottom: 15px; font-weight: 600; }
     .index-card-description { color: #b0b0b0; margin-bottom: 20px; line-height: 1.7; }
+    .index-card-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #1a2030; }
+    .index-card-date { color: #707070; font-size: .85rem; }
+    .index-card-badge { background: #1a2030; color: #00d4ff; padding: 4px 12px; border-radius: 12px; font-size: .8rem; font-weight: 600; }
+    a.index-card-link { text-decoration: none; color: inherit; display: block; }
 
-    .index-card-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 20px;
-      padding-top: 20px;
-      border-top: 1px solid #1a2030;
-    }
-
-    .index-card-date { color: #707070; font-size: 0.85rem; }
-    .index-card-badge {
-      background: #1a2030;
-      color: #00d4ff;
-      padding: 4px 12px;
-      border-radius: 12px;
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
-
-    .footer {
-      text-align: center;
-      padding: 40px 20px;
-      color: #707070;
-      border-top: 1px solid #1a2030;
-      margin-top: 60px;
-    }
-
+    .footer { text-align: center; padding: 40px 20px; color: #707070; border-top: 1px solid #1a2030; margin-top: 60px; }
     .footer a { color: #00d4ff; text-decoration: none; }
     .footer a:hover { text-decoration: underline; }
 
@@ -150,37 +82,8 @@
       .hero-subtitle { font-size: 1.1rem; }
       .index-grid { grid-template-columns: 1fr; }
     }
-
-    a.index-card-link { text-decoration: none; color: inherit; display: block; }
   </style>
 </head>
-  <script>
-async function loadPages() {
-  const response = await fetch('pages.json');
-  const data = await response.json();
-  const grid = document.querySelector('.index-grid');
-  grid.innerHTML = ''; // clear existing cards
-
-  data.pages.forEach(page => {
-    const card = document.createElement('a');
-    card.href = page.file;
-    card.className = 'index-card-link';
-    card.innerHTML = `
-      <div class="index-card">
-        <div class="index-card-icon">${page.icon}</div>
-        <h3 class="index-card-title">${page.title}</h3>
-        <p class="index-card-description">${page.desc}</p>
-        <div class="index-card-meta">
-          <span class="index-card-date">Updated ${new Date().toLocaleString('default', { month: 'short', year: 'numeric' })}</span>
-          <span class="index-card-badge">Live</span>
-        </div>
-      </div>`;
-    grid.appendChild(card);
-  });
-}
-loadPages();
-</script>
-
 <body>
 
   <!-- NAVBAR -->
@@ -206,60 +109,278 @@ loadPages();
   <div class="container">
     <h2 class="section-title">Available Indexes</h2>
 
+    <!-- ===== BrandRank Index Suite ===== -->
+    <h3 class="subsection-title">BrandRank Index Suite</h3>
+    <div class="index-grid">
+      <a href="BrandRankIndex Q2 2025.html" class="index-card-link">
+        <div class="index-card">
+          <div class="index-card-icon">📈</div>
+          <h3 class="index-card-title">BrandRank Index Q2 2025</h3>
+          <p class="index-card-description">Core quarterly BrandRank index results and methodology snapshot.</p>
+          <div class="index-card-meta"><span class="index-card-date">Updated 2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="BrandRankIndex Q2 2025 (1).html" class="index-card-link">
+        <div class="index-card">
+          <div class="index-card-icon">🔢</div>
+          <h3 class="index-card-title">BrandRank Index Q2 2025 (1)</h3>
+          <p class="index-card-description">Alt view: segmented breakdown and scoring slices.</p>
+          <div class="index-card-meta"><span class="index-card-date">Updated 2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="BrandRankIndex Q2 2025 (2).html" class="index-card-link">
+        <div class="index-card">
+          <div class="index-card-icon">🧮</div>
+          <h3 class="index-card-title">BrandRank Index Q2 2025 (2)</h3>
+          <p class="index-card-description">Alt view: category deltas and rank movement.</p>
+          <div class="index-card-meta"><span class="index-card-date">Updated 2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="BrandRankIndex Q2 2025 (3).html" class="index-card-link">
+        <div class="index-card">
+          <div class="index-card-icon">📊</div>
+          <h3 class="index-card-title">BrandRank Index Q2 2025 (3)</h3>
+          <p class="index-card-description">Alt view: model-by-model comparison surfaces.</p>
+          <div class="index-card-meta"><span class="index-card-date">Updated 2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="BR_BrandRankTop 100 BestCPG (3).html" class="index-card-link">
+        <div class="index-card">
+          <div class="index-card-icon">🏆</div>
+          <h3 class="index-card-title">Top 100 Best CPG (BR)</h3>
+          <p class="index-card-description">Best-of CPG leaderboard derived from BrandRank signals.</p>
+          <div class="index-card-meta"><span class="index-card-date">Updated 2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="BRGenZ Index June 2024.html" class="index-card-link">
+        <div class="index-card">
+          <div class="index-card-icon">🧑‍🎤</div>
+          <h3 class="index-card-title">Gen Z Index (June 2024)</h3>
+          <p class="index-card-description">Generational lens on brand visibility and preference signals.</p>
+          <div class="index-card-meta"><span class="index-card-date">Updated 2024</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="BR NewProductLaunch Q2 25.html" class="index-card-link">
+        <div class="index-card">
+          <div class="index-card-icon">🚀</div>
+          <h3 class="index-card-title">New Product Launch (Q2 ‘25)</h3>
+          <p class="index-card-description">Launch visibility and early traction across answer engines.</p>
+          <div class="index-card-meta"><span class="index-card-date">Updated 2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="BR VendorNavigator Q2 2025.html" class="index-card-link">
+        <div class="index-card">
+          <div class="index-card-icon">🧭</div>
+          <h3 class="index-card-title">Vendor Navigator (Q2 2025)</h3>
+          <p class="index-card-description">Supplier landscape explorer with cross-model coverage.</p>
+          <div class="index-card-meta"><span class="index-card-date">Q2 2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="BrandRaceHeatMap July 2025.html" class="index-card-link">
+        <div class="index-card">
+          <div class="index-card-icon">🗺️</div>
+          <h3 class="index-card-title">Brand Race Heat Map (July 2025)</h3>
+          <p class="index-card-description">Heat-map view of head-to-head brand dynamics.</p>
+          <div class="index-card-meta"><span class="index-card-date">Jul 2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+    </div>
+
+    <!-- ===== Industry & Category Indexes ===== -->
+    <h3 class="subsection-title">Industry & Category Indexes</h3>
+    <div class="index-grid">
+      <a href="BrandRankAI FitnessWellnessIndex June2025.html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">💪</div>
+          <h3 class="index-card-title">Fitness & Wellness Index (Jun 2025)</h3>
+          <p class="index-card-description">Fitness, nutrition, and wellness brand visibility across LLMs.</p>
+          <div class="index-card-meta"><span class="index-card-date">Jun 2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="BrandRankCookieMonitor.html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">🍪</div>
+          <h3 class="index-card-title">Cookie Monitor</h3>
+          <p class="index-card-description">Cookie/CMP experience audits and model interpretation checks.</p>
+          <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="BROralCareIndex Q3 2025 (3).html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">🦷</div>
+          <h3 class="index-card-title">Oral Care Index (Q3 2025)</h3>
+          <p class="index-card-description">Toothpaste, brush, and rinse brands ranked by answer coverage.</p>
+          <div class="index-card-meta"><span class="index-card-date">Q3 2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="BR PetIndustry Mars June 2025.html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">🐾</div>
+          <h3 class="index-card-title">Pet Industry (Mars, Jun 2025)</h3>
+          <p class="index-card-description">Pet brands momentum and query coverage across engines.</p>
+          <div class="index-card-meta"><span class="index-card-date">Jun 2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="BR PetSupplement June 2025.html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">🦴</div>
+          <h3 class="index-card-title">Pet Supplement (Jun 2025)</h3>
+          <p class="index-card-description">Supplement SKUs and claims surfaced in model outputs.</p>
+          <div class="index-card-meta"><span class="index-card-date">Jun 2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="BR SmokeFreeIndex July2025.html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">🚭</div>
+          <h3 class="index-card-title">Smoke Free Index (Jul 2025)</h3>
+          <p class="index-card-description">Policy and brand mentions tied to smoke-free initiatives.</p>
+          <div class="index-card-meta"><span class="index-card-date">Jul 2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="BRTrust Index Q3 2025.html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">🤝</div>
+          <h3 class="index-card-title">BR Trust Index (Q3 2025)</h3>
+          <p class="index-card-description">Digital trust and reputation signals synthesized across models.</p>
+          <div class="index-card-meta"><span class="index-card-date">Q3 2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="BRAgenticCommerce Q2 2025.html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">🛒</div>
+          <h3 class="index-card-title">Agentic Commerce (Q2 2025)</h3>
+          <p class="index-card-description">Agentic shopping/assistant surfaces influencing brand picks.</p>
+          <div class="index-card-meta"><span class="index-card-date">Q2 2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="financial_services_report (1) (1).html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">🏦</div>
+          <h3 class="index-card-title">Financial Services Report</h3>
+          <p class="index-card-description">Banking/fin-serv visibility, trust, and query intent coverage.</p>
+          <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="Groomdex July2025 BrandRank.html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">✂️</div>
+          <h3 class="index-card-title">Groomdex (Jul 2025)</h3>
+          <p class="index-card-description">Personal care & grooming brand exposure across LLMs.</p>
+          <div class="index-card-meta"><span class="index-card-date">Jul 2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+    </div>
+
+    <!-- ===== Dashboards & Presentations ===== -->
+    <h3 class="subsection-title">Dashboards & Presentations</h3>
+    <div class="index-grid">
+      <a href="navrail_executive_presentation.html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">📑</div>
+          <h3 class="index-card-title">NavRail Executive Presentation</h3>
+          <p class="index-card-description">Executive-ready slides on model outputs and implications.</p>
+          <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="nestle_nutrition_dashboard (1) (1).html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">🍼</div>
+          <h3 class="index-card-title">Nestlé Nutrition Dashboard (v2)</h3>
+          <p class="index-card-description">Brand/category coverage for Nestlé infant & family nutrition.</p>
+          <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="nestle_nutrition_dashboard (1).html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">🧊</div>
+          <h3 class="index-card-title">Nestlé Nutrition Dashboard (v1)</h3>
+          <p class="index-card-description">Earlier build of the nutrition visibility dashboard.</p>
+          <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="brand_smoothie_blender.html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">🥤</div>
+          <h3 class="index-card-title">Brand Smoothie (Blender)</h3>
+          <p class="index-card-description">Blended brand view across prompts and engine responses.</p>
+          <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="brand_trust_health_index.html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">❤️</div>
+          <h3 class="index-card-title">Brand Trust Health Index</h3>
+          <p class="index-card-description">Composite trust signals and sentiment across sources.</p>
+          <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+    </div>
+
+    <!-- ===== Research, Tools & Experiments ===== -->
+    <h3 class="subsection-title">Research, Tools & Experiments</h3>
+    <div class="index-grid">
+      <a href="ai_media_prioritization_matrix (1).html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">🎛️</div>
+          <h3 class="index-card-title">AI Media Prioritization Matrix</h3>
+          <p class="index-card-description">Matrix tool for channel/keyword prioritization by AI visibility.</p>
+          <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="ai_shopping_cart_comparison.html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">🛍️</div>
+          <h3 class="index-card-title">AI Shopping Cart Comparison</h3>
+          <p class="index-card-description">Comparative carts generated across engines for identical intents.</p>
+          <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="cognitive_processing_time.html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">⏱️</div>
+          <h3 class="index-card-title">Cognitive Processing Time</h3>
+          <p class="index-card-description">Latency/effort framing for prompt interactions and outputs.</p>
+          <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="CPG Prompted 100 Q3 2025.html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">🧰</div>
+          <h3 class="index-card-title">CPG Prompted 100 (Q3 2025)</h3>
+          <p class="index-card-description">Standardized prompt pack and score rollups for CPG.</p>
+          <div class="index-card-meta"><span class="index-card-date">Q3 2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="Lunchline LeaderBoard _ Claude _ Claude.html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">🥇</div>
+          <h3 class="index-card-title">Lunchline Leaderboard (Claude)</h3>
+          <p class="index-card-description">Engine-specific leaderboard for lunchline prompts/results.</p>
+          <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="BeanSeenCoffeeTracker.html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">☕</div>
+          <h3 class="index-card-title">BeanSeen Coffee Tracker</h3>
+          <p class="index-card-description">Coffee brand visibility and inventory mentions across engines.</p>
+          <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+    </div>
+
+    <!-- ===== Your existing featured tiles ===== -->
+    <h3 class="subsection-title">Featured Dashboards</h3>
     <div class="index-grid">
       <a href="coaching-comparison-pres.html" class="index-card-link">
         <div class="index-card">
           <div class="index-card-icon">📊</div>
           <h3 class="index-card-title">Coaching Comparison Dashboard</h3>
-          <p class="index-card-description">
-            Compare AI model responses across coaching data segments and platform performance metrics.
-          </p>
-          <div class="index-card-meta">
-            <span class="index-card-date">Updated Oct 2025</span>
-            <span class="index-card-badge">Live</span>
-          </div>
+          <p class="index-card-description">Compare AI model responses across coaching data segments and platform performance metrics.</p>
+          <div class="index-card-meta"><span class="index-card-date">Updated Oct 2025</span><span class="index-card-badge">Live</span></div>
         </div>
       </a>
       <a href="power-brush-index.html" class="index-card-link">
-  <div class="index-card">
-    <div class="index-card-icon">⚙️</div>
-    <h3 class="index-card-title">Power Brush Index</h3>
-    <p class="index-card-description">
-      Market visibility and generative AI coverage report for Power Brush products and related tool brands.
-    </p>
-    <div class="index-card-meta">
-      <span class="index-card-date">Updated Oct 2025</span>
-      <span class="index-card-badge">Live</span>
-    </div>
-  </div>
-</a>
-      
-<a href="sandwich-leaderboard.html" class="index-card-link">
-  <div class="index-card">
-    <div class="index-card-icon">🥪</div>
-    <h3 class="index-card-title">Sandwich Leaderboard</h3>
-    <p class="index-card-description">
-      Comparative brand ranking and AI response frequency analysis across leading sandwich chains and deli brands.
-    </p>
-    <div class="index-card-meta">
-      <span class="index-card-date">Updated Oct 2025</span>
-      <span class="index-card-badge">Live</span>
-    </div>
-  </div>
-</a>
-
-
+        <div class="index-card">
+          <div class="index-card-icon">⚙️</div>
+          <h3 class="index-card-title">Power Brush Index</h3>
+          <p class="index-card-description">Market visibility and generative AI coverage report for Power Brush products and related tool brands.</p>
+          <div class="index-card-meta"><span class="index-card-date">Updated Oct 2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="sandwich-leaderboard.html" class="index-card-link">
+        <div class="index-card">
+          <div class="index-card-icon">🥪</div>
+          <h3 class="index-card-title">Sandwich Leaderboard</h3>
+          <p class="index-card-description">Comparative brand ranking and AI response frequency analysis across leading sandwich chains and deli brands.</p>
+          <div class="index-card-meta"><span class="index-card-date">Updated Oct 2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
       <a href="kelsey-brandrank-pres.html" class="index-card-link">
         <div class="index-card">
           <div class="index-card-icon">💼</div>
           <h3 class="index-card-title">Kelsey BrandRank Presentation</h3>
-          <p class="index-card-description">
-            Brand visibility breakdown and answer-engine analytics for Kelsey BrandRank comparative model outputs.
-          </p>
-          <div class="index-card-meta">
-            <span class="index-card-date">Updated Oct 2025</span>
-            <span class="index-card-badge">Live</span>
-          </div>
+          <p class="index-card-description">Brand visibility breakdown and answer-engine analytics for Kelsey BrandRank comparative model outputs.</p>
+          <div class="index-card-meta"><span class="index-card-date">Updated Oct 2025</span><span class="index-card-badge">Live</span></div>
         </div>
       </a>
     </div>
@@ -267,9 +388,7 @@ loadPages();
 
   <div class="footer">
     <p>&copy; 2025 Index Hub. Built with data intelligence in mind.</p>
-    <p>
-      <a href="https://github.com/NickoN123/llm-analysis-dashboard">GitHub</a>
-    </p>
+    <p><a href="https://github.com/NickoN123/llm-analysis-dashboard">GitHub</a></p>
   </div>
 </body>
 </html>
