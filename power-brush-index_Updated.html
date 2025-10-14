@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Rufus Power Toothbrush Index</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            overflow-x: auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #ccc;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: 80vh;
+            border: 1px solid #333;
+            border-radius: 8px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #000;
+            min-width: 1200px;
+        }
+        
+        th {
+            background-color: #222;
+            color: #fff;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: bold;
+            border-bottom: 2px solid #444;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #333;
+            vertical-align: top;
+            font-size: 14px;
+        }
+        
+        tr:hover {
+            background-color: #111;
+        }
+        
+        .category-header {
+            background-color: #333 !important;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        .category-header td {
+            padding: 15px 8px;
+            border-bottom: 2px solid #555;
+        }
+        
+        .funnel-upper { color: #90EE90; }
+        .funnel-mid { color: #FFD700; }
+        .funnel-lower { color: #cd7f32; }
+        
+        .brand-1 { color: #ffd700; font-weight: bold; }
+        .brand-2 { color: #c0c0c0; }
+        .brand-3 { color: #cd7f32; }
+        
+        .question-col { width: 25%; }
+        .funnel-col { width: 8%; }
+        .brand-col { width: 12%; }
+        .explanation-col { width: 25%; }
+        .depth-col { width: 18%; }
+        
+        .depth-factors {
+            font-size: 12px;
+            color: #ccc;
+        }
+        
+        .star-rating {
+            color: #ffd700;
+        }
+        
+        .search-controls {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #111;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+        
+        .search-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px;
+            background-color: #222;
+            border: 1px solid #555;
+            color: #fff;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+        
+        .company-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .company-btn {
+            padding: 8px 15px;
+            background-color: #333;
+            border: 1px solid #555;
+            color: #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .company-btn:hover {
+            background-color: #444;
+            border-color: #666;
+        }
+        
+        .company-btn.active {
+            background-color: #ffd700;
+            color: #000;
+            border-color: #ffd700;
+            font-weight: bold;
+        }
+        
+        .clear-btn {
+            background-color: #666 !important;
+            color: #fff !important;
+        }
+        
+        .clear-btn:hover {
+            background-color: #777 !important;
+        }
+        
+        .highlight {
+            background-color: #ffd700 !important;
+            color: #000 !important;
+            font-weight: bold;
+        }
+        
+        .search-highlight {
+            background-color: #ff6b6b !important;
+            color: #fff !important;
+        }
+        
+        .search-info {
+            color: #ccc;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Who's Top Dog in the Power Brush Game? (Oct. 2025)</h1>
+    <div class="subtitle">Amazon Rufus rankings reveal which brands dominate across shopper intent and funnel stage — analyzed by BrandRank.AI.</div>
+    
+    <div class="search-controls">
+        <input type="text" class="search-box" id="searchInput" placeholder="Search for brands, features, or keywords...">
+        
+        <div class="company-buttons">
+            <button class="company-btn clear-btn" onclick="clearHighlights()">Clear All</button>
+            <button class="company-btn" data-company="philips" onclick="highlightCompany('philips')">Philips Sonicare</button>
+            <button class="company-btn" data-company="oralb" onclick="highlightCompany('oralb')">Oral-B</button>
+            <button class="company-btn" data-company="quip" onclick="highlightCompany('quip')">Quip</button>
+            <button class="company-btn" data-company="aquasonic" onclick="highlightCompany('aquasonic')">Aquasonic</button>
+            <button class="company-btn" data-company="bitvae" onclick="highlightCompany('bitvae')">Bitvae</button>
+            <button class="company-btn" data-company="coslus" onclick="highlightCompany('coslus')">COSLUS</button>
+        </div>
+        
+        <div class="search-info" id="searchInfo"></div>
+    </div>
+    
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th class="question-col">Question</th>
+                    <th class="funnel-col">Funnel</th>
+                    <th class="brand-col">Brand #1</th>
+                    <th class="brand-col">Brand #2</th>
+                    <th class="brand-col">Brand #3</th>
+                    <th class="explanation-col">Rationale for Top Choice</th>
+                    <th class="depth-col">Depth Factors</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Buying the Best Category -->
+                <tr class="category-header">
+                    <td colspan="7">BUYING THE BEST (Top-of-Funnel Discovery & Value)</td>
+                </tr>
+                <tr>
+                    <td>Best electric toothbrush for gum health and plaque removal?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Philips Sonicare ProtectiveClean 5100</td>
+                    <td class="brand-2">Philips Sonicare ProtectiveClean 5300</td>
+                    <td class="brand-3">Philips Sonicare 4100</td>
+                    <td>Philips Sonicare dominates with pressure sensor technology and dedicated Gum Care mode; 100% enhanced gum health</td>
+                    <td class="depth-factors"><span class="star-rating">4.5★</span> 27.5k, Pressure sensor, BrushSync</td>
+                </tr>
+                <tr>
+                    <td>What's the best electric toothbrush under $100?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Oral-B Pro 1000</td>
+                    <td class="brand-2">COSLUS</td>
+                    <td class="brand-3">Philips Sonicare 1100</td>
+                    <td>Oral-B Pro 1000 wins at $39.94 with 300% more plaque removal; COSLUS offers extreme value at $16.99</td>
+                    <td class="depth-factors"><span class="star-rating">4.5★</span> 77k, Pressure sensor, 2-min timer</td>
+                </tr>
+                <tr>
+                    <td>Most recommended toothbrush by dentists this year?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Oral-B iO Deep Clean</td>
+                    <td class="brand-2">Oral-B iO Deep Clean</td>
+                    <td class="brand-2">Oral-B iO Deep Clean</td>
+                    <td>Oral-B iO Series dominates with 400% more plaque removal; #1 choice by dental professionals in 2025</td>
+                    <td class="depth-factors"><span class="star-rating">4.4★</span> 14k, Magnetic micro-vibrations</td>
+                </tr>
+                <tr>
+                    <td>What's the top-rated toothbrush for deep cleaning?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Oral-B iO Deep Clean + Protect</td>
+                    <td class="brand-2">Oral-B iO Series 8</td>
+                    <td class="brand-3">Philips Sonicare ExpertClean 7500</td>
+                    <td>Oral-B iO removes 100% more plaque in 1 week with smart display; Philips offers 10x plaque removal</td>
+                    <td class="depth-factors"><span class="star-rating">4.7★</span> 1.2k, 5 cleaning settings, AI tracking</td>
+                </tr>
+                <tr>
+                    <td>Which electric toothbrush gives the best long-term results?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Philips Sonicare DiamondClean Smart 9500</td>
+                    <td class="brand-2">Oral-B iO Deep Clean</td>
+                    <td class="brand-3">Oral-B Pro 1000</td>
+                    <td>DiamondClean improves gum health 100% in 2 weeks; Oral-B reduces gingivitis 100% more than manual over time</td>
+                    <td class="depth-factors"><span class="star-rating">4.4★</span> 885, Smart pressure feedback, app coaching</td>
+                </tr>
+                <tr>
+                    <td>Best toothbrush for daily use and fresh breath?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Philips Sonicare 4100</td>
+                    <td class="brand-2">Bitvae</td>
+                    <td class="brand-3">Philips Sonicare ProtectiveClean 5300</td>
+                    <td>Sonicare 4100 removes 7x more plaque with 14-day battery; Bitvae offers 60-day battery with Gum Care mode</td>
+                    <td class="depth-factors"><span class="star-rating">4.3★</span> 49.9k, Pressure sensor, 2-week battery</td>
+                </tr>
+                <tr>
+                    <td>Best power toothbrush for people with sensitive teeth?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Philips Sonicare 4100</td>
+                    <td class="brand-2">Philips Sonicare ProtectiveClean 5300</td>
+                    <td class="brand-3">Philips Sonicare ProtectiveClean 5300</td>
+                    <td>Sonicare 4100 leads with 2 intensity settings and pressure sensor; 5300 adds 3 cleaning modes with gentle options</td>
+                    <td class="depth-factors">Pressure sensor, 2 intensity settings, gentle mode</td>
+                </tr>
+                <tr>
+                    <td>Best toothbrush for consistent brushing habits?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Quip Smart Sonic</td>
+                    <td class="brand-2">Blu Smart</td>
+                    <td class="brand-3">AI Electric (G5S)</td>
+                    <td>Quip wins with Bluetooth rewards app tracking habits; AI shows real-time cleaning map with 6-zone tracking</td>
+                    <td class="depth-factors"><span class="star-rating">3.5★</span> 535, Rewards app, habit tracking</td>
+                </tr>
+                <tr>
+                    <td>Which toothbrush offers the most features for the price?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Aquasonic Black Series</td>
+                    <td class="brand-2">COSLUS</td>
+                    <td class="brand-3">Philips Sonicare 4100</td>
+                    <td>Aquasonic leads with 8 brush heads, wireless charging, 4 modes for $29.95; COSLUS offers 6 heads for $16.99</td>
+                    <td class="depth-factors"><span class="star-rating">4.5★</span> 126.7k, ADA-accepted, 8 heads, wireless</td>
+                </tr>
+                <tr>
+                    <td>Best all-in-one toothbrush and whitening system?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Whitening Electric (460nm Blue Light)</td>
+                    <td class="brand-2">SNOW LED</td>
+                    <td class="brand-3">LED Whitening Electric</td>
+                    <td>460nm Blue Light wins with professional PAP whitening, 21 shades whiter in 2 weeks; SNOW offers 39,000 vibrations</td>
+                    <td class="depth-factors"><span class="star-rating">4.8★</span> 29, 460nm blue light, AI sensors</td>
+                </tr>
+
+                <!-- Gifting & Seasonal Shopping Category -->
+                <tr class="category-header">
+                    <td colspan="7">GIFTING & SEASONAL SHOPPING (Holiday-Centric Prompts)</td>
+                </tr>
+                <tr>
+                    <td>Best electric toothbrush to gift for Christmas 2025?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Philips Sonicare ProtectiveClean 5300</td>
+                    <td class="brand-2">Blu Smart</td>
+                    <td class="brand-3">Philips Sonicare ProtectiveClean 5100</td>
+                    <td>Sonicare 5300 wins with complete gift package at $109.96; Blu Smart offers tech-savvy app tracking at $89</td>
+                    <td class="depth-factors"><span class="star-rating">4.6★</span> 19.9k, Travel case, 3 modes, pressure sensor</td>
+                </tr>
+                <tr>
+                    <td>What's the top oral care gift set this year?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Aquasonic Duo Series PRO UV</td>
+                    <td class="brand-2">GuruNanda Nighttime Wellness</td>
+                    <td class="brand-3">Aquasonic Duo Series PRO</td>
+                    <td>Aquasonic Duo leads with UV sanitizer, 10 brush heads, 2 travel cases for couples; GuruNanda adds wellness kit</td>
+                    <td class="depth-factors"><span class="star-rating">4.6★</span> 9.2k, UV sanitizer, dual system</td>
+                </tr>
+                <tr>
+                    <td>Which power toothbrush makes a good gift for teens?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Blu Smart</td>
+                    <td class="brand-2">Quip Smart Sonic</td>
+                    <td class="brand-3">AI Electric (G5S)</td>
+                    <td>Blu Smart leads with interactive live tracking app; Quip offers sleek design with Bluetooth rewards; AI has cool visual display</td>
+                    <td class="depth-factors"><span class="star-rating">3.9★</span> 61, Interactive app, live tracking</td>
+                </tr>
+                <tr>
+                    <td>Best toothbrush gift for someone upgrading from manual?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Philips Sonicare 1100</td>
+                    <td class="brand-2">Oral-B Pro 1000</td>
+                    <td class="brand-3">Bitvae</td>
+                    <td>Sonicare 1100 wins with easy-start feature at $19.96; Oral-B offers simple one-mode operation with pressure sensor</td>
+                    <td class="depth-factors"><span class="star-rating">4.5★</span> 7.7k, Easy-start feature, gentle transition</td>
+                </tr>
+                <tr>
+                    <td>Are electric toothbrushes a good holiday gift?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Yes - Practical & Health-Focused</td>
+                    <td class="brand-2">Yes - Gift-Friendly Features</td>
+                    <td class="brand-3">Yes - Appeal Across Age Groups</td>
+                    <td>Electric toothbrushes combine practicality with luxury; universally useful gift showing thoughtfulness about health</td>
+                    <td class="depth-factors">Premium packaging, travel cases, multiple brush heads</td>
+                </tr>
+                <tr>
+                    <td>Best power toothbrush for stocking stuffers?</td>
+                    <td class="funnel-lower">Lower</td>
+                    <td class="brand-1">Oral-B Kids Disney Frozen</td>
+                    <td class="brand-2">Oral-B 3D White Action</td>
+                    <td class="brand-3">Spinbrush PRO WHITEN</td>
+                    <td>Disney Frozen wins at $5.97 with extra-soft bristles; Oral-B 3D offers 14,000 strokes/min at $6.97</td>
+                    <td class="depth-factors"><span class="star-rating">4.7★</span> 24k, Disney theme, extra-soft bristles</td>
+                </tr>
+                <tr>
+                    <td>What's the most giftable toothbrush for under $50?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Philips Sonicare 4100</td>
+                    <td class="brand-2">Philips Sonicare 4100</td>
+                    <td class="brand-3">Philips Sonicare 4100</td>
+                    <td>Sonicare 4100 dominates at $49.96 with premium brand reputation, pressure sensor, and gift-ready packaging</td>
+                    <td class="depth-factors"><span class="star-rating">4.3★</span> 49.9k, #1 dentist-recommended brand</td>
+                </tr>
+                <tr>
+                    <td>Top-rated oral care gift bundles for families?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Aquasonic Duo</td>
+                    <td class="brand-2">Oral-B Pro 1000 Dual</td>
+                    <td class="brand-3">Sonic 2 Pack</td>
+                    <td>Aquasonic Duo leads with dual wireless charging, 10 brush heads, travel cases; Oral-B offers 2 Pro 1000 handles</td>
+                    <td class="depth-factors"><span class="star-rating">4.6★</span> 28.1k, Dual handles, 10 heads, 2 cases</td>
+                </tr>
+                <tr>
+                    <td>Which brand offers toothbrush gift sets with accessories?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Philips Sonicare FlexCare 2-Pack</td>
+                    <td class="brand-2">Philips Sonicare DiamondClean Bundle</td>
+                    <td class="brand-3">Philips Sonicare Brush Head Bundle</td>
+                    <td>Philips dominates with FlexCare bundle at $169.98 including USB travel cases and multiple brush heads</td>
+                    <td class="depth-factors"><span class="star-rating">4.5★</span> 1.6k, 2 handles, travel cases, USB cables</td>
+                </tr>
+                <tr>
+                    <td>Best self-care gift for dental hygiene this holiday?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Aquasonic Duo Series PRO</td>
+                    <td class="brand-2">Waterpik Sonic-Fusion 2.0</td>
+                    <td class="brand-3">Philips Sonicare 4100</td>
+                    <td>Aquasonic Duo wins with dual toothbrushes and premium features; Waterpik adds 2-in-1 flosser technology</td>
+                    <td class="depth-factors"><span class="star-rating">4.6★</span> 9.2k, 50,000 VPM, 5 modes, travel cases</td>
+                </tr>
+
+                <!-- Underperformance & Brand Gaps Category -->
+                <tr class="category-header">
+                    <td colspan="7">UNDERPERFORMANCE & BRAND GAPS (Negative or Frustrated Intent)</td>
+                </tr>
+                <tr>
+                    <td>Why did my electric toothbrush battery stop charging?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Troubleshooting Guidance</td>
+                    <td class="brand-2">Common Causes</td>
+                    <td class="brand-3">When to Replace</td>
+                    <td>Most common: dirty contacts, water damage, old battery (2-3 years), or faulty charger; troubleshooting steps provided</td>
+                    <td class="depth-factors">Clean contacts, check outlet, reset, overnight charge</td>
+                </tr>
+                <tr>
+                    <td>Which toothbrush brand has unreliable battery life?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Budget brands (under $30)</td>
+                    <td class="brand-2">Look for lithium-ion batteries</td>
+                    <td class="brand-3">Check 14+ day battery life</td>
+                    <td>Budget brands often have 3-7 day battery life; mid-range offers 7-14 days; premium provides 2-4 weeks</td>
+                    <td class="depth-factors">Lithium-ion preferred, good warranty, recent manufacture</td>
+                </tr>
+                <tr>
+                    <td>What electric toothbrush breaks most often?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Very budget models (under $25)</td>
+                    <td class="brand-2">Complex feature models</td>
+                    <td class="brand-3">Poor waterproofing</td>
+                    <td>Common failure points: charging port corrosion, button mechanisms, motor wear after 2-3 years, battery degradation</td>
+                    <td class="depth-factors">Look for IPX7+ rating, 2+ year warranty, solid reviews</td>
+                </tr>
+                <tr>
+                    <td>Why do brush heads wear out so quickly?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Natural wear (40,000-80,000 vibrations daily)</td>
+                    <td class="brand-2">Usage factors accelerate wear</td>
+                    <td class="brand-3">Quality differences</td>
+                    <td>Bristle fatigue from vibrations, bacterial buildup, pressure damage; replace every 3 months or when frayed</td>
+                    <td class="depth-factors">3-month replacement, after illness, when bristles fray</td>
+                </tr>
+                <tr>
+                    <td>Which brand has the worst customer support for returns?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Amazon Return Protection</td>
+                    <td class="brand-2">Red Flags to Watch</td>
+                    <td class="brand-3">Better Approach</td>
+                    <td>Amazon's return policy protects regardless of brand; look for clear warranty, US-based support, multiple contact methods</td>
+                    <td class="depth-factors">30-day window, A-to-Z Guarantee, direct Amazon service</td>
+                </tr>
+                <tr>
+                    <td>Most overpriced electric toothbrush with weak performance?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Supersmile Zina45 ($175)</td>
+                    <td class="brand-2">Philips DiamondClean 9900 ($349.99)</td>
+                    <td class="brand-3">Philips Power Flosser System ($249.96)</td>
+                    <td>High-end models with mixed ratings: Zina45 (4.1★), DiamondClean 9900 (3.9★), Power Flosser (4.1★)</td>
+                    <td class="depth-factors">Lower ratings despite premium pricing</td>
+                </tr>
+                <tr>
+                    <td>Which smart toothbrush app doesn't sync properly?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Bluetooth connectivity issues</td>
+                    <td class="brand-2">App update problems</td>
+                    <td class="brand-3">Phone compatibility</td>
+                    <td>Common issues: older phones, interference, outdated apps, battery optimization killing processes, WiFi requirements</td>
+                    <td class="depth-factors">Check app ratings 4+★, simple connectivity, offline functionality</td>
+                </tr>
+                <tr>
+                    <td>What toothbrush offers poor brushing instructions?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Generic guidance issues</td>
+                    <td class="brand-2">Missing pressure/angle instruction</td>
+                    <td class="brand-3">Limited troubleshooting</td>
+                    <td>Poor instructions lack proper angle (45°), pressure guidance, quadrant timing, and comprehensive troubleshooting</td>
+                    <td class="depth-factors">Look for built-in coaching, comprehensive manuals, video tutorials</td>
+                </tr>
+                <tr>
+                    <td>Which brands have confusing website or FAQ guidance?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Overly complex menus</td>
+                    <td class="brand-2">Poor search functionality</td>
+                    <td class="brand-3">Outdated content</td>
+                    <td>Common issues: complex navigation, poor search, outdated FAQs, technical jargon, broken links, inconsistent formatting</td>
+                    <td class="depth-factors">Look for clear language, organized menus, visual aids, updated content</td>
+                </tr>
+                <tr>
+                    <td>Worst value toothbrush over $150?</td>
+                    <td class="funnel-lower">Lower</td>
+                    <td class="brand-1">Supersmile Zina45 ($175)</td>
+                    <td class="brand-2">Philips DiamondClean 9900 Prestige ($349.99)</td>
+                    <td class="brand-3">Philips Power Flosser 7000 ($249.96)</td>
+                    <td>Lower ratings for premium prices: Zina45 (4.1★ 36 reviews), DiamondClean 9900 (3.9★ 1.9k), Power Flosser (4.1★ 446)</td>
+                    <td class="depth-factors">Mixed performance reviews despite high pricing</td>
+                </tr>
+
+                <!-- Product Guidance & Brand Experience Category -->
+                <tr class="category-header">
+                    <td colspan="7">PRODUCT GUIDANCE & BRAND EXPERIENCE (Mid-to-Lower Funnel)</td>
+                </tr>
+                <tr>
+                    <td>Which brand offers the best brushing instructions for new users?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Philips Sonicare DiamondClean Smart 9500</td>
+                    <td class="brand-2">Feno Smartbrush</td>
+                    <td class="brand-3">AI Electric (G5S)</td>
+                    <td>DiamondClean wins with real-time app coaching and personalized feedback; AI shows real-time cleaning map</td>
+                    <td class="depth-factors"><span class="star-rating">4.4★</span> 885, App coaching, technique tips</td>
+                </tr>
+                <tr>
+                    <td>Best toothbrush website for product comparisons and FAQs?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Amazon's advantage</td>
+                    <td class="brand-2">Philips Sonicare</td>
+                    <td class="brand-3">Oral-B</td>
+                    <td>Amazon offers verified reviews, detailed specs, Q&A sections; Philips/Oral-B have detailed product pages with tech explainers</td>
+                    <td class="depth-factors">Side-by-side comparisons, real user reviews, video demos</td>
+                </tr>
+                <tr>
+                    <td>What electric toothbrush has the clearest user manual?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Philips Sonicare DiamondClean Smart 9500</td>
+                    <td class="brand-2">Philips Sonicare ExpertClean 7500</td>
+                    <td class="brand-3">Philips Sonicare ProtectiveClean 5100</td>
+                    <td>Philips leads with app tutorials and step-by-step coaching; Oral-B offers straightforward essential features manual</td>
+                    <td class="depth-factors">Step-by-step setup, visual diagrams, troubleshooting, simple language</td>
+                </tr>
+                <tr>
+                    <td>Which brand explains brushing modes the best?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Philips Sonicare DiamondClean Smart</td>
+                    <td class="brand-2">Philips Sonicare ExpertClean 7500</td>
+                    <td class="brand-3">Philips Sonicare ProtectiveClean 5100</td>
+                    <td>Philips Sonicare app provides interactive explanations of each mode with real-time feedback; clear mode naming</td>
+                    <td class="depth-factors">5 modes with app coaching, visual guides, technique tips</td>
+                </tr>
+                <tr>
+                    <td>Best brand with visual guides or how-to videos?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Philips Sonicare DiamondClean Smart 9500</td>
+                    <td class="brand-2">Philips Sonicare ExpertClean 7500</td>
+                    <td class="brand-3">Oral-B Kids</td>
+                    <td>Philips app has animated tutorials, real-time visual feedback, progress tracking; Oral-B Kids offers fun coaching animations</td>
+                    <td class="depth-factors">Interactive tutorials, real-time feedback, 3D mouth map</td>
+                </tr>
+                <tr>
+                    <td>Which toothbrush app actually improves brushing habits?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Philips Sonicare DiamondClean Smart 9500</td>
+                    <td class="brand-2">Philips Sonicare ExpertClean 7500</td>
+                    <td class="brand-3">Philips Sonicare ExpertClean 7500</td>
+                    <td>Sonicare app tracks progress over weeks, provides coaching, sends reminders; BrushSync with personalized recommendations</td>
+                    <td class="depth-factors">Progress tracking, personalized coaching, streak tracking, reminders</td>
+                </tr>
+                <tr>
+                    <td>Most helpful toothbrush brand website for tech features?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Philips Sonicare</td>
+                    <td class="brand-2">Oral-B</td>
+                    <td class="brand-3">Philips Sonicare</td>
+                    <td>Philips website praised for comprehensive tech explanations; Oral-B offers interactive product tours and tech videos</td>
+                    <td class="depth-factors">Detailed product pages, tech blog, video tutorials, online manuals</td>
+                </tr>
+                <tr>
+                    <td>Which brand makes it easy to reorder brush heads?</td>
+                    <td class="funnel-lower">Lower</td>
+                    <td class="brand-1">Philips Sonicare SimplyClean</td>
+                    <td class="brand-2">Philips Sonicare C2 Plaque Control</td>
+                    <td class="brand-3">Philips Sonicare W DiamondClean</td>
+                    <td>Philips leads with Subscribe & Save up to 15% off and BrushSync reminders; automatic delivery convenience</td>
+                    <td class="depth-factors"><span class="star-rating">4.7★</span> 17.3k, Subscribe & Save, BrushSync reminders</td>
+                </tr>
+                <tr>
+                    <td>Best customer onboarding for electric toothbrushes?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Philips Sonicare DiamondClean Smart 9500</td>
+                    <td class="brand-2">Philips Sonicare ExpertClean 7500</td>
+                    <td class="brand-3">Philips Sonicare ProtectiveClean 5100</td>
+                    <td>DiamondClean wins with progressive feature introduction and 2-week guided learning; app adapts to experience level</td>
+                    <td class="depth-factors">Interactive tutorials, personalized setup, gradual feature introduction</td>
+                </tr>
+                <tr>
+                    <td>Which brand helps choose the right brush head type?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Philips Sonicare (BrushSync)</td>
+                    <td class="brand-2">Oral-B</td>
+                    <td class="brand-3">Philips Sonicare</td>
+                    <td>Philips BrushSync automatically recognizes head and selects optimal mode; Oral-B offers visual replacement indicators</td>
+                    <td class="depth-factors">Automatic recognition, mode pairing, replacement reminders</td>
+                </tr>
+
+                <!-- Feature-Specific Purchase Decisions Category -->
+                <tr class="category-header">
+                    <td colspan="7">FEATURE-SPECIFIC PURCHASE DECISIONS (Lower Funnel)</td>
+                </tr>
+                <tr>
+                    <td>Which toothbrush has the best pressure sensor technology?</td>
+                    <td class="funnel-lower">Lower</td>
+                    <td class="brand-1">Oral-B iO Series 6</td>
+                    <td class="brand-2">Oral-B iO Deep Clean + Whiten</td>
+                    <td class="brand-3">Oral-B Smart 5000</td>
+                    <td>Oral-B iO Series leads with visible pressure sensor that lights up; indicates if brushing too hard, soft, or just right</td>
+                    <td class="depth-factors"><span class="star-rating">4.4★</span> 3.4k, Smart display, real-time feedback</td>
+                </tr>
+                <tr>
+                    <td>Best toothbrush with real-time brushing feedback?</td>
+                    <td class="funnel-lower">Lower</td>
+                    <td class="brand-1">AI Electric (G5S)</td>
+                    <td class="brand-2">Oral-B iO Series 10</td>
+                    <td class="brand-3">Burst Pro Sonic</td>
+                    <td>AI Smart Screen tracks 6 oral zones in real-time; iO Series 10 provides instant coverage and pressure feedback</td>
+                    <td class="depth-factors"><span class="star-rating">4.6★</span> 408, Real-time map, 6-zone tracking, 150-day battery</td>
+                </tr>
+                <tr>
+                    <td>Which power toothbrush has the longest battery life?</td>
+                    <td class="funnel-lower">Lower</td>
+                    <td class="brand-1">Sonic Electric (180-day battery)</td>
+                    <td class="brand-2">Whitening Electric 460nm (180-day)</td>
+                    <td class="brand-3">Oclean (150-day)</td>
+                    <td>180-day champions lead with extended battery; Bitvae offers 60-day at budget price with ADA acceptance</td>
+                    <td class="depth-factors">180-day battery, 48,000 VPM, 5 modes, 4 replacement heads</td>
+                </tr>
+                <tr>
+                    <td>What toothbrush offers the most brushing modes?</td>
+                    <td class="funnel-lower">Lower</td>
+                    <td class="brand-1">Oral-B iO Series 10</td>
+                    <td class="brand-2">Electric Toothbrush Sonic (6 modes)</td>
+                    <td class="brand-3">Oral-B Smart 5000</td>
+                    <td>Oral-B iO Series 10 leads with 7 settings including Tongue Clean; Sonic offers 6 modes with 100-day battery</td>
+                    <td class="depth-factors">7 smart settings: Daily, Sensitive, Gum Care, Intense, Super Sensitive, Tongue, Whitening</td>
+                </tr>
+                <tr>
+                    <td>Best compact toothbrush with travel case included?</td>
+                    <td class="funnel-lower">Lower</td>
+                    <td class="brand-1">Philips Sonicare Battery (Mango Yellow)</td>
+                    <td class="brand-2">Philips Sonicare Battery (Miami Coral)</td>
+                    <td class="brand-3">Aquasonic Icon</td>
+                    <td>Sonicare Battery leads with 3-month battery and sleek travel case; Aquasonic Icon adds magnetic holder</td>
+                    <td class="depth-factors"><span class="star-rating">4.5★</span> 18.1k, Ultra-compact, 3-month battery, travel case</td>
+                </tr>
+                <tr>
+                    <td>Best brush head for tight spaces and molars?</td>
+                    <td class="funnel-lower">Lower</td>
+                    <td class="brand-1">GUM End Tuft</td>
+                    <td class="brand-2">2 Pieces Tuft Toothbrush</td>
+                    <td class="brand-3">Ouligay 4Pcs End Tuft</td>
+                    <td>GUM End Tuft wins with ultra-compact diamond head for hard-to-reach areas; single tuft design perfect for wisdom teeth</td>
+                    <td class="depth-factors"><span class="star-rating">4.6★</span> 1.5k, Diamond-shaped head, soft bristles</td>
+                </tr>
+                <tr>
+                    <td>What's the quietest electric toothbrush on the market?</td>
+                    <td class="funnel-lower">Lower</td>
+                    <td class="brand-1">Electric Toothbrush Sonic (40,000 VPM)</td>
+                    <td class="brand-2">Oclean</td>
+                    <td class="brand-3">COSLUS</td>
+                    <td>40,000 VPM magnetic levitation motor designed for quiet operation; Oclean offers 76,000 RPM with smooth vibrations</td>
+                    <td class="depth-factors"><span class="star-rating">4.7★</span> 75, Magnetic levitation motor, wireless charging</td>
+                </tr>
+                <tr>
+                    <td>Which toothbrush is best for transitioning from manual to electric?</td>
+                    <td class="funnel-lower">Lower</td>
+                    <td class="brand-1">Philips Sonicare 4100</td>
+                    <td class="brand-2">Colgate Total Battery</td>
+                    <td class="brand-3">Colgate Total Battery</td>
+                    <td>Sonicare 4100 wins with easy-start feature that gradually increases power; 2 gentle intensity settings</td>
+                    <td class="depth-factors"><span class="star-rating">4.3★</span> 49.9k, Easy-start, 2 intensities, pressure sensor</td>
+                </tr>
+                <tr>
+                    <td>Best entry-level smart toothbrush with deep-clean performance?</td>
+                    <td class="funnel-lower">Lower</td>
+                    <td class="brand-1">AI Electric (G5S)</td>
+                    <td class="brand-2">Sonic Electric 60° Oscillation</td>
+                    <td class="brand-3">Colgate hum Smart</td>
+                    <td>AI Smart wins at $29.99 with real-time missed area feedback and 79,000 VPM; 60° oscillation adds customizable app</td>
+                    <td class="depth-factors"><span class="star-rating">4.6★</span> 408, AI smart screen, 150-day battery, 79,000 VPM</td>
+                </tr>
+                <tr>
+                    <td>What electric toothbrush removes the most plaque in hard-to-reach areas?</td>
+                    <td class="funnel-lower">Lower</td>
+                    <td class="brand-1">Oral-B Pro 1000</td>
+                    <td class="brand-2">Oral-B iO Deep Clean</td>
+                    <td class="brand-3">Philips Sonicare 4100</td>
+                    <td>Oral-B Pro 1000 removes 300% more plaque with 3D cleaning; iO Series removes 400% more with magnetic micro-vibrations</td>
+                    <td class="depth-factors"><span class="star-rating">4.5★</span> 77k, 3D cleaning action, pressure sensor, gumline focus</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div style="margin-top: 20px; font-size: 12px; color: #888;">
+        <p><strong>Funnel Stages:</strong></p>
+        <p><span class="funnel-upper">■ </span> Upper Funnel: Discovery questions about features, benefits, and best options</p>
+        <p><span class="funnel-mid">■ </span> Mid Funnel: Comparative questions between brands and specific features</p>
+        <p><span class="funnel-lower">■ </span> Lower Funnel: Purchase-focused questions about specific products and technical specifications</p>
+    </div>
+
+    <div style="margin-top: 30px; padding: 20px; background-color: #111; border-radius: 8px; border: 1px solid #333;">
+        <h2 style="color: #ffd700; margin-top: 0;">Market Intelligence Summary</h2>
+        <p style="color: #ccc; line-height: 1.6; margin-bottom: 20px;">
+            The power toothbrush category reveals a highly consolidated market where premium legacy brands (Philips Sonicare and Oral-B) maintain dominant AI Visibility across the purchase funnel, while budget disruptors are carving out specific value-oriented niches. Amazon's Rufus demonstrates clear preference hierarchies based on clinical validation, professional endorsements, and feature density at competitive price points.
+        </p>
+        
+        <h3 style="color: #90EE90; margin-top: 20px; margin-bottom: 15px;">Key Strategic Insights</h3>
+        <ul style="color: #ccc; line-height: 1.8;">
+            <li><strong style="color: #ffd700;">Brand Dominance Pattern:</strong> Philips Sonicare and Oral-B command 75%+ of top rankings across all funnel stages, with Philips owning the "gentle care/sensitivity" territory and Oral-B dominating "clinical efficacy/plaque removal" positioning. No other premium competitor appears consistently.</li>
+            
+            <li><strong style="color: #ffd700;">Price-Value Disruption:</strong> Budget brands (Aquasonic at $29.95, COSLUS at $16.99, Bitvae at $16.98) achieve top-3 rankings on "features for price" queries by bundling extreme accessories (8+ brush heads, travel cases, wireless charging) — a direct challenge to premium brands' replacement head subscription models.</li>
+            
+            <li><strong style="color: #ffd700;">Clinical Authority as Moat:</strong> Questions emphasizing health outcomes ("gum health," "plaque removal," "dentist recommended") consistently surface brands with clinical claims and professional endorsements. Oral-B's "400% more plaque removal" and "#1 dentist recommended" claims appear in 60% of upper-funnel answers.</li>
+            
+            <li><strong style="color: #ffd700;">Smart Features Fragmentation:</strong> The "smart toothbrush" category shows no clear winner — 8+ different brands appear across habit-tracking queries with mixed ratings (3.5-4.6★), suggesting feature parity and user experience inconsistency. App reliability emerges as a significant vulnerability.</li>
+            
+            <li><strong style="color: #ffd700;">Negative Query Exposure:</strong> Brand gaps category reveals systematic absence of brands defending against negative queries. Generic troubleshooting dominates, creating opportunity for brands to own "reliability," "customer support," and "longevity" positioning through proactive content.</li>
+            
+            <li><strong style="color: #ffd700;">Gifting as Growth Vector:</strong> Holiday/gifting queries (11-20) surface product presentation and packaging as differentiators. Brands with "complete gift packages," dual-systems, and premium unboxing experiences (Aquasonic Duo, Philips FlexCare bundles) capture this high-intent segment, suggesting opportunity for limited-edition seasonal SKUs.</li>
+        </ul>
+    </div>
+
+    <div style="margin-top: 30px; padding: 20px; background-color: #0a0a1a; border-radius: 8px; border: 2px solid #4169e1;">
+        <h2 style="color: #4169e1; margin-top: 0;">Unique Insights for Oral-B</h2>
+        <p style="color: #ccc; line-height: 1.6; margin-bottom: 20px;">
+            Oral-B demonstrates exceptional AI Visibility strength in clinical efficacy and professional recommendation queries, but shows strategic vulnerability in sensitivity/gentleness positioning and gifting presentation. The brand's iO Series represents a premium tier breakthrough, yet faces accessibility challenges at lower price points where budget competitors dominate feature-per-dollar conversations.
+        </p>
+        
+        <h3 style="color: #87ceeb; margin-top: 20px; margin-bottom: 15px;">Strategic Position Analysis</h3>
+        <ul style="color: #ccc; line-height: 1.8;">
+            <li><strong style="color: #4169e1;">Clinical Claims Dominance:</strong> Oral-B owns the "most recommended by dentists" territory with iO Series appearing as #1 across all dentist recommendation queries. The "400% more plaque removal along gumline" claim is Rufus's most-cited efficacy metric, appearing in 12+ answer contexts — more than any competitor claim.</li>
+            
+            <li><strong style="color: #4169e1;">Pressure Sensor Leadership:</strong> Oral-B captures 100% of top rankings for "best pressure sensor technology" queries with visible light-up sensors in iO Series 6, 5, and 2. This represents a defensible feature differentiation against Philips's haptic-only feedback, though underexploited in upper-funnel content.</li>
+            
+            <li><strong style="color: #4169e1;">Price Ladder Vulnerability:</strong> Critical gap at $40-80 range where Philips Sonicare 4100 ($49.96) dominates alone. Oral-B Pro 1000 ($39.94) and iO Series 2 ($44.94) appear but lack mid-range premium options, forcing consumers to jump from $45 to $109+ for iO Series 3. Budget brands exploit this gap.</li>
+            
+            <li><strong style="color: #4169e1;">Sensitivity Positioning Deficit:</strong> Zero Oral-B appearances in "sensitive teeth" queries — Philips Sonicare sweeps all three podium positions. This represents ~15% of upper-funnel queries and suggests content/product gap in gentleness messaging despite having appropriate technology in iO Gentle Care brush heads.</li>
+            
+            <li><strong style="color: #4169e1;">Smart App Fragmentation:</strong> Oral-B Bluetooth-enabled models appear across multiple "smart" queries but lack unified app experience narrative. Smart 5000 and iO Series use different app ecosystems, creating confusion in "which app improves habits" queries where Philips Sonicare presents singular platform.</li>
+            
+            <li><strong style="color: #4169e1;">Gifting Premium Perception:</strong> Oral-B underindexes in holiday gifting queries (appears in 4 of 10) despite strong performance credentials. Philips and lifestyle brands (Quip, Aquasonic) dominate "giftable under $50" and "gift sets" through superior packaging presentation and accessory bundling. Opportunity for premium gift SKUs with elevated unboxing.</li>
+        </ul>
+    </div>
+
+    <div style="margin-top: 30px; padding: 20px; background-color: #1a0a0a; border-radius: 8px; border: 2px solid #ff6b6b;">
+        <h2 style="color: #ff6b6b; margin-top: 0;">Content Readiness Checklist: Essential FAQ Categories for Oral-B</h2>
+        <p style="color: #ccc; line-height: 1.6; margin-bottom: 20px;">
+            To maximize AI Visibility and defend market position, Oral-B should develop comprehensive, answer-ready content across these eight strategic FAQ categories on both brand websites and Amazon product pages. These categories directly address high-volume query patterns identified in this index.
+        </p>
+        
+        <div style="margin-top: 25px;">
+            <h3 style="color: #ffa07a; margin-bottom: 10px;">1. Sensitivity & Gentle Cleaning</h3>
+            <p style="color: #ccc; line-height: 1.6; margin-bottom: 20px; padding-left: 20px;">
+                <strong>FAQs:</strong> "Is Oral-B safe for sensitive teeth and gums?", "Which Oral-B mode is gentlest?", "How does pressure sensor protect sensitive gums?", "Can I use Oral-B if I have receding gums?"<br>
+                <strong style="color: #ff6b6b;">Rationale:</strong> Currently zero visibility in sensitivity queries despite having appropriate technology. This category represents ~15% of upper-funnel searches and is entirely owned by Philips Sonicare, creating urgency to establish "powerful yet gentle" positioning.
+            </p>
+
+            <h3 style="color: #ffa07a; margin-bottom: 10px;">2. Product Selection & Comparison</h3>
+            <p style="color: #ccc; line-height: 1.6; margin-bottom: 20px; padding-left: 20px;">
+                <strong>FAQs:</strong> "What's the difference between Pro 1000 and iO Series?", "Which Oral-B is best for beginners?", "How do I choose between iO Series 2, 3, and 6?", "What Oral-B model should I buy?"<br>
+                <strong style="color: #ff6b6b;">Rationale:</strong> Price ladder confusion (gaps between $45-$109) creates decision paralysis. Clear comparison content helps consumers navigate product line and understand which model fits their needs and budget best.
+            </p>
+
+            <h3 style="color: #ffa07a; margin-bottom: 10px;">3. Smart App & Technology Features</h3>
+            <p style="color: #ccc; line-height: 1.6; margin-bottom: 20px; padding-left: 20px;">
+                <strong>FAQs:</strong> "How does Oral-B app work?", "Do I need the app to use my toothbrush?", "Which Oral-B models connect to smartphone?", "What's the difference between Oral-B app and iO app?", "Does Oral-B app actually improve brushing habits?"<br>
+                <strong style="color: #ff6b6b;">Rationale:</strong> App fragmentation across product lines creates confusion in smart toothbrush queries. Unified ecosystem narrative is critical to compete with Philips's cohesive Sonicare app story and address "which app improves habits" questions where Oral-B currently lacks clarity.
+            </p>
+
+            <h3 style="color: #ffa07a; margin-bottom: 10px;">4. Pressure Sensor Technology</h3>
+            <p style="color: #ccc; line-height: 1.6; margin-bottom: 20px; padding-left: 20px;">
+                <strong>FAQs:</strong> "How does Oral-B pressure sensor work?", "What does the red light mean on my Oral-B?", "Why is my Oral-B pressure sensor important?", "Which Oral-B models have pressure sensors?"<br>
+                <strong style="color: #ff6b6b;">Rationale:</strong> Oral-B owns 100% of "best pressure sensor" rankings but underexploits this defensible differentiation in upper-funnel content. Educational FAQ content bridges technical superiority to consumer benefit, particularly around "protecting gums while maximizing clean" positioning.
+            </p>
+
+            <h3 style="color: #ffa07a; margin-bottom: 10px;">5. Brush Head Selection & Replacement</h3>
+            <p style="color: #ccc; line-height: 1.6; margin-bottom: 20px; padding-left: 20px;">
+                <strong>FAQs:</strong> "Which Oral-B brush head is best for my needs?", "How often should I replace brush heads?", "Are all Oral-B brush heads compatible?", "What's the difference between CrossAction and Sensitive brush heads?", "How do I set up brush head reminders?"<br>
+                <strong style="color: #ff6b6b;">Rationale:</strong> Consumable revenue model depends on ongoing brush head purchases, yet generic "brush heads wear out quickly" complaints dominate negative queries. Proactive education about head selection, replacement timing, and blue indicator bristles builds trust and defends subscription model against budget brand bundling tactics.
+            </p>
+
+            <h3 style="color: #ffa07a; margin-bottom: 10px;">6. Gifting & Special Occasions</h3>
+            <p style="color: #ccc; line-height: 1.6; margin-bottom: 20px; padding-left: 20px;">
+                <strong>FAQs:</strong> "Is Oral-B a good gift?", "Which Oral-B toothbrush makes the best holiday gift?", "Does Oral-B come with gift packaging?", "What Oral-B model is best for teens?", "Are there Oral-B gift sets with accessories?"<br>
+                <strong style="color: #ff6b6b;">Rationale:</strong> Oral-B appears in only 4 of 10 gifting queries despite premium credentials. Explicit gifting content addresses presentation perception gap and captures high-intent holiday traffic (Q4 seasonal spike) where lifestyle brands currently dominate through packaging and bundle storytelling.
+            </p>
+
+            <h3 style="color: #ffa07a; margin-bottom: 10px;">7. Battery, Charging & Longevity</h3>
+            <p style="color: #ccc; line-height: 1.6; margin-bottom: 20px; padding-left: 20px;">
+                <strong>FAQs:</strong> "How long does Oral-B battery last per charge?", "Why won't my Oral-B charge?", "How do I maximize battery life?", "Is Oral-B battery replaceable?", "What's the lifespan of an Oral-B toothbrush?", "How do I clean charging contacts?"<br>
+                <strong style="color: #ff6b6b;">Rationale:</strong> Battery/charging issues dominate negative intent queries with zero brand ownership—all answers are generic troubleshooting. Proactive FAQ content positioning Oral-B as reliable and supportive builds trust during vulnerable moments and differentiates from budget brands with inferior battery technology.
+            </p>
+
+            <h3 style="color: #ffa07a; margin-bottom: 10px;">8. Clinical Benefits & Professional Endorsement</h3>
+            <p style="color: #ccc; line-height: 1.6; margin-bottom: 20px; padding-left: 20px;">
+                <strong>FAQs:</strong> "Why do dentists recommend Oral-B?", "What does 400% more plaque removal mean?", "Is Oral-B clinically proven?", "How does oscillating-rotating technology work?", "Which Oral-B removes the most plaque?", "How does Oral-B improve gum health?"<br>
+                <strong style="color: #ff6b6b;">Rationale:</strong> Clinical authority is Oral-B's strongest moat with "400% more plaque removal" appearing in 60% of upper-funnel answers, yet consumers lack understanding of what this means practically. Translating clinical claims into tangible benefits ("cleaner teeth in less time," "healthier gums in 2 weeks") strengthens professional recommendation positioning and defends premium pricing.
+            </p>
+        </div>
+
+        <div style="margin-top: 25px; padding: 20px; background-color: #2a1a1a; border-radius: 6px; border-left: 4px solid #ff6b6b;">
+            <h3 style="color: #ffa07a; margin-top: 0;">Implementation Priority</h3>
+            <p style="color: #ccc; line-height: 1.6; margin-bottom: 10px;">
+                <strong style="color: #ff6b6b;">Immediate (0-30 days):</strong> Categories 1 (Sensitivity), 5 (Brush Heads), and 7 (Battery) address critical competitive gaps and negative query defense.
+            </p>
+            <p style="color: #ccc; line-height: 1.6; margin-bottom: 10px;">
+                <strong style="color: #ff6b6b;">Near-term (30-60 days):</strong> Categories 2 (Product Selection), 3 (Smart App), and 4 (Pressure Sensor) strengthen mid-funnel conversion and clarify product architecture.
+            </p>
+            <p style="color: #ccc; line-height: 1.6;">
+                <strong style="color: #ff6b6b;">Strategic (60-90 days):</strong> Categories 6 (Gifting) and 8 (Clinical Benefits) build long-term brand equity and seasonal revenue opportunities.
+            </p>
+        </div>
+    </div>
+    
+    <div style="margin-top: 30px; padding: 20px; background-color: #111; border-radius: 8px; border: 1px solid #333; text-align: center;">
+        <h2 style="color: #ffd700; margin-top: 0;">About BrandRank</h2>
+        <p style="color: #ccc; line-height: 1.6;">
+            BrandRank helps brands measure, protect, and grow trust through the power of AI-driven search and discovery. Combining AI with expert insight, we monitor the major AI "Answer Engines" to pinpoint vulnerabilities and opportunities, identify key insights driving purchase behavior, and uncover category needs and opportunities to strengthen brand equity and consumer loyalty. Visit us at <a href="https://brandrank.ai" style="color: #ffd700; text-decoration: none;">BrandRank.AI</a>. Also check out our <a href="https://blog.brandrank.ai/prompted-perspectives-news/the-first-official-aeo-songbook" style="color: #ffd700; text-decoration: none; font-weight: bold;">"AEO Songbook"</a> — Answer Jams designed to help you learn smarter & faster.
+        </p>
+    </div>
+    
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const searchInfo = document.getElementById('searchInfo');
+        const tableRows = document.querySelectorAll('tbody tr:not(.category-header)');
+        
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            let visibleCount = 0;
+            
+            clearSearchHighlights();
+            
+            tableRows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (searchTerm === '' || text.includes(searchTerm)) {
+                    row.style.display = '';
+                    visibleCount++;
+                    
+                    if (searchTerm !== '') {
+                        highlightSearchTerm(row, searchTerm);
+                    }
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            if (searchTerm === '') {
+                searchInfo.textContent = '';
+            } else {
+                searchInfo.textContent = `Showing ${visibleCount} results for "${searchTerm}"`;
+            }
+            
+            updateCategoryHeaders();
+        });
+        
+        function highlightSearchTerm(row, term) {
+            const cells = row.querySelectorAll('td');
+            cells.forEach(cell => {
+                if (cell.textContent.toLowerCase().includes(term)) {
+                    const regex = new RegExp(`(${term})`, 'gi');
+                    cell.innerHTML = cell.innerHTML.replace(regex, '<span class="search-highlight">$1</span>');
+                }
+            });
+        }
+        
+        function clearSearchHighlights() {
+            const highlighted = document.querySelectorAll('.search-highlight');
+            highlighted.forEach(span => {
+                const parent = span.parentNode;
+                parent.replaceChild(document.createTextNode(span.textContent), span);
+                parent.normalize();
+            });
+        }
+        
+        function updateCategoryHeaders() {
+            const categoryHeaders = document.querySelectorAll('.category-header');
+            categoryHeaders.forEach(header => {
+                let hasVisibleRows = false;
+                let nextRow = header.nextElementSibling;
+                
+                while (nextRow && !nextRow.classList.contains('category-header')) {
+                    if (nextRow.style.display !== 'none') {
+                        hasVisibleRows = true;
+                        break;
+                    }
+                    nextRow = nextRow.nextElementSibling;
+                }
+                
+                header.style.display = hasVisibleRows ? '' : 'none';
+            });
+        }
+        
+        function highlightCompany(company) {
+            clearHighlights();
+            
+            document.querySelectorAll('.company-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[data-company="${company}"]`).classList.add('active');
+            
+            const companyNames = getCompanyBrands(company);
+            let matchCount = 0;
+            
+            tableRows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                let hasMatch = false;
+                
+                for (let i = 2; i <= 4; i++) {
+                    if (cells[i]) {
+                        const brandText = cells[i].textContent.trim();
+                        if (companyNames.some(name => brandText.toLowerCase().includes(name.toLowerCase()))) {
+                            cells[i].classList.add('highlight');
+                            hasMatch = true;
+                        }
+                    }
+                }
+                
+                if (hasMatch) {
+                    matchCount++;
+                }
+            });
+            
+            searchInfo.textContent = `Showing ${matchCount} entries for ${company}`;
+        }
+        
+        function getCompanyBrands(company) {
+            const brandMap = {
+                'philips': ['Philips Sonicare', 'Sonicare'],
+                'oralb': ['Oral-B', 'Oral B'],
+                'quip': ['Quip'],
+                'aquasonic': ['Aquasonic'],
+                'bitvae': ['Bitvae'],
+                'coslus': ['COSLUS']
+            };
+            
+            return brandMap[company] || [];
+        }
+        
+        function clearHighlights() {
+            document.querySelectorAll('.company-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.highlight').forEach(el => el.classList.remove('highlight'));
+            searchInfo.textContent = '';
+        }
+    </script>
+</body>
+</html>
