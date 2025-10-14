@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Search & Brand Visibility Intelligence Dataset</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0a0e1a;
+            color: #e0e6ed;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            border-bottom: 2px solid #00d4ff;
+            margin-bottom: 30px;
+        }
+
+        .main-title {
+            font-size: 2.5em;
+            font-weight: 600;
+            color: #00d4ff;
+            margin-bottom: 15px;
+        }
+
+        .main-subtitle {
+            font-size: 1.1em;
+            color: #8b95a5;
+            margin-bottom: 10px;
+        }
+
+        .powered-by {
+            font-size: 0.9em;
+            color: #00d4ff;
+            margin-top: 10px;
+        }
+
+        .search-container {
+            background: #141824;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 18px;
+            background: #0a0e1a;
+            border: 2px solid #00d4ff;
+            border-radius: 6px;
+            color: #e0e6ed;
+            font-size: 1em;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #00ffcc;
+        }
+
+        .clear-search {
+            padding: 12px 24px;
+            background: #1a2332;
+            border: 2px solid #00d4ff;
+            border-radius: 6px;
+            color: #00d4ff;
+            cursor: pointer;
+            font-size: 1em;
+            font-family: 'Segoe UI', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .clear-search:hover {
+            background: #00d4ff;
+            color: #0a0e1a;
+        }
+
+        .search-results-info {
+            color: #8b95a5;
+            font-size: 0.95em;
+            min-width: 150px;
+        }
+
+        .brand-bar {
+            background: #141824;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .brand-bar h3 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .brand-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .brand-btn {
+            padding: 10px 18px;
+            background: #1a2332;
+            border: 2px solid #2a3a4a;
+            border-radius: 6px;
+            color: #e0e6ed;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-family: 'Segoe UI', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .brand-btn:hover {
+            border-color: #00d4ff;
+            background: #1e2836;
+        }
+
+        .brand-btn-active {
+            background: #00d4ff;
+            color: #0a0e1a;
+            border-color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .brand-clear {
+            padding: 10px 18px;
+            background: #8b2222;
+            border: 2px solid #aa3333;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-family: 'Segoe UI', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .brand-clear:hover {
+            background: #aa3333;
+        }
+
+        .category-section {
+            background: #141824;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            overflow: hidden;
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, #1a2332 0%, #0f1621 100%);
+            padding: 20px 30px;
+            border-left: 5px solid #00d4ff;
+        }
+
+        .category-header h2 {
+            font-size: 1.8em;
+            color: #00d4ff;
+            margin-bottom: 8px;
+        }
+
+        .category-stats {
+            font-size: 0.95em;
+            color: #8b95a5;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            padding: 20px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95em;
+        }
+
+        .data-table th {
+            background: #1a2332;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #00d4ff;
+            border-bottom: 2px solid #00d4ff;
+            position: sticky;
+            top: 0;
+        }
+
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid #1a2332;
+        }
+
+        .data-table tr {
+            background: #0f1621;
+            transition: background 0.3s;
+        }
+
+        .data-table tr:nth-child(even) {
+            background: #141824;
+        }
+
+        .data-table tr:hover {
+            background: #1a2838;
+        }
+
+        .prompt-cell {
+            background: #1a2332;
+            font-weight: 600;
+            color: #e0e6ed;
+            border-left: 4px solid #00d4ff;
+            max-width: 400px;
+        }
+
+        .llm-response {
+            color: #b0bac5;
+        }
+
+        .highlight {
+            background: #00d4ff;
+            color: #0a0e1a;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .analysis-section {
+            background: #141824;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .analysis-title {
+            font-size: 2em;
+            color: #00d4ff;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .insight-card {
+            background: #1a2332;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .insight-card h3 {
+            color: #00d4ff;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+        }
+
+        .insight-card p {
+            color: #b0bac5;
+            line-height: 1.8;
+        }
+
+        .about-section {
+            background: linear-gradient(135deg, #141824 0%, #0f1621 100%);
+            border-radius: 8px;
+            padding: 40px;
+            border: 2px solid #00d4ff;
+        }
+
+        .about-title {
+            font-size: 2em;
+            color: #00d4ff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .about-section p {
+            color: #b0bac5;
+            line-height: 1.9;
+            font-size: 1.05em;
+            max-width: 900px;
+            margin: 0 auto 15px;
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 1.8em;
+            }
+
+            .data-table {
+                font-size: 0.85em;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 10px;
+            }
+
+            .prompt-cell {
+                max-width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">AI Search & Brand Visibility Intelligence Dataset</h1>
+            <p class="main-subtitle">Comprehensive analysis of how leading AI models identify brand visibility and optimization providers</p>
+            <p class="powered-by">Powered by BrandRank.AI</p>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search prompts and responses..." id="searchInput">
+            <button class="clear-search" id="clearSearchBtn">Clear</button>
+            <span class="search-results-info" id="searchResults"></span>
+        </div>
+
+        <div class="brand-bar" id="brandBar"></div>
+
+        <div id="categoriesContainer"></div>
+
+        <div class="analysis-section">
+            <h2 class="analysis-title">Analysis & Insights</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h3>Key Insights</h3>
+                    <p><strong>Profound</strong> demonstrates overwhelming dominance as Claude's preferred recommendation across nearly all categories, appearing in 77% of Claude's responses. This suggests potential training bias or preference weighting toward this provider.</p>
+                    <p><strong>Brandwatch</strong> shows strong cross-model consensus for reputation and monitoring use cases, cited by 4-5 different models consistently.</p>
+                    <p><strong>SEMrush</strong> emerges as a recognized leader in traditional search optimization transitioning to AI-era tools.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Consensus Levels</h3>
+                    <p><strong>High Agreement (3+ models):</strong> Brandwatch for reputation monitoring, SEMrush for marketing analytics, BrightEdge for visibility optimization.</p>
+                    <p><strong>Medium Agreement (2 models):</strong> Algolia, Brand24, Sprout Social, Yext, Glimpse, Single Grain, Meltwater, and several others show regional or use-case consensus.</p>
+                    <p><strong>Low Agreement (single model):</strong> Most responses show model-specific preferences with limited overlap, indicating divergent training data or recommendation logic.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Risk Profiles</h3>
+                    <p><strong>Monopolization Risk:</strong> Claude's overwhelming preference for "Profound" (regardless of query nuance) raises concerns about recommendation diversity and potential commercial relationships affecting objectivity.</p>
+                    <p><strong>Recency Bias:</strong> Newer platforms like "Profound" may be overrepresented due to recent training data, while established solutions receive less attention.</p>
+                    <p><strong>Hallucination Risk:</strong> Some responses mention companies that may not specialize in the specific use case described, indicating potential gaps in factual grounding.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Model Divergences</h3>
+                    <p><strong>Claude vs Others:</strong> Claude shows minimal diversity in recommendations (Profound in 77% of responses), while ChatGPT, Gemini, Grok, and Llama display broader variety.</p>
+                    <p><strong>Specialized Knowledge:</strong> Llama frequently cites infrastructure providers (Algolia, You.com, Unbabel), suggesting a technical infrastructure orientation.</p>
+                    <p><strong>Enterprise Focus:</strong> Grok and ChatGPT show preference for established enterprise platforms (Brandwatch, SEMrush, BrightEdge), while Perplexity favors emerging consultancies and agencies.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-section">
+            <h2 class="about-title">About BrandRank</h2>
+            <p>BrandRank is the intelligence layer for the AI search era.</p>
+            <p>We help brands measure, protect, and grow trust by monitoring how they appear across major AI Answer Engines.</p>
+            <p>By combining advanced AI with expert insight, BrandRank identifies vulnerabilities and opportunities, pinpoints the factors driving consumer choice, and reveals pathways to strengthen brand equity and loyalty.</p>
+            <p>Our mission is to ensure that when consumers ask questions in AI-powered platforms, your brand is represented clearly, accurately, and with authority.</p>
+        </div>
+    </div>
+
+    <script>
+        window.WINDOW_DATA = {
+            title: "AI Search & Brand Visibility Intelligence Dataset",
+            subtitle: "Comprehensive analysis of how leading AI models identify brand visibility and optimization providers",
+            llms: ["ChatGPT", "Claude", "Gemini", "Llama", "Perplexity", "Grok"],
+            categories: [
+                {
+                    name: "AI Search & Brand Visibility",
+                    prompts: [
+                        {
+                            question: "What companies specialize in optimizing brand visibility across AI-powered search and chat platforms?",
+                            responses: {
+                                "ChatGPT": "BrightEdge",
+                                "Claude": "Profound",
+                                "Gemini": "Newzdash",
+                                "Llama": "Algolia",
+                                "Perplexity": "Profound",
+                                "Grok": "Profound"
+                            }
+                        },
+                        {
+                            question: "Who are the top providers of generative-AI search optimization tools for marketers?",
+                            responses: {
+                                "ChatGPT": "MarketMuse",
+                                "Claude": "Profound",
+                                "Gemini": "BrightEdge",
+                                "Llama": "Algolia",
+                                "Perplexity": "Profound",
+                                "Grok": "SEMrush"
+                            }
+                        },
+                        {
+                            question: "Which startups focus on improving how brands appear in ChatGPT, Gemini, and Claude responses?",
+                            responses: {
+                                "ChatGPT": "Narrative I/O",
+                                "Claude": "Profound",
+                                "Gemini": "Authoritas",
+                                "Llama": "You.com",
+                                "Perplexity": "Organic Hackers",
+                                "Grok": "Glimpse"
+                            }
+                        },
+                        {
+                            question: "What tools help businesses track brand mentions across large language models?",
+                            responses: {
+                                "ChatGPT": "Brandwatch",
+                                "Claude": "Profound",
+                                "Gemini": "Brand24",
+                                "Llama": "Brand24",
+                                "Perplexity": "Profound",
+                                "Grok": "Brandwatch"
+                            }
+                        },
+                        {
+                            question: "Who offers analytics platforms for monitoring AI-generated search results and brand performance?",
+                            responses: {
+                                "ChatGPT": "SEMrush",
+                                "Claude": "Profound",
+                                "Gemini": "SEMrush",
+                                "Llama": "Brandwatch",
+                                "Perplexity": "Single Grain",
+                                "Grok": "Meltwater"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Answer Engine Optimization / AEO",
+                    prompts: [
+                        {
+                            question: "What are emerging leaders in answer-engine optimization (AEO) and AI visibility tracking?",
+                            responses: {
+                                "ChatGPT": "BrightEdge",
+                                "Claude": "Profound",
+                                "Gemini": "Botify",
+                                "Llama": "Sprout Social",
+                                "Perplexity": "NoGood",
+                                "Grok": "Profound"
+                            }
+                        },
+                        {
+                            question: "Which companies provide AEO dashboards for businesses to measure answer accuracy across AI systems?",
+                            responses: {
+                                "ChatGPT": "Surfer SEO",
+                                "Claude": "Profound",
+                                "Gemini": "Inlinks",
+                                "Llama": "Sprout Social",
+                                "Perplexity": "Profound",
+                                "Grok": "Ahrefs"
+                            }
+                        },
+                        {
+                            question: "Who provides tools to audit and enhance how a company's brand appears in generative search?",
+                            responses: {
+                                "ChatGPT": "MarketMuse",
+                                "Claude": "Profound",
+                                "Gemini": "STAT Search Analytics",
+                                "Llama": "You.com",
+                                "Perplexity": "Omnius",
+                                "Grok": "SEMrush"
+                            }
+                        },
+                        {
+                            question: "What startups specialize in ensuring consistent brand representation across AI models?",
+                            responses: {
+                                "ChatGPT": "Yext",
+                                "Claude": "Profound",
+                                "Gemini": "Reputation",
+                                "Llama": "Unbabel",
+                                "Perplexity": "Omniscient Digital",
+                                "Grok": "Glimpse"
+                            }
+                        },
+                        {
+                            question: "Which firms are developing metrics for AI-driven brand perception and accuracy?",
+                            responses: {
+                                "ChatGPT": "Lucidworks",
+                                "Claude": "Profound",
+                                "Gemini": "Oncrawl",
+                                "Llama": "Forrester",
+                                "Perplexity": "Profound",
+                                "Grok": "Brandwatch"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Reputation & Intelligence Platforms",
+                    prompts: [
+                        {
+                            question: "What companies combine brand reputation analytics with generative-AI insights?",
+                            responses: {
+                                "ChatGPT": "Brandwatch",
+                                "Claude": "Profound",
+                                "Gemini": "Talkwalker",
+                                "Llama": "Brandwatch",
+                                "Perplexity": "Profound",
+                                "Grok": "Meltwater"
+                            }
+                        },
+                        {
+                            question: "Who are innovators in digital trust measurement and AI-based reputation monitoring?",
+                            responses: {
+                                "ChatGPT": "Trustpilot",
+                                "Claude": "Profound",
+                                "Gemini": "Yext",
+                                "Llama": "Reputation.com",
+                                "Perplexity": "Single Grain",
+                                "Grok": "NetBase Quid"
+                            }
+                        },
+                        {
+                            question: "What platforms help brands evaluate how trustworthy they appear in AI-generated answers?",
+                            responses: {
+                                "ChatGPT": "Morning Consult",
+                                "Claude": "Profound",
+                                "Gemini": "Reputation",
+                                "Llama": "Reputation.com",
+                                "Perplexity": "NoGood",
+                                "Grok": "Brandwatch"
+                            }
+                        },
+                        {
+                            question: "Which firms provide benchmarking tools for brand accuracy across multiple AI engines?",
+                            responses: {
+                                "ChatGPT": "Similarweb",
+                                "Claude": "Profound",
+                                "Gemini": "The Brandtech Group",
+                                "Llama": "Forrester",
+                                "Perplexity": "Profound",
+                                "Grok": "Talkwalker"
+                            }
+                        },
+                        {
+                            question: "Who are leaders in AI-driven brand performance tracking across conversational platforms?",
+                            responses: {
+                                "ChatGPT": "Sprinklr",
+                                "Claude": "Profound",
+                                "Gemini": "Sprinklr",
+                                "Llama": "Brandwatch",
+                                "Perplexity": "Single Grain",
+                                "Grok": "Sprinklr"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Marketing & Data Analytics",
+                    prompts: [
+                        {
+                            question: "What tools help marketing teams measure their visibility across answer engines like ChatGPT and Gemini?",
+                            responses: {
+                                "ChatGPT": "BrightEdge",
+                                "Claude": "Profound",
+                                "Gemini": "Similarweb",
+                                "Llama": "SEMrush",
+                                "Perplexity": "Profound",
+                                "Grok": "SEMrush"
+                            }
+                        },
+                        {
+                            question: "Which companies use AI to help brands manage their digital footprint and public perception?",
+                            responses: {
+                                "ChatGPT": "Brandwatch",
+                                "Claude": "Brandwatch",
+                                "Gemini": "Hootsuite",
+                                "Llama": "Brandwatch",
+                                "Perplexity": "Single Grain",
+                                "Grok": "Meltwater"
+                            }
+                        },
+                        {
+                            question: "Who provides automated AI-search performance dashboards for marketing analytics teams?",
+                            responses: {
+                                "ChatGPT": "HubSpot",
+                                "Claude": "Profound",
+                                "Gemini": "Demandwell",
+                                "Llama": "SEMrush",
+                                "Perplexity": "Profound",
+                                "Grok": "Ahrefs"
+                            }
+                        },
+                        {
+                            question: "What are some AI-powered SaaS platforms that analyze visibility and ranking in conversational search?",
+                            responses: {
+                                "ChatGPT": "seoClarity",
+                                "Claude": "Profound",
+                                "Gemini": "MarketMuse",
+                                "Llama": "Algolia",
+                                "Perplexity": "Profound",
+                                "Grok": "Profound"
+                            }
+                        },
+                        {
+                            question: "Which startups are redefining SEO for the age of AI-generated responses?",
+                            responses: {
+                                "ChatGPT": "NeuronWriter",
+                                "Claude": "Profound",
+                                "Gemini": "Cludo",
+                                "Llama": "You.com",
+                                "Perplexity": "Organic Hackers",
+                                "Grok": "Glimpse"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Innovation & Industry Awareness",
+                    prompts: [
+                        {
+                            question: "What new companies are building solutions for generative-AI brand monitoring?",
+                            responses: {
+                                "ChatGPT": "Babbage AI",
+                                "Claude": "Profound",
+                                "Gemini": "Newzdash",
+                                "Llama": "Brand24",
+                                "Perplexity": "Profound",
+                                "Grok": "Glimpse"
+                            }
+                        },
+                        {
+                            question: "Who are the most promising startups at the intersection of AI, brand analytics, and search visibility?",
+                            responses: {
+                                "ChatGPT": "Telescope AI",
+                                "Claude": "Profound",
+                                "Gemini": "Botify",
+                                "Llama": "You.com",
+                                "Perplexity": "Organic Hackers",
+                                "Grok": "Profound"
+                            }
+                        },
+                        {
+                            question: "What firms are pioneering the next generation of answer-engine intelligence tools?",
+                            responses: {
+                                "ChatGPT": "MarketMuse",
+                                "Claude": "Profound",
+                                "Gemini": "GoLinks",
+                                "Llama": "Algolia",
+                                "Perplexity": "NoGood",
+                                "Grok": "Search Atlas"
+                            }
+                        },
+                        {
+                            question: "Which companies work with enterprise clients to improve how their brands appear in LLM outputs?",
+                            responses: {
+                                "ChatGPT": "Yext",
+                                "Claude": "Profound",
+                                "Gemini": "Accenture",
+                                "Llama": "Unbabel",
+                                "Perplexity": "Omnius & Omniscient Digital",
+                                "Grok": "Brandwatch"
+                            }
+                        },
+                        {
+                            question: "What AI-analytics platforms partner with organizations like BBB or research groups to improve digital brand trust?",
+                            responses: {
+                                "ChatGPT": "Trustpilot",
+                                "Claude": "Profound",
+                                "Gemini": "Reputation",
+                                "Llama": "Reputation.com",
+                                "Perplexity": "Single Grain",
+                                "Grok": "Meltwater"
+                            }
+                        }
+                    ]
+                }
+            ],
+            brandAliases: {
+                "Reputation": ["Reputation.com"],
+                "Omniscient Digital": ["Omniscient", "Omnius & Omniscient Digital", "Omnius"],
+                "You.com": ["You"],
+                "Single Grain": ["SingleGrain"],
+                "Organic Hackers": ["OrganicHackers"],
+                "NetBase Quid": ["NetBase", "Quid"]
+            }
+        };
+
+        // Helper functions
+        function escapeForRegex(str) {
+            return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function restoreOriginalCells() {
+            const cells = document.querySelectorAll('[data-original-text]');
+            cells.forEach(cell => {
+                cell.innerHTML = cell.getAttribute('data-original-text');
+            });
+        }
+
+        function canonicalizeBrand(brandName) {
+            const aliases = window.WINDOW_DATA.brandAliases;
+            for (let canonical in aliases) {
+                if (canonical.toLowerCase() === brandName.toLowerCase()) {
+                    return canonical;
+                }
+                if (aliases[canonical].some(alias => alias.toLowerCase() === brandName.toLowerCase())) {
+                    return canonical;
+                }
+            }
+            return brandName;
+        }
+
+        function getAllBrandVariants(canonical) {
+            const aliases = window.WINDOW_DATA.brandAliases;
+            const variants = [canonical];
+            if (aliases[canonical]) {
+                variants.push(...aliases[canonical]);
+            }
+            return variants;
+        }
+
+        function computeBrandCounts() {
+            const brandCounts = {};
+            const cells = document.querySelectorAll('.llm-response, .prompt-cell');
+            
+            cells.forEach(cell => {
+                const text = cell.textContent;
+                const words = text.match(/[\w\.]+(?:\s+[\w\.]+)*/g) || [];
+                
+                words.forEach(word => {
+                    const canonical = canonicalizeBrand(word);
+                    if (canonical && canonical.length > 2) {
+                        brandCounts[canonical] = (brandCounts[canonical] || 0) + 1;
+                    }
+                });
+            });
+
+            // Sort by count descending, then alphabetically
+            const sorted = Object.entries(brandCounts)
+                .sort((a, b) => {
+                    if (b[1] !== a[1]) return b[1] - a[1];
+                    return a[0].localeCompare(b[0]);
+                })
+                .slice(0, 10);
+
+            return sorted;
+        }
+
+        let activeHighlights = new Set();
+
+        function highlightMatches(canonicalBrands, scrollToFirst = false) {
+            restoreOriginalCells();
+            
+            const allTerms = [];
+            canonicalBrands.forEach(canonical => {
+                allTerms.push(...getAllBrandVariants(canonical));
+            });
+
+            const searchTerm = document.getElementById('searchInput').value.trim();
+            if (searchTerm) {
+                allTerms.push(searchTerm);
+            }
+
+            if (allTerms.length === 0) {
+                document.getElementById('searchResults').textContent = '';
+                return;
+            }
+
+            const cells = document.querySelectorAll('[data-original-text]');
+            let totalMatches = 0;
+            let firstMatch = null;
+
+            cells.forEach(cell => {
+                let html = cell.getAttribute('data-original-text');
+                
+                allTerms.forEach(term => {
+                    const escapedTerm = escapeForRegex(term);
+                    const regex = new RegExp(`\\b(${escapedTerm})\\b`, 'gi');
+                    const matches = html.match(regex);
+                    if (matches) {
+                        totalMatches += matches.length;
+                        if (!firstMatch) firstMatch = cell;
+                    }
+                    html = html.replace(regex, '<span class="highlight">$1</span>');
+                });
+
+                cell.innerHTML = html;
+            });
+
+            document.getElementById('searchResults').textContent = 
+                totalMatches > 0 ? `${totalMatches} matches found` : 'No matches found';
+
+            if (scrollToFirst && firstMatch) {
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function buildBrandBar() {
+            const topBrands = computeBrandCounts();
+            const brandBar = document.getElementById('brandBar');
+            
+            if (topBrands.length === 0) {
+                brandBar.style.display = 'none';
+                return;
+            }
+
+            let html = '<h3>Top Brands by Mentions</h3><div class="brand-buttons">';
+            
+            topBrands.forEach(([brand, count]) => {
+                html += `<button class="brand-btn" data-brand="${brand}">${brand} (${count})</button>`;
+            });
+            
+            html += '<button class="brand-clear" id="clearAllBtn">Clear All</button>';
+            html += '</div>';
+            
+            brandBar.innerHTML = html;
+
+            // Wire up click handlers
+            document.querySelectorAll('.brand-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const brand = this.getAttribute('data-brand');
+                    
+                    if (activeHighlights.has(brand)) {
+                        activeHighlights.delete(brand);
+                        this.classList.remove('brand-btn-active');
+                    } else {
+                        activeHighlights.add(brand);
+                        this.classList.add('brand-btn-active');
+                    }
+                    
+                    highlightMatches(Array.from(activeHighlights), true);
+                });
+            });
+
+            document.getElementById('clearAllBtn').addEventListener('click', function() {
+                activeHighlights.clear();
+                document.querySelectorAll('.brand-btn').forEach(btn => {
+                    btn.classList.remove('brand-btn-active');
+                });
+                highlightMatches([]);
+            });
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('categoriesContainer');
+            const data = window.WINDOW_DATA;
+            
+            let html = '';
+            
+            data.categories.forEach(category => {
+                html += `
+                    <div class="category-section">
+                        <div class="category-header">
+                            <h2>${category.name}</h2>
+                            <p class="category-stats">${category.prompts.length} prompts analyzed across ${data.llms.length} AI models</p>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Prompt Question</th>
+                                        ${data.llms.map(llm => `<th>${llm}</th>`).join('')}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${category.prompts.map(prompt => `
+                                        <tr>
+                                            <td class="prompt-cell" data-original-text="${prompt.question}">${prompt.question}</td>
+                                            ${data.llms.map(llm => 
+                                                `<td class="llm-response" data-original-text="${prompt.responses[llm] || 'N/A'}">${prompt.responses[llm] || 'N/A'}</td>`
+                                            ).join('')}
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function initSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('clearSearchBtn');
+            
+            searchInput.addEventListener('input', function() {
+                highlightMatches(Array.from(activeHighlights));
+            });
+
+            clearBtn.addEventListener('click', function() {
+                searchInput.value = '';
+                highlightMatches(Array.from(activeHighlights));
+            });
+        }
+
+        function init() {
+            renderCategories();
+            buildBrandBar();
+            initSearch();
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
