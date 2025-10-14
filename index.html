@@ -154,6 +154,33 @@
     a.index-card-link { text-decoration: none; color: inherit; display: block; }
   </style>
 </head>
+  <script>
+async function loadPages() {
+  const response = await fetch('pages.json');
+  const data = await response.json();
+  const grid = document.querySelector('.index-grid');
+  grid.innerHTML = ''; // clear existing cards
+
+  data.pages.forEach(page => {
+    const card = document.createElement('a');
+    card.href = page.file;
+    card.className = 'index-card-link';
+    card.innerHTML = `
+      <div class="index-card">
+        <div class="index-card-icon">${page.icon}</div>
+        <h3 class="index-card-title">${page.title}</h3>
+        <p class="index-card-description">${page.desc}</p>
+        <div class="index-card-meta">
+          <span class="index-card-date">Updated ${new Date().toLocaleString('default', { month: 'short', year: 'numeric' })}</span>
+          <span class="index-card-badge">Live</span>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+loadPages();
+</script>
+
 <body>
 
   <!-- NAVBAR -->
