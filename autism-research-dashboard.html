@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autism Research Dashboard - BrandRank.AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0a0e1a;
+            color: #e0e6ed;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 2rem;
+            aspect-ratio: 16/9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f2e 100%);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: #00d4ff;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .main-subtitle {
+            font-size: 1.1rem;
+            color: #a0a9b8;
+            margin-top: 0.5rem;
+        }
+
+        .search-container {
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            background: #1a1f2e;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.75rem;
+            background: #0a0e1a;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 4px;
+            color: #e0e6ed;
+            font-size: 1rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+        }
+
+        .clear-search {
+            padding: 0.75rem 1.5rem;
+            background: #00d4ff;
+            color: #0a0e1a;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .clear-search:hover {
+            background: #00a8cc;
+            transform: translateY(-2px);
+        }
+
+        .search-results-info {
+            color: #00d4ff;
+            font-size: 0.9rem;
+            min-width: 150px;
+        }
+
+        .brand-bar {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #1a1f2e;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .brand-bar-label {
+            color: #a0a9b8;
+            margin-right: 1rem;
+            font-weight: 600;
+        }
+
+        .brand-btn {
+            padding: 0.5rem 1rem;
+            background: #0a0e1a;
+            color: #e0e6ed;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .brand-btn:hover {
+            background: #1a1f2e;
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+        }
+
+        .brand-btn-active {
+            background: #00d4ff;
+            color: #0a0e1a;
+            border-color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .brand-clear {
+            padding: 0.5rem 1rem;
+            background: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        .brand-clear:hover {
+            background: #ff3838;
+        }
+
+        .category-section {
+            margin-bottom: 3rem;
+            background: #1a1f2e;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .category-header {
+            background: linear-gradient(90deg, #00d4ff 0%, #0080ff 100%);
+            color: #0a0e1a;
+            padding: 1rem 1.5rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .category-stats {
+            padding: 0.5rem 1.5rem;
+            background: #0a0e1a;
+            color: #a0a9b8;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .table-container {
+            max-height: 500px;
+            overflow-y: auto;
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background: #0a0e1a;
+            color: #00d4ff;
+            padding: 1rem;
+            text-align: left;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-bottom: 2px solid #00d4ff;
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+            vertical-align: top;
+        }
+
+        .data-table tr:nth-child(even) {
+            background: rgba(0, 212, 255, 0.03);
+        }
+
+        .data-table tr:hover {
+            background: rgba(0, 212, 255, 0.08);
+            transition: background 0.3s ease;
+        }
+
+        .prompt-cell {
+            background: linear-gradient(90deg, rgba(0, 212, 255, 0.1) 0%, transparent 100%);
+            font-weight: 600;
+            color: #00d4ff;
+            border-left: 4px solid #00d4ff;
+            min-width: 300px;
+        }
+
+        .llm-response {
+            color: #e0e6ed;
+            min-width: 200px;
+        }
+
+        .highlight {
+            background: #00d4ff;
+            color: #0a0e1a;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .analysis-section {
+            margin-top: 3rem;
+            background: #1a1f2e;
+            border-radius: 8px;
+            padding: 2rem;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .analysis-title {
+            font-size: 1.8rem;
+            color: #00d4ff;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .insight-card {
+            background: #0a0e1a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .insight-card h3 {
+            color: #00d4ff;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .insight-card p {
+            color: #a0a9b8;
+            line-height: 1.6;
+        }
+
+        .about-section {
+            margin-top: 3rem;
+            background: linear-gradient(135deg, #1a1f2e 0%, #0a0e1a 100%);
+            border-radius: 8px;
+            padding: 2rem;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .about-title {
+            font-size: 1.8rem;
+            color: #00d4ff;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .about-section p {
+            color: #a0a9b8;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                aspect-ratio: auto;
+                padding: 1rem;
+            }
+
+            .main-title {
+                font-size: 1.8rem;
+            }
+
+            .table-container {
+                max-height: 400px;
+            }
+
+            .data-table {
+                font-size: 0.85rem;
+            }
+
+            .data-table td, .data-table th {
+                padding: 0.5rem;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0e1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #00d4ff;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00a8cc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">🧠 Autism Research: Medication & Environmental Factors</h1>
+            <div class="main-subtitle">
+                Comparative Analysis Across Major AI Models<br>
+                Powered by BrandRank.AI
+            </div>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search for terms...">
+            <button class="clear-search">Clear Search</button>
+            <div class="search-results-info">0 matches found</div>
+        </div>
+
+        <div class="brand-bar">
+            <span class="brand-bar-label">Top Brands:</span>
+        </div>
+
+        <div id="categories"></div>
+
+        <div class="analysis-section">
+            <h2 class="analysis-title">Analysis</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h3>Key Insights & Trends</h3>
+                    <p>Acetaminophen (Tylenol) dominates autism research discussions across all AI models, appearing in nearly every response about pregnancy medications. SSRIs and fertility treatments represent secondary areas of investigation, though with less consensus on specific brands or impacts.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Consensus Levels</h3>
+                    <p><strong>High Agreement:</strong> All models identify acetaminophen as the primary OTC medication under investigation.<br>
+                    <strong>Medium Agreement:</strong> SSRIs' potential associations with autism risk.<br>
+                    <strong>Low Agreement:</strong> Specific fertility treatment brands and their impacts.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Risk Profiles</h3>
+                    <p>Models consistently emphasize that associations are not proven causation. ChatGPT and Claude tend to name specific brands (Tylenol), while Gemini focuses on generic compounds. All models stress that current evidence remains inconclusive.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Model Divergences</h3>
+                    <p>Amazon Rufus provides the most conservative responses, avoiding specific brand mentions. ChatGPT and Claude frequently cite Tylenol by name, while Gemini prefers generic terminology. Perplexity and Grok offer more detailed mechanistic explanations.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-section">
+            <h2 class="about-title">About BrandRank</h2>
+            <p>
+                BrandRank is the intelligence layer for the AI search era.<br><br>
+                We help brands measure, protect, and grow trust by monitoring how they appear across major AI Answer Engines.<br><br>
+                By combining advanced AI with expert insight, BrandRank identifies vulnerabilities and opportunities, pinpoints the factors driving consumer choice, and reveals pathways to strengthen brand equity and loyalty.<br><br>
+                Our mission is to ensure that when consumers ask questions in AI-powered platforms, your brand is represented clearly, accurately, and with authority.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        window.WINDOW_DATA = {
+            categories: [
+                {
+                    title: "🧠 Pregnancy & Medication-Related Autism Risk",
+                    prompts: [
+                        {
+                            question: "What common over-the-counter medicines are being studied for links to autism?",
+                            responses: {
+                                "Amazon Rufus": "Research is ongoing into possible links, but no confirmed causal medicines are named.",
+                                "ChatGPT": "Tylenol is the most frequently studied for possible autism links.",
+                                "Claude": "Tylenol (acetaminophen) is the most frequently researched for autism links.",
+                                "Gemini": "Research focuses on the active ingredient acetaminophen, not specific brands.",
+                                "Llama": "Acetaminophen and ibuprofen are most studied for potential links to autism.",
+                                "Perplexity": "Acetaminophen is the most-studied OTC drug for possible autism links, with associations but no proven causation.",
+                                "Grok": "Acetaminophen and ibuprofen are the main OTC drugs studied for possible autism links, though evidence remains inconclusive."
+                            }
+                        },
+                        {
+                            question: "What pain relievers taken during pregnancy might affect a child's brain development?",
+                            responses: {
+                                "Amazon Rufus": "Studies continue on painkillers' effects on brain development, with no proven causal connection.",
+                                "ChatGPT": "Tylenol has been most associated with potential neurodevelopmental effects.",
+                                "Claude": "Tylenol (acetaminophen) appears most often in studies of prenatal brain effects.",
+                                "Gemini": "Acetaminophen use during pregnancy has been studied for potential but inconclusive neurodevelopmental effects.",
+                                "Llama": "Some studies suggest acetaminophen may influence brain development if taken during pregnancy.",
+                                "Perplexity": "Research centers on acetaminophen's potential neurodevelopmental effects, while recent large studies find no autism increase from prescribed opioids.",
+                                "Grok": "Acetaminophen is most researched for potential neurodevelopmental effects, with limited correlational findings."
+                            }
+                        },
+                        {
+                            question: "Which fever-reducing medications are under investigation for autism risk?",
+                            responses: {
+                                "Amazon Rufus": "The relationship between fever reducers and autism risk remains under investigation.",
+                                "ChatGPT": "Tylenol remains the leading drug under investigation.",
+                                "Claude": "Tylenol (acetaminophen) is the leading drug under ongoing investigation.",
+                                "Gemini": "Studies examine acetaminophen's possible links to autism, though results remain uncertain.",
+                                "Llama": "Acetaminophen remains under investigation for possible associations with autism risk.",
+                                "Perplexity": "Acetaminophen is the primary pregnancy-approved antipyretic under investigation for autism and ADHD associations.",
+                                "Grok": "Acetaminophen is under investigation for modest autism associations, while untreated fever poses higher risks."
+                            }
+                        },
+                        {
+                            question: "How do mild painkillers used in pregnancy influence neurodevelopment outcomes?",
+                            responses: {
+                                "Amazon Rufus": "Evidence is inconclusive; research continues on their influence during pregnancy.",
+                                "ChatGPT": "Research most often centers on Tylenol exposure.",
+                                "Claude": "Tylenol (acetaminophen) is the top focus in neurodevelopmental outcome research.",
+                                "Gemini": "Acetaminophen exposure is frequently analyzed but without proven causation.",
+                                "Llama": "Research indicates mild analgesics may affect neurodevelopment, though evidence is not conclusive.",
+                                "Perplexity": "Acetaminophen may cross the placenta and affect development via oxidative stress or hormonal/epigenetic pathways, but causality is unproven.",
+                                "Grok": "Acetaminophen may influence fetal brain pathways like prostaglandin and endocannabinoid signaling, though safety remains generally supported."
+                            }
+                        },
+                        {
+                            question: "What medications for headaches or fevers are being questioned in autism studies?",
+                            responses: {
+                                "Amazon Rufus": "Some pregnancy-used drugs are being studied, but results are not definitive.",
+                                "ChatGPT": "Tylenol is the primary focus of autism-related studies.",
+                                "Claude": "Tylenol (acetaminophen) remains central to autism-risk studies.",
+                                "Gemini": "Acetaminophen is the active ingredient most often investigated in pregnancy-related studies.",
+                                "Llama": "Acetaminophen and ibuprofen are being examined for their potential impact on fetal development.",
+                                "Perplexity": "Acetaminophen is the main headache and fever medicine questioned in autism studies.",
+                                "Grok": "Acetaminophen is the main focus of dose-dependent autism-risk studies."
+                            }
+                        },
+                        {
+                            question: "What common cold or flu remedies have been mentioned in autism-related research?",
+                            responses: {
+                                "Amazon Rufus": "Research is ongoing into any association between these medicines and autism.",
+                                "ChatGPT": "Tylenol Cold & Flu has been most cited in research discussions.",
+                                "Claude": "Tylenol (acetaminophen) is the most frequently mentioned in autism-related research.",
+                                "Gemini": "Research emphasizes acetaminophen's role in multi-symptom cold or flu treatments and potential developmental outcomes.",
+                                "Llama": "Multi-symptom cold and flu drugs containing acetaminophen or ibuprofen are being studied for developmental effects.",
+                                "Perplexity": "No specific cold/flu remedies beyond acetaminophen are prominent in recent autism-related pregnancy research.",
+                                "Grok": "Acetaminophen-based products and decongestants are occasionally mentioned, with weak evidence of direct links."
+                            }
+                        },
+                        {
+                            question: "What household medicines taken during pregnancy could influence child behavior?",
+                            responses: {
+                                "Amazon Rufus": "Studies examine whether everyday drugs in pregnancy affect child behavior, with no clear link yet.",
+                                "ChatGPT": "Tylenol is the main over-the-counter brand examined for behavioral outcomes.",
+                                "Claude": "Tylenol (acetaminophen) is consistently linked to child-behavior outcome studies.",
+                                "Gemini": "Acetaminophen remains central to studies on prenatal medication exposure and child behavior.",
+                                "Llama": "Common pain medicines like acetaminophen and ibuprofen are explored for behavioral impacts in children.",
+                                "Perplexity": "Acetaminophen is the chief household medication scrutinized for child behavior and neurodevelopment.",
+                                "Grok": "Acetaminophen and antacids are most studied for behavioral outcomes, with multifactorial influences suspected."
+                            }
+                        },
+                        {
+                            question: "Which prenatal exposures to pain medication are linked to developmental differences?",
+                            responses: {
+                                "Amazon Rufus": "Research is active but hasn't shown proven developmental differences.",
+                                "ChatGPT": "Tylenol is the top drug referenced in developmental studies.",
+                                "Claude": "Tylenol (acetaminophen) dominates developmental risk analyses.",
+                                "Gemini": "Acetaminophen is the primary compound linked to developmental research.",
+                                "Llama": "Opioid exposure in pregnancy has been linked to developmental differences in some studies.",
+                                "Perplexity": "Some studies link prenatal acetaminophen exposure to higher autism/ADHD rates, while opioids generally show no added autism risk.",
+                                "Grok": "Acetaminophen shows associations with language and developmental traits; opioid links are stronger but broader."
+                            }
+                        },
+                        {
+                            question: "How might medications for pain or inflammation during pregnancy affect the fetus?",
+                            responses: {
+                                "Amazon Rufus": "Effects on fetal development are still being evaluated.",
+                                "ChatGPT": "Tylenol dominates current research attention.",
+                                "Claude": "Tylenol (acetaminophen) continues to be the primary medication examined.",
+                                "Gemini": "Acetaminophen continues to be a focus, with findings still inconclusive.",
+                                "Llama": "Such drugs may affect fetal health by altering the maternal-fetal environment.",
+                                "Perplexity": "Acetaminophen is under study for potential fetal effects; NSAIDs are generally not recommended and opioids show no clear autism link.",
+                                "Grok": "These may affect the fetus via immune or hormonal changes, but short-term use is generally safe."
+                            }
+                        },
+                        {
+                            question: "What role do commonly used pregnancy-safe drugs play in autism research?",
+                            responses: {
+                                "Amazon Rufus": "Common prenatal drugs are under study, though causation isn't established.",
+                                "ChatGPT": "Tylenol remains central in autism-related investigation.",
+                                "Claude": "Tylenol (acetaminophen) is the key drug featured in autism-related research.",
+                                "Gemini": "Acetaminophen is the most examined active ingredient, with no definitive evidence of harm.",
+                                "Llama": "Acetaminophen is widely researched due to its prevalence in prenatal use.",
+                                "Perplexity": "Acetaminophen remains under active review yet is still recommended when medically necessary.",
+                                "Grok": "Acetaminophen is heavily researched given its widespread use, though caution is urged for cumulative exposure."
+                            }
+                        }
+                    ]
+                },
+                {
+                    title: "🧪 Prescription & Environmental Factors",
+                    prompts: [
+                        {
+                            question: "What antidepressants have been studied for possible associations with autism?",
+                            responses: {
+                                "Amazon Rufus": "Studies explore SSRI and other antidepressant exposure during pregnancy, but findings remain mixed.",
+                                "ChatGPT": "Prozac (SSRI) is the most cited medication in autism risk research.",
+                                "Claude": "Zoloft (sertraline/SSRI) is most frequently associated with autism-risk studies.",
+                                "Gemini": "Research highlights SSRIs as the main class studied for prenatal autism associations.",
+                                "Llama": "SSRIs are studied for possible autism associations, though findings remain mixed.",
+                                "Perplexity": "No specific findings cited.",
+                                "Grok": "SSRIs like Prozac and Zoloft show slight but inconsistent autism-risk increases, likely confounded by maternal depression."
+                            }
+                        },
+                        {
+                            question: "How do fertility treatments or hormones relate to autism risk?",
+                            responses: {
+                                "Amazon Rufus": "Ongoing research examines possible associations, with no confirmed causal link.",
+                                "ChatGPT": "Gonal-F appears most often in related studies.",
+                                "Claude": "Clomid (clomiphene) appears most often in fertility-related autism research.",
+                                "Gemini": "Certain hormonal and fertility therapies are studied, but no single agent is identified as causal.",
+                                "Llama": "Fertility and hormone therapies have been examined, but no definitive link is established.",
+                                "Perplexity": "No specific findings cited.",
+                                "Grok": "IVF, clomiphene, and progesterone treatments show mixed links, largely explained by multiple births and parental age."
+                            }
+                        }
+                    ]
+                }
+            ],
+            brandGroups: {
+                "Tylenol": ["Tylenol", "Tylenol Cold & Flu", "Tylenol Cold", "Tylenol Flu"],
+                "Acetaminophen": ["acetaminophen", "Acetaminophen"],
+                "Ibuprofen": ["ibuprofen", "Ibuprofen"],
+                "SSRIs": ["SSRI", "SSRIs"],
+                "Prozac": ["Prozac"],
+                "Zoloft": ["Zoloft", "sertraline"],
+                "Clomid": ["Clomid", "clomiphene"],
+                "NSAIDs": ["NSAID", "NSAIDs"],
+                "Opioids": ["opioid", "opioids", "Opioid", "Opioids"]
+            }
+        };
+
+        function escapeForRegex(str) {
+            return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function restoreOriginalCells() {
+            const cells = document.querySelectorAll('.prompt-cell, .llm-response');
+            cells.forEach(cell => {
+                const original = cell.getAttribute('data-original-text');
+                if (original) {
+                    cell.innerHTML = original;
+                }
+            });
+        }
+
+        function canonicalizeBrand(brand) {
+            const groups = window.WINDOW_DATA.brandGroups;
+            for (const [parent, children] of Object.entries(groups)) {
+                if (parent.toLowerCase() === brand.toLowerCase()) return parent;
+                if (children.some(child => child.toLowerCase() === brand.toLowerCase())) {
+                    return parent;
+                }
+            }
+            return brand;
+        }
+
+        function expandBrandToAliases(brand) {
+            const groups = window.WINDOW_DATA.brandGroups;
+            if (groups[brand]) {
+                return [brand, ...groups[brand]];
+            }
+            for (const [parent, children] of Object.entries(groups)) {
+                if (children.some(child => child.toLowerCase() === brand.toLowerCase())) {
+                    return [parent, ...children];
+                }
+            }
+            return [brand];
+        }
+
+        function computeBrandCounts() {
+            const cells = document.querySelectorAll('.prompt-cell, .llm-response');
+            const brandCounts = new Map();
+            
+            cells.forEach(cell => {
+                const text = cell.textContent || cell.innerText;
+                
+                Object.entries(window.WINDOW_DATA.brandGroups).forEach(([parent, aliases]) => {
+                    const allVariants = [parent, ...aliases];
+                    allVariants.forEach(variant => {
+                        const regex = new RegExp('\\b' + escapeForRegex(variant) + '\\b', 'gi');
+                        const matches = text.match(regex);
+                        if (matches) {
+                            const canonical = canonicalizeBrand(variant);
+                            brandCounts.set(canonical, (brandCounts.get(canonical) || 0) + matches.length);
+                        }
+                    });
+                });
+            });
+
+            const sorted = Array.from(brandCounts.entries())
+                .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+                .slice(0, 10);
+
+            return sorted;
+        }
+
+        function highlightMatches(brands, scrollToFirst = false) {
+            restoreOriginalCells();
+            
+            const cells = document.querySelectorAll('.prompt-cell, .llm-response');
+            let totalMatches = 0;
+            let firstMatch = null;
+
+            cells.forEach(cell => {
+                if (!cell.hasAttribute('data-original-text')) {
+                    cell.setAttribute('data-original-text', cell.innerHTML);
+                }
+                
+                let html = cell.innerHTML;
+                
+                brands.forEach(brand => {
+                    const aliases = expandBrandToAliases(brand);
+                    aliases.forEach(alias => {
+                        const regex = new RegExp('\\b(' + escapeForRegex(alias) + ')\\b', 'gi');
+                        const replacement = '<span class="highlight">$1</span>';
+                        const newHtml = html.replace(regex, replacement);
+                        if (newHtml !== html) {
+                            totalMatches += (newHtml.match(/<span class="highlight">/g) || []).length - 
+                                          (html.match(/<span class="highlight">/g) || []).length;
+                            html = newHtml;
+                            if (!firstMatch) firstMatch = cell;
+                        }
+                    });
+                });
+                
+                cell.innerHTML = html;
+            });
+
+            document.querySelector('.search-results-info').textContent = 
+                `${totalMatches} match${totalMatches !== 1 ? 'es' : ''} found`;
+
+            if (scrollToFirst && firstMatch) {
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function buildBrandBar() {
+            const brandBar = document.querySelector('.brand-bar');
+            brandBar.innerHTML = '<span class="brand-bar-label">Top Brands:</span>';
+            
+            const topBrands = computeBrandCounts();
+            const activeBrands = new Set();
+
+            topBrands.forEach(([brand, count]) => {
+                const btn = document.createElement('button');
+                btn.className = 'brand-btn';
+                btn.textContent = `${brand} (${count})`;
+                btn.dataset.brand = brand;
+                
+                btn.addEventListener('click', () => {
+                    if (btn.classList.contains('brand-btn-active')) {
+                        btn.classList.remove('brand-btn-active');
+                        activeBrands.delete(brand);
+                    } else {
+                        btn.classList.add('brand-btn-active');
+                        activeBrands.add(brand);
+                    }
+                    
+                    if (activeBrands.size > 0) {
+                        highlightMatches(Array.from(activeBrands), true);
+                    } else {
+                        restoreOriginalCells();
+                        document.querySelector('.search-results-info').textContent = '0 matches found';
+                    }
+                });
+                
+                brandBar.appendChild(btn);
+            });
+
+            const clearBtn = document.createElement('button');
+            clearBtn.className = 'brand-clear';
+            clearBtn.textContent = 'Clear All';
+            clearBtn.addEventListener('click', () => {
+                document.querySelectorAll('.brand-btn-active').forEach(btn => {
+                    btn.classList.remove('brand-btn-active');
+                });
+                activeBrands.clear();
+                restoreOriginalCells();
+                document.querySelector('.search-results-info').textContent = '0 matches found';
+            });
+            brandBar.appendChild(clearBtn);
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('categories');
+            const data = window.WINDOW_DATA;
+            
+            data.categories.forEach(category => {
+                const section = document.createElement('div');
+                section.className = 'category-section';
+                
+                const header = document.createElement('div');
+                header.className = 'category-header';
+                header.textContent = category.title;
+                section.appendChild(header);
+                
+                const stats = document.createElement('div');
+                stats.className = 'category-stats';
+                stats.textContent = `${category.prompts.length} prompts analyzed across 7 AI models`;
+                section.appendChild(stats);
+                
+                const tableContainer = document.createElement('div');
+                tableContainer.className = 'table-container';
+                
+                const table = document.createElement('table');
+                table.className = 'data-table';
+                
+                const models = Object.keys(category.prompts[0].responses);
+                
+                const thead = document.createElement('thead');
+                const headerRow = document.createElement('tr');
+                headerRow.innerHTML = `<th>Prompt Question</th>${models.map(m => `<th>${m}</th>`).join('')}`;
+                thead.appendChild(headerRow);
+                table.appendChild(thead);
+                
+                const tbody = document.createElement('tbody');
+                category.prompts.forEach(prompt => {
+                    const row = document.createElement('tr');
+                    const promptCell = document.createElement('td');
+                    promptCell.className = 'prompt-cell';
+                    promptCell.textContent = prompt.question;
+                    row.appendChild(promptCell);
+                    
+                    models.forEach(model => {
+                        const cell = document.createElement('td');
+                        cell.className = 'llm-response';
+                        cell.textContent = prompt.responses[model] || 'No response';
+                        row.appendChild(cell);
+                    });
+                    
+                    tbody.appendChild(row);
+                });
+                
+                table.appendChild(tbody);
+                tableContainer.appendChild(table);
+                section.appendChild(tableContainer);
+                container.appendChild(section);
+            });
+        }
+
+        function initSearch() {
+            const searchInput = document.querySelector('.search-input');
+            const clearBtn = document.querySelector('.clear-search');
+            
+            let searchTimeout;
+            
+            searchInput.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    const term = e.target.value.trim();
+                    if (term) {
+                        highlightMatches([term], true);
+                    } else {
+                        restoreOriginalCells();
+                        document.querySelector('.search-results-info').textContent = '0 matches found';
+                    }
+                }, 300);
+            });
+            
+            clearBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                restoreOriginalCells();
+                document.querySelector('.search-results-info').textContent = '0 matches found';
+            });
+        }
+
+        function init() {
+            renderCategories();
+            buildBrandBar();
+            initSearch();
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
