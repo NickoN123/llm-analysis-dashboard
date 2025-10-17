@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Online Education Degree Recommendations - LLM Comparison</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #0a0e1a;
+  color: #e0e0e0;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 50px;
+  padding-bottom: 30px;
+  border-bottom: 2px solid #00d4ff;
+}
+
+.main-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #00d4ff;
+  margin-bottom: 15px;
+}
+
+.main-subtitle {
+  font-size: 1.1rem;
+  color: #b0b0b0;
+  margin-bottom: 10px;
+}
+
+.powered-by {
+  font-size: 0.95rem;
+  color: #888;
+  margin-top: 10px;
+}
+
+.search-container {
+  margin-bottom: 30px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.search-input {
+  padding: 12px 20px;
+  background: #161c2e;
+  border: 2px solid #2a3550;
+  border-radius: 8px;
+  color: #e0e0e0;
+  font-size: 1rem;
+  width: 400px;
+  max-width: 100%;
+  transition: border-color 0.3s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #00d4ff;
+}
+
+.clear-search {
+  padding: 12px 24px;
+  background: #2a3550;
+  border: none;
+  border-radius: 8px;
+  color: #00d4ff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.clear-search:hover {
+  background: #3a4560;
+}
+
+.search-results-info {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.brand-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: #161c2e;
+  border-radius: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+.brand-btn {
+  padding: 10px 18px;
+  background: #2a3550;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  color: #e0e0e0;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.brand-btn:hover {
+  background: #3a4560;
+  border-color: #00d4ff;
+}
+
+.brand-btn-active {
+  background: #00d4ff;
+  color: #0a0e1a;
+  border-color: #00d4ff;
+  font-weight: 600;
+}
+
+.brand-clear {
+  padding: 10px 18px;
+  background: #d64545;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-weight: 600;
+}
+
+.brand-clear:hover {
+  background: #e55555;
+}
+
+.category-section {
+  margin-bottom: 50px;
+  background: #161c2e;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.category-header {
+  background: linear-gradient(135deg, #1a2540 0%, #2a3550 100%);
+  padding: 20px 30px;
+  border-left: 4px solid #00d4ff;
+}
+
+.category-header h2 {
+  font-size: 1.8rem;
+  color: #00d4ff;
+  margin-bottom: 8px;
+}
+
+.category-stats {
+  font-size: 0.95rem;
+  color: #888;
+}
+
+.table-container {
+  overflow-x: auto;
+  padding: 30px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+.data-table th {
+  background: #1a2540;
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  color: #00d4ff;
+  border-bottom: 2px solid #00d4ff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.data-table td {
+  padding: 18px 15px;
+  border-bottom: 1px solid #2a3550;
+}
+
+.data-table tr {
+  transition: background 0.3s;
+}
+
+.data-table tbody tr:nth-child(even) {
+  background: #0f1420;
+}
+
+.data-table tbody tr:hover {
+  background: #1f2840;
+}
+
+.prompt-cell {
+  font-weight: 600;
+  color: #fff;
+  background: #1a2540;
+  border-left: 4px solid #00d4ff;
+  max-width: 400px;
+}
+
+.llm-response {
+  color: #d0d0d0;
+  font-size: 0.95rem;
+}
+
+.highlight {
+  background: #00d4ff;
+  color: #0a0e1a;
+  font-weight: 600;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+.analysis-section {
+  margin-bottom: 50px;
+  background: #161c2e;
+  border-radius: 8px;
+  padding: 40px;
+  border-left: 4px solid #00d4ff;
+}
+
+.analysis-title {
+  font-size: 2rem;
+  color: #00d4ff;
+  margin-bottom: 30px;
+}
+
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.insight-card {
+  background: #1a2540;
+  padding: 25px;
+  border-radius: 8px;
+  border-left: 3px solid #00d4ff;
+}
+
+.insight-card h3 {
+  color: #00d4ff;
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+
+.insight-card p {
+  color: #b0b0b0;
+  line-height: 1.7;
+}
+
+.about-section {
+  background: #161c2e;
+  border-radius: 8px;
+  padding: 40px;
+  border-left: 4px solid #00d4ff;
+}
+
+.about-title {
+  font-size: 2rem;
+  color: #00d4ff;
+  margin-bottom: 25px;
+}
+
+.about-section p {
+  color: #b0b0b0;
+  line-height: 1.8;
+  font-size: 1.05rem;
+  margin-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+  .main-title {
+    font-size: 1.8rem;
+  }
+  
+  .search-input {
+    width: 100%;
+  }
+  
+  .brand-bar {
+    flex-direction: column;
+  }
+  
+  .brand-btn {
+    width: 100%;
+  }
+  
+  .table-container {
+    padding: 15px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1 class="main-title">Online Education Degree Recommendations</h1>
+    <p class="main-subtitle">LLM Response Comparison Across Leading AI Models</p>
+    <p class="powered-by">Powered by BrandRank.AI</p>
+  </div>
+
+  <div class="search-container">
+    <input type="text" class="search-input" placeholder="Search across all responses..." id="searchInput">
+    <button class="clear-search" id="clearSearchBtn">Clear</button>
+    <span class="search-results-info" id="searchResults"></span>
+  </div>
+
+  <div class="brand-bar" id="brandBar"></div>
+
+  <div id="categoriesContainer"></div>
+
+  <div class="analysis-section">
+    <h2 class="analysis-title">Analysis & Key Insights</h2>
+    <div class="insights-grid">
+      <div class="insight-card">
+        <h3>Consensus Leader</h3>
+        <p>Western Governors University (WGU) emerges as the dominant recommendation across models, mentioned in 14 responses. WGU shows particularly strong consensus for flexibility, fast completion, and IT career transitions.</p>
+      </div>
+      <div class="insight-card">
+        <h3>High Agreement Topics</h3>
+        <p>Fastest bachelor's degree completion (5/6 models recommend WGU), flexibility for working parents (4/6 recommend WGU), and IT field switching show high consensus levels among AI models.</p>
+      </div>
+      <div class="insight-card">
+        <h3>Divergent Recommendations</h3>
+        <p>Specialized fields like cybersecurity, nursing leadership, and educational policy show the most divergence, with each LLM surfacing different institutional strengths based on their training data.</p>
+      </div>
+      <div class="insight-card">
+        <h3>Emerging Patterns</h3>
+        <p>Johns Hopkins University dominates healthcare-related queries (nursing, public health). USC and Columbia emerge for social work and education leadership. Georgia Tech and Purdue Global appear frequently for technology paths.</p>
+      </div>
+      <div class="insight-card">
+        <h3>Risk Profile</h3>
+        <p>Medium risk: Models show regional bias and recency effects. Some recommendations may reflect marketing presence rather than objective quality. Users should validate recommendations with accreditation data and outcome metrics.</p>
+      </div>
+      <div class="insight-card">
+        <h3>Model Behavior Differences</h3>
+        <p>ChatGPT tends toward specific program names with detail. Claude provides parenthetical clarifications. Gemini favors prestige institutions. Perplexity shows high WGU and Purdue Global frequency, suggesting indexing of online education content.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-section">
+    <h2 class="about-title">About BrandRank</h2>
+    <p>BrandRank is the intelligence layer for the AI search era.</p>
+    <p>We help brands measure, protect, and grow trust by monitoring how they appear across major AI Answer Engines.</p>
+    <p>By combining advanced AI with expert insight, BrandRank identifies vulnerabilities and opportunities, pinpoints the factors driving consumer choice, and reveals pathways to strengthen brand equity and loyalty.</p>
+    <p>Our mission is to ensure that when consumers ask questions in AI-powered platforms, your brand is represented clearly, accurately, and with authority.</p>
+  </div>
+</div>
+
+<script>
+window.WINDOW_DATA = {
+  title: "Online Education Degree Recommendations",
+  subtitle: "LLM Response Comparison Across Leading AI Models",
+  categories: [
+    {
+      name: "Education & Teaching Careers",
+      prompts: [
+        {
+          question: "What's the best online education degree to advance my teaching career?",
+          responses: {
+            "ChatGPT": "University of Southern California (USC) – Rossier School of Education",
+            "Claude": "Western Governors University (WGU)",
+            "Gemini": "Johns Hopkins University",
+            "Llama": "Walden University",
+            "Perplexity": "Western Governors University (WGU)",
+            "Grok": "University of Florida"
+          }
+        },
+        {
+          question: "What's the best master's for working professionals in education leadership?",
+          responses: {
+            "ChatGPT": "Vanderbilt University – Peabody College",
+            "Claude": "University of Southern California (USC)",
+            "Gemini": "Harvard University",
+            "Llama": "University of Illinois",
+            "Perplexity": "Western Governors University (WGU)",
+            "Grok": "Johns Hopkins University"
+          }
+        },
+        {
+          question: "What is the best path to become a school principal from being a teacher?",
+          responses: {
+            "ChatGPT": "University of Florida – Educational Leadership Program",
+            "Claude": "University of Southern California (USC)",
+            "Gemini": "Florida State University",
+            "Llama": "University of Southern California",
+            "Perplexity": "Southern New Hampshire University (SNHU)",
+            "Grok": "Vanderbilt University"
+          }
+        },
+        {
+          question: "Name the best specialization in education for online learning.",
+          responses: {
+            "ChatGPT": "University of Illinois Urbana-Champaign – EdTech & Online Learning Specialization",
+            "Claude": "University of Illinois Urbana-Champaign",
+            "Gemini": "University of Illinois Urbana-Champaign",
+            "Llama": "Boise State University",
+            "Perplexity": "Western Governors University (WGU)",
+            "Grok": "Purdue University"
+          }
+        },
+        {
+          question: "What's the best master's for learning analytics roles?",
+          responses: {
+            "ChatGPT": "Teachers College, Columbia University – MA in Learning Analytics",
+            "Claude": "University of Pennsylvania",
+            "Gemini": "Columbia University",
+            "Llama": "University of Maryland",
+            "Perplexity": "Western Governors University (WGU) / Purdue Global",
+            "Grok": "Georgia Institute of Technology"
+          }
+        },
+        {
+          question: "Which degree programs support roles in educational policy consulting?",
+          responses: {
+            "ChatGPT": "Harvard Graduate School of Education – Ed.M. in Education Policy and Management",
+            "Claude": "Columbia University (Teachers College)",
+            "Gemini": "Vanderbilt University",
+            "Llama": "Georgetown University",
+            "Perplexity": "Southern New Hampshire University (SNHU)",
+            "Grok": "Harvard University"
+          }
+        },
+        {
+          question: "What is the best part-time degree that supports roles in educational policy consulting?",
+          responses: {
+            "ChatGPT": "University of California, Berkeley – Goldman School of Public Policy (MPP)",
+            "Claude": "Columbia University (Teachers College)",
+            "Gemini": "Vanderbilt University",
+            "Llama": "Vanderbilt University",
+            "Perplexity": "Southern New Hampshire University (SNHU)",
+            "Grok": "Georgetown University"
+          }
+        }
+      ]
+    },
+    {
+      name: "Technology & IT Pathways",
+      prompts: [
+        {
+          question: "Which IT master's path is best for cybersecurity roles?",
+          responses: {
+            "ChatGPT": "University of Maryland Global Campus (UMGC)",
+            "Claude": "Georgia Institute of Technology (Georgia Tech)",
+            "Gemini": "University of California, Berkeley",
+            "Llama": "SANS Technology Institute",
+            "Perplexity": "Purdue Global",
+            "Grok": "Georgia Institute of Technology"
+          }
+        },
+        {
+          question: "Name the best degree for switching fields into IT.",
+          responses: {
+            "ChatGPT": "Western Governors University (WGU) – BS in Information Technology",
+            "Claude": "Western Governors University (WGU)",
+            "Gemini": "Georgia Institute of Technology",
+            "Llama": "Carnegie Mellon University",
+            "Perplexity": "Purdue Global",
+            "Grok": "Western Governors University"
+          }
+        }
+      ]
+    },
+    {
+      name: "Business & MBA Programs",
+      prompts: [
+        {
+          question: "How do I compare online business programs by ROI?",
+          responses: {
+            "ChatGPT": "University of Florida – Warrington College of Business",
+            "Claude": "University of Florida (Warrington)",
+            "Gemini": "University of Pennsylvania",
+            "Llama": "University of Florida",
+            "Perplexity": "Purdue Global",
+            "Grok": "University of Illinois Urbana-Champaign"
+          }
+        },
+        {
+          question: "Which online business school is most recognized by employers?",
+          responses: {
+            "ChatGPT": "University of North Carolina at Chapel Hill – Kenan-Flagler Business School",
+            "Claude": "University of North Carolina Chapel Hill (Kenan-Flagler)",
+            "Gemini": "Indiana University Bloomington",
+            "Llama": "Indiana University Bloomington",
+            "Perplexity": "Purdue Global",
+            "Grok": "University of Pennsylvania"
+          }
+        }
+      ]
+    },
+    {
+      name: "Healthcare & Nursing",
+      prompts: [
+        {
+          question: "What is the best degree program for advancing in nursing leadership?",
+          responses: {
+            "ChatGPT": "Duke University – School of Nursing (MSN in Nursing Leadership)",
+            "Claude": "Johns Hopkins University",
+            "Gemini": "Duke University",
+            "Llama": "Johns Hopkins University",
+            "Perplexity": "Southern New Hampshire University (SNHU)",
+            "Grok": "Johns Hopkins University"
+          }
+        },
+        {
+          question: "Are there options to get a nursing degree online?",
+          responses: {
+            "ChatGPT": "Western Governors University (WGU) – BSN and MSN Nursing Programs",
+            "Claude": "University of Pennsylvania",
+            "Gemini": "The Ohio State University",
+            "Llama": "University of Pennsylvania",
+            "Perplexity": "Western Governors University (WGU)",
+            "Grok": "University of Texas at Arlington"
+          }
+        },
+        {
+          question: "Which degree supports roles in health policy advocacy?",
+          responses: {
+            "ChatGPT": "Johns Hopkins Bloomberg School of Public Health – Master of Public Health",
+            "Claude": "Johns Hopkins University",
+            "Gemini": "Johns Hopkins University",
+            "Llama": "Johns Hopkins University",
+            "Perplexity": "Purdue Global",
+            "Grok": "Johns Hopkins University"
+          }
+        }
+      ]
+    },
+    {
+      name: "Social Work & Human Services",
+      prompts: [
+        {
+          question: "What is the best remote degree for becoming a clinical social worker?",
+          responses: {
+            "ChatGPT": "University of Southern California (USC) – MSW Program",
+            "Claude": "University of Southern California (USC)",
+            "Gemini": "Columbia University",
+            "Llama": "University of Southern California",
+            "Perplexity": "Purdue Global",
+            "Grok": "University of Southern California"
+          }
+        },
+        {
+          question: "Which certificate programs online help in conflict resolution roles?",
+          responses: {
+            "ChatGPT": "Cornell University – Certificate in Conflict Resolution",
+            "Claude": "Cornell University",
+            "Gemini": "Cornell University",
+            "Llama": "Nova Southeastern University",
+            "Perplexity": "Southern New Hampshire University (SNHU)",
+            "Grok": "Harvard University"
+          }
+        }
+      ]
+    },
+    {
+      name: "Flexibility & Speed",
+      prompts: [
+        {
+          question: "What's the fastest route to a bachelor's degree online?",
+          responses: {
+            "ChatGPT": "Western Governors University (WGU)",
+            "Claude": "Western Governors University (WGU)",
+            "Gemini": "Western Governors University",
+            "Llama": "University of Phoenix",
+            "Perplexity": "Western Governors University (WGU)",
+            "Grok": "Western Governors University"
+          }
+        },
+        {
+          question: "Which degree offers most flexibility for working parents?",
+          responses: {
+            "ChatGPT": "Western Governors University (WGU)",
+            "Claude": "Western Governors University (WGU)",
+            "Gemini": "Arizona State University",
+            "Llama": "Western Governors University",
+            "Perplexity": "Southern New Hampshire University (SNHU)",
+            "Grok": "Western Governors University"
+          }
+        },
+        {
+          question: "Which master's program has the lowest time to completion?",
+          responses: {
+            "ChatGPT": "Southern New Hampshire University (SNHU)",
+            "Claude": "Western Governors University (WGU)",
+            "Gemini": "Western Governors University",
+            "Llama": "University of Southern New Hampshire",
+            "Perplexity": "Western Governors University (WGU)",
+            "Grok": "Western Governors University"
+          }
+        }
+      ]
+    },
+    {
+      name: "Public Safety & Policy",
+      prompts: [
+        {
+          question: "Which degree best supports careers in public safety leadership while I am working?",
+          responses: {
+            "ChatGPT": "Arizona State University – BS in Public Safety and Emergency Management",
+            "Claude": "Arizona State University (ASU)",
+            "Gemini": "Arizona State University",
+            "Llama": "Michigan State University",
+            "Perplexity": "Purdue Global",
+            "Grok": "Johns Hopkins University"
+          }
+        }
+      ]
+    }
+  ],
+  brandGroups: {
+    "Western Governors University": ["WGU", "Western Governors University"],
+    "University of Southern California": ["USC", "University of Southern California"],
+    "Southern New Hampshire University": ["SNHU", "Southern New Hampshire University", "University of Southern New Hampshire"],
+    "Georgia Institute of Technology": ["Georgia Tech", "Georgia Institute of Technology"],
+    "Columbia University": ["Teachers College, Columbia University", "Columbia University", "Teachers College"],
+    "Harvard University": ["Harvard Graduate School of Education", "Harvard University"],
+    "University of North Carolina at Chapel Hill": ["University of North Carolina Chapel Hill", "University of North Carolina at Chapel Hill"],
+    "Johns Hopkins University": ["Johns Hopkins Bloomberg School of Public Health", "Johns Hopkins University"],
+    "Arizona State University": ["ASU", "Arizona State University"],
+    "University of Florida": ["University of Florida"],
+    "Vanderbilt University": ["Vanderbilt University"],
+    "Purdue Global": ["Purdue Global"],
+    "University of Pennsylvania": ["University of Pennsylvania"],
+    "University of Illinois Urbana-Champaign": ["University of Illinois Urbana-Champaign", "University of Illinois"],
+    "Duke University": ["Duke University"],
+    "Cornell University": ["Cornell University"],
+    "Georgetown University": ["Georgetown University"],
+    "University of California, Berkeley": ["University of California, Berkeley"]
+  }
+};
+
+function escapeForRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function restoreOriginalCells() {
+  document.querySelectorAll('[data-original-text]').forEach(cell => {
+    cell.innerHTML = cell.getAttribute('data-original-text');
+  });
+}
+
+function canonicalizeBrand(brandName) {
+  const normalized = brandName.trim();
+  
+  if (window.WINDOW_DATA.brandGroups[normalized]) {
+    return normalized;
+  }
+  
+  for (const [parent, children] of Object.entries(window.WINDOW_DATA.brandGroups)) {
+    if (children.some(child => child.toLowerCase() === normalized.toLowerCase())) {
+      return parent;
+    }
+  }
+  
+  return normalized;
+}
+
+function computeBrandCounts() {
+  const brandCounts = {};
+  
+  document.querySelectorAll('.data-table td').forEach(cell => {
+    const text = cell.textContent;
+    
+    for (const [parent, aliases] of Object.entries(window.WINDOW_DATA.brandGroups)) {
+      aliases.forEach(alias => {
+        const escapedAlias = escapeForRegex(alias);
+        const regex = new RegExp(`\\b${escapedAlias}\\b`, 'gi');
+        const matches = text.match(regex);
+        if (matches) {
+          brandCounts[parent] = (brandCounts[parent] || 0) + matches.length;
+        }
+      });
+    }
+  });
+  
+  const sorted = Object.entries(brandCounts)
+    .sort((a, b) => {
+      if (b[1] !== a[1]) return b[1] - a[1];
+      return a[0].localeCompare(b[0]);
+    })
+    .slice(0, 10);
+  
+  return sorted;
+}
+
+let activeSearchTerms = new Set();
+
+function highlightMatches(brandNames = [], manualSearchTerm = '', scrollToFirst = true) {
+  restoreOriginalCells();
+  
+  const allTermsToHighlight = [...brandNames];
+  if (manualSearchTerm.trim()) {
+    allTermsToHighlight.push(manualSearchTerm.trim());
+  }
+  
+  if (allTermsToHighlight.length === 0) {
+    document.getElementById('searchResults').textContent = '';
+    return;
+  }
+  
+  let totalMatches = 0;
+  let firstMatch = null;
+  
+  document.querySelectorAll('.data-table td').forEach(cell => {
+    if (!cell.hasAttribute('data-original-text')) {
+      cell.setAttribute('data-original-text', cell.innerHTML);
+    }
+    
+    let cellHTML = cell.getAttribute('data-original-text');
+    
+    allTermsToHighlight.forEach(term => {
+      let termsToMatch = [term];
+      
+      if (window.WINDOW_DATA.brandGroups[term]) {
+        termsToMatch = window.WINDOW_DATA.brandGroups[term];
+      }
+      
+      termsToMatch.forEach(matchTerm => {
+        const escapedTerm = escapeForRegex(matchTerm);
+        const regex = new RegExp(`\\b(${escapedTerm})\\b`, 'gi');
+        
+        const matches = cellHTML.match(regex);
+        if (matches) {
+          totalMatches += matches.length;
+        }
+        
+        cellHTML = cellHTML.replace(regex, (match) => {
+          if (!firstMatch) {
+            firstMatch = cell;
+          }
+          return `<span class="highlight">${match}</span>`;
+        });
+      });
+    });
+    
+    cell.innerHTML = cellHTML;
+  });
+  
+  const resultsInfo = document.getElementById('searchResults');
+  if (totalMatches > 0) {
+    resultsInfo.textContent = `${totalMatches} match${totalMatches !== 1 ? 'es' : ''} found`;
+  } else {
+    resultsInfo.textContent = 'No matches found';
+  }
+  
+  if (scrollToFirst && firstMatch) {
+    firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function buildBrandBar() {
+  const brandBar = document.getElementById('brandBar');
+  const topBrands = computeBrandCounts();
+  
+  if (topBrands.length === 0) {
+    brandBar.style.display = 'none';
+    return;
+  }
+  
+  brandBar.innerHTML = '';
+  
+  topBrands.forEach(([brandName, count]) => {
+    const btn = document.createElement('button');
+    btn.className = 'brand-btn';
+    btn.textContent = `${brandName} (${count})`;
+    btn.dataset.brand = brandName;
+    
+    btn.addEventListener('click', function() {
+      this.classList.toggle('brand-btn-active');
+      
+      const activeButtons = document.querySelectorAll('.brand-btn-active');
+      const activeBrands = Array.from(activeButtons).map(b => b.dataset.brand);
+      
+      const manualTerm = document.getElementById('searchInput').value;
+      
+      highlightMatches(activeBrands, manualTerm, true);
+    });
+    
+    brandBar.appendChild(btn);
+  });
+  
+  const clearBtn = document.createElement('button');
+  clearBtn.className = 'brand-clear';
+  clearBtn.textContent = 'Clear All';
+  clearBtn.addEventListener('click', function() {
+    document.querySelectorAll('.brand-btn-active').forEach(btn => {
+      btn.classList.remove('brand-btn-active');
+    });
+    document.getElementById('searchInput').value = '';
+    restoreOriginalCells();
+    document.getElementById('searchResults').textContent = '';
+  });
+  
+  brandBar.appendChild(clearBtn);
+}
+
+function renderCategories() {
+  const container = document.getElementById('categoriesContainer');
+  const categories = window.WINDOW_DATA.categories;
+  
+  categories.forEach(category => {
+    const section = document.createElement('div');
+    section.className = 'category-section';
+    
+    const header = document.createElement('div');
+    header.className = 'category-header';
+    header.innerHTML = `
+      <h2>${category.name}</h2>
+      <p class="category-stats">${category.prompts.length} prompt${category.prompts.length !== 1 ? 's' : ''}</p>
+    `;
+    
+    const tableContainer = document.createElement('div');
+    tableContainer.className = 'table-container';
+    
+    const table = document.createElement('table');
+    table.className = 'data-table';
+    
+    const llms = new Set();
+    category.prompts.forEach(prompt => {
+      Object.keys(prompt.responses).forEach(llm => llms.add(llm));
+    });
+    const llmArray = Array.from(llms).sort();
+    
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    headerRow.innerHTML = `<th>Prompt Question</th>`;
+    llmArray.forEach(llm => {
+      headerRow.innerHTML += `<th>${llm}</th>`;
+    });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+    
+    const tbody = document.createElement('tbody');
+    category.prompts.forEach(prompt => {
+      const row = document.createElement('tr');
+      
+      const questionCell = document.createElement('td');
+      questionCell.className = 'prompt-cell';
+      questionCell.textContent = prompt.question;
+      questionCell.setAttribute('data-original-text', prompt.question);
+      row.appendChild(questionCell);
+      
+      llmArray.forEach(llm => {
+        const responseCell = document.createElement('td');
+        responseCell.className = 'llm-response';
+        const response = prompt.responses[llm] || '—';
+        responseCell.textContent = response;
+        responseCell.setAttribute('data-original-text', response);
+        row.appendChild(responseCell);
+      });
+      
+      tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+    
+    tableContainer.appendChild(table);
+    section.appendChild(header);
+    section.appendChild(tableContainer);
+    container.appendChild(section);
+  });
+}
+
+function initSearch() {
+  const searchInput = document.getElementById('searchInput');
+  const clearBtn = document.getElementById('clearSearchBtn');
+  
+  searchInput.addEventListener('input', function() {
+    const searchTerm = this.value;
+    const activeButtons = document.querySelectorAll('.brand-btn-active');
+    const activeBrands = Array.from(activeButtons).map(b => b.dataset.brand);
+    
+    highlightMatches(activeBrands, searchTerm, true);
+  });
+  
+  clearBtn.addEventListener('click', function() {
+    searchInput.value = '';
+    const activeButtons = document.querySelectorAll('.brand-btn-active');
+    const activeBrands = Array.from(activeButtons).map(b => b.dataset.brand);
+    
+    if (activeBrands.length > 0) {
+      highlightMatches(activeBrands, '', false);
+    } else {
+      restoreOriginalCells();
+      document.getElementById('searchResults').textContent = '';
+    }
+  });
+}
+
+function init() {
+  renderCategories();
+  buildBrandBar();
+  initSearch();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
