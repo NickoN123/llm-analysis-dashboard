@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ask Mary™ — Demo (HTML)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg1:#0a0e1a; --bg2:#1a1f35; --text:#ffffff; --muted:#a0aec0; --muted2:#718096;
+      --brand:#00d4ff; --panel: rgba(255,255,255,0.05); --panel-border: rgba(255,255,255,0.1);
+      --shadow: 0 4px 20px rgba(0,0,0,0.3);
+      --gradA:#ff8b94; --gradB:#ffa07a;
+    }
+    * { box-sizing:border-box }
+    html, body { height:100% }
+    body { margin:0; min-height:100vh; font-family:'Nunito',sans-serif; background: linear-gradient(135deg, var(--bg1), var(--bg2)); color: var(--text); }
+    .container { max-width:1400px; margin:0 auto; padding: 0 2rem; }
+    /* Header */
+    header.app { position: sticky; top:0; z-index:100; background: rgba(10,14,26,0.95); backdrop-filter: blur(10px); border-bottom:1px solid rgba(0,212,255,0.2); box-shadow:0 2px 8px rgba(0,0,0,0.3); }
+    header .row { display:flex; align-items:center; justify-content:space-between; padding:1.5rem 0; }
+    .brand { display:flex; align-items:center; gap:1rem }
+    .brand-badge { width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:24px; font-weight:800; background: linear-gradient(135deg, var(--gradA), var(--gradB)); }
+    .lang { display:flex; gap:1rem; align-items:center; color:var(--muted) }
+    .lang select { padding: .5rem 1rem; border-radius:8px; border:1px solid var(--panel-border); background: rgba(255,255,255,0.05); color: #fff; cursor:pointer }
+    /* Welcome */
+    .welcome { background: linear-gradient(135deg, var(--gradA), var(--gradB)); color:#fff; padding:2rem; position:relative; text-align:center }
+    .welcome .card { background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding:1.5rem; border-radius:12px; max-width:800px; margin:0 auto; text-align:left }
+    .close-btn { position:absolute; top:1rem; right:1rem; background: rgba(255,255,255,0.2); border:none; color:#fff; padding:.5rem 1rem; border-radius:6px; cursor:pointer }
+    /* Tabs */
+    .tabs { display:flex; gap:1rem; margin:2rem 0; border-bottom:2px solid var(--panel-border); overflow:auto hidden; padding-bottom:.5rem }
+    .tab-btn { padding:1rem 1.5rem; border:none; background:none; color: var(--muted); cursor:pointer; border-bottom:3px solid transparent; font-weight:400; white-space:nowrap; transition:.2s }
+    .tab-btn.active { color: var(--brand); border-bottom-color: var(--brand); font-weight:600 }
+    /* Grid */
+    .grid { display:grid; gap:2rem }
+    @media (min-width: 980px){ .grid-2 { grid-template-columns: 350px 1fr } }
+    /* Panels */
+    .panel { background: var(--panel); border:1px solid var(--panel-border); border-radius:16px; box-shadow: var(--shadow) }
+    /* Scenario buttons */
+    .scenario-btn { width:100%; text-align:left; background: var(--panel); border:2px solid var(--panel-border); border-radius:12px; padding:1rem; cursor:pointer; transition:.2s; }
+    .scenario-btn.active { background: rgba(0,212,255,0.1); border-color: var(--brand); box-shadow:0 4px 12px rgba(0,212,255,0.2) }
+    .scenario-cat { font-size:.75rem; color: var(--brand); font-weight:700; margin-bottom:.25rem; letter-spacing:.5px; text-transform: uppercase }
+    .scenario-title { font-size:.95rem; color:#fff; font-weight:700; margin-bottom:.5rem }
+    .scenario-quote { font-size:.85rem; color:#cbd5e0; line-height:1.4 }
+    /* Trust list */
+    .trust-list { display:flex; flex-direction:column; gap:.75rem }
+    .trust-item { display:flex; align-items:center; gap:.75rem; color:#cbd5e0; font-size:.85rem }
+    .trust-icon { width:28px; height:28px; background:#e6f7f7; border-radius:6px; display:flex; align-items:center; justify-content:center; color:#4ecdc4; font-weight:900 }
+    /* Chat */
+    .chat { display:flex; flex-direction:column; height:700px }
+    .chat-messages { flex:1; overflow:auto; padding:2rem }
+    .chat-empty { height:100%; display:flex; align-items:center; justify-content:center; text-align:center; color: var(--muted) }
+    .bubble-user { background: var(--brand); color: var(--bg1); padding:1rem 1.25rem; border-radius:16px 16px 4px 16px; max-width:80%; font-weight:600; margin-left:auto }
+    .bubble-mary-wrap { display:flex; gap:1rem; margin-bottom:.5rem }
+    .mary-avatar { width:40px; height:40px; border-radius:50%; background: linear-gradient(135deg, var(--gradA), var(--gradB)); display:flex; align-items:center; justify-content:center; font-weight:800 }
+    .bubble-mary { background: rgba(255,255,255,0.08); color:#fff; padding:1rem 1.25rem; border-radius:16px 16px 16px 4px; line-height:1.7; white-space:pre-line }
+    .action-row { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:1rem }
+    .pill { padding:.5rem 1rem; background: rgba(0,212,255,0.1); border:1px solid var(--brand); color: var(--brand); border-radius:8px; font-size:.85rem; cursor:pointer; transition:.2s }
+    .pill:hover { background: var(--brand); color: var(--bg1) }
+    .input-row { padding:1.5rem; border-top:1px solid var(--panel-border); background: rgba(0,0,0,0.2); display:flex; gap:1rem }
+    .input-row input { flex:1; padding:1rem; border-radius:12px; border:1px solid var(--panel-border); background: var(--panel); color:#fff; font-size:1rem; outline:none }
+    .btn { padding:1rem 2rem; background: var(--brand); color: var(--bg1); border:none; border-radius:12px; font-weight:700; cursor:pointer }
+    /* Journey */
+    .progress-card { background: linear-gradient(135deg, var(--gradA), var(--gradB)); color:#fff; padding:2rem; border-radius:12px; margin-bottom:2rem }
+    .progress-bar { background: rgba(255,255,255,0.2); height:12px; border-radius:6px; overflow:hidden }
+    .progress-fill { background:#fff; height:100%; width:0; transition: width .5s }
+    .grid-badges { display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:1rem }
+    .badge-card { position:relative; padding:1.5rem; background: var(--panel); border:2px solid var(--panel-border); border-radius:12px; text-align:center; opacity:.5 }
+    .badge-card.earned { background: rgba(0,212,255,0.1); border-color: var(--brand); opacity: 1 }
+    .check-dot { position:absolute; top:.5rem; right:.5rem; background: var(--brand); width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#0a0e1a; font-weight:900 }
+    .learn-card { background: var(--panel); border:1px solid var(--panel-border); border-radius:12px; padding:1.5rem; }
+    .learn-bar { background: rgba(255,255,255,0.1); height:8px; border-radius:4px; overflow:hidden }
+    .learn-fill { background: var(--brand); height:100% }
+    /* Science */
+    .grid-cards { display:grid; grid-template-columns: repeat(auto-fill, minmax(350px,1fr)); gap:1.5rem }
+    .card { background: var(--panel); border:1px solid var(--panel-border); border-radius:12px; padding:1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: transform .2s, box-shadow .2s; cursor:pointer }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,212,255,0.2) }
+    .chip { padding:.25rem .75rem; border-radius:12px; font-size:.75rem; font-weight:700 }
+    .chip.high { background:#e6f7f7; color:#4ecdc4 }
+    .chip.medium { background:#fffaeb; color:#ffd93d }
+    .chip.low { background:#fef2f2; color:#ff6b6b }
+    .card-foot { display:flex; justify-content:space-between; align-items:center; padding-top:1rem; border-top:1px solid var(--panel-border); color:var(--muted2) }
+    /* Pro */
+    .grid-metrics { display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:2rem; margin-bottom:3rem }
+    .metric { background: var(--panel); border:1px solid var(--panel-border); border-radius:12px; padding:1.5rem }
+    .metric .val { font-size:2rem; font-weight:800; color: var(--brand) }
+    .metric .chg { margin-top:.75rem; color:#4ecdc4; font-weight:700 }
+    .grid-features { display:grid; grid-template-columns: 1fr 1fr; gap:1.5rem }
+    .feature { display:flex; align-items:center; gap:1rem; padding:1rem; background: var(--panel); border-radius:8px; border:1px solid var(--panel-border) }
+    /* Footer */
+    footer { margin-top:4rem; background: rgba(0,0,0,0.3); border-top:1px solid var(--panel-border); text-align:center; color:var(--muted); padding:2rem }
+    /* helpers */
+    .mb-1{margin-bottom:.5rem}.mb-2{margin-bottom:1rem}.mb-3{margin-bottom:1.5rem}.mb-4{margin-bottom:2rem}
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="app">
+    <div class="container row">
+      <div class="brand">
+        <div class="brand-badge">M</div>
+        <div>
+          <h1 style="margin:0; font-size:1.5rem; font-weight:800">Ask Mary™</h1>
+          <p style="margin:0; font-size:.875rem; color:var(--muted)">Trusted AI for Reproductive Health</p>
+        </div>
+      </div>
+      <div class="lang">
+        <span>🌐</span>
+        <select aria-label="Language">
+          <option>English</option>
+          <option>Español</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <!-- Welcome Banner -->
+  <section class="welcome" id="welcome">
+    <button class="close-btn" id="closeWelcome" aria-label="Close">×</button>
+    <h2 style="font-size:2rem; margin:0 0 1rem 0; font-weight:800">We exist for the reproductive health questions no one else answers</h2>
+    <p style="font-size:1.25rem; margin:0 0 1.5rem 0; opacity:.95">— and the hope that follows.</p>
+    <div class="card">
+      <div style="display:flex; align-items:flex-start; gap:1rem">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg" alt="Dr. Mary Abusief" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid #fff"/>
+        <div>
+          <h3 style="margin:.1rem 0 .5rem 0; font-size:1.1rem">Dr. Mary Abusief, M.D., FACOG</h3>
+          <p style="margin:0; font-size:.95rem; opacity:.9; line-height:1.6">Board‑certified REI specialist with 20+ years helping women navigate their fertility journeys. Ask Mary brings my expertise to you—like ChatGPT for reproductive health, but backed by real medical authority you can trust.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="container" style="padding:2rem 0">
+    <!-- Tabs -->
+    <nav class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="chat">💬 Ask Mary</button>
+      <button class="tab-btn" data-tab="journey">🏅 My Journey</button>
+      <button class="tab-btn" data-tab="science">✨ Science Now</button>
+      <button class="tab-btn" data-tab="pro">🏢 For Clinics</button>
+    </nav>
+
+    <!-- CHAT TAB -->
+    <section id="tab-chat">
+      <div class="grid grid-2">
+        <!-- Sidebar: Scenarios -->
+        <aside>
+          <h3 class="mb-1" style="font-weight:700">Try These Scenarios</h3>
+          <div id="scenarioList" class="mb-4" style="display:flex; flex-direction:column; gap:.75rem"></div>
+
+          <!-- Trust indicators -->
+          <div class="panel" style="padding:1.5rem">
+            <h4 class="mb-2" style="font-weight:700">Why Trust Ask Mary?</h4>
+            <div class="trust-list">
+              <div class="trust-item"><span class="trust-icon">✓</span><span>Board‑certified REI specialist</span></div>
+              <div class="trust-item"><span class="trust-icon">🔒</span><span>HIPAA‑compliant & private</span></div>
+              <div class="trust-item"><span class="trust-icon">★</span><span>Peer‑reviewed research</span></div>
+              <div class="trust-item"><span class="trust-icon">📖</span><span>Source citations included</span></div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Chat Area -->
+        <section class="panel chat">
+          <div id="chatMessages" class="chat-messages">
+            <div class="chat-empty">
+              <div>
+                <div style="font-size:48px; margin-bottom:1rem; color:#4a5568">💬</div>
+                <h3 class="mb-1">Start a Conversation</h3>
+                <p style="margin:0; color:var(--muted)">Select a scenario or type your question below</p>
+              </div>
+            </div>
+          </div>
+          <div class="input-row">
+            <input id="userInput" type="text" placeholder="Ask me anything about reproductive health..." />
+            <button class="btn" id="sendBtn">Send</button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- JOURNEY TAB -->
+    <section id="tab-journey" hidden>
+      <div class="panel" style="padding:2rem">
+        <h2 class="mb-4">Your Fertility Journey</h2>
+        <div class="progress-card">
+          <h3 class="mb-1">Journey Progress</h3>
+          <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+          <p id="progressText" style="margin:1rem 0 0 0; opacity:.9">0 of 5 milestones completed</p>
+        </div>
+        <h3 class="mb-2">Badges Earned</h3>
+        <div id="badgesGrid" class="grid-badges mb-4"></div>
+
+        <h3 class="mb-2" style="margin-top:2rem">Continue Learning</h3>
+        <div class="learn-list" style="display:flex; flex-direction:column; gap:1rem">
+          <div class="learn-card">
+            <div style="display:flex; justify-content:space-between; align-items:center" class="mb-1">
+              <h4 style="margin:0">Understanding Your Cycle</h4>
+              <span style="color:var(--muted)">5/5 complete</span>
+            </div>
+            <div class="learn-bar"><div class="learn-fill" style="width:100%"></div></div>
+          </div>
+          <div class="learn-card">
+            <div style="display:flex; justify-content:space-between; align-items:center" class="mb-1">
+              <h4 style="margin:0">Fertility Fundamentals</h4>
+              <span style="color:var(--muted)">3/5 complete</span>
+            </div>
+            <div class="learn-bar"><div class="learn-fill" style="width:60%"></div></div>
+          </div>
+          <div class="learn-card">
+            <div style="display:flex; justify-content:space-between; align-items:center" class="mb-1">
+              <h4 style="margin:0">Treatment Landscape</h4>
+              <span style="color:var(--muted)">1/5 complete</span>
+            </div>
+            <div class="learn-bar"><div class="learn-fill" style="width:20%"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCIENCE TAB -->
+    <section id="tab-science" hidden>
+      <h2 class="mb-2">Science Now™ — Latest Research</h2>
+      <div class="grid-cards">
+        <article class="card">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start" class="mb-1">
+            <span style="font-size:.75rem; color:#ff8b94; font-weight:800; letter-spacing:.5px; text-transform:uppercase">Diagnostics</span>
+            <span class="chip high">High</span>
+          </div>
+          <h3 class="mb-1" style="font-size:1.1rem">AMH Tests May Overestimate Egg Count</h3>
+          <p class="mb-1" style="color:#cbd5e0">New study shows AMH tests may overestimate ovarian reserve by up to 30% in certain hormone profiles...</p>
+          <div class="card-foot"><span>Oct 15, 2025</span><button class="btn" style="padding:.5rem 1rem; border-radius:8px">Read More →</button></div>
+        </article>
+        <article class="card">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start" class="mb-1">
+            <span style="font-size:.75rem; color:#ff8b94; font-weight:800; letter-spacing:.5px; text-transform:uppercase">Lifestyle</span>
+            <span class="chip medium">Medium</span>
+          </div>
+          <h3 class="mb-1" style="font-size:1.1rem">Mediterranean Diet Improves IVF Success</h3>
+          <p class="mb-1" style="color:#cbd5e0">Randomized trial demonstrates 15% improvement in implantation rates with Mediterranean dietary patterns...</p>
+          <div class="card-foot"><span>Oct 12, 2025</span><button class="btn" style="padding:.5rem 1rem; border-radius:8px">Read More →</button></div>
+        </article>
+        <article class="card">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start" class="mb-1">
+            <span style="font-size:.75rem; color:#ff8b94; font-weight:800; letter-spacing:.5px; text-transform:uppercase">IVF Technology</span>
+            <span class="chip low">Emerging</span>
+          </div>
+          <h3 class="mb-1" style="font-size:1.1rem">AI‑Guided Embryo Selection Shows Promise</h3>
+          <p class="mb-1" style="color:#cbd5e0">Machine learning algorithms analyzing time‑lapse imaging may predict embryo viability more accurately...</p>
+          <div class="card-foot"><span>Oct 10, 2025</span><button class="btn" style="padding:.5rem 1rem; border-radius:8px">Read More →</button></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- PRO TAB -->
+    <section id="tab-pro" hidden>
+      <div class="panel" style="padding:3rem; background: linear-gradient(135deg, var(--bg1), var(--bg2))">
+        <h2 class="mb-1" style="font-size:2rem">Ask Mary Pro™</h2>
+        <p class="mb-4" style="font-size:1.1rem; color: rgba(255,255,255,0.9)">Enterprise platform for fertility clinics and OB‑GYN practices</p>
+        <div class="grid-metrics">
+          <div class="metric">
+            <div class="val">89%</div>
+            <div class="title" style="font-weight:700; margin-bottom:.5rem">Patient Engagement</div>
+            <div class="desc" style="opacity:.7">Average engagement rate</div>
+            <div class="chg">+12% vs last month</div>
+          </div>
+          <div class="metric">
+            <div class="val">2,847</div>
+            <div class="title" style="font-weight:700; margin-bottom:.5rem">Question Volume</div>
+            <div class="desc" style="opacity:.7">Questions this month</div>
+            <div class="chg">+24% vs last month</div>
+          </div>
+          <div class="metric">
+            <div class="val">43%</div>
+            <div class="title" style="font-weight:700; margin-bottom:.5rem">Call Reduction</div>
+            <div class="desc" style="opacity:.7">Fewer routine calls</div>
+            <div class="chg">+8% vs last month</div>
+          </div>
+        </div>
+        <h3 class="mb-2" style="font-size:1.5rem">Key Features</h3>
+        <div class="grid-features">
+          <div class="feature">✓ Co‑branded patient experience</div>
+          <div class="feature">✓ Custom avatar training</div>
+          <div class="feature">✓ Patient question analytics</div>
+          <div class="feature">✓ Pre‑visit education tools</div>
+          <div class="feature">✓ Treatment protocol libraries</div>
+          <div class="feature">✓ Compliance tracking</div>
+          <div class="feature">✓ Integration with EMR systems</div>
+          <div class="feature">✓ White‑label options</div>
+        </div>
+        <button class="btn" style="margin-top:3rem; border-radius:12px">Request Enterprise Demo →</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p style="margin:0 0 .5rem 0">Ask Mary™ — Interactive Demo Version</p>
+    <p style="margin:0; color:var(--muted2)">This AI companion is for informational purposes and does not replace professional medical advice.</p>
+  </footer>
+
+  <script>
+    // ----- Data copied/adapted from the TSX component -----
+    const scenarios = [
+      { id:1, title:"Early Fertility Awareness", question:"I'm 31 and not ready to have kids yet, but I'm worried about my future fertility. What should I do now?", category:"Planning" },
+      { id:2, title:"Navigating an IVF Cycle", question:"My doctor said I have to take progesterone injections. Why is this so important?", category:"Treatment" },
+      { id:3, title:"Coping with Loss", question:"My embryo transfer failed. I don't know if I can go through this again.", category:"Emotional Support" },
+      { id:4, title:"Understanding PCOS", question:"I was told I have PCOS, but I don't understand what that really means.", category:"Diagnosis" },
+      { id:5, title:"Exploring New Treatments", question:"I read about ovarian rejuvenation therapy online. Is that real?", category:"Research" }
+    ];
+
+    const responses = {
+      1: { text: `I understand that concern, and you're being thoughtful about your future—that's wonderful. At 31, you have time, but it's smart to be proactive.\n\nHere's what I recommend:\n\n**Understanding Your Current Fertility:**\nYour ovarian reserve naturally declines with age, but everyone's timeline is different. The key tests that can give you insight are:\n\n• AMH (Anti-Müllerian Hormone) - indicates your remaining egg supply\n• FSH (Follicle Stimulating Hormone) - shows how hard your body is working to ovulate\n• Antral Follicle Count via ultrasound - direct visualization of available follicles\n\n**Important Context:** These tests have limitations and can't predict exact fertility, but they provide helpful baseline information.\n\n**What You Can Do Now:**\n\n✓ Maintain a balanced diet rich in antioxidants\n✓ Regular exercise (but not excessive)\n✓ Manage stress through mindfulness or therapy\n✓ Limit alcohol and avoid smoking\n✓ Consider tracking your cycles to understand your patterns\n\n**Creating Your Fertility Readiness Plan:**\nWould you like me to help you create a personalized timeline based on your goals? We can also discuss egg freezing if that's something you'd like to explore.\n\nRemember: Knowledge is power, and you're taking the right first step by asking these questions.`,
+           actions:["Create Fertility Timeline","Learn About Egg Freezing","Lifestyle Checklist","Find a Specialist"], badge:"Fertility Aware" },
+      2: { text: `Great question. Progesterone is absolutely crucial to the success of your IVF cycle, and I'll explain exactly why.\n\n**What Progesterone Does:**\n\nProgesterone transforms your uterine lining into a nurturing environment for embryo implantation. Think of it as preparing a comfortable bed for your embryo to nestle into.\n\n**Why Injections After IVF?**\n\nDuring a natural cycle, your corpus luteum (the follicle that released the egg) produces progesterone. In IVF, because we've retrieved your eggs, your body needs supplemental progesterone support.\n\n**The Timeline:**\n• Days 1-3 post-transfer: Embryo begins to attach\n• Days 4-5: Implantation deepens\n• Days 6-10: Critical hormone support period\n• Progesterone maintains the lining throughout this entire process\n\n**Making Injections Easier:**\n\n✓ Warm the vial in your hands first\n✓ Use ice or numbing cream before injection\n✓ Rotate injection sites to prevent soreness\n✓ Have your partner learn the technique\n✓ Inject before bed to sleep through any discomfort\n\n**Important:** Never skip a dose. Set phone reminders if helpful.\n\nThis part is hard, but you're doing something powerful for your future. Would you like me to show you how progesterone supports implantation at the cellular level?`,
+           actions:["View Implantation Animation","Injection Tips Guide","Set Medication Reminders","Partner Coaching"], badge:"Treatment Navigator" },
+      3: { text: `I'm so sorry. What you're feeling right now is completely valid, and there are no words that can take away this pain.\n\nFirst, I want you to hear this: **You are not a failure. Your body is not broken.**\n\nEmbryo transfer outcomes involve many factors—most beyond anyone's control. Many, many successful journeys include setbacks like this.\n\n**Right Now:**\n\nYou don't need to make any decisions about the future. You need time and space to grieve what didn't happen. That's not weakness—it's necessary healing.\n\n**Some Gentle Truths:**\n\n• Success rates improve with subsequent cycles as your team learns more about your specific needs\n• This outcome doesn't predict future outcomes\n• Taking time before trying again is okay\n• So is deciding to move forward quickly if that feels right for you\n• Your feelings may change day to day—that's normal\n\n**Support Available:**\n\n• Guided journaling prompts for processing grief\n• Self-compassion exercises (no pressure to be "positive")\n• Stories from others who continued after setbacks (only if you want them)\n• Therapist referrals specializing in fertility challenges\n\n**There's No Timeline:**\n\nSome people need weeks, some need months. Some want to try again immediately. All of these are valid.\n\nI'm here whenever you need to talk—about next steps, about nothing at all, or just to sit with these hard feelings.\n\nWould you like some resources for processing grief, or would you prefer to just talk?`,
+           actions:["Grief Support Resources","Find a Therapist","Peer Stories (Optional)","Save for Later"], badge:"Resilient Heart" },
+      4: { text: `PCOS can feel overwhelming when you're first diagnosed, but let's break this down together. You're not alone—it affects about 1 in 10 women.\n\n**What PCOS Actually Means:**\n\nPolycystic Ovary Syndrome is a hormonal condition where:\n\n• Your ovaries may develop multiple small follicles (not true "cysts")\n• Hormone levels become imbalanced—often higher androgens (like testosterone)\n• Ovulation becomes irregular or absent\n• Insulin resistance is common (your body's response to sugar is affected)\n\n**Why This Happens:**\n\nYour body's hormone signals get mixed up. The pituitary gland, ovaries, and pancreas aren't communicating properly, creating a feedback loop that sustains the imbalance.\n\n**Common PCOS Symptoms:**\n\n✓ Irregular or absent periods\n✓ Difficulty conceiving\n✓ Weight gain or difficulty losing weight\n✓ Excess hair growth\n✓ Acne\n✓ Thinning hair on scalp\n\n**But Here's the Important Part:**\n\nPCOS is highly manageable. Many women with PCOS conceive naturally or with minimal intervention.\n\n**What Helps:**\n\n**Lifestyle:**\n• Anti-inflammatory diet (Mediterranean style)\n• Regular exercise (combination of cardio and strength)\n• Stress management\n• Quality sleep\n\n**Medical Options:**\n• Metformin (improves insulin sensitivity)\n• Letrozole (for ovulation induction)\n• Birth control (to regulate cycles if not trying to conceive)\n• Inositol supplements (good evidence base)\n\n**Preparing for Your Next Doctor Visit:**\n\nQuestions to ask:\n- What type of PCOS do I have?\n- Should I see an endocrinologist?\n- What's my best path to conception?\n- Should I track ovulation?\n\nWould you like me to create a personalized PCOS management plan or help you prepare specific questions for your doctor?`,
+           actions:["PCOS Management Plan","Symptom Tracker","Doctor Visit Prep","Nutrition Guide"], badge:"PCOS Informed" },
+      5: { text: `This is a great example of how fast reproductive science is moving—and why critical evaluation matters.\n\n**What Ovarian Rejuvenation Actually Is:**\n\nSeveral experimental approaches claim to "reactivate" dormant follicles or improve egg quality:\n\n• Platelet-Rich Plasma (PRP) injections into ovaries\n• Stem cell therapies\n• Mitochondrial supplementation\n• Fragmentation techniques (IVA/OFFA)\n\n**Current Scientific Status:**\n\n🟡 **Confidence Level: Low (Emerging Science)**\n\nBased on: 12 peer-reviewed studies (2022-2025)\n\n**What We Know:**\n\n✓ Some small studies show follicle development in previously "exhausted" ovaries\n✓ Case reports of pregnancies exist\n✓ Mechanisms are theoretically plausible\n\n**What We Don't Know:**\n\n✗ Large-scale randomized controlled trials are lacking\n✗ Long-term safety data incomplete\n✗ Success rates compared to standard IVF unclear\n✗ Cost-effectiveness unproven ($5,000-15,000+ per procedure)\n\n**Red Flags to Watch For:**\n\n⚠️ Clinics guaranteeing results\n⚠️ Pressure to act quickly\n⚠️ Lack of transparent success rates\n⚠️ Not offered alongside proven treatments\n\n**My Recommendation:**\n\nIf you're interested, ask these questions to an REI specialist:\n\n1. What does the current research really show?\n2. Am I a candidate for proven treatments first?\n3. Are there clinical trials I could join?\n4. What would you recommend for your own family member?\n\n**Better-Established Options:**\n\nDepending on your situation:\n• Donor eggs (highest success rates for diminished reserve)\n• Standard IVF with genetic testing\n• Mini-IVF protocols\n\n**The Bottom Line:**\n\nThis research is exciting and may lead to breakthroughs. But right now, it's experimental. Anyone offering it should be transparent about that.\n\nWould you like me to help you prepare questions for discussing this with your doctor, or explore proven alternatives?`,
+           actions:["Evaluate My Options","Find Clinical Trials","Questions for Doctor","Track This Research"], badge:"Science Seeker" }
+    };
+
+    // ----- State -----
+    let activeTab = 'chat';
+    let activeScenario = null;
+    let chatMessages = [];
+    let badges = [];
+
+    // ----- Elements -----
+    const tabs = Array.from(document.querySelectorAll('.tab-btn'));
+    const tabSections = {
+      chat: document.getElementById('tab-chat'),
+      journey: document.getElementById('tab-journey'),
+      science: document.getElementById('tab-science'),
+      pro: document.getElementById('tab-pro')
+    };
+
+    // Welcome close
+    document.getElementById('closeWelcome').addEventListener('click',()=>{
+      document.getElementById('welcome').style.display='none';
+    });
+
+    // Tabs behavior
+    tabs.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        tabs.forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        activeTab = btn.dataset.tab;
+        for(const [k,sec] of Object.entries(tabSections)){
+          sec.hidden = (k!==activeTab);
+        }
+      });
+    });
+
+    // Render scenarios
+    const scenarioList = document.getElementById('scenarioList');
+    function renderScenarios(){
+      scenarioList.innerHTML = '';
+      scenarios.forEach(s=>{
+        const b = document.createElement('button');
+        b.className = 'scenario-btn' + (activeScenario===s.id?' active':'');
+        b.innerHTML = `
+          <div class="scenario-cat">${s.category}</div>
+          <div class="scenario-title">${s.title}</div>
+          <div class="scenario-quote">"${s.question.substring(0,60)}..."</div>
+        `;
+        b.addEventListener('click',()=>handleScenarioClick(s));
+        scenarioList.appendChild(b);
+      });
+    }
+
+    // Chat rendering
+    const chatEl = document.getElementById('chatMessages');
+    function renderChat(){
+      chatEl.innerHTML = '';
+      if(chatMessages.length===0){
+        const empty = document.createElement('div');
+        empty.className='chat-empty';
+        empty.innerHTML = `<div><div style="font-size:48px;margin-bottom:1rem;color:#4a5568">💬</div><h3 class="mb-1">Start a Conversation</h3><p style="margin:0;color:var(--muted)">Select a scenario or type your question below</p></div>`;
+        chatEl.appendChild(empty);
+        return;
+      }
+      const wrap = document.createElement('div');
+      wrap.style.display='flex'; wrap.style.flexDirection='column'; wrap.style.gap='1.5rem';
+      chatMessages.forEach(msg=>{
+        const item = document.createElement('div');
+        if(msg.type==='user'){
+          item.innerHTML = `<div class="bubble-user">${escapeHtml(msg.text)}</div>`;
+          item.style.display='flex'; item.style.justifyContent='flex-end';
+        } else {
+          const outer = document.createElement('div');
+          outer.className='bubble-mary-wrap';
+          const avatar = document.createElement('div'); avatar.className='mary-avatar'; avatar.textContent='M';
+          const body = document.createElement('div'); body.style.flex='1';
+          const bubble = document.createElement('div'); bubble.className='bubble-mary'; bubble.innerHTML = mdToHtml(msg.text);
+          body.appendChild(bubble);
+          if(msg.actions){
+            const row = document.createElement('div'); row.className='action-row';
+            msg.actions.forEach(a=>{ const p=document.createElement('button'); p.className='pill'; p.textContent=a; row.appendChild(p); });
+            body.appendChild(row);
+          }
+          outer.appendChild(avatar); outer.appendChild(body);
+          item.appendChild(outer);
+        }
+        wrap.appendChild(item);
+      });
+      chatEl.appendChild(wrap);
+      chatEl.scrollTop = chatEl.scrollHeight;
+    }
+
+    // Helpers: simple markdown converter for **bold** and lists/line breaks
+    function mdToHtml(t){
+      const esc = escapeHtml(t)
+        .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+        .replace(/^• /gm,'• ')
+        .replace(/\n\n/g,'<br><br>')
+        .replace(/\n/g,'<br>');
+      return esc;
+    }
+    function escapeHtml(s){
+      return s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+    }
+
+    // Scenario click
+    function handleScenarioClick(s){
+      activeScenario = s.id; renderScenarios();
+      const r = responses[s.id];
+      chatMessages = [
+        { type:'user', text: s.question, time:'Just now' },
+        { type:'mary', text: r.text, actions: r.actions, time:'Just now' }
+      ];
+      renderChat();
+      if(r.badge && !badges.includes(r.badge)){
+        setTimeout(()=>{ badges.push(r.badge); updateJourney(); }, 800);
+      }
+    }
+
+    // Send message (demo response)
+    document.getElementById('sendBtn').addEventListener('click', sendUserMsg);
+    document.getElementById('userInput').addEventListener('keypress', e=>{ if(e.key==='Enter') sendUserMsg(); });
+    function sendUserMsg(){
+      const input = document.getElementById('userInput');
+      const v = input.value.trim(); if(!v) return;
+      chatMessages.push({type:'user', text:v, time:'Just now'});
+      chatMessages.push({type:'mary', text:"I'm here to help with your reproductive health questions. This is a demo, so try one of the example scenarios above to see how I respond with expert, compassionate guidance from Dr. Mary Abusief.", time:'Just now'});
+      input.value=''; renderChat();
+    }
+
+    // Journey rendering
+    const allBadges = ['Fertility Aware','Treatment Navigator','Resilient Heart','PCOS Informed','Science Seeker'];
+    function updateJourney(){
+      const grid = document.getElementById('badgesGrid');
+      grid.innerHTML='';
+      allBadges.forEach(name=>{
+        const d = document.createElement('div');
+        const earned = badges.includes(name);
+        d.className = 'badge-card' + (earned ? ' earned' : '');
+        d.innerHTML = `<div style="font-size:32px">🏅</div><h4 style="margin:.75rem 0 0 0">${name}</h4>` + (earned? `<div class="check-dot">✓</div>`:'');
+        grid.appendChild(d);
+      });
+      const fill = document.getElementById('progressFill');
+      const pct = (badges.length / allBadges.length) * 100;
+      fill.style.width = pct + '%';
+      document.getElementById('progressText').textContent = `${badges.length} of ${allBadges.length} milestones completed`;
+    }
+
+    // Init
+    renderScenarios();
+    renderChat();
+    updateJourney();
+  </script>
+</body>
+</html>
