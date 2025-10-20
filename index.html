@@ -73,7 +73,7 @@
     .index-card-badge { background: #1a2030; color: #00d4ff; padding: 4px 12px; border-radius: 12px; font-size: .8rem; font-weight: 600; }
     a.index-card-link { text-decoration: none; color: inherit; display: block; }
 
-    /* Small utility styles for upload UI */
+    /* Upload UI */
     .btn {
       display:inline-block; padding:10px 16px; border:1px solid #00d4ff;
       border-radius:10px; color:#00d4ff; background:transparent; cursor:pointer;
@@ -84,6 +84,7 @@
       background:#0f1422; border:1px solid #1a2030; color:#e0e0e0;
       padding:10px 12px; border-radius:10px;
     }
+    .select { appearance:none; }
     .del-pill {
       background:#1a2030; color:#ff6b6b; border:1px solid #2a2a2a;
       padding:4px 8px; border-radius:999px; font-size:.75rem; cursor:pointer;
@@ -114,12 +115,12 @@
       <a href="#industry">Industry</a>
       <a href="#dashboards">Dashboards</a>
       <a href="#research">Research</a>
-      <a href="#uploads">Uploads</a><!-- NEW -->
+      <a href="#uploads">Uploads</a>
     </div>
   </div>
 
   <script>
-    // Smooth scrolling between section links
+    // Smooth scrolling
     document.querySelectorAll('.navbar-links a').forEach(link => {
       link.addEventListener('click', e => {
         e.preventDefault();
@@ -137,13 +138,13 @@
     </p>
   </div>
 
-  <!-- Add id="all" so the "All" link scrolls here -->
+  <!-- All -->
   <div class="container" id="all">
     <h2 class="section-title">Available Indexes</h2>
 
     <!-- ===== BrandRank Index Suite ===== -->
     <h3 class="subsection-title" id="brandrank">BrandRank Index Suite</h3>
-    <div class="index-grid">
+    <div class="index-grid" id="brandrankGrid">
       <a href="BR-BrandRank100-BestOfCPG (3).html" class="index-card-link">
         <div class="index-card">
           <div class="index-card-icon">🏆</div>
@@ -204,7 +205,7 @@
 
     <!-- ===== Industry & Category Indexes ===== -->
     <h3 class="subsection-title" id="industry">Industry & Category Indexes</h3>
-    <div class="index-grid">
+    <div class="index-grid" id="industryGrid">
       <a href="BrandRankAI-FitnessWellnessIndex-June2025.html" class="index-card-link">
         <div class="index-card"><div class="index-card-icon">💪</div>
           <h3 class="index-card-title">Fitness & Wellness Index — Jun 2025</h3>
@@ -299,7 +300,7 @@
 
     <!-- ===== Dashboards & Presentations ===== -->
     <h3 class="subsection-title" id="dashboards">Dashboards & Presentations</h3>
-    <div class="index-grid">
+    <div class="index-grid" id="dashboardsGrid">
       <a href="navratil_executive_presentation.html" class="index-card-link">
         <div class="index-card"><div class="index-card-icon">📑</div>
           <h3 class="index-card-title">Navratil — Executive Presentation</h3>
@@ -336,7 +337,6 @@
         </div>
       </a>
 
-      <!-- Featured items moved here to keep one place for decks/dashboards -->
       <a href="coaching-comparison-pres.html" class="index-card-link">
         <div class="index-card">
           <div class="index-card-icon">📊</div>
@@ -345,7 +345,6 @@
           <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
         </div>
       </a>
-      <!-- Using the updated version you uploaded -->
       <a href="power-brush-index_Updated.html" class="index-card-link">
         <div class="index-card">
           <div class="index-card-icon">⚙️</div>
@@ -374,7 +373,7 @@
 
     <!-- ===== Research, Tools & Experiments ===== -->
     <h3 class="subsection-title" id="research">Research, Tools & Experiments</h3>
-    <div class="index-grid">
+    <div class="index-grid" id="researchGrid">
       <a href="ai_media_prioritization_matrix (1).html" class="index-card-link">
         <div class="index-card"><div class="index-card-icon">🎛️</div>
           <h3 class="index-card-title">AI Media Prioritization Matrix</h3>
@@ -396,8 +395,6 @@
           <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
         </div>
       </a>
-
-      <!-- Note: filename says 2035 — linking exactly as provided -->
       <a href="CPG-Prompted-100-Q3-2035.html" class="index-card-link">
         <div class="index-card"><div class="index-card-icon">🧰</div>
           <h3 class="index-card-title">CPG Prompted 100 — Q3 2035</h3>
@@ -405,7 +402,6 @@
           <div class="index-card-meta"><span class="index-card-date">2035</span><span class="index-card-badge">Live</span></div>
         </div>
       </a>
-
       <a href="Lunchline LeaderBoard _ Claude _ Claude.html" class="index-card-link">
         <div class="index-card"><div class="index-card-icon">🥇</div>
           <h3 class="index-card-title">Lunchline Leaderboard — Claude</h3>
@@ -420,7 +416,6 @@
           <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
         </div>
       </a>
-
       <a href="financial_services_report (1) (1).html" class="index-card-link">
         <div class="index-card"><div class="index-card-icon">🏦</div>
           <h3 class="index-card-title">Financial Services Report</h3>
@@ -428,7 +423,6 @@
           <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
         </div>
       </a>
-
       <a href="Groomdex-July2025-BrandRank.html" class="index-card-link">
         <div class="index-card"><div class="index-card-icon">✂️</div>
           <h3 class="index-card-title">Groomdex — July 2025</h3>
@@ -445,27 +439,29 @@
       </a>
     </div>
 
-    <!-- ===== User Uploads (browser persisted) ===== -->
+    <!-- ===== Uploads (control panel only) ===== -->
     <h3 class="subsection-title" id="uploads">Uploads</h3>
-
     <div class="index-card" style="margin-bottom:24px;">
       <div class="index-card-icon">🗂️</div>
       <h3 class="index-card-title" style="margin-bottom:8px;">Add an HTML Page</h3>
       <p class="index-card-description" style="margin-bottom:16px;">
-        Upload an .html file and it will appear as a card below on this device. These uploads are saved only in your browser.
+        Choose a section, pick an icon, and upload an .html file. It will appear as a card at the top of that section on this device (saved in your browser).
       </p>
       <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
         <input id="uploadTitle" class="input" type="text" placeholder="Optional title (defaults to file name)"/>
+        <input id="uploadIcon" class="input" type="text" placeholder="Icon (e.g., 🧩)" style="width:120px"/>
+        <select id="uploadSection" class="input select" aria-label="Section">
+          <option value="brandrank">BrandRank</option>
+          <option value="industry">Industry</option>
+          <option value="dashboards">Dashboards</option>
+          <option value="research" selected>Research</option>
+        </select>
         <input id="uploadFile" class="input" type="file" accept=".html"/>
         <button id="uploadBtn" class="btn">Add to Page</button>
       </div>
       <p style="color:#707070; font-size:.85rem; margin-top:10px;">
-        Tip: use this to stage pages before committing them to the repo.
+        Note: browser-local only. Use this to stage pages before committing to the repo.
       </p>
-    </div>
-
-    <div class="index-grid" id="uploadsGrid">
-      <!-- Cards generated here -->
     </div>
 
   </div>
@@ -478,67 +474,42 @@
   <!-- Uploads logic -->
   <script>
   /*
-    Uploads are stored in localStorage under key "ihUploads" as:
-    [{ id, title, dateISO, contentText }]
-    - contentText is the raw HTML string
-    - Cards render into #uploadsGrid
-    - Clicking a card opens the uploaded HTML in a new tab
-    - Delete removes from localStorage and re-renders
+    Stores uploads in localStorage under "ihUploads" as:
+      { id, title, dateISO, contentText, section, icon }
+    Renders as index cards inside the chosen section's grid.
+    Cards are tagged with [data-upload="1"] for clean re-rendering.
   */
   (function() {
     const STORAGE_KEY = 'ihUploads';
-    const uploadTitleEl = document.getElementById('uploadTitle');
-    const uploadFileEl  = document.getElementById('uploadFile');
-    const uploadBtnEl   = document.getElementById('uploadBtn');
-    const uploadsGridEl = document.getElementById('uploadsGrid');
+    const SECTION_IDS = {
+      brandrank: 'brandrankGrid',
+      industry: 'industryGrid',
+      dashboards: 'dashboardsGrid',
+      research: 'researchGrid'
+    };
+
+    const uploadTitleEl   = document.getElementById('uploadTitle');
+    const uploadIconEl    = document.getElementById('uploadIcon');
+    const uploadSectionEl = document.getElementById('uploadSection');
+    const uploadFileEl    = document.getElementById('uploadFile');
+    const uploadBtnEl     = document.getElementById('uploadBtn');
 
     function getUploads() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : [];
-      } catch (e) {
-        console.error('Failed to parse uploads from storage', e);
-        return [];
-      }
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+      catch { return []; }
     }
+    function setUploads(arr) { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
 
-    function setUploads(arr) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
-    }
-
-    function openUpload(id) {
-      const uploads = getUploads();
-      const item = uploads.find(u => u.id === id);
-      if (!item) return;
-
-      const w = window.open('', '_blank');
-      if (!w) {
-        alert('Popup blocked. Please allow popups for this site.');
-        return;
-      }
-      const title = item.title || 'Uploaded Page';
-      w.document.open();
-      w.document.write(item.contentText);
-      try { w.document.title = title; } catch {}
-      w.document.close();
-    }
-
-    function deleteUpload(id) {
-      const uploads = getUploads().filter(u => u.id !== id);
-      setUploads(uploads);
-      renderUploads();
-    }
-
-    function uploadCard(u) {
-      const date = new Date(u.dateISO);
-      const niceDate = date.toLocaleDateString(undefined, { year:'numeric', month:'short', day:'numeric' });
-
+    // Build one card (anchor + inner .index-card) identical to your house style
+    function buildCard(u) {
       const a = document.createElement('a');
       a.href = '#';
       a.className = 'index-card-link';
+      a.setAttribute('data-upload', '1');
+      a.setAttribute('data-upload-id', u.id);
       a.addEventListener('click', (e) => {
         e.preventDefault();
-        openUpload(u.id);
+        openUpload(u);
       });
 
       const card = document.createElement('div');
@@ -546,7 +517,7 @@
 
       const icon = document.createElement('div');
       icon.className = 'index-card-icon';
-      icon.textContent = '🧩';
+      icon.textContent = u.icon || '🧩';
 
       const title = document.createElement('h3');
       title.className = 'index-card-title';
@@ -561,12 +532,11 @@
 
       const dateSpan = document.createElement('span');
       dateSpan.className = 'index-card-date';
+      const niceDate = new Date(u.dateISO).toLocaleDateString(undefined, { year:'numeric', month:'short', day:'numeric' });
       dateSpan.textContent = niceDate;
 
       const right = document.createElement('span');
-      right.style.display = 'flex';
-      right.style.gap = '8px';
-      right.style.alignItems = 'center';
+      right.style.display = 'flex'; right.style.gap = '8px'; right.style.alignItems = 'center';
 
       const badge = document.createElement('span');
       badge.className = 'index-card-badge';
@@ -578,8 +548,7 @@
       del.textContent = 'Delete';
       del.title = 'Remove from this browser';
       del.addEventListener('click', (e) => {
-        e.stopPropagation();
-        e.preventDefault();
+        e.stopPropagation(); e.preventDefault();
         if (confirm('Delete this uploaded page from your browser?')) {
           deleteUpload(u.id);
         }
@@ -587,7 +556,6 @@
 
       right.appendChild(badge);
       right.appendChild(del);
-
       meta.appendChild(dateSpan);
       meta.appendChild(right);
 
@@ -599,53 +567,82 @@
       return a;
     }
 
-    function renderUploads() {
+    function openUpload(u) {
+      const w = window.open('', '_blank');
+      if (!w) { alert('Popup blocked. Please allow popups for this site.'); return; }
+      const title = u.title || 'Uploaded Page';
+      w.document.open();
+      w.document.write(u.contentText);
+      try { w.document.title = title; } catch {}
+      w.document.close();
+    }
+
+    function deleteUpload(id) {
+      const next = getUploads().filter(x => x.id !== id);
+      setUploads(next);
+      renderAll();
+    }
+
+    // Remove existing uploaded cards, then insert newest-first into selected grids
+    function renderAll() {
+      // clear previously rendered upload cards
+      Object.values(SECTION_IDS).forEach(gridId => {
+        const grid = document.getElementById(gridId);
+        if (!grid) return;
+        grid.querySelectorAll('[data-upload="1"]').forEach(node => node.remove());
+      });
+
       const uploads = getUploads();
-      uploadsGridEl.innerHTML = '';
-      if (!uploads.length) {
-        const p = document.createElement('p');
-        p.style.color = '#707070';
-        p.textContent = 'No uploads yet. Add an HTML file above to see it here.';
-        uploadsGridEl.appendChild(p);
-        return;
-      }
-      uploads.forEach(u => uploadsGridEl.appendChild(uploadCard(u)));
+      // newest-first
+      uploads.sort((a,b) => new Date(b.dateISO) - new Date(a.dateISO));
+
+      uploads.forEach(u => {
+        const gridId = SECTION_IDS[u.section] || SECTION_IDS.research;
+        const grid = document.getElementById(gridId);
+        if (!grid) return;
+        const card = buildCard(u);
+        // prepend to top of grid
+        if (grid.firstChild) grid.insertBefore(card, grid.firstChild);
+        else grid.appendChild(card);
+      });
     }
 
     uploadBtnEl.addEventListener('click', () => {
       const file = uploadFileEl.files && uploadFileEl.files[0];
-      if (!file) {
-        alert('Choose an .html file first.');
-        return;
-      }
-      if (!/\.html?$/i.test(file.name)) {
-        alert('Please select a .html file.');
-        return;
-      }
+      if (!file) { alert('Choose an .html file first.'); return; }
+      if (!/\.html?$/i.test(file.name)) { alert('Please select a .html file.'); return; }
 
       const reader = new FileReader();
       reader.onload = (e) => {
         const contentText = e.target.result;
         const title = (uploadTitleEl.value || file.name.replace(/\.[^/.]+$/, '')).trim();
-        const newItem = {
-          id: 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
-          title,
+        const icon  = (uploadIconEl.value || '').trim() || '🧩';
+        const section = uploadSectionEl.value || 'research';
+
+        const item = {
+          id: 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2,8),
+          title, icon, section,
           dateISO: new Date().toISOString(),
           contentText
         };
         const uploads = getUploads();
-        uploads.unshift(newItem);
+        uploads.unshift(item);
         setUploads(uploads);
 
         uploadTitleEl.value = '';
-        uploadFileEl.value = '';
-        renderUploads();
-        document.getElementById('uploads').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        uploadIconEl.value  = '';
+        uploadFileEl.value  = '';
+        renderAll();
+
+        // smooth jump to section
+        const anchor = document.getElementById(section);
+        if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
       };
       reader.readAsText(file);
     });
 
-    renderUploads();
+    // Initial paint
+    renderAll();
   })();
   </script>
 </body>
