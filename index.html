@@ -73,6 +73,22 @@
     .index-card-badge { background: #1a2030; color: #00d4ff; padding: 4px 12px; border-radius: 12px; font-size: .8rem; font-weight: 600; }
     a.index-card-link { text-decoration: none; color: inherit; display: block; }
 
+    /* Small utility styles for upload UI */
+    .btn {
+      display:inline-block; padding:10px 16px; border:1px solid #00d4ff;
+      border-radius:10px; color:#00d4ff; background:transparent; cursor:pointer;
+      font-weight:600; transition:all .2s ease; text-decoration:none;
+    }
+    .btn:hover { background:#001b22; box-shadow:0 6px 16px rgba(0,212,255,.2);}
+    .input {
+      background:#0f1422; border:1px solid #1a2030; color:#e0e0e0;
+      padding:10px 12px; border-radius:10px;
+    }
+    .del-pill {
+      background:#1a2030; color:#ff6b6b; border:1px solid #2a2a2a;
+      padding:4px 8px; border-radius:999px; font-size:.75rem; cursor:pointer;
+    }
+
     .footer { text-align: center; padding: 40px 20px; color: #707070; border-top: 1px solid #1a2030; margin-top: 60px; }
     .footer a { color: #00d4ff; text-decoration: none; }
     .footer a:hover { text-decoration: underline; }
@@ -98,6 +114,7 @@
       <a href="#industry">Industry</a>
       <a href="#dashboards">Dashboards</a>
       <a href="#research">Research</a>
+      <a href="#uploads">Uploads</a><!-- NEW -->
     </div>
   </div>
 
@@ -423,9 +440,32 @@
         <div class="index-card"><div class="index-card-icon">💊</div>
           <h3 class="index-card-title">Autism Research — September 2025</h3>
           <p class="index-card-description">Over the counter medication analysis.</p>
-          <div class="index-car-meta"><span class="index-card-date">Sept 2025</span><span class="index-card-badge">Live</span></div>
+          <div class="index-card-meta"><span class="index-card-date">Sept 2025</span><span class="index-card-badge">Live</span></div>
         </div>
       </a>
+    </div>
+
+    <!-- ===== User Uploads (browser persisted) ===== -->
+    <h3 class="subsection-title" id="uploads">Uploads</h3>
+
+    <div class="index-card" style="margin-bottom:24px;">
+      <div class="index-card-icon">🗂️</div>
+      <h3 class="index-card-title" style="margin-bottom:8px;">Add an HTML Page</h3>
+      <p class="index-card-description" style="margin-bottom:16px;">
+        Upload an .html file and it will appear as a card below on this device. These uploads are saved only in your browser.
+      </p>
+      <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+        <input id="uploadTitle" class="input" type="text" placeholder="Optional title (defaults to file name)"/>
+        <input id="uploadFile" class="input" type="file" accept=".html"/>
+        <button id="uploadBtn" class="btn">Add to Page</button>
+      </div>
+      <p style="color:#707070; font-size:.85rem; margin-top:10px;">
+        Tip: use this to stage pages before committing them to the repo.
+      </p>
+    </div>
+
+    <div class="index-grid" id="uploadsGrid">
+      <!-- Cards generated here -->
     </div>
 
   </div>
@@ -434,5 +474,179 @@
     <p>&copy; 2025 Index Hub. Built with data intelligence in mind.</p>
     <p><a href="https://github.com/NickoN123/llm-analysis-dashboard">GitHub</a></p>
   </div>
+
+  <!-- Uploads logic -->
+  <script>
+  /*
+    Uploads are stored in localStorage under key "ihUploads" as:
+    [{ id, title, dateISO, contentText }]
+    - contentText is the raw HTML string
+    - Cards render into #uploadsGrid
+    - Clicking a card opens the uploaded HTML in a new tab
+    - Delete removes from localStorage and re-renders
+  */
+  (function() {
+    const STORAGE_KEY = 'ihUploads';
+    const uploadTitleEl = document.getElementById('uploadTitle');
+    const uploadFileEl  = document.getElementById('uploadFile');
+    const uploadBtnEl   = document.getElementById('uploadBtn');
+    const uploadsGridEl = document.getElementById('uploadsGrid');
+
+    function getUploads() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        console.error('Failed to parse uploads from storage', e);
+        return [];
+      }
+    }
+
+    function setUploads(arr) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+    }
+
+    function openUpload(id) {
+      const uploads = getUploads();
+      const item = uploads.find(u => u.id === id);
+      if (!item) return;
+
+      const w = window.open('', '_blank');
+      if (!w) {
+        alert('Popup blocked. Please allow popups for this site.');
+        return;
+      }
+      const title = item.title || 'Uploaded Page';
+      w.document.open();
+      w.document.write(item.contentText);
+      try { w.document.title = title; } catch {}
+      w.document.close();
+    }
+
+    function deleteUpload(id) {
+      const uploads = getUploads().filter(u => u.id !== id);
+      setUploads(uploads);
+      renderUploads();
+    }
+
+    function uploadCard(u) {
+      const date = new Date(u.dateISO);
+      const niceDate = date.toLocaleDateString(undefined, { year:'numeric', month:'short', day:'numeric' });
+
+      const a = document.createElement('a');
+      a.href = '#';
+      a.className = 'index-card-link';
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        openUpload(u.id);
+      });
+
+      const card = document.createElement('div');
+      card.className = 'index-card';
+
+      const icon = document.createElement('div');
+      icon.className = 'index-card-icon';
+      icon.textContent = '🧩';
+
+      const title = document.createElement('h3');
+      title.className = 'index-card-title';
+      title.textContent = u.title || 'Uploaded HTML';
+
+      const desc = document.createElement('p');
+      desc.className = 'index-card-description';
+      desc.textContent = 'User-uploaded page stored locally in your browser. Click to open.';
+
+      const meta = document.createElement('div');
+      meta.className = 'index-card-meta';
+
+      const dateSpan = document.createElement('span');
+      dateSpan.className = 'index-card-date';
+      dateSpan.textContent = niceDate;
+
+      const right = document.createElement('span');
+      right.style.display = 'flex';
+      right.style.gap = '8px';
+      right.style.alignItems = 'center';
+
+      const badge = document.createElement('span');
+      badge.className = 'index-card-badge';
+      badge.textContent = 'Uploaded';
+
+      const del = document.createElement('button');
+      del.className = 'del-pill';
+      del.type = 'button';
+      del.textContent = 'Delete';
+      del.title = 'Remove from this browser';
+      del.addEventListener('click', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (confirm('Delete this uploaded page from your browser?')) {
+          deleteUpload(u.id);
+        }
+      });
+
+      right.appendChild(badge);
+      right.appendChild(del);
+
+      meta.appendChild(dateSpan);
+      meta.appendChild(right);
+
+      card.appendChild(icon);
+      card.appendChild(title);
+      card.appendChild(desc);
+      card.appendChild(meta);
+      a.appendChild(card);
+      return a;
+    }
+
+    function renderUploads() {
+      const uploads = getUploads();
+      uploadsGridEl.innerHTML = '';
+      if (!uploads.length) {
+        const p = document.createElement('p');
+        p.style.color = '#707070';
+        p.textContent = 'No uploads yet. Add an HTML file above to see it here.';
+        uploadsGridEl.appendChild(p);
+        return;
+      }
+      uploads.forEach(u => uploadsGridEl.appendChild(uploadCard(u)));
+    }
+
+    uploadBtnEl.addEventListener('click', () => {
+      const file = uploadFileEl.files && uploadFileEl.files[0];
+      if (!file) {
+        alert('Choose an .html file first.');
+        return;
+      }
+      if (!/\.html?$/i.test(file.name)) {
+        alert('Please select a .html file.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const contentText = e.target.result;
+        const title = (uploadTitleEl.value || file.name.replace(/\.[^/.]+$/, '')).trim();
+        const newItem = {
+          id: 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+          title,
+          dateISO: new Date().toISOString(),
+          contentText
+        };
+        const uploads = getUploads();
+        uploads.unshift(newItem);
+        setUploads(uploads);
+
+        uploadTitleEl.value = '';
+        uploadFileEl.value = '';
+        renderUploads();
+        document.getElementById('uploads').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
+      reader.readAsText(file);
+    });
+
+    renderUploads();
+  })();
+  </script>
 </body>
 </html>
