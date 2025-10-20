@@ -138,6 +138,33 @@
     </p>
   </div>
 
+  <!-- ===== Uploads (control panel at top) ===== -->
+  <div class="container" id="uploads" style="padding-top:30px;">
+    <h3 class="subsection-title">Uploads</h3>
+    <div class="index-card" style="margin-bottom:24px;">
+      <div class="index-card-icon">🗂️</div>
+      <h3 class="index-card-title" style="margin-bottom:8px;">Add an HTML Page</h3>
+      <p class="index-card-description" style="margin-bottom:16px;">
+        Choose a section, pick an icon, and upload an .html file. It will appear as a card at the top of that section on this device (saved in your browser).
+      </p>
+      <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+        <input id="uploadTitle" class="input" type="text" placeholder="Optional title (defaults to file name)"/>
+        <input id="uploadIcon" class="input" type="text" placeholder="Icon (e.g., 🧩)" style="width:120px"/>
+        <select id="uploadSection" class="input select" aria-label="Section">
+          <option value="brandrank">BrandRank</option>
+          <option value="industry">Industry</option>
+          <option value="dashboards">Dashboards</option>
+          <option value="research" selected>Research</option>
+        </select>
+        <input id="uploadFile" class="input" type="file" accept=".html"/>
+        <button id="uploadBtn" class="btn">Add to Page</button>
+      </div>
+      <p style="color:#707070; font-size:.85rem; margin-top:10px;">
+        Note: browser-local only. Use this to stage pages before committing to the repo.
+      </p>
+    </div>
+  </div>
+
   <!-- All -->
   <div class="container" id="all">
     <h2 class="section-title">Available Indexes</h2>
@@ -410,7 +437,7 @@
         </div>
       </a>
       <a href="BeanSeenCoffeeTracker.html" class="index-card-link">
-        <div class="index-card"><div class="index-card-icon">☕</div>
+        <div class="index-card"><div className="index-card-icon">☕</div>
           <h3 class="index-card-title">BeanSeen Coffee Tracker</h3>
           <p class="index-card-description">Coffee brand visibility and inventory mentions across engines.</p>
           <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
@@ -438,32 +465,6 @@
         </div>
       </a>
     </div>
-
-    <!-- ===== Uploads (control panel only) ===== -->
-    <h3 class="subsection-title" id="uploads">Uploads</h3>
-    <div class="index-card" style="margin-bottom:24px;">
-      <div class="index-card-icon">🗂️</div>
-      <h3 class="index-card-title" style="margin-bottom:8px;">Add an HTML Page</h3>
-      <p class="index-card-description" style="margin-bottom:16px;">
-        Choose a section, pick an icon, and upload an .html file. It will appear as a card at the top of that section on this device (saved in your browser).
-      </p>
-      <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
-        <input id="uploadTitle" class="input" type="text" placeholder="Optional title (defaults to file name)"/>
-        <input id="uploadIcon" class="input" type="text" placeholder="Icon (e.g., 🧩)" style="width:120px"/>
-        <select id="uploadSection" class="input select" aria-label="Section">
-          <option value="brandrank">BrandRank</option>
-          <option value="industry">Industry</option>
-          <option value="dashboards">Dashboards</option>
-          <option value="research" selected>Research</option>
-        </select>
-        <input id="uploadFile" class="input" type="file" accept=".html"/>
-        <button id="uploadBtn" class="btn">Add to Page</button>
-      </div>
-      <p style="color:#707070; font-size:.85rem; margin-top:10px;">
-        Note: browser-local only. Use this to stage pages before committing to the repo.
-      </p>
-    </div>
-
   </div>
 
   <div class="footer">
@@ -500,7 +501,6 @@
     }
     function setUploads(arr) { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
 
-    // Build one card (anchor + inner .index-card) identical to your house style
     function buildCard(u) {
       const a = document.createElement('a');
       a.href = '#';
@@ -583,9 +583,7 @@
       renderAll();
     }
 
-    // Remove existing uploaded cards, then insert newest-first into selected grids
     function renderAll() {
-      // clear previously rendered upload cards
       Object.values(SECTION_IDS).forEach(gridId => {
         const grid = document.getElementById(gridId);
         if (!grid) return;
@@ -593,7 +591,6 @@
       });
 
       const uploads = getUploads();
-      // newest-first
       uploads.sort((a,b) => new Date(b.dateISO) - new Date(a.dateISO));
 
       uploads.forEach(u => {
@@ -601,7 +598,6 @@
         const grid = document.getElementById(gridId);
         if (!grid) return;
         const card = buildCard(u);
-        // prepend to top of grid
         if (grid.firstChild) grid.insertBefore(card, grid.firstChild);
         else grid.appendChild(card);
       });
@@ -634,14 +630,12 @@
         uploadFileEl.value  = '';
         renderAll();
 
-        // smooth jump to section
         const anchor = document.getElementById(section);
         if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
       };
       reader.readAsText(file);
     });
 
-    // Initial paint
     renderAll();
   })();
   </script>
