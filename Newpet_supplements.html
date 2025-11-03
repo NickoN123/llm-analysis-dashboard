@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrandRank.AI Pet Supplements Index (Q4-2025)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .dashboard-container {
+            max-width: 1800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            background: linear-gradient(90deg, #0a0e1a 0%, #1a1f35 100%);
+            padding: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #00d4ff;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .header h2 {
+            font-size: 1.4em;
+            font-weight: 400;
+            color: #ffffff;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        .info-banner {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid #00d4ff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #ffffff;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .controls {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+        }
+
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .brand-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .brand-btn {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-btn:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+        }
+
+        .brand-btn.active {
+            background: #00d4ff;
+            color: #0a0e1a;
+            border-color: #00d4ff;
+        }
+
+        .clear-btn {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+        }
+
+        .clear-btn:hover {
+            background: #ff6b6b;
+            color: #ffffff;
+        }
+
+        .search-info {
+            color: #00d4ff;
+            font-size: 13px;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+            min-width: 1200px;
+        }
+
+        th {
+            background: linear-gradient(135deg, #1a1f35 0%, #2a2f45 100%);
+            color: #00d4ff;
+            padding: 15px 10px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-bottom: 2px solid #00d4ff;
+        }
+
+        th:first-child {
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            text-align: left;
+            width: 25%;
+            border-right: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        td {
+            padding: 12px 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            vertical-align: middle;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        td:first-child {
+            background: rgba(255, 255, 255, 0.03);
+            font-weight: 600;
+            color: #ffffff;
+            position: sticky;
+            left: 0;
+            z-index: 5;
+            border-right: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        tr:hover td {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .brand-highlight {
+            background: linear-gradient(90deg, #00d4ff, #4ecdc4) !important;
+            color: #0a0e1a !important;
+            font-weight: 700 !important;
+            box-shadow: 0 2px 10px rgba(0, 212, 255, 0.3);
+            transform: scale(1.02);
+            border-radius: 4px;
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%) !important;
+            color: #ffffff !important;
+            font-weight: 700;
+            text-align: left !important;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 11px;
+            padding: 12px 10px !important;
+        }
+
+        .species-header {
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%) !important;
+            color: #ffffff !important;
+            font-weight: 700;
+            text-align: left !important;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: 14px;
+            padding-left: 20px !important;
+        }
+
+        .stats-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.1);
+        }
+
+        .stat-title {
+            font-size: 12px;
+            color: #00d4ff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .performance-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-left: 5px;
+        }
+
+        .high-performance { background: #4ecdc4; }
+        .medium-performance { background: #ffd93d; }
+        .low-performance { background: #ff6b6b; }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animated {
+            animation: slideIn 0.6s ease-out;
+        }
+
+        .analysis-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+        }
+
+        .analysis-title {
+            font-size: 1.5em;
+            color: #00d4ff;
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .analysis-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .analysis-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .analysis-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .analysis-item:hover {
+            background: rgba(0, 212, 255, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .analysis-bullet {
+            font-size: 16px;
+            min-width: 20px;
+        }
+
+        .analysis-text {
+            color: #ffffff;
+            line-height: 1.5;
+            font-size: 13px;
+        }
+
+        .about-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 25px 30px;
+            text-align: center;
+        }
+
+        .about-title {
+            font-size: 1.2em;
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .about-text {
+            color: #ffffff;
+            line-height: 1.6;
+            font-size: 14px;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 1200px) {
+            .analysis-columns {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .brand-filters {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container animated">
+        <div class="header">
+            <h1>Answer Share: Pet Supplements (Q4-2025)</h1>
+            <h2>Brand Recommendations from Leading AI Platforms - Powered by BrandRank.AI</h2>
+            
+            <div class="info-banner">
+                Comprehensive analysis of 79 pet health questions across 6 leading AI platforms (including Amazon Rufus), covering both canine and feline supplement recommendations
+            </div>
+            
+            <div class="controls">
+                <div class="search-container">
+                    <input type="text" class="search-box" id="searchInput" placeholder="Search questions, brands, or categories..." 
+                           onkeyup="filterTable(this.value)">
+                    <div class="search-info" id="searchInfo"></div>
+                </div>
+                
+                <div class="brand-filters">
+                    <button class="brand-btn" onclick="highlightBrand('Pet Honesty')">Pet Honesty</button>
+                    <button class="brand-btn" onclick="highlightBrand('Zesty Paws')">Zesty Paws</button>
+                    <button class="brand-btn" onclick="highlightBrand('Nutramax')">Nutramax</button>
+                    <button class="brand-btn" onclick="highlightBrand('VetriScience')">VetriScience</button>
+                    <button class="brand-btn" onclick="highlightBrand('Purina')">Purina</button>
+                    <button class="brand-btn" onclick="highlightBrand('Native Pet')">Native Pet</button>
+                    <button class="brand-btn" onclick="highlightBrand('NaturVet')">NaturVet</button>
+                    <button class="brand-btn" onclick="highlightBrand('Only Natural Pet')">Only Natural Pet</button>
+                    <button class="brand-btn" onclick="highlightBrand('Nordic Naturals')">Nordic Naturals</button>
+                    <button class="brand-btn clear-btn" onclick="clearHighlights()">Clear All</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table id="comparisonTable">
+                <thead>
+                    <tr>
+                        <th>Question</th>
+                        <th>Amazon Rufus</th>
+                        <th>ChatGPT</th>
+                        <th>Google Gemini</th>
+                        <th>Claude</th>
+                        <th>DeepSeek</th>
+                        <th>X Grok</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- DOG SUPPLEMENTS -->
+                    <tr>
+                        <td class="species-header" colspan="7">🐕 DOG SUPPLEMENTS</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="category-header">Natural & Safety Standards</td>
+                        <td class="category-header">Amazon Rufus</td>
+                        <td class="category-header">ChatGPT</td>
+                        <td class="category-header">Google Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">X Grok</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best natural pet supplements?</td>
+                        <td>Native Pet 11-in-1</td>
+                        <td>Zesty Paws</td>
+                        <td>Zesty Paws</td>
+                        <td>Only Natural Pet</td>
+                        <td>Zesty Paws</td>
+                        <td>Zesty Paws</td>
+                    </tr>
+                    <tr>
+                        <td>Which pet supplements are made without artificial preservatives?</td>
+                        <td>Nordic Naturals Omega-3</td>
+                        <td>Native Pet</td>
+                        <td>Zesty Paws</td>
+                        <td>Zesty Paws</td>
+                        <td>The Honest Kitchen</td>
+                        <td>Pet Naturals</td>
+                    </tr>
+                    <tr>
+                        <td>Are there any non-GMO dog supplements on the market?</td>
+                        <td>Pet Honesty 10-in-1</td>
+                        <td>Wholistic Pet Organics</td>
+                        <td>Wholistic Pet Organics</td>
+                        <td>Only Natural Pet</td>
+                        <td>Pet Naturals of Vermont</td>
+                        <td>Natural Dog Company</td>
+                    </tr>
+                    <tr>
+                        <td>What are the safest holistic pet supplements?</td>
+                        <td>Fera Pets Dog Multivitamin</td>
+                        <td>Honest Paws</td>
+                        <td>VetriScience</td>
+                        <td>VetriScience</td>
+                        <td>VetriScience</td>
+                        <td>Only Natural Pet</td>
+                    </tr>
+                    <tr>
+                        <td>Which dog supplements avoid fillers like soy, wheat, and corn?</td>
+                        <td>Dr. Harvey's Herbal Multi-Vitamin</td>
+                        <td>Pet Honesty</td>
+                        <td>Zesty Paws</td>
+                        <td>Only Natural Pet</td>
+                        <td>Nutramax (Cosequin)</td>
+                        <td>Zesty Paws</td>
+                    </tr>
+                    <tr>
+                        <td>What pet supplement brands use clean-label ingredients?</td>
+                        <td>Native Pet</td>
+                        <td>Open Farm</td>
+                        <td>Native Pet</td>
+                        <td>Only Natural Pet</td>
+                        <td>Open Farm</td>
+                        <td>Natural Dog Company</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="category-header">Joint Health & Mobility</td>
+                        <td class="category-header">Amazon Rufus</td>
+                        <td class="category-header">ChatGPT</td>
+                        <td class="category-header">Google Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">X Grok</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best joint supplements for senior dogs?</td>
+                        <td>Nutramax Cosequin Senior</td>
+                        <td>Nutramax Dasuquin</td>
+                        <td>Nutramax Dasuquin</td>
+                        <td>Nutramax Cosequin</td>
+                        <td>Dasuquin</td>
+                        <td>Nutramax Cosequin</td>
+                    </tr>
+                    <tr>
+                        <td>How can I relieve my dog's joint stiffness naturally?</td>
+                        <td>Pet Honesty Hip & Joint Turmeric</td>
+                        <td>Turmeric</td>
+                        <td>Omega-3 Fatty Acids</td>
+                        <td>Glucosamine and chondroitin supplements</td>
+                        <td>Turmeric & fish oil</td>
+                        <td>Glucosamine and chondroitin</td>
+                    </tr>
+                    <tr>
+                        <td>What ingredients help with dog joint pain?</td>
+                        <td>Turmeric/Curcumin with BioPerine</td>
+                        <td>Glucosamine and chondroitin</td>
+                        <td>Glucosamine and chondroitin</td>
+                        <td>Glucosamine, chondroitin, MSM, and turmeric</td>
+                        <td>Glucosamine & chondroitin</td>
+                        <td>Glucosamine and chondroitin</td>
+                    </tr>
+                    <tr>
+                        <td>Are there soft chews for canine hip and joint mobility?</td>
+                        <td>Nutramax Cosequin Soft Chews</td>
+                        <td>VetriScience GlycoFlex Soft Chews</td>
+                        <td>Zesty Paws</td>
+                        <td>Zesty Paws</td>
+                        <td>Nutramax Welactin</td>
+                        <td>Zesty Paws</td>
+                    </tr>
+                    <tr>
+                        <td>What's the most effective supplement for dog arthritis?</td>
+                        <td>Nutramax Dasuquin with MSM</td>
+                        <td>Cosequin Max Strength</td>
+                        <td>Nutramax Dasuquin</td>
+                        <td>Nutramax Dasuquin</td>
+                        <td>Phycox</td>
+                        <td>Nutramax Cosequin</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best joint supplement for large breed dogs?</td>
+                        <td>Nutramax Dasuquin Large Dog</td>
+                        <td>Dasuquin Advanced</td>
+                        <td>Nutramax Dasuquin</td>
+                        <td>Nutramax Dasuquin</td>
+                        <td>GlycoFlex</td>
+                        <td>Nutramax Dasuquin</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best hip and joint supplements for senior dogs with arthritis?</td>
+                        <td>Nutramax Dasuquin Senior Large</td>
+                        <td>VetriScience GlycoFlex Stage 3</td>
+                        <td>Nutramax Cosequin</td>
+                        <td>Nutramax Dasuquin</td>
+                        <td>Cosequin DS Plus MSM</td>
+                        <td>WellyTails</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="category-header">Digestive Health & Probiotics</td>
+                        <td class="category-header">Amazon Rufus</td>
+                        <td class="category-header">ChatGPT</td>
+                        <td class="category-header">Google Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">X Grok</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best probiotics for dogs with sensitive stomachs?</td>
+                        <td>Purina Pro Plan FortiFlora</td>
+                        <td>Purina Pro Plan FortiFlora</td>
+                        <td>Purina Pro Plan FortiFlora</td>
+                        <td>Purina FortiFlora</td>
+                        <td>Purina Pro Plan FortiFlora</td>
+                        <td>Purina FortiFlora</td>
+                    </tr>
+                    <tr>
+                        <td>How do I improve my dog's digestion naturally?</td>
+                        <td>Purina Pro Plan FortiFlora</td>
+                        <td>Pumpkin</td>
+                        <td>Pumpkin</td>
+                        <td>High-quality probiotics and digestive enzymes</td>
+                        <td>Pumpkin puree</td>
+                        <td>Probiotics and prebiotics</td>
+                    </tr>
+                    <tr>
+                        <td>What supplements help with dog diarrhea or gas?</td>
+                        <td>Purina Pro Plan FortiFlora</td>
+                        <td>Probiotics</td>
+                        <td>Purina Pro Plan FortiFlora</td>
+                        <td>Purina FortiFlora</td>
+                        <td>Bernie's Perfect Poop</td>
+                        <td>Probiotics and digestive enzymes</td>
+                    </tr>
+                    <tr>
+                        <td>Which brands offer probiotics in soft chew form?</td>
+                        <td>Zesty Paws Probiotics</td>
+                        <td>Zesty Paws Probiotic Bites</td>
+                        <td>Zesty Paws</td>
+                        <td>Zesty Paws</td>
+                        <td>Zesty Paws Probiotic Bites</td>
+                        <td>NaturVet</td>
+                    </tr>
+                    <tr>
+                        <td>What's a good gut health supplement for dogs?</td>
+                        <td>Purina Pro Plan FortiFlora</td>
+                        <td>Native Pet Probiotic</td>
+                        <td>Zesty Paws</td>
+                        <td>Native Pet</td>
+                        <td>Adored Beast Love Bugs</td>
+                        <td>Purina FortiFlora</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="category-header">Calming & Behavioral Support</td>
+                        <td class="category-header">Amazon Rufus</td>
+                        <td class="category-header">ChatGPT</td>
+                        <td class="category-header">Google Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">X Grok</td>
+                    </tr>
+                    <tr>
+                        <td>What are the most effective natural calming treats for dogs?</td>
+                        <td>Natural Dog Company Calming Chews</td>
+                        <td>Calming Dog by Zesty Paws</td>
+                        <td>Pet Honesty</td>
+                        <td>NaturVet</td>
+                        <td>VetriScience Composure</td>
+                        <td>VetriScience Composure</td>
+                    </tr>
+                    <tr>
+                        <td>How can I ease my dog's separation anxiety with supplements?</td>
+                        <td>Purina Pro Plan Calming Care</td>
+                        <td>Hemp Calming Chews by Honest Paws</td>
+                        <td>VetriScience Calm & Confident</td>
+                        <td>VetriScience Composure</td>
+                        <td>NaturVet Quiet Moments</td>
+                        <td>L-theanine and chamomile</td>
+                    </tr>
+                    <tr>
+                        <td>Are there melatonin-based supplements for anxious dogs?</td>
+                        <td>NaturVet Quiet Moments</td>
+                        <td>NaturVet Quiet Moments</td>
+                        <td>Wonder Paws</td>
+                        <td>VetriScience Composure</td>
+                        <td>Pet Naturals Calming</td>
+                        <td>Zesty Paws Melatonin</td>
+                    </tr>
+                    <tr>
+                        <td>What's a good bedtime supplement for hyperactive pets?</td>
+                        <td>Dog Melatonin Calming Chews</td>
+                        <td>Zesty Paws Calming Bites</td>
+                        <td>Zesty Paws</td>
+                        <td>NaturVet Quiet Moments</td>
+                        <td>VetriScience Mega-Tranquility</td>
+                        <td>NaturVet Quiet Moments</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best anxiety supplements for dogs during thunderstorms?</td>
+                        <td>NaturVet Quiet Moments</td>
+                        <td>ThunderWunders Calming Chews</td>
+                        <td>VetriScience Calm & Confident</td>
+                        <td>VetriScience Composure</td>
+                        <td>ThunderWunders</td>
+                        <td>VetriScience Composure</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="category-header">Coat, Skin & Allergy Management</td>
+                        <td class="category-header">Amazon Rufus</td>
+                        <td class="category-header">ChatGPT</td>
+                        <td class="category-header">Google Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">X Grok</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best supplement for a shiny dog coat?</td>
+                        <td>Zesty Paws Wild Alaskan Omega-3</td>
+                        <td>Nutri-Vet Fish Oil</td>
+                        <td>Zesty Paws</td>
+                        <td>Nordic Naturals Omega-3</td>
+                        <td>Nordic Naturals Omega-3</td>
+                        <td>Zesty Paws Omega Bites</td>
+                    </tr>
+                    <tr>
+                        <td>What helps relieve dog itching and dry skin?</td>
+                        <td>Zesty Paws Dog Allergy Relief</td>
+                        <td>Salmon oil</td>
+                        <td>Omega-3 Fatty Acids</td>
+                        <td>Omega-3 fatty acids and supplements</td>
+                        <td>Wild Salmon Oil</td>
+                        <td>Omega-3 fatty acids</td>
+                    </tr>
+                    <tr>
+                        <td>Are there allergy supplements for dogs with itchy ears?</td>
+                        <td>Zesty Paws Dog Allergy Relief</td>
+                        <td>Vet's Best Seasonal Allergy Support</td>
+                        <td>VetriScience</td>
+                        <td>Zesty Paws Allergy Immune</td>
+                        <td>Only Natural Pet Allergy Support</td>
+                        <td>Quercetin and probiotics</td>
+                    </tr>
+                    <tr>
+                        <td>What natural oils improve a dog's coat and skin?</td>
+                        <td>Zesty Paws Wild Alaskan Omega-3</td>
+                        <td>Coconut oil</td>
+                        <td>Salmon Oil</td>
+                        <td>Fish oil, particularly salmon or krill oil</td>
+                        <td>Coconut oil</td>
+                        <td>Omega-3 fatty acids</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best supplements for dogs with seasonal allergies?</td>
+                        <td>Zesty Paws Dog Allergy Relief</td>
+                        <td>Pet Honesty Allergy Support</td>
+                        <td>Zesty Paws</td>
+                        <td>Zesty Paws Allergy Immune</td>
+                        <td>Vet's Best Seasonal Allergy Relief</td>
+                        <td>Zesty Paws Allergy Bites</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="category-header">Immune System & Daily Wellness</td>
+                        <td class="category-header">Amazon Rufus</td>
+                        <td class="category-header">ChatGPT</td>
+                        <td class="category-header">Google Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">X Grok</td>
+                    </tr>
+                    <tr>
+                        <td>What supplements support a dog's immune system naturally?</td>
+                        <td>Turkey Tail with Real Turkey Tail</td>
+                        <td>Zesty Paws Immunity Bites</td>
+                        <td>VetriScience</td>
+                        <td>VetriScience</td>
+                        <td>Four Leaf Rover Protect</td>
+                        <td>Antioxidants and vitamins</td>
+                    </tr>
+                    <tr>
+                        <td>What is the best daily wellness chew for dogs?</td>
+                        <td>Zesty Paws 8-in-1 Multivitamin</td>
+                        <td>Native Pet Daily</td>
+                        <td>Zesty Paws</td>
+                        <td>Pet Honesty 10-in-1</td>
+                        <td>Pet Honesty 10-for-1 Multivitamin</td>
+                        <td>Zesty Paws 8-in-1</td>
+                    </tr>
+                    <tr>
+                        <td>What's a good immune booster for dogs during allergy season?</td>
+                        <td>Zesty Paws Dog Allergy Relief</td>
+                        <td>VetriScience Immune Plus</td>
+                        <td>Zesty Paws</td>
+                        <td>Only Natural Pet</td>
+                        <td>VetriScience Canine Plus</td>
+                        <td>Zesty Paws Allergy Bites</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best supplements for aging dogs?</td>
+                        <td>NaturVet All-in-One Senior</td>
+                        <td>Nutramax Cosequin Senior</td>
+                        <td>Zesty Paws</td>
+                        <td>VetriScience</td>
+                        <td>VetriScience GlycoFlex 3</td>
+                        <td>Zesty Paws 11-in-1</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best all-in-one supplements for older dogs?</td>
+                        <td>Zesty Paws Senior Advanced</td>
+                        <td>PetLab Co. Multivitamin</td>
+                        <td>Zesty Paws</td>
+                        <td>Pet Honesty 10-in-1</td>
+                        <td>Nutra Thrive</td>
+                        <td>Zesty Paws Senior Bites</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best senior dog supplement for energy and mobility?</td>
+                        <td>NAD+ Precursor with NMN Alternative</td>
+                        <td>Zesty Paws Senior Mobility Bites</td>
+                        <td>Nutramax Cosequin</td>
+                        <td>Nutramax Dasuquin with MSM</td>
+                        <td>Doggie Dailies Senior</td>
+                        <td>Pet Naturals Daily Multi</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="category-header">Format & Palatability</td>
+                        <td class="category-header">Amazon Rufus</td>
+                        <td class="category-header">ChatGPT</td>
+                        <td class="category-header">Google Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">X Grok</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best-tasting dog supplements?</td>
+                        <td>Googipet Premium 10-in-1 (Peanut Butter)</td>
+                        <td>Greenies Supplements</td>
+                        <td>Embark</td>
+                        <td>Zesty Paws</td>
+                        <td>Pet 'n Shape Churro Chews</td>
+                        <td>Zesty Paws Senior Bites</td>
+                    </tr>
+                    <tr>
+                        <td>Which pet supplements come in easy-to-give treat form?</td>
+                        <td>Zesty Paws (Peanut Butter)</td>
+                        <td>Zesty Paws Soft Chews</td>
+                        <td>Zesty Paws</td>
+                        <td>Zesty Paws</td>
+                        <td>VetriScience Vetri Lysine</td>
+                        <td>Zesty Paws</td>
+                    </tr>
+                    <tr>
+                        <td>What are the most palatable supplements for picky pets?</td>
+                        <td>Liquid Vet Total & Complete</td>
+                        <td>PetLab Co. Chews</td>
+                        <td>Embark</td>
+                        <td>VetriScience</td>
+                        <td>Solid Gold Berry Balance</td>
+                        <td>Zesty Paws Soft Chews</td>
+                    </tr>
+                    <tr>
+                        <td>What's better: soft chews or pills for dogs?</td>
+                        <td>Soft Chews</td>
+                        <td>Soft chews</td>
+                        <td>Soft chews</td>
+                        <td>Soft chews are generally easier and more palatable</td>
+                        <td>Soft chews</td>
+                        <td>Soft chews</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="category-header">Market Performance & Value</td>
+                        <td class="category-header">Amazon Rufus</td>
+                        <td class="category-header">ChatGPT</td>
+                        <td class="category-header">Google Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">X Grok</td>
+                    </tr>
+                    <tr>
+                        <td>What are the most popular dog supplements on Amazon?</td>
+                        <td>Nutramax Cosequin (132ct)</td>
+                        <td>Zesty Paws</td>
+                        <td>Zesty Paws</td>
+                        <td>Zesty Paws</td>
+                        <td>Zesty Paws (Amazon's Choice)</td>
+                        <td>Zesty Paws</td>
+                    </tr>
+                    <tr>
+                        <td>Which dog supplements have the best customer reviews?</td>
+                        <td>Nutramax Cosequin (132ct)</td>
+                        <td>Pet Honesty</td>
+                        <td>Zesty Paws</td>
+                        <td>Nutramax Cosequin</td>
+                        <td>Nutramax (highest-rated)</td>
+                        <td>Zesty Paws</td>
+                    </tr>
+                    <tr>
+                        <td>What is the best affordable dog supplement brand?</td>
+                        <td>VetIQ</td>
+                        <td>NaturVet</td>
+                        <td>Vibeful</td>
+                        <td>NaturVet</td>
+                        <td>Nutri-Vet</td>
+                        <td>Zesty Paws</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best value pet supplement for dogs?</td>
+                        <td>ProSense Vitamin Solutions</td>
+                        <td>PetLab Co.</td>
+                        <td>Vibeful</td>
+                        <td>Zesty Paws</td>
+                        <td>Pet Honesty</td>
+                        <td>Zesty Paws</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best affordable alternative to expensive vet supplements?</td>
+                        <td>VetIQ Multivitamin</td>
+                        <td>VetIQ</td>
+                        <td>Vibeful</td>
+                        <td>NaturVet</td>
+                        <td>PetLab Co.</td>
+                        <td>Zesty Paws</td>
+                    </tr>
+                    <tr>
+                        <td>Which pet supplement brand has the best customer reviews?</td>
+                        <td>Nutramax (Cosequin brand)</td>
+                        <td>Zesty Paws</td>
+                        <td>Zesty Paws</td>
+                        <td>Nutramax</td>
+                        <td>Zesty Paws</td>
+                        <td>Zesty Paws</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best value for money in pet supplements?</td>
+                        <td>Native Pet 11-in-1</td>
+                        <td>NaturVet</td>
+                        <td>Vibeful</td>
+                        <td>Zesty Paws</td>
+                        <td>Pet Honesty</td>
+                        <td>Zesty Paws</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="category-header">Digital Experience & Brand Trust</td>
+                        <td class="category-header">Amazon Rufus</td>
+                        <td class="category-header">ChatGPT</td>
+                        <td class="category-header">Google Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">X Grok</td>
+                    </tr>
+                    <tr>
+                        <td>What pet supplement brand has the best website for product info and trust?</td>
+                        <td>Native Pet</td>
+                        <td>Open Farm</td>
+                        <td>Embark</td>
+                        <td>VetriScience</td>
+                        <td>The Honest Kitchen</td>
+                        <td>Zesty Paws</td>
+                    </tr>
+                    <tr>
+                        <td>Which pet supplement brand has the most engaging social media presence?</td>
+                        <td>Zesty Paws</td>
+                        <td>Zesty Paws</td>
+                        <td>Zesty Paws</td>
+                        <td>Zesty Paws</td>
+                        <td>Open Farm</td>
+                        <td>Zesty Paws</td>
+                    </tr>
+                    <tr>
+                        <td>Which pet wellness brand is most active on Instagram or TikTok?</td>
+                        <td>BarkBox</td>
+                        <td>Finn Pet Supplements</td>
+                        <td>Zesty Paws</td>
+                        <td>Zesty Paws</td>
+                        <td>Zesty Paws</td>
+                        <td>Zesty Paws</td>
+                    </tr>
+                    <tr>
+                        <td>What pet supplement company offers the most informative blog or pet health content?</td>
+                        <td>Native Pet</td>
+                        <td>Honest Paws Blog</td>
+                        <td>Embark</td>
+                        <td>Only Natural Pet</td>
+                        <td>VetriScience</td>
+                        <td>Zesty Paws</td>
+                    </tr>
+                    <tr>
+                        <td>Which pet supplement website makes it easiest to compare ingredients and benefits?</td>
+                        <td>Wholistic Pet Organics</td>
+                        <td>Native Pet Website</td>
+                        <td>Chewy</td>
+                        <td>Chewy</td>
+                        <td>Only Natural Pet</td>
+                        <td>Zesty Paws</td>
+                    </tr>
+                    <tr>
+                        <td>Which pet brand has the best online experience for buying supplements?</td>
+                        <td>Amazon (Multi-Brand)</td>
+                        <td>Chewy.com</td>
+                        <td>Chewy</td>
+                        <td>Chewy</td>
+                        <td>Chewy (for multi-brand comparisons)</td>
+                        <td>VetriScience Nu Cat</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="category-header">Dog Dental Health</td>
+                        <td class="category-header">Amazon Rufus</td>
+                        <td class="category-header">ChatGPT</td>
+                        <td class="category-header">Google Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">X Grok</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best dental supplement for dogs that actually works?</td>
+                        <td>VetriScience Dental Care Powder</td>
+                        <td>VetriScience Perio Support</td>
+                        <td>ProDen PlaqueOff</td>
+                        <td>Pet Honesty Dental</td>
+                        <td>Oravet Dental Chews</td>
+                        <td>VetriScience Perio</td>
+                    </tr>
+                    
+                    <!-- CAT SUPPLEMENTS -->
+                    <tr>
+                        <td class="species-header" colspan="7">🐈 CAT SUPPLEMENTS</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="category-header">Cat Daily Wellness & Life Stage</td>
+                        <td class="category-header">Amazon Rufus</td>
+                        <td class="category-header">ChatGPT</td>
+                        <td class="category-header">Google Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">X Grok</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best multivitamin chews for cats?</td>
+                        <td>Pet Honesty Cat Multivitamin Crunchy & Creamy</td>
+                        <td>Nutri-Vet Multi-Vite Chews</td>
+                        <td>Zesty Paws</td>
+                        <td>Pet Honesty</td>
+                        <td>VetriScience NuCat</td>
+                        <td>Tomlyn L-Lysine</td>
+                    </tr>
+                    <tr>
+                        <td>What's the most effective cat immune system supplement?</td>
+                        <td>Vetoquinol Viralys L-Lysine</td>
+                        <td>VetriScience Lysine Plus</td>
+                        <td>VetriScience</td>
+                        <td>Only Natural Pet</td>
+                        <td>Rx Vitamins for Pets</td>
+                        <td>VetriScience Nu Cat Senior</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best supplements for senior cats?</td>
+                        <td>VetriScience Senior 27+</td>
+                        <td>Nutramax Cosequin for Cats</td>
+                        <td>VetriScience</td>
+                        <td>VetriScience</td>
+                        <td>VetriScience GlycoFlex for Cats</td>
+                        <td>Tomlyn Felovite</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best kitten vitamins and supplements?</td>
+                        <td>VetriScience 27+</td>
+                        <td>Tomlyn High-Calorie Nutritional Gel</td>
+                        <td>ProDen PlaqueOff</td>
+                        <td>NaturVet</td>
+                        <td>Tomlyn Felovite</td>
+                        <td>Zesty Paws Multivitamin</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best natural supplements for cats?</td>
+                        <td>Fera Pets USDA Organic Probiotics</td>
+                        <td>NHV Natural Pet</td>
+                        <td>Wholistic Pet Organics</td>
+                        <td>Only Natural Pet</td>
+                        <td>Animal Essentials</td>
+                        <td>Fera Pets Multivitamin</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best all-in-one wellness supplements for cats?</td>
+                        <td>Pet Honesty Cat Multivitamin Crunchy & Creamy</td>
+                        <td>Zesty Paws 8-in-1 Bites for Cats</td>
+                        <td>Wholistic Pet Organics</td>
+                        <td>Pet Honesty</td>
+                        <td>Pet Honesty Multivitamin</td>
+                        <td>Pet Honesty Hairball</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="category-header">Cat Digestive & Internal Health</td>
+                        <td class="category-header">Amazon Rufus</td>
+                        <td class="category-header">ChatGPT</td>
+                        <td class="category-header">Google Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">X Grok</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best hairball supplement for cats?</td>
+                        <td>Pet Honesty Cat Hairball Support Crunchy & Creamy</td>
+                        <td>Pet Naturals Hairball Relief</td>
+                        <td>Tomlyn Laxatone</td>
+                        <td>Pet Honesty</td>
+                        <td>Vet's Best Hairball Relief</td>
+                        <td>Purina FortiFlora</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best probiotics for cats with sensitive stomachs?</td>
+                        <td>Purina Pro Plan FortiFlora Cat</td>
+                        <td>Purina Pro Plan FortiFlora Cat</td>
+                        <td>Purina Pro Plan FortiFlora</td>
+                        <td>Purina FortiFlora</td>
+                        <td>Purina Pro Plan FortiFlora</td>
+                        <td>Probiotics and enzymes</td>
+                    </tr>
+                    <tr>
+                        <td>What supplements help cats with diarrhea or vomiting?</td>
+                        <td>Purina Pro Plan FortiFlora Cat</td>
+                        <td>Proviable DC</td>
+                        <td>Purina Pro Plan FortiFlora</td>
+                        <td>Purina FortiFlora</td>
+                        <td>Proviable-DC</td>
+                        <td>Zesty Paws Urinary</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best cat urinary tract supplements?</td>
+                        <td>Pet Honesty Cat Urinary Tract Crunchy & Creamy</td>
+                        <td>Cranberry Relief by NaturVet</td>
+                        <td>Pet Honesty</td>
+                        <td>VetriScience</td>
+                        <td>VetriScience Urinary Support</td>
+                        <td>Standard Process Renal</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best kidney support supplements for cats?</td>
+                        <td>Epakitin</td>
+                        <td>Azodyl</td>
+                        <td>Vetoquinol Epakitin</td>
+                        <td>Vetoquinol Azodyl</td>
+                        <td>Azodyl</td>
+                        <td>Purina Pro Plan Weight</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best weight management supplements for indoor cats?</td>
+                        <td>Weight & Thyroid Support</td>
+                        <td>VetriScience Hairball + Weight Control</td>
+                        <td>VetriScience</td>
+                        <td>VetriScience</td>
+                        <td>VetriScience LeanCat</td>
+                        <td>Omega-3 fatty acids</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="category-header">Cat Skin, Coat & Respiratory Health</td>
+                        <td class="category-header">Amazon Rufus</td>
+                        <td class="category-header">ChatGPT</td>
+                        <td class="category-header">Google Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">X Grok</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best supplements for cat shedding?</td>
+                        <td>Pet Honesty Cat Skin & Coat Health Chews</td>
+                        <td>Shed-X</td>
+                        <td>VetriScience</td>
+                        <td>Nordic Naturals Omega-3</td>
+                        <td>Nordic Naturals Omega-3</td>
+                        <td>Zesty Paws Omega</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best omega-3 supplement for cats?</td>
+                        <td>Nordic Naturals Omega-3 Cat</td>
+                        <td>Nordic Naturals Omega-3 Pet</td>
+                        <td>Zesty Paws</td>
+                        <td>Nordic Naturals Pet</td>
+                        <td>Grizzly Salmon Oil</td>
+                        <td>Omega-3 fatty acids</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best supplements for cats with dry skin or dandruff?</td>
+                        <td>Omega 3 Fish Oil (Dandruff Treatment)</td>
+                        <td>Zesty Paws Omega Bites for Cats</td>
+                        <td>Zesty Paws</td>
+                        <td>Omega-3 fish oil supplements</td>
+                        <td>Nutramax Welactin</td>
+                        <td>Zesty Paws Omega</td>
+                    </tr>
+                    <tr>
+                        <td>What supplements help with cat coat health and shine?</td>
+                        <td>Zesty Paws Wild Alaskan Omega-3</td>
+                        <td>Salmon oil</td>
+                        <td>Zesty Paws</td>
+                        <td>Fish oil or salmon oil</td>
+                        <td>Missing Link Skin & Coat</td>
+                        <td>L-Lysine and probiotics</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best cat supplements for respiratory health?</td>
+                        <td>Vetoquinol Viralys L-Lysine</td>
+                        <td>VetriScience Lysine Plus</td>
+                        <td>Pet Wellbeing</td>
+                        <td>L-lysine supplements</td>
+                        <td>VetriScience Respiratory Support</td>
+                        <td>Zesty Paws Allergy</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best supplements for cats with allergies?</td>
+                        <td>Pet Honesty Cat Immune Support Lysine</td>
+                        <td>Pet Honesty Allergy Support</td>
+                        <td>VetriScience</td>
+                        <td>VetriScience</td>
+                        <td>Only Natural Pet Allergy Support</td>
+                        <td>Tomlyn L-Lysine</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best eye health supplements for cats?</td>
+                        <td>Vetoquinol Viralys L-Lysine</td>
+                        <td>Ocu-GLO for Cats</td>
+                        <td>Angels' Eyes</td>
+                        <td>VetriScience Vetri-Vision</td>
+                        <td>VetriScience Eye Support</td>
+                        <td>VetriScience Composure</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="category-header">Cat Behavioral & Format Preferences</td>
+                        <td class="category-header">Amazon Rufus</td>
+                        <td class="category-header">ChatGPT</td>
+                        <td class="category-header">Google Gemini</td>
+                        <td class="category-header">Claude</td>
+                        <td class="category-header">DeepSeek</td>
+                        <td class="category-header">X Grok</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best calming supplements for anxious cats?</td>
+                        <td>Pet Honesty Calming Chews for Cats (Chicken)</td>
+                        <td>Calming Care by Purina</td>
+                        <td>Zylkene</td>
+                        <td>VetriScience Composure</td>
+                        <td>Feliway Calming Chews</td>
+                        <td>L-theanine and chamomile</td>
+                    </tr>
+                    <tr>
+                        <td>What supplements help cats adjust to a new home?</td>
+                        <td>FELIWAY Optimum Diffuser</td>
+                        <td>Feliway Optimum</td>
+                        <td>FELIWAY</td>
+                        <td>Feliway (pheromone) with VetriScience Composure</td>
+                        <td>Composure Pro</td>
+                        <td>Zesty Paws Bites</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best cat supplements that cats actually want to eat?</td>
+                        <td>INABA Churu Cat Treats</td>
+                        <td>Greenies SmartBites</td>
+                        <td>Purina Pro Plan FortiFlora</td>
+                        <td>Pet Honesty</td>
+                        <td>Greenies Pill Pockets</td>
+                        <td>Zesty Paws</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best treat-form supplements for cats?</td>
+                        <td>Pet Honesty Calming Chews for Cats</td>
+                        <td>Temptations MixUps with Benefits</td>
+                        <td>Zesty Paws</td>
+                        <td>Pet Honesty</td>
+                        <td>VetriScience Lysine Treats</td>
+                        <td>Zesty Paws</td>
+                    </tr>
+                    <tr>
+                        <td>What are the best cat supplements for picky eaters?</td>
+                        <td>INABA Churu Cat Treats</td>
+                        <td>Deley Naturals Cat Vitamins</td>
+                        <td>Stella & Chewy's</td>
+                        <td>Pet Honesty</td>
+                        <td>Deley Naturals Immune Support</td>
+                        <td>Zesty Paws</td>
+                    </tr>
+                    <tr>
+                        <td>Which cat supplement brand has the best soft chews?</td>
+                        <td>Pet Honesty (Dual-Texture)</td>
+                        <td>VetriScience Composure Chews</td>
+                        <td>Pet Honesty</td>
+                        <td>Pet Honesty</td>
+                        <td>VetriScience Composure Chews</td>
+                        <td>VetriScience Perio</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best dental supplement for cats?</td>
+                        <td>VetriScience Dental Care Powder</td>
+                        <td>PlaqueOff Powder for Cats</td>
+                        <td>Greenies</td>
+                        <td>Pet Honesty Dental</td>
+                        <td>TropiClean Fresh Breath</td>
+                        <td>Zesty Paws Dental</td>
+                    </tr>
+                    <tr>
+                        <td>What's the best supplement for cat bad breath and oral health?</td>
+                        <td>Probiora for Cats</td>
+                        <td>Oxyfresh Pet Dental Water Additive</td>
+                        <td>ProDen PlaqueOff</td>
+                        <td>Pet Honesty Dental</td>
+                        <td>Vetradent Dental Wipes</td>
+                        <td>N/A</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="stats-panel">
+            <div class="stat-card">
+                <div class="stat-title">Most Recommended Overall</div>
+                <div class="stat-value">Zesty Paws <span class="performance-indicator high-performance"></span></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Joint Health Leader</div>
+                <div class="stat-value">Nutramax <span class="performance-indicator high-performance"></span></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Probiotic Consensus</div>
+                <div class="stat-value">Purina FortiFlora <span class="performance-indicator high-performance"></span></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Amazon Rufus Favorite</div>
+                <div class="stat-value">Nutramax Cosequin <span class="performance-indicator high-performance"></span></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Total Questions Analyzed</div>
+                <div class="stat-value">79 Questions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">AI Platforms Compared</div>
+                <div class="stat-value">6 Platforms</div>
+            </div>
+        </div>
+
+        <div class="about-section">
+            <h3 class="about-title">About BrandRank.AI</h3>
+            <p class="about-text">We help brands measure, protect, and grow trust through the power of AI-driven search and discovery. Combining AI with expert insight, we monitor major AI answer engines to identify vulnerabilities and opportunities, uncover key insights driving purchase behavior, and reveal category needs to strengthen brand equity and consumer loyalty.</p>
+        </div>
+    </div>
+
+    <script>
+        function filterTable(searchTerm) {
+            const table = document.getElementById('comparisonTable');
+            const rows = table.getElementsByTagName('tr');
+            
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                const firstCell = row.querySelector('td');
+                
+                if (firstCell && (firstCell.classList.contains('category-header') || firstCell.classList.contains('species-header'))) {
+                    row.style.display = '';
+                    continue;
+                }
+                
+                let found = false;
+                const cells = row.getElementsByTagName('td');
+                
+                for (let j = 0; j < cells.length; j++) {
+                    const cellText = cells[j].textContent.toLowerCase();
+                    if (cellText.includes(searchTerm.toLowerCase())) {
+                        found = true;
+                        break;
+                    }
+                }
+                
+                row.style.display = found ? '' : 'none';
+            }
+        }
+
+        function highlightBrand(brandName) {
+            clearHighlights();
+            
+            document.querySelectorAll('.brand-btn').forEach(btn => {
+                if (btn.textContent.trim() === brandName) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            const table = document.getElementById('comparisonTable');
+            const rows = table.querySelectorAll('tbody tr');
+            let matchCount = 0;
+            
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                cells.forEach((cell, index) => {
+                    if (index > 0 && 
+                        !cell.classList.contains('category-header') && 
+                        !cell.classList.contains('species-header')) {
+                        
+                        const cellText = cell.textContent.trim();
+                        if (cellText.toLowerCase().includes(brandName.toLowerCase())) {
+                            cell.classList.add('brand-highlight');
+                            matchCount++;
+                        }
+                    }
+                });
+            });
+            
+            const searchInfo = document.getElementById('searchInfo');
+            if (searchInfo) {
+                searchInfo.textContent = `✓ Highlighted ${matchCount} mentions of ${brandName}`;
+            }
+        }
+        
+        function clearHighlights() {
+            document.querySelectorAll('.brand-highlight').forEach(cell => {
+                cell.classList.remove('brand-highlight');
+            });
+            
+            document.querySelectorAll('.brand-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            const searchInfo = document.getElementById('searchInfo');
+            if (searchInfo) {
+                searchInfo.textContent = '';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableRows = document.querySelectorAll('tbody tr');
+            tableRows.forEach(row => {
+                row.addEventListener('mouseenter', function() {
+                    if (!this.querySelector('.category-header') && !this.querySelector('.species-header')) {
+                        this.style.transform = 'scale(1.01)';
+                        this.style.zIndex = '1';
+                    }
+                });
+                
+                row.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                    this.style.zIndex = 'auto';
+                });
+            });
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 'f':
+                        e.preventDefault();
+                        document.querySelector('.search-box').focus();
+                        break;
+                    case 'c':
+                        e.preventDefault();
+                        clearHighlights();
+                        break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
