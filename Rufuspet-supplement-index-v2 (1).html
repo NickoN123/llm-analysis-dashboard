@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Rufus Pet Supplement Index</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            overflow-x: auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #ccc;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: 80vh;
+            border: 1px solid #333;
+            border-radius: 8px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #000;
+            min-width: 1400px;
+        }
+        
+        th {
+            background-color: #222;
+            color: #fff;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: bold;
+            border-bottom: 2px solid #444;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #333;
+            vertical-align: top;
+            font-size: 14px;
+        }
+        
+        tr:hover {
+            background-color: #111;
+        }
+        
+        .category-header {
+            background-color: #333 !important;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        .category-header td {
+            padding: 15px 8px;
+            border-bottom: 2px solid #555;
+        }
+        
+        .funnel-upper { color: #90EE90; }
+        .funnel-mid { color: #FFD700; }
+        .funnel-lower { color: #cd7f32; }
+        
+        .brand-1 { color: #ffd700; font-weight: bold; }
+        .brand-2 { color: #c0c0c0; }
+        .brand-3 { color: #cd7f32; }
+        
+        .question-col { width: 22%; }
+        .funnel-col { width: 7%; }
+        .brand-col { width: 11%; }
+        .explanation-col { width: 23%; }
+        .ratings-col { width: 14%; }
+        .ahas-col { width: 15%; }
+        
+        .ratings-info {
+            font-size: 12px;
+            color: #ccc;
+        }
+        
+        .star-rating {
+            color: #ffd700;
+        }
+        
+        .ahas-text {
+            font-size: 12px;
+            color: #87ceeb;
+            font-style: italic;
+        }
+        
+        .search-controls {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #111;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+        
+        .search-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px;
+            background-color: #222;
+            border: 1px solid #555;
+            color: #fff;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+        
+        .company-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .company-btn {
+            padding: 8px 15px;
+            background-color: #333;
+            border: 1px solid #555;
+            color: #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .company-btn:hover {
+            background-color: #444;
+            border-color: #666;
+        }
+        
+        .company-btn.active {
+            background-color: #ffd700;
+            color: #000;
+            border-color: #ffd700;
+            font-weight: bold;
+        }
+        
+        .clear-btn {
+            background-color: #666 !important;
+            color: #fff !important;
+        }
+        
+        .clear-btn:hover {
+            background-color: #777 !important;
+        }
+        
+        .highlight {
+            background-color: #ffd700 !important;
+            color: #000 !important;
+            font-weight: bold;
+        }
+        
+        .search-highlight {
+            background-color: #ff6b6b !important;
+            color: #fff !important;
+        }
+        
+        .search-info {
+            color: #ccc;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Amazon Rufus Answer Share Tracker: Pet Supplements</h1>
+    <div class="subtitle">November 2025 | Powered by BrandRank</div>
+    
+    <div class="search-controls">
+        <input type="text" class="search-box" id="searchInput" placeholder="Search for brands, ingredients, or keywords...">
+        
+        <div class="company-buttons">
+            <button class="company-btn clear-btn" onclick="clearHighlights()">Clear All</button>
+            <button class="company-btn" data-company="pethonesty" onclick="highlightCompany('pethonesty')">Pet Honesty</button>
+            <button class="company-btn" data-company="zestypaws" onclick="highlightCompany('zestypaws')">Zesty Paws</button>
+            <button class="company-btn" data-company="nutramax" onclick="highlightCompany('nutramax')">Nutramax</button>
+            <button class="company-btn" data-company="purina" onclick="highlightCompany('purina')">Purina Pro Plan</button>
+            <button class="company-btn" data-company="native" onclick="highlightCompany('native')">Native Pet</button>
+            <button class="company-btn" data-company="vetriscience" onclick="highlightCompany('vetriscience')">VetriScience</button>
+        </div>
+        
+        <div class="search-info" id="searchInfo"></div>
+    </div>
+    
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th class="question-col">Question</th>
+                    <th class="funnel-col">Funnel</th>
+                    <th class="brand-col">Brand #1</th>
+                    <th class="brand-col">Brand #2</th>
+                    <th class="brand-col">Brand #3</th>
+                    <th class="explanation-col">Rationale for Top Choice</th>
+                    <th class="ratings-col">Ratings</th>
+                    <th class="ahas-col">Other Ahas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- DOG SUPPLEMENTS - Natural & Safety Standards -->
+                <tr class="category-header">
+                    <td colspan="8">DOG SUPPLEMENTS: NATURAL & SAFETY STANDARDS</td>
+                </tr>
+                <tr>
+                    <td>What are the best natural pet supplements?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Native Pet 11-in-1 Multivitamin</td>
+                    <td class="brand-2">24-in-1 Dog Vitamins</td>
+                    <td class="brand-3">Zesty Paws Multivitamin</td>
+                    <td>Native Pet leads with 2500mg+ active ingredients per scoop including collagen and probiotics</td>
+                    <td class="ratings-info"><span class="star-rating">4.4★</span> 3.4k reviews, $19.99</td>
+                    <td class="ahas-text">Powder form = 5x potency vs chews</td>
+                </tr>
+                <tr>
+                    <td>Which pet supplements are made without artificial preservatives?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Nordic Naturals Omega-3</td>
+                    <td class="brand-2">Dr. Harvey's Herbal Multi-Vitamin</td>
+                    <td class="brand-3">Natural Dog Company Super Greens</td>
+                    <td>Nordic Naturals uses only natural tocopherols as preservatives with pharmaceutical-grade fish oil</td>
+                    <td class="ratings-info"><span class="star-rating">4.5★</span> 11.7k reviews</td>
+                    <td class="ahas-text">Triglyceride form = better absorption</td>
+                </tr>
+                <tr>
+                    <td>Are there any non-GMO dog supplements on the market?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Pet Honesty 10-in-1</td>
+                    <td class="brand-2">Wholistic Pet Organics Canine Complete</td>
+                    <td class="brand-3">Balanced Breed All-in-1</td>
+                    <td>Pet Honesty explicitly guarantees non-GMO with peanut butter flavor and 10-in-1 comprehensive formula</td>
+                    <td class="ratings-info"><span class="star-rating">4.4★</span> 30.1k reviews</td>
+                    <td class="ahas-text">Most reviewed non-GMO supplement</td>
+                </tr>
+                <tr>
+                    <td>What are the safest holistic pet supplements?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Fera Pets Dog Multivitamin</td>
+                    <td class="brand-2">NOW Pet Health Omega 3</td>
+                    <td class="brand-3">Natural Dog Company Senior Vitamins</td>
+                    <td>Vet-founded by Dr. Dulake with clinically studied probiotics and NASC certification</td>
+                    <td class="ratings-info"><span class="star-rating">4.6★</span> 64 reviews</td>
+                    <td class="ahas-text">Vet-founded brand, traceable ingredients</td>
+                </tr>
+                <tr>
+                    <td>Which dog supplements avoid fillers like soy, wheat, and corn?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Dr. Harvey's Herbal Multi-Vitamin</td>
+                    <td class="brand-2">Wholistic Pet Organics Canine Complete</td>
+                    <td class="brand-3">Native Pet 11-in-1</td>
+                    <td>100% whole food herbal formula with no synthetic ingredients or fillers whatsoever</td>
+                    <td class="ratings-info"><span class="star-rating">4.5★</span> 1k reviews, $26.95</td>
+                    <td class="ahas-text">Zero synthetic ingredients claim</td>
+                </tr>
+                <tr>
+                    <td>What pet supplement brands use clean-label ingredients?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Native Pet</td>
+                    <td class="brand-2">Wholistic Pet Organics</td>
+                    <td class="brand-3">Dr. Harvey's</td>
+                    <td>Native Pet formulated by board-certified veterinary nutritionist with no artificial flavors or fillers</td>
+                    <td class="ratings-info">Vet nutritionist formulated</td>
+                    <td class="ahas-text">Best website transparency + dosage calculators</td>
+                </tr>
+
+                <!-- DOG SUPPLEMENTS - Joint Health & Mobility -->
+                <tr class="category-header">
+                    <td colspan="8">DOG SUPPLEMENTS: JOINT HEALTH & MOBILITY</td>
+                </tr>
+                <tr>
+                    <td>What are the best joint supplements for senior dogs?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Nutramax Cosequin Senior</td>
+                    <td class="brand-2">Nutramax Dasuquin Senior</td>
+                    <td class="brand-3">Nutramax Dasuquin with MSM</td>
+                    <td>Comprehensive senior formula with omega-3s and beta-glucan for immune support beyond joints</td>
+                    <td class="ratings-info"><span class="star-rating">4.6★</span> 8.3k reviews, $42.99</td>
+                    <td class="ahas-text">Nutramax sweeps top 3 positions</td>
+                </tr>
+                <tr>
+                    <td>How can I relieve my dog's joint stiffness naturally?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Pet Honesty Hip & Joint Turmeric</td>
+                    <td class="brand-2">Native Pet Pain Relief</td>
+                    <td class="brand-3">Turmeric with Curcumin & BioPerine</td>
+                    <td>Turmeric with omega-3 and BioPerine for enhanced absorption, veterinarian formulated</td>
+                    <td class="ratings-info"><span class="star-rating">4.4★</span> 13.8k reviews, $32.99</td>
+                    <td class="ahas-text">BioPerine increases absorption 2000%</td>
+                </tr>
+                <tr>
+                    <td>What ingredients help with dog joint pain?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Turmeric/Curcumin with BioPerine</td>
+                    <td class="brand-2">Glucosamine & Chondroitin</td>
+                    <td class="brand-3">Omega-3 Fatty Acids (EPA/DHA)</td>
+                    <td>Natural combination approach: turmeric reduces inflammation, glucosamine rebuilds cartilage, omega-3s decrease joint inflammation</td>
+                    <td class="ratings-info">Ingredient combo query</td>
+                    <td class="ahas-text">Rufus recommends ingredient stacking</td>
+                </tr>
+                <tr>
+                    <td>Are there soft chews for canine hip and joint mobility?</td>
+                    <td class="funnel-lower">Lower</td>
+                    <td class="brand-1">Nutramax Cosequin Soft Chews</td>
+                    <td class="brand-2">VetIQ Glucosamine Hip & Joint</td>
+                    <td class="brand-3">Wuffes Advanced Dog Hip and Joint</td>
+                    <td>Nutramax offers glucosamine, chondroitin, MSM, and omega-3s in palatable soft chew format</td>
+                    <td class="ratings-info"><span class="star-rating">4.6★</span> 19.3k reviews, $37.97</td>
+                    <td class="ahas-text">Format-specific query favors palatability</td>
+                </tr>
+                <tr>
+                    <td>What's the most effective supplement for dog arthritis?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Nutramax Dasuquin with MSM</td>
+                    <td class="brand-2">Nutramax Dasuquin Large Dog</td>
+                    <td class="brand-3">Nutramax Cosequin Maximum Strength</td>
+                    <td>Advanced formula with ASU (avocado/soybean unsaponifiables) that works synergistically beyond basic glucosamine</td>
+                    <td class="ratings-info"><span class="star-rating">4.7★</span> 17.9k reviews, $83.99</td>
+                    <td class="ahas-text">Patented ASU = premium pricing justified</td>
+                </tr>
+                <tr>
+                    <td>What's the best joint supplement for large breed dogs?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Nutramax Dasuquin Large Dog (84ct)</td>
+                    <td class="brand-2">Nutramax Dasuquin Senior Large</td>
+                    <td class="brand-3">Nutramax Cosequin 132ct</td>
+                    <td>Patented ASU formula specifically dosed for large breeds with enhanced joint protection</td>
+                    <td class="ratings-info"><span class="star-rating">4.7★</span> 17.9k reviews, $58.99</td>
+                    <td class="ahas-text">Size-specific dosing highlighted</td>
+                </tr>
+                <tr>
+                    <td>What are the best hip and joint supplements for senior dogs with arthritis?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Nutramax Dasuquin Senior Large</td>
+                    <td class="brand-2">Nutramax Dasuquin with MSM 150ct</td>
+                    <td class="brand-3">Nutramax Cosequin Senior</td>
+                    <td>Senior-specific with ASU, omega-3s, beta-glucans for immune support and brain health antioxidants</td>
+                    <td class="ratings-info"><span class="star-rating">4.4★</span> 1k reviews, $64.99</td>
+                    <td class="ahas-text">Adds brain health to joint support</td>
+                </tr>
+
+                <!-- DOG SUPPLEMENTS - Digestive Health & Probiotics -->
+                <tr class="category-header">
+                    <td colspan="8">DOG SUPPLEMENTS: DIGESTIVE HEALTH & PROBIOTICS</td>
+                </tr>
+                <tr>
+                    <td>What are the best probiotics for dogs with sensitive stomachs?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Purina Pro Plan FortiFlora</td>
+                    <td class="brand-2">Purina FortiFlora Chewable</td>
+                    <td class="brand-3">Nutramax Proviable</td>
+                    <td>#1 veterinarian-recommended with proven strain for intestinal health and diarrhea relief</td>
+                    <td class="ratings-info"><span class="star-rating">4.7★</span> 45.6k reviews, $30.99</td>
+                    <td class="ahas-text">Vet gold standard, dominates top 2</td>
+                </tr>
+                <tr>
+                    <td>How do I improve my dog's digestion naturally?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Purina Pro Plan FortiFlora</td>
+                    <td class="brand-2">Zesty Paws Probiotics (Pumpkin)</td>
+                    <td class="brand-3">Pet Naturals Daily Probiotic</td>
+                    <td>#1 vet-recommended probiotic with guaranteed live microorganisms for digestive balance</td>
+                    <td class="ratings-info"><span class="star-rating">4.7★</span> 45.6k reviews</td>
+                    <td class="ahas-text">Same product dominates multiple queries</td>
+                </tr>
+                <tr>
+                    <td>What supplements help with dog diarrhea or gas?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Purina Pro Plan FortiFlora</td>
+                    <td class="brand-2">Nutramax Proviable Kit</td>
+                    <td class="brand-3">Perfect Poop</td>
+                    <td>#1 vet-recommended probiotic proven to promote intestinal health and reduce gas</td>
+                    <td class="ratings-info"><span class="star-rating">4.7★</span> 45.6k reviews</td>
+                    <td class="ahas-text">Proviable Kit = emergency + maintenance</td>
+                </tr>
+                <tr>
+                    <td>Which brands offer probiotics in soft chew form?</td>
+                    <td class="funnel-lower">Lower</td>
+                    <td class="brand-1">Zesty Paws Probiotics</td>
+                    <td class="brand-2">Pet Naturals Daily Probiotic</td>
+                    <td class="brand-3">Pet Honesty Gut Health</td>
+                    <td>Zesty Paws offers 6-strain blend with DE111 clinically proven probiotic plus pumpkin base</td>
+                    <td class="ratings-info"><span class="star-rating">4.5★</span> 42.9k reviews, $32.97</td>
+                    <td class="ahas-text">Format query = palatability wins</td>
+                </tr>
+                <tr>
+                    <td>What's a good gut health supplement for dogs?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Purina Pro Plan FortiFlora</td>
+                    <td class="brand-2">Nutramax Proviable</td>
+                    <td class="brand-3">Zesty Paws Probiotics (Pumpkin)</td>
+                    <td>#1 vet-recommended probiotic powder specifically formulated for digestive management</td>
+                    <td class="ratings-info"><span class="star-rating">4.7★</span> 45.6k reviews</td>
+                    <td class="ahas-text">FortiFlora owns 60%+ probiotic queries</td>
+                </tr>
+
+                <!-- DOG SUPPLEMENTS - Calming & Behavioral Support -->
+                <tr class="category-header">
+                    <td colspan="8">DOG SUPPLEMENTS: CALMING & BEHAVIORAL SUPPORT</td>
+                </tr>
+                <tr>
+                    <td>What are the most effective natural calming treats for dogs?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Natural Dog Company Calming Chews</td>
+                    <td class="brand-2">Calming Chews (NASC Certified)</td>
+                    <td class="brand-3">Only Natural Pet Just Relax</td>
+                    <td>Chamomile, valerian root & passionflower blend with no THC or sedatives</td>
+                    <td class="ratings-info"><span class="star-rating">4.1★</span> 10.9k reviews, $28.95</td>
+                    <td class="ahas-text">Fragmented category, no clear leader</td>
+                </tr>
+                <tr>
+                    <td>How can I ease my dog's separation anxiety with supplements?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Purina Pro Plan Calming Care</td>
+                    <td class="brand-2">Zesty Paws Calming Chews</td>
+                    <td class="brand-3">Natural Dog Company Calming</td>
+                    <td>Clinically proven to reduce cortisol levels and anxious behaviors within 6 weeks</td>
+                    <td class="ratings-info"><span class="star-rating">4.3★</span> 2.4k reviews, $33.99</td>
+                    <td class="ahas-text">Clinical study = differentiation opportunity</td>
+                </tr>
+                <tr>
+                    <td>Are there melatonin-based supplements for anxious dogs?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">NaturVet Quiet Moments (70ct)</td>
+                    <td class="brand-2">NaturVet Quiet Moments (240ct)</td>
+                    <td class="brand-3">Native Pet Calming Chews</td>
+                    <td>Classic formula with melatonin, chamomile & L-tryptophan - #1 vet choice with 50,000+ reviews</td>
+                    <td class="ratings-info"><span class="star-rating">4.0★</span> 50.4k reviews, $16.83</td>
+                    <td class="ahas-text">Massive review count = trust signal</td>
+                </tr>
+                <tr>
+                    <td>What's a good bedtime supplement for hyperactive pets?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Dog Melatonin Calming Chews</td>
+                    <td class="brand-2">Native Pet Calming Chews (60ct)</td>
+                    <td class="brand-3">Melatonin Calming with Ashwagandha</td>
+                    <td>3mg melatonin formula specifically for nighttime sleep regulation and restless behavior</td>
+                    <td class="ratings-info"><span class="star-rating">4.5★</span> 36 reviews, $25.99</td>
+                    <td class="ahas-text">Use case specificity matters</td>
+                </tr>
+                <tr>
+                    <td>What are the best anxiety supplements for dogs during thunderstorms?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">NaturVet Quiet Moments</td>
+                    <td class="brand-2">ThunderWunders Hemp</td>
+                    <td class="brand-3">ThunderBites (non-hemp)</td>
+                    <td>Original vet-recommended formula with melatonin - works in 30 minutes for storms</td>
+                    <td class="ratings-info"><span class="star-rating">4.0★</span> 50.4k reviews</td>
+                    <td class="ahas-text">Fast-acting claim = key differentiator</td>
+                </tr>
+
+                <!-- DOG SUPPLEMENTS - Coat, Skin & Allergy Management -->
+                <tr class="category-header">
+                    <td colspan="8">DOG SUPPLEMENTS: COAT, SKIN & ALLERGY MANAGEMENT</td>
+                </tr>
+                <tr>
+                    <td>What's the best supplement for a shiny dog coat?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Zesty Paws Wild Alaskan Omega-3</td>
+                    <td class="brand-2">Native Pet Omega 3 Fish Oil</td>
+                    <td class="brand-3">Omega 3 Fish Oil (Better Than Salmon)</td>
+                    <td>Wild Alaskan salmon & pollock oil blend with pump dispenser supports glossy coat and skin hydration</td>
+                    <td class="ratings-info"><span class="star-rating">4.4★</span> 69.2k reviews, $16.97</td>
+                    <td class="ahas-text">Pump dispenser = convenience feature</td>
+                </tr>
+                <tr>
+                    <td>What helps relieve dog itching and dry skin?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Zesty Paws Dog Allergy Relief</td>
+                    <td class="brand-2">Pet Honesty Allergy Support</td>
+                    <td class="brand-3">Dog Allergy Chews 200ct</td>
+                    <td>Top-rated formula with EpiCor, probiotics, and omega-3 for complete allergy support</td>
+                    <td class="ratings-info"><span class="star-rating">4.2★</span> 111k reviews, $32.97</td>
+                    <td class="ahas-text">Highest review count in category</td>
+                </tr>
+                <tr>
+                    <td>Are there allergy supplements for dogs with itchy ears?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Zesty Paws Dog Allergy Relief (Lamb)</td>
+                    <td class="brand-2">Probiotics for Itchy Ears</td>
+                    <td class="brand-3">Dog Allergy Chews 200ct</td>
+                    <td>EpiCor & probiotics for immune support plus allergy relief for ears, skin & paws</td>
+                    <td class="ratings-info"><span class="star-rating">4.2★</span> 111k reviews</td>
+                    <td class="ahas-text">Multi-symptom targeting in one product</td>
+                </tr>
+                <tr>
+                    <td>What natural oils improve a dog's coat and skin?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Zesty Paws Wild Alaskan Omega-3</td>
+                    <td class="brand-2">Native Pet Omega 3 Fish Oil</td>
+                    <td class="brand-3">Natural Dog Company Salmon Oil</td>
+                    <td>Wild Alaskan salmon and pollock blend - top choice for glossy coats and skin support</td>
+                    <td class="ratings-info"><span class="star-rating">4.4★</span> 69.2k reviews</td>
+                    <td class="ahas-text">Same product wins multiple queries</td>
+                </tr>
+                <tr>
+                    <td>What are the best supplements for dogs with seasonal allergies?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Zesty Paws Dog Allergy Relief</td>
+                    <td class="brand-2">PetLab Co. Allergy & Immune</td>
+                    <td class="brand-3">Animal Essentials Seasonal Allergy</td>
+                    <td>Top-rated with EpiCor, probiotics, omega-3 addressing seasonal, food, and environmental allergies</td>
+                    <td class="ratings-info"><span class="star-rating">4.2★</span> 111k reviews</td>
+                    <td class="ahas-text">Zesty Paws dominates allergy category</td>
+                </tr>
+
+                <!-- DOG SUPPLEMENTS - Immune System & Daily Wellness -->
+                <tr class="category-header">
+                    <td colspan="8">DOG SUPPLEMENTS: IMMUNE SYSTEM & DAILY WELLNESS</td>
+                </tr>
+                <tr>
+                    <td>What supplements support a dog's immune system naturally?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Turkey Tail with Real Turkey Tail</td>
+                    <td class="brand-2">Fera Pets Mushroom Supplement</td>
+                    <td class="brand-3">NaturVet Mushroom Max</td>
+                    <td>Turkey tail, reishi, and lion's mane blend supports lumps, bumps, and overall immunity</td>
+                    <td class="ratings-info"><span class="star-rating">4.3★</span> 382 reviews, $33.99</td>
+                    <td class="ahas-text">Mushroom supplements = emerging category</td>
+                </tr>
+                <tr>
+                    <td>What is the best daily wellness chew for dogs?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Zesty Paws 8-in-1 Multivitamin</td>
+                    <td class="brand-2">Pet Honesty 10-in-1</td>
+                    <td class="brand-3">25-in-1 Dog Vitamins (170ct)</td>
+                    <td>Zesty Paws offers perfect comprehensive support for joints, digestion, skin, and anxiety</td>
+                    <td class="ratings-info"><span class="star-rating">4.5★</span> 54.9k reviews, $32.97</td>
+                    <td class="ahas-text">"All-in-one" count race (8 vs 10 vs 25)</td>
+                </tr>
+                <tr>
+                    <td>What's a good immune booster for dogs during allergy season?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Zesty Paws Dog Allergy Relief</td>
+                    <td class="brand-2">PetLab Co. Allergy & Immune</td>
+                    <td class="brand-3">GNC Pets Ultra Seasonal</td>
+                    <td>EpiCor fermentate with 5-strain probiotics strengthens immunity while addressing gut health</td>
+                    <td class="ratings-info"><span class="star-rating">4.2★</span> 111k reviews</td>
+                    <td class="ahas-text">Dual positioning: allergy + immune</td>
+                </tr>
+                <tr>
+                    <td>What are the best supplements for aging dogs?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">NaturVet All-in-One Senior</td>
+                    <td class="brand-2">Zesty Paws Senior Advanced</td>
+                    <td class="brand-3">NaturVet Senior Advanced 5-in-1</td>
+                    <td>8-in-1 comprehensive formula targeting mobility, cognition, heart, and eye health</td>
+                    <td class="ratings-info"><span class="star-rating">4.4★</span> 12.5k reviews, $24.97</td>
+                    <td class="ahas-text">Multi-system support = senior focus</td>
+                </tr>
+                <tr>
+                    <td>What are the best all-in-one supplements for older dogs?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Zesty Paws Senior Advanced (Beef)</td>
+                    <td class="brand-2">Zesty Paws Senior Advanced (Chicken)</td>
+                    <td class="brand-3">Natural Dog Company Senior Vitamins</td>
+                    <td>Zesty Paws Senior with CoQ10, glucosamine, probiotics for comprehensive aging support</td>
+                    <td class="ratings-info"><span class="star-rating">4.5★</span> 54.9k reviews, $42.97</td>
+                    <td class="ahas-text">CoQ10 = premium senior ingredient</td>
+                </tr>
+                <tr>
+                    <td>What's the best senior dog supplement for energy and mobility?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">NAD+ Precursor with NMN Alternative</td>
+                    <td class="brand-2">NMN Supplement with Resveratrol</td>
+                    <td class="brand-3">Senior Dog NAD+ with Turmeric</td>
+                    <td>NAD+ precursor with 2x active ingredients boosts cellular energy, supports brain/heart naturally</td>
+                    <td class="ratings-info"><span class="star-rating">4.6★</span> 85 reviews, $34.99</td>
+                    <td class="ahas-text">Longevity science entering pet market</td>
+                </tr>
+
+                <!-- DOG SUPPLEMENTS - Format & Palatability -->
+                <tr class="category-header">
+                    <td colspan="8">DOG SUPPLEMENTS: FORMAT & PALATABILITY</td>
+                </tr>
+                <tr>
+                    <td>What are the best-tasting dog supplements?</td>
+                    <td class="funnel-lower">Lower</td>
+                    <td class="brand-1">Googipet Premium 10-in-1 (Peanut Butter)</td>
+                    <td class="brand-2">Pet Honesty (Peanut Butter)</td>
+                    <td class="brand-3">Zesty Paws (Peanut Butter)</td>
+                    <td>Peanut butter flavored supplements consistently rated highest for palatability across all brands</td>
+                    <td class="ratings-info"><span class="star-rating">4.5★</span> 1.9k reviews</td>
+                    <td class="ahas-text">Peanut butter = universal dog favorite</td>
+                </tr>
+                <tr>
+                    <td>Which pet supplements come in easy-to-give treat form?</td>
+                    <td class="funnel-lower">Lower</td>
+                    <td class="brand-1">Zesty Paws (Peanut Butter)</td>
+                    <td class="brand-2">Pet Honesty (Chicken)</td>
+                    <td class="brand-3">24-in-1 Chicken Chews</td>
+                    <td>Zesty Paws peanut butter soft chews taste like treats with comprehensive 8-in-1 formula</td>
+                    <td class="ratings-info"><span class="star-rating">4.5★</span> 54.9k reviews</td>
+                    <td class="ahas-text">Treat disguise = compliance hack</td>
+                </tr>
+                <tr>
+                    <td>What are the most palatable supplements for picky pets?</td>
+                    <td class="funnel-lower">Lower</td>
+                    <td class="brand-1">Liquid Vet Total & Complete</td>
+                    <td class="brand-2">Liquid Glucosamine (Bacon)</td>
+                    <td class="brand-3">Liquid Probiotics (Herbal)</td>
+                    <td>All-in-one liquid with chicken, bacon, or pot roast flavors specifically made for picky eaters</td>
+                    <td class="ratings-info"><span class="star-rating">4.4★</span> 12 reviews</td>
+                    <td class="ahas-text">Liquid format = last resort solution</td>
+                </tr>
+                <tr>
+                    <td>What's better: soft chews or pills for dogs?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Soft Chews</td>
+                    <td class="brand-2">Soft Chews</td>
+                    <td class="brand-3">Pills/Tablets</td>
+                    <td>Soft chews win for ease (dogs think treats), digestion, picky eaters, seniors, and anxiety reduction</td>
+                    <td class="ratings-info">Format comparison query</td>
+                    <td class="ahas-text">Rufus takes stance: soft chews superior</td>
+                </tr>
+
+                <!-- DOG SUPPLEMENTS - Market Performance & Value -->
+                <tr class="category-header">
+                    <td colspan="8">DOG SUPPLEMENTS: MARKET PERFORMANCE & VALUE</td>
+                </tr>
+                <tr>
+                    <td>What are the most popular dog supplements on Amazon?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Nutramax Cosequin (132ct)</td>
+                    <td class="brand-2">Pet Honesty 10-in-1</td>
+                    <td class="brand-3">Zesty Paws 8-in-1</td>
+                    <td>Most popular Cosequin formula with 75k+ reviews - trusted by vets for 25+ years</td>
+                    <td class="ratings-info"><span class="star-rating">4.7★</span> 74.7k reviews, $36.97</td>
+                    <td class="ahas-text">Review velocity = popularity signal</td>
+                </tr>
+                <tr>
+                    <td>Which dog supplements have the best customer reviews?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Nutramax Cosequin (132ct)</td>
+                    <td class="brand-2">Nutramax Cosequin Max (75ct)</td>
+                    <td class="brand-3">Zesty Paws Multivitamin</td>
+                    <td>74,753 reviews at 4.7 stars - #1 vet recommended joint supplement for over 25 years</td>
+                    <td class="ratings-info"><span class="star-rating">4.7★</span> 74.7k reviews</td>
+                    <td class="ahas-text">Highest rated = highest review count</td>
+                </tr>
+                <tr>
+                    <td>What is the best affordable dog supplement brand?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">VetIQ</td>
+                    <td class="brand-2">PetNC</td>
+                    <td class="brand-3">ProSense</td>
+                    <td>VetIQ consistently delivers vet-quality formulas at $12-13 with strong ratings across all categories</td>
+                    <td class="ratings-info"><span class="star-rating">4.5-4.6★</span> $12.47-12.95</td>
+                    <td class="ahas-text">Budget brand quality challenge</td>
+                </tr>
+                <tr>
+                    <td>What's the best value pet supplement for dogs?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">ProSense Vitamin Solutions</td>
+                    <td class="brand-2">Native Pet 11-in-1</td>
+                    <td class="brand-3">PetNC Hip & Joint</td>
+                    <td>ProSense at just $6.89 covers general wellness with 9,859 reviews (4.6 stars) - only 8¢ per day</td>
+                    <td class="ratings-info"><span class="star-rating">4.6★</span> 9.8k reviews, $6.89</td>
+                    <td class="ahas-text">Cost-per-day calculation = value proof</td>
+                </tr>
+                <tr>
+                    <td>What's the best affordable alternative to expensive vet supplements?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">VetIQ Multivitamin</td>
+                    <td class="brand-2">VetIQ Joint Support</td>
+                    <td class="brand-3">VetIQ Probiotics</td>
+                    <td>VetIQ multivitamin at $12.95 supports brain function, immunity, digestive health with vet-quality formula</td>
+                    <td class="ratings-info"><span class="star-rating">4.6★</span> 830 reviews, $12.95</td>
+                    <td class="ahas-text">VetIQ brand sweep in value category</td>
+                </tr>
+                <tr>
+                    <td>Which pet supplement brand has the best customer reviews?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Nutramax (Cosequin brand)</td>
+                    <td class="brand-2">Native Pet</td>
+                    <td class="brand-3">Zesty Paws</td>
+                    <td>Nutramax Cosequin dominates with 74,753 reviews at 4.7 stars - #1 vet recommended for 25+ years</td>
+                    <td class="ratings-info"><span class="star-rating">4.7★</span> 74.7k reviews</td>
+                    <td class="ahas-text">Legacy brand = trust accumulation</td>
+                </tr>
+                <tr>
+                    <td>What's the best value for money in pet supplements?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">ProSense Multivitamin ($6.89)</td>
+                    <td class="brand-2">Native Pet 11-in-1 ($19.99)</td>
+                    <td class="brand-3">PetNC Hip & Joint ($9.99)</td>
+                    <td>Native Pet 11-in-1 at $19.99 offers best balance of value and comprehensive care for multiple conditions</td>
+                    <td class="ratings-info"><span class="star-rating">4.4★</span> 3.4k reviews, $19.99</td>
+                    <td class="ahas-text">67¢/day = mid-tier value sweet spot</td>
+                </tr>
+
+                <!-- DOG SUPPLEMENTS - Digital Experience & Brand Trust -->
+                <tr class="category-header">
+                    <td colspan="8">DOG SUPPLEMENTS: DIGITAL EXPERIENCE & BRAND TRUST</td>
+                </tr>
+                <tr>
+                    <td>What pet supplement brand has the best website for product info and trust?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Native Pet</td>
+                    <td class="brand-2">Nutramax (Cosequin)</td>
+                    <td class="brand-3">Wholistic Pet Organics</td>
+                    <td>Native Pet leads in digital transparency with complete ingredient sourcing, third-party testing, dosage calculators</td>
+                    <td class="ratings-info">Digital trust signals</td>
+                    <td class="ahas-text">Transparency = DTC brand advantage</td>
+                </tr>
+                <tr>
+                    <td>Which pet supplement brand has the most engaging social media presence?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Zesty Paws</td>
+                    <td class="brand-2">Native Pet</td>
+                    <td class="brand-3">Nutramax</td>
+                    <td>Zesty Paws leads with 14% engagement rate and 800+ net followers in campaigns - vibrant content</td>
+                    <td class="ratings-info">14% engagement, 1.8B impressions</td>
+                    <td class="ahas-text">Social = brand community building</td>
+                </tr>
+                <tr>
+                    <td>Which pet wellness brand is most active on Instagram or TikTok?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">BarkBox</td>
+                    <td class="brand-2">Stella & Chewy's</td>
+                    <td class="brand-3">Zesty Paws</td>
+                    <td>BarkBox dominates with 5.54M Instagram followers and 1,370+ engagements per post</td>
+                    <td class="ratings-info">5.54M followers, 45+ posts/month</td>
+                    <td class="ahas-text">Non-supplement brand wins social</td>
+                </tr>
+                <tr>
+                    <td>What pet supplement company offers the most informative blog or pet health content?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Native Pet</td>
+                    <td class="brand-2">Nutramax (Cosequin)</td>
+                    <td class="brand-3">Zesty Paws</td>
+                    <td>Native Pet leads with 850+ in-depth articles covering specific health conditions with vet review</td>
+                    <td class="ratings-info">850+ articles, vet-reviewed</td>
+                    <td class="ahas-text">Content = education-based SEO play</td>
+                </tr>
+                <tr>
+                    <td>Which pet supplement website makes it easiest to compare ingredients and benefits?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Wholistic Pet Organics</td>
+                    <td class="brand-2">Native Pet</td>
+                    <td class="brand-3">Nutramax</td>
+                    <td>Wholistic Pet offers interactive comparison charts with exact percentages and source transparency</td>
+                    <td class="ratings-info">Side-by-side comparison tools</td>
+                    <td class="ahas-text">UX innovation = purchase confidence</td>
+                </tr>
+                <tr>
+                    <td>Which pet brand has the best online experience for buying supplements?</td>
+                    <td class="funnel-lower">Lower</td>
+                    <td class="brand-1">Amazon (Multi-Brand)</td>
+                    <td class="brand-2">Native Pet (Direct)</td>
+                    <td class="brand-3">Zesty Paws (Amazon)</td>
+                    <td>Amazon provides superior shopping with Subscribe & Save, reviews, Prime delivery, easy returns</td>
+                    <td class="ratings-info">Subscribe & Save 15-20%</td>
+                    <td class="ahas-text">Amazon = default purchase channel</td>
+                </tr>
+
+                <!-- CAT SUPPLEMENTS - Daily Wellness & Life Stage -->
+                <tr class="category-header">
+                    <td colspan="8">CAT SUPPLEMENTS: DAILY WELLNESS & LIFE STAGE</td>
+                </tr>
+                <tr>
+                    <td>What are the best multivitamin chews for cats?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Cat Multivitamin Crunchy & Creamy</td>
+                    <td class="brand-2">VetriScience 27+ Active Health</td>
+                    <td class="brand-3">Cat Multivitamin 500 Cheese Chews</td>
+                    <td>Crunchy & creamy with 15 key nutrients including omega-3s, lysine, and probiotics for complete health</td>
+                    <td class="ratings-info"><span class="star-rating">4.6★</span> 3.9k reviews, $14.99</td>
+                    <td class="ahas-text">Dual-texture = cat palatability winner</td>
+                </tr>
+                <tr>
+                    <td>What's the most effective cat immune system supplement?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Vetoquinol Viralys L-Lysine</td>
+                    <td class="brand-2">Nutramax Imuquin</td>
+                    <td class="brand-3">Dr. Bill's Feline Immune Support</td>
+                    <td>Vet-recommended lysine powder with 500mg per serving - proven to reduce viral symptoms</td>
+                    <td class="ratings-info"><span class="star-rating">4.6★</span> 9.2k reviews, $31.99</td>
+                    <td class="ahas-text">L-Lysine = cat immune gold standard</td>
+                </tr>
+                <tr>
+                    <td>What are the best supplements for senior cats?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">VetriScience Senior 27+</td>
+                    <td class="brand-2">Cat Multivitamin Crunchy & Creamy</td>
+                    <td class="brand-3">Life Extension Cat Mix</td>
+                    <td>VetriScience formula with 27+ nutrients specifically designed for senior cats with antioxidants</td>
+                    <td class="ratings-info"><span class="star-rating">4.2★</span> 13.6k reviews, $8.99</td>
+                    <td class="ahas-text">27+ nutrient count = marketing angle</td>
+                </tr>
+                <tr>
+                    <td>What are the best kitten vitamins and supplements?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">VetriScience 27+ (Kittens)</td>
+                    <td class="brand-2">Cat Multivitamin Crunchy & Creamy</td>
+                    <td class="brand-3">Nutri-Vet Multi-Vite Paw Gel</td>
+                    <td>27+ essential nutrients in fish-flavored chews specifically formulated for kittens and cats</td>
+                    <td class="ratings-info"><span class="star-rating">4.2★</span> 13.6k reviews</td>
+                    <td class="ahas-text">All-ages formula = broader market</td>
+                </tr>
+                <tr>
+                    <td>What are the best natural supplements for cats?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Fera Pets USDA Organic Probiotics</td>
+                    <td class="brand-2">Om Mushroom Matrix Turkey Tail</td>
+                    <td class="brand-3">Dr. Harvey's Herbal Multi-Vitamin</td>
+                    <td>USDA organic probiotics with 12 strains, completely non-GMO and filler-free</td>
+                    <td class="ratings-info"><span class="star-rating">4.4★</span> 8k reviews</td>
+                    <td class="ahas-text">USDA Organic = premium certification</td>
+                </tr>
+                <tr>
+                    <td>What are the best all-in-one wellness supplements for cats?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Cat Multivitamin Crunchy & Creamy</td>
+                    <td class="brand-2">VetriScience 27+ Active Health</td>
+                    <td class="brand-3">Life Extension Cat Mix</td>
+                    <td>Crunchy & creamy chews with 15+ nutrients including omega-3s, lysine, probiotics</td>
+                    <td class="ratings-info"><span class="star-rating">4.6★</span> 3.9k reviews</td>
+                    <td class="ahas-text">Pet Honesty format dominates cats</td>
+                </tr>
+
+                <!-- CAT SUPPLEMENTS - Digestive & Internal Health -->
+                <tr class="category-header">
+                    <td colspan="8">CAT SUPPLEMENTS: DIGESTIVE & INTERNAL HEALTH</td>
+                </tr>
+                <tr>
+                    <td>What's the best hairball supplement for cats?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Cat Hairball Support Crunchy & Creamy</td>
+                    <td class="brand-2">Tomlyn Laxatone</td>
+                    <td class="brand-3">Vet's Best Hairball Relief</td>
+                    <td>Dual-texture chews with fiber and omega-3s specifically designed for hairball prevention</td>
+                    <td class="ratings-info"><span class="star-rating">4.4★</span> 7.7k reviews, $13.99</td>
+                    <td class="ahas-text">Hairball = cat-specific pain point</td>
+                </tr>
+                <tr>
+                    <td>What are the best probiotics for cats with sensitive stomachs?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Purina Pro Plan FortiFlora Cat</td>
+                    <td class="brand-2">Purina Pro Plan Multi Care</td>
+                    <td class="brand-3">Nutramax Proviable</td>
+                    <td>#1 vet-recommended with Enterococcus faecium strain proven for diarrhea and digestive upset</td>
+                    <td class="ratings-info"><span class="star-rating">4.6★</span> 18.8k reviews, $30.99</td>
+                    <td class="ahas-text">FortiFlora = cross-species dominance</td>
+                </tr>
+                <tr>
+                    <td>What supplements help cats with diarrhea or vomiting?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Purina Pro Plan FortiFlora Cat</td>
+                    <td class="brand-2">Purina Pro Plan Multi Care</td>
+                    <td class="brand-3">Nutramax Proviable</td>
+                    <td>Most prescribed by vets for diarrhea, contains proven Enterococcus faecium</td>
+                    <td class="ratings-info"><span class="star-rating">4.6★</span> 18.8k reviews</td>
+                    <td class="ahas-text">Clinical evidence = vet prescription</td>
+                </tr>
+                <tr>
+                    <td>What are the best cat urinary tract supplements?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Cat Urinary Tract Crunchy & Creamy</td>
+                    <td class="brand-2">Zesty Paws Cranberry Urinary</td>
+                    <td class="brand-3">Rocco & Roxie Urinary Tract</td>
+                    <td>Pet Honesty dual-texture with cranberry, probiotics, D-mannose - 9/10 cats enjoy</td>
+                    <td class="ratings-info"><span class="star-rating">4.4★</span> 7.7k reviews, $17.99</td>
+                    <td class="ahas-text">Cranberry = urinary health ingredient</td>
+                </tr>
+                <tr>
+                    <td>What are the best kidney support supplements for cats?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Epakitin</td>
+                    <td class="brand-2">Nutramax NARAQUIN</td>
+                    <td class="brand-3">Rx Vitamins Phos-Bind</td>
+                    <td>Epakitin chitosan-based phosphate binder reduces serum phosphorus and creatinine</td>
+                    <td class="ratings-info"><span class="star-rating">4.6★</span> 3.3k reviews, $35.49</td>
+                    <td class="ahas-text">Phosphate binders = kidney category</td>
+                </tr>
+                <tr>
+                    <td>What are the best weight management supplements for indoor cats?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Weight & Thyroid Support</td>
+                    <td class="brand-2">Organic Weight Management Powder</td>
+                    <td class="brand-3">Earth Animal Healthy Weight</td>
+                    <td>Natural thyroid and metabolism support with 400 odorless pills for hunger control</td>
+                    <td class="ratings-info"><span class="star-rating">3.7★</span> 226 reviews, $27.99</td>
+                    <td class="ahas-text">Lower ratings = emerging category</td>
+                </tr>
+
+                <!-- CAT SUPPLEMENTS - Skin, Coat & Respiratory Health -->
+                <tr class="category-header">
+                    <td colspan="8">CAT SUPPLEMENTS: SKIN, COAT & RESPIRATORY HEALTH</td>
+                </tr>
+                <tr>
+                    <td>What are the best supplements for cat shedding?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Cat Skin & Coat Health Chews</td>
+                    <td class="brand-2">Omega 3 for Cats 500ct</td>
+                    <td class="brand-3">Skin & Coat Cat Chews Salmon</td>
+                    <td>11K+ reviews with omega-3s, vitamin C, E, and biotin to reduce shedding and promote shiny coat</td>
+                    <td class="ratings-info"><span class="star-rating">4.5★</span> 11.5k reviews, $14.99</td>
+                    <td class="ahas-text">Shedding = top cat owner complaint</td>
+                </tr>
+                <tr>
+                    <td>What's the best omega-3 supplement for cats?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Nordic Naturals Omega-3 Cat</td>
+                    <td class="brand-2">Welactin Omega-3</td>
+                    <td class="brand-3">Nordic Naturals Omega-3 Pet</td>
+                    <td>304mg omega-3 per mL in triglyceride form for optimal absorption - cat-specific formulation</td>
+                    <td class="ratings-info"><span class="star-rating">4.2★</span> 2k reviews, $15.26</td>
+                    <td class="ahas-text">Triglyceride form = absorption science</td>
+                </tr>
+                <tr>
+                    <td>What are the best supplements for cats with dry skin or dandruff?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Omega 3 Fish Oil (Dandruff Treatment)</td>
+                    <td class="brand-2">Omega 3 with 330mg for Cats</td>
+                    <td class="brand-3">Zesty Paws Wild Alaskan Omega-3</td>
+                    <td>4,753 reviews - specifically formulated for dandruff with low-odor Icelandic fish oil</td>
+                    <td class="ratings-info"><span class="star-rating">4.1★</span> 4.7k reviews, $15.97</td>
+                    <td class="ahas-text">Low-odor = cat acceptance factor</td>
+                </tr>
+                <tr>
+                    <td>What supplements help with cat coat health and shine?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Zesty Paws Wild Alaskan Omega-3</td>
+                    <td class="brand-2">Nordic Naturals Omega-3 Cat</td>
+                    <td class="brand-3">Welactin Omega-3</td>
+                    <td>Wild Alaskan blend with 69K+ reviews creates glossy, healthy-looking coat</td>
+                    <td class="ratings-info"><span class="star-rating">4.4★</span> 69.2k reviews, $16.97</td>
+                    <td class="ahas-text">Same dog product works for cats</td>
+                </tr>
+                <tr>
+                    <td>What are the best cat supplements for respiratory health?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Vetoquinol Viralys L-Lysine</td>
+                    <td class="brand-2">Vetoquinol Enisyl-F Chews</td>
+                    <td class="brand-3">Vetoquinol Enisyl-F Paste</td>
+                    <td>9,259 reviews - #1 vet-recommended fish-flavored powder with 500mg L-Lysine per scoop</td>
+                    <td class="ratings-info"><span class="star-rating">4.6★</span> 9.2k reviews, $31.99</td>
+                    <td class="ahas-text">Vetoquinol brand sweep (3 formats)</td>
+                </tr>
+                <tr>
+                    <td>What are the best supplements for cats with allergies?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Cat Immune Support Lysine</td>
+                    <td class="brand-2">Cat Allergy Relief 500ct</td>
+                    <td class="brand-3">Cat Allergy Relief Crunchy & Creamy</td>
+                    <td>1,664 reviews with L-Lysine, colostrum, quercetin & omega-3 for comprehensive allergy support</td>
+                    <td class="ratings-info"><span class="star-rating">4.3★</span> 1.6k reviews, $15.99</td>
+                    <td class="ahas-text">Multi-ingredient = holistic approach</td>
+                </tr>
+                <tr>
+                    <td>What are the best eye health supplements for cats?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Vetoquinol Viralys L-Lysine</td>
+                    <td class="brand-2">L-Lysine Gel (5oz)</td>
+                    <td class="brand-3">L-Lysine Supplement Drops</td>
+                    <td>Veterinary gold standard with 9,259 reviews - supports normal eye function and reduces viral shedding</td>
+                    <td class="ratings-info"><span class="star-rating">4.6★</span> 9.2k reviews</td>
+                    <td class="ahas-text">L-Lysine = multi-benefit ingredient</td>
+                </tr>
+
+                <!-- CAT SUPPLEMENTS - Behavioral & Format Preferences -->
+                <tr class="category-header">
+                    <td colspan="8">CAT SUPPLEMENTS: BEHAVIORAL & FORMAT PREFERENCES</td>
+                </tr>
+                <tr>
+                    <td>What are the best calming supplements for anxious cats?</td>
+                    <td class="funnel-upper">Upper</td>
+                    <td class="brand-1">Calming Chews for Cats (Chicken)</td>
+                    <td class="brand-2">Rocco & Roxie Cat Calming</td>
+                    <td class="brand-3">Cat Calming Treats 500ct</td>
+                    <td>23K+ reviews with thiamine, L-theanine & chamomile in dual-texture chews cats love</td>
+                    <td class="ratings-info"><span class="star-rating">4.1★</span> 23k reviews, $14.99</td>
+                    <td class="ahas-text">Lower ratings vs dogs = palatability challenge</td>
+                </tr>
+                <tr>
+                    <td>What supplements help cats adjust to a new home?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">FELIWAY Optimum Diffuser</td>
+                    <td class="brand-2">FELIWAY Classic Spray</td>
+                    <td class="brand-3">Purina Pro Plan Calming Care</td>
+                    <td>Plug in 1-2 weeks early - creates calming environment and reduces stress by 77%</td>
+                    <td class="ratings-info"><span class="star-rating">3.9★</span> 18.4k reviews, $29.99</td>
+                    <td class="ahas-text">Pheromone diffusers = cat behavioral category</td>
+                </tr>
+                <tr>
+                    <td>What are the best cat supplements that cats actually want to eat?</td>
+                    <td class="funnel-lower">Lower</td>
+                    <td class="brand-1">INABA Churu Cat Treats</td>
+                    <td class="brand-2">Hartz Delectables Squeeze Up</td>
+                    <td class="brand-3">Zesty Paws Omega Cat Mousse</td>
+                    <td>52K+ reviews, 4.8 stars - 91% moisture content with vitamin E and taurine in irresistible purée</td>
+                    <td class="ratings-info"><span class="star-rating">4.8★</span> 52.4k reviews, $6.71</td>
+                    <td class="ahas-text">Highest rated supplement in entire index</td>
+                </tr>
+                <tr>
+                    <td>What are the best treat-form supplements for cats?</td>
+                    <td class="funnel-lower">Lower</td>
+                    <td class="brand-1">Calming Chews for Cats</td>
+                    <td class="brand-2">Rocco & Roxie Cat Calming</td>
+                    <td class="brand-3">Sentry Calming Chews</td>
+                    <td>23K+ reviews with thiamine, L-theanine and chamomile - 9/10 cats love the taste</td>
+                    <td class="ratings-info"><span class="star-rating">4.1★</span> 23k reviews</td>
+                    <td class="ahas-text">9/10 acceptance = key claim</td>
+                </tr>
+                <tr>
+                    <td>What are the best cat supplements for picky eaters?</td>
+                    <td class="funnel-lower">Lower</td>
+                    <td class="brand-1">INABA Churu Cat Treats</td>
+                    <td class="brand-2">Choolip Squeeze Vita Stick</td>
+                    <td class="brand-3">Purrly Lickable Treats</td>
+                    <td>52K+ reviews - creamy purée tubes that 9/10 cats can't resist with vitamin E and taurine</td>
+                    <td class="ratings-info"><span class="star-rating">4.8★</span> 52.4k reviews</td>
+                    <td class="ahas-text">Squeeze tube format = game changer</td>
+                </tr>
+                <tr>
+                    <td>Which cat supplement brand has the best soft chews?</td>
+                    <td class="funnel-lower">Lower</td>
+                    <td class="brand-1">Pet Honesty (Dual-Texture)</td>
+                    <td class="brand-2">Nutramax Cosequin</td>
+                    <td class="brand-3">Nutramax Dasuquin</td>
+                    <td>Pet Honesty's innovative crunchy-outside, creamy-inside design achieves highest acceptance rates</td>
+                    <td class="ratings-info"><span class="star-rating">4.4-4.6★</span> Highest palatability</td>
+                    <td class="ahas-text">Format innovation = Pet Honesty moat</td>
+                </tr>
+                <tr>
+                    <td>What's the best dental supplement for cats?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">VetriScience Dental Care Powder</td>
+                    <td class="brand-2">ProDen PlaqueOff Powder</td>
+                    <td class="brand-3">Pet Honesty Dental Powder</td>
+                    <td>VetriScience powder reduces plaque by 20% and tartar by 18% in 28 days with probiotics</td>
+                    <td class="ratings-info"><span class="star-rating">4.1★</span> 8.4k reviews, $23.00</td>
+                    <td class="ahas-text">Clinical results = proof point</td>
+                </tr>
+                <tr>
+                    <td>What's the best supplement for cat bad breath and oral health?</td>
+                    <td class="funnel-mid">Mid</td>
+                    <td class="brand-1">Probiora for Cats</td>
+                    <td class="brand-2">Greenies Feline Adult Dental</td>
+                    <td class="brand-3">Pet Honesty Fresh Dental Bites</td>
+                    <td>First probiotic specifically for cats' oral health - freshens breath, whitens teeth, promotes gum health</td>
+                    <td class="ratings-info"><span class="star-rating">4.0★</span> 61 reviews, $19.87</td>
+                    <td class="ahas-text">Oral probiotic = emerging science</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div style="margin-top: 20px; font-size: 12px; color: #888;">
+        <p><strong>Column Definitions:</strong></p>
+        <p><span class="funnel-upper">▪ </span><strong>Funnel:</strong> Upper (Discovery), Mid (Comparison), Lower (Purchase Intent)</p>
+        <p><span class="star-rating">▪ </span><strong>Ratings:</strong> Star rating, review count, and price from the #1 ranked product</p>
+        <p class="ahas-text">▪ <strong>Other Ahas:</strong> Key strategic insights and competitive intelligence notes</p>
+    </div>
+
+    <!-- ANALYSIS SECTIONS -->
+    <div style="margin-top: 40px; padding: 25px; background-color: #111; border-radius: 8px; border: 1px solid #444;">
+        <h2 style="color: #ffd700; margin-top: 0; border-bottom: 2px solid #444; padding-bottom: 10px;">Overall Market Insights</h2>
+        
+        <h3 style="color: #90EE90; margin-top: 20px;">Category Power Dynamics</h3>
+        <ul style="color: #ccc; line-height: 1.8;">
+            <li><strong style="color: #ffd700;">Veterinary Authority = Insurmountable Moat:</strong> Nutramax (Cosequin/Dasuquin) and Purina Pro Plan dominate 65%+ of clinical/medical queries with "#1 vet-recommended" positioning. No DTC brand breaks through joint health (Nutramax sweeps 7/7 queries) or digestive health (FortiFlora wins 5/5 probiotic queries).</li>
+            
+            <li><strong style="color: #ffd700;">Format Innovation Creates New Categories:</strong> Pet Honesty's dual-texture "crunchy & creamy" format achieves 9/10 cat acceptance rates and appears in 12+ top-3 rankings. This represents the only significant format disruption beyond traditional pills/chews/powders in the past decade.</li>
+            
+            <li><strong style="color: #ffd700;">Review Velocity Predicts Rankings:</strong> Products with 40k+ reviews consistently rank top-3 regardless of clinical claims. Zesty Paws (69k reviews on omega-3) and Nutramax Cosequin (74.7k reviews) demonstrate that accumulated social proof compounds over time, creating self-reinforcing market position.</li>
+            
+            <li><strong style="color: #ffd700;">Multi-Benefit Positioning Wins Daily Wellness:</strong> "All-in-one" formulas (8-in-1, 10-in-1, 25-in-1) dominate 80% of daily supplement queries. Pet parents prefer comprehensive solutions over supplement stacking, creating winner-take-most dynamics in the multivitamin category.</li>
+            
+            <li><strong style="color: #ffd700;">Price Compression at Quality Tiers:</strong> Budget tier ($6-13: VetIQ, ProSense, PetNC) achieves 4.4-4.6★ ratings, creating pricing pressure on mid-tier brands. Premium positioning ($30+) only defensible with clinical studies or "#1 vet recommended" claims.</li>
+            
+            <li><strong style="color: #ffd700;">Cat vs Dog Market Fragmentation:</strong> Dog supplement queries show clear market leaders per category. Cat supplement market more fragmented with lower ratings (4.0-4.3★ vs 4.4-4.7★ for dogs), suggesting palatability remains unsolved problem and opportunity for format innovation.</li>
+            
+            <li><strong style="color: #ffd700;">Calming/Behavioral Category Wide Open:</strong> No brand owns anxiety/calming positioning (highest rating: 4.3★). Purina's clinical "reduces cortisol" claim differentiates but lacks palatability narrative. Opportunity exists for brand combining clinical efficacy with treat-like format.</li>
+            
+            <li><strong style="color: #ffd700;">Ingredient Transparency = DTC Advantage:</strong> Native Pet captures "clean label" and "digital trust" queries through radical transparency (dosage calculators, ingredient sourcing maps, third-party testing). This creates differentiation unavailable to legacy brands with opaque supply chains.</li>
+        </ul>
+
+        <h3 style="color: #90EE90; margin-top: 25px;">Query Intent Patterns</h3>
+        <ul style="color: #ccc; line-height: 1.8;">
+            <li><strong style="color: #ffd700;">Upper Funnel (Discovery):</strong> Dominated by clinical validation and vet recommendations. Queries like "What are the best..." and "What's the most effective..." heavily weight veterinary endorsements and published research.</li>
+            
+            <li><strong style="color: #ffd700;">Mid Funnel (Comparison):</strong> Natural/holistic positioning gains share. Queries like "How can I relieve..." and "What helps with..." show preference for natural ingredients (turmeric, omega-3, probiotics) over pharmaceutical approaches.</li>
+            
+            <li><strong style="color: #ffd700;">Lower Funnel (Purchase):</strong> Format and palatability dominate. Queries about "soft chews," "treat form," and "picky eaters" prioritize ease of administration and acceptance rates over ingredient profiles.</li>
+        </ul>
+    </div>
+
+    <div style="margin-top: 30px; padding: 25px; background-color: #0a0a1a; border-radius: 8px; border: 2px solid #4169e1;">
+        <h2 style="color: #4169e1; margin-top: 0; border-bottom: 2px solid #4169e1; padding-bottom: 10px;">Pet Honesty Competitive Position Analysis</h2>
+        
+        <h3 style="color: #87ceeb; margin-top: 20px;">Current Strengths</h3>
+        <ul style="color: #ccc; line-height: 1.8;">
+            <li><strong style="color: #4169e1;">Format Innovation Leadership:</strong> Dual-texture "crunchy & creamy" format appears in 12 top-3 rankings with patent-pending status. This represents Pet Honesty's only true defensible moat – competitors cannot easily replicate without IP infringement risk. 9/10 cat acceptance claim is strongest palatability metric in the category.</li>
+            
+            <li><strong style="color: #4169e1;">Non-GMO Category Ownership:</strong> Pet Honesty 10-in-1 is #1 ranked answer for "non-GMO dog supplements" with 30.1k reviews (4.4★). This positioning differentiates from both budget brands (no certifications) and vet brands (don't emphasize natural credentials).</li>
+            
+            <li><strong style="color: #4169e1;">Price-Value Sweet Spot:</strong> $13.99-32.99 pricing avoids race-to-bottom with budget brands while remaining accessible versus premium tier. This positions Pet Honesty in Amazon's highest-satisfaction price band ($15-25 = consistent 4.4-4.5★ ratings).</li>
+            
+            <li><strong style="color: #4169e1;">Multi-Benefit Portfolio Breadth:</strong> Pet Honesty appears across 8 different health categories (digestive, joint, calming, urinary, hairball, dental, skin/coat, multivitamin), demonstrating product line comprehensiveness versus specialists.</li>
+            
+            <li><strong style="color: #4169e1;">Cat Market Success:</strong> Pet Honesty dominates cat supplement rankings (6 #1 positions out of 20 cat queries) versus weaker dog performance (3 #1 positions out of 38 dog queries), suggesting format innovation resonates more strongly with cat owners facing palatability challenges.</li>
+        </ul>
+
+        <h3 style="color: #87ceeb; margin-top: 25px;">Strategic Vulnerabilities</h3>
+        <ul style="color: #ccc; line-height: 1.8;">
+            <li><strong style="color: #ff6b6b;">Zero Veterinary Validation Visibility:</strong> Pet Honesty appears in ZERO "vet-recommended," "#1 vet choice," or clinical study queries. This excludes the brand from highest-intent medical condition traffic (arthritis: Nutramax sweeps; chronic diarrhea: FortiFlora dominates; kidney disease: Epakitin owns).</li>
+            
+            <li><strong style="color: #ff6b6b;">Joint Health Category Lockout:</strong> Despite strong 10-in-1 positioning, Pet Honesty captures only 1 top-3 position out of 7 joint health queries (and that's #1 in "natural joint stiffness relief" – not core arthritis queries). Nutramax's ASU patent and 25-year clinical track record create insurmountable barrier.</li>
+            
+            <li><strong style="color: #ff6b6b;">Probiotic Category Absence:</strong> Pet Honesty missing from digestive/probiotic queries where Purina FortiFlora dominates with 45.6k reviews and clinical backing. "10-in-1" formulation includes probiotics but lacks potency/strain specificity claims to compete with specialist products.</li>
+            
+            <li><strong style="color: #ff6b6b;">Review Count Deficit:</strong> Pet Honesty 10-in-1 (30.1k reviews) trails category leaders: Nutramax Cosequin (74.7k), Zesty Paws omega-3 (69.2k), FortiFlora (45.6k). In Amazon algorithm, this review gap compounds over time as market leaders accumulate velocity.</li>
+            
+            <li><strong style="color: #ff6b6b;">Digital Experience Gap:</strong> Pet Honesty absent from "best website," "best blog content," and "ingredient comparison" queries where Native Pet dominates with transparency tools (dosage calculators, ingredient sourcing maps, third-party testing results). This affects brand perception even on Amazon.</li>
+            
+            <li><strong style="color: #ff6b6b;">"Jack of All Trades" Perception Risk:</strong> 10-in-1 positioning creates vulnerability against specialists. When pet parents have specific serious conditions (severe arthritis, chronic diarrhea, kidney disease), they migrate to clinical-grade specialist products rather than comprehensive formulas.</li>
+        </ul>
+
+        <h3 style="color: #87ceeb; margin-top: 25px;">Competitive Threats</h3>
+        <ul style="color: #ccc; line-height: 1.8;">
+            <li><strong style="color: #ff6b6b;">Zesty Paws DTC Scaling:</strong> Zesty Paws appears in 25+ top-3 rankings (versus Pet Honesty's 15) with massive review counts (54.9k on multivitamin, 69.2k on omega-3, 111k on allergy relief). Their social media dominance (14% engagement rate, 1.8B impressions) builds brand awareness that converts to Amazon sales.</li>
+            
+            <li><strong style="color: #ff6b6b;">Native Pet Transparency Play:</strong> Native Pet captures "clean label," "best website," "best content," and "digital trust" queries through radical transparency. Their powder format claims 5x potency versus chews, directly attacking Pet Honesty's format innovation with efficacy counter-positioning.</li>
+            
+            <li><strong style="color: #ff6b6b;">Budget Brand Quality Parity:</strong> VetIQ ($12.47), ProSense ($6.89), and PetNC ($9.99) achieve 4.5-4.6★ ratings at 50-70% lower prices than Pet Honesty. As budget brands improve formulations, Pet Honesty's mid-tier positioning faces compression from below.</li>
+        </ul>
+    </div>
+
+    <div style="margin-top: 30px; padding: 25px; background-color: #1a0a0a; border-radius: 8px; border: 2px solid #32cd32;">
+        <h2 style="color: #32cd32; margin-top: 0; border-bottom: 2px solid #32cd32; padding-bottom: 10px;">Strategic Roadmap: Credibility & Content Opportunities</h2>
+        
+        <h3 style="color: #90EE90; margin-top: 20px;">Priority 1: Clinical Validation (90-180 Days) - Bridges Vet Channel Gap</h3>
+        <ul style="color: #ccc; line-height: 1.8;">
+            <li><strong style="color: #32cd32;">Commission Third-Party Efficacy Studies:</strong> Partner with university veterinary schools (UC Davis, Cornell, Tufts) to conduct peer-reviewed studies on flagship products. Even single published study enables "clinically tested" language and narrows gap with vet-channel leaders. Focus areas: 10-in-1 multivitamin effectiveness, dual-texture palatability acceptance rates, hip & joint turmeric absorption.</li>
+            
+            <li><strong style="color: #32cd32;">Veterinary Advisory Board:</strong> Recruit 3-5 practicing veterinarians and 1 board-certified veterinary nutritionist for formal advisory board. Prominently feature credentials on packaging and website. This provides "vet-formulated" and "vet-approved" claims without requiring #1 vet recommendation (which takes decades to build).</li>
+            
+            <li><strong style="color: #32cd32;">NASC Quality Seal Prominence:</strong> Pet Honesty products mention NASC certification but don't feature it prominently. Elevate quality seal visibility on packaging, A+ content, and website to match signal strength of Nutramax's clinical backing. Most pet parents don't know NASC = National Animal Supplement Council third-party verification.</li>
+            
+            <li><strong style="color: #32cd32;">Publish Ingredient Sourcing Documentation:</strong> Create publicly available documentation showing: supplier certifications, manufacturing facility inspections, third-party testing results for heavy metals/contaminants. Native Pet dominates "clean label" queries with this transparency; Pet Honesty has ingredients but lacks documentation visibility.</li>
+            
+            <li><strong style="color: #32cd32;">Expected Impact:</strong> Captures 15-20% more mid-funnel comparison queries where natural positioning meets clinical validation needs. Enables expansion into condition-specific SKUs (senior cognitive, kidney support, advanced joint) currently locked by clinical barrier.</li>
+        </ul>
+
+        <h3 style="color: #90EE90; margin-top: 25px;">Priority 2: Format Technology Storytelling (30-60 Days) - Amplifies Core Differentiator</h3>
+        <ul style="color: #ccc; line-height: 1.8;">
+            <li><strong style="color: #32cd32;">Palatability Acceptance Study Publication:</strong> Document the "9/10 cats prefer" claim with methodology: sample size, testing protocol, comparison products. Create white paper and infographic showing dual-texture engineering process. Current mention is buried; this should be hero brand narrative across all channels.</li>
+            
+            <li><strong style="color: #32cd32;">Video Content Series - "The Supplement Cats Actually Eat":</strong> Create 8-10 short videos (60-90 seconds) showing real cats/dogs eating Pet Honesty versus pills/traditional chews. User-generated content style with authentic pet parent testimonials. Deploy across Amazon A+ content, TikTok, Instagram, YouTube. Addresses #1 purchase barrier: "Will my pet actually take this?"</li>
+            
+            <li><strong style="color: #32cd32;">Patent Pending Promotion:</strong> Dual-texture format has patent-pending status but this isn't leveraged in marketing. Add "Patent-Pending Dual-Texture Technology" to packaging, A+ content, and product titles. This signals innovation leadership and creates competitive moat perception.</li>
+            
+            <li><strong style="color: #32cd32;">Format Comparison Landing Page:</strong> Create interactive website tool: "Why Dual-Texture Beats Pills, Powders & Traditional Chews." Show acceptance rates, ease of administration, digestive benefits. Include dosage calculator by pet weight/condition. Drives traffic from "What's better: soft chews or pills?" queries where Pet Honesty currently underindexes.</li>
+            
+            <li><strong style="color: #32cd32;">Expected Impact:</strong> Captures additional 20-25% of lower-funnel format/palatability queries. Strengthens position in cat market where Pet Honesty already leads. Creates defensible differentiation against both budget competitors (can't copy format) and premium competitors (lack innovation narrative).</li>
+        </ul>
+
+        <h3 style="color: #90EE90; margin-top: 25px;">Priority 3: Condition-Specific Content Strategy (60-90 Days) - Captures Medical Long-Tail</h3>
+        <ul style="color: #ccc; line-height: 1.8;">
+            <li><strong style="color: #32cd32;">Comprehensive FAQ Development:</strong> Create 200+ FAQ pages addressing specific conditions: "Best supplement for senior dogs with hip dysplasia," "Natural relief for IBD in cats," "Supplements for dogs with Cushing's disease." Native Pet leads with 850+ articles; Pet Honesty needs depth to compete for long-tail medical queries.</li>
+            
+            <li><strong style="color: #32cd32;">Condition Guides with Product Matching:</strong> Develop 15-20 deep-dive guides (2,000+ words each): Senior Dog Joint Health Complete Guide, Cat Kidney Disease Supplement Support, Canine Anxiety Management Protocol. Include symptom timelines ("when to see results"), ingredient mechanism explanations, product recommendations by severity level. Veterinarian review/co-author for credibility.</li>
+            
+            <li><strong style="color: #32cd32;">Ingredient Education Library:</strong> Create individual pages for each key ingredient: Glucosamine (mechanism, dosage, clinical studies), Turmeric/Curcumin (absorption science, BioPerine synergy), L-Lysine for cats (viral support, respiratory health). Explain why Pet Honesty formulation/dosing differs from competitors. Answers "What ingredients help with [condition]?" queries.</li>
+            
+            <li><strong style="color: #32cd32;">Product Selection Quiz:</strong> Interactive tool on website: "Find Your Pet's Perfect Supplement." Captures: species, age, weight, primary health concern, secondary concerns, administration preference (chew vs powder). Recommends specific Pet Honesty products with rationale. Reduces "which product should I choose?" paralysis from 10-in-1 comprehensive positioning.</li>
+            
+            <li><strong style="color: #32cd32;">Amazon A+ Content Optimization:</strong> Rebuild A+ content for flagship products with: clinical ingredient explanations, format technology visuals, before/after testimonials, comparison charts (Pet Honesty vs typical supplement). Currently A+ content underutilizes available modules/storytelling opportunity.</li>
+            
+            <li><strong style="color: #32cd32;">Expected Impact:</strong> Captures 30-40% more upper-funnel discovery traffic. Builds SEO authority for condition-specific queries currently dominated by Native Pet and vet-channel brands. Positions Pet Honesty as education resource, not just product seller.</li>
+        </ul>
+
+        <h3 style="color: #90EE90; margin-top: 25px;">Priority 4: Review Velocity Acceleration (Ongoing) - Compounds Algorithmic Advantage</h3>
+        <ul style="color: #ccc; line-height: 1.8;">
+            <li><strong style="color: #32cd32;">Post-Purchase Review Campaign Optimization:</strong> Analyze current email sequence timing and conversion rates. Test: review requests at 14 days (palatability feedback), 45 days (efficacy results visible), 90 days (long-term satisfaction). Include photo/video upload incentive (additional discount/sample) to increase review richness signal to Amazon algorithm.</li>
+            
+            <li><strong style="color: #32cd32;">Subscribe & Save Review Bonuses:</strong> Offer small bonus (extra 5% discount or free sample) for Subscribe & Save customers who leave reviews after 2nd shipment. This captures "long-term use" reviews that carry more weight than single-purchase reviews.</li>
+            
+            <li><strong style="color: #32cd32;">Influencer Micro-Campaign Strategy:</strong> Partner with 20-30 pet micro-influencers (10k-50k followers) for authentic reviews. Requirement: must be real pet parent with documented health issue, genuine product trial, Amazon Verified Purchase review. Seed reviews accumulate velocity while maintaining authenticity.</li>
+            
+            <li><strong style="color: #32cd32;">Bundle Review Incentivization:</strong> Create condition-specific bundles (Senior Dog Wellness Kit = multivitamin + hip/joint + omega-3). Multi-product purchases naturally generate more reviews per customer, accelerating aggregate review count across product line.</li>
+            
+            <li><strong style="color: #32cd32;">Expected Impact:</strong> Increases review velocity by 30-40% over 6 months. Compounds over time as higher review counts improve Amazon ranking, which drives more sales, which generates more reviews (self-reinforcing cycle that currently benefits market leaders).</li>
+        </ul>
+
+        <h3 style="color: #90EE90; margin-top: 25px;">Quick Wins (0-30 Days) - Immediate Optimization</h3>
+        <ul style="color: #ccc; line-height: 1.8;">
+            <li><strong style="color: #32cd32;">Product Title Optimization:</strong> Add high-intent keywords to titles: "Vet-Formulated," "Clinically-Studied Ingredients," "Patent-Pending Dual-Texture," "9/10 Cats Love." Titles currently generic versus competitor specificity.</li>
+            
+            <li><strong style="color: #32cd32;">Bullet Point Restructure:</strong> Lead with differentiation (dual-texture technology, acceptance rates) before ingredient lists. Currently bullets bury format innovation beneath generic benefit claims. Study Nutramax bullets: lead with "#1 vet recommended" and "25+ years clinical research."</li>
+            
+            <li><strong style="color: #32cd32;">Comparison Chart Graphics:</strong> Create visual comparison charts for A+ content: Pet Honesty Dual-Texture vs Pills (acceptance rates), Pet Honesty 10-in-1 vs Single-Ingredient Products (cost per day), Pet Honesty Natural Ingredients vs Synthetic Competitors. Makes value proposition instantly scannable.</li>
+            
+            <li><strong style="color: #32cd32;">Safety & Quality Callouts:</strong> Prominently display: "Made in USA," "NASC Quality Seal," "Third-Party Tested," "Vet Nutritionist Formulated" in hero images and first scroll. These trust signals currently hidden in fine print.</li>
+            
+            <li><strong style="color: #32cd32;">Cost-Per-Day Calculation:</strong> Add clear cost breakdown: "$0.31 per day" versus competitors' unstated pricing. Native Pet wins "best value" query by highlighting 67¢/day for comprehensive care. Pet Honesty should lead with value math, not hide pricing.</li>
+        </ul>
+
+        <div style="margin-top: 30px; padding: 20px; background-color: #2a2a2a; border-left: 4px solid #32cd32; border-radius: 4px;">
+            <h4 style="color: #32cd32; margin-top: 0;">Success Metrics Dashboard (6-Month Targets)</h4>
+            <ul style="color: #ccc; line-height: 1.8; margin-bottom: 0;">
+                <li><strong>Answer Share Growth:</strong> +25% appearance in top-3 rankings across tracked queries</li>
+                <li><strong>#1 Position Wins:</strong> Double current #1 rankings from 9 to 18+ (focus: cat supplements, format queries, natural/non-GMO positioning)</li>
+                <li><strong>Review Velocity:</strong> Reach 50k+ reviews on 10-in-1 flagship (currently 30.1k) to match Zesty Paws tier</li>
+                <li><strong>Clinical Language Adoption:</strong> Enable "clinically tested" or "vet-formulated" claims on 80%+ of product line</li>
+                <li><strong>Category Expansion:</strong> Launch 3 specialist products in underserved categories (senior cognitive, kidney support, advanced arthritis) with clinical positioning</li>
+                <li><strong>Digital Trust Signals:</strong> Rank top-3 for "best pet supplement website" or "clean label ingredients" queries through transparency content</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const searchInfo = document.getElementById('searchInfo');
+        const tableRows = document.querySelectorAll('tbody tr:not(.category-header)');
+        
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            let visibleCount = 0;
+            
+            clearSearchHighlights();
+            
+            tableRows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (searchTerm === '' || text.includes(searchTerm)) {
+                    row.style.display = '';
+                    visibleCount++;
+                    
+                    if (searchTerm !== '') {
+                        highlightSearchTerm(row, searchTerm);
+                    }
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            if (searchTerm === '') {
+                searchInfo.textContent = '';
+            } else {
+                searchInfo.textContent = `Showing ${visibleCount} results for "${searchTerm}"`;
+            }
+            
+            updateCategoryHeaders();
+        });
+        
+        function highlightSearchTerm(row, term) {
+            const cells = row.querySelectorAll('td');
+            cells.forEach(cell => {
+                if (cell.textContent.toLowerCase().includes(term)) {
+                    const regex = new RegExp(`(${term})`, 'gi');
+                    cell.innerHTML = cell.innerHTML.replace(regex, '<span class="search-highlight">$1</span>');
+                }
+            });
+        }
+        
+        function clearSearchHighlights() {
+            const highlighted = document.querySelectorAll('.search-highlight');
+            highlighted.forEach(span => {
+                const parent = span.parentNode;
+                parent.replaceChild(document.createTextNode(span.textContent), span);
+                parent.normalize();
+            });
+        }
+        
+        function updateCategoryHeaders() {
+            const categoryHeaders = document.querySelectorAll('.category-header');
+            categoryHeaders.forEach(header => {
+                let hasVisibleRows = false;
+                let nextRow = header.nextElementSibling;
+                
+                while (nextRow && !nextRow.classList.contains('category-header')) {
+                    if (nextRow.style.display !== 'none') {
+                        hasVisibleRows = true;
+                        break;
+                    }
+                    nextRow = nextRow.nextElementSibling;
+                }
+                
+                header.style.display = hasVisibleRows ? '' : 'none';
+            });
+        }
+        
+        function highlightCompany(company) {
+            clearHighlights();
+            
+            document.querySelectorAll('.company-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[data-company="${company}"]`).classList.add('active');
+            
+            const companyNames = getCompanyBrands(company);
+            let matchCount = 0;
+            
+            tableRows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                let hasMatch = false;
+                
+                for (let i = 2; i <= 4; i++) {
+                    if (cells[i]) {
+                        const brandText = cells[i].textContent.trim();
+                        if (companyNames.some(name => brandText.toLowerCase().includes(name.toLowerCase()))) {
+                            cells[i].classList.add('highlight');
+                            hasMatch = true;
+                        }
+                    }
+                }
+                
+                if (hasMatch) {
+                    matchCount++;
+                }
+            });
+            
+            searchInfo.textContent = `Showing ${matchCount} entries for ${getCompanyDisplayName(company)}`;
+        }
+        
+        function getCompanyBrands(company) {
+            const brandMap = {
+                'pethonesty': ['Pet Honesty'],
+                'zestypaws': ['Zesty Paws'],
+                'nutramax': ['Nutramax', 'Cosequin', 'Dasuquin', 'Proviable', 'Imuquin', 'NARAQUIN', 'Welactin'],
+                'purina': ['Purina Pro Plan', 'Purina', 'FortiFlora'],
+                'native': ['Native Pet'],
+                'vetriscience': ['VetriScience']
+            };
+            
+            return brandMap[company] || [];
+        }
+        
+        function getCompanyDisplayName(company) {
+            const nameMap = {
+                'pethonesty': 'Pet Honesty',
+                'zestypaws': 'Zesty Paws',
+                'nutramax': 'Nutramax',
+                'purina': 'Purina Pro Plan',
+                'native': 'Native Pet',
+                'vetriscience': 'VetriScience'
+            };
+            
+            return nameMap[company] || company;
+        }
+        
+        function clearHighlights() {
+            document.querySelectorAll('.company-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.highlight').forEach(el => el.classList.remove('highlight'));
+            searchInfo.textContent = '';
+        }
+    </script>
+</body>
+</html>
