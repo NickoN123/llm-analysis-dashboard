@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BrandRank Playmaker Profile - Joakim Noah</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    let currentSlide = 0;
+    const totalSlides = 10;
+
+    const styles = {
+      container: `
+        width: 100%;
+        height: 100vh;
+        background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+        display: flex;
+        flex-direction: column;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #ffffff;
+      `,
+      slideContainer: `
+        flex: 1;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      `,
+      titleSlide: `
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        text-align: center;
+        padding: 0 120px;
+      `,
+      titleContent: `
+        margin-bottom: 60px;
+      `,
+      mainTitle: `
+        font-size: 64px;
+        font-weight: bold;
+        color: #ffffff;
+        margin-bottom: 40px;
+        letter-spacing: -0.5px;
+      `,
+      nameTitle: `
+        font-size: 56px;
+        font-weight: bold;
+        color: #00d4ff;
+        margin-bottom: 30px;
+      `,
+      roleText: `
+        font-size: 28px;
+        color: #ffffff;
+        margin-bottom: 20px;
+        font-weight: 400;
+      `,
+      affiliationText: `
+        font-size: 22px;
+        color: #b8c5d6;
+        font-weight: 300;
+      `,
+      scoreCard: `
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 12px;
+        padding: 40px 60px;
+        display: inline-block;
+      `,
+      scoreLabel: `
+        font-size: 20px;
+        color: #b8c5d6;
+        margin-bottom: 12px;
+      `,
+      scoreValue: `
+        font-size: 72px;
+        font-weight: bold;
+        color: #00d4ff;
+      `,
+      dateText: `
+        margin-top: 40px;
+        font-size: 18px;
+        color: #7a8a9e;
+      `,
+      contentSlide: `
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: 60px 80px;
+      `,
+      slideTitle: `
+        font-size: 52px;
+        font-weight: bold;
+        color: #ffffff;
+        margin-bottom: 40px;
+        letter-spacing: -0.5px;
+      `,
+      section: `
+        margin-bottom: 30px;
+      `,
+      sectionLabel: `
+        color: #00d4ff;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 12px;
+      `,
+      taglineText: `
+        font-size: 22px;
+        color: #ffffff;
+        font-style: italic;
+        font-weight: 300;
+      `,
+      bodyText: `
+        font-size: 20px;
+        color: #d1dae6;
+        line-height: 1.6;
+      `,
+      twoColumnGrid: `
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        flex: 1;
+      `,
+      threeColumnGrid: `
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+      `,
+      card: `
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 8px;
+        padding: 30px;
+        transition: all 0.3s ease;
+      `,
+      strengthCard: `
+        border: 1px solid rgba(78, 205, 196, 0.3);
+      `,
+      weaknessCard: `
+        border: 1px solid rgba(255, 107, 107, 0.3);
+      `,
+      strengthLabel: `
+        color: #4ecdc4;
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 12px;
+      `,
+      weaknessLabel: `
+        color: #ff6b6b;
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 12px;
+      `,
+      cardText: `
+        color: #d1dae6;
+        font-size: 17px;
+        line-height: 1.5;
+      `,
+      cardTitle: `
+        font-size: 24px;
+        font-weight: bold;
+        color: #00d4ff;
+        margin-bottom: 20px;
+      `,
+      scoreText: `
+        font-size: 20px;
+        color: #ffffff;
+        margin-bottom: 20px;
+        font-weight: 600;
+      `,
+      listItem: `
+        margin-bottom: 20px;
+      `,
+      itemLabel: `
+        font-size: 18px;
+        font-weight: bold;
+        color: #ffffff;
+        margin-bottom: 4px;
+      `,
+      itemValue: `
+        font-size: 16px;
+        color: #b8c5d6;
+        line-height: 1.4;
+      `,
+      valueItem: `
+        margin-bottom: 16px;
+      `,
+      valueDesc: `
+        font-size: 14px;
+        color: #b8c5d6;
+        line-height: 1.4;
+      `,
+      tableContainer: `
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 8px;
+        overflow: hidden;
+      `,
+      table: `
+        width: 100%;
+        border-collapse: collapse;
+      `,
+      tableHead: `
+        background: rgba(0, 212, 255, 0.1);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+      `,
+      tableHeader: `
+        text-align: left;
+        padding: 20px 30px;
+        font-size: 22px;
+        font-weight: bold;
+        color: #ffffff;
+      `,
+      tableRow: `
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+      `,
+      tableCellLabel: `
+        padding: 20px 30px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #00d4ff;
+        width: 30%;
+      `,
+      tableCell: `
+        padding: 20px 30px;
+        font-size: 17px;
+        color: #d1dae6;
+        line-height: 1.5;
+      `,
+      personaCard: `
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 8px;
+        padding: 30px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      `,
+      personaScore: `
+        font-size: 28px;
+        font-weight: bold;
+        color: #00d4ff;
+        margin-bottom: 12px;
+      `,
+      personaName: `
+        font-size: 18px;
+        font-weight: bold;
+        color: #ffffff;
+        margin-bottom: 10px;
+      `,
+      personaDesc: `
+        font-size: 14px;
+        color: #b8c5d6;
+        line-height: 1.4;
+      `,
+      categoryLabel: `
+        font-size: 14px;
+        color: #00d4ff;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      `,
+      associationText: `
+        font-size: 20px;
+        font-weight: bold;
+        color: #ffffff;
+        margin-bottom: 10px;
+      `,
+      descriptionText: `
+        font-size: 14px;
+        color: #b8c5d6;
+        line-height: 1.4;
+      `,
+      sectionTitleGreen: `
+        font-size: 26px;
+        font-weight: bold;
+        color: #4ecdc4;
+        margin-bottom: 24px;
+      `,
+      sectionTitleRed: `
+        font-size: 26px;
+        font-weight: bold;
+        color: #ff6b6b;
+        margin-bottom: 24px;
+      `,
+      alignedCard: `
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(78, 205, 196, 0.3);
+        border-radius: 8px;
+        padding: 24px;
+        margin-bottom: 20px;
+      `,
+      misalignedCard: `
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255, 107, 107, 0.3);
+        border-radius: 8px;
+        padding: 24px;
+        margin-bottom: 20px;
+      `,
+      brandHeader: `
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      `,
+      brandName: `
+        font-size: 20px;
+        font-weight: bold;
+        color: #ffffff;
+        margin-bottom: 10px;
+      `,
+      brandScore: `
+        font-size: 28px;
+        font-weight: bold;
+        color: #4ecdc4;
+      `,
+      brandCommentary: `
+        font-size: 15px;
+        color: #b8c5d6;
+        line-height: 1.4;
+      `,
+      opportunityCard: `
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(0, 212, 255, 0.3);
+        border-radius: 8px;
+        padding: 30px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      `,
+      opportunityBrand: `
+        font-size: 24px;
+        font-weight: bold;
+        color: #00d4ff;
+        margin-bottom: 12px;
+      `,
+      opportunityFit: `
+        font-size: 16px;
+        color: #d1dae6;
+        line-height: 1.5;
+      `,
+      finalTitle: `
+        font-size: 52px;
+        font-weight: bold;
+        color: #ffffff;
+        margin-bottom: 60px;
+      `,
+      finalVerdict: `
+        font-size: 26px;
+        color: #d1dae6;
+        line-height: 1.7;
+        margin-bottom: 60px;
+        max-width: 1200px;
+        font-weight: 300;
+      `,
+      finalScoreCard: `
+        background: rgba(255,255,255,0.05);
+        border: 2px solid rgba(0, 212, 255, 0.5);
+        border-radius: 12px;
+        padding: 50px 80px;
+        display: inline-block;
+      `,
+      finalScoreLabel: `
+        font-size: 22px;
+        color: #b8c5d6;
+        margin-bottom: 16px;
+      `,
+      finalScoreValue: `
+        font-size: 80px;
+        font-weight: bold;
+        color: #00d4ff;
+      `,
+      navBar: `
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 30px 80px;
+        background: rgba(0, 0, 0, 0.3);
+        border-top: 1px solid rgba(255,255,255,0.1);
+      `,
+      navButton: `
+        padding: 12px 32px;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 6px;
+        color: #ffffff;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 500;
+      `,
+      navButtonDisabled: `
+        opacity: 0.3;
+        cursor: not-allowed;
+      `,
+      progressContainer: `
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      `,
+      progressText: `
+        color: #7a8a9e;
+        font-size: 16px;
+      `,
+      progressDots: `
+        display: flex;
+        gap: 8px;
+      `,
+      progressDot: `
+        height: 8px;
+        width: 8px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.2);
+        transition: all 0.3s ease;
+      `,
+      progressDotActive: `
+        width: 32px;
+        background: #00d4ff;
+        border-radius: 4px;
+      `,
+    };
+
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+        render();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        render();
+      }
+    }
+
+    function renderSlide() {
+      switch (currentSlide) {
+        case 0:
+          return `
+            <div style="${styles.titleSlide}">
+              <div style="${styles.titleContent}">
+                <h1 style="${styles.mainTitle}">BrandRank Playmaker Profile™</h1>
+                <div style="${styles.nameTitle}">Joakim Noah</div>
+                <div style="${styles.roleText}">Retired NBA Star, Influencer, Community Leader</div>
+                <div style="${styles.affiliationText}">Noah's Arc Foundation | Chicago Bulls Team Ambassador</div>
+              </div>
+              <div style="${styles.scoreCard}">
+                <div style="${styles.scoreLabel}">BrandRank Playmaker Profile Score</div>
+                <div style="${styles.scoreValue}">7.5 / 10</div>
+              </div>
+              <div style="${styles.dateText}">Report Date: November 1, 2025</div>
+            </div>
+          `;
+
+        case 1:
+          return `
+            <div style="${styles.contentSlide}">
+              <h2 style="${styles.slideTitle}">Executive Summary</h2>
+              <div style="${styles.section}">
+                <div style="${styles.sectionLabel}">Executive Tagline</div>
+                <div style="${styles.taglineText}">"Transforming competitive grit into social impact and brand influence"</div>
+              </div>
+              <div style="${styles.section}">
+                <div style="${styles.sectionLabel}">Brand Essence and Character</div>
+                <div style="${styles.bodyText}">Joakim Noah represents a unique type of leadership: fierce on the court, deeply reflective off it. His essence is defined by purpose over polish – building platforms rooted in healing, youth empowerment, and global responsibility. With French-Cameroonian and Swedish-American roots, he embodies cross-cultural resonance. He does not posture for digital clout; instead, he creates impact ecosystems that reflect hard-earned credibility and emotion-driven engagement.</div>
+              </div>
+              <div style="${styles.section}">
+                <div style="${styles.sectionLabel}">Most Recent Highlight</div>
+                <div style="${styles.bodyText}">Joakim Noah continues to evolve as a purpose-led figure in post-retirement. He has formalized his relationship with the Chicago Bulls as Team Ambassador, launched a violence-prevention basketball league in Chicago, and engaged globally through NBA Africa, BAL ambassadorship, and youth initiatives in Cameroon. His story is shifting from enforcer to empath, from center court to community impact.</div>
+              </div>
+              <div style="${styles.twoColumnGrid}">
+                <div style="${styles.card}${styles.strengthCard}">
+                  <div style="${styles.strengthLabel}">Surprising Strength</div>
+                  <div style="${styles.cardText}">Strong presence in long-form media (e.g., podcasts) where his emotional authenticity resonates deeply, reinforcing his reputation for honesty and reflection.</div>
+                </div>
+                <div style="${styles.card}${styles.weaknessCard}">
+                  <div style="${styles.weaknessLabel}">Surprising Weakness</div>
+                  <div style="${styles.cardText}">Emotional volatility – while humanizing – has occasionally created friction with partners or press, complicating alignment in formal brand settings.</div>
+                </div>
+              </div>
+            </div>
+          `;
+
+        case 2:
+          return `
+            <div style="${styles.contentSlide}">
+              <h2 style="${styles.slideTitle}">Brand Promise & Core Values</h2>
+              <div style="${styles.twoColumnGrid}">
+                <div style="${styles.card}">
+                  <h3 style="${styles.cardTitle}">Brand Promise Alignment</h3>
+                  <div style="${styles.scoreText}">8/10 – Strong narrative consistency</div>
+                  <div style="${styles.listItem}">
+                    <div style="${styles.itemLabel}">Sustainability</div>
+                    <div style="${styles.itemValue}">Committed to empowering communities and youth through sport, health, and place.</div>
+                  </div>
+                  <div style="${styles.listItem}">
+                    <div style="${styles.itemLabel}">Innovation</div>
+                    <div style="${styles.itemValue}">Reimagines athlete influence as a driver of social change and cultural voice.</div>
+                  </div>
+                </div>
+                <div style="${styles.card}">
+                  <h3 style="${styles.cardTitle}">Core Values</h3>
+                  <div style="${styles.valueItem}">
+                    <div style="${styles.itemLabel}">Resilience</div>
+                    <div style="${styles.valueDesc}">Rebounded from injuries to lead a meaningful second act</div>
+                  </div>
+                  <div style="${styles.valueItem}">
+                    <div style="${styles.itemLabel}">Community Empowerment</div>
+                    <div style="${styles.valueDesc}">Youth leagues, arts, and mentorship through foundation</div>
+                  </div>
+                  <div style="${styles.valueItem}">
+                    <div style="${styles.itemLabel}">Authenticity</div>
+                    <div style="${styles.valueDesc}">Vulnerable in public storytelling around identity</div>
+                  </div>
+                  <div style="${styles.valueItem}">
+                    <div style="${styles.itemLabel}">Global Responsibility</div>
+                    <div style="${styles.valueDesc}">BAL, NBA Africa, initiatives in Cameroon</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+
+        case 3:
+          return `
+            <div style="${styles.contentSlide}">
+              <h2 style="${styles.slideTitle}">Brand Vulnerability Assessment</h2>
+              <div style="${styles.tableContainer}">
+                <table style="${styles.table}">
+                  <thead style="${styles.tableHead}">
+                    <tr>
+                      <th style="${styles.tableHeader}">Vulnerability</th>
+                      <th style="${styles.tableHeader}">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style="${styles.tableRow}">
+                      <td style="${styles.tableCellLabel}">Identity Risk Post-NBA</td>
+                      <td style="${styles.tableCell}">Lacks one defining post-career platform; more grassroots than media empire</td>
+                    </tr>
+                    <tr style="${styles.tableRow}">
+                      <td style="${styles.tableCellLabel}">Emotional Volatility</td>
+                      <td style="${styles.tableCell}">Unfiltered style can cause tension in corporate or institutional settings</td>
+                    </tr>
+                    <tr style="${styles.tableRow}">
+                      <td style="${styles.tableCellLabel}">Market Saturation Risk</td>
+                      <td style="${styles.tableCell}">Competes in a dense field of athlete influencers with broader digital pull</td>
+                    </tr>
+                    <tr style="${styles.tableRow}">
+                      <td style="${styles.tableCellLabel}">Demographic Disconnect</td>
+                      <td style="${styles.tableCell}">Strong with Millennials/Gen X, but under-engaged with Gen Z platforms</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `;
+
+        case 4:
+          return `
+            <div style="${styles.contentSlide}">
+              <h2 style="${styles.slideTitle}">Persona Mapping: Strategic Dimensions</h2>
+              <div style="${styles.threeColumnGrid}">
+                ${[
+                  { score: '7/10', name: 'The Sustainable Strategist', desc: 'Grounded in urban healing and youth empowerment' },
+                  { score: '8/10', name: 'The Innovation Catalyst', desc: 'Reframes athlete brand into community-first leadership' },
+                  { score: '9/10', name: 'The Global Bridge Builder', desc: 'Works across continents (BAL, Cameroon, NBA Africa)' },
+                  { score: '7/10', name: 'The Culture Cultivator', desc: 'Builds programs that uplift underserved voices' },
+                  { score: '8/10', name: 'The Partnership Weaver', desc: 'Formal Bulls ambassador, collaborates with brands & orgs' },
+                  { score: '8/10', name: 'The Ethical Entrepreneur', desc: 'Consistently aligns values with visible action' }
+                ].map(p => `
+                  <div style="${styles.personaCard}">
+                    <div style="${styles.personaScore}">${p.score}</div>
+                    <div style="${styles.personaName}">${p.name}</div>
+                    <div style="${styles.personaDesc}">${p.desc}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+
+        case 5:
+          return `
+            <div style="${styles.contentSlide}">
+              <h2 style="${styles.slideTitle}">Persona Mapping: Operational Dimensions</h2>
+              <div style="${styles.threeColumnGrid}">
+                ${[
+                  { score: '6/10', name: 'The Digital Pioneer', desc: 'Strong on long-form storytelling; weak on short-form virality' },
+                  { score: '7/10', name: 'The Insight Explorer', desc: 'Leads with reflection, inner narrative, and identity work' },
+                  { score: '7/10', name: 'The Brand Architect', desc: 'Gradually evolving post-NBA identity around legacy' },
+                  { score: '8/10', name: 'The Efficiency Optimizer', desc: 'High-impact programs on lean operational models' },
+                  { score: '7.5/10', name: 'The Environmental Groundbreaker', desc: 'Localized, grassroots commitment to sustainability' }
+                ].map(p => `
+                  <div style="${styles.personaCard}">
+                    <div style="${styles.personaScore}">${p.score}</div>
+                    <div style="${styles.personaName}">${p.name}</div>
+                    <div style="${styles.personaDesc}">${p.desc}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+
+        case 6:
+          return `
+            <div style="${styles.contentSlide}">
+              <h2 style="${styles.slideTitle}">Archetype Mapping</h2>
+              <div style="${styles.threeColumnGrid}">
+                ${[
+                  { cat: 'Animal', assoc: 'Wolf', desc: 'Pack leader who protects and leads his people' },
+                  { cat: 'Technology', assoc: 'Community Land Trust', desc: 'Builds equity through place, not platform' },
+                  { cat: 'Movie', assoc: 'Remember the Titans', desc: 'Healing through unity and shared adversity' },
+                  { cat: 'Tree', assoc: 'Oak', desc: 'Deeply rooted, emotionally strong' },
+                  { cat: 'Vehicle', assoc: 'Land Rover', desc: 'Durable, purposeful, cross-cultural' },
+                  { cat: 'Historical Figure', assoc: 'Marcus Rashford', desc: 'Athlete-activist with measurable policy wins' }
+                ].map(a => `
+                  <div style="${styles.card}">
+                    <div style="${styles.categoryLabel}">${a.cat}</div>
+                    <div style="${styles.associationText}">${a.assoc}</div>
+                    <div style="${styles.descriptionText}">${a.desc}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+
+        case 7:
+          return `
+            <div style="${styles.contentSlide}">
+              <h2 style="${styles.slideTitle}">Brand Alignment Analysis</h2>
+              <div style="${styles.twoColumnGrid}">
+                <div>
+                  <h3 style="${styles.sectionTitleGreen}">Most Aligned Brands</h3>
+                  ${[
+                    { brand: "Noah's Arc Foundation", score: 10, commentary: 'Origin of his mission; lean, community-first, local impact' },
+                    { brand: 'Chicago Bulls (Ambassador)', score: 9, commentary: 'Formal role + emotional ties to career and community' },
+                    { brand: 'Lyrical Lemonade', score: 8, commentary: 'Shared audience, authentic streetwear collaboration' }
+                  ].map(b => `
+                    <div style="${styles.alignedCard}">
+                      <div style="${styles.brandHeader}">
+                        <div style="${styles.brandName}">${b.brand}</div>
+                        <div style="${styles.brandScore}">${b.score}</div>
+                      </div>
+                      <div style="${styles.brandCommentary}">${b.commentary}</div>
+                    </div>
+                  `).join('')}
+                </div>
+                <div>
+                  <h3 style="${styles.sectionTitleRed}">Least Aligned Brands</h3>
+                  ${[
+                    { brand: 'Performance Supplements', rationale: "Conflicts with Noah's lifestyle and anti-optimization ethos" },
+                    { brand: 'Fast-Fashion Brands', rationale: "Oppose Noah's sustainable, purpose-first narrative" },
+                    { brand: 'Nike (Post-release)', rationale: 'Noah was cut in 2017; brand trust and values misaligned' }
+                  ].map(b => `
+                    <div style="${styles.misalignedCard}">
+                      <div style="${styles.brandName}">${b.brand}</div>
+                      <div style="${styles.brandCommentary}">${b.rationale}</div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+          `;
+
+        case 8:
+          return `
+            <div style="${styles.contentSlide}">
+              <h2 style="${styles.slideTitle}">Strong Brand Opportunities</h2>
+              <div style="${styles.twoColumnGrid}">
+                ${[
+                  { brand: 'Patagonia', fit: 'Shared values: sustainability, legacy, social action' },
+                  { brand: 'Therabody', fit: "Recovery + mental wellness – strong alignment with Noah's messaging" },
+                  { brand: 'WHOOP', fit: 'Data-driven wellness and performance tracking for ex-athletes' },
+                  { brand: 'MasterClass', fit: 'Joakim could teach resilience, identity work, or social impact strategy' },
+                  { brand: 'Headspace / Calm', fit: 'Mental health and emotional leadership platform' },
+                  { brand: 'Red Bull Amaphiko', fit: 'Supports social changemakers in underserved communities' }
+                ].map(o => `
+                  <div style="${styles.opportunityCard}">
+                    <div style="${styles.opportunityBrand}">${o.brand}</div>
+                    <div style="${styles.opportunityFit}">${o.fit}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+
+        case 9:
+          return `
+            <div style="${styles.titleSlide}">
+              <h2 style="${styles.finalTitle}">Final Verdict</h2>
+              <div style="${styles.finalVerdict}">Joakim Noah isn't built for digital saturation. He's built for deep, focused, authentic impact. His leadership style is emotional, localized, and slow-burning – but unmistakably real. With time, storytelling, and the right partnerships, he's positioned to be one of sport's most respected off-court voices in wellness, youth empowerment, and social healing.</div>
+              <div style="${styles.finalScoreCard}">
+                <div style="${styles.finalScoreLabel}">Final BrandRank Score</div>
+                <div style="${styles.finalScoreValue}">7.5 / 10</div>
+              </div>
+            </div>
+          `;
+
+        default:
+          return '';
+      }
+    }
+
+    function render() {
+      const app = document.getElementById('app');
+      
+      app.innerHTML = `
+        <div style="${styles.container}">
+          <div style="${styles.slideContainer}">
+            ${renderSlide()}
+          </div>
+
+          <div style="${styles.navBar}">
+            <button 
+              id="prevBtn"
+              style="${styles.navButton}${currentSlide === 0 ? styles.navButtonDisabled : ''}"
+              ${currentSlide === 0 ? 'disabled' : ''}
+            >
+              ← Previous
+            </button>
+
+            <div style="${styles.progressContainer}">
+              <span style="${styles.progressText}">
+                ${currentSlide + 1} / ${totalSlides}
+              </span>
+              <div style="${styles.progressDots}">
+                ${Array.from({ length: totalSlides }).map((_, idx) => `
+                  <div style="${styles.progressDot}${idx === currentSlide ? styles.progressDotActive : ''}"></div>
+                `).join('')}
+              </div>
+            </div>
+
+            <button 
+              id="nextBtn"
+              style="${styles.navButton}${currentSlide === totalSlides - 1 ? styles.navButtonDisabled : ''}"
+              ${currentSlide === totalSlides - 1 ? 'disabled' : ''}
+            >
+              Next →
+            </button>
+          </div>
+        </div>
+      `;
+
+      // Add event listeners
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+
+      prevBtn.onclick = prevSlide;
+      nextBtn.onclick = nextSlide;
+
+      prevBtn.onmouseenter = function(e) {
+        if (currentSlide > 0) {
+          e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+        }
+      };
+      prevBtn.onmouseleave = function(e) {
+        e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+      };
+
+      nextBtn.onmouseenter = function(e) {
+        if (currentSlide < totalSlides - 1) {
+          e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+        }
+      };
+      nextBtn.onmouseleave = function(e) {
+        e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+      };
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+    });
+
+    // Initial render
+    render();
+  </script>
+</body>
+</html>
