@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-AI Reverse Mortgage Rankings - Executive Presentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 1.4;
+        }
+        
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slide {
+            width: 100%;
+            height: 100%;
+            padding: 60px 80px;
+            display: none;
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .slide-header {
+            margin-bottom: 40px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 20px;
+        }
+        
+        .slide-title {
+            font-size: 3.2em;
+            font-weight: 300;
+            color: #00d4ff;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+        }
+        
+        .slide-subtitle {
+            font-size: 1.4em;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+        }
+        
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        /* Navigation */
+        .nav-controls {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+        
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            padding: 12px 24px;
+            cursor: pointer;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-btn:hover {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .slide-counter {
+            position: fixed;
+            bottom: 40px;
+            left: 40px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9em;
+            z-index: 1000;
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: #00d4ff;
+            transition: width 0.6s ease;
+            z-index: 1000;
+        }
+        
+        /* Title Slide */
+        .title-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .main-title {
+            font-size: 4.5em;
+            font-weight: 200;
+            color: #00d4ff;
+            margin-bottom: 30px;
+            letter-spacing: -2px;
+        }
+        
+        .main-subtitle {
+            font-size: 1.8em;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 40px;
+            max-width: 900px;
+            line-height: 1.3;
+        }
+        
+        .brand-tag {
+            font-size: 1.1em;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 300;
+        }
+        
+        /* Executive Summary Grid */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            height: 100%;
+        }
+        
+        .summary-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .summary-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(0, 212, 255, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .card-title {
+            font-size: 1.8em;
+            color: #00d4ff;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+        
+        .card-content {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .metric {
+            font-size: 2.5em;
+            font-weight: 300;
+            color: #00d4ff;
+            margin: 15px 0;
+        }
+        
+        /* Category Table */
+        .category-table {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .category-header {
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            padding: 25px 40px;
+            font-size: 1.6em;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .category-stats {
+            padding: 20px 40px;
+            background: rgba(255, 255, 255, 0.03);
+            color: rgba(255, 255, 255, 0.7);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table th {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px 15px;
+            text-align: left;
+            font-weight: 500;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .data-table td {
+            padding: 18px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9em;
+            transition: background 0.3s ease;
+        }
+        
+        .data-table tr:hover td {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        .prompt-cell {
+            font-weight: 500;
+            max-width: 300px;
+            color: #ffffff;
+        }
+        
+        .llm-response {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.85em;
+        }
+        
+        /* Key Insights */
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .insight-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 30px;
+            border-left: 4px solid #00d4ff;
+            transition: all 0.3s ease;
+        }
+        
+        .insight-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(5px);
+        }
+        
+        .insight-title {
+            font-size: 1.3em;
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .insight-text {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.5;
+        }
+        
+        /* Performance Indicators */
+        .performance-positive { color: #4ecdc4; }
+        .performance-neutral { color: #ffd93d; }
+        .performance-negative { color: #ff6b6b; }
+        
+        /* Methodology */
+        .methodology-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            height: 100%;
+        }
+        
+        .methodology-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .methodology-title {
+            font-size: 1.6em;
+            color: #00d4ff;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+        
+        .methodology-list {
+            list-style: none;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .methodology-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 1.05em;
+        }
+        
+        .methodology-list li:before {
+            content: "▸";
+            color: #00d4ff;
+            margin-right: 15px;
+            font-size: 1.2em;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .slide { padding: 40px 60px; }
+            .main-title { font-size: 3.5em; }
+            .slide-title { font-size: 2.8em; }
+            .summary-grid, .methodology-grid { grid-template-columns: 1fr; }
+            .insights-grid { grid-template-columns: 1fr; }
+        }
+        
+        @media (max-width: 768px) {
+            .slide { padding: 30px 40px; }
+            .main-title { font-size: 2.5em; }
+            .slide-title { font-size: 2em; }
+            .nav-controls { bottom: 20px; right: 20px; }
+            .slide-counter { bottom: 20px; left: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="progress-bar" id="progressBar"></div>
+        
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <h1 class="main-title">Multi-AI Reverse Mortgage Rankings</h1>
+            <p class="main-subtitle">Definitive analysis of 25 key questions across 6 AI platforms to identify the most trusted mortgage providers</p>
+            <p class="brand-tag">Powered by brandrank</p>
+        </div>
+        
+        <!-- Slide 2: Executive Summary -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Executive Summary</h2>
+                <p class="slide-subtitle">Comprehensive AI Intelligence Analysis</p>
+            </div>
+            <div class="slide-content">
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <h3 class="card-title">Research Scope</h3>
+                        <div class="card-content">
+                            <div class="metric">150</div>
+                            <p>Total AI responses analyzed across 25 strategic questions and 6 leading language models</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <h3 class="card-title">AI Models Evaluated</h3>
+                        <div class="card-content">
+                            ChatGPT, Claude, Gemini, Llama, Perplexity, and Grok providing diverse perspectives on market leaders
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <h3 class="card-title">Key Finding</h3>
+                        <div class="card-content">
+                            <p class="performance-positive">Finance of America Reverse</p>
+                            <p>emerges as the most frequently recommended provider across cost and flexibility categories</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <h3 class="card-title">Risk Alert</h3>
+                        <div class="card-content">
+                            <p class="performance-negative">Reverse Mortgage Funding LLC</p>
+                            <p>consistently flagged across multiple AI models for trust and review concerns</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 3: Best & Comparison Category -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Best & Comparison-Oriented</h2>
+                <p class="slide-subtitle">General Excellence and Competitive Rankings</p>
+            </div>
+            <div class="slide-content">
+                <div class="category-table">
+                    <div class="category-header">Market Leaders by AI Consensus</div>
+                    <div class="category-stats">5 prompts focused on general "best" recommendations and competitive comparisons</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Question Category</th>
+                                <th>ChatGPT</th>
+                                <th>Claude</th>
+                                <th>Gemini</th>
+                                <th>Llama</th>
+                                <th>Perplexity</th>
+                                <th>Grok</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="prompt-cell">Best Overall Company</td>
+                                <td class="llm-response">AAG</td>
+                                <td class="llm-response">AAG</td>
+                                <td class="llm-response">Finance America</td>
+                                <td class="llm-response">AAG</td>
+                                <td class="llm-response">Finance America</td>
+                                <td class="llm-response">Finance America</td>
+                            </tr>
+                            <tr>
+                                <td class="prompt-cell">Top Current Lenders</td>
+                                <td class="llm-response">AAG</td>
+                                <td class="llm-response">Finance America</td>
+                                <td class="llm-response">Finance America</td>
+                                <td class="llm-response">Quicken Loans</td>
+                                <td class="llm-response">Finance America</td>
+                                <td class="llm-response">Finance America</td>
+                            </tr>
+                            <tr>
+                                <td class="prompt-cell">Best Rates</td>
+                                <td class="llm-response">Mutual Omaha</td>
+                                <td class="llm-response">Longbridge</td>
+                                <td class="llm-response">Best Rates Co.</td>
+                                <td class="llm-response">Quicken Loans</td>
+                                <td class="llm-response">Longbridge</td>
+                                <td class="llm-response">Mutual Omaha</td>
+                            </tr>
+                            <tr>
+                                <td class="prompt-cell">Most Trusted</td>
+                                <td class="llm-response">AAG</td>
+                                <td class="llm-response">Liberty Home</td>
+                                <td class="llm-response">Longbridge</td>
+                                <td class="llm-response">Quicken Loans</td>
+                                <td class="llm-response">Longbridge</td>
+                                <td class="llm-response">AAG</td>
+                            </tr>
+                            <tr>
+                                <td class="prompt-cell">Best Reviews</td>
+                                <td class="llm-response">AAG</td>
+                                <td class="llm-response">Mutual Omaha</td>
+                                <td class="llm-response">Longbridge</td>
+                                <td class="llm-response">Quicken Loans</td>
+                                <td class="llm-response">Finance America</td>
+                                <td class="llm-response">All Reverse</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 4: Cost & Rate Analysis -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Rate & Cost-Driven Analysis</h2>
+                <p class="slide-subtitle">Financial Performance Leaders</p>
+            </div>
+            <div class="slide-content">
+                <div class="category-table">
+                    <div class="category-header">Financial Optimization Champions</div>
+                    <div class="category-stats">5 prompts focused on financial terms, rates, and monetary considerations</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Financial Metric</th>
+                                <th>ChatGPT</th>
+                                <th>Claude</th>
+                                <th>Gemini</th>
+                                <th>Llama</th>
+                                <th>Perplexity</th>
+                                <th>Grok</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="prompt-cell">Best Interest Rates</td>
+                                <td class="llm-response">Mutual Omaha</td>
+                                <td class="llm-response">AAG</td>
+                                <td class="llm-response">Guild Mortgage</td>
+                                <td class="llm-response">AAG</td>
+                                <td class="llm-response">Guild Mortgage</td>
+                                <td class="llm-response">Longbridge</td>
+                            </tr>
+                            <tr>
+                                <td class="prompt-cell">Lowest Closing Costs</td>
+                                <td class="llm-response">Longbridge</td>
+                                <td class="llm-response">Mutual Omaha</td>
+                                <td class="llm-response">Fairway Reverse</td>
+                                <td class="llm-response">AAG</td>
+                                <td class="llm-response">Finance America</td>
+                                <td class="llm-response">Longbridge</td>
+                            </tr>
+                            <tr>
+                                <td class="prompt-cell">Maximum Payout</td>
+                                <td class="llm-response performance-positive">Finance America</td>
+                                <td class="llm-response performance-positive">Finance America</td>
+                                <td class="llm-response">Guild Mortgage</td>
+                                <td class="llm-response">AAG</td>
+                                <td class="llm-response">Jumbo Reverse</td>
+                                <td class="llm-response performance-positive">Finance America</td>
+                            </tr>
+                            <tr>
+                                <td class="prompt-cell">Most Flexible Terms</td>
+                                <td class="llm-response performance-positive">Finance America</td>
+                                <td class="llm-response performance-positive">Finance America</td>
+                                <td class="llm-response performance-positive">Finance America</td>
+                                <td class="llm-response performance-positive">Finance America</td>
+                                <td class="llm-response">AAG</td>
+                                <td class="llm-response performance-positive">Finance America</td>
+                            </tr>
+                            <tr>
+                                <td class="prompt-cell">Most Transparent Fees</td>
+                                <td class="llm-response">Mutual Omaha</td>
+                                <td class="llm-response">Longbridge</td>
+                                <td class="llm-response">Longbridge</td>
+                                <td class="llm-response">AAG</td>
+                                <td class="llm-response">Longbridge</td>
+                                <td class="llm-response">Fairway Independent</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 5: Risk Analysis -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Risk & Skepticism Analysis</h2>
+                <p class="slide-subtitle">Companies to Avoid - AI Consensus Warnings</p>
+            </div>
+            <div class="slide-content">
+                <div class="category-table">
+                    <div class="category-header">High-Risk Provider Identification</div>
+                    <div class="category-stats">5 prompts identifying companies to avoid, problems, and red flags</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Risk Category</th>
+                                <th>ChatGPT</th>
+                                <th>Claude</th>
+                                <th>Gemini</th>
+                                <th>Llama</th>
+                                <th>Perplexity</th>
+                                <th>Grok</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="prompt-cell">Should Not Trust</td>
+                                <td class="llm-response performance-negative">One Reverse</td>
+                                <td class="llm-response performance-negative">Reverse Funding LLC</td>
+                                <td class="llm-response performance-negative">AAG</td>
+                                <td class="llm-response performance-negative">American Equity</td>
+                                <td class="llm-response">No brands named</td>
+                                <td class="llm-response performance-negative">Celink</td>
+                            </tr>
+                            <tr>
+                                <td class="prompt-cell">Worst Reviews</td>
+                                <td class="llm-response performance-negative">Reverse Solutions</td>
+                                <td class="llm-response performance-negative">Reverse Funding LLC</td>
+                                <td class="llm-response performance-negative">Finance America</td>
+                                <td class="llm-response performance-negative">Reverse Funding</td>
+                                <td class="llm-response performance-negative">Central Pacific</td>
+                                <td class="llm-response performance-negative">Reverse Funding</td>
+                            </tr>
+                            <tr>
+                                <td class="prompt-cell">Most Expensive</td>
+                                <td class="llm-response performance-negative">AAG</td>
+                                <td class="llm-response performance-negative">Champion Mortgage</td>
+                                <td class="llm-response">No single provider</td>
+                                <td class="llm-response performance-negative">Longbridge LLC</td>
+                                <td class="llm-response">No brand identified</td>
+                                <td class="llm-response performance-negative">One Reverse</td>
+                            </tr>
+                            <tr>
+                                <td class="prompt-cell">Legal Issues</td>
+                                <td class="llm-response performance-negative">AAG</td>
+                                <td class="llm-response performance-negative">Wells Fargo</td>
+                                <td class="llm-response performance-negative">AAG</td>
+                                <td class="llm-response performance-negative">Reverse Solutions</td>
+                                <td class="llm-response performance-negative">Townstone</td>
+                                <td class="llm-response performance-negative">Reverse Funding</td>
+                            </tr>
+                            <tr>
+                                <td class="prompt-cell">Most Complaints</td>
+                                <td class="llm-response performance-negative">Reverse Solutions</td>
+                                <td class="llm-response performance-negative">Reverse Funding LLC</td>
+                                <td class="llm-response performance-negative">Finance America</td>
+                                <td class="llm-response performance-negative">Reverse Solutions</td>
+                                <td class="llm-response performance-negative">Federal Savings</td>
+                                <td class="llm-response performance-negative">Celink</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 6: Key Insights -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Strategic Intelligence</h2>
+                <p class="slide-subtitle">Critical Market Insights from AI Analysis</p>
+            </div>
+            <div class="slide-content">
+                <div class="insights-grid">
+                    <div class="insight-card">
+                        <h3 class="insight-title">Market Leader Contradiction</h3>
+                        <p class="insight-text">Finance of America Reverse appears as both a top performer for flexibility and payout, yet also receives negative mentions for reviews and complaints - indicating mixed market perception.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h3 class="insight-title">AAG Mixed Signals</h3>
+                        <p class="insight-text">American Advisors Group consistently recommended for general excellence but also flagged for legal issues and high costs - suggesting brand recognition vs. performance gap.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h3 class="insight-title">Trust Leaders</h3>
+                        <p class="insight-text">Longbridge Financial and Mutual of Omaha emerge as consistent choices for safety, transparency, and institutional credibility across multiple AI models.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h3 class="insight-title">High-Risk Consensus</h3>
+                        <p class="insight-text">Reverse Mortgage Funding LLC appears in negative categories across multiple AI models, indicating strong consensus on risk factors.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h3 class="insight-title">AI Model Variance</h3>
+                        <p class="insight-text">Significant disagreement between models suggests different training data sources and evaluation criteria - highlighting need for multi-AI analysis.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h3 class="insight-title">Emerging Players</h3>
+                        <p class="insight-text">Guild Mortgage and Fairway Independent Mortgage gaining recognition across cost-focused categories, indicating potential market disruption.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 7: Methodology -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Research Methodology</h2>
+                <p class="slide-subtitle">Comprehensive AI Intelligence Framework</p>
+            </div>
+            <div class="slide-content">
+                <div class="methodology-grid">
+                    <div class="methodology-section">
+                        <h3 class="methodology-title">Data Collection Process</h3>
+                        <ul class="methodology-list">
+                            <li>25 strategically designed questions across 5 key categories</li>
+                            <li>Identical prompts submitted to 6 major AI platforms</li>
+                            <li>Real-time responses captured for analysis</li>
+                            <li>No prompt engineering or bias introduction</li>
+                            <li>Responses recorded exactly as provided by each AI</li>
+                        </ul>
+                    </div>
+                    <div class="methodology-section">
+                        <h3 class="methodology-title">Analysis Framework</h3>
+                        <ul class="methodology-list">
+                            <li>Cross-platform consensus identification</li>
+                            <li>Frequency analysis of company mentions</li>
+                            <li>Positive vs. negative sentiment categorization</li>
+                            <li>Category-specific performance mapping</li>
+                            <li>Risk assessment through negative indicators</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide-counter">
+            <span id="currentSlide">1</span> / <span id="totalSlides">7</span>
+        </div>
+        
+        <div class="nav-controls">
+            <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+            <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next</button>
+        </div>
+    </div>
+    
+    <script>
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        document.getElementById('totalSlides').textContent = totalSlides;
+        
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentSlideIndex);
+            });
+            
+            document.getElementById('currentSlide').textContent = currentSlideIndex + 1;
+            document.getElementById('prevBtn').disabled = currentSlideIndex === 0;
+            document.getElementById('nextBtn').disabled =
