@@ -768,6 +768,32 @@
 
     renderAll();
   })();
+    // Change this to your real deployed URL:
+const UPLOAD_ENDPOINT = 'https://llm-analysis-dashboard.vercel.app/api/upload';
+
+// Call the backend, which pushes to GitHub and returns a public URL
+async function uploadToServer({ fileName, html }) {
+  const res = await fetch(UPLOAD_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ fileName, html })
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new Error('Upload failed: ' + res.status + ' ' + text);
+  }
+
+  const data = await res.json();
+  if (!data.url) {
+    throw new Error('Upload response did not include a URL');
+  }
+
+  return data.url;
+}
+
   </script>
 </body>
 </html>
