@@ -576,25 +576,45 @@
     }
     function setUploads(arr) { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
 
-    function buildCard(u) {
-      const a = document.createElement('a');
-      a.className = 'index-card-link';
-      a.setAttribute('data-upload', '1');
-      a.setAttribute('data-upload-id', u.id);
+function buildCard(u) {
+  const a = document.createElement('a');
+  a.className = 'index-card-link';
+  a.setAttribute('data-upload', '1');
+  a.setAttribute('data-upload-id', u.id);
 
-      // If we have a real URL, link directly to it as a shareable link.
-      if (u.url) {
-        a.href = u.url;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
-      } else {
-        // Fallback to local-only openUpload behavior.
-        a.href = '#';
-        a.addEventListener('click', (e) => {
-          e.preventDefault();
-          openUpload(u);
-        });
-      }
+  if (u.url) {
+    a.href = u.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+  } else {
+    a.href = '#';
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      openUpload(u); // local fallback
+    });
+  }
+
+  // ... same as before ...
+
+  if (u.url) {
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'del-pill';
+    copyBtn.type = 'button';
+    copyBtn.textContent = 'Copy link';
+    copyBtn.style.color = '#00d4ff';
+    copyBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      navigator.clipboard.writeText(u.url)
+        .then(() => alert('Link copied to clipboard.'))
+        .catch(() => alert('Could not copy link.'));
+    });
+    right.appendChild(copyBtn);
+  }
+
+  // delete button etc...
+}
+
 
       const card = document.createElement('div');
       card.className = 'index-card';
