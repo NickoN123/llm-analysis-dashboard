@@ -77,7 +77,7 @@ export default async function handler(req, res) {
     }
 
     // This is the URL GitHub Pages will serve it from:
-    const publicUrl = `https://nickon123.github.io/llm-analysis-dashboard/${path}`;
+    const publicUrl = `https://${owner}.github.io/${repo}/${path}`;
 
     return res.status(200).json({ url: publicUrl });
   } catch (err) {
