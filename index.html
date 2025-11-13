@@ -714,57 +714,55 @@
     }
 
     // Updated upload handler with GitHub integration
-    uploadBtnEl.addEventListener('click', async () => {
-      const file = uploadFileEl.files && uploadFileEl.files[0];
-      if (!file) { alert('Choose a .html file first.'); return; }
-      if (!/\.html?$/i.test(file.name)) { alert('Please select a .html file.'); return; }
+ uploadBtnEl.addEventListener('click', async () => {
+  const file = uploadFileEl.files && uploadFileEl.files[0];
+  if (!file) { alert('Choose a .html file first.'); return; }
+  if (!/\.html?$/i.test(file.name)) { alert('Please select a .html file.'); return; }
 
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const contentText = e.target.result;
-        const title = (uploadTitleEl.value || file.name.replace(/\.[^/.]+$/, '')).trim();
-        const icon  = (uploadIconEl.value || '').trim() || '🧩';
-        const section = uploadSectionEl.value || 'research';
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    const contentText = e.target.result;
+    const title = (uploadTitleEl.value || file.name.replace(/\.[^/.]+$/, '')).trim();
+    const icon  = (uploadIconEl.value || '').trim() || '🧩';
+    const section = uploadSectionEl.value || 'research';
 
-        let url = null;
+    let url = null;
+    try {
+      // This calls your Vercel backend, which uploads to GitHub
+      url = await uploadToServer({
+        fileName: file.name,
+        html: contentText
+      });
+    } catch (err) {
+      console.error('Upload to server failed:', err);
+      alert('Could not upload to GitHub. This will be stored locally only.');
+    }
 
-        // Try to upload to GitHub to get a shareable URL
-        if (githubConfigured()) {
-          try {
-            url = await uploadToGitHub({
-              fileName: file.name,
-              html: contentText
-            });
-          } catch (err) {
-            console.error('Upload to GitHub failed:', err);
-            alert('Could not upload to GitHub. This will be stored locally only.');
-          }
-        }
+    const item = {
+      id: 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+      title,
+      icon,
+      section,
+      dateISO: new Date().toISOString(),
+      contentText, // still stored locally as a fallback
+      url          // shareable link if upload succeeded
+    };
 
-        const item = {
-          id: 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
-          title,
-          icon,
-          section,
-          dateISO: new Date().toISOString(),
-          contentText,
-          url // may be null if GitHub upload failed or not configured
-        };
+    const uploads = getUploads();
+    uploads.unshift(item);
+    setUploads(uploads);
 
-        const uploads = getUploads();
-        uploads.unshift(item);
-        setUploads(uploads);
+    uploadTitleEl.value = '';
+    uploadIconEl.value  = '';
+    uploadFileEl.value  = '';
+    renderAll();
 
-        uploadTitleEl.value = '';
-        uploadIconEl.value  = '';
-        uploadFileEl.value  = '';
-        renderAll();
+    const anchor = document.getElementById(section);
+    if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+  reader.readAsText(file);
+});
 
-        const anchor = document.getElementById(section);
-        if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      };
-      reader.readAsText(file);
-    });
 
     renderAll();
   })();
