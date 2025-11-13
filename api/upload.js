@@ -43,8 +43,6 @@ export default async function handler(req, res) {
     const uniqueSuffix = Date.now().toString(36);
     const safeFileName = `${baseName}-${uniqueSuffix}.html`;
     const path = `uploads/${safeFileName}`;  // keep this part as is
-    const publicUrl = `https://${owner}.github.io/${repo}/${path}`;
-
 
     // GitHub Contents API URL
     const githubUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(path)}`;
