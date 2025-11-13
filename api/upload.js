@@ -77,7 +77,9 @@ export default async function handler(req, res) {
     }
 
     // This is the URL GitHub Pages will serve it from:
-    const publicUrl = `https://${owner}.github.io/${repo}/uploads/${safeFileName}`;
+    // If the file is in the root folder:
+const publicUrl = `https://brandrankai-dashboard-index.com/${safeFileName}`;
+
 
     return res.status(200).json({ url: publicUrl });
   } catch (err) {
