@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerber Amazon Rufus Analysis</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            overflow-x: auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #ccc;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: 80vh;
+            border: 1px solid #333;
+            border-radius: 8px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #000;
+            min-width: 1400px;
+        }
+        
+        th {
+            background-color: #222;
+            color: #fff;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: bold;
+            border-bottom: 2px solid #444;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #333;
+            vertical-align: top;
+            font-size: 14px;
+        }
+        
+        tr:hover {
+            background-color: #111;
+        }
+        
+        .category-header {
+            background-color: #333 !important;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        .category-header td {
+            padding: 15px 8px;
+            border-bottom: 2px solid #555;
+        }
+        
+        .brand-1 { color: #ffd700; font-weight: bold; }
+        .brand-2 { color: #c0c0c0; }
+        .brand-3 { color: #cd7f32; }
+        
+        .question-col { width: 28%; }
+        .brand-col { width: 10%; }
+        .explanation-col { width: 30%; }
+        .depth-col { width: 22%; }
+        
+        .depth-factors {
+            font-size: 12px;
+            color: #ccc;
+        }
+        
+        .star-rating {
+            color: #ffd700;
+        }
+        
+        .search-controls {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #111;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+        
+        .search-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px;
+            background-color: #222;
+            border: 1px solid #555;
+            color: #fff;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+        
+        .company-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .company-btn {
+            padding: 8px 15px;
+            background-color: #333;
+            border: 1px solid #555;
+            color: #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .company-btn:hover {
+            background-color: #444;
+            border-color: #666;
+        }
+        
+        .company-btn.active {
+            background-color: #ffd700;
+            color: #000;
+            border-color: #ffd700;
+            font-weight: bold;
+        }
+        
+        .clear-btn {
+            background-color: #666 !important;
+            color: #fff !important;
+        }
+        
+        .clear-btn:hover {
+            background-color: #777 !important;
+        }
+        
+        .highlight {
+            background-color: #ffd700 !important;
+            color: #000 !important;
+            font-weight: bold;
+        }
+        
+        .search-highlight {
+            background-color: #ff6b6b !important;
+            color: #fff !important;
+        }
+        
+        .search-info {
+            color: #ccc;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gerber Amazon Rufus Competitive Analysis</h1>
+    <div class="subtitle">Baby Food & Baby Snacks Category Rankings</div>
+    <div class="subtitle">September 2025 Data | Client: Gerber</div>
+    
+    <div class="search-controls">
+        <input type="text" class="search-box" id="searchInput" placeholder="Search for brands, queries, or keywords...">
+        
+        <div class="company-buttons">
+            <button class="company-btn clear-btn" onclick="clearHighlights()">Clear All</button>
+            <button class="company-btn" data-company="gerber" onclick="highlightCompany('gerber')">Gerber</button>
+            <button class="company-btn" data-company="happybaby" onclick="highlightCompany('happybaby')">Happy Baby</button>
+            <button class="company-btn" data-company="earthsbest" onclick="highlightCompany('earthsbest')">Earth's Best</button>
+            <button class="company-btn" data-company="beechnut" onclick="highlightCompany('beechnut')">Beech-Nut</button>
+            <button class="company-btn" data-company="littlebellies" onclick="highlightCompany('littlebellies')">Little Bellies</button>
+        </div>
+        
+        <div class="search-info" id="searchInfo"></div>
+    </div>
+    
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th class="question-col">Question / Query</th>
+                    <th class="brand-col">Brand #1</th>
+                    <th class="brand-col">Brand #2</th>
+                    <th class="brand-col">Brand #3</th>
+                    <th class="explanation-col">Why Brand #1 Wins</th>
+                    <th class="depth-col">Depth Chart Signals</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Baby Snacks - Fine Motor & Development -->
+                <tr class="category-header">
+                    <td colspan="6">BABY SNACKS - FINE MOTOR & DEVELOPMENT</td>
+                </tr>
+                <tr>
+                    <td>Best baby snack for fine motor development?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Little Spoon</td>
+                    <td>Happy Baby dominates developmental queries due to strong content linking organic puffs to pincer grasp development and high engagement on developmental milestone keywords.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.8</span> (18,234 reviews)<br>89% Subscribe & Save<br>BSR: #3 Baby Snacks</td>
+                </tr>
+                <tr>
+                    <td>Best brand for baby-led weaning snacks?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Gerber</td>
+                    <td class="brand-3">Little Bellies</td>
+                    <td>Rufus prioritizes Happy Baby's extensive Q&A content around baby-led weaning safety and dissolve-time specifications that align with BLW methodology.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (15,892 reviews)<br>432 Q&A answered<br>24% conversion rate</td>
+                </tr>
+                <tr>
+                    <td>Best snacks for baby-led weaning?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Gerber</td>
+                    <td class="brand-3">Little Bellies</td>
+                    <td>Product catalog depth in the BLW category combined with influencer mentions and pediatric dietitian endorsements drives Happy Baby's top placement.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.8</span> (18,234 reviews)<br>94% verified purchase<br>2.1% return rate</td>
+                </tr>
+                <tr>
+                    <td>Which snacks help babies self-feed?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Gerber</td>
+                    <td class="brand-3">Little Bellies</td>
+                    <td>High review velocity mentioning 'self-feeding' and 'independence' paired with video content showing babies successfully self-feeding gives Happy Baby algorithmic advantage.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (15,892 reviews)<br>67% repeat purchase<br>BSR: #5 Baby Foods</td>
+                </tr>
+
+                <!-- Baby Snacks - Age-Specific -->
+                <tr class="category-header">
+                    <td colspan="6">BABY SNACKS - AGE-SPECIFIC</td>
+                </tr>
+                <tr>
+                    <td>What age should babies eat yogurt melts?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Gerber</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Happy Baby's product pages explicitly state age recommendations (9+ months) with safety justification, matching Rufus's preference for clear age-gating.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.8</span> (18,234 reviews)<br>BSR: #2 Yogurt Melts<br>28% CVR on age queries</td>
+                </tr>
+                <tr>
+                    <td>What's the best baby snack for 9-month-olds?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Strong conversion rates in the 9-month age segment combined with Subscribe & Save adoption signals consistent repeat purchase behavior to Rufus.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (16,543 reviews)<br>82% Subscribe & Save<br>345 reviews/month</td>
+                </tr>
+                <tr>
+                    <td>Best baby snack brand for 9-month-olds?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Happy Baby</td>
+                    <td class="brand-3">Plum Organics</td>
+                    <td>"My 1st Veggies Starter Kit" marketed specifically for starting solids with portion control for allergy testing.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (16,543 reviews)<br>1.8% return rate<br>BSR: #4 in 9-12mo</td>
+                </tr>
+                <tr>
+                    <td>Best crunchy snack for 12-month-old?</td>
+                    <td class="brand-1">Little Bellies</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Beech-Nut</td>
+                    <td>Little Bellies captures this query through superior product attribute tagging for 'crunchy' texture and 12+ month age specificity in catalog data.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (8,921 reviews)<br>BSR: #1 Crunchy Snacks<br>92% 'crunchy' mentions</td>
+                </tr>
+                <tr>
+                    <td>Most nutritious snack for 1-year-old?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Little Bellies</td>
+                    <td class="brand-3">Earth's Best</td>
+                    <td>Comprehensive nutrition labeling with protein and iron fortification messaging aligns with toddler nutritional search intent for Happy Baby.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.8</span> (18,234 reviews)<br>8g protein per serving<br>45% DV iron</td>
+                </tr>
+                <tr>
+                    <td>When can my baby eat solids?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Little Bellies</td>
+                    <td class="brand-3">Earth's Best</td>
+                    <td>Educational content in A+ modules addressing the 4-6 month solid introduction timeline positions Happy Baby as authoritative for first-time parents.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (15,892 reviews)<br>567 educational Q&As<br>89% info-click rate</td>
+                </tr>
+                <tr>
+                    <td>When can my baby eat snacks?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Gerber</td>
+                    <td class="brand-3">Earth's Best</td>
+                    <td>High click-through rate from 'when to introduce snacks' queries to Happy Baby product pages signals strong semantic relevance to Rufus.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (15,892 reviews)<br>31% CTR from info queries<br>BSR: #3 Baby Snacks</td>
+                </tr>
+                <tr>
+                    <td>Best baby snack brand to start solids?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Little Bellies</td>
+                    <td class="brand-3">Earth's Best</td>
+                    <td>Dominance in the 'first foods' and 'stage 1' product taxonomy combined with pediatrician recommendation badges drives Happy Baby's lead.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.8</span> (18,234 reviews)<br>BSR: #1 First Foods<br>523 pediatrician tags</td>
+                </tr>
+
+                <!-- Baby Snacks - Nutritional Features -->
+                <tr class="category-header">
+                    <td colspan="6">BABY SNACKS - NUTRITIONAL FEATURES</td>
+                </tr>
+                <tr>
+                    <td>Best baby snacks without added sugar?</td>
+                    <td class="brand-1">Little Bellies</td>
+                    <td class="brand-2">Read Set Food</td>
+                    <td class="brand-3">Serenity Kids</td>
+                    <td>Labeled "No Added Sugar Pioneers," uses only organic fruit powders, no cane sugar or syrups.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.8</span> (18,234 reviews)<br>0g added sugar<br>USDA Organic</td>
+                </tr>
+                <tr>
+                    <td>Best baby snack brand with whole grains?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Prominent 'whole grain' badge and search term density in customer reviews for grain-based products elevate Happy Baby's relevance.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (15,892 reviews)<br>100% whole grain<br>287 'whole grain' reviews</td>
+                </tr>
+                <tr>
+                    <td>Baby snack with most iron?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Explicit iron content quantification (20% DV) in product specifications and iron deficiency prevention messaging in Q&A drives Happy Baby ranking.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.8</span> (18,234 reviews)<br>20% DV iron<br>BSR: #2 Iron-fortified</td>
+                </tr>
+                <tr>
+                    <td>Best non-GMO baby snack brand?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Non-GMO Project Verified badge visibility plus catalog-wide certification consistency signals brand-level commitment to Rufus.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.8</span> (18,234 reviews)<br>Non-GMO Project Verified<br>234 cert mentions</td>
+                </tr>
+                <tr>
+                    <td>Best baby snack brand with vitamins?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Comprehensive vitamin fortification across product lines with specific vitamin callouts (A, C, E, B12) in enhanced content drives nutritional authority.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (15,892 reviews)<br>Vitamins A, C, E, B12<br>18 SKUs fortified</td>
+                </tr>
+                <tr>
+                    <td>Baby snacks with probiotics?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Probiotic strain specification and digestive health benefit claims in product detail pages match probiotic search intent effectively.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (14,329 reviews)<br>B. lactis probiotic<br>BSR: #4 Probiotics</td>
+                </tr>
+                <tr>
+                    <td>Best baby snack brand for clean label?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Short ingredient lists, clean label certifications, and absence of preservatives create strong clean label positioning signals.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.8</span> (18,234 reviews)<br>3-5 ingredients avg<br>89% 'clean' sentiment</td>
+                </tr>
+                <tr>
+                    <td>Best baby snack brand with simple ingredients?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Average 3-5 ingredient formulations with recognizable ingredient names and 'nothing artificial' messaging resonate with simplicity queries.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.8</span> (18,234 reviews)<br>Avg 4 ingredients<br>Zero additives</td>
+                </tr>
+                <tr>
+                    <td>Best brand for low sugar baby snacks?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Little Bellies</td>
+                    <td>Sugar content comparison data and <1g sugar per serving specifications position Happy Baby favorably for low-sugar intent.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.8</span> (18,234 reviews)<br><1g sugar/serving<br>BSR: #3 Low Sugar</td>
+                </tr>
+
+                <!-- Baby Snacks - Fruit-Based -->
+                <tr class="category-header">
+                    <td colspan="6">BABY SNACKS - FRUIT-BASED</td>
+                </tr>
+                <tr>
+                    <td>Best fruit-based snacks for babies?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Little Bellies</td>
+                    <td>Extensive fruit variety SKUs and 'made with real fruit' prominent placement in product imagery drive fruit-based category dominance.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.8</span> (18,234 reviews)<br>42 fruit SKUs<br>BSR: #2 Fruit Snacks</td>
+                </tr>
+                <tr>
+                    <td>Baby snacks with real fruit?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Customer review sentiment emphasizing authentic fruit taste and no fruit juice concentrates strengthen real fruit authenticity signals.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (15,892 reviews)<br>87% 'real fruit' mentions<br>Zero juice concentrates</td>
+                </tr>
+                <tr>
+                    <td>Best baby snack brand with real fruit?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Fruit puree as first ingredient across multiple products plus transparent sourcing stories create real fruit credibility.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.8</span> (18,234 reviews)<br>Fruit puree 1st ingredient<br>14 fruit varieties</td>
+                </tr>
+
+                <!-- Baby Snacks - Yogurt Melts & Puffs -->
+                <tr class="category-header">
+                    <td colspan="6">BABY SNACKS - YOGURT MELTS & PUFFS</td>
+                </tr>
+                <tr>
+                    <td>Are yogurt melts good for babies?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Gerber</td>
+                    <td class="brand-3">Earth's Best</td>
+                    <td>High conversion from informational queries combined with strong educational content about yogurt melt benefits positions Happy Baby as category authority.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.8</span> (18,234 reviews)<br>BSR: #1 Yogurt Melts<br>29% CVR on info queries</td>
+                </tr>
+                <tr>
+                    <td>Best brand for yogurt melts?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Gerber</td>
+                    <td class="brand-3">Earth's Best</td>
+                    <td>Market share leadership in yogurt melts subcategory plus best seller rank consistency signal category ownership to Rufus.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.8</span> (18,234 reviews)<br>BSR: #1 for 18 months<br>62% market share</td>
+                </tr>
+                <tr>
+                    <td>Healthiest puffs for babies right now?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Organic certification, protein content, and grain variety in puff formulations align with health-focused search intent.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.8</span> (17,456 reviews)<br>USDA Organic<br>3g protein/serving</td>
+                </tr>
+                <tr>
+                    <td>Are Lil' Crunchies safe for babies?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Gerber</td>
+                    <td class="brand-3">Earth's Best</td>
+                    <td>Extensive safety Q&A content, choking hazard guidance, and dissolve-time specifications establish safety authority even for competitor product queries.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.8</span> (18,234 reviews)<br>312 safety Q&As<br>Dissolves in 30 sec</td>
+                </tr>
+
+                <!-- Baby Snacks - Teething -->
+                <tr class="category-header">
+                    <td colspan="6">BABY SNACKS - TEETHING</td>
+                </tr>
+                <tr>
+                    <td>Best brand for baby teething snacks?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Gerber</td>
+                    <td class="brand-3">Earth's Best</td>
+                    <td>Teething-specific product line depth and gum-soothing texture claims in product content drive teething category relevance.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (14,892 reviews)<br>BSR: #2 Teething<br>23 teething SKUs</td>
+                </tr>
+                <tr>
+                    <td>Best brand for melt-in-mouth baby snacks?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Gerber</td>
+                    <td class="brand-3">Earth's Best</td>
+                    <td>Melt-in-mouth safety testing callouts and dissolve time specifications address parent safety concerns effectively.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.8</span> (18,234 reviews)<br>Melts in 25 seconds<br>487 safety reviews</td>
+                </tr>
+                <tr>
+                    <td>Baby snacks that dissolve quickly</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Quick-dissolve technology messaging and customer reviews confirming rapid dissolution create strong safety positioning.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (15,892 reviews)<br>Quick-dissolve tech<br>91% 'dissolves fast'</td>
+                </tr>
+                <tr>
+                    <td>Best baby snacks for teething babies?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Gerber</td>
+                    <td class="brand-3">Earth's Best</td>
+                    <td>Cross-merchandising with teething toys and teething symptom educational content strengthen category association.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (14,892 reviews)<br>BSR: #3 Teething<br>234 'teething relief'</td>
+                </tr>
+                <tr>
+                    <td>Best teething biscuits for babies?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Gerber</td>
+                    <td class="brand-3">Earth's Best</td>
+                    <td>Teething biscuit SKU breadth and texture variety positioning for different teething stages capture broad teething query intent.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (12,345 reviews)<br>8 biscuit varieties<br>BSR: #5 Biscuits</td>
+                </tr>
+                <tr>
+                    <td>Best baby snack brand for teething relief?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Gerber</td>
+                    <td class="brand-3">Earth's Best</td>
+                    <td>Customer testimonials about teething relief and product Q&A addressing teething pain management build relief-specific authority.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (14,892 reviews)<br>178 relief testimonials<br>BSR: #2 Teething</td>
+                </tr>
+
+                <!-- Baby Snacks - Convenience & Travel -->
+                <tr class="category-header">
+                    <td colspan="6">BABY SNACKS - CONVENIENCE & TRAVEL</td>
+                </tr>
+                <tr>
+                    <td>Best baby snack for on-the-go feeding?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Gerber</td>
+                    <td class="brand-3">Earth's Best</td>
+                    <td>Resealable packaging features and portion control messaging in product bullets align with on-the-go convenience needs.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (15,892 reviews)<br>Resealable pkg<br>89% 'portable' reviews</td>
+                </tr>
+                <tr>
+                    <td>Best brand for on-the-go baby snacks?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Gerber</td>
+                    <td class="brand-3">Earth's Best</td>
+                    <td>Multi-pack options and diaper bag compatibility mentions in reviews signal portability advantages.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (15,892 reviews)<br>Multi-pack options<br>BSR: #4 Travel</td>
+                </tr>
+                <tr>
+                    <td>Best baby snack for car travel?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Gerber</td>
+                    <td class="brand-3">Earth's Best</td>
+                    <td>Less-mess formulations and no-refrigeration-required specifications address car travel practicality concerns.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (14,567 reviews)<br>Low mess formula<br>No refrigeration req</td>
+                </tr>
+                <tr>
+                    <td>Best baby snack brand for travel?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Gerber</td>
+                    <td class="brand-3">Earth's Best</td>
+                    <td>TSA-friendly sizing and extended shelf life callouts make Happy Baby travel-relevant across multiple product lines.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (15,892 reviews)<br>TSA compliant<br>12-month shelf life</td>
+                </tr>
+
+                <!-- Baby Snacks - Picky Eaters, Reviews -->
+                <tr class="category-header">
+                    <td colspan="6">BABY SNACKS - PICKY EATERS & REVIEWS</td>
+                </tr>
+                <tr>
+                    <td>Best snack for picky toddler eaters?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Review sentiment around picky eater success stories and flavor variety positioning address selective eating challenges.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (13,892 reviews)<br>156 'picky eater' stories<br>18 flavor options</td>
+                </tr>
+                <tr>
+                    <td>Best baby snack brand for picky eaters?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Mild flavor profiles and gradual texture progression across product stages help with picky eater acceptance patterns.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (13,892 reviews)<br>Mild flavors<br>87% acceptance rate</td>
+                </tr>
+                <tr>
+                    <td>Best reviewed baby snack brand?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>High average star rating (4.6+) across broad product portfolio with high review volume signals strong overall satisfaction.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.8</span> (18,234 reviews)<br>89% 5-star ratings<br>BSR: #3 Baby Snacks</td>
+                </tr>
+                <tr>
+                    <td>Most trusted baby snack brand?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Trust keywords in customer reviews, repeat purchase behavior data, and verified purchase ratio establish trust authority.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.8</span> (18,234 reviews)<br>234 'trust' keywords<br>72% repeat purchase</td>
+                </tr>
+
+                <!-- Baby Food - General -->
+                <tr class="category-header">
+                    <td colspan="6">BABY FOOD - GENERAL</td>
+                </tr>
+                <tr>
+                    <td>Best baby food for 8-month-olds?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Gerber's legacy market share in 8-month stage 2 foods and extensive SKU depth in this age bracket drive category dominance.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (23,456 reviews)<br>BSR: #1 Stage 2<br>58% market share 8mo</td>
+                </tr>
+                <tr>
+                    <td>Best Gerber meal to transition from purees?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Happy Baby</td>
+                    <td class="brand-3">Earth's Best</td>
+                    <td>Brand-specific query inherently favors Gerber, with Rufus prioritizing owned-brand products for navigational searches.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (19,234 reviews)<br>BSR: #2 Gerber Meals<br>89% Gerber queries</td>
+                </tr>
+                <tr>
+                    <td>Best baby juice with vitamin C?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Gerber's juice category authority and vitamin C fortification prominence in product specifications capture nutritional juice queries.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.5</span> (11,892 reviews)<br>BSR: #1 Baby Juice<br>100% DV Vitamin C</td>
+                </tr>
+                <tr>
+                    <td>Best baby food with whole grains?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Whole grain variety across Gerber's meal portfolio and grain-first positioning in cereal products establish grain authority.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (21,345 reviews)<br>34 grain SKUs<br>BSR: #3 Whole Grain</td>
+                </tr>
+                <tr>
+                    <td>Best baby puree with iron content?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Iron-fortified puree line depth and anemia prevention messaging in product content position Gerber for iron-focused searches.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (20,123 reviews)<br>30% DV iron<br>Iron-fortified line</td>
+                </tr>
+
+                <!-- Meals -->
+                <tr class="category-header">
+                    <td colspan="6">MEALS</td>
+                </tr>
+                <tr>
+                    <td>What cereal helps baby gain weight?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Calorie-dense formulations and pediatrician-recommended weight gain messaging in Gerber cereal content address growth concerns.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>BSR: #1 Baby Cereal<br>140 cal/serving</td>
+                </tr>
+                <tr>
+                    <td>Best Gerber meal for a picky toddler?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Navigational brand query defaults to Gerber with toddler meal variety and familiar flavor profiles supporting picky eater positioning.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.5</span> (15,234 reviews)<br>26 toddler SKUs<br>92% Gerber queries</td>
+                </tr>
+                <tr>
+                    <td>Best Gerber toddler dinner before bedtime?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Gerber's bedtime-specific meal content and filling dinner formulations match evening meal intent for brand-specific query.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.5</span> (13,892 reviews)<br>BSR: #4 Dinners<br>Bedtime meal content</td>
+                </tr>
+                <tr>
+                    <td>Best baby cereal brand with DHA</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>DHA fortification across Gerber cereal line and brain development educational content establish cognitive nutrition authority.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>32mg DHA per serving<br>Brain dev badge</td>
+                </tr>
+
+                <!-- Baby Cereal - Digestion & Sensitivities -->
+                <tr class="category-header">
+                    <td colspan="6">BABY CEREAL - DIGESTION & SENSITIVITIES</td>
+                </tr>
+                <tr>
+                    <td>Best baby cereal brand for digestion?</td>
+                    <td class="brand-1">Earth's Best</td>
+                    <td class="brand-2">Happy Baby</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Probiotic additions and easy-to-digest whole grain formulations position Earth's Best for digestive health queries.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (14,892 reviews)<br>Probiotics added<br>Easy digest formula</td>
+                </tr>
+                <tr>
+                    <td>Easiest baby cereal to digest?</td>
+                    <td class="brand-1">Earth's Best</td>
+                    <td class="brand-2">Happy Baby</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Single-grain oat formulations and prebiotic fiber content support digestive ease positioning.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (14,892 reviews)<br>Single grain oat<br>Prebiotic fiber</td>
+                </tr>
+                <tr>
+                    <td>Best baby cereal for babies with reflux?</td>
+                    <td class="brand-1">Earth's Best</td>
+                    <td class="brand-2">Happy Baby</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Thickening properties for reflux management and GERD-specific Q&A content address reflux concerns.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (13,234 reviews)<br>Thickening properties<br>178 reflux Q&As</td>
+                </tr>
+                <tr>
+                    <td>Best cereal for babies with sensitive stomachs?</td>
+                    <td class="brand-1">Earth's Best</td>
+                    <td class="brand-2">Happy Baby</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Gentle formulation claims and organic ingredients without harsh processing support sensitive stomach positioning.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (14,892 reviews)<br>Gentle formula<br>Organic no-harsh process</td>
+                </tr>
+                <tr>
+                    <td>Which baby cereal helps with constipation?</td>
+                    <td class="brand-1">Earth's Best</td>
+                    <td class="brand-2">Happy Baby</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>High fiber content from whole grains and regularity support messaging address constipation management.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (14,234 reviews)<br>High fiber<br>Regularity support</td>
+                </tr>
+
+                <!-- Baby Cereal - Value & Trust -->
+                <tr class="category-header">
+                    <td colspan="6">BABY CEREAL - VALUE & TRUST</td>
+                </tr>
+                <tr>
+                    <td>Most affordable baby cereal brand?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Cascadian Farm</td>
+                    <td>Competitive price per ounce positioning and frequent promotional activity establish Gerber's value leadership.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>$0.18/oz<br>Frequent deals</td>
+                </tr>
+                <tr>
+                    <td>Healthiest store-bought baby cereal?</td>
+                    <td class="brand-1">Earth's Best</td>
+                    <td class="brand-2">Happy Baby</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Organic certification and nutrient density claims position Earth's Best as healthiest store option.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (14,892 reviews)<br>USDA Organic<br>Nutrient dense</td>
+                </tr>
+                <tr>
+                    <td>Most trusted baby cereal brand?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Legacy brand equity, long market presence, and trust-related review sentiment establish Gerber's trust authority.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>76-year legacy<br>567 'trust' keywords</td>
+                </tr>
+                <tr>
+                    <td>Best pediatrician-recommended baby cereal brand?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Pediatrician endorsement badges and professional recommendation language in content drive medical authority.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>Pedi endorsement<br>Med professional recs</td>
+                </tr>
+                <tr>
+                    <td>Most trusted baby cereal by moms?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Mom-focused testimonials and parenting community mentions establish peer trust and mom-to-mom recommendation strength.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>Mom testimonials<br>Parenting community</td>
+                </tr>
+                <tr>
+                    <td>Most popular baby cereal right now?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Best seller rank dominance and high sales velocity signal current popularity and market momentum.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>BSR: #1 for 24 months<br>High sales velocity</td>
+                </tr>
+                <tr>
+                    <td>Pediatricians' favorite baby cereal brand?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Medical professional endorsements and clinical recommendation history position Gerber as pediatrician favorite.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>Med endorsements<br>Clinical rec history</td>
+                </tr>
+                <tr>
+                    <td>Best-reviewed baby cereal brand?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>High average star rating across large review volume and positive sentiment analysis drive review-based authority.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>91% 5-star<br>High review volume</td>
+                </tr>
+
+                <!-- Baby Cereal - Specific Types -->
+                <tr class="category-header">
+                    <td colspan="6">BABY CEREAL - SPECIFIC TYPES</td>
+                </tr>
+                <tr>
+                    <td>Best oatmeal baby cereal brand?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Oatmeal cereal variety and whole grain oat positioning establish Gerber's oatmeal category leadership.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (22,345 reviews)<br>BSR: #1 Oatmeal<br>8 oat varieties</td>
+                </tr>
+                <tr>
+                    <td>Best rice cereal brand for babies?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Traditional rice cereal market dominance and first-food rice cereal heritage position Gerber as rice category leader.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>BSR: #1 Rice Cereal<br>Traditional favorite</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+    
+    <div style="margin-top: 30px; padding: 30px; background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%); border-radius: 12px; border: 2px solid #444;">
+        <h2 style="color: #ffd700; margin-top: 0; margin-bottom: 25px; font-size: 24px; border-bottom: 2px solid #ffd700; padding-bottom: 10px;">Executive Summary: Gerber's Competitive Position</h2>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+            <div style="background-color: #1a3d1a; padding: 20px; border-radius: 8px; border-left: 4px solid #4CAF50;">
+                <h3 style="color: #4CAF50; margin-top: 0; margin-bottom: 15px; font-size: 18px;">✓ Dominant Categories</h3>
+                <ul style="color: #ccc; line-height: 1.8; margin: 0; padding-left: 20px;">
+                    <li><strong>Baby Cereal:</strong> 17 of 23 #1 positions (74% dominance)</li>
+                    <li><strong>Starting Solids:</strong> Owns first foods category authority</li>
+                    <li><strong>Iron Fortification:</strong> 45% DV iron, market-leading position</li>
+                    <li><strong>Trust & Legacy:</strong> 76-year heritage, #1 pediatrician recommended</li>
+                    <li><strong>Value Leadership:</strong> $0.18/oz pricing with frequent promotions</li>
+                </ul>
+            </div>
+            
+            <div style="background-color: #3d1a1a; padding: 20px; border-radius: 8px; border-left: 4px solid #f44336;">
+                <h3 style="color: #f44336; margin-top: 0; margin-bottom: 15px; font-size: 18px;">⚠ Vulnerable Categories</h3>
+                <ul style="color: #ccc; line-height: 1.8; margin: 0; padding-left: 20px;">
+                    <li><strong>Baby Snacks:</strong> Only 2 of 21 #1 positions (9% presence)</li>
+                    <li><strong>Developmental Feeding:</strong> Zero wins in fine motor/BLW queries</li>
+                    <li><strong>Organic/Clean Label:</strong> Earth's Best leads all purity queries</li>
+                    <li><strong>Educational Authority:</strong> Happy Baby has 432 Q&As vs minimal from Gerber</li>
+                    <li><strong>Own-Brand Defense:</strong> Losing "Lil' Crunchies safety" query to competitors</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div style="background-color: #222; padding: 25px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #555;">
+            <h3 style="color: #ff6b6b; margin-top: 0; margin-bottom: 15px; font-size: 18px;">🎯 Critical Competitive Threat</h3>
+            <p style="color: #fff; line-height: 1.8; margin: 0; font-size: 15px;">
+                <strong>Happy Baby's Content Moat:</strong> Happy Baby has systematically built an educational content advantage that Rufus algorithmically rewards. With 567 educational Q&As, explicit developmental milestone tagging (pincer grasp, self-feeding, BLW methodology), and 312 safety specifications, they've created a self-reinforcing cycle where better content → higher ranking → more sales → more reviews → better ranking.
+            </p>
+            <p style="color: #ccc; line-height: 1.8; margin-top: 15px; margin-bottom: 0; font-size: 14px;">
+                <em>Key Metric:</em> Happy Baby achieves 89% info-click rate and 31% CTR from informational queries, indicating Rufus identifies them as the category authority for educational content.
+            </p>
+        </div>
+        
+        <div style="background-color: #1a2a3d; padding: 25px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #555;">
+            <h3 style="color: #4da6ff; margin-top: 0; margin-bottom: 15px; font-size: 18px;">📊 Competitive Intelligence Breakdown</h3>
+            
+            <table style="width: 100%; border-collapse: collapse; background-color: transparent;">
+                <tr style="background-color: #2a2a2a;">
+                    <th style="padding: 12px; text-align: left; border: 1px solid #444; color: #ffd700;">Competitor</th>
+                    <th style="padding: 12px; text-align: left; border: 1px solid #444; color: #ffd700;">Primary Advantage</th>
+                    <th style="padding: 12px; text-align: left; border: 1px solid #444; color: #ffd700;">Gerber's Gap</th>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; border: 1px solid #444; color: #fff; font-weight: bold;">Happy Baby</td>
+                    <td style="padding: 12px; border: 1px solid #444; color: #ccc;">Developmental milestone content, BLW expertise, 432+ Q&As, pediatric dietitian endorsements</td>
+                    <td style="padding: 12px; border: 1px solid #444; color: #ff6b6b;">Lack of educational Q&A content, missing developmental keyword tagging</td>
+                </tr>
+                <tr style="background-color: #1a1a1a;">
+                    <td style="padding: 12px; border: 1px solid #444; color: #fff; font-weight: bold;">Earth's Best</td>
+                    <td style="padding: 12px; border: 1px solid #444; color: #ccc;">Heavy metal testing transparency (<3 ppb), 100% USDA Organic, clean label authority</td>
+                    <td style="padding: 12px; border: 1px solid #444; color: #ff6b6b;">No public testing results, vulnerable to health-conscious millennial/Gen Z parents</td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; border: 1px solid #444; color: #fff; font-weight: bold;">Beech-Nut</td>
+                    <td style="padding: 12px; border: 1px solid #444; color: #ccc;">Simple ingredients dominance, single-ingredient organic options, $1.10/pouch value</td>
+                    <td style="padding: 12px; border: 1px solid #444; color: #ff6b6b;">Complex formulations perceived as less "clean" for simple ingredients queries</td>
+                </tr>
+                <tr style="background-color: #1a1a1a;">
+                    <td style="padding: 12px; border: 1px solid #444; color: #fff; font-weight: bold;">Little Bellies</td>
+                    <td style="padding: 12px; border: 1px solid #444; color: #ccc;">Superior texture attribute tagging, "No Added Sugar Pioneers" positioning, 0g added sugar</td>
+                    <td style="padding: 12px; border: 1px solid #444; color: #ff6b6b;">Product catalog lacks texture-specific optimization, sugar messaging not prominent</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div style="background-color: #2d1f3d; padding: 25px; border-radius: 8px; border: 1px solid #555;">
+            <h3 style="color: #b794f6; margin-top: 0; margin-bottom: 20px; font-size: 18px;">💡 Considerations</h3>
+            
+            <div style="margin-bottom: 20px;">
+                <h4 style="color: #ffd700; margin: 0 0 10px 0; font-size: 16px;">IMMEDIATE (30-60 Days)</h4>
+                <ol style="color: #ccc; line-height: 1.8; margin: 0; padding-left: 20px;">
+                    <li><strong>Emergency Content Audit:</strong> Conduct comprehensive analysis of all Gerber product pages. Identify queries where Gerber products are mentioned but competitors rank #1 (e.g., "Lil' Crunchies safety").</li>
+                    <li><strong>Q&A Sprint:</strong> Create 100 answered questions focused on safety, dissolve times, and developmental milestones for top 10 SKUs. Target keywords: "baby-led weaning," "pincer grasp," "self-feeding."</li>
+                    <li><strong>Attribute Tagging Overhaul:</strong> Add age-specific tags (6mo, 9mo, 12mo+), texture descriptors ("melts in 25 seconds"), and safety specifications to all product listings.</li>
+                </ol>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <h4 style="color: #ffd700; margin: 0 0 10px 0; font-size: 16px;">SHORT-TERM (60-120 Days)</h4>
+                <ol start="4" style="color: #ccc; line-height: 1.8; margin: 0; padding-left: 20px;">
+                    <li><strong>Educational Content Hub:</strong> Build 300+ Q&As across entire catalog. Focus areas: developmental feeding, nutritional benefits, safety concerns, feeding transitions.</li>
+                    <li><strong>Transparency Initiative:</strong> Publish third-party heavy metal testing results. Set target: <5 ppb across all products. Create comparison charts vs. competitors.</li>
+                    <li><strong>Review Generation Campaign:</strong> Launch targeted review request program asking customers to mention specific keywords: "easy to digest," "baby loves," "dissolves quickly," "helped with teething."</li>
+                    <li><strong>Video Content Creation:</strong> Produce 20+ short videos showing babies successfully eating Gerber products, demonstrating dissolve times, and featuring parent testimonials.</li>
+                </ol>
+            </div>
+            
+            <div>
+                <h4 style="color: #ffd700; margin: 0 0 10px 0; font-size: 16px;">LONG-TERM (6-12 Months)</h4>
+                <ol start="8" style="color: #ccc; line-height: 1.8; margin: 0; padding-left: 20px;">
+                    <li><strong>Influencer Partnership Program:</strong> Recruit pediatric dietitians and registered dietitians for product endorsements. Target 50+ professional mentions across baby snacks catalog.</li>
+                    <li><strong>BLW Product Line Extension:</strong> Develop/reposition products specifically for baby-led weaning methodology. Create dedicated landing pages with BLW educational content.</li>
+                    <li><strong>Subscribe & Save Optimization:</strong> Increase subscription adoption from current levels to match Happy Baby's 89% rate. Bundle products by age/stage.</li>
+                    <li><strong>Clean Label Sub-Brand:</strong> Consider launching or repositioning a line to compete directly with Earth's Best on organic/clean positioning. Feature minimal ingredients, organic certification, and testing transparency.</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div style="background-color: #1f2d3d; padding: 25px; border-radius: 8px; margin-top: 20px; border: 1px solid #555;">
+            <h3 style="color: #4da6ff; margin-top: 0; margin-bottom: 15px; font-size: 18px;">Key Takeaway</h3>
+            <p style="color: #fff; line-height: 1.8; margin: 0; font-size: 15px;">
+                Gerber's challenge isn't product quality—it's <strong>content strategy in an answer engine environment</strong>. Happy Baby hasn't won through better products; they've won by treating Amazon product pages as educational platforms that Rufus algorithmically rewards. The competition has shown the playbook—Gerber can execute it at scale with systematic content development, transparency initiatives, and strategic keyword optimization.
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const searchInfo = document.getElementById('searchInfo');
+        const tableRows = document.querySelectorAll('tbody tr:not(.category-header)');
+        
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            let visibleCount = 0;
+            
+            // Clear previous search highlights
+            clearSearchHighlights();
+            
+            tableRows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (searchTerm === '' || text.includes(searchTerm)) {
+                    row.style.display = '';
+                    visibleCount++;
+                    
+                    // Highlight search term
+                    if (searchTerm !== '') {
+                        highlightSearchTerm(row, searchTerm);
+                    }
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            // Update search info
+            if (searchTerm === '') {
+                searchInfo.textContent = '';
+            } else {
+                searchInfo.textContent = `Showing ${visibleCount} results for "${searchTerm}"`;
+            }
+            
+            // Show/hide category headers based on visible rows
+            updateCategoryHeaders();
+        });
+        
+        function highlightSearchTerm(row, term) {
+            const cells = row.querySelectorAll('td');
+            cells.forEach(cell => {
+                if (cell.textContent.toLowerCase().includes(term)) {
+                    const regex = new RegExp(`(${term})`, 'gi');
+                    cell.innerHTML = cell.innerHTML.replace(regex, '<span class="search-highlight">$1</span>');
+                }
+            });
+        }
+        
+        function clearSearchHighlights() {
+            const highlighted = document.querySelectorAll('.search-highlight');
+            highlighted.forEach(span => {
+                const parent = span.parentNode;
+                parent.replaceChild(document.createTextNode(span.textContent), span);
+                parent.normalize();
+            });
+        }
+        
+        function updateCategoryHeaders() {
+            const categoryHeaders = document.querySelectorAll('.category-header');
+            categoryHeaders.forEach(header => {
+                let hasVisibleRows = false;
+                let nextRow = header.nextElementSibling;
+                
+                while (nextRow && !nextRow.classList.contains('category-header')) {
+                    if (nextRow.style.display !== 'none') {
+                        hasVisibleRows = true;
+                        break;
+                    }
+                    nextRow = nextRow.nextElementSibling;
+                }
+                
+                header.style.display = hasVisibleRows ? '' : 'none';
+            });
+        }
+        
+        // Company highlighting functionality
+        function highlightCompany(company) {
+            // Clear all highlights first
+            clearHighlights();
+            
+            // Set active button
+            document.querySelectorAll('.company-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[data-company="${company}"]`).classList.add('active');
+            
+            // Highlight matching rows
+            const companyNames = getCompanyBrands(company);
+            let matchCount = 0;
+            
+            tableRows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                let hasMatch = false;
+                
+                // Check brand columns (columns 1, 2, 3)
+                for (let i = 1; i <= 3; i++) {
+                    if (cells[i]) {
+                        const brandText = cells[i].textContent.trim();
+                        if (companyNames.some(name => brandText.toLowerCase().includes(name.toLowerCase()))) {
+                            cells[i].classList.add('highlight');
+                            hasMatch = true;
+                        }
+                    }
+                }
+                
+                if (hasMatch) {
+                    matchCount++;
+                }
+            });
+            
+            searchInfo.textContent = `Showing ${matchCount} entries for ${getCompanyDisplayName(company)}`;
+        }
+        
+        function getCompanyBrands(company) {
+            const brandMap = {
+                'gerber': ['Gerber'],
+                'happybaby': ['Happy Baby'],
+                'earthsbest': ['Earth\'s Best', 'Earths Best'],
+                'beechnut': ['Beech-Nut', 'Beech Nut'],
+                'littlebellies': ['Little Bellies']
+            };
+            
+            return brandMap[company] || [];
+        }
+        
+        function getCompanyDisplayName(company) {
+            const displayMap = {
+                'gerber': 'Gerber',
+                'happybaby': 'Happy Baby',
+                'earthsbest': 'Earth\'s Best',
+                'beechnut': 'Beech-Nut',
+                'littlebellies': 'Little Bellies'
+            };
+            
+            return displayMap[company] || company;
+        }
+        
+        function clearHighlights() {
+            // Clear all active buttons
+            document.querySelectorAll('.company-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Clear all highlights
+            document.querySelectorAll('.highlight').forEach(el => el.classList.remove('highlight'));
+            
+            // Clear search info
+            searchInfo.textContent = '';
+        }
+    </script>
+</body>
+</html> - Starting Solids -->
+                <tr class="category-header">
+                    <td colspan="6">BABY CEREAL - STARTING SOLIDS</td>
+                </tr>
+                <tr>
+                    <td>Best baby snack brand to start solids?</td>
+                    <td class="brand-1">Happy Baby</td>
+                    <td class="brand-2">Gerber</td>
+                    <td class="brand-3">Earth's Best</td>
+                    <td>Stage 1 product positioning and first foods educational content make Happy Baby relevant for solid introduction queries.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.8</span> (18,234 reviews)<br>BSR: #1 First Foods<br>Stage 1 authority</td>
+                </tr>
+                <tr>
+                    <td>Best baby cereal for introducing solids?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Gerber's single-grain rice cereal dominance and pediatrician recommendation history position it as first cereal choice.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>BSR: #1 Single Grain<br>67% first cereal choice</td>
+                </tr>
+                <tr>
+                    <td>Best baby cereal for 6-month-olds?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Extensive 6+ month age labeling and beginner cereal variety give Gerber strong 6-month age-specific relevance.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>BSR: #1 6mo+ Cereal<br>6+ mo labeling</td>
+                </tr>
+                <tr>
+                    <td>Most recommended cereal for starting solids?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Recommendation language in reviews and professional endorsement badges position Gerber as the recommended choice.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>892 'recommended' reviews<br>Pedi endorsements</td>
+                </tr>
+                <tr>
+                    <td>Best baby cereal brand for first foods?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Market leadership in first foods category and 'baby's first cereal' messaging establish Gerber's first-food authority.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>BSR: #1 First Foods<br>76-year heritage</td>
+                </tr>
+
+                <!-- Baby Cereal - Clean & Organic -->
+                <tr class="category-header">
+                    <td colspan="6">BABY CEREAL - CLEAN & ORGANIC</td>
+                </tr>
+                <tr>
+                    <td>Baby cereal with no added sugar?</td>
+                    <td class="brand-1">Cascadian Farm</td>
+                    <td class="brand-2">Gerber</td>
+                    <td class="brand-3">Earth's Best</td>
+                    <td>Cascadian Farm's zero added sugar certifications and organic positioning capture health-conscious no-sugar queries.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (9,234 reviews)<br>0g added sugar<br>BSR: #1 Sugar-Free</td>
+                </tr>
+                <tr>
+                    <td>Safest baby cereal brand overall?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Gerber's safety testing transparency, recall-free history, and quality assurance messaging build comprehensive safety authority.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>Zero recalls<br>Quality assurance</td>
+                </tr>
+                <tr>
+                    <td>Cereal without synthetic vitamins?</td>
+                    <td class="brand-1">Earth's Best</td>
+                    <td class="brand-2">Happy Baby</td>
+                    <td class="brand-3">Cascadian Farm</td>
+                    <td>Earth's Best organic formulation emphasis and natural vitamin sourcing callouts address synthetic vitamin avoidance concerns.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (14,892 reviews)<br>100% natural vitamins<br>USDA Organic</td>
+                </tr>
+                <tr>
+                    <td>Best baby cereal brand without additives?</td>
+                    <td class="brand-1">Earth's Best</td>
+                    <td class="brand-2">Happy Baby</td>
+                    <td class="brand-3">Cascadian Farm</td>
+                    <td>Clean ingredient deck and no artificial anything messaging position Earth's Best for additive-avoidance queries.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (14,892 reviews)<br>Zero additives<br>Clean label cert</td>
+                </tr>
+                <tr>
+                    <td>Best organic baby cereal options today?</td>
+                    <td class="brand-1">Earth's Best</td>
+                    <td class="brand-2">Happy Baby</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>USDA Organic certification across entire Earth's Best cereal line establishes pure organic category ownership.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (14,892 reviews)<br>100% USDA Organic<br>BSR: #1 Organic Cereal</td>
+                </tr>
+                <tr>
+                    <td>Best baby cereal brand without heavy metals?</td>
+                    <td class="brand-1">Earth's Best</td>
+                    <td class="brand-2">Happy Baby</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Third-party heavy metal testing documentation and low-metal sourcing transparency address contamination concerns.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (14,892 reviews)<br>3rd party tested<br><5 ppb heavy metals</td>
+                </tr>
+                <tr>
+                    <td>Best non-GMO baby cereal brand?</td>
+                    <td class="brand-1">Earth's Best</td>
+                    <td class="brand-2">Happy Baby</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Non-GMO Project Verified seals and GMO-free supply chain transparency establish Earth's Best non-GMO credentials.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (14,892 reviews)<br>Non-GMO verified<br>100% non-GMO supply</td>
+                </tr>
+                <tr>
+                    <td>Which baby cereal has least heavy metals?</td>
+                    <td class="brand-1">Earth's Best</td>
+                    <td class="brand-2">Happy Baby</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Public testing results and below-detection-limit claims for lead and arsenic create heavy metal safety positioning.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (14,892 reviews)<br>Test results: <3 ppb<br>Clean sourcing</td>
+                </tr>
+                <tr>
+                    <td>Baby cereal with cleanest ingredients?</td>
+                    <td class="brand-1">Earth's Best</td>
+                    <td class="brand-2">Happy Baby</td>
+                    <td class="brand-3">Cascadian Farm</td>
+                    <td>Minimal ingredient lists with organic certification and absence of controversial additives define clean ingredient authority.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (14,892 reviews)<br>Avg 2 ingredients<br>Organic + simple</td>
+                </tr>
+
+                <!-- Baby Cereal - Gluten-Free -->
+                <tr class="category-header">
+                    <td colspan="6">BABY CEREAL - GLUTEN-FREE</td>
+                </tr>
+                <tr>
+                    <td>Best gluten-free baby cereal options?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Gerber's rice and oat cereal variety with gluten-free certifications capture allergy-conscious parent searches.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>Certified GF<br>BSR: #1 Gluten-Free</td>
+                </tr>
+                <tr>
+                    <td>Best gluten-free baby cereal brand?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Certified gluten-free badge presence and dedicated production facility messaging build gluten-free brand trust.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>GF facility<br>12 GF SKUs</td>
+                </tr>
+
+                <!-- Baby Cereal - Nutritional Benefits -->
+                <tr class="category-header">
+                    <td colspan="6">BABY CEREAL - NUTRITIONAL BENEFITS</td>
+                </tr>
+                <tr>
+                    <td>Best multigrain baby cereal brands?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Multigrain cereal SKU variety and grain diversity messaging (oats, quinoa, barley) establish Gerber's grain expertise.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (21,456 reviews)<br>8 grain varieties<br>BSR: #2 Multigrain</td>
+                </tr>
+                <tr>
+                    <td>Which cereal is best for iron needs?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>High iron fortification levels (45% DV per serving) and anemia prevention educational content drive iron authority.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>45% DV iron/serving<br>Iron-fortified line</td>
+                </tr>
+                <tr>
+                    <td>Iron-rich cereals babies will eat?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Taste-test data and acceptance rate claims combined with iron content create palatability-plus-nutrition positioning.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>45% DV iron<br>89% taste acceptance</td>
+                </tr>
+                <tr>
+                    <td>Best baby cereal brand with DHA?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>DHA fortification across cereal portfolio and cognitive development benefit claims position Gerber for brain health queries.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>32mg DHA/serving<br>Brain dev content</td>
+                </tr>
+                <tr>
+                    <td>Which cereal supports baby's brain development?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>DHA and choline content highlighting plus brain development educational modules create cognitive benefit authority.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>DHA + choline<br>Cognitive benefits</td>
+                </tr>
+                <tr>
+                    <td>What cereal helps baby gain weight?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Calorie density specifications and weight gain support messaging address growth and nutrition adequacy concerns.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>140 cal/serving<br>Weight gain support</td>
+                </tr>
+                <tr>
+                    <td>Best baby cereal brand for iron absorption?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Vitamin C pairing for enhanced iron absorption and bioavailability messaging demonstrate nutritional sophistication.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>Iron + Vitamin C<br>Enhanced absorption</td>
+                </tr>
+                <tr>
+                    <td>What's the top iron-fortified baby cereal?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Market-leading iron fortification levels and iron deficiency prevention positioning establish Gerber as iron-fortified leader.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>BSR: #1 Iron Cereal<br>45% DV iron</td>
+                </tr>
+
+                <!-- Baby Cereal - Taste & Preferences -->
+                <tr class="category-header">
+                    <td colspan="6">BABY CEREAL - TASTE & PREFERENCES</td>
+                </tr>
+                <tr>
+                    <td>Best baby cereal for picky eaters?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Mild flavor profiles and picky eater success testimonials in reviews support selective eating positioning.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (19,234 reviews)<br>Mild flavor<br>234 'picky' reviews</td>
+                </tr>
+                <tr>
+                    <td>Most filling baby cereal meal?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Satiety claims, whole grain content, and protein fortification support filling meal messaging.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (21,456 reviews)<br>8g protein<br>Whole grain satiety</td>
+                </tr>
+                <tr>
+                    <td>Best cereal to mix with fruits?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Recipe content showing fruit combinations and flavor compatibility claims drive mixability positioning.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (22,345 reviews)<br>187 recipe Q&As<br>Flavor compatibility</td>
+                </tr>
+                <tr>
+                    <td>Baby cereal with least added sugar?</td>
+                    <td class="brand-1">Earth's Best</td>
+                    <td class="brand-2">Happy Baby</td>
+                    <td class="brand-3">Cascadian Farm</td>
+                    <td>Zero added sugar formulations and natural sweetness from whole grains position Earth's Best for low-sugar queries.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (14,892 reviews)<br>0g added sugar<br>Natural sweetness only</td>
+                </tr>
+                <tr>
+                    <td>Best baby cereal brand for picky eaters?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Customer testimonials about picky eater acceptance and flavor variety options address selective eating challenges.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (19,234 reviews)<br>18 flavor options<br>87% acceptance rate</td>
+                </tr>
+                <tr>
+                    <td>Best-tasting baby cereal brand?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Taste-focused review sentiment and baby enjoyment keywords position Gerber for taste-priority searches.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (24,567 reviews)<br>92% taste approval<br>456 'delicious' reviews</td>
+                </tr>
+                <tr>
+                    <td>Best baby cereal brand with real fruit?</td>
+                    <td class="brand-1">Earth's Best</td>
+                    <td class="brand-2">Happy Baby</td>
+                    <td class="brand-3">Gerber</td>
+                    <td>Real fruit piece inclusion and no artificial flavoring claims establish Earth's Best real fruit authenticity.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.7</span> (14,892 reviews)<br>Real fruit pieces<br>No artificial flavors</td>
+                </tr>
+                <tr>
+                    <td>Do babies prefer oatmeal or barley cereal?</td>
+                    <td class="brand-1">Gerber</td>
+                    <td class="brand-2">Earth's Best</td>
+                    <td class="brand-3">Happy Baby</td>
+                    <td>Comparative product positioning and preference data in content address grain type preference questions.</td>
+                    <td class="depth-factors"><span class="star-rating">★ 4.6</span> (20,456 reviews)<br>Comparative data<br>Preference studies</td>
+                </tr>
+
+                <!-- Baby Cereal
