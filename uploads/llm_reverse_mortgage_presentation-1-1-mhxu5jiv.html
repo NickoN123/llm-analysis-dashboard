@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Reverse Mortgage Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 60px 80px;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 0;
+        }
+
+        .main-title {
+            font-size: 4.5em;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+            text-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .main-subtitle {
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+            max-width: 800px;
+            margin: 0 auto 50px;
+        }
+
+        .search-container {
+            max-width: 800px;
+            margin: 40px auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 20px 25px;
+            font-size: 1.1em;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            color: #ffffff;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #00d4ff;
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .clear-search {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            font-size: 1.2em;
+            padding: 5px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .clear-search:hover {
+            color: #00d4ff;
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .quick-search {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .quick-search-btn {
+            padding: 12px 24px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 25px;
+            color: #00d4ff;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .quick-search-btn:hover {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+        }
+
+        .quick-search-btn.active {
+            background: #00d4ff;
+            color: #0a0e1a;
+            border-color: #00d4ff;
+        }
+
+        .search-results-info {
+            text-align: center;
+            margin: 20px 0;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9em;
+            display: none;
+        }
+
+        .search-results-info.no-results {
+            color: #ff6b6b;
+        }
+
+        .highlight {
+            border: 2px solid #00d4ff !important;
+            color: #ffffff !important;
+            font-weight: 600;
+            padding: 2px 4px;
+            border-radius: 4px;
+            animation: highlightPulse 1s ease-in-out;
+        }
+
+        @keyframes highlightPulse {
+            0%, 100% { border-color: #00d4ff; }
+            50% { border-color: #4ecdc4; }
+        }
+
+        .category-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            margin-bottom: 60px;
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .category-section:nth-child(2) { animation-delay: 0.1s; }
+        .category-section:nth-child(3) { animation-delay: 0.2s; }
+        .category-section:nth-child(4) { animation-delay: 0.3s; }
+        .category-section:nth-child(5) { animation-delay: 0.4s; }
+        .category-section:nth-child(6) { animation-delay: 0.5s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: #0a0e1a;
+            padding: 25px 40px;
+            font-size: 1.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .category-stats {
+            padding: 20px 40px;
+            background: rgba(0, 212, 255, 0.05);
+            font-size: 1.1em;
+            color: rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            padding: 0;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: transparent;
+        }
+
+        .data-table th {
+            background: rgba(0, 212, 255, 0.15);
+            padding: 20px 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.5);
+        }
+
+        .data-table th:first-child {
+            width: 30%;
+            min-width: 300px;
+        }
+
+        .data-table td {
+            padding: 18px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            vertical-align: top;
+        }
+
+        .data-table tr:hover td {
+            background: rgba(0, 212, 255, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .prompt-cell {
+            font-weight: 500;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid #00d4ff;
+        }
+
+        .llm-response {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9em;
+        }
+
+        .data-table tr:nth-child(even) td:not(.prompt-cell) {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+        }
+
+        .scroll-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #4ecdc4);
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        /* Analysis Section */
+        .analysis-section {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(78, 205, 196, 0.05));
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 20px;
+            margin: 80px 0 60px;
+            padding: 60px 50px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .analysis-header {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .analysis-header::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, #00d4ff, #4ecdc4);
+        }
+
+        .analysis-title {
+            font-size: 2.8em;
+            font-weight: 200;
+            color: #00d4ff;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            text-shadow: 0 4px 20px rgba(0, 212, 255, 0.2);
+        }
+
+        .analysis-subtitle {
+            font-size: 1.3em;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+        }
+
+        .insight-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 35px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .insight-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, #00d4ff, #4ecdc4);
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+        }
+
+        .insight-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .insight-card:hover {
+            transform: translateY(-8px);
+            background: rgba(0, 212, 255, 0.08);
+            border-color: rgba(0, 212, 255, 0.4);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.15);
+        }
+
+        .insight-title {
+            font-size: 1.5em;
+            color: #00d4ff;
+            margin-bottom: 25px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .insight-content p {
+            margin-bottom: 18px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1em;
+        }
+
+        .insight-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .insight-content p strong {
+            color: #ffffff;
+            font-weight: 600;
+            background: rgba(0, 212, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        /* About Section */
+        .about-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            margin: 60px 0 40px;
+            padding: 40px 50px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .about-title {
+            font-size: 1.8em;
+            color: #00d4ff;
+            margin-bottom: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .about-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.7;
+            font-size: 1em;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 40px 50px;
+            }
+            
+            .main-title {
+                font-size: 3.5em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 25px;
+            }
+            
+            .main-title {
+                font-size: 2.5em;
+            }
+            
+            .main-subtitle {
+                font-size: 1.1em;
+            }
+            
+            .quick-search {
+                gap: 10px;
+            }
+            
+            .quick-search-btn {
+                padding: 10px 18px;
+                font-size: 0.8em;
+            }
+            
+            .search-input {
+                padding: 15px 20px;
+                font-size: 1em;
+            }
+            
+            .category-header {
+                padding: 20px 25px;
+                font-size: 1.4em;
+            }
+            
+            .category-stats {
+                padding: 15px 25px;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 12px 8px;
+                font-size: 0.8em;
+            }
+            
+            .data-table th:first-child {
+                min-width: 200px;
+            }
+
+            .insights-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .analysis-title {
+                font-size: 2em;
+            }
+            
+            .insight-card {
+                padding: 20px;
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-indicator">
+        <div class="scroll-progress"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">The Lender Litmus Test: AI Edition</h1>
+            <p class="main-subtitle">When AI evaluates reverse mortgage companies, surprising patterns emerge<br>Powered by BrandRank.AI</p>
+            
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search for any company name..." id="searchInput">
+                <button class="clear-search" id="clearSearch">×</button>
+                <div class="quick-search">
+                    <button class="quick-search-btn" data-company="American Advisors Group">AAG</button>
+                    <button class="quick-search-btn" data-company="Finance of America">Finance of America</button>
+                    <button class="quick-search-btn" data-company="Longbridge Financial">Longbridge Financial</button>
+                    <button class="quick-search-btn" data-company="Mutual of Omaha">Mutual of Omaha</button>
+                    <button class="quick-search-btn" data-company="Guild Mortgage">Guild Mortgage</button>
+                    <button class="quick-search-btn" data-company="Quicken Loans">Quicken Loans</button>
+                    <button class="quick-search-btn" data-company="Reverse Mortgage Funding">Reverse Mortgage Funding</button>
+                    <button class="quick-search-btn" data-company="One Reverse Mortgage">One Reverse Mortgage</button>
+                    <button class="quick-search-btn" data-company="Liberty Home Equity">Liberty Home Equity</button>
+                </div>
+                <div class="search-results-info" id="searchResults"></div>
+            </div>
+        </div>
+
+        <!-- Best & Comparison-Oriented -->
+        <div class="category-section">
+            <h2 class="category-header">Best & Comparison-Oriented</h2>
+            <div class="category-stats">5 prompts focused on general "best" recommendations and competitive comparisons</div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Prompt Question</th>
+                            <th>ChatGPT</th>
+                            <th>Claude</th>
+                            <th>Gemini</th>
+                            <th>Llama</th>
+                            <th>Perplexity</th>
+                            <th>Grok</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="prompt-cell">What is the best reverse mortgage company?</td>
+                            <td class="llm-response">AAG (American Advisors Group)</td>
+                            <td class="llm-response">AAG (American Advisors Group)</td>
+                            <td class="llm-response">Finance of America Reverse (FAR)</td>
+                            <td class="llm-response">American Advisors Group (AAG)</td>
+                            <td class="llm-response">Finance of America</td>
+                            <td class="llm-response">Finance of America Reverse (FAR)</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Who are the top reverse mortgage lenders right now?</td>
+                            <td class="llm-response">AAG (American Advisors Group)</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Finance of America Reverse (FAR)</td>
+                            <td class="llm-response">Quicken Loans</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What bank has the best reverse mortgage rates?</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Best Reverse Mortgage Rates</td>
+                            <td class="llm-response">Quicken Loans</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Which reverse mortgage provider is the most trusted?</td>
+                            <td class="llm-response">AAG (American Advisors Group)</td>
+                            <td class="llm-response">Liberty Home Equity Solutions</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Quicken Loans</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">American Advisors Group</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Who has the best reverse mortgage reviews?</td>
+                            <td class="llm-response">AAG (American Advisors Group)</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Quicken Loans</td>
+                            <td class="llm-response">Finance of America</td>
+                            <td class="llm-response">All Reverse Mortgage</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Personal Fit -->
+        <div class="category-section">
+            <h2 class="category-header">Personal Fit ("For Me")</h2>
+            <div class="category-stats">5 prompts targeting specific personal situations and demographics</div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Prompt Question</th>
+                            <th>ChatGPT</th>
+                            <th>Claude</th>
+                            <th>Gemini</th>
+                            <th>Llama</th>
+                            <th>Perplexity</th>
+                            <th>Grok</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="prompt-cell">What is the best reverse mortgage company for seniors over 70?</td>
+                            <td class="llm-response">AAG (American Advisors Group)</td>
+                            <td class="llm-response">AAG (American Advisors Group)</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Quicken Loans</td>
+                            <td class="llm-response">Finance of America</td>
+                            <td class="llm-response">Finance of America</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Which reverse mortgage lender is best if I still have a mortgage?</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Guild Mortgage</td>
+                            <td class="llm-response">Quicken Loans</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Who offers the best reverse mortgage for veterans?</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">American Advisors Group</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What's the best reverse mortgage option if I want to stay in my home long-term?</td>
+                            <td class="llm-response">AAG (American Advisors Group)</td>
+                            <td class="llm-response">Liberty Home Equity Solutions</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">American Advisors Group</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Which reverse mortgage company is best for low fees?</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">Guild Mortgage</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Guild Mortgage</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Rate & Cost-Driven -->
+        <div class="category-section">
+            <h2 class="category-header">Rate & Cost-Driven</h2>
+            <div class="category-stats">5 prompts focused on financial terms, rates, and monetary considerations</div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Prompt Question</th>
+                            <th>ChatGPT</th>
+                            <th>Claude</th>
+                            <th>Gemini</th>
+                            <th>Llama</th>
+                            <th>Perplexity</th>
+                            <th>Grok</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="prompt-cell">Where can I find the best reverse mortgage interest rates?</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">American Advisors Group (AAG)</td>
+                            <td class="llm-response">Guild Mortgage</td>
+                            <td class="llm-response">American Advisors Group</td>
+                            <td class="llm-response">Guild Mortgage</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Which company has the lowest reverse mortgage closing costs?</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Mutual of Omaha</td>
+                            <td class="llm-response">Fairway Reverse Mortgage</td>
+                            <td class="llm-response">American Advisors Group</td>
+                            <td class="llm-response">Finance of America</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Who gives the most money in a reverse mortgage?</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Guild Mortgage</td>
+                            <td class="llm-response">American Advisors Group</td>
+                            <td class="llm-response">Jumbo Reverse Mortgage</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Which lender offers the most flexible reverse mortgage terms?</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">American Advisors Group (AAG)</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What reverse mortgage company has the most transparent fees?</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">American Advisors Group (AAG)</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Fairway Independent Mortgage Corporation</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Trust, Reputation & Safety -->
+        <div class="category-section">
+            <h2 class="category-header">Trust, Reputation & Safety</h2>
+            <div class="category-stats">5 prompts emphasizing trustworthiness, safety, and institutional credibility</div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Prompt Question</th>
+                            <th>ChatGPT</th>
+                            <th>Claude</th>
+                            <th>Gemini</th>
+                            <th>Llama</th>
+                            <th>Perplexity</th>
+                            <th>Grok</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="prompt-cell">Who are the most reputable reverse mortgage companies?</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">American Advisors Group (AAG)</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Finance of America</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Which reverse mortgage companies are rated highest by the Better Business Bureau?</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Guild Mortgage</td>
+                            <td class="llm-response">Fairway Independent Mortgage Corporation</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What is the safest reverse mortgage lender to work with?</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Finance of America</td>
+                            <td class="llm-response">Mutual of Omaha Reverse Mortgage</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Which reverse mortgage provider is best at protecting heirs and families?</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Guild Mortgage</td>
+                            <td class="llm-response">Mutual of Omaha Reverse Mortgage</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Who explains reverse mortgages the clearest and simplest?</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">American Advisors Group (AAG)</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">American Advisors Group</td>
+                            <td class="llm-response">American Advisors Group</td>
+                            <td class="llm-response">Fairway Independent Mortgage Corporation</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Directionally Negative -->
+        <div class="category-section">
+            <h2 class="category-header">Risk & Skepticism</h2>
+            <div class="category-stats">5 prompts identifying companies to avoid, problems, and red flags</div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Prompt Question</th>
+                            <th>ChatGPT</th>
+                            <th>Claude</th>
+                            <th>Gemini</th>
+                            <th>Llama</th>
+                            <th>Perplexity</th>
+                            <th>Grok</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="prompt-cell">What reverse mortgage companies should not be trusted?</td>
+                            <td class="llm-response">One Reverse Mortgage</td>
+                            <td class="llm-response">Reverse Mortgage Funding LLC</td>
+                            <td class="llm-response">American Advisors Group</td>
+                            <td class="llm-response">American Equity Investment Life Insurance Company</td>
+                            <td class="llm-response">No specific brands named</td>
+                            <td class="llm-response">Celink</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Which reverse mortgage lenders have the worst reviews?</td>
+                            <td class="llm-response">Reverse Mortgage Solutions</td>
+                            <td class="llm-response">Reverse Mortgage Funding LLC</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Reverse Mortgage Funding</td>
+                            <td class="llm-response">Central Pacific Bank</td>
+                            <td class="llm-response">Reverse Mortgage Funding</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Who are the most expensive reverse mortgage providers?</td>
+                            <td class="llm-response">AAG (American Advisors Group)</td>
+                            <td class="llm-response">Champion Mortgage Company</td>
+                            <td class="llm-response">There is no single "most expensive" provider</td>
+                            <td class="llm-response">Longbridge Financial LLC</td>
+                            <td class="llm-response">No specific brand identified</td>
+                            <td class="llm-response">One Reverse Mortgage</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What reverse mortgage companies have had lawsuits or regulatory issues?</td>
+                            <td class="llm-response">AAG (American Advisors Group)</td>
+                            <td class="llm-response">Wells Fargo (exited market)</td>
+                            <td class="llm-response">American Advisors Group</td>
+                            <td class="llm-response">Reverse Mortgage Solutions</td>
+                            <td class="llm-response">Townstone Financial</td>
+                            <td class="llm-response">Reverse Mortgage Funding (RMF)</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Which reverse mortgage companies have the most consumer complaints?</td>
+                            <td class="llm-response">Reverse Mortgage Solutions</td>
+                            <td class="llm-response">Reverse Mortgage Funding LLC</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Reverse Mortgage Solutions</td>
+                            <td class="llm-response">Federal Savings Bank</td>
+                            <td class="llm-response">Celink</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Analysis Section -->
+        <div class="analysis-section">
+            <div class="analysis-header">
+                <h2 class="analysis-title">Key Insights & Trends</h2>
+                <p class="analysis-subtitle">What the data reveals about AI recommendations in reverse mortgages</p>
+            </div>
+
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h3 class="insight-title">Precise Market Leaders</h3>
+                    <div class="insight-content">
+                        <p><strong>Finance of America:</strong> 33 positive mentions, 2 negative mentions across all 25 prompts, making it the most recommended overall despite Gemini's concerns about reviews and consumer complaints.</p>
+                        <p><strong>Longbridge Financial:</strong> 26 positive, 1 negative mention - consistently strong in trust and safety categories with minimal risk flags.</p>
+                        <p><strong>American Advisors Group (AAG):</strong> 22 positive, 4 negative mentions - high brand recognition but significant negative exposure in cost and regulatory categories.</p>
+                        <p><strong>Mutual of Omaha:</strong> 16 positive, 0 negative mentions - spotless negative record but narrower recommendation scope.</p>
+                    </div>
+                </div>
+
+                <div class="insight-card">
+                    <h3 class="insight-title">Consensus Spectrum</h3>
+                    <div class="insight-content">
+                        <p><strong>Highest consensus:</strong> "Most flexible terms" achieves 83% agreement on Finance of America (5/6 models), followed by "Top lenders" at 67% consensus (4/6 models).</p>
+                        <p><strong>Moderate consensus:</strong> Several prompts show 50% agreement, including "Best company overall" and "Best for existing mortgage" situations.</p>
+                        <p><strong>Lowest consensus:</strong> "Best reviews" shows only 17% agreement with 6 different recommendations, while negative categories average just 25-33% consensus, indicating vastly different risk assessment criteria.</p>
+                    </div>
+                </div>
+
+                <div class="insight-card">
+                    <h3 class="insight-title">Risk Profile Analysis</h3>
+                    <div class="insight-content">
+                        <p><strong>High-risk patterns:</strong> Reverse Mortgage Funding LLC flagged in 3 out of 5 negative categories, while Reverse Mortgage Solutions appears in 2 negative categories consistently.</p>
+                        <p><strong>AAG contradiction:</strong> Despite 22 positive recommendations, AAG appears in 4 negative mentions across "trust," "expensive," and "regulatory" categories - the largest positive-negative gap.</p>
+                        <p><strong>Traditional bank absence:</strong> Major banks like Wells Fargo only mentioned in regulatory exit contexts, suggesting AI models focus on specialist reverse mortgage providers rather than traditional banking institutions.</p>
+                    </div>
+                </div>
+
+                <div class="insight-card">
+                    <h3 class="insight-title">Gemini Divergence & Data Sources</h3>
+                    <div class="insight-content">
+                        <p><strong>Gemini's unique perspective:</strong> Only model to flag Finance of America negatively (worst reviews, consumer complaints) while other 5 models consistently praise it - suggesting different evaluation timeframes or source prioritization.</p>
+                        <p><strong>Methodology implications:</strong> Low consensus on negative assessments (17-33%) likely reflects different training data recency, source diversity, and risk evaluation criteria rather than analytical capability differences.</p>
+                        <p><strong>Missing traditional players:</strong> Absence of major banks except in exit scenarios suggests AI models may prioritize specialist industry sources over broader financial institution coverage.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About BrandRank -->
+        <div class="about-section">
+            <div class="about-content">
+                <h3 class="about-title">About BrandRank</h3>
+                <p class="about-description">We help brands measure, protect, and grow trust through the power of AI-driven search and discovery. Combining AI with expert insight, we monitor the major AI "Answer Engines" to pinpoint vulnerabilities and opportunities, identify key insights driving purchase behavior, and uncover category needs and opportunities to strengthen brand equity and consumer loyalty.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const clearButton = document.getElementById('clearSearch');
+        const searchResults = document.getElementById('searchResults');
+        const quickSearchButtons = document.querySelectorAll('.quick-search-btn');
+        
+        let currentSearchTerm = '';
+
+        function highlightMatches(searchTerm) {
+            // Remove existing highlights
+            clearHighlights();
+            
+            if (!searchTerm) {
+                searchResults.style.display = 'none';
+                return;
+            }
+
+            const responses = document.querySelectorAll('.llm-response');
+            let matchCount = 0;
+            let firstMatch = null;
+            
+            responses.forEach(cell => {
+                const originalText = cell.getAttribute('data-original-text') || cell.textContent;
+                if (!cell.getAttribute('data-original-text')) {
+                    cell.setAttribute('data-original-text', originalText);
+                }
+                
+                const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                
+                if (regex.test(originalText)) {
+                    matchCount++;
+                    const highlightedText = originalText.replace(regex, '<span class="highlight">$1</span>');
+                    cell.innerHTML = highlightedText;
+                    
+                    if (!firstMatch) {
+                        firstMatch = cell;
+                    }
+                }
+            });
+
+            // Show results info
+            searchResults.style.display = 'block';
+            if (matchCount > 0) {
+                searchResults.textContent = `Found ${matchCount} matches for "${searchTerm}"`;
+                searchResults.className = 'search-results-info';
+                
+                // Scroll to first match
+                if (firstMatch) {
+                    setTimeout(() => {
+                        firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 100);
+                }
+            } else {
+                searchResults.textContent = `No matches found for "${searchTerm}"`;
+                searchResults.className = 'search-results-info no-results';
+            }
+        }
+
+        function clearHighlights() {
+            const responses = document.querySelectorAll('.llm-response');
+            responses.forEach(cell => {
+                const originalText = cell.getAttribute('data-original-text');
+                if (originalText) {
+                    cell.innerHTML = originalText;
+                }
+            });
+            
+            // Clear active states
+            quickSearchButtons.forEach(btn => btn.classList.remove('active'));
+        }
+
+        function clearSearch() {
+            searchInput.value = '';
+            currentSearchTerm = '';
+            clearHighlights();
+            searchResults.style.display = 'none';
+            clearButton.style.display = 'none';
+        }
+
+        // Search input event listeners
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.trim();
+            currentSearchTerm = searchTerm;
+            
+            if (searchTerm) {
+                clearButton.style.display = 'block';
+                highlightMatches(searchTerm);
+            } else {
+                clearSearch();
+            }
+        });
+
+        // Clear button
+        clearButton.addEventListener('click', clearSearch);
+
+        // Quick search buttons
+        quickSearchButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const company = this.getAttribute('data-company');
+                
+                // Toggle active state
+                if (this.classList.contains('active')) {
+                    clearSearch();
+                } else {
+                    quickSearchButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    searchInput.value = company;
+                    currentSearchTerm = company;
+                    clearButton.style.display = 'block';
+                    highlightMatches(company);
+                }
+            });
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Escape to clear search
+            if (e.key === 'Escape') {
+                clearSearch();
+                searchInput.blur();
+            }
+            
+            // Ctrl/Cmd + F to focus search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+                e.preventDefault();
+                searchInput.focus();
+            }
+        });
+
+        // Scroll progress indicator
+        function updateScrollProgress() {
+            const scrollTop = window.pageYOffset;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            document.querySelector('.scroll-progress').style.width = scrollPercent + '%';
+        }
+
+        window.addEventListener('scroll', updateScrollProgress);
+        window.addEventListener('resize', updateScrollProgress);
+        
+        // Initialize
+        updateScrollProgress();
+    </script>
+</body>
+</html>
