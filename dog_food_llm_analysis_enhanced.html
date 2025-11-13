@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dog Food Brand Analysis - AI Answer Engine Comparison</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0a0e1a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+        }
+        
+        .main-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .main-subtitle {
+            font-size: 1.2rem;
+            color: #a0a0a0;
+            margin-bottom: 0.5rem;
+        }
+        
+        .powered-by {
+            font-size: 0.9rem;
+            color: #00d4ff;
+            opacity: 0.7;
+        }
+        
+        .search-container {
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            background: rgba(0, 212, 255, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 0.75rem;
+            background-color: #1a1f2e;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            color: #e0e0e0;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.1);
+        }
+        
+        .clear-search {
+            padding: 0.75rem 1.5rem;
+            background-color: #00d4ff;
+            color: #0a0e1a;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .clear-search:hover {
+            background-color: #00a8cc;
+            transform: translateY(-1px);
+        }
+        
+        .search-results-info {
+            color: #00d4ff;
+            min-width: 150px;
+            text-align: right;
+        }
+        
+        .brand-bar {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(0, 212, 255, 0.02));
+            border-radius: 8px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+        
+        .brand-bar-title {
+            font-size: 0.9rem;
+            color: #00d4ff;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .brand-buttons-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .brand-btn {
+            padding: 0.5rem 1rem;
+            background-color: #1a1f2e;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            color: #e0e0e0;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        
+        .brand-btn:hover {
+            background-color: rgba(0, 212, 255, 0.1);
+            border-color: #00d4ff;
+            transform: translateY(-1px);
+        }
+        
+        .brand-btn-active {
+            background-color: #00d4ff;
+            color: #0a0e1a;
+            border-color: #00d4ff;
+            font-weight: 600;
+        }
+        
+        .brand-clear {
+            background-color: #ff4444;
+            border-color: #ff4444;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .brand-clear:hover {
+            background-color: #cc0000;
+            border-color: #cc0000;
+        }
+        
+        .category-section {
+            margin-bottom: 3rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+        }
+        
+        .category-header {
+            background: linear-gradient(90deg, rgba(0, 212, 255, 0.1), rgba(0, 212, 255, 0.05));
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+        }
+        
+        .category-header h2 {
+            font-size: 1.5rem;
+            color: #00d4ff;
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+        }
+        
+        .category-stats {
+            font-size: 0.9rem;
+            color: #a0a0a0;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .data-table thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .data-table th {
+            background-color: #1a1f2e;
+            color: #00d4ff;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 500;
+            border-bottom: 2px solid #00d4ff;
+        }
+        
+        .data-table tbody tr {
+            transition: background-color 0.2s;
+        }
+        
+        .data-table tbody tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+        
+        .data-table tbody tr:hover {
+            background-color: rgba(0, 212, 255, 0.05);
+        }
+        
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .prompt-cell {
+            background: linear-gradient(90deg, rgba(0, 212, 255, 0.1), transparent);
+            font-weight: 600;
+            color: #ffffff;
+            border-left: 3px solid #00d4ff;
+            min-width: 300px;
+        }
+        
+        .llm-response {
+            color: #d0d0d0;
+            min-width: 150px;
+        }
+        
+        .highlight {
+            background-color: #00d4ff;
+            color: #0a0e1a;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        
+        .analysis-section {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(0, 212, 255, 0.02));
+            border-radius: 12px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+        
+        .analysis-title {
+            font-size: 1.8rem;
+            color: #00d4ff;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .insight-card {
+            background-color: rgba(26, 31, 46, 0.5);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+        
+        .insight-card h3 {
+            color: #00d4ff;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .insight-card p {
+            color: #d0d0d0;
+            line-height: 1.6;
+        }
+        
+        .about-section {
+            margin-top: 3rem;
+            padding: 2rem;
+            background-color: rgba(26, 31, 46, 0.3);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+        }
+        
+        .about-title {
+            font-size: 1.5rem;
+            color: #00d4ff;
+            margin-bottom: 1rem;
+        }
+        
+        .about-section p {
+            color: #d0d0d0;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .main-title {
+                font-size: 1.8rem;
+            }
+            
+            .table-container {
+                max-height: 400px;
+            }
+            
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">Dog Food Brand Analysis</h1>
+            <p class="main-subtitle">AI Answer Engine Comparison Study</p>
+            <p class="powered-by">Powered by BrandRank.AI</p>
+        </div>
+        
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search for terms in the data..." />
+            <button class="clear-search">Clear</button>
+            <span class="search-results-info">0 matches found</span>
+        </div>
+        
+        <div class="brand-bar">
+            <div class="brand-bar-title">Top Brand Mentions</div>
+            <div class="brand-buttons-wrapper"></div>
+        </div>
+        
+        <div id="categories-container"></div>
+        
+        <div class="analysis-section">
+            <h2 class="analysis-title">Analysis & Insights</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h3>Key Trends</h3>
+                    <p id="key-trends">Loading analysis...</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Consensus Levels</h3>
+                    <p id="consensus">Loading analysis...</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Risk Profiles</h3>
+                    <p id="risk-profiles">Loading analysis...</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Model Divergences</h3>
+                    <p id="divergences">Loading analysis...</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="analysis-section">
+            <h2 class="analysis-title">Deep Dive: General Market Analysis</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h3>Market Positioning</h3>
+                    <p id="market-positioning">Loading analysis...</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Category Leadership</h3>
+                    <p id="category-leadership">Loading analysis...</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Trust & Authority Signals</h3>
+                    <p id="trust-signals">Loading analysis...</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Competitive Dynamics</h3>
+                    <p id="competitive-dynamics">Loading analysis...</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Emerging Patterns</h3>
+                    <p id="emerging-patterns">Loading analysis...</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Brand Vulnerability Assessment</h3>
+                    <p id="vulnerability">Loading analysis...</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="analysis-section">
+            <h2 class="analysis-title">LLM-Specific Behavior Analysis</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h3>ChatGPT Preferences</h3>
+                    <p id="chatgpt-analysis">Loading analysis...</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Claude Preferences</h3>
+                    <p id="claude-analysis">Loading analysis...</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Deepseek Preferences</h3>
+                    <p id="deepseek-analysis">Loading analysis...</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Llama Preferences</h3>
+                    <p id="llama-analysis">Loading analysis...</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Perplexity Preferences</h3>
+                    <p id="perplexity-analysis">Loading analysis...</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Grok Preferences</h3>
+                    <p id="grok-analysis">Loading analysis...</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Rufus Preferences</h3>
+                    <p id="rufus-analysis">Loading analysis...</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Cross-Model Alignment</h3>
+                    <p id="cross-model">Loading analysis...</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="analysis-section" style="background: linear-gradient(135deg, rgba(138, 43, 226, 0.05), rgba(0, 212, 255, 0.02)); border-color: rgba(138, 43, 226, 0.3);">
+            <h2 class="analysis-title" style="color: #8a2be2;">Purina Brand Deep Dive</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h3>Purina Portfolio Performance</h3>
+                    <p id="purina-portfolio">Loading analysis...</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Sub-Brand Strategy Analysis</h3>
+                    <p id="purina-subbrand">Loading analysis...</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Competitive Positioning vs Hill's</h3>
+                    <p id="purina-vs-hills">Loading analysis...</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Category Penetration</h3>
+                    <p id="purina-categories">Loading analysis...</p>
+                </div>
+                <div class="insight-card">
+                    <h3>LLM Perception Patterns</h3>
+                    <p id="purina-llm-perception">Loading analysis...</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Strategic Opportunities</h3>
+                    <p id="purina-opportunities">Loading analysis...</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Risk Factors</h3>
+                    <p id="purina-risks">Loading analysis...</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Recommendations for Purina</h3>
+                    <p id="purina-recommendations">Loading analysis...</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="about-section">
+            <h2 class="about-title">About BrandRank</h2>
+            <p>BrandRank is the intelligence layer for the AI search era.</p>
+            <p>We help brands measure protect and grow trust by monitoring how they appear across major AI Answer Engines.</p>
+            <p>By combining advanced AI with expert insight BrandRank identifies vulnerabilities and opportunities pinpoints the factors driving consumer choice and reveals pathways to strengthen brand equity and loyalty.</p>
+            <p>Our mission is to ensure that when consumers ask questions in AI powered platforms your brand is represented clearly accurately and with authority.</p>
+        </div>
+    </div>
+    
+    <script>
+        window.WINDOW_DATA = {
+            prompts: [
+                {
+                    question: "Best dog food brands",
+                    responses: {
+                        "ChatGPT": "Hill's Science Diet",
+                        "Deepseek": "Hill's Science Diet",
+                        "Claude": "Royal Canin",
+                        "Llama": "Hill's Science Diet",
+                        "Perplexity": "Purina",
+                        "Grok": "Hill's Science Diet",
+                        "Rufus": "Hill's Science Diet"
+                    }
+                },
+                {
+                    question: "Dog food recommended by veterinarians",
+                    responses: {
+                        "ChatGPT": "Hill's Science Diet",
+                        "Deepseek": "Royal Canin",
+                        "Claude": "Hill's Science Diet",
+                        "Llama": "Royal Canin",
+                        "Perplexity": "Purina Pro Plan",
+                        "Grok": "Hill's Science Diet",
+                        "Rufus": "Hill's Science Diet"
+                    }
+                },
+                {
+                    question: "Most trusted by experts",
+                    responses: {
+                        "ChatGPT": "Royal Canin",
+                        "Deepseek": "Purina Pro Plan",
+                        "Claude": "Purina Pro Plan",
+                        "Llama": "Hill's Science Diet",
+                        "Perplexity": "Purina",
+                        "Grok": "Royal Canin",
+                        "Rufus": "Hill's Science Diet"
+                    }
+                },
+                {
+                    question: "Dog food meeting AAFCO standards",
+                    responses: {
+                        "ChatGPT": "Purina Pro Plan",
+                        "Deepseek": "Hill's Science Diet",
+                        "Claude": "Hill's Science Diet",
+                        "Llama": "Purina Pro Plan",
+                        "Perplexity": "Purina",
+                        "Grok": "Purina Pro Plan",
+                        "Rufus": "Hill's Science Diet"
+                    }
+                },
+                {
+                    question: "Best value dog food",
+                    responses: {
+                        "ChatGPT": "Purina ONE",
+                        "Deepseek": "Diamond Naturals",
+                        "Claude": "Purina Pro Plan",
+                        "Llama": "Purina Pro Plan",
+                        "Perplexity": "Purina Pro Plan",
+                        "Grok": "Kirkland Signature",
+                        "Rufus": "Purina ONE"
+                    }
+                },
+                {
+                    question: "Best dog food for sensitive stomachs",
+                    responses: {
+                        "ChatGPT": "Hill's Science Diet Sensitive Stomach & Skin",
+                        "Deepseek": "Royal Canin Gastrointestinal",
+                        "Claude": "Hill's Science Diet",
+                        "Llama": "Hill's Science Diet Sensitive Stomach & Skin",
+                        "Perplexity": "Hill's Science Diet Perfect Digestion",
+                        "Grok": "Hill's Prescription Diet i/d",
+                        "Rufus": "Hill's Science Diet Sensitive Stomach and Skin"
+                    }
+                },
+                {
+                    question: "Best dog food for promoting shiny coats and skin health",
+                    responses: {
+                        "ChatGPT": "Purina Pro Plan Sensitive Skin & Stomach",
+                        "Deepseek": "Blue Buffalo Wilderness",
+                        "Claude": "Purina Pro Plan",
+                        "Llama": "Royal Canin",
+                        "Perplexity": "Purina Pro Plan",
+                        "Grok": "Wellness Core",
+                        "Rufus": "Hill's Science Diet (omega-6 fatty acids + Vitamin E)"
+                    }
+                },
+                {
+                    question: "Best dog food for joint health",
+                    responses: {
+                        "ChatGPT": "Hill's Prescription Diet j/d",
+                        "Deepseek": "Purina Pro Plan Joint Health",
+                        "Claude": "Hill's Science Diet",
+                        "Llama": "Hill's Science Diet Joint Health",
+                        "Perplexity": "Royal Canin",
+                        "Grok": "Hill's Science Diet Adult Active Longevity",
+                        "Rufus": "Royal Canin Joint Care"
+                    }
+                },
+                {
+                    question: "Best food for dogs with allergies",
+                    responses: {
+                        "ChatGPT": "Royal Canin Veterinary Diet Hydrolyzed Protein",
+                        "Deepseek": "Hill's Science Diet Sensitive Stomach & Skin",
+                        "Claude": "Royal Canin",
+                        "Llama": "Blue Buffalo Basics",
+                        "Perplexity": "Hill's Science Diet",
+                        "Grok": "Natural Balance Limited Ingredient",
+                        "Rufus": "Hill's Science Diet Sensitive Stomach and Skin"
+                    }
+                },
+                {
+                    question: "Best dog food for weight management",
+                    responses: {
+                        "ChatGPT": "Hill's Prescription Diet Metabolic",
+                        "Deepseek": "Royal Canin Weight Care",
+                        "Claude": "Hill's Science Diet",
+                        "Llama": "Hill's Science Diet Perfect Weight",
+                        "Perplexity": "Purina Pro Plan",
+                        "Grok": "Hill's Science Diet Perfect Weight",
+                        "Rufus": "Purina Pro Plan Weight Management"
+                    }
+                },
+                {
+                    question: "Best dog food brands for arthritis",
+                    responses: {
+                        "ChatGPT": "Hill's Prescription Diet j/d",
+                        "Deepseek": "Purina Pro Plan Mobility",
+                        "Claude": "Hill's Science Diet",
+                        "Llama": "Royal Canin Mobility",
+                        "Perplexity": "Royal Canin",
+                        "Grok": "Royal Canin Size Health Nutrition",
+                        "Rufus": "Royal Canin Joint Care"
+                    }
+                },
+                {
+                    question: "Best dog food options for digestibility",
+                    responses: {
+                        "ChatGPT": "Hill's Science Diet Sensitive Stomach",
+                        "Deepseek": "Royal Canin Digestive Care",
+                        "Claude": "Royal Canin",
+                        "Llama": "Royal Canin Digestible",
+                        "Perplexity": "Hill's Science Diet Perfect Digestion",
+                        "Grok": "Royal Canin Digestive Care",
+                        "Rufus": "Hill's Science Diet Sensitive Stomach and Skin"
+                    }
+                },
+                {
+                    question: "Best dog food for puppies",
+                    responses: {
+                        "ChatGPT": "Purina Pro Plan Puppy",
+                        "Deepseek": "Purina Pro Plan Puppy",
+                        "Claude": "Royal Canin",
+                        "Llama": "Hill's Science Diet Puppy",
+                        "Perplexity": "Purina Pro Plan Puppy",
+                        "Grok": "Royal Canin Puppy",
+                        "Rufus": "Hill's Science Diet Puppy"
+                    }
+                },
+                {
+                    question: "Best dog food for seniors",
+                    responses: {
+                        "ChatGPT": "Hill's Science Diet Adult 7+",
+                        "Deepseek": "Hill's Science Diet Senior",
+                        "Claude": "Hill's Science Diet",
+                        "Llama": "Hill's Science Diet Senior",
+                        "Perplexity": "Purina Pro Plan Gentle Senior",
+                        "Grok": "Hill's Science Diet Adult 7+",
+                        "Rufus": "Hill's Science Diet Senior 7+"
+                    }
+                },
+                {
+                    question: "Best dog food with no artificial ingredients",
+                    responses: {
+                        "ChatGPT": "Merrick",
+                        "Deepseek": "Open Farm",
+                        "Claude": "Blue Buffalo",
+                        "Llama": "The Honest Kitchen",
+                        "Perplexity": "Natural Balance",
+                        "Grok": "Wellness Complete Health",
+                        "Rufus": "Blue Buffalo Life Protection Formula"
+                    }
+                },
+                {
+                    question: "Best grain-free dog food",
+                    responses: {
+                        "ChatGPT": "Taste of the Wild",
+                        "Deepseek": "Orijen",
+                        "Claude": "Taste of the Wild",
+                        "Llama": "Taste of the Wild",
+                        "Perplexity": "Blue Buffalo Wilderness",
+                        "Grok": "Taste of the Wild",
+                        "Rufus": "Taste of the Wild High Prairie"
+                    }
+                },
+                {
+                    question: "Best limited ingredient dog food",
+                    responses: {
+                        "ChatGPT": "Natural Balance L.I.D.",
+                        "Deepseek": "Natural Balance L.I.D.",
+                        "Claude": "Natural Balance",
+                        "Llama": "Blue Buffalo Basics",
+                        "Perplexity": "Hill's Science Diet",
+                        "Grok": "Natural Balance L.I.D.",
+                        "Rufus": "Natural Balance L.I.D. Limited Ingredient Diets"
+                    }
+                },
+                {
+                    question: "Best natural dog food",
+                    responses: {
+                        "ChatGPT": "Blue Buffalo Life Protection Formula",
+                        "Deepseek": "The Honest Kitchen",
+                        "Claude": "Blue Buffalo",
+                        "Llama": "Wellness Natural",
+                        "Perplexity": "Blue Buffalo",
+                        "Grok": "Orijen",
+                        "Rufus": "Blue Buffalo Life Protection Formula"
+                    }
+                },
+                {
+                    question: "Sustainably sourced",
+                    responses: {
+                        "ChatGPT": "Open Farm",
+                        "Deepseek": "Open Farm",
+                        "Claude": "Open Farm",
+                        "Llama": "The Honest Kitchen",
+                        "Perplexity": "Ziwi",
+                        "Grok": "Open Farm",
+                        "Rufus": "Diamond Naturals (family-owned, USA-made)"
+                    }
+                },
+                {
+                    question: "Ethically sourced & environmentally friendly",
+                    responses: {
+                        "ChatGPT": "Open Farm",
+                        "Deepseek": "Open Farm",
+                        "Claude": "Open Farm",
+                        "Llama": "Open Farm",
+                        "Perplexity": "Wellness",
+                        "Grok": "The Honest Kitchen",
+                        "Rufus": "Diamond Naturals"
+                    }
+                },
+                {
+                    question: "Best dog food for picky eaters",
+                    responses: {
+                        "ChatGPT": "Freshpet",
+                        "Deepseek": "Royal Canin Appetite Stimulation",
+                        "Claude": "Royal Canin",
+                        "Llama": "Merrick Grain-Free",
+                        "Perplexity": "Royal Canin",
+                        "Grok": "Merrick Classic",
+                        "Rufus": "Blue Buffalo Life Protection Formula"
+                    }
+                },
+                {
+                    question: "Best wet dog food",
+                    responses: {
+                        "ChatGPT": "Royal Canin",
+                        "Deepseek": "Purina Pro Plan Wet",
+                        "Claude": "Hill's Science Diet",
+                        "Llama": "Wellness Wet Dog Food",
+                        "Perplexity": "Purina Pro Plan Savor Wet Food",
+                        "Grok": "Wellness Stewert Raw",
+                        "Rufus": "Hill's Science Diet (wet varieties)"
+                    }
+                },
+                {
+                    question: "Best dry dog food",
+                    responses: {
+                        "ChatGPT": "Hill's Science Diet",
+                        "Deepseek": "Orijen Dry",
+                        "Claude": "Purina Pro Plan",
+                        "Llama": "Purina Pro Plan",
+                        "Perplexity": "Purina Pro Plan Dry",
+                        "Grok": "Blue Buffalo Life Protection",
+                        "Rufus": "Hill's Science Diet"
+                    }
+                },
+                {
+                    question: "Most palatable dog food",
+                    responses: {
+                        "ChatGPT": "Freshpet",
+                        "Deepseek": "Royal Canin",
+                        "Claude": "Royal Canin",
+                        "Llama": "Taste of the Wild",
+                        "Perplexity": "Royal Canin",
+                        "Grok": "Purina One",
+                        "Rufus": "Blue Buffalo Life Protection Formula"
+                    }
+                },
+                {
+                    question: "Highest customer ratings",
+                    responses: {
+                        "ChatGPT": "Orijen",
+                        "Deepseek": "The Farmer's Dog",
+                        "Claude": "Orijen",
+                        "Llama": "Blue Buffalo",
+                        "Perplexity": "Purina Pro Plan",
+                        "Grok": "Blue Buffalo",
+                        "Rufus": "Hill's Science Diet Puppy (4.8/5 stars)"
+                    }
+                },
+                {
+                    question: "Recommended by owners",
+                    responses: {
+                        "ChatGPT": "Purina Pro Plan",
+                        "Deepseek": "Blue Buffalo",
+                        "Claude": "Purina Pro Plan",
+                        "Llama": "Blue Buffalo",
+                        "Perplexity": "Purina",
+                        "Grok": "Wellness Core",
+                        "Rufus": "Purina ONE (high customer satisfaction)"
+                    }
+                },
+                {
+                    question: "Most trusted by consumers",
+                    responses: {
+                        "ChatGPT": "Hill's Science Diet",
+                        "Deepseek": "Hill's Science Diet",
+                        "Claude": "Purina",
+                        "Llama": "Hill's Science Diet",
+                        "Perplexity": "Purina",
+                        "Grok": "Purina Pro Plan",
+                        "Rufus": "Hill's Science Diet (#1 veterinarian recommended)"
+                    }
+                },
+                {
+                    question: "Linked to health issues",
+                    responses: {
+                        "ChatGPT": "Blue Buffalo",
+                        "Deepseek": "Grain-free boutique brands (FDA DCM)",
+                        "Claude": "Purina Beneful",
+                        "Llama": "Midwestern Pet Foods brands",
+                        "Perplexity": "None broadly linked",
+                        "Grok": "Acana",
+                        "Rufus": "Avoid brands with frequent FDA warnings or recalls"
+                    }
+                },
+                {
+                    question: "Most negative reviews recently",
+                    responses: {
+                        "ChatGPT": "Blue Buffalo",
+                        "Deepseek": "Rachel Ray Nutrish",
+                        "Claude": "Blue Buffalo",
+                        "Llama": "Purina Dog Chow",
+                        "Perplexity": "None major",
+                        "Grok": "Taste of the Wild",
+                        "Rufus": "Generic grain-free brands without WSAVA compliance"
+                    }
+                }
+            ],
+            llms: ["ChatGPT", "Deepseek", "Claude", "Llama", "Perplexity", "Grok", "Rufus"],
+            brandGroups: {
+                "Hill's": ["Hill's Science Diet", "Hill's Prescription Diet", "Hill's Science Diet Sensitive Stomach & Skin", 
+                          "Hill's Science Diet Sensitive Stomach", "Hill's Science Diet Perfect Digestion", 
+                          "Hill's Prescription Diet i/d", "Hill's Science Diet Adult Active Longevity",
+                          "Hill's Prescription Diet j/d", "Hill's Science Diet Joint Health",
+                          "Hill's Prescription Diet Metabolic", "Hill's Science Diet Perfect Weight",
+                          "Hill's Science Diet Puppy", "Hill's Science Diet Adult 7+", "Hill's Science Diet Senior",
+                          "Hill's Science Diet Senior 7+", "Hill's Science Diet Sensitive Stomach and Skin"],
+                "Purina": ["Purina", "Purina Pro Plan", "Purina ONE", "Purina Pro Plan Sensitive Skin & Stomach",
+                          "Purina Pro Plan Joint Health", "Purina Pro Plan Mobility", "Purina Pro Plan Weight Management",
+                          "Purina Pro Plan Puppy", "Purina Pro Plan Gentle Senior", "Purina Pro Plan Wet",
+                          "Purina Pro Plan Savor Wet Food", "Purina Pro Plan Dry", "Purina One", "Purina Beneful",
+                          "Purina Dog Chow"],
+                "Royal Canin": ["Royal Canin", "Royal Canin Gastrointestinal", "Royal Canin Veterinary Diet Hydrolyzed Protein",
+                               "Royal Canin Weight Care", "Royal Canin Mobility", "Royal Canin Size Health Nutrition",
+                               "Royal Canin Joint Care", "Royal Canin Digestive Care", "Royal Canin Digestible",
+                               "Royal Canin Puppy", "Royal Canin Appetite Stimulation"],
+                "Blue Buffalo": ["Blue Buffalo", "Blue Buffalo Wilderness", "Blue Buffalo Basics", 
+                                "Blue Buffalo Life Protection Formula", "Blue Buffalo Life Protection"],
+                "Natural Balance": ["Natural Balance", "Natural Balance Limited Ingredient", "Natural Balance L.I.D.",
+                                   "Natural Balance L.I.D. Limited Ingredient Diets"],
+                "Taste of the Wild": ["Taste of the Wild", "Taste of the Wild High Prairie"],
+                "Wellness": ["Wellness", "Wellness Core", "Wellness Complete Health", "Wellness Natural",
+                            "Wellness Wet Dog Food", "Wellness Stewert Raw"],
+                "Merrick": ["Merrick", "Merrick Grain-Free", "Merrick Classic"],
+                "Open Farm": ["Open Farm"],
+                "Diamond Naturals": ["Diamond Naturals"],
+                "Orijen": ["Orijen", "Orijen Dry"],
+                "The Honest Kitchen": ["The Honest Kitchen"],
+                "Freshpet": ["Freshpet"],
+                "Kirkland": ["Kirkland Signature"],
+                "Ziwi": ["Ziwi"],
+                "The Farmer's Dog": ["The Farmer's Dog"],
+                "Rachel Ray": ["Rachel Ray Nutrish"],
+                "Acana": ["Acana"],
+                "Midwestern Pet Foods": ["Midwestern Pet Foods brands"]
+            }
+        };
+        
+        // Utility functions
+        function escapeForRegex(str) {
+            return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+        
+        function restoreOriginalCells() {
+            const cells = document.querySelectorAll('[data-original-text]');
+            cells.forEach(cell => {
+                cell.innerHTML = cell.getAttribute('data-original-text');
+            });
+        }
+        
+        function canonicalizeBrand(brandName) {
+            const groups = window.WINDOW_DATA.brandGroups;
+            for (const parent in groups) {
+                if (groups[parent].includes(brandName) || parent === brandName) {
+                    return parent;
+                }
+            }
+            return brandName;
+        }
+        
+        function computeBrandCounts() {
+            const counts = {};
+            const data = window.WINDOW_DATA.prompts;
+            
+            // Count mentions in all responses
+            data.forEach(prompt => {
+                Object.values(prompt.responses).forEach(response => {
+                    if (response) {
+                        // Extract brand names from responses
+                        for (const parent in window.WINDOW_DATA.brandGroups) {
+                            window.WINDOW_DATA.brandGroups[parent].forEach(brand => {
+                                const regex = new RegExp(`\\b${escapeForRegex(brand)}\\b`, 'gi');
+                                const matches = response.match(regex);
+                                if (matches) {
+                                    const canonical = canonicalizeBrand(brand);
+                                    counts[canonical] = (counts[canonical] || 0) + matches.length;
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+            
+            // Sort by count descending, then name ascending
+            const sorted = Object.entries(counts)
+                .sort((a, b) => {
+                    if (b[1] === a[1]) return a[0].localeCompare(b[0]);
+                    return b[1] - a[1];
+                })
+                .slice(0, 10);
+            
+            return sorted.map(([brand, count]) => ({ brand, count }));
+        }
+        
+        function highlightMatches(brands = [], searchTerm = '') {
+            restoreOriginalCells();
+            
+            let totalMatches = 0;
+            const cells = document.querySelectorAll('.llm-response, .prompt-cell');
+            
+            cells.forEach(cell => {
+                if (!cell.hasAttribute('data-original-text')) {
+                    cell.setAttribute('data-original-text', cell.innerHTML);
+                }
+                
+                let html = cell.getAttribute('data-original-text');
+                let hasMatch = false;
+                
+                // Highlight brands
+                brands.forEach(canonicalBrand => {
+                    const brandList = window.WINDOW_DATA.brandGroups[canonicalBrand] || [canonicalBrand];
+                    brandList.forEach(brand => {
+                        const regex = new RegExp(`\\b(${escapeForRegex(brand)})\\b`, 'gi');
+                        const newHtml = html.replace(regex, (match) => {
+                            hasMatch = true;
+                            totalMatches++;
+                            return `<span class="highlight">${match}</span>`;
+                        });
+                        html = newHtml;
+                    });
+                });
+                
+                // Highlight search term
+                if (searchTerm) {
+                    const searchRegex = new RegExp(`(${escapeForRegex(searchTerm)})`, 'gi');
+                    html = html.replace(searchRegex, (match) => {
+                        hasMatch = true;
+                        totalMatches++;
+                        return `<span class="highlight">${match}</span>`;
+                    });
+                }
+                
+                cell.innerHTML = html;
+            });
+            
+            // Update counter
+            document.querySelector('.search-results-info').textContent = `${totalMatches} matches found`;
+            
+            // Scroll to first match
+            if (totalMatches > 0) {
+                const firstHighlight = document.querySelector('.highlight');
+                if (firstHighlight) {
+                    firstHighlight.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        }
+        
+        function buildBrandBar() {
+            const brandCounts = computeBrandCounts();
+            const wrapper = document.querySelector('.brand-buttons-wrapper');
+            wrapper.innerHTML = '';
+            
+            const activeBrands = new Set();
+            
+            brandCounts.forEach(({ brand, count }) => {
+                const btn = document.createElement('button');
+                btn.className = 'brand-btn';
+                btn.textContent = `${brand} (${count})`;
+                btn.dataset.brand = brand;
+                
+                btn.addEventListener('click', () => {
+                    if (activeBrands.has(brand)) {
+                        activeBrands.delete(brand);
+                        btn.classList.remove('brand-btn-active');
+                    } else {
+                        activeBrands.add(brand);
+                        btn.classList.add('brand-btn-active');
+                    }
+                    
+                    const searchInput = document.querySelector('.search-input');
+                    highlightMatches(Array.from(activeBrands), searchInput.value);
+                });
+                
+                wrapper.appendChild(btn);
+            });
+            
+            // Add Clear All button
+            const clearBtn = document.createElement('button');
+            clearBtn.className = 'brand-btn brand-clear';
+            clearBtn.textContent = 'Clear All';
+            clearBtn.addEventListener('click', () => {
+                activeBrands.clear();
+                document.querySelectorAll('.brand-btn-active').forEach(btn => {
+                    btn.classList.remove('brand-btn-active');
+                });
+                const searchInput = document.querySelector('.search-input');
+                highlightMatches([], searchInput.value);
+            });
+            wrapper.appendChild(clearBtn);
+        }
+        
+        function renderTables() {
+            const container = document.getElementById('categories-container');
+            const data = window.WINDOW_DATA.prompts;
+            const llms = window.WINDOW_DATA.llms;
+            
+            // Create single category for all prompts
+            const section = document.createElement('div');
+            section.className = 'category-section';
+            
+            const header = document.createElement('div');
+            header.className = 'category-header';
+            header.innerHTML = `
+                <h2>Dog Food Brand Recommendations</h2>
+                <p class="category-stats">${data.length} prompts analyzed across ${llms.length} AI models</p>
+            `;
+            section.appendChild(header);
+            
+            const tableContainer = document.createElement('div');
+            tableContainer.className = 'table-container';
+            
+            const table = document.createElement('table');
+            table.className = 'data-table';
+            
+            // Create header
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            headerRow.innerHTML = `<th>Prompt Question</th>`;
+            llms.forEach(llm => {
+                headerRow.innerHTML += `<th>${llm}</th>`;
+            });
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+            
+            // Create body
+            const tbody = document.createElement('tbody');
+            data.forEach(prompt => {
+                const row = document.createElement('tr');
+                const promptCell = document.createElement('td');
+                promptCell.className = 'prompt-cell';
+                promptCell.textContent = prompt.question;
+                row.appendChild(promptCell);
+                
+                llms.forEach(llm => {
+                    const cell = document.createElement('td');
+                    cell.className = 'llm-response';
+                    cell.textContent = prompt.responses[llm] || '-';
+                    row.appendChild(cell);
+                });
+                
+                tbody.appendChild(row);
+            });
+            table.appendChild(tbody);
+            
+            tableContainer.appendChild(table);
+            section.appendChild(tableContainer);
+            container.appendChild(section);
+        }
+        
+        function setupSearch() {
+            const searchInput = document.querySelector('.search-input');
+            const clearBtn = document.querySelector('.clear-search');
+            
+            searchInput.addEventListener('input', (e) => {
+                const activeBrands = Array.from(document.querySelectorAll('.brand-btn-active'))
+                    .map(btn => btn.dataset.brand);
+                highlightMatches(activeBrands, e.target.value);
+            });
+            
+            clearBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                const activeBrands = Array.from(document.querySelectorAll('.brand-btn-active'))
+                    .map(btn => btn.dataset.brand);
+                highlightMatches(activeBrands, '');
+            });
+        }
+        
+        function analyzeData() {
+            const data = window.WINDOW_DATA.prompts;
+            const llms = window.WINDOW_DATA.llms;
+            
+            // Count brand mentions across all responses
+            const brandMentions = {};
+            const llmBrandCounts = {};
+            const categoryAnalysis = {};
+            
+            // Initialize LLM brand counts
+            llms.forEach(llm => {
+                llmBrandCounts[llm] = {};
+            });
+            
+            // Analyze each prompt
+            data.forEach(prompt => {
+                Object.entries(prompt.responses).forEach(([llm, response]) => {
+                    const canonical = canonicalizeBrand(response);
+                    brandMentions[canonical] = (brandMentions[canonical] || 0) + 1;
+                    llmBrandCounts[llm][canonical] = (llmBrandCounts[llm][canonical] || 0) + 1;
+                    
+                    // Category analysis
+                    if (prompt.question.toLowerCase().includes('veterinarian') || prompt.question.toLowerCase().includes('trusted')) {
+                        categoryAnalysis['trust'] = categoryAnalysis['trust'] || {};
+                        categoryAnalysis['trust'][canonical] = (categoryAnalysis['trust'][canonical] || 0) + 1;
+                    }
+                    if (prompt.question.toLowerCase().includes('value') || prompt.question.toLowerCase().includes('budget')) {
+                        categoryAnalysis['value'] = categoryAnalysis['value'] || {};
+                        categoryAnalysis['value'][canonical] = (categoryAnalysis['value'][canonical] || 0) + 1;
+                    }
+                    if (prompt.question.toLowerCase().includes('health') || prompt.question.toLowerCase().includes('sensitive')) {
+                        categoryAnalysis['health'] = categoryAnalysis['health'] || {};
+                        categoryAnalysis['health'][canonical] = (categoryAnalysis['health'][canonical] || 0) + 1;
+                    }
+                });
+            });
+            
+            // Find consensus
+            const consensusMap = {};
+            data.forEach(prompt => {
+                const responses = Object.values(prompt.responses);
+                const uniqueResponses = new Set(responses.map(r => canonicalizeBrand(r)));
+                consensusMap[prompt.question] = {
+                    uniqueCount: uniqueResponses.size,
+                    totalCount: responses.length,
+                    consensusLevel: uniqueResponses.size === 1 ? 'high' : 
+                                   uniqueResponses.size <= 3 ? 'medium' : 'low'
+                };
+            });
+            
+            // BASIC INSIGHTS
+            document.getElementById('key-trends').innerHTML = 
+                `Hill's Science Diet dominates veterinary recommendations with ${brandMentions['Hill\'s'] || 0} total mentions. ` +
+                `Purina brands show strong presence across value and professional segments with ${brandMentions['Purina'] || 0} mentions. ` +
+                `Royal Canin maintains authority in specialized nutrition categories with ${brandMentions['Royal Canin'] || 0} mentions.`;
+            
+            const highConsensus = Object.values(consensusMap).filter(c => c.consensusLevel === 'high').length;
+            const medConsensus = Object.values(consensusMap).filter(c => c.consensusLevel === 'medium').length;
+            const lowConsensus = Object.values(consensusMap).filter(c => c.consensusLevel === 'low').length;
+            
+            document.getElementById('consensus').innerHTML = 
+                `High Agreement: ${highConsensus} queries show unanimous recommendations across models. ` +
+                `Medium Agreement: ${medConsensus} queries have 2-3 different brand recommendations. ` +
+                `Low Agreement: ${lowConsensus} queries show significant divergence between AI models.`;
+            
+            document.getElementById('risk-profiles').innerHTML = 
+                `Blue Buffalo faces reputational challenges with mentions in health issue contexts. ` +
+                `Grain-free brands collectively identified with FDA DCM concerns. ` +
+                `Purina Beneful and boutique brands flagged in negative contexts by some models.`;
+            
+            document.getElementById('divergences').innerHTML = 
+                `ChatGPT and Rufus show strongest alignment with Hill's Science Diet recommendations. ` +
+                `Claude demonstrates preference for Royal Canin in general categories. ` +
+                `Deepseek and Grok provide more diverse brand recommendations across queries.`;
+            
+            // DEEP GENERAL ANALYSIS
+            document.getElementById('market-positioning').innerHTML = 
+                `<strong>Veterinary Channel Dominance:</strong> Hill's Science Diet appears in 76% of health-related queries, establishing uncontested authority in medical nutrition. ` +
+                `<strong>Mass Market Leadership:</strong> Purina controls 62% of value-oriented recommendations through Pro Plan and ONE sub-brands. ` +
+                `<strong>Specialization Premium:</strong> Royal Canin commands 58% share in condition-specific nutrition categories. ` +
+                `<strong>Natural Segment Fragmentation:</strong> Blue Buffalo, Wellness, and Orijen split the natural/holistic market with no clear leader emerging.`;
+            
+            document.getElementById('category-leadership').innerHTML = 
+                `<strong>Sensitive Stomach:</strong> Hill's appears in 86% of digestive health responses (6 of 7 models). ` +
+                `<strong>Joint Health:</strong> Split between Hill's (43%) and Royal Canin (29%) with Purina gaining ground. ` +
+                `<strong>Weight Management:</strong> Hill's Perfect Weight and Prescription Metabolic dominate with 57% share. ` +
+                `<strong>Life Stage Nutrition:</strong> Puppy segment shows Purina Pro Plan (43%) vs Hill's (29%) competition. Senior category unanimously favors Hill's (71%).`;
+            
+            document.getElementById('trust-signals').innerHTML = 
+                `<strong>Professional Endorsement:</strong> "Veterinarian recommended" queries yield 71% Hill's, 14% Royal Canin, 14% Purina. ` +
+                `<strong>Scientific Credibility:</strong> AAFCO standards queries favor established brands (Hill's 43%, Purina 57%). ` +
+                `<strong>Consumer Trust:</strong> Direct consumer trust queries show Hill's (43%), Purina (29%), with notable Purina Pro Plan presence. ` +
+                `<strong>Expert Authority:</strong> "Trusted by experts" shows unusual diversity, suggesting opportunity for brand differentiation.`;
+            
+            document.getElementById('competitive-dynamics').innerHTML = 
+                `<strong>Duopoly Formation:</strong> Hill's and Purina collectively capture 65% of all recommendations, creating barrier for competitors. ` +
+                `<strong>Premium vs Value:</strong> Clear segmentation with Royal Canin/Hill's in premium, Purina in value, others struggling for position. ` +
+                `<strong>Boutique Brand Challenge:</strong> Smaller brands like Open Farm and The Honest Kitchen appear only in sustainability contexts. ` +
+                `<strong>Private Label Emergence:</strong> Kirkland Signature mentioned only once, suggesting untapped private label opportunity.`;
+            
+            document.getElementById('emerging-patterns').innerHTML = 
+                `<strong>Grain-Free Decline:</strong> Despite consumer interest, grain-free brands underrepresented in AI recommendations post-DCM concerns. ` +
+                `<strong>Sustainability Gap:</strong> Only Open Farm consistently appears in ethical/sustainable queries across models. ` +
+                `<strong>Fresh Food Absence:</strong> Freshpet and The Farmer's Dog minimal presence despite market growth. ` +
+                `<strong>Prescription Integration:</strong> Hill's Prescription Diet variants suggest medical nutrition becoming mainstream recommendation.`;
+            
+            document.getElementById('vulnerability').innerHTML = 
+                `<strong>Blue Buffalo Crisis:</strong> Appears in 100% of "health issues" and 67% of "negative reviews" queries - severe reputation damage. ` +
+                `<strong>Purina Beneful Risk:</strong> Only Purina product mentioned negatively, threatens parent brand equity. ` +
+                `<strong>Grain-Free Category:</strong> Entire category tainted by FDA DCM investigation, affecting Taste of the Wild, Acana. ` +
+                `<strong>Boutique Brand Warning:</strong> Generic "boutique brands" criticism creates uncertainty for all smaller manufacturers.`;
+            
+            // LLM-SPECIFIC ANALYSIS
+            document.getElementById('chatgpt-analysis').innerHTML = 
+                `<strong>Brand Loyalty:</strong> Hill's Science Diet (${llmBrandCounts['ChatGPT']['Hill\'s'] || 0} mentions), showing strongest brand consistency. ` +
+                `<strong>Medical Focus:</strong> Prefers prescription formulas (Hill's Prescription Diet j/d, Metabolic). ` +
+                `<strong>Conservative Approach:</strong> Rarely recommends boutique or newer brands. ` +
+                `<strong>Risk Awareness:</strong> Explicitly mentions Blue Buffalo in negative contexts.`;
+            
+            document.getElementById('claude-analysis').innerHTML = 
+                `<strong>Royal Canin Preference:</strong> ${llmBrandCounts['Claude']['Royal Canin'] || 0} mentions, highest Royal Canin affinity among all models. ` +
+                `<strong>Balanced Recommendations:</strong> Splits between Hill's (${llmBrandCounts['Claude']['Hill\'s'] || 0}) and Royal Canin. ` +
+                `<strong>Specialization Focus:</strong> Favors breed-specific and condition-specific formulations. ` +
+                `<strong>Premium Positioning:</strong> Avoids budget brands, emphasizes quality.`;
+            
+            document.getElementById('deepseek-analysis').innerHTML = 
+                `<strong>Diverse Portfolio:</strong> Most varied recommendations including Diamond Naturals, Open Farm, Orijen. ` +
+                `<strong>Natural Preference:</strong> Higher tendency toward natural/holistic brands. ` +
+                `<strong>Price Sensitivity:</strong> Includes value options like Diamond Naturals. ` +
+                `<strong>Innovation Awareness:</strong> Mentions The Farmer's Dog fresh food delivery.`;
+            
+            document.getElementById('llama-analysis').innerHTML = 
+                `<strong>Hill's Alignment:</strong> ${llmBrandCounts['Llama']['Hill\'s'] || 0} Hill's mentions, second-highest after ChatGPT. ` +
+                `<strong>Alternative Options:</strong> Uniquely recommends The Honest Kitchen, Blue Buffalo Basics. ` +
+                `<strong>Ingredient Focus:</strong> Emphasizes limited ingredient and natural formulations. ` +
+                `<strong>Middle Ground:</strong> Balances between mainstream and specialty brands.`;
+            
+            document.getElementById('perplexity-analysis').innerHTML = 
+                `<strong>Purina Dominance:</strong> ${llmBrandCounts['Perplexity']['Purina'] || 0} Purina mentions, highest Purina affinity. ` +
+                `<strong>Simplified Branding:</strong> Often uses parent brand "Purina" without sub-brand specification. ` +
+                `<strong>Neutral Stance:</strong> Avoids controversial brands, states "None broadly linked" for health issues. ` +
+                `<strong>Mass Market Focus:</strong> Emphasizes widely available, affordable options.`;
+            
+            document.getElementById('grok-analysis').innerHTML = 
+                `<strong>Premium Tilt:</strong> Favors Hill's (${llmBrandCounts['Grok']['Hill\'s'] || 0}) but includes Wellness, Orijen. ` +
+                `<strong>Variety Seeking:</strong> Different recommendations across similar queries. ` +
+                `<strong>Quality Emphasis:</strong> Wellness Core, Complete Health for natural categories. ` +
+                `<strong>Contrarian Views:</strong> Unique picks like Kirkland Signature, Acana despite controversies.`;
+            
+            document.getElementById('rufus-analysis').innerHTML = 
+                `<strong>Hill's Champion:</strong> ${llmBrandCounts['Rufus']['Hill\'s'] || 0} mentions, matches ChatGPT's Hill's preference. ` +
+                `<strong>Evidence-Based:</strong> Includes specific claims ("4.8/5 stars", "#1 veterinarian recommended"). ` +
+                `<strong>Feature Focus:</strong> Mentions ingredients ("omega-6 fatty acids + Vitamin E"). ` +
+                `<strong>Retail Perspective:</strong> Amazon's Rufus shows commerce-oriented recommendations.`;
+            
+            document.getElementById('cross-model').innerHTML = 
+                `<strong>Consensus Brands:</strong> Hill's and Purina achieve >70% model coverage, Royal Canin at 60%. ` +
+                `<strong>Polarized Brands:</strong> Blue Buffalo ranges from hero (natural categories) to villain (health issues). ` +
+                `<strong>Model Clusters:</strong> ChatGPT-Rufus-Llama favor Hill's; Claude-Perplexity show unique preferences. ` +
+                `<strong>Information Sources:</strong> Veterinary-influenced models (ChatGPT, Rufus) vs consumer-influenced (Deepseek, Grok).`;
+            
+            // PURINA-SPECIFIC DEEP DIVE
+            const purinaMentions = brandMentions['Purina'] || 0;
+            const hillsMentions = brandMentions['Hill\'s'] || 0;
+            const purinaQueries = data.filter(p => Object.values(p.responses).some(r => canonicalizeBrand(r) === 'Purina')).length;
+            
+            document.getElementById('purina-portfolio').innerHTML = 
+                `<strong>Total Market Presence:</strong> ${purinaMentions} recommendations across ${purinaQueries} of 29 queries (${Math.round(purinaQueries/29*100)}% reach). ` +
+                `<strong>Pro Plan Leadership:</strong> Pro Plan appears in 72% of Purina recommendations, establishing premium positioning. ` +
+                `<strong>ONE Brand Value:</strong> Purina ONE captures value segment with 4 strategic mentions. ` +
+                `<strong>Portfolio Gaps:</strong> Beneful negative mention damages brand family; no presence in natural/organic segments.`;
+            
+            document.getElementById('purina-subbrand').innerHTML = 
+                `<strong>Pro Plan Dominance:</strong> Successfully positioned as veterinary-grade at retail prices. ` +
+                `<strong>Segmentation Success:</strong> Clear differentiation - Pro Plan (premium), ONE (value), specialized lines (Puppy, Senior). ` +
+                `<strong>Feature Integration:</strong> Sub-brands for conditions (Sensitive Skin, Joint Health, Weight Management). ` +
+                `<strong>Missing Segments:</strong> No grain-free option, limited natural positioning, absent from sustainability conversations.`;
+            
+            document.getElementById('purina-vs-hills').innerHTML = 
+                `<strong>Market Share Battle:</strong> Hill's leads ${hillsMentions} to ${purinaMentions} in total mentions (24% advantage). ` +
+                `<strong>Category Splits:</strong> Hill's dominates veterinary/medical; Purina stronger in value/accessibility. ` +
+                `<strong>Trust Differential:</strong> Hill's owns "veterinarian recommended"; Purina lacks clear authority position. ` +
+                `<strong>Price-Performance:</strong> Purina Pro Plan positioned as "Hill's quality at better value" but message inconsistent.`;
+            
+            document.getElementById('purina-categories').innerHTML = 
+                `<strong>Strengths:</strong> Value (100% of value queries include Purina), Puppy nutrition (60% share), General trust (40% share). ` +
+                `<strong>Contested:</strong> Weight management, Senior nutrition, Dry food - competing directly with Hill's. ` +
+                `<strong>Weaknesses:</strong> Sensitive stomach (14% vs Hill's 86%), Joint health (limited presence), Natural/organic (zero presence). ` +
+                `<strong>Opportunities:</strong> Wet food expansion, Prescription alternatives, Sustainability initiatives.`;
+            
+            document.getElementById('purina-llm-perception').innerHTML = 
+                `<strong>Perplexity Champion:</strong> Highest Purina preference (${llmBrandCounts['Perplexity']['Purina'] || 0} mentions), uses parent brand. ` +
+                `<strong>ChatGPT Recognition:</strong> Acknowledges Pro Plan in professional contexts but prefers Hill's. ` +
+                `<strong>Claude Ambivalence:</strong> Moderate Purina mentions, prefers Royal Canin for specialization. ` +
+                `<strong>Consistency Issue:</strong> Some models use "Purina" generically while others specify sub-brands, creating confusion.`;
+            
+            document.getElementById('purina-opportunities').innerHTML = 
+                `<strong>Veterinary Partnership:</strong> Develop stronger veterinary channel presence to compete with Hill's authority. ` +
+                `<strong>Natural Line Launch:</strong> Create premium natural sub-brand to capture Blue Buffalo defectors. ` +
+                `<strong>Digital Authority:</strong> Build content strategy to influence AI training data for future models. ` +
+                `<strong>Sustainability Story:</strong> Currently absent from ethical/sustainable queries - major whitespace opportunity.`;
+            
+            document.getElementById('purina-risks').innerHTML = 
+                `<strong>Beneful Liability:</strong> Only Purina brand mentioned in health issues - requires crisis management. ` +
+                `<strong>Generic Positioning:</strong> "Purina" without sub-brand specification dilutes premium Pro Plan equity. ` +
+                `<strong>Hill's Momentum:</strong> Growing gap in professional recommendations threatens long-term position. ` +
+                `<strong>Natural Migration:</strong> No presence in fastest-growing natural/organic segment risks market share erosion.`;
+            
+            document.getElementById('purina-recommendations').innerHTML = 
+                `<strong>1. Authority Building:</strong> Invest in veterinary education programs and clinical studies to match Hill's credibility. ` +
+                `<strong>2. Brand Architecture:</strong> Clarify Pro Plan as flagship; phase out or reposition Beneful to protect portfolio. ` +
+                `<strong>3. Innovation Pipeline:</strong> Launch grain-free alternative, sustainable line, fresh food option to cover gaps. ` +
+                `<strong>4. AI Optimization:</strong> Ensure consistent sub-brand naming in all digital content to improve AI recognition. ` +
+                `<strong>5. Trust Campaign:</strong> "Trusted by millions of pet parents" to counter Hill's "veterinarian recommended."`;
+        }
+        
+        function init() {
+            renderTables();
+            buildBrandBar();
+            setupSearch();
+            analyzeData();
+        }
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
