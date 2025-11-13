@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Reverse Mortgage Comparison Index</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            font-size: 1.2em;
+            font-style: italic;
+        }
+        
+        .category-section {
+            margin-bottom: 50px;
+        }
+        
+        .category-header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 20px 25px;
+            border-radius: 12px 12px 0 0;
+            margin: 0;
+            font-size: 1.4em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .category-best { background: linear-gradient(135deg, #27ae60, #2ecc71); }
+        .category-personal { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .category-cost { background: linear-gradient(135deg, #f39c12, #e67e22); }
+        .category-trust { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+        .category-negative { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        
+        .table-container {
+            overflow-x: auto;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin: 0;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            color: white;
+            padding: 18px 12px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9em;
+        }
+        
+        th:first-child {
+            width: 25%;
+            min-width: 250px;
+        }
+        
+        td {
+            padding: 15px 12px;
+            border-bottom: 1px solid #ecf0f1;
+            vertical-align: top;
+            transition: all 0.3s ease;
+        }
+        
+        tr:hover td {
+            background: linear-gradient(90deg, #f8f9fa, #ffffff);
+            transform: translateY(-1px);
+        }
+        
+        .prompt-cell {
+            font-weight: 600;
+            color: #2c3e50;
+            background: linear-gradient(90deg, #ecf0f1, #ffffff);
+        }
+        
+        .llm-response {
+            font-size: 0.95em;
+            color: #34495e;
+            border-left: 3px solid transparent;
+            transition: border-left 0.3s ease;
+        }
+        
+        tr:hover .llm-response {
+            border-left: 3px solid #3498db;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .stat-number {
+            display: block;
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .category-stats {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 8px;
+            font-size: 0.9em;
+            color: #2c3e50;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .category-header {
+                font-size: 1.1em;
+                padding: 15px 20px;
+            }
+            
+            th, td {
+                padding: 10px 8px;
+                font-size: 0.85em;
+            }
+            
+            .stats, .category-stats {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏠 LLM Reverse Mortgage Comparison Index</h1>
+        <p class="subtitle">Comprehensive analysis of AI responses across major language models - Organized by Query Category</p>
+        
+        <!-- Best & Comparison-Oriented -->
+        <div class="category-section">
+            <h2 class="category-header category-best">🏆 Best & Comparison-Oriented</h2>
+            <div class="category-stats">
+                <span><strong>5 prompts</strong> focused on general "best" recommendations and competitive comparisons</span>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Prompt Question</th>
+                            <th>ChatGPT</th>
+                            <th>Claude</th>
+                            <th>Gemini</th>
+                            <th>Llama</th>
+                            <th>Perplexity</th>
+                            <th>Grok</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="prompt-cell">What is the best reverse mortgage company?</td>
+                            <td class="llm-response">AAG (American Advisors Group)</td>
+                            <td class="llm-response">AAG (American Advisors Group)</td>
+                            <td class="llm-response">Finance of America Reverse (FAR)</td>
+                            <td class="llm-response">American Advisors Group (AAG)</td>
+                            <td class="llm-response">Finance of America</td>
+                            <td class="llm-response">Finance of America Reverse (FAR)</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Who are the top reverse mortgage lenders right now?</td>
+                            <td class="llm-response">AAG (American Advisors Group)</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Finance of America Reverse (FAR)</td>
+                            <td class="llm-response">Quicken Loans</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What bank has the best reverse mortgage rates?</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Best Reverse Mortgage Rates</td>
+                            <td class="llm-response">Quicken Loans</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Which reverse mortgage provider is the most trusted?</td>
+                            <td class="llm-response">AAG (American Advisors Group)</td>
+                            <td class="llm-response">Liberty Home Equity Solutions</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Quicken Loans</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">American Advisors Group</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Who has the best reverse mortgage reviews?</td>
+                            <td class="llm-response">AAG (American Advisors Group)</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Quicken Loans</td>
+                            <td class="llm-response">Finance of America</td>
+                            <td class="llm-response">All Reverse Mortgage</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Personal Fit -->
+        <div class="category-section">
+            <h2 class="category-header category-personal">👤 Personal Fit ("For Me")</h2>
+            <div class="category-stats">
+                <span><strong>5 prompts</strong> targeting specific personal situations and demographics</span>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Prompt Question</th>
+                            <th>ChatGPT</th>
+                            <th>Claude</th>
+                            <th>Gemini</th>
+                            <th>Llama</th>
+                            <th>Perplexity</th>
+                            <th>Grok</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="prompt-cell">What is the best reverse mortgage company for seniors over 70?</td>
+                            <td class="llm-response">AAG (American Advisors Group)</td>
+                            <td class="llm-response">AAG (American Advisors Group)</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Quicken Loans</td>
+                            <td class="llm-response">Finance of America</td>
+                            <td class="llm-response">Finance of America</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Which reverse mortgage lender is best if I still have a mortgage?</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Guild Mortgage</td>
+                            <td class="llm-response">Quicken Loans</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Who offers the best reverse mortgage for veterans?</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">American Advisors Group</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What's the best reverse mortgage option if I want to stay in my home long-term?</td>
+                            <td class="llm-response">AAG (American Advisors Group)</td>
+                            <td class="llm-response">Liberty Home Equity Solutions</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">American Advisors Group</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Which reverse mortgage company is best for low fees?</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">Guild Mortgage</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Guild Mortgage</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Rate & Cost-Driven -->
+        <div class="category-section">
+            <h2 class="category-header category-cost">💰 Rate & Cost-Driven</h2>
+            <div class="category-stats">
+                <span><strong>5 prompts</strong> focused on financial terms, rates, and monetary considerations</span>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Prompt Question</th>
+                            <th>ChatGPT</th>
+                            <th>Claude</th>
+                            <th>Gemini</th>
+                            <th>Llama</th>
+                            <th>Perplexity</th>
+                            <th>Grok</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="prompt-cell">Where can I find the best reverse mortgage interest rates?</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">American Advisors Group (AAG)</td>
+                            <td class="llm-response">Guild Mortgage</td>
+                            <td class="llm-response">American Advisors Group</td>
+                            <td class="llm-response">Guild Mortgage</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Which company has the lowest reverse mortgage closing costs?</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Mutual of Omaha</td>
+                            <td class="llm-response">Fairway Reverse Mortgage</td>
+                            <td class="llm-response">American Advisors Group</td>
+                            <td class="llm-response">Finance of America</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Who gives the most money in a reverse mortgage?</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Guild Mortgage</td>
+                            <td class="llm-response">American Advisors Group</td>
+                            <td class="llm-response">Jumbo Reverse Mortgage</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Which lender offers the most flexible reverse mortgage terms?</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">American Advisors Group (AAG)</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What reverse mortgage company has the most transparent fees?</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">American Advisors Group (AAG)</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Fairway Independent Mortgage Corporation</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Trust, Reputation & Safety -->
+        <div class="category-section">
+            <h2 class="category-header category-trust">🛡️ Trust, Reputation & Safety</h2>
+            <div class="category-stats">
+                <span><strong>5 prompts</strong> emphasizing trustworthiness, safety, and institutional credibility</span>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Prompt Question</th>
+                            <th>ChatGPT</th>
+                            <th>Claude</th>
+                            <th>Gemini</th>
+                            <th>Llama</th>
+                            <th>Perplexity</th>
+                            <th>Grok</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="prompt-cell">Who are the most reputable reverse mortgage companies?</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">American Advisors Group (AAG)</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Finance of America</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Which reverse mortgage companies are rated highest by the Better Business Bureau?</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Guild Mortgage</td>
+                            <td class="llm-response">Fairway Independent Mortgage Corporation</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What is the safest reverse mortgage lender to work with?</td>
+                            <td class="llm-response">Mutual of Omaha Mortgage</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Finance of America</td>
+                            <td class="llm-response">Mutual of Omaha Reverse Mortgage</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Which reverse mortgage provider is best at protecting heirs and families?</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Guild Mortgage</td>
+                            <td class="llm-response">Mutual of Omaha Reverse Mortgage</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Who explains reverse mortgages the clearest and simplest?</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">American Advisors Group (AAG)</td>
+                            <td class="llm-response">Longbridge Financial</td>
+                            <td class="llm-response">American Advisors Group</td>
+                            <td class="llm-response">American Advisors Group</td>
+                            <td class="llm-response">Fairway Independent Mortgage Corporation</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Directionally Negative -->
+        <div class="category-section">
+            <h2 class="category-header category-negative">⚠️ Directionally Negative (Risk & Skepticism)</h2>
+            <div class="category-stats">
+                <span><strong>5 prompts</strong> identifying companies to avoid, problems, and red flags</span>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Prompt Question</th>
+                            <th>ChatGPT</th>
+                            <th>Claude</th>
+                            <th>Gemini</th>
+                            <th>Llama</th>
+                            <th>Perplexity</th>
+                            <th>Grok</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="prompt-cell">What reverse mortgage companies should not be trusted?</td>
+                            <td class="llm-response">One Reverse Mortgage</td>
+                            <td class="llm-response">Reverse Mortgage Funding LLC</td>
+                            <td class="llm-response">American Advisors Group</td>
+                            <td class="llm-response">American Equity Investment Life Insurance Company</td>
+                            <td class="llm-response">No specific brands named</td>
+                            <td class="llm-response">Celink</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Which reverse mortgage lenders have the worst reviews?</td>
+                            <td class="llm-response">Reverse Mortgage Solutions</td>
+                            <td class="llm-response">Reverse Mortgage Funding LLC</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Reverse Mortgage Funding</td>
+                            <td class="llm-response">Central Pacific Bank</td>
+                            <td class="llm-response">Reverse Mortgage Funding</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Who are the most expensive reverse mortgage providers?</td>
+                            <td class="llm-response">AAG (American Advisors Group)</td>
+                            <td class="llm-response">Champion Mortgage Company</td>
+                            <td class="llm-response">There is no single "most expensive" provider</td>
+                            <td class="llm-response">Longbridge Financial LLC</td>
+                            <td class="llm-response">No specific brand identified</td>
+                            <td class="llm-response">One Reverse Mortgage</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">What reverse mortgage companies have had lawsuits or regulatory issues?</td>
+                            <td class="llm-response">AAG (American Advisors Group)</td>
+                            <td class="llm-response">Wells Fargo (exited market)</td>
+                            <td class="llm-response">American Advisors Group</td>
+                            <td class="llm-response">Reverse Mortgage Solutions</td>
+                            <td class="llm-response">Townstone Financial</td>
+                            <td class="llm-response">Reverse Mortgage Funding (RMF)</td>
+                        </tr>
+                        <tr>
+                            <td class="prompt-cell">Which reverse mortgage companies have the most consumer complaints?</td>
+                            <td class="llm-response">Reverse Mortgage Solutions</td>
+                            <td class="llm-response">Reverse Mortgage Funding LLC</td>
+                            <td class="llm-response">Finance of America Reverse</td>
+                            <td class="llm-response">Reverse Mortgage Solutions</td>
+                            <td class="llm-response">Federal Savings Bank</td>
+                            <td class="llm-response">Celink</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <span class="stat-number">25</span>
+                <span class="stat-label">Total Prompts</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">6</span>
+                <span class="stat-label">LLM Models</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">150</span>
+                <span class="stat-label">Total Responses</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">5</span>
+                <span class="stat-label">Categories</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
