@@ -41,7 +41,8 @@ export default async function handler(req, res) {
       .replace(/^-+|-+$/g, '') || 'uploaded';
 
     const uniqueSuffix = Date.now().toString(36);
-    const safeFileName = `${baseName}-${uniqueSuffix}.html`;
+   const safeFileName = `${baseName}.html`;  // Removes the suffix
+
     const path = `${safeFileName}`;  // This saves it directly to the root folder
 
 
