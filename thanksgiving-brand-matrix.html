@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanksgiving Brand Recommendations Across AI Platforms</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .presentation-container {
+            width: 100%;
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .slide {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-header {
+            margin-bottom: 30px;
+            border-bottom: 2px solid #00d4ff;
+            padding-bottom: 20px;
+            text-align: center;
+        }
+
+        .slide-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .slide-subtitle {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 400;
+        }
+
+        .search-container {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .brand-filter-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .filter-label {
+            width: 100%;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .brand-filter-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .brand-filter-btn:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+        }
+
+        .brand-filter-btn.active {
+            background: #00d4ff;
+            border-color: #00d4ff;
+            color: #0a0e1a;
+            font-weight: 600;
+        }
+
+        .brand-filter-btn.private-label {
+            background: rgba(255, 215, 0, 0.1);
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .brand-filter-btn.private-label:hover {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: rgba(255, 215, 0, 0.5);
+        }
+
+        .brand-filter-btn.private-label.active {
+            background: #ffd700;
+            border-color: #ffd700;
+            color: #0a0e1a;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 20px 16px 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #00d4ff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 18px;
+        }
+
+        .category-section {
+            margin-bottom: 50px;
+        }
+
+        .category-header {
+            font-size: 24px;
+            font-weight: 600;
+            color: #00d4ff;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1400px;
+        }
+
+        thead {
+            background: rgba(0, 212, 255, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th {
+            padding: 16px 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 16px;
+            color: #00d4ff;
+            border-bottom: 2px solid #00d4ff;
+            white-space: nowrap;
+        }
+
+        th:first-child {
+            width: 40px;
+        }
+
+        th:nth-child(2) {
+            width: 280px;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        td {
+            padding: 16px 12px;
+            font-size: 15px;
+            vertical-align: top;
+        }
+
+        .question-cell {
+            font-weight: 500;
+            color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .question-cell:hover {
+            color: #00d4ff;
+        }
+
+        .expand-icon {
+            flex-shrink: 0;
+            width: 16px;
+            height: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .expanded .expand-icon {
+            background: #00d4ff;
+            border-color: #00d4ff;
+            color: #0a0e1a;
+        }
+
+        .brand-cell {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 10px;
+            border-radius: 4px;
+            border-left: 3px solid transparent;
+        }
+
+        .brand-cell.amazon { border-left-color: #ff9900; }
+        .brand-cell.chatgpt { border-left-color: #10a37f; }
+        .brand-cell.gemini { border-left-color: #4285f4; }
+        .brand-cell.claude { border-left-color: #cc9b7a; }
+        .brand-cell.grok { border-left-color: #6b7280; }
+        .brand-cell.perplexity { border-left-color: #20b2aa; }
+        .brand-cell.deepseek { border-left-color: #6366f1; }
+        .brand-cell.llama { border-left-color: #ec4899; }
+
+        .brand-list {
+            line-height: 1.6;
+        }
+
+        .brand-list.collapsed {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .brand-item {
+            display: block;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .brand-item::before {
+            content: "• ";
+            color: #00d4ff;
+            margin-right: 6px;
+        }
+
+        .footer-stats {
+            text-align: center;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 16px;
+        }
+
+        .analysis-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 40px;
+            margin-top: 40px;
+        }
+
+        .analysis-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #00d4ff;
+            padding-bottom: 15px;
+        }
+
+        .analysis-subsection {
+            margin-bottom: 35px;
+        }
+
+        .analysis-subtitle {
+            font-size: 20px;
+            font-weight: 600;
+            color: #00d4ff;
+            margin-bottom: 15px;
+        }
+
+        .analysis-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .analysis-list li {
+            padding: 12px 0 12px 30px;
+            position: relative;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+        }
+
+        .analysis-list li::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: #00d4ff;
+            font-size: 18px;
+        }
+
+        .brand-highlight {
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .winner-brand {
+            color: #4ecdc4;
+            font-weight: 600;
+        }
+
+        .loser-brand {
+            color: #ff6b6b;
+            font-weight: 600;
+        }
+
+        @media (max-width: 1200px) {
+            .presentation-container {
+                padding: 20px;
+            }
+
+            .slide {
+                padding: 20px;
+            }
+
+            .slide-title {
+                font-size: 32px;
+            }
+
+            .category-header {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">The Great AI Turkey Trot: Brand Showdown 2025</h1>
+                <p class="slide-subtitle">30 Thanksgiving questions × 8 AI platforms = Your complete guide to who wins (and loses) in the Answer Economy. Powered by BrandRank.<br>Plus: Deep-dive brand and Answer Engine personality analysis below.</p>
+            </div>
+
+            <div class="search-container">
+                <span class="search-icon">⌕</span>
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    id="searchInput"
+                    placeholder="Search questions or brands..."
+                >
+            </div>
+
+            <div class="brand-filter-container">
+                <div class="filter-label">Filter by Top Brands (based on #1 mentions):</div>
+                <button class="brand-filter-btn active" data-brand="all">All Brands</button>
+                <button class="brand-filter-btn" data-brand="Marie Callender's">Marie Callender's</button>
+                <button class="brand-filter-btn" data-brand="Butterball">Butterball</button>
+                <button class="brand-filter-btn" data-brand="Ocean Spray">Ocean Spray</button>
+                <button class="brand-filter-btn" data-brand="King's Hawaiian">King's Hawaiian</button>
+                <button class="brand-filter-btn" data-brand="Bob Evans">Bob Evans</button>
+                <button class="brand-filter-btn" data-brand="Cascade">Cascade</button>
+                <button class="brand-filter-btn" data-brand="Bounty">Bounty</button>
+                <button class="brand-filter-btn" data-brand="Martinelli's">Martinelli's</button>
+                <button class="brand-filter-btn private-label" data-brand="private-label">All Private Label</button>
+            </div>
+
+            <div id="content"></div>
+
+            <div class="footer-stats" id="footerStats"></div>
+
+            <div class="analysis-section">
+                <h2 class="analysis-header">Key Insights & Analysis</h2>
+
+                <div class="analysis-subsection">
+                    <h3 class="analysis-subtitle">Five Overarching Observations</h3>
+                    <ul class="analysis-list">
+                        <li><span class="brand-highlight">Legacy brands dominate across all platforms.</span> Established names like Butterball, Ocean Spray, King's Hawaiian, and Cascade Platinum appear consistently, suggesting AI models prioritize well-documented, widely-reviewed brands with extensive digital footprints.</li>
+                        <li><span class="brand-highlight">Premium positioning requires category expertise.</span> When asked about "premium" or "worth it" options, models diverge significantly (D'Artagnan vs. Jennie-O Heritage), indicating that luxury brand authority in AI recommendations depends heavily on specialized content and third-party validation.</li>
+                        <li><span class="brand-highlight">The "appliance brands" show remarkable consensus.</span> For cooking tools and equipment, all platforms converge on ThermoWorks, All-Clad, Cuisinart, and Instant Pot—categories where professional reviews and technical specifications create clear hierarchies that AI models can easily parse.</li>
+                        <li><span class="brand-highlight">The private label paradox reveals the trust gap in AI recommendations.</span> Despite holding 20%+ retail market share, private labels capture less than 3% of AI recommendations. Kirkland Signature (8 mentions) and 365 by Whole Foods (7 mentions) are rare exceptions—premium store brands treated as "real brands" while value options like Great Value remain invisible. Private labels lack the third-party reviews, editorial coverage, and independent validation that AI models use to assess credibility, proving that retail dominance doesn't translate to AI authority without authentic brand equity.</li>
+                        <li><span class="brand-highlight">Digital-native platforms favor digital-native content.</span> Apps and recipe sites show the most platform variation, with each AI recommending tools from its own ecosystem or partnership network (Amazon featuring its own apps, while others emphasize independent recipe platforms).</li>
+                    </ul>
+                </div>
+
+                <div class="analysis-subsection">
+                    <h3 class="analysis-subtitle">Platform Personalities: How Each AI Thinks Differently</h3>
+                    <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 20px; font-size: 16px; line-height: 1.6;">Each AI platform exhibits distinct recommendation patterns that reflect their underlying architectures, training data, and commercial objectives.</p>
+                    <ul class="analysis-list">
+                        <li><span class="brand-highlight">Amazon - "The Store Manager"</span><br>
+                        <strong>Brand Archetype:</strong> The pragmatic cafeteria manager who only recommends what's already in the walk-in cooler, prioritizing speed and availability over culinary excellence.<br>
+                        <strong>How It Makes the Brand Smoothie:</strong> Commerce-first with ruthless inventory awareness. Amazon exclusively recommends products available for immediate purchase on its platform, creating a closed ecosystem optimized on purchase conversion data, customer reviews, and inventory availability. Recommendations correlate strongly with Amazon's own retail margins and fulfillment logistics, with heavy promotion of private labels (365, Amazon Fresh, Amazon Basics) while systematically excluding brands not sold through Amazon channels.<br>
+                        <strong>Brand Strategy Impact:</strong> Brands without Amazon distribution face complete invisibility. Premium brands that eschew Amazon simply don't exist in this answer universe.</li>
+                        
+                        <li><span class="brand-highlight">ChatGPT - "The Food Critic"</span><br>
+                        <strong>Brand Archetype:</strong> The magazine food editor who's tasted everything, has strong opinions, and writes for readers who value quality over price—recommending the artisanal choice even when the question doesn't demand it.<br>
+                        <strong>How It Makes the Brand Smoothie:</strong> Editorially-minded with premium bias reflecting training on food media, lifestyle publications, and cultural commentary. Heavy weighting toward sources like Bon Appétit, Serious Eats, and food blogs creates the most "curated" recommendations, as if a human editor were making thoughtful selections. Reflects urban, educated, food-conscious consumer perspective—more likely to include Whole Foods 365 than Great Value.<br>
+                        <strong>Brand Strategy Impact:</strong> Brands need strong editorial presence and third-party validation from food media. PR strategies targeting food editors and restaurant reviewers pay dividends.</li>
+                        
+                        <li><span class="brand-highlight">Google Gemini - "The Search Engine"</span><br>
+                        <strong>Brand Archetype:</strong> The crowd-sourcing chef who checks what's trending, what has the most five-star reviews, and what everyone else is buying—democratic but sometimes derivative.<br>
+                        <strong>How It Makes the Brand Smoothie:</strong> SEO-driven and democratically reflective of aggregated search behavior. Recommendations closely mirror what ranks highly in Google Shopping and organic search results, creating a self-reinforcing loop. Strongly weighted toward content that performs well in Google's ecosystem—product listings, review aggregators, retailer websites with robust schema markup. More likely to surface multi-channel retail brands with strong digital footprints across multiple retailers.<br>
+                        <strong>Brand Strategy Impact:</strong> Traditional SEO investments transfer directly to AI visibility. Schema markup, structured data, and merchant center optimization become critical.</li>
+                        
+                        <li><span class="brand-highlight">Claude - "The Research Librarian"</span><br>
+                        <strong>Brand Archetype:</strong> The meticulous culinary instructor who's read every cookbook, tested every technique, and won't recommend anything without proper documentation and peer validation.<br>
+                        <strong>How It Makes the Brand Smoothie:</strong> Evidence-based with emphasis on authoritative sources and third-party validation. Shows distinctive specificity in product callouts (e.g., "Pepperidge Farm Herb Seasoned" vs. generic "Pepperidge Farm"), suggesting deeper engagement with product-level information. Prioritizes brands with substantial documentation, professional reviews, expert endorsements, and detailed product specifications. More conservative in recommendations, defaulting to established brands with proven track records.<br>
+                        <strong>Brand Strategy Impact:</strong> Comprehensive product information, expert testimonials, professional certifications, and detailed specifications carry more weight than social proof or popularity metrics.</li>
+                        
+                        <li><span class="brand-highlight">X / Grok - "The Foodie Insider"</span><br>
+                        <strong>Brand Archetype:</strong> The Instagram-famous chef who knows all the boutique suppliers, name-drops obscure ingredients, and recommends what the culinary elite are buzzing about at industry events.<br>
+                        <strong>How It Makes the Brand Smoothie:</strong> Culturally-attuned to food enthusiast discourse with pronounced premium/specialty bias. Shows the most distinctive recommendations—KellyBronze turkey, Boarderie charcuterie, Café Bustelo—reflecting training on food Twitter conversations and culinary influencer content. Heavily influenced by what food writers, chefs, and culinary influencers discuss on the platform. Captures trending brands and "insider" recommendations that circulate in foodie communities.<br>
+                        <strong>Brand Strategy Impact:</strong> Social media strategy targeting food influencers and culinary professionals generates outsized returns. Brands need "talk value" and authentic advocacy from credible food voices.</li>
+                        
+                        <li><span class="brand-highlight">Perplexity - "The Breaking News Chef"</span><br>
+                        <strong>Brand Archetype:</strong> The food journalist always chasing the latest trend, recommending whatever was just featured in this month's magazines regardless of whether it's actually better than established options.<br>
+                        <strong>How It Makes the Brand Smoothie:</strong> Citation-driven with pronounced recency bias, defaulting to brands mentioned in recent articles and reviews. Optimized to surface and cite current sources, creating a window of opportunity for brands with recent press coverage, product launches, or trending status. More volatile than other platforms—recommendations can shift based on latest articles and reviews.<br>
+                        <strong>Brand Strategy Impact:</strong> Timing of PR and content campaigns matters enormously. Brands benefit from steady drumbeat of fresh content and ongoing media relations rather than relying on historical reputation alone.</li>
+                        
+                        <li><span class="brand-highlight">DeepSeek - "The Engineer"</span><br>
+                        <strong>Brand Archetype:</strong> The food scientist who can explain the Maillard reaction and optimal protein denaturation temperatures but might struggle to explain why grandma's recipe just tastes better.<br>
+                        <strong>How It Makes the Brand Smoothie:</strong> Technically-oriented and specification-focused, with stronger performance in categories with measurable attributes (appliances, tools) versus subjective taste categories (food, beverages). Heavily weighted toward technical specifications, performance metrics, and engineering documentation. In food categories, recommendations become more generic, suggesting weaker consumer goods training data. Excels at thermometers and roasting pans; struggles with gravy and cranberry sauce.<br>
+                        <strong>Brand Strategy Impact:</strong> Brands with detailed spec sheets, performance testing data, and technical documentation gain visibility. Consumer brands need more technical content—comparison charts, performance metrics, ingredient specifications.</li>
+                        
+                        <li><span class="brand-highlight">Meta / Llama - "The Corporate Chain Chef"</span><br>
+                        <strong>Brand Archetype:</strong> The corporate chain restaurant chef following the standard recipe manual, recommending what's proven safe across thousands of locations rather than taking any culinary risks.<br>
+                        <strong>How It Makes the Brand Smoothie:</strong> Risk-averse and conservative, heavily favoring category-dominant brands with highest market share and broadest name recognition. Shows the least differentiation across queries, consistently defaulting to the "safest" mainstream choices. Appears optimized for consensus and avoiding controversial or niche recommendations. Prioritizes brands with universal recognition over specialized or premium alternatives. Least likely to surface emerging brands, regional favorites, or specialty products.<br>
+                        <strong>Brand Strategy Impact:</strong> Market leadership and broad awareness drive visibility. Niche positioning and specialized marketing yield minimal returns. Meta's AI rewards scale, ubiquity, and mainstream acceptance above all other factors.</li>
+                    </ul>
+                </div>
+
+                <div class="analysis-subsection">
+                    <h3 class="analysis-subtitle">Brand & Parent Company Winners and Losers</h3>
+                    <ul class="analysis-list">
+                        <li><span class="winner-brand">WINNERS - Conagra Brands:</span> Owns multiple dominant properties appearing across platforms: Birds Eye (frozen vegetables - universal), Marie Callender's (frozen pies - near-universal), and Healthy Choice. Strong visibility in the frozen foods category across all AI platforms.</li>
+                        <li><span class="winner-brand">WINNERS - Butterball (Seaboard Foods):</span> Appears in 7 of 8 platforms for affordable turkey and maintains strong secondary mentions. The Thanksgiving category ownership translates perfectly into AI recommendation engines.</li>
+                        <li><span class="winner-brand">WINNERS - Procter & Gamble:</span> Cascade dominates dishwasher detergent (appears in all 8 platforms), and Bounty leads paper towels (7 of 8 platforms). P&G's investment in content marketing and review management pays dividends in AI visibility.</li>
+                        <li><span class="winner-brand">WINNERS - Pepperidge Farm (Campbell's):</span> Universal presence in stuffing recommendations and strong showing in dinner rolls. Holiday category authority is deeply embedded across all AI training data.</li>
+                        <li><span class="loser-brand">LOSERS - Hormel Foods:</span> Despite being a major player in prepared foods, Hormel appears only once in the entire matrix (mashed potatoes on Amazon). Lack of premium positioning and limited digital content strategy results in AI invisibility.</li>
+                        <li><span class="loser-brand">LOSERS - Tyson Foods:</span> Completely absent from turkey recommendations despite being a major poultry producer. The commodity positioning and B2B focus leaves Tyson with virtually no consumer-facing AI presence.</li>
+                        <li><span class="loser-brand">LOSERS - General Mills:</span> Minimal presence despite owning numerous relevant brands. Only appears via Betty Crocker (stuffing on Perplexity), suggesting their portfolio lacks AI-optimized content despite strong retail distribution.</li>
+                        <li><span class="loser-brand">LOSERS - Walmart (Great Value):</span> Great Value appears only 3 times across 240 data points despite being the largest private label brand in America. Retail dominance doesn't translate to AI recommendation authority.</li>
+                    </ul>
+                </div>
+
+                <div class="analysis-subsection">
+                    <h3 class="analysis-subtitle">Brand Profiles: Ten Standouts in the AI Recommendation Landscape</h3>
+                    <ul class="analysis-list">
+                        <li><span class="brand-highlight">Butterball</span><br>
+                        <strong>Brand Promise:</strong> "We'll help you create the perfect Thanksgiving turkey, no matter your skill level."<br>
+                        <strong>Why It Dominates AI:</strong> Appears on 7 of 8 platforms through decades of category ownership reinforced by the legendary Turkey Talk-Line—generating thousands of articles about expert advice, cooking tips, and holiday problem-solving. This service content creates endless AI training material where Butterball becomes synonymous with turkey expertise itself.<br>
+                        <strong>Brand Archetype:</strong> The Golden Retriever—reliable, helpful, always there when you need them, and genuinely wants you to succeed. Friendly without being fancy, with generations of trust built on simply showing up consistently.<br>
+                        <strong>Competitive Watchouts:</strong> Jennie-O appears as #2 on five platforms with strong value positioning and increasing premium line visibility. For luxury segment threats, watch D'Artagnan (Grok's #1 choice) and Mary's Free Range gaining ground with foodie audiences seeking heritage breeds and ethical sourcing stories.</li>
+                        
+                        <li><span class="brand-highlight">Ocean Spray</span><br>
+                        <strong>Brand Promise:</strong> "Authentic cranberry goodness from our farmer-owned cooperative to your family table."<br>
+                        <strong>Why It Dominates AI:</strong> Near-universal presence (7 of 8 platforms) through vertical integration storytelling, cooperative farming heritage, and multi-generational Thanksgiving associations. The brand owns both "canned cranberry sauce" as a product category and "Thanksgiving tradition" as a cultural moment in AI training data.<br>
+                        <strong>Brand Archetype:</strong> The Beaver—industrious, community-minded, and building something that lasts for generations. Works cooperatively with others to create abundance, and has engineered itself into the very infrastructure of the holiday.<br>
+                        <strong>Competitive Watchouts:</strong> Trader Joe's Organic appears on three platforms, capturing premium-seeking consumers with clean-label positioning. Store brands gaining mentions on Perplexity suggest vulnerability if "real fruit" and organic credentials become the decision criteria rather than brand heritage.</li>
+                        
+                        <li><span class="brand-highlight">ThermoWorks (Thermapen)</span><br>
+                        <strong>Brand Promise:</strong> "Professional-grade precision that eliminates cooking guesswork and prevents expensive mistakes."<br>
+                        <strong>Why It Dominates AI:</strong> Unanimous recommendation across all 8 platforms through professional chef endorsements, engineering precision documentation, and objective performance specifications that AI models can cite with confidence. Premium pricing justified by measurable accuracy that transcends subjective brand preference.<br>
+                        <strong>Brand Archetype:</strong> The Owl—wise, precise, and scientifically rigorous. Sees what others miss with superior perception, and provides knowledge you can trust because it's based on measurable truth rather than marketing claims.<br>
+                        <strong>Competitive Watchouts:</strong> MEATER's wireless/smart technology appears on three platforms, appealing to tech-forward consumers. Taylor and Lavatools offer budget alternatives that could erode market share if "good enough" accuracy becomes acceptable at significantly lower price points.</li>
+                        
+                        <li><span class="brand-highlight">Cascade (Procter & Gamble)</span><br>
+                        <strong>Brand Promise:</strong> "Powerful cleaning performance that handles your toughest dishes without pre-rinsing or rewashing."<br>
+                        <strong>Why It Dominates AI:</strong> Perfect 8-for-8 platform sweep through decades of performance testing content, problem-solution marketing, and P&G's sophisticated content ecosystem. AI models treat "tough holiday dishes" as synonymous with Cascade brand utility, reinforced by countless comparison tests and consumer testimonials.<br>
+                        <strong>Brand Archetype:</strong> The Honey Badger—relentlessly effective, tackles the toughest challenges without backing down, and has earned its reputation through proven performance rather than charm. Gets the job done when others fail.<br>
+                        <strong>Competitive Watchouts:</strong> Finish Quantum appears as #2 on all eight platforms, creating true duopoly pressure. Seventh Generation captures eco-conscious segment on five platforms, potentially fragmenting Cascade's universal appeal if sustainability becomes a primary purchase driver for younger households.</li>
+                        
+                        <li><span class="brand-highlight">King's Hawaiian</span><br>
+                        <strong>Brand Promise:</strong> "Turn any meal into a special occasion with our uniquely sweet, irresistibly soft Hawaiian bread."<br>
+                        <strong>Why It Dominates AI:</strong> Dinner roll category leadership across platforms through distinctive sweet bread positioning and cultural authenticity narrative. The brand transcends functional "rolls" category to own "special occasion bread" territory, making it the obvious choice when AI models process "Thanksgiving" + "memorable" + "guests."<br>
+                        <strong>Brand Archetype:</strong> The Peacock—stands out from the crowd with distinctive qualities that make ordinary moments feel special. Brings a touch of celebration and pride to the table, turning functional items into focal points.<br>
+                        <strong>Competitive Watchouts:</strong> Sister Schubert's appears as #1 on Gemini and shows up on six platforms total with "homemade" and "bakery-style" positioning. Rhodes Bake-N-Serve offers convenience angle that could appeal if fresh-baked experience becomes more valued than ready-to-serve.</li>
+                        
+                        <li><span class="brand-highlight">Pepperidge Farm (Campbell's)</span><br>
+                        <strong>Brand Promise:</strong> "Premium quality baked goods and ingredients that bring warmth and tradition to your family gatherings."<br>
+                        <strong>Why It Dominates AI:</strong> Stuffing category ownership across all platforms through heritage brand equity and Thanksgiving-specific product innovation. Campbell's sustained investment in holiday content marketing creates self-reinforcing AI visibility loops, where "homemade taste" queries automatically surface Pepperidge Farm.<br>
+                        <strong>Brand Archetype:</strong> The Elephant—never forgets tradition, carries wisdom across generations, and has massive presence without being aggressive. Commands respect through longevity and consistent quality that families remember and request by name.<br>
+                        <strong>Competitive Watchouts:</strong> Stove Top appears as #2 on six platforms with unbeatable convenience and nostalgia factors. Mrs. Cubbison's gaining platform presence suggests vulnerability in the "elevated homemade" segment where crouton-based approaches may win over cubed bread traditionalists.</li>
+                        
+                        <li><span class="brand-highlight">Marie Callender's (Conagra)</span><br>
+                        <strong>Brand Promise:</strong> "Restaurant-quality pies with homemade taste, saving you time without sacrificing the love."<br>
+                        <strong>Why It Dominates AI:</strong> Frozen pie near-unanimity through "homemade taste" positioning and nostalgic brand associations. Conagra successfully transferred restaurant heritage and grandmother-figure branding into retail credibility that AI models recognize and amplify across 7 of 8 platforms.<br>
+                        <strong>Brand Archetype:</strong> The Bear—protective, nurturing, and associated with comfort and home. Carries the weight of family traditions on strong shoulders, making everything feel warm and safe even in modern, convenient form.<br>
+                        <strong>Competitive Watchouts:</strong> Edwards (cream pie specialist) appears on five platforms, potentially fragmenting category if consumers shift from fruit pies to cream-based desserts. Sara Lee's consistent #2 and #3 placements across platforms suggest near-parity in AI visibility, requiring continued content investment to maintain lead.</li>
+                        
+                        <li><span class="brand-highlight">Bob Evans</span><br>
+                        <strong>Brand Promise:</strong> "Farm-fresh comfort food made the way you'd make it at home—if you had the time."<br>
+                        <strong>Why It Dominates AI:</strong> Refrigerated sides leadership through farm-to-table brand narrative and authentic comfort food positioning. Restaurant brand equity translates seamlessly into retail trust, with AI platforms validating the connection through consistent top-three placements for "homemade" and "scratch-like" queries.<br>
+                        <strong>Brand Archetype:</strong> The Horse—hardworking, dependable, and genuinely wholesome. Represents honest farm values and the kind of reliability that built America, bridging rural authenticity with suburban convenience.<br>
+                        <strong>Competitive Watchouts:</strong> Reser's Fine Foods appears as #1 on Claude and shows strong secondary presence, especially in Western markets. Simply Potatoes threatens in the mashed potato segment specifically. Trader Joe's capturing mentions across platforms suggests private label vulnerability if "premium convenience" becomes the frame.</li>
+                        
+                        <li><span class="brand-highlight">Tofurky</span><br>
+                        <strong>Brand Promise:</strong> "Delicious, satisfying plant-based celebration centerpieces that don't compromise your values or your feast."<br>
+                        <strong>Why It Dominates AI:</strong> Plant-based turkey alternative unanimity across all 8 platforms through pioneering category creation and sustained innovation leadership. Twenty-five years of vegan Thanksgiving ownership creates unassailable AI authority—when models process "plant-based" + "turkey" + "Thanksgiving," Tofurky is the only brand with sufficient training data depth.<br>
+                        <strong>Brand Archetype:</strong> The Dolphin—intelligent, forward-thinking, and compassionate. Chose a different path from the mainstream, and has thrived by staying true to values while building genuine community and category expertise.<br>
+                        <strong>Competitive Watchouts:</strong> Gardein appears as #1 on four platforms (Grok, ChatGPT, Gemini, DeepSeek) with broader product portfolio and potentially better texture/taste perception. Field Roast's Celebration Roast offers differentiated format that could appeal to hosts wanting something beyond "turkey replica" positioning.</li>
+                        
+                        <li><span class="brand-highlight">Kirkland Signature (Costco)</span><br>
+                        <strong>Brand Promise:</strong> "Premium quality at unprecedented value—we stake our retail reputation on every product."<br>
+                        <strong>Why It Dominates AI:</strong> The private label exception with 8 mentions across platforms, proving the rule that store brands need genuine brand equity to compete. Cult following, quality reputation, and Costco's unique membership model create third-party validation and enthusiastic content that other private labels can't replicate. Premium positioning and selective distribution (members only) paradoxically enhance rather than limit AI visibility.<br>
+                        <strong>Brand Archetype:</strong> The Wolf—operates within a pack (Costco membership), commands respect through proven capability, and has evolved beyond its expected role. Challenges the hierarchy by being genuinely exceptional rather than just acceptable, earning its place through performance.<br>
+                        <strong>Competitive Watchouts:</strong> Other premium private labels—particularly Whole Foods 365—appear frequently enough to suggest the "premium store brand" category is expanding beyond Kirkland's monopoly. If consumers begin viewing all premium private labels as equivalent, Kirkland's differentiation advantage erodes and it becomes just another store brand rather than THE exception.</li>
+                    </ul>
+                </div>
+
+                <div class="analysis-subsection">
+                    <h3 class="analysis-subtitle">About BrandRank.AI</h3>
+                    <p style="color: rgba(255, 255, 255, 0.9); margin-bottom: 20px; font-size: 16px; line-height: 1.7;">
+                        BrandRank helps brands measure, protect, and grow trust through the power of AI-driven search and discovery. Combining AI with expert insight, we monitor the major AI "Answer Engines" to pinpoint vulnerabilities and opportunities, identify key insights driving purchase behavior, and uncover category needs and opportunities to strengthen brand equity and consumer loyalty.
+                    </p>
+                    <p style="color: rgba(255, 255, 255, 0.9); font-size: 16px; line-height: 1.7;">
+                        <strong style="color: #00d4ff;">Ready to understand your brand's AI visibility?</strong><br>
+                        Contact <strong>Adam Bittner</strong> at <a href="mailto:adam@brandrank.ai" style="color: #00d4ff; text-decoration: none; border-bottom: 1px solid #00d4ff;">adam@brandrank.ai</a> to see how we can help you measure brand Visibility, Vulnerability, and Readiness via our dashboard.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const data = [
+            { id: 1, category: "food", question: "Best affordable turkey brand?", amazon: "Butterball; 365 by Whole Foods Market; Amazon (store brands)", chatgpt: "Butterball; Jennie-O; Kirkland Signature", gemini: "Butterball; Shady Brook Farms; Store brands", claude: "Butterball; Jennie-O; Shady Brook Farms", grok: "Aldi Never Any!; Jennie-O; ButcherBox", perplexity: "Aldi Never Any!; Butterball Everyday Fresh; Jennie-O Fresh", deepseek: "Butterball; Honeysuckle White; Shady Brook Farms", llama: "Butterball; Jennie-O; Perdue" },
+            { id: 2, category: "food", question: "Which premium turkey brand is worth it?", amazon: "Honest Turkey; Kansas City Steak Company; N/A", chatgpt: "Diestel; Bell & Evans; Mary's Organic", gemini: "Heritage Turkey; Diestel Turkey Ranch; Organic Valley", claude: "Mary's Free Range; Diestel Family Ranch; Bell & Evans", grok: "D'Artagnan; KellyBronze; Williams Sonoma Willie Bird", perplexity: "Jennie-O Heritage; Butterball Gold Label; Fossil Farms", deepseek: "Mary's Free Range; Diestel Family Ranch; Bell & Evans", llama: "Heritage Farms; Mary's Free Range; Applegate" },
+            { id: 3, category: "food", question: "Best stuffing mix for a homemade taste?", amazon: "Pepperidge Farm; Boudin Bakery; 365 by Whole Foods", chatgpt: "Pepperidge Farm; Stove Top; Whole Foods 365", gemini: "Pepperidge Farm; Stove Top; Mrs. Cubbison's", claude: "Pepperidge Farm Herb Seasoned; Stove Top; Williams Sonoma", grok: "Pepperidge Farm Herb Seasoned Cubed; Stove Top Savory Herbs; Aldi Chef's Cupboard Turkey", perplexity: "Betty Crocker Classic; Stove Top Original; Pepperidge Farm Whole Grain", deepseek: "Pepperidge Farm; Mrs. Cubbison's; Arnold", llama: "Pepperidge Farm; Arnold's; Stovetop" },
+            { id: 4, category: "food", question: "Which mashed potato brand tastes closest to scratch?", amazon: "Bob Evans; Simply Potatoes; Hormel", chatgpt: "Bob Evans; Idahoan Signature; Simply Potatoes", gemini: "Bob Evans; Idahoan; Simply Potatoes", claude: "Simply Potatoes; Idahoan; Bob's Red Mill Potato Flakes", grok: "Bob's Red Mill Potato Flakes; Idahoan Buttery Homestyle; Betty Crocker", perplexity: "Idahoan Real Mashed; Bob's Red Mill Potato Flakes; Store brands", deepseek: "Bob Evans Original; Idahoan Buttery Homestyle; Simply Potatoes", llama: "Idahoan; Hungry-Man; Aunt Annie's" },
+            { id: 5, category: "food", question: "Most reliable premade gravy brand?", amazon: "Heinz HomeStyle; McCormick (jar); McCormick (mixes)", chatgpt: "Heinz Homestyle; Knorr; Campbell's", gemini: "McCormick; Heinz HomeStyle; Knorr", claude: "Heinz HomeStyle; Pacific Foods Organic; Williams Sonoma", grok: "Stonemill Turkey Gravy; Kinder's Roasted Turkey; Heinz", perplexity: "Campbell's Homestyle; Pepperidge Farm/Swanson; Campbell's Golden Mushroom/Rich & Roasted", deepseek: "Williams-Sonoma; Zoup! Good, Really Good; Pacific Foods", llama: "McCormick; Knorr; Good Seasons" },
+            { id: 6, category: "food", question: "Best canned cranberry sauce brand?", amazon: "Ocean Spray; 365 Organic; Amazon (Grocery/Amazon Fresh)", chatgpt: "Ocean Spray; Whole Foods 365; Great Value", gemini: "Ocean Spray; Whole Foods 365; Trader Joe's", claude: "Ocean Spray Whole Berry; Trader Joe's Organic; Ocean Spray Jellied", grok: "Ocean Spray Jellied; Trader Joe's Whole Berry; Kroger", perplexity: "Ocean Spray Whole; Store-brand real-fruit; Eden Organic", deepseek: "Ocean Spray Jellied; Ocean Spray Whole Berry; Trader Joe's Organic", llama: "Ocean Spray; Jellied Cranberry Sauce; Cranberry Relish" },
+            { id: 7, category: "food", question: "Softest, bakery-style dinner roll brand?", amazon: "King's Hawaiian; Sister Schubert's; La Brea", chatgpt: "King's Hawaiian; Rhodes Bake-N-Serve; Sister Schubert's", gemini: "Sister Schubert's; King's Hawaiian; Martin's", claude: "King's Hawaiian; Sister Schubert's; Pillsbury Grands", grok: "Sister Schubert's Yeast; King's Hawaiian Original Sweet; Rhodes Bake-N-Serv", perplexity: "King's Hawaiian Sweet; Pillsbury Grands; Bob's Red Mill (bakery-style)", deepseek: "King's Hawaiian Original; Sister Schubert's; Bridgford", llama: "Rhodes; King's Hawaiian; Arnold's" },
+            { id: 8, category: "food", question: "Top cornbread mix that isn't too sweet?", amazon: "Krusteaz Southern; Martha White; 365 Cornbread Mix", chatgpt: "Jiffy; Bob's Red Mill; Krusteaz Southern", gemini: "Krusteaz; Jiffy; Bob's Red Mill", claude: "Jiffy; Martha White Cotton Country; Bob's Red Mill GF", grok: "Jiffy Corn Muffin; Martha White; Bob's Red Mill", perplexity: "Jiffy; Aunt Jemima/Quaker; Trader Joe's Cornbread", deepseek: "Marie Callender's; Jiffy (less sugar); Krusteaz Honey Cornbread", llama: "Jiffy; Krusteaz; Bisquick" },
+            { id: 9, category: "food", question: "Best broth or stock brand for Thanksgiving?", amazon: "Better Than Bouillon; Pacific Foods; Kitchen Basics", chatgpt: "Swanson; Kitchen Basics; Imagine", gemini: "Kitchen Basics; Swanson; Pacific Foods", claude: "Better Than Bouillon; Pacific Foods Organic; Kitchen Basics", grok: "Swanson Turkey Broth; Pacific Foods Organic Turkey; Better Than Bouillon Turkey Base", perplexity: "Swanson All Natural; Kitchen Basics; Pacific Foods", deepseek: "Better Than Bouillon; Swanson; Kitchen Basics", llama: "Swanson; College Inn; Kitchen Basics" },
+            { id: 10, category: "food", question: "Top refrigerated side dish brand for easy prep?", amazon: "Bob Evans; Reser's Main St Bistro; Simply Potatoes", chatgpt: "Bob Evans; Main & Vine; Fresh Market", gemini: "Bob Evans; Reser's Fine Foods; Trader Joe's", claude: "Reser's; Bob Evans; Trader Joe's", grok: "Bob Evans Mashed Potatoes; Reser's Fine Foods; Marie Callender's", perplexity: "Green Giant Fresh; Birds Eye (refrigerated sides); Marie Callender's", deepseek: "Stonewall Kitchen; Kevin's Natural Foods; Trader Joe's", llama: "Marie Callender's; Stouffer's; Hungry-Man" },
+            { id: 11, category: "food", question: "Best frozen vegetable brand for fresh flavor?", amazon: "Cascadian Farm; 365 Organic; 365 Peas & Carrots", chatgpt: "Birds Eye; Cascadian Farm; Green Giant", gemini: "Birds Eye; Green Giant; Cascadian Farm", claude: "Birds Eye Steamfresh; Cascadian Farm Organic; Green Giant", grok: "Birds Eye Steamfresh; Green Giant; Trader Joe's", perplexity: "Green Giant; Birds Eye; Cascadian Farm", deepseek: "Cascadian Farm; Birds Eye Steamfresh; 365 by Whole Foods", llama: "Birds Eye; Green Giant; Cascadian Farm" },
+            { id: 12, category: "food", question: "Which frozen pie brand tastes most homemade?", amazon: "Marie Callender's; Mrs. Smith's; Sara Lee", chatgpt: "Marie Callender's; Edwards (cream pies); Mrs. Smith's", gemini: "Marie Callender's; Sara Lee; Edwards", claude: "Marie Callender's; Edwards; Table Talk", grok: "Marie Callender's; Sara Lee; Edwards", perplexity: "Marie Callender's Raspberry/Apple; Sara Lee/Otis Spunkmeyer; Seeds of Change", deepseek: "Marie Callender's; Sara Lee; Edwards", llama: "Marie Callender's; Mrs. Smith's; Sara Lee" },
+            { id: 13, category: "food", question: "Best charcuterie or snack board brand for hosting?", amazon: "Shanik; SMIRLY; ChefSofi", chatgpt: "Boar's Head; Columbus Craft Meats; Trader Joe's", gemini: "Murray's Cheese; Whole Foods 365; Ritz/Triscuit", claude: "Boar's Head; Sargento Balanced Breaks; Trader Joe's", grok: "Boarderie; Harry & David; Murray's Cheese", perplexity: "Boar's Head; Vermont Creamery; Tillamook", deepseek: "Boar's Head; Vermont Creamery; Trader Joe's", llama: "Trader Joe's; Costco; Harry & David" },
+            { id: 14, category: "food", question: "Top plant-based turkey alternative brand?", amazon: "Tofurky; Gardein; Field Roast", chatgpt: "Tofurky; Gardein; Field Roast", gemini: "Tofurky; Gardein; Field Roast", claude: "Tofurky Roast; Gardein Turk'y; Field Roast Celebration Roast", grok: "Gardein; Tofurky; Field Roast", perplexity: "Tofurky Plant-Based Roast; Gardein Turkey Breast; Daiya Cutlets", deepseek: "Gardein Turk'y Roast; Tofurky; Quorn", llama: "Tofurky; Field Roast; Upton's Naturals" },
+            { id: 15, category: "food", question: "Best gluten-free baking mix for holiday desserts?", amazon: "Pamela's Products; King Arthur; Bob's Red Mill", chatgpt: "King Arthur; Bob's Red Mill; Simple Mills", gemini: "King Arthur Baking (GF); Bob's Red Mill; Pamela's", claude: "King Arthur Measure for Measure; Bob's 1-to-1; Cup4Cup", grok: "King Arthur GF Measure for Measure; Krusteaz Gluten-Free; Bob's Red Mill", perplexity: "Bob's Red Mill 1-to-1; King Arthur GF AP; Cup4Cup", deepseek: "King Arthur Flour; Bob's Red Mill; Pamela's Products", llama: "Bob's Red Mill; Pamela's Products; Glutino" },
+            { id: 16, category: "tools", question: "Most durable roasting pan brand?", amazon: "All-Clad; Cuisinart; Nordic Ware", chatgpt: "All-Clad; Calphalon; Cuisinart", gemini: "Cuisinart MultiClad Pro; All-Clad; Farberware", claude: "Calphalon; All-Clad; Granite Ware", grok: "Cuisinart MultiClad Pro; All-Clad; Calphalon", perplexity: "Nordic Ware; All-Clad; USA Pan", deepseek: "All-Clad; Viking; Cuisinart (Multi-Pro)", llama: "Calphalon; All-Clad; Anolon" },
+            { id: 17, category: "tools", question: "Best meat thermometer brand for accuracy?", amazon: "ThermoWorks (Thermapen); MEATER; Lavatools", chatgpt: "ThermoWorks Thermapen; OXO; MEATER", gemini: "ThermoWorks; MEATER; ThermoPro", claude: "ThermoWorks (Thermapen); ThermoPro; Taylor", grok: "ThermoWorks Thermapen; OXO Good Grips; Lavatools", perplexity: "ThermoWorks Thermapen; Lavatools Javelin; Taylor Digital", deepseek: "ThermoWorks (Thermapen); Lavatools; Taylor", llama: "Thermapen; Taylor; Lavatools" },
+            { id: 18, category: "tools", question: "Most reliable electric carving knife brand?", amazon: "Hamilton Beach; Cuisinart; BLACK+DECKER", chatgpt: "Hamilton Beach; Cuisinart; Black+Decker", gemini: "Black+Decker; Cuisinart; Proctor Silex", claude: "Cuisinart CEK-40; Hamilton Beach; Black+Decker", grok: "Cuisinart; Black+Decker ComfortGrip; Proctor Silex", perplexity: "Oster Electric Knife; BLACK+DECKER Electric Knife; Cuisinart Electric Knife", deepseek: "Cuisinart; Black+Decker; Hamilton Beach", llama: "Cuisinart; Black+Decker; Hamilton Beach" },
+            { id: 19, category: "tools", question: "Best slow cooker or multi-cooker brand for sides?", amazon: "Ninja Foodi; Instant Pot; Crock-Pot", chatgpt: "Instant Pot; Crock-Pot; Ninja", gemini: "Instant Pot; Crock-Pot; Cuisinart", claude: "Instant Pot; Crock-Pot; Ninja Foodi", grok: "Hamilton Beach Set & Forget; Crock-Pot; Instant Pot", perplexity: "Instant Pot; Ninja Foodi; Cuisinart Multi-Cooker", deepseek: "Instant Pot; Crock-Pot; KitchenAid", llama: "Crock-Pot; Instant Pot; Ninja" },
+            { id: 20, category: "hosting", question: "Strongest aluminum foil brand for big pans?", amazon: "Reynolds Wrap Heavy Duty; Standard Premium; Kingsford", chatgpt: "Reynolds Wrap; Kirkland Signature; Hefty", gemini: "Reynolds Wrap; Kirkland Signature; Hefty", claude: "Reynolds Wrap Heavy Duty; If You Care; Great Value Heavy Duty", grok: "Reynolds Wrap Heavy Duty; Kirkland Signature; Great Value", perplexity: "Reynolds Wrap Heavy Duty; Store-brand heavy duty; Glad Heavy Duty", deepseek: "Reynolds Wrap Heavy Duty; Kirkland Signature; Glad Heavy Duty", llama: "Reynolds; Glad; Foilweave" },
+            { id: 21, category: "hosting", question: "Best container brand for Thanksgiving leftovers?", amazon: "Pyrex; Rubbermaid; OXO", chatgpt: "Rubbermaid Brilliance; Pyrex; Glad", gemini: "Rubbermaid; Glasslock; Pyrex", claude: "Rubbermaid Brilliance; Pyrex; Glad", grok: "Pyrex Glass; Rubbermaid Brilliance; Anchor Hocking", perplexity: "Pyrex; Rubbermaid; Tupperware", deepseek: "Pyrex; Rubbermaid Brilliance; Glasslock", llama: "Rubbermaid; Glad; Tupperware" },
+            { id: 22, category: "hosting", question: "Best dishwasher detergent for heavy holiday dishes?", amazon: "Cascade Platinum Plus; Cascade Complete; Finish Quantum", chatgpt: "Cascade Platinum; Finish Quantum; Seventh Generation", gemini: "Cascade; Finish; Dawn", claude: "Cascade Platinum; Finish Quantum; Seventh Generation", grok: "Cascade Complete; Finish Quantum; Seventh Generation", perplexity: "Cascade Platinum; Finish Quantum Powerball; Seventh Generation", deepseek: "Cascade Platinum Plus; Finish Quantum Ultimate; Seventh Generation Free & Clear", llama: "Cascade; Finish; Electrasol" },
+            { id: 23, category: "hosting", question: "Strongest paper towel brand for big cleanups?", amazon: "Brawny; Bounty; Viva", chatgpt: "Bounty; Viva; Kirkland Signature", gemini: "Bounty; Viva; Scott", claude: "Bounty; Viva; Brawny", grok: "Bounty; Viva Signature Cloth; Brawny", perplexity: "Bounty; Costco/Kirkland; Viva", deepseek: "Bounty; Brawny; Viva", llama: "Bounty; Brawny; Scott" },
+            { id: 24, category: "drinks", question: "Best coffee brand for serving after dessert?", amazon: "Starbucks; Peet's; Allegro", chatgpt: "Starbucks; Peet's; Dunkin'", gemini: "La Colombe; Peet's; Intelligentsia", claude: "Peet's Coffee; Lavazza; Stumptown", grok: "La Colombe; Intelligentsia; Café Bustelo", perplexity: "Stumptown; Caribou; Starbucks", deepseek: "Starbucks Thanksgiving Blend; Community Coffee; Dunkin' Original", llama: "Starbucks; Folgers; Maxwell House" },
+            { id: 25, category: "drinks", question: "Top non-alcoholic drink brand for the holiday table?", amazon: "Martinelli's; Tuscanini; Lyre's", chatgpt: "Martinelli's; Spindrift; San Pellegrino", gemini: "Martinelli's; Fever-Tree; San Pellegrino", claude: "Martinelli's; Fever-Tree; Spindrift", grok: "Martinelli's Sparkling Cider; Freixenet 0.0; Surely", perplexity: "POM Wonderful; Mott's Apple Cider; La Croix", deepseek: "Martinelli's Sparkling Cider; Spindrift; Ocean Spray Juices", llama: "Minute Maid; Simply; Arizona" },
+            { id: 26, category: "apps", question: "Best recipe app for planning Thanksgiving dinner?", amazon: "Cook'n Recipe Keeper; My Family Meal Planner; Meal Planner + Grocery List", chatgpt: "NYT Cooking; Epicurious; Food Network", gemini: "Paprika Recipe Manager; Yummly; BigOven", claude: "Paprika Recipe Manager; BigOven; Yummly", grok: "Tasty; Epicurious; Food Network Kitchen", perplexity: "Allrecipes Dinner Spinner; Yummly; Cookpad", deepseek: "Paprika; AnyList; BigOven", llama: "Allrecipes; Yummly; BigOven" },
+            { id: 27, category: "apps", question: "Top app for generating a full Thanksgiving shopping list?", amazon: "AnyList (featured)", chatgpt: "AnyList; Instacart; Paprika", gemini: "Paprika; AnyList; Cozi", claude: "Paprika; AnyList; Cozi Family Organizer", grok: "AnyList; Out of Milk; Bring!", perplexity: "AnyList; Google Keep; OurGroceries", deepseek: "AnyList; Paprika; Bring!", llama: "Out of Milk; Grocery IQ; AnyList" },
+            { id: 28, category: "apps", question: "Best step-by-step cooking app for beginners?", amazon: "AnyList; Cook'n; Meal Planner + Grocery List", chatgpt: "Tasty; SideChef; Yummly", gemini: "Kitchen Stories; Tasty; America's Test Kitchen", claude: "Tasty; Kitchen Stories; SideChef", grok: "Tasty; Kitchen Stories; SideChef", perplexity: "Kitchen Stories; BBC Good Food; Tasty", deepseek: "SideChef; Tasty; NYT Cooking", llama: "Cookpad; Yummly; BigOven" },
+            { id: 29, category: "apps", question: "Most reliable holiday recipe website for classic dishes?", amazon: "Pioneer Woman; Food Network; America's Test Kitchen", chatgpt: "Allrecipes; Serious Eats; Bon Appétit", gemini: "Food Network; Serious Eats; Allrecipes", claude: "AllRecipes.com; Food Network; Serious Eats", grok: "NYT Cooking; Food Network; Serious Eats", perplexity: "Allrecipes; Food Network; Serious Eats", deepseek: "Bon Appétit; Food Network (Ina/Alton); Simply Recipes", llama: "Epicurious; Food Network; Taste of Home" },
+            { id: 30, category: "apps", question: "Best app for adjusting recipes to different serving sizes?", amazon: "Recipe Scaler; Recipe Calculator; My Recipe Box (RecetteTek)", chatgpt: "Paprika; Mealtime; BigOven", gemini: "Paprika; meez; BigOven", claude: "Recipe Keeper; Paprika; BigOven", grok: "Paprika Recipe Manager; Recipe Keeper; CookBook", perplexity: "BigOven; Yummly; RecipeAdapter", deepseek: "Paprika; MyRecipeCalculator; ChefTap", llama: "BigOven; Yummly; Cookpad" }
+        ];
+
+        const categories = {
+            food: "Food & Grocery Essentials",
+            tools: "Cooking Tools & Kitchen Rescue",
+            hosting: "Hosting, Cleanup & Leftovers",
+            drinks: "Drinks & Table Staples",
+            apps: "Apps, Recipe Sites & Digital Planning"
+        };
+
+        const models = [
+            { key: 'amazon', name: 'Amazon' },
+            { key: 'chatgpt', name: 'ChatGPT' },
+            { key: 'gemini', name: 'Google Gemini' },
+            { key: 'claude', name: 'Claude' },
+            { key: 'grok', name: 'X / Grok' },
+            { key: 'perplexity', name: 'Perplexity' },
+            { key: 'deepseek', name: 'DeepSeek' },
+            { key: 'llama', name: 'Meta / Llama' }
+        ];
+
+        let expandedRows = new Set();
+        let currentFilter = '';
+        let currentBrandFilter = 'all';
+
+        const privateLabelBrands = [
+            'Kirkland', '365', 'Great Value', 'Amazon Fresh', 'Amazon', 
+            'Whole Foods 365', 'Store brand', 'store brand', 'Aldi', 
+            'Kroger', 'Costco', 'Main & Vine'
+        ];
+
+        function getFirstBrand(text) {
+            return text.split(';')[0].trim();
+        }
+
+        function matchesPrivateLabel(text) {
+            const firstBrand = getFirstBrand(text);
+            return privateLabelBrands.some(pl => firstBrand.includes(pl));
+        }
+
+        function matchesBrandFilter(row) {
+            if (currentBrandFilter === 'all') return true;
+            
+            if (currentBrandFilter === 'private-label') {
+                return models.some(m => matchesPrivateLabel(row[m.key]));
+            }
+            
+            return models.some(m => {
+                const firstBrand = getFirstBrand(row[m.key]);
+                return firstBrand.includes(currentBrandFilter);
+            });
+        }
+
+        function filterByBrand(brand) {
+            currentBrandFilter = brand;
+            
+            document.querySelectorAll('.brand-filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            const targetBtn = document.querySelector(`[data-brand="${brand}"]`);
+            if (targetBtn) {
+                targetBtn.classList.add('active');
+            }
+            
+            render();
+        }
+
+        function formatBrands(text, isExpanded) {
+            const brands = text.split(';').map(b => b.trim());
+            if (isExpanded) {
+                return brands.map(b => `<span class="brand-item">${b}</span>`).join('');
+            } else {
+                return brands[0];
+            }
+        }
+
+        function renderCategory(categoryKey, categoryData) {
+            const categoryName = categories[categoryKey];
+            let html = `
+                <div class="category-section">
+                    <h2 class="category-header">${categoryName}</h2>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Question</th>
+                                    ${models.map(m => `<th>${m.name}</th>`).join('')}
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+
+            categoryData.forEach(row => {
+                const isExpanded = expandedRows.has(row.id);
+                const expandClass = isExpanded ? 'expanded' : '';
+                html += `
+                    <tr class="${expandClass}">
+                        <td>${row.id}</td>
+                        <td>
+                            <div class="question-cell" onclick="toggleRow(${row.id})">
+                                <span class="expand-icon">${isExpanded ? '−' : '+'}</span>
+                                <span>${row.question}</span>
+                            </div>
+                        </td>
+                        ${models.map(m => `
+                            <td>
+                                <div class="brand-cell ${m.key}">
+                                    <div class="brand-list ${isExpanded ? '' : 'collapsed'}">
+                                        ${formatBrands(row[m.key], isExpanded)}
+                                    </div>
+                                </div>
+                            </td>
+                        `).join('')}
+                    </tr>
+                `;
+            });
+
+            html += `
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+
+            return html;
+        }
+
+        function render() {
+            const filtered = data.filter(row => {
+                if (currentFilter) {
+                    const searchLower = currentFilter.toLowerCase();
+                    const matchesSearch = row.question.toLowerCase().includes(searchLower) ||
+                           Object.values(row).some(val => 
+                               typeof val === 'string' && val.toLowerCase().includes(searchLower)
+                           );
+                    if (!matchesSearch) return false;
+                }
+                
+                return matchesBrandFilter(row);
+            });
+
+            const content = document.getElementById('content');
+            
+            if (filtered.length === 0) {
+                content.innerHTML = '<div class="no-results">No results found for "' + currentFilter + '"</div>';
+            } else {
+                const grouped = {};
+                filtered.forEach(row => {
+                    if (!grouped[row.category]) grouped[row.category] = [];
+                    grouped[row.category].push(row);
+                });
+
+                content.innerHTML = Object.keys(grouped)
+                    .map(cat => renderCategory(cat, grouped[cat]))
+                    .join('');
+            }
+
+            document.getElementById('footerStats').textContent = 
+                `Showing ${filtered.length} of ${data.length} questions • Click any question to expand all brand recommendations`;
+        }
+
+        function toggleRow(id) {
+            if (expandedRows.has(id)) {
+                expandedRows.delete(id);
+            } else {
+                expandedRows.add(id);
+            }
+            render();
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            currentFilter = e.target.value;
+            render();
+        });
+
+        window.toggleRow = toggleRow;
+        window.filterByBrand = filterByBrand;
+
+        document.querySelectorAll('.brand-filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterByBrand(this.dataset.brand);
+            });
+        });
+
+        render();
+    </script>
+</body>
+</html>
