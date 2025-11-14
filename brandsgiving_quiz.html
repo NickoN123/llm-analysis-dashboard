@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrandsGiving AI Intelligence Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .presentation-container {
+            width: 100%;
+            max-width: 1280px;
+            aspect-ratio: 16/9;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 60px 80px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (max-width: 1024px) {
+            .presentation-container {
+                aspect-ratio: auto;
+                min-height: 90vh;
+                padding: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .presentation-container {
+                padding: 30px 20px;
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .turkey-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .title {
+            font-size: 48px;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 12px;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 400;
+            letter-spacing: 0.3px;
+        }
+
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .start-screen, .quiz-screen, .results-screen {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .start-description {
+            font-size: 20px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 28px;
+            text-align: center;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .start-btn, .restart-btn {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            display: block;
+            padding: 18px 40px;
+            background: #00d4ff;
+            border: none;
+            border-radius: 4px;
+            color: #0a0e1a;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .start-btn:hover, .restart-btn:hover {
+            background: #00bdeb;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 212, 255, 0.3);
+        }
+
+        .brandrank-logo {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .brandrank-logo img {
+            max-width: 300px;
+            height: auto;
+            opacity: 0.9;
+        }
+
+        .progress-container {
+            margin-bottom: 30px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #00d4ff;
+            transition: width 0.4s ease;
+            border-radius: 2px;
+        }
+
+        .question-section {
+            margin-bottom: 35px;
+        }
+
+        .question-number {
+            font-size: 14px;
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .question-text {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 35px;
+            line-height: 1.4;
+            color: #ffffff;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .option {
+            padding: 20px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 17px;
+            text-align: left;
+            font-weight: 400;
+        }
+
+        .option:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #00d4ff;
+            transform: translateX(4px);
+        }
+
+        .option.selected {
+            background: rgba(0, 212, 255, 0.15);
+            border-color: #00d4ff;
+            color: #00d4ff;
+            font-weight: 500;
+        }
+
+        .option.correct {
+            background: rgba(78, 205, 196, 0.15);
+            border-color: #4ecdc4;
+            color: #4ecdc4;
+            font-weight: 500;
+        }
+
+        .option.incorrect {
+            background: rgba(255, 107, 107, 0.15);
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+            font-weight: 500;
+        }
+
+        .next-btn {
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+            display: block;
+            padding: 16px;
+            background: #00d4ff;
+            border: none;
+            border-radius: 4px;
+            color: #0a0e1a;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .next-btn.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .next-btn:hover {
+            background: #00bdeb;
+            transform: translateY(-2px);
+        }
+
+        .explanation {
+            margin-top: 25px;
+            padding: 20px 24px;
+            background: rgba(0, 212, 255, 0.08);
+            border-left: 3px solid #00d4ff;
+            border-radius: 4px;
+            font-size: 16px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.9);
+            display: none;
+        }
+
+        .explanation.visible {
+            display: block;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .results-layout {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        @media (max-width: 768px) {
+            .results-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .score-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .score-number {
+            font-size: 96px;
+            font-weight: 700;
+            color: #00d4ff;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .score-label {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+        }
+
+        .segment-badge {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #00d4ff;
+            border-radius: 2px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #0a0e1a;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .results-content {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .segment-description {
+            font-size: 18px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .insights-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 25px;
+        }
+
+        .insights-title {
+            font-size: 18px;
+            color: #00d4ff;
+            margin-bottom: 18px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .insight-item {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 15px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .insight-item:last-child {
+            border-bottom: none;
+        }
+
+        .cta-box {
+            margin-top: 30px;
+            padding: 25px;
+            background: rgba(0, 212, 255, 0.08);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 4px;
+            font-size: 15px;
+            line-height: 1.7;
+            text-align: center;
+        }
+
+        .cta-box strong {
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .cta-box a {
+            color: #00d4ff;
+            text-decoration: none;
+            border-bottom: 1px solid #00d4ff;
+        }
+
+        .cta-box a:hover {
+            color: #ffffff;
+            border-bottom-color: #ffffff;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .turkey-icon {
+                font-size: 48px;
+            }
+
+            .title {
+                font-size: 32px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .start-description {
+                font-size: 16px;
+            }
+
+            .question-text {
+                font-size: 22px;
+            }
+
+            .option {
+                padding: 16px 20px;
+                font-size: 15px;
+            }
+
+            .score-number {
+                font-size: 72px;
+            }
+
+            .brandrank-logo img {
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="header">
+            <span class="turkey-icon">🦃</span>
+            <h1 class="title">BrandsGiving AI Intelligence Test</h1>
+            <p class="subtitle">Measure Your Answer Engine Expertise and Brand Knowledge</p>
+        </div>
+
+        <div class="content-area">
+            <div id="startScreen" class="start-screen">
+                <p class="start-description">
+                    We queried all the major Answer Engines about the most recommended brands for the Thanksgiving holiday—from meal preparation to cleanup. Across 30 questions and 8 AI platforms, clear patterns emerged about which brands dominate, which companies are winning, and how each platform thinks differently.
+                </p>
+                <p class="start-description">
+                    Test your knowledge about who showed up and why. Can you predict which brands achieve universal consensus, which platforms favor premium recommendations, and what separates AI winners from retail giants that barely register?
+                </p>
+                <button class="start-btn" onclick="startQuiz()">Begin Assessment</button>
+                
+                <div class="brandrank-logo">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 200'%3E%3Crect width='800' height='200' fill='%231a1f35'/%3E%3Crect x='50' y='50' width='700' height='100' rx='50' fill='none' stroke='white' stroke-width='3'/%3E%3Ctext x='400' y='105' font-family='serif' font-size='48' fill='white' text-anchor='middle' font-weight='300'%3Ebrandrank.ai%3C/text%3E%3Cpath d='M 530 70 L 560 100 L 530 130' fill='none' stroke='white' stroke-width='3'/%3E%3Ctext x='400' y='170' font-family='serif' font-size='20' fill='white' text-anchor='middle' font-style='italic'%3Eprompting your brand truth%3C/text%3E%3Ctext x='710' y='170' font-size='14' fill='white'%3ESM%3C/text%3E%3C/svg%3E" alt="BrandRank.AI - Prompting Your Brand Truth">
+                </div>
+            </div>
+
+            <div id="quizScreen" class="quiz-screen hidden">
+                <div class="progress-container">
+                    <div class="progress-info">
+                        <span id="progressText">Question 1 of 10</span>
+                        <span id="progressPercent">10%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+                
+                <div class="question-section">
+                    <div class="question-number" id="questionNumber"></div>
+                    <div class="question-text" id="questionText"></div>
+                </div>
+                
+                <div class="options" id="options"></div>
+                <div class="explanation" id="explanation"></div>
+                <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Continue</button>
+            </div>
+
+            <div id="resultsScreen" class="results-screen hidden">
+                <div class="results-layout">
+                    <div class="score-card">
+                        <div class="score-number" id="finalScore"></div>
+                        <div class="score-label">Correct Answers</div>
+                        <div class="segment-badge" id="segmentBadge"></div>
+                    </div>
+                    
+                    <div class="results-content">
+                        <div class="segment-description" id="segmentDescription"></div>
+                        
+                        <div class="insights-box">
+                            <div class="insights-title">Performance Analysis</div>
+                            <div id="insights"></div>
+                        </div>
+                        
+                        <button class="restart-btn" onclick="restartQuiz()">Retake Assessment</button>
+                    </div>
+                </div>
+                
+                <div class="cta-box">
+                    <strong>Want to see how YOUR brand performs across AI platforms?</strong><br>
+                    Contact Adam Bittner at <a href="mailto:adam@brandrank.ai">adam@brandrank.ai</a> to access your BrandRank.AI dashboard and measure Visibility, Vulnerability, and Readiness.
+                </div>
+                
+                <div class="brandrank-logo">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 200'%3E%3Crect width='800' height='200' fill='%231a1f35'/%3E%3Crect x='50' y='50' width='700' height='100' rx='50' fill='none' stroke='white' stroke-width='3'/%3E%3Ctext x='400' y='105' font-family='serif' font-size='48' fill='white' text-anchor='middle' font-weight='300'%3Ebrandrank.ai%3C/text%3E%3Cpath d='M 530 70 L 560 100 L 530 130' fill='none' stroke='white' stroke-width='3'/%3E%3Ctext x='400' y='170' font-family='serif' font-size='20' fill='white' text-anchor='middle' font-style='italic'%3Eprompting your brand truth%3C/text%3E%3Ctext x='710' y='170' font-size='14' fill='white'%3ESM%3C/text%3E%3C/svg%3E" alt="BrandRank.AI - Prompting Your Brand Truth">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Which brand appears in ALL 8 AI platforms for dishwasher detergent?",
+                options: ["Finish Quantum", "Cascade", "Seventh Generation", "Dawn"],
+                correct: 1,
+                explanation: "Cascade Platinum achieves a perfect 8-for-8 sweep across all platforms, demonstrating P&G's content marketing dominance and universal AI recognition for 'tough holiday dishes.'"
+            },
+            {
+                question: "When asked about premium turkeys, which platform recommends the most luxe option?",
+                options: ["ChatGPT (Mary's Organic)", "Grok (D'Artagnan)", "Claude (Bell & Evans)", "Gemini (Diestel)"],
+                correct: 1,
+                explanation: "X/Grok recommends D'Artagnan and KellyBronze—the most premium choices—reflecting its training on food Twitter and culinary influencer discourse. It's 'The Foodie Insider' platform."
+            },
+            {
+                question: "Which meat thermometer brand is recommended by every single AI platform?",
+                options: ["MEATER", "Taylor", "ThermoWorks Thermapen", "ThermoPro"],
+                correct: 2,
+                explanation: "ThermoWorks achieves unanimous 8-for-8 recommendations through professional chef endorsements, engineering precision, and objective performance specs that AI models can cite with confidence."
+            },
+            {
+                question: "Private labels hold 20%+ retail market share but capture what % of AI recommendations?",
+                options: ["18%", "12%", "Less than 3%", "About 25%"],
+                correct: 2,
+                explanation: "Despite retail dominance, private labels capture less than 3% of AI mentions. They lack third-party reviews and editorial coverage that AI models use to assess credibility—proving retail sales don't equal AI authority."
+            },
+            {
+                question: "Which platform is most likely to recommend Amazon's own brands?",
+                options: ["Perplexity", "Amazon", "ChatGPT", "DeepSeek"],
+                correct: 1,
+                explanation: "Amazon is 'The Store Manager'—exclusively recommending products available for immediate purchase on its platform, heavily promoting private labels (365, Amazon Fresh) while excluding brands not in its inventory."
+            },
+            {
+                question: "For plant-based turkey alternatives, how many platforms recommend Tofurky?",
+                options: ["5 platforms", "All 8 platforms", "3 platforms", "6 platforms"],
+                correct: 1,
+                explanation: "Tofurky achieves perfect unanimity across all 8 platforms through 25+ years of category ownership. When AI processes 'plant-based turkey,' Tofurky has unassailable training data depth."
+            },
+            {
+                question: "Which company owns BOTH Marie Callender's pies AND Birds Eye vegetables?",
+                options: ["Campbell's", "General Mills", "Conagra Brands", "Nestlé"],
+                correct: 2,
+                explanation: "Conagra Brands is a major winner, owning Marie Callender's (frozen pies - near-universal AI presence) and Birds Eye (frozen vegetables - universal), dominating the frozen foods AI landscape."
+            },
+            {
+                question: "Which platform is described as 'The Research Librarian' in the analysis?",
+                options: ["Claude", "ChatGPT", "Gemini", "Perplexity"],
+                correct: 0,
+                explanation: "Claude is 'The Research Librarian'—evidence-based with emphasis on authoritative sources, detailed product specs, and third-party validation. Shows distinctive specificity in product callouts."
+            },
+            {
+                question: "Ocean Spray dominates cranberry sauce. What's their competitive edge?",
+                options: ["Lowest price point", "Farmer-owned cooperative story", "Most sugar content", "Celebrity endorsements"],
+                correct: 1,
+                explanation: "Ocean Spray (7 of 8 platforms) dominates through farmer-owned cooperative heritage, vertical integration storytelling, and owning both 'canned cranberry' as a category and 'Thanksgiving tradition' as a cultural moment."
+            },
+            {
+                question: "Which major food company is notably ABSENT despite being a major poultry producer?",
+                options: ["Perdue", "Hormel Foods", "Tyson Foods", "Foster Farms"],
+                correct: 2,
+                explanation: "Tyson Foods is completely absent from turkey recommendations despite being a major producer. Their commodity positioning and B2B focus leaves them with virtually no consumer-facing AI presence."
+            }
+        ];
+
+        const segments = [
+            {
+                name: "Answer Engine Architect",
+                min: 9,
+                description: "You're an AI recommendation savant with comprehensive understanding of how different platforms think, which brands dominate, and why legacy content creates AI authority. Your strategic insight positions you at the forefront of Answer Economy optimization.",
+                insights: "You recognize that AI recommendation engines reflect training data biases, commercial relationships, and content ecosystems. You understand that winning in AI requires fundamentally different strategies than traditional retail or search optimization."
+            },
+            {
+                name: "Brand Strategist Pro",
+                min: 7,
+                description: "Impressive performance. You demonstrate strong intuition about brand authority and understand how AI platforms diverge in their recommendations. You're thinking strategically about the Answer Economy and its implications for modern marketing.",
+                insights: "You grasp that platforms like ChatGPT favor editorial content while Amazon prioritizes commerce. You understand that legacy brands dominate not by accident, but through decades of content accumulation that AI models inherently reward."
+            },
+            {
+                name: "Data-Driven Marketer",
+                min: 5,
+                description: "Solid results. You recognize patterns in AI recommendations and understand that brand visibility in AI systems is not random. You're beginning to see how the Answer Economy differs from traditional marketing channels and search optimization.",
+                insights: "You're noticing that retail dominance doesn't equal AI presence. Continue exploring how different AI platforms develop distinct recommendation patterns based on their training data, commercial incentives, and architectural design choices."
+            },
+            {
+                name: "Curious Observer",
+                min: 3,
+                description: "You're developing awareness of major brands and can identify some patterns, but the deeper mechanics of AI recommendations remain unclear. This represents an opportunity to build expertise in Answer Engine Optimization as the field evolves.",
+                insights: "AI platforms synthesize content, reviews, and expert opinions in unique ways that differ fundamentally from traditional search algorithms. Understanding these patterns is becoming essential for contemporary brand strategy and marketing effectiveness."
+            },
+            {
+                name: "AI Novice",
+                min: 1,
+                description: "You're at the beginning of learning how AI answers questions differently than traditional search engines. The Answer Economy represents new territory with significant opportunity to develop expertise as the landscape continues to evolve rapidly.",
+                insights: "Critical insight: Brands that dominate AI recommendations earned position through years of content development, third-party validation, and review accumulation—not through advertising spend or retail distribution alone."
+            },
+            {
+                name: "Developing Knowledge",
+                min: 0,
+                description: "AI-powered answer engines are fundamentally changing consumer brand discovery patterns. Building understanding of this shift is becoming essential for marketing effectiveness in an increasingly AI-mediated marketplace.",
+                insights: "Begin by exploring how ChatGPT, Claude, and Gemini answer identical brand questions differently. You'll observe that each platform has distinct recommendation patterns shaped by training data sources, commercial relationships, and architectural objectives."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answers = [];
+
+        function startQuiz() {
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('quizScreen').classList.remove('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('questionNumber').textContent = `Question ${currentQuestion + 1}`;
+            document.getElementById('questionText').textContent = q.question;
+            
+            const optionsHtml = q.options.map((option, index) => 
+                `<div class="option" onclick="selectOption(${index})">${option}</div>`
+            ).join('');
+            document.getElementById('options').innerHTML = optionsHtml;
+            
+            document.getElementById('explanation').classList.remove('visible');
+            document.getElementById('nextBtn').classList.remove('visible');
+            
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+            document.getElementById('progressPercent').textContent = Math.round(progress) + '%';
+        }
+
+        function selectOption(index) {
+            const q = questions[currentQuestion];
+            const options = document.querySelectorAll('.option');
+            
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+            });
+            
+            options[index].classList.add('selected');
+            
+            setTimeout(() => {
+                options.forEach((opt, i) => {
+                    if (i === q.correct) {
+                        opt.classList.add('correct');
+                    } else if (i === index && i !== q.correct) {
+                        opt.classList.add('incorrect');
+                    }
+                });
+                
+                document.getElementById('explanation').textContent = q.explanation;
+                document.getElementById('explanation').classList.add('visible');
+                document.getElementById('nextBtn').classList.add('visible');
+                
+                if (index === q.correct) {
+                    score++;
+                }
+                answers.push(index === q.correct);
+            }, 300);
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            
+            if (currentQuestion < questions.length) {
+                showQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quizScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.remove('hidden');
+            
+            document.getElementById('finalScore').textContent = score;
+            
+            const segment = segments.find(s => score >= s.min);
+            document.getElementById('segmentBadge').textContent = segment.name;
+            document.getElementById('segmentDescription').textContent = segment.description;
+            
+            const percentage = Math.round((score / questions.length) * 100);
+            const level = segment.name.includes('Architect') ? 'Expert' : 
+                         segment.name.includes('Pro') ? 'Advanced' : 
+                         segment.name.includes('Data-Driven') ? 'Intermediate' : 
+                         segment.name.includes('Observer') ? 'Developing' : 'Foundational';
+            
+            const insightsHtml = `
+                <div class="insight-item">Accuracy: ${score} of ${questions.length} correct (${percentage}%)</div>
+                <div class="insight-item">Knowledge Level: ${level}</div>
+                <div class="insight-item">${segment.insights}</div>
+            `;
+            document.getElementById('insights').innerHTML = insightsHtml;
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            answers = [];
+            document.getElementById('resultsScreen').classList.add('hidden');
+            document.getElementById('quizScreen').classList.remove('hidden');
+            showQuestion();
+        }
+    </script>
+</body>
+</html>
