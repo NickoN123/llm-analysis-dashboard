@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Thanksgiving Brand Battle</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            min-height: 100vh;
+            padding: 4rem 6rem;
+        }
+
+        .slide-header {
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .slide-title {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .slide-subtitle {
+            font-size: 1.2rem;
+            color: #ffffff;
+            font-weight: 400;
+        }
+
+        .summary-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: #00d4ff;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .brand-frequency {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .frequency-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0.5rem;
+            border-radius: 8px;
+        }
+
+        .frequency-bar:hover {
+            background: rgba(0, 212, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .brand-name {
+            min-width: 150px;
+            font-weight: 500;
+        }
+
+        .bar-container {
+            flex: 1;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff 0%, #0099cc 100%);
+            transition: width 1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .matrix-container {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            overflow-x: auto;
+            backdrop-filter: blur(10px);
+            margin-bottom: 3rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 0.85rem;
+        }
+
+        thead {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(0, 212, 255, 0.05) 100%);
+        }
+
+        th {
+            padding: 1.5rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #00d4ff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.75rem;
+            border-bottom: 2px solid #00d4ff;
+            white-space: nowrap;
+        }
+
+        th:first-child {
+            border-top-left-radius: 8px;
+            position: sticky;
+            left: 0;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(0, 212, 255, 0.05) 100%);
+            z-index: 10;
+            min-width: 120px;
+        }
+
+        tbody tr {
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        tbody tr:hover {
+            background: rgba(0, 212, 255, 0.05);
+            transform: scale(1.01);
+        }
+
+        tbody tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        tbody tr:nth-child(even):hover {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        td {
+            padding: 1.5rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            vertical-align: top;
+            line-height: 1.6;
+        }
+
+        td:first-child {
+            font-weight: 600;
+            color: #00d4ff;
+            position: sticky;
+            left: 0;
+            background: inherit;
+            z-index: 5;
+            white-space: nowrap;
+            min-width: 120px;
+        }
+
+        .brand-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .brand-list li {
+            padding: 0.5rem 0;
+            font-size: 1rem;
+            position: relative;
+            padding-left: 1rem;
+            transition: all 0.2s ease;
+            line-height: 1.6;
+        }
+
+        .brand-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #00d4ff;
+            font-weight: bold;
+        }
+
+        .brand-list li:hover {
+            color: #00d4ff;
+            padding-left: 1.3rem;
+        }
+
+        .brand-list li.highlighted {
+            background: rgba(0, 212, 255, 0.15);
+            border-left: 3px solid #00d4ff;
+            padding-left: 1.5rem;
+            margin-left: -0.5rem;
+            padding-right: 0.5rem;
+            border-radius: 4px;
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .personality-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .personality-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #00d4ff;
+            transform: translateY(-5px);
+        }
+
+        .card-content {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .about-section {
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid #00d4ff;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .presentation-container > * {
+            animation: slideIn 0.8s ease forwards;
+        }
+
+        @media (max-width: 1400px) {
+            .presentation-container {
+                padding: 3rem 4rem;
+            }
+            
+            .slide-title {
+                font-size: 2.5rem;
+            }
+            
+            table {
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .presentation-container {
+                padding: 2rem 2rem;
+            }
+            
+            .slide-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-header">
+            <h1 class="slide-title">The Thanksgiving Brand Battle: AI's Recipe Playbook Revealed</h1>
+            <p class="slide-subtitle">Same menu, 8 AI platforms, wildly different brand winners—visibility determines who lands on America's Thanksgiving tables. Powered by BrandRank.</p>
+        </div>
+
+        <div class="summary-card">
+            <div class="card-title">Top Brand Mentions</div>
+            <div class="brand-frequency">
+                <div class="frequency-bar" onclick="highlightBrand('McCormick')">
+                    <span class="brand-name">McCormick</span>
+                    <div class="bar-container">
+                        <div class="bar-fill" style="width: 100%;">40</div>
+                    </div>
+                </div>
+                <div class="frequency-bar" onclick="highlightBrand('Butterball')">
+                    <span class="brand-name">Butterball</span>
+                    <div class="bar-container">
+                        <div class="bar-fill" style="width: 60%;">24</div>
+                    </div>
+                </div>
+                <div class="frequency-bar" onclick="highlightBrand('Lundberg')">
+                    <span class="brand-name">Lundberg</span>
+                    <div class="bar-container">
+                        <div class="bar-fill" style="width: 55%;">22</div>
+                    </div>
+                </div>
+                <div class="frequency-bar" onclick="highlightBrand('Swanson')">
+                    <span class="brand-name">Swanson</span>
+                    <div class="bar-container">
+                        <div class="bar-fill" style="width: 43%;">17</div>
+                    </div>
+                </div>
+                <div class="frequency-bar" onclick="highlightBrand('Fage')">
+                    <span class="brand-name">Fage</span>
+                    <div class="bar-container">
+                        <div class="bar-fill" style="width: 40%;">16</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="matrix-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>LLM Platform</th>
+                        <th>Turkey</th>
+                        <th>Stuffing</th>
+                        <th>Brussels Sprouts</th>
+                        <th>Sweet Potatoes</th>
+                        <th>Pumpkin Pie</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Amazon Rufus</td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Butterball">Butterball Boneless Turkey Breast</li>
+                            <li data-brand="Lawry's">Lawry's Poultry Rub</li>
+                            <li data-brand="McCormick">McCormick Poultry Seasoning</li>
+                            <li data-brand="California Olive Ranch">California Olive Ranch EVOO</li>
+                            <li data-brand="Kerrygold">Kerrygold Irish Butter</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Lundberg">Lundberg Wild Blend Rice</li>
+                            <li data-brand="Arnold">Arnold 100% Whole Wheat</li>
+                            <li data-brand="Swanson">Swanson Low-Sodium Broth</li>
+                            <li data-brand="Simply Organic">Simply Organic Sage</li>
+                            <li data-brand="Kerrygold">Kerrygold Butter</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Birds Eye">Birds Eye Brussels Sprouts</li>
+                            <li data-brand="365 Whole Foods">365 Brussels Sprouts</li>
+                            <li data-brand="Bertolli">Bertolli EVOO</li>
+                            <li data-brand="Colavita">Colavita Balsamic</li>
+                            <li data-brand="Fisher">Fisher Pine Nuts</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li>Fresh Sweet Potatoes</li>
+                            <li data-brand="Chobani">Chobani Greek Yogurt</li>
+                            <li data-brand="Kerrygold">Kerrygold Butter</li>
+                            <li data-brand="McCormick">McCormick Cinnamon</li>
+                            <li data-brand="Butternut Mountain">Butternut Mountain Maple Syrup</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Libby's">Libby's Pure Pumpkin</li>
+                            <li data-brand="Eagle Brand">Eagle Brand Condensed Milk</li>
+                            <li data-brand="Pillsbury">Pillsbury Pie Crust</li>
+                            <li data-brand="McCormick">McCormick Pie Spice</li>
+                            <li data-brand="Kerrygold">Kerrygold Butter</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td>Google Gemini</td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Butterball">Butterball Turkey Breast</li>
+                            <li data-brand="Pacific">Pacific Organic Chicken Broth</li>
+                            <li data-brand="Melissa's">Melissa's Fresh Herbs</li>
+                            <li data-brand="Morton">Morton Kosher Salt</li>
+                            <li data-brand="Simply Organic">Simply Organic Peppercorns</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Lundberg">Lundberg Wild Blend Rice</li>
+                            <li data-brand="Swanson">Swanson Low-Sodium Broth</li>
+                            <li data-brand="Arnold">Arnold 100% Whole Wheat</li>
+                            <li data-brand="Spice Islands">Spice Islands Poultry Seasoning</li>
+                            <li data-brand="Pompeian">Pompeian EVOO</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Bertolli">Bertolli EVOO</li>
+                            <li data-brand="Mussini">Mussini Balsamic Glaze</li>
+                            <li data-brand="Fisher">Fisher Pine Nuts</li>
+                            <li data-brand="Redmond">Redmond Real Salt</li>
+                            <li data-brand="McCormick">McCormick Black Pepper</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Fage">Fage 0% Greek Yogurt</li>
+                            <li data-brand="Butternut Mountain">Butternut Mountain Maple Syrup</li>
+                            <li data-brand="Frontier">Frontier Organic Cinnamon</li>
+                            <li data-brand="Diamond">Diamond Crystal Kosher Salt</li>
+                            <li data-brand="Grown In Idaho">Grown In Idaho Sweet Potatoes</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Libby's">Libby's Pure Pumpkin</li>
+                            <li data-brand="Carnation">Nestlé Carnation Evaporated Milk</li>
+                            <li data-brand="Badia">Badia Cinnamon & Ginger</li>
+                            <li data-brand="Horizon">Horizon Heavy Cream</li>
+                            <li data-brand="Pillsbury">Pillsbury Pie Crust</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td>ChatGPT</td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Butterball">Butterball</li>
+                            <li data-brand="Jennie-O">Jennie-O</li>
+                            <li data-brand="California Olive Ranch">California Olive Ranch</li>
+                            <li data-brand="Swanson">Swanson</li>
+                            <li data-brand="McCormick">McCormick</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Lundberg">Lundberg</li>
+                            <li data-brand="Pepperidge Farm">Pepperidge Farm/Arnold</li>
+                            <li data-brand="Swanson">Swanson</li>
+                            <li data-brand="Bob's Red Mill">Bob's Red Mill</li>
+                            <li data-brand="McCormick">McCormick</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Colavita">Colavita Balsamic</li>
+                            <li data-brand="Fisher">Fisher Pine Nuts</li>
+                            <li data-brand="California Olive Ranch">California Olive Ranch</li>
+                            <li data-brand="McCormick">McCormick Pepper</li>
+                            <li>Local Sprouts</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Fage">Fage Total</li>
+                            <li data-brand="Chobani">Chobani</li>
+                            <li data-brand="Land O'Lakes">Land O'Lakes</li>
+                            <li data-brand="McCormick">McCormick Spices</li>
+                            <li>Local Sweet Potatoes</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Libby's">Libby's</li>
+                            <li data-brand="Carnation">Carnation</li>
+                            <li data-brand="McCormick">McCormick Spices</li>
+                            <li data-brand="Eagle Brand">Eagle Brand</li>
+                            <li data-brand="Land O'Lakes">Land O'Lakes</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td>Claude</td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Land O'Lakes">Land O'Lakes</li>
+                            <li data-brand="Swanson">Swanson Broth</li>
+                            <li data-brand="McCormick">McCormick Organic Herbs</li>
+                            <li data-brand="Jennie-O">Jennie-O</li>
+                            <li data-brand="Morton">Morton Salt</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Lundberg">Lundberg</li>
+                            <li data-brand="Pepperidge Farm">Pepperidge Farm</li>
+                            <li data-brand="Arnold">Arnold Bread</li>
+                            <li data-brand="Swanson">Swanson Veg Broth</li>
+                            <li data-brand="Ocean Spray">Ocean Spray</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="California Olive Ranch">California Olive Ranch</li>
+                            <li data-brand="Napa Valley Naturals">Napa Valley Naturals</li>
+                            <li data-brand="Colavita">Colavita</li>
+                            <li data-brand="Trader Joe's">Trader Joe's Pine Nuts</li>
+                            <li data-brand="Crown">Crown Syrup</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Fage">Fage Total</li>
+                            <li data-brand="Chobani">Chobani</li>
+                            <li data-brand="Land O'Lakes">Land O'Lakes</li>
+                            <li data-brand="McCormick">McCormick Spices</li>
+                            <li data-brand="Organic Valley">Organic Valley Milk</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Libby's">Libby's</li>
+                            <li data-brand="Eagle Brand">Eagle Brand</li>
+                            <li data-brand="King Arthur">King Arthur</li>
+                            <li data-brand="McCormick">McCormick</li>
+                            <li data-brand="Land O'Lakes">Land O'Lakes</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td>Grok/X</td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Butterball">Butterball Boneless Turkey Breast</li>
+                            <li data-brand="McCormick">McCormick Gourmet Organic Rosemary</li>
+                            <li data-brand="McCormick">McCormick Gourmet Organic Thyme</li>
+                            <li data-brand="Morton">Morton Kosher Salt</li>
+                            <li data-brand="Pompeian">Pompeian Extra Virgin Olive Oil</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Lundberg">Lundberg</li>
+                            <li data-brand="Pepperidge Farm">Pepperidge Farm</li>
+                            <li data-brand="Swanson">Swanson</li>
+                            <li data-brand="McCormick">McCormick Seasoning</li>
+                            <li data-brand="Ocean Spray">Ocean Spray Craisins</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Birds Eye">Birds Eye</li>
+                            <li data-brand="Pompeian">Pompeian Balsamic</li>
+                            <li data-brand="Diamond">Diamond Pine Nuts</li>
+                            <li data-brand="Morton">Morton Salt</li>
+                            <li data-brand="Bertolli">Bertolli EVOO</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Bruce's">Bruce's Yams</li>
+                            <li data-brand="Fage">Fage Yogurt</li>
+                            <li data-brand="Maple Grove">Maple Grove Syrup</li>
+                            <li data-brand="McCormick">McCormick Cinnamon</li>
+                            <li data-brand="Chobani">Chobani Zero</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Libby's">Libby's</li>
+                            <li data-brand="Eagle Brand">Eagle Brand</li>
+                            <li data-brand="Land O'Lakes">Land O'Lakes Cream</li>
+                            <li data-brand="McCormick">McCormick Pie Spice</li>
+                            <li data-brand="Pillsbury">Pillsbury</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td>Perplexity</td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Land O'Lakes">Land O Lakes</li>
+                            <li data-brand="Filippo Berio">Filippo Berio/Bertolli EVOO</li>
+                            <li data-brand="Spice World">Spice World Garlic</li>
+                            <li data-brand="McCormick">McCormick Herbs</li>
+                            <li data-brand="Morton">Morton Salt</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Lundberg">Lundberg</li>
+                            <li data-brand="Ezekiel">Ezekiel/Pepperidge Farm</li>
+                            <li data-brand="Kitchen Basics">Kitchen Basics/Pacific</li>
+                            <li data-brand="McCormick">McCormick Garlic</li>
+                            <li>Parsley</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Bertolli">Bertolli/Filippo Berio EVOO</li>
+                            <li data-brand="Colavita">Colavita Balsamic</li>
+                            <li data-brand="O Organics">O Organics Pine Nuts</li>
+                            <li data-brand="Morton">Morton Salt</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Fage">Fage Total</li>
+                            <li data-brand="Chobani">Chobani</li>
+                            <li data-brand="Land O'Lakes">Land O Lakes</li>
+                            <li data-brand="Nature Nate's">Nature Nate's Honey</li>
+                            <li data-brand="Morton">Morton Salt</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Libby's">Libby's</li>
+                            <li data-brand="Crisco">Crisco/Butter</li>
+                            <li data-brand="Eggland's Best">Eggland's Best</li>
+                            <li data-brand="Organic Valley">Organic Valley Cream</li>
+                            <li data-brand="McCormick">McCormick</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td>DeepSeek</td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Butterball">Butterball Boneless Turkey Breast</li>
+                            <li data-brand="McCormick">McCormick Poultry Seasoning</li>
+                            <li data-brand="California Olive Ranch">California Olive Ranch EVOO</li>
+                            <li data-brand="Diamond">Diamond Crystal Kosher Salt</li>
+                            <li data-brand="Gotham Greens">Gotham Greens Rosemary & Thyme</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Lundberg">Lundberg Wild Blend Rice</li>
+                            <li data-brand="Dave's Killer Bread">Dave's Killer Bread 21 Whole Grains</li>
+                            <li data-brand="Bertolli">Bertolli EVOO</li>
+                            <li data-brand="Swanson">Swanson Low-Sodium Broth</li>
+                            <li data-brand="Simply Organic">Simply Organic Sage</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Pompeian">Pompeian Aged Balsamic</li>
+                            <li data-brand="NOW Foods">NOW Foods Pine Nuts</li>
+                            <li data-brand="Colavita">Colavita EVOO</li>
+                            <li data-brand="Morton">Morton Coarse Sea Salt</li>
+                            <li data-brand="Earthbound Farm">Earthbound Farm Organic Brussels Sprouts</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Stokes Purple">Stokes Purple Sweet Potatoes</li>
+                            <li data-brand="Fage">Fage 2% Greek Yogurt</li>
+                            <li data-brand="Land O'Lakes">Land O'Lakes Unsalted Butter</li>
+                            <li data-brand="McCormick">McCormick Ground Cinnamon</li>
+                            <li data-brand="Simply Organic">Simply Organic Ground Nutmeg</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Libby's">Libby's 100% Pure Pumpkin</li>
+                            <li data-brand="Eagle Brand">Eagle Brand Condensed Milk</li>
+                            <li data-brand="Pillsbury">Pillsbury Pie Crust</li>
+                            <li data-brand="McCormick">McCormick Pumpkin Pie Spice</li>
+                            <li data-brand="Vital Farms">Vital Farms Pasture-Raised Eggs</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td>Llama</td>
+                        <td><ul class="brand-list">
+                            <li data-brand="California Olive Ranch">California Olive Ranch EVOO</li>
+                            <li data-brand="McCormick">McCormick Rosemary/Thyme</li>
+                            <li data-brand="Morton">Morton Salt</li>
+                            <li data-brand="McCormick">McCormick Pepper</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Arnold">Arnold Whole Wheat Bread</li>
+                            <li data-brand="Lundberg">Lundberg Wild Rice</li>
+                            <li data-brand="Swanson">Swanson Organic Broth</li>
+                            <li data-brand="McCormick">McCormick Parsley</li>
+                            <li data-brand="California Olive Ranch">California Olive Ranch EVOO</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="California Olive Ranch">California Olive Ranch</li>
+                            <li data-brand="Colavita">Colavita Balsamic</li>
+                            <li data-brand="Mariani">Mariani Pine Nuts</li>
+                            <li data-brand="Morton">Morton Salt</li>
+                            <li data-brand="McCormick">McCormick Pepper</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Cavendish">Cavendish Sweet Potatoes</li>
+                            <li data-brand="Fage">Fage Yogurt</li>
+                            <li data-brand="Land O'Lakes">Land O'Lakes</li>
+                            <li data-brand="Morton">Morton Salt</li>
+                            <li data-brand="McCormick">McCormick Pepper</li>
+                        </ul></td>
+                        <td><ul class="brand-list">
+                            <li data-brand="Libby's">Libby's</li>
+                            <li data-brand="Organic Valley">Organic Valley Cream</li>
+                            <li data-brand="Domino">Domino Sugar</li>
+                            <li data-brand="Morton">Morton Salt</li>
+                            <li data-brand="McCormick">McCormick Cinnamon</li>
+                        </ul></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="slide-header" style="margin-top: 4rem;">
+            <h1 class="slide-title">Key Brand Insights</h1>
+            <p class="slide-subtitle">What The Data Reveals About Brand Visibility</p>
+        </div>
+
+        <div class="summary-grid">
+            <div class="personality-card">
+                <div class="card-title">McCormick's Overwhelming Dominance</div>
+                <div class="card-content">With 40 mentions across all platforms, McCormick appears nearly 2x more than the next competitor. The spice giant owns the Answer Economy for seasonings, appearing in every recipe category across every AI platform.</div>
+            </div>
+
+            <div class="personality-card">
+                <div class="card-title">Category Monopolies Emerge</div>
+                <div class="card-content">Butterball dominates turkey (24 mentions), Lundberg owns wild rice (22 mentions), and Libby's is the universal pumpkin standard (16 mentions). AI platforms show remarkable consensus on category leaders.</div>
+            </div>
+
+            <div class="personality-card">
+                <div class="card-title">The Premium Shift</div>
+                <div class="card-content">Brands like Kerrygold, Dave's Killer Bread, Vital Farms, and Stokes Purple appear frequently, signaling AI's bias toward premium, health-conscious options over budget alternatives.</div>
+            </div>
+
+            <div class="personality-card">
+                <div class="card-title">Platform-Specific Brand Bias</div>
+                <div class="card-content">Amazon Rufus favors brands available on Amazon (Kerrygold appears 4x). Google Gemini pushes premium organic brands. Each platform's commercial interests shape recommendations invisibly.</div>
+            </div>
+
+            <div class="personality-card">
+                <div class="card-title">Regional Brands Lose</div>
+                <div class="card-content">AI answer engines consistently favor national brands with strong digital footprints. Regional favorites and store brands are virtually invisible in the Answer Economy—a crisis for smaller players.</div>
+            </div>
+        </div>
+
+        <div class="slide-header" style="margin-top: 4rem;">
+            <h1 class="slide-title">Answer Engine Personalities</h1>
+            <p class="slide-subtitle">How Each AI Platform Thinks About Brands</p>
+        </div>
+
+        <div class="summary-grid">
+            <div class="personality-card">
+                <div class="card-title">Amazon Rufus: The Retailer</div>
+                <div class="card-content">Heavy emphasis on Amazon-available brands and premium products. Kerrygold appears 4x, Lawry's leads seasonings. Clear bias toward items that drive Amazon revenue and Prime subscriptions.</div>
+            </div>
+
+            <div class="personality-card">
+                <div class="card-title">Google Gemini: The Health Optimizer</div>
+                <div class="card-content">Pushes Melissa's fresh herbs, Frontier Organic spices, and Diamond Crystal salt. Shows preference for "better-for-you" brands and organic certifications over mainstream options.</div>
+            </div>
+
+            <div class="personality-card">
+                <div class="card-title">ChatGPT: The Safe Bet</div>
+                <div class="card-content">Recommends universally recognized brands across all categories. Heavy on Butterball, Pepperidge Farm, and McCormick. Optimized for broad appeal and minimizing complaints.</div>
+            </div>
+
+            <div class="personality-card">
+                <div class="card-title">Claude: The Balanced Curator</div>
+                <div class="card-content">Mixes premium and mainstream brands strategically. Features both Trader Joe's and established names. Aims for accessibility while maintaining quality perception.</div>
+            </div>
+
+            <div class="personality-card">
+                <div class="card-title">Grok/X: The Traditionalist</div>
+                <div class="card-content">Splits McCormick herbs into separate items (Rosemary + Thyme), uses Pompeian over California Olive Ranch. Shows more granular product specificity than competitors.</div>
+            </div>
+
+            <div class="personality-card">
+                <div class="card-title">Perplexity: The Research-Driven</div>
+                <div class="card-content">Shows diverse sourcing with brands like Filippo Berio, Ezekiel bread, and Nature Nate's honey. Reflects comprehensive web research rather than algorithmic bias.</div>
+            </div>
+
+            <div class="personality-card">
+                <div class="card-title">DeepSeek: The Wellness Warrior</div>
+                <div class="card-content">Most health-forward recommendations: Dave's Killer Bread, Vital Farms eggs, Earthbound Farm organic, Stokes Purple specialty potatoes. Targets conscious consumers willing to pay premium.</div>
+            </div>
+
+            <div class="personality-card">
+                <div class="card-title">Llama: The Generic Optimizer</div>
+                <div class="card-content">Most basic recommendations with heavy McCormick and Morton Salt presence. Prioritizes universal availability and price accessibility over premium positioning.</div>
+            </div>
+        </div>
+
+        <div class="slide-header" style="margin-top: 4rem;">
+            <h1 class="slide-title">Top 10 Brand Profiles</h1>
+            <p class="slide-subtitle">Who's Winning The Answer Economy</p>
+        </div>
+
+        <div class="summary-grid">
+            <div class="personality-card">
+                <div class="card-title">McCormick</div>
+                <div class="card-content">The undisputed king of AI recipe recommendations. Appears in every platform across multiple categories—seasonings, herbs, spices. Universal trust signal. Gold standard for Answer Engine Optimization.</div>
+            </div>
+
+            <div class="personality-card">
+                <div class="card-title">Butterball</div>
+                <div class="card-content">Owns the turkey category with 6 of 8 platforms recommending it. Strong brand recall and category dominance translate directly to AI visibility. The Thanksgiving winner.</div>
+            </div>
+
+            <div class="personality-card">
+                <div class="card-title">Lundberg</div>
+                <div class="card-content">Near-universal wild rice recommendation. Premium positioning meets widespread availability. Health-conscious halo effect boosts AI recommendations across platforms.</div>
+            </div>
+
+            <div class="personality-card">
+                <div class="card-title">Kerrygold</div>
+                <div class="card-content">Amazon Rufus powerhouse appearing across multiple recipes. Premium butter category leader. Shows how retail partnerships amplify AI visibility on commerce-driven platforms.</div>
+            </div>
+
+            <div class="personality-card">
+                <div class="card-title">Swanson</div>
+                <div class="card-content">The broth standard across AI platforms. Consistent quality perception and broad availability create recommendation consensus. Budget-friendly without sacrificing trust.</div>
+            </div>
+
+            <div class="personality-card">
+                <div class="card-title">Land O'Lakes</div>
+                <div class="card-content">Butter and dairy category stalwart. Strong across traditional AI platforms (ChatGPT, Claude, Perplexity). Heritage brand equity translates to digital recommendation power.</div>
+            </div>
+
+            <div class="personality-card">
+                <div class="card-title">Fage</div>
+                <div class="card-content">Greek yogurt category leader in AI recommendations. Premium health positioning drives visibility across platforms. Wins the "better-for-you" algorithm bias.</div>
+            </div>
+
+            <div class="personality-card">
+                <div class="card-title">Libby's</div>
+                <div class="card-content">Universal pumpkin pie standard—appears on every platform. Category dominance so complete that AI has no alternative. The definition of owning a category in the Answer Economy.</div>
+            </div>
+
+            <div class="personality-card">
+                <div class="card-title">California Olive Ranch</div>
+                <div class="card-content">Premium American olive oil breaks through Italian competition. Quality positioning plus domestic production story resonates with AI training data and health-conscious algorithms.</div>
+            </div>
+
+            <div class="personality-card">
+                <div class="card-title">Morton</div>
+                <div class="card-content">The salt standard across multiple AI platforms. Generic category, iconic brand. Shows how deep brand recall creates AI recommendation momentum even in commodity categories.</div>
+            </div>
+        </div>
+
+        <div class="about-section">
+            <div class="card-title">About BrandRank.AI</div>
+            <div class="card-content">BrandRank helps brands measure, protect, and grow trust through the power of AI-driven search and discovery. Combining AI with expert insight, we monitor the major AI "Answer Engines" to pinpoint vulnerabilities and opportunities, identify key insights driving purchase behavior, and uncover category needs and opportunities to strengthen brand equity and consumer loyalty.<br><br>Ready to understand your brand's AI visibility? Contact Adam Bittner at adam@brandrank.ai to see how we can help you measure brand Visibility, Vulnerability, and Readiness via our dashboard.</div>
+        </div>
+    </div>
+
+    <script>
+        let activeFilter = null;
+
+        function highlightBrand(brandName) {
+            const brandItems = document.querySelectorAll('.brand-list li');
+            
+            if (activeFilter === brandName) {
+                clearHighlight();
+                return;
+            }
+            
+            activeFilter = brandName;
+            
+            brandItems.forEach(item => {
+                const itemBrand = item.dataset.brand;
+                if (itemBrand && itemBrand.includes(brandName)) {
+                    item.classList.add('highlighted');
+                } else {
+                    item.classList.remove('highlighted');
+                }
+            });
+
+            document.querySelector('.matrix-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function clearHighlight() {
+            activeFilter = null;
+            document.querySelectorAll('.brand-list li').forEach(item => {
+                item.classList.remove('highlighted');
+            });
+        }
+    </script>
+</body>
+</html>
