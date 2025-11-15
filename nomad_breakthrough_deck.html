@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Chicago Episode Breakthrough</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        
+        .slide {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            padding: 60px 80px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .slide.active {
+            opacity: 1;
+        }
+        
+        .slide-header {
+            margin-bottom: 40px;
+        }
+        
+        .slide-title {
+            font-size: 48px;
+            font-weight: 600;
+            color: #00d4ff;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+        
+        .slide-subtitle {
+            font-size: 24px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .content-box {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 24px;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+        
+        .content-box:hover {
+            transform: translateY(-2px);
+            background: rgba(255,255,255,0.08);
+        }
+        
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+        
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 24px;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 28px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: scale(1.05);
+            background: rgba(0,212,255,0.1);
+            border-color: #00d4ff;
+        }
+        
+        .stat-number {
+            font-size: 56px;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 12px;
+        }
+        
+        .stat-label {
+            font-size: 18px;
+            color: rgba(255,255,255,0.8);
+            font-weight: 400;
+        }
+        
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .bullet-list li {
+            font-size: 22px;
+            line-height: 1.8;
+            margin-bottom: 16px;
+            padding-left: 32px;
+            position: relative;
+            color: rgba(255,255,255,0.9);
+        }
+        
+        .bullet-list li:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 12px;
+            width: 12px;
+            height: 12px;
+            background: #00d4ff;
+            border-radius: 50%;
+        }
+        
+        .highlight {
+            color: #00d4ff;
+            font-weight: 600;
+        }
+        
+        .success {
+            color: #4ecdc4;
+        }
+        
+        .warning {
+            color: #ffd93d;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .data-table th {
+            background: rgba(0,212,255,0.15);
+            padding: 16px;
+            text-align: left;
+            font-size: 18px;
+            font-weight: 600;
+            border-bottom: 2px solid #00d4ff;
+        }
+        
+        .data-table td {
+            padding: 14px 16px;
+            font-size: 18px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .data-table tr:hover {
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .process-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 30px 0;
+        }
+        
+        .process-step {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            margin: 0 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .process-step:hover {
+            background: rgba(0,212,255,0.1);
+            transform: translateY(-4px);
+        }
+        
+        .process-step-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #00d4ff;
+            margin-bottom: 8px;
+        }
+        
+        .process-step-desc {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .arrow {
+            color: #00d4ff;
+            font-size: 32px;
+            font-weight: 300;
+        }
+        
+        .navigation {
+            position: fixed;
+            bottom: 40px;
+            right: 80px;
+            display: flex;
+            gap: 16px;
+            z-index: 1000;
+        }
+        
+        .nav-button {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        .nav-button:hover {
+            background: #00d4ff;
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+        }
+        
+        .nav-button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .progress-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 80px;
+            display: flex;
+            gap: 8px;
+            z-index: 1000;
+        }
+        
+        .progress-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .progress-dot.active {
+            background: #00d4ff;
+            width: 32px;
+            border-radius: 5px;
+        }
+        
+        .big-quote {
+            font-size: 32px;
+            line-height: 1.5;
+            color: rgba(255,255,255,0.95);
+            font-weight: 300;
+            font-style: italic;
+            text-align: center;
+            padding: 40px 80px;
+            border-left: 4px solid #00d4ff;
+            background: rgba(0,212,255,0.05);
+            margin: 40px 0;
+        }
+        
+        .section-header {
+            font-size: 28px;
+            font-weight: 600;
+            color: #00d4ff;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(0,212,255,0.3);
+        }
+        
+        .compact-list {
+            font-size: 20px;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.85);
+        }
+        
+        .compact-list li {
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="slide-content">
+                <h1 style="font-size: 72px; font-weight: 700; color: #00d4ff; margin-bottom: 24px; text-align: center;">The Chicago Episode Breakthrough</h1>
+                <p style="font-size: 32px; text-align: center; color: rgba(255,255,255,0.7); font-weight: 300;">How NOMAD Achieved Universal AI Visibility in 72 Hours</p>
+                <div style="text-align: center; margin-top: 60px; font-size: 20px; color: rgba(255,255,255,0.5);">
+                    Case Study: Answer Engine Optimization in Action
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: The Core Finding -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">The Core Finding</h2>
+            </div>
+            <div class="slide-content">
+                <div class="big-quote">
+                    Joakim Noah's NOMAD launched November 11, 2025. Within 72 hours, all five major AI platforms knew about the Chicago episode and Derrick Rose reunion. None consistently knew anything else.
+                </div>
+                <div class="content-box">
+                    <p style="font-size: 24px; line-height: 1.7; color: rgba(255,255,255,0.9);">
+                        This isn't a story about LLM differences. This is a case study in what it takes to break through to AI answer engines immediately after launch.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: What Penetrated -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">What Actually Penetrated the AI Layer</h2>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div>
+                        <div class="section-header">Universal Knowledge</div>
+                        <p style="font-size: 18px; color: rgba(255,255,255,0.6); margin-bottom: 20px;">All 5 LLMs agreed</p>
+                        <ul class="compact-list bullet-list">
+                            <li>Chicago premiere episode exists</li>
+                            <li>Derrick Rose appears and reunites with Noah</li>
+                            <li>Show explores basketball and culture</li>
+                            <li>NBAT2 production</li>
+                            <li>Launched November 2025</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="section-header">Fragmentary Knowledge</div>
+                        <p style="font-size: 18px; color: rgba(255,255,255,0.6); margin-bottom: 20px;">Only 1-3 LLMs mentioned</p>
+                        <ul class="compact-list bullet-list">
+                            <li>Morocco and Jamaica episodes</li>
+                            <li>Private Chicago screening November 12</li>
+                            <li>Italian beef sandwich scene</li>
+                            <li>Specific quotes and moments</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="content-box" style="margin-top: 32px; text-align: center;">
+                    <p style="font-size: 26px; color: #00d4ff; font-weight: 600;">
+                        Strong consensus on Chicago and Rose. Everything else is fragmentary or uncertain.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: The Breakthrough Formula -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">The Breakthrough Formula</h2>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div class="content-box">
+                        <div class="section-header">Essential Elements</div>
+                        <ul class="bullet-list">
+                            <li>Celebrity co-factor</li>
+                            <li>Nostalgic anchor</li>
+                            <li>Place-based story</li>
+                            <li>Multi-format distribution</li>
+                            <li>Community engagement</li>
+                        </ul>
+                    </div>
+                    <div class="content-box">
+                        <div class="section-header">The Compounding Effect</div>
+                        <div style="font-size: 18px; line-height: 2; color: rgba(255,255,255,0.85); padding: 20px;">
+                            Strong narrative hook<br>
+                            <span style="color: #00d4ff;">↓</span> Social sharing<br>
+                            <span style="color: #00d4ff;">↓</span> Podcast coverage<br>
+                            <span style="color: #00d4ff;">↓</span> Local media pickup<br>
+                            <span style="color: #00d4ff;">↓</span> Multiple citation sources<br>
+                            <span style="color: #00d4ff;">↓</span> LLM confidence<br>
+                            <span style="color: #00d4ff;">↓</span> Answer engine visibility
+                        </div>
+                    </div>
+                </div>
+                <div class="content-box" style="margin-top: 24px;">
+                    <p style="font-size: 24px; text-align: center; color: rgba(255,255,255,0.9);">
+                        Break any link in this chain, and you get Morocco level penetration: maybe it exists, maybe it doesn't, LLMs can't tell.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Strategic Implications -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Strategic Implications for Brand Launches</h2>
+            </div>
+            <div class="slide-content">
+                <div class="content-box">
+                    <div class="section-header">The New Launch Reality</div>
+                    <p style="font-size: 20px; line-height: 1.8; color: rgba(255,255,255,0.85); margin-bottom: 24px;">
+                        Traditional PR assumes: Make noise → Media covers it → Consumers find it
+                    </p>
+                    <p style="font-size: 20px; line-height: 1.8; color: #00d4ff; font-weight: 600;">
+                        AI-mediated discovery requires: Create citation-dense narrative → Multi-platform social proof → LLMs can confirm it → Consumers can discover it
+                    </p>
+                </div>
+                
+                <div class="two-column" style="margin-top: 32px;">
+                    <div class="content-box">
+                        <div class="section-header">What NOMAD Got Right</div>
+                        <ul class="compact-list bullet-list">
+                            <li>Flagship episode with built-in audience</li>
+                            <li>Community pre-seeding</li>
+                            <li>Multi-format content</li>
+                            <li>Platform diversity</li>
+                            <li>Clear narrative hook</li>
+                        </ul>
+                    </div>
+                    <div class="content-box">
+                        <div class="section-header">Could Have Been Stronger</div>
+                        <ul class="compact-list bullet-list">
+                            <li>Official press coverage</li>
+                            <li>Streaming clarity</li>
+                            <li>Episode rollout visibility</li>
+                            <li>Structured data</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="navigation">
+        <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+        <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">Next</button>
+    </div>
+
+    <div class="progress-bar" id="progressBar"></div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            updateNavButtons();
+            updateProgressBar();
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        function updateNavButtons() {
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function updateProgressBar() {
+            const progressBar = document.getElementById('progressBar');
+            progressBar.innerHTML = '';
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'progress-dot' + (i === currentSlide ? ' active' : '');
+                dot.onclick = () => showSlide(i);
+                progressBar.appendChild(dot);
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+
+        updateNavButtons();
+        updateProgressBar();
+    </script>
+</body>
+</html>
