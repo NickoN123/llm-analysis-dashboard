@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holiday AI Answer Funnel - BrandRank.ai</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            width: 90vw;
+            max-width: 1600px;
+            height: 90vh;
+            max-height: 900px;
+            aspect-ratio: 16/9;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 60px 80px;
+            display: none;
+            flex-direction: column;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .slide.active {
+            display: flex;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-header {
+            margin-bottom: 40px;
+        }
+
+        .slide-title {
+            font-size: 52px;
+            font-weight: 300;
+            letter-spacing: -1px;
+            margin-bottom: 15px;
+            color: #ffffff;
+            line-height: 1.2;
+        }
+
+        .slide-subtitle {
+            font-size: 22px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 0.5px;
+        }
+
+        .accent {
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Title Slide Styles */
+        .search-bar {
+            background: #ffffff;
+            border-radius: 50px;
+            padding: 25px 40px;
+            margin: 50px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.3);
+        }
+
+        .search-bar-text {
+            font-size: 42px;
+            font-weight: 600;
+            color: #0a0e1a;
+        }
+
+        .hero-statement {
+            font-size: 56px;
+            font-weight: 300;
+            text-align: center;
+            line-height: 1.4;
+            margin: 40px 0;
+        }
+
+        .stat-highlight {
+            font-size: 64px;
+            font-weight: 700;
+            color: #00d4ff;
+            text-align: center;
+            margin: 60px 0 30px 0;
+        }
+
+        /* Content Box Styles */
+        .content-box {
+            background: rgba(255, 255, 255, 0.08);
+            border-left: 4px solid #00d4ff;
+            padding: 40px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .content-list {
+            font-size: 24px;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .content-list li {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+
+        /* Funnel Visual */
+        .funnel-svg-stage {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .slide.active .funnel-svg-stage {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide.active .funnel-svg-stage[data-stage="1"] {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .slide.active .funnel-svg-stage[data-stage="2"] {
+            animation: fadeInUp 0.6s ease 0.2s forwards;
+        }
+
+        .slide.active .funnel-svg-stage[data-stage="3"] {
+            animation: fadeInUp 0.6s ease 0.4s forwards;
+        }
+
+        .slide.active .funnel-svg-stage[data-stage="4"] {
+            animation: fadeInUp 0.6s ease 0.6s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: #00d4ff;
+            transform: translateY(-5px);
+        }
+
+        .metric-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #00d4ff;
+            margin-bottom: 15px;
+        }
+
+        .metric-subtitle {
+            font-size: 16px;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 20px;
+        }
+
+        .metric-items {
+            font-size: 16px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .metric-items li {
+            margin: 10px 0;
+            list-style-position: inside;
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin: 30px 0;
+        }
+
+        .column-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 35px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .column-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #00d4ff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .column-content {
+            font-size: 18px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+        }
+
+        /* Action Items */
+        .action-list {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+        .action-item {
+            font-size: 22px;
+            line-height: 1.6;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 3px solid #00d4ff;
+            background: rgba(0, 212, 255, 0.05);
+            font-weight: 300;
+        }
+
+        .action-number {
+            color: #00d4ff;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        /* Branding */
+        .branding {
+            position: absolute;
+            top: 30px;
+            right: 80px;
+            text-align: right;
+        }
+
+        .brand-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: #00d4ff;
+            letter-spacing: 1px;
+        }
+
+        .brand-tagline {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 300;
+            margin-top: 3px;
+        }
+
+        /* Navigation */
+        .navigation {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-button {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-button:hover {
+            background: #00d4ff;
+            color: #0a0e1a;
+            border-color: #00d4ff;
+        }
+
+        .progress-bar {
+            position: absolute;
+            bottom: 30px;
+            left: 80px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .progress-dot.active {
+            background: #00d4ff;
+            transform: scale(1.3);
+        }
+
+        /* Readiness Cards */
+        .readiness-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .readiness-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 8px;
+            border-top: 4px solid #00d4ff;
+            text-align: center;
+        }
+
+        .readiness-card h3 {
+            font-size: 22px;
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .readiness-card p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+        }
+
+        .quote-large {
+            font-size: 36px;
+            font-style: italic;
+            color: #00d4ff;
+            text-align: center;
+            margin: 50px 0;
+            font-weight: 300;
+            line-height: 1.5;
+        }
+
+        .tension-list {
+            font-size: 28px;
+            line-height: 2;
+            font-weight: 300;
+            margin: 40px 0;
+        }
+
+        .tension-list li {
+            margin: 25px 0;
+            padding-left: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active" data-slide="0">
+            <div class="branding">
+                <div class="brand-name">brandrank.ai</div>
+                <div class="brand-tagline">prompting your brand truth™</div>
+            </div>
+            <div class="slide-content">
+                <div class="search-bar">
+                    <span class="search-bar-text">"Best gift for holidays?"</span>
+                </div>
+                <h1 class="slide-title" style="text-align: center;">Holiday Answers: The AI Gatekeepers<br/>Deciding Your Brand's Fate This Season</h1>
+                <p style="text-align: center; font-size: 20px; color: rgba(255,255,255,0.6); margin-top: 30px;">Pete Blackshaw, Adam Bittner<br/>November 20, 2025</p>
+            </div>
+            <div class="navigation">
+                <button class="nav-button" onclick="previousSlide()">←</button>
+                <button class="nav-button" onclick="nextSlide()">→</button>
+            </div>
+            <div class="progress-bar"></div>
+        </div>
+
+        <!-- Slide 2: The New Reality -->
+        <div class="slide" data-slide="1">
+            <div class="branding">
+                <div class="brand-name">brandrank.ai</div>
+                <div class="brand-tagline">prompting your brand truth™</div>
+            </div>
+            <div class="slide-header">
+                <h1 class="slide-title">The New Holiday Reality</h1>
+            </div>
+            <div class="slide-content">
+                <p class="hero-statement">This holiday, your brand won't be<br/>searched. It will be <span class="accent">answered</span>.</p>
+            </div>
+            <div class="navigation">
+                <button class="nav-button" onclick="previousSlide()">←</button>
+                <button class="nav-button" onclick="nextSlide()">→</button>
+            </div>
+            <div class="progress-bar"></div>
+        </div>
+
+        <!-- Slide 3: 70% Stat -->
+        <div class="slide" data-slide="2">
+            <div class="branding">
+                <div class="brand-name">brandrank.ai</div>
+                <div class="brand-tagline">prompting your brand truth™</div>
+            </div>
+            <div class="slide-header">
+                <h1 class="slide-title">The New Holiday Reality</h1>
+            </div>
+            <div class="slide-content">
+                <p class="stat-highlight">70%</p>
+                <p style="font-size: 36px; text-align: center; font-weight: 300;">of shoppers will reference AI<br/>before they buy</p>
+            </div>
+            <div class="navigation">
+                <button class="nav-button" onclick="previousSlide()">←</button>
+                <button class="nav-button" onclick="nextSlide()">→</button>
+            </div>
+            <div class="progress-bar"></div>
+        </div>
+
+        <!-- Slide 4: Collapse of Traditional Search -->
+        <div class="slide" data-slide="3">
+            <div class="branding">
+                <div class="brand-name">brandrank.ai</div>
+                <div class="brand-tagline">prompting your brand truth™</div>
+            </div>
+            <div class="slide-header">
+                <h1 class="slide-title">The Collapse of <span class="accent">Traditional Search</span></h1>
+            </div>
+            <div class="slide-content">
+                <div class="content-box">
+                    <ul class="content-list">
+                        <li>No homepage. No 10 blue links.</li>
+                        <li>Consumers bypass Google, PDPs, and your website.</li>
+                        <li>Welcome to the <span class="accent">Answer Economy</span>.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="nav-button" onclick="previousSlide()">←</button>
+                <button class="nav-button" onclick="nextSlide()">→</button>
+            </div>
+            <div class="progress-bar"></div>
+        </div>
+
+        <!-- Slide 5: The Funnel Visual -->
+        <div class="slide" data-slide="4">
+            <div class="branding">
+                <div class="brand-name">brandrank.ai</div>
+                <div class="brand-tagline">prompting your brand truth™</div>
+            </div>
+            <div class="slide-header">
+                <h1 class="slide-title">The Holiday AI <span class="accent">Answer Funnel</span></h1>
+            </div>
+            <div class="slide-content">
+                <svg viewBox="0 0 1200 500" style="width: 100%; height: 100%; max-height: 500px;">
+                    <g class="funnel-svg-stage" data-stage="1">
+                        <path d="M 150 50 L 1050 50 L 1000 140 L 200 140 Z" fill="rgba(0, 212, 255, 0.15)" stroke="#00d4ff" stroke-width="2"/>
+                        <circle cx="100" cy="95" r="25" fill="#00d4ff"/>
+                        <text x="100" y="103" font-family="Segoe UI, sans-serif" font-size="20" font-weight="700" fill="#0a0e1a" text-anchor="middle">1</text>
+                        <text x="600" y="75" font-family="Segoe UI, sans-serif" font-size="36" font-weight="600" fill="#ffffff" text-anchor="middle">ASK</text>
+                        <text x="600" y="115" font-family="Segoe UI, sans-serif" font-size="16" font-weight="300" fill="rgba(255, 255, 255, 0.7)" text-anchor="middle">Consumer initiates query through AI-powered interface</text>
+                    </g>
+                    <g class="funnel-svg-stage" data-stage="2">
+                        <line x1="600" y1="140" x2="600" y2="175" stroke="#00d4ff" stroke-width="3"/>
+                        <polygon points="600,180 595,170 605,170" fill="#00d4ff"/>
+                        <path d="M 200 180 L 1000 180 L 925 270 L 275 270 Z" fill="rgba(0, 212, 255, 0.15)" stroke="#00d4ff" stroke-width="2"/>
+                        <circle cx="145" cy="225" r="25" fill="#00d4ff"/>
+                        <text x="145" y="233" font-family="Segoe UI, sans-serif" font-size="20" font-weight="700" fill="#0a0e1a" text-anchor="middle">2</text>
+                        <text x="600" y="205" font-family="Segoe UI, sans-serif" font-size="36" font-weight="600" fill="#ffffff" text-anchor="middle">INTERPRET</text>
+                        <text x="600" y="245" font-family="Segoe UI, sans-serif" font-size="16" font-weight="300" fill="rgba(255, 255, 255, 0.7)" text-anchor="middle">AI processes intent and contextual requirements</text>
+                    </g>
+                    <g class="funnel-svg-stage" data-stage="3">
+                        <line x1="600" y1="270" x2="600" y2="305" stroke="#00d4ff" stroke-width="3"/>
+                        <polygon points="600,310 595,300 605,300" fill="#00d4ff"/>
+                        <path d="M 275 310 L 925 310 L 825 400 L 375 400 Z" fill="rgba(0, 212, 255, 0.15)" stroke="#00d4ff" stroke-width="2"/>
+                        <circle cx="215" cy="355" r="25" fill="#00d4ff"/>
+                        <text x="215" y="363" font-family="Segoe UI, sans-serif" font-size="20" font-weight="700" fill="#0a0e1a" text-anchor="middle">3</text>
+                        <text x="600" y="335" font-family="Segoe UI, sans-serif" font-size="36" font-weight="600" fill="#ffffff" text-anchor="middle">ANSWER</text>
+                        <text x="600" y="375" font-family="Segoe UI, sans-serif" font-size="16" font-weight="300" fill="rgba(255, 255, 255, 0.7)" text-anchor="middle">Curated response delivered with brand recommendations</text>
+                    </g>
+                    <g class="funnel-svg-stage" data-stage="4">
+                        <line x1="600" y1="400" x2="600" y2="435" stroke="#00d4ff" stroke-width="3"/>
+                        <polygon points="600,440 595,430 605,430" fill="#00d4ff"/>
+                        <path d="M 375 440 L 825 440 L 700 500 L 500 500 Z" fill="rgba(0, 212, 255, 0.15)" stroke="#00d4ff" stroke-width="2"/>
+                        <circle cx="310" cy="470" r="25" fill="#00d4ff"/>
+                        <text x="310" y="478" font-family="Segoe UI, sans-serif" font-size="20" font-weight="700" fill="#0a0e1a" text-anchor="middle">4</text>
+                        <text x="600" y="465" font-family="Segoe UI, sans-serif" font-size="36" font-weight="600" fill="#ffffff" text-anchor="middle">PURCHASE</text>
+                        <text x="600" y="490" font-family="Segoe UI, sans-serif" font-size="16" font-weight="300" fill="rgba(255, 255, 255, 0.7)" text-anchor="middle">Conversion completed without traditional search friction</text>
+                    </g>
+                </svg>
+            </div>
+            <div class="navigation">
+                <button class="nav-button" onclick="previousSlide()">←</button>
+                <button class="nav-button" onclick="nextSlide()">→</button>
+            </div>
+            <div class="progress-bar"></div>
+        </div>
+
+        <!-- Slide 6: Why Brands Are Losing -->
+        <div class="slide" data-slide="5">
+            <div class="branding">
+                <div class="brand-name">brandrank.ai</div>
+                <div class="brand-tagline">prompting your brand truth™</div>
+            </div>
+            <div class="slide-header">
+                <h1 class="slide-title">Why Brands are <span class="accent">Losing it</span> Without Knowing It</h1>
+            </div>
+            <div class="slide-content">
+                <div class="content-box">
+                    <ul class="content-list">
+                        <li>Bad or missing content = AI fills the gap</li>
+                        <li>Outdated return policy answers</li>
+                        <li>Competitor substitution</li>
+                        <li>Category misinformation (eco claims, safety, ingredients)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="nav-button" onclick="previousSlide()">←</button>
+                <button class="nav-button" onclick="nextSlide()">→</button>
+            </div>
+            <div class="progress-bar"></div>
+        </div>
+
+        <!-- Slide 7: Real Holiday Queries -->
+        <div class="slide" data-slide="6">
+            <div class="branding">
+                <div class="brand-name">brandrank.ai</div>
+                <div class="brand-tagline">prompting your brand truth™</div>
+            </div>
+            <div class="slide-header">
+                <h1 class="slide-title">Real Holiday Queries AI is <span class="accent">Deciding Right Now</span></h1>
+            </div>
+            <div class="slide-content">
+                <div class="content-box">
+                    <ul class="content-list">
+                        <li>"Best gifts under $100 for teens"</li>
+                        <li>"Is [brand] trustworthy?"</li>
+                        <li>"Return policy without receipt?"</li>
+                        <li>"Best value version of [category]?"<br/><span style="font-size: 20px; color: rgba(255,255,255,0.5);">(Highlight how often AI names competitors.)</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="nav-button" onclick="previousSlide()">←</button>
+                <button class="nav-button" onclick="nextSlide()">→</button>
+            </div>
+            <div class="progress-bar"></div>
+        </div>
+
+        <!-- Slide 8: Case Study -->
+        <div class="slide" data-slide="7">
+            <div class="branding">
+                <div class="brand-name">brandrank.ai</div>
+                <div class="brand-tagline">prompting your brand truth™</div>
+            </div>
+            <div class="slide-header">
+                <h1 class="slide-title">Case Study: The Holiday <span class="accent">Answer Moment</span></h1>
+            </div>
+            <div class="slide-content">
+                <div class="content-box">
+                    <ul class="content-list">
+                        <li>Walmart, Amazon, Target examples</li>
+                        <li>How major retailers already optimize for agents (Rufus/Sparky)</li>
+                        <li>What CPGs and DTC brands are missing.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="nav-button" onclick="previousSlide()">←</button>
+                <button class="nav-button" onclick="nextSlide()">→</button>
+            </div>
+            <div class="progress-bar"></div>
+        </div>
+
+        <!-- Slide 9: Ecosystem Insights -->
+        <div class="slide" data-slide="8">
+            <div class="branding">
+                <div class="brand-name">brandrank.ai</div>
+                <div class="brand-tagline">prompting your brand truth™</div>
+            </div>
+            <div class="slide-header">
+                <h1 class="slide-title">What We are Seeing Across the <span class="accent">Ecosystem</span></h1>
+            </div>
+            <div class="slide-content">
+                <div class="content-box">
+                    <ul class="content-list">
+                        <li>Visibility gains/losses across answer engines</li>
+                        <li>Private label bias</li>
+                        <li>Eco/ethical narrative tilt</li>
+                        <li>What climbs during holiday season: FAQs, returns, value, trust signals.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="nav-button" onclick="previousSlide()">←</button>
+                <button class="nav-button" onclick="nextSlide()">→</button>
+            </div>
+            <div class="progress-bar"></div>
+        </div>
+
+        <!-- Slide 10: Vulnerability Score -->
+        <div class="slide" data-slide="9">
+            <div class="branding">
+                <div class="brand-name">brandrank.ai</div>
+                <div class="brand-tagline">prompting your brand truth™</div>
+            </div>
+            <div class="slide-header">
+                <h1 class="slide-title">Your Brand's Holiday <span class="accent">Vulnerability Score</span></h1>
+            </div>
+            <div class="slide-content">
+                <div class="content-box">
+                    <ul class="content-list">
+                        <li>Misalignment between brand truth and AI answers</li>
+                        <li>Hallucinations vs brand facts</li>
+                        <li>Outdated, vague, or missing content</li>
+                        <li>"What AI says about you <span class="accent">right now</span>."</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="nav-button" onclick="previousSlide()">←</button>
+                <button class="nav-button" onclick="nextSlide()">→</button>
+            </div>
+            <div class="progress-bar"></div>
+        </div>
+
+        <!-- Slide 11: Metrics That Matter -->
+        <div class="slide" data-slide="10">
+            <div class="branding">
+                <div class="brand-name">brandrank.ai</div>
+                <div class="brand-tagline">prompting your brand truth™</div>
+            </div>
+            <div class="slide-header">
+                <h1 class="slide-title">Metrics That <span class="accent">Matter</span></h1>
+            </div>
+            <div class="slide-content">
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-title">Visibility</div>
+                        <div class="metric-subtitle">(Do you show up?)</div>
+                        <ul class="metric-items">
+                            <li>Rank in AI Search Results</li>
+                            <li>AEO competitive comparison</li>
+                            <li>Sites Referenced for Answers</li>
+                        </ul>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Vulnerability</div>
+                        <div class="metric-subtitle">(Do you show up well?)</div>
+                        <ul class="metric-items">
+                            <li>Brand Promise vs AI Narrative</li>
+                            <li>Credibility, Trust</li>
+                            <li>Counterfactuals, Risks</li>
+                        </ul>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Content Readiness</div>
+                        <div class="metric-subtitle">(Are You AI Friendly?)</div>
+                        <ul class="metric-items">
+                            <li>Content Hygiene for AI</li>
+                            <li>Depth of Content</li>
+                            <li>Liquidity (Bot Friendliness)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="readiness-grid" style="margin-top: 30px;">
+                    <div class="readiness-card">
+                        <h3>Availability</h3>
+                        <p>Ensure content is structured and accessible for AI to find and process efficiently across all platforms.</p>
+                    </div>
+                    <div class="readiness-card">
+                        <h3>Depth</h3>
+                        <p>Provide rich context, citations, and supporting detail that AI systems can reference and validate.</p>
+                    </div>
+                    <div class="readiness-card">
+                        <h3>Clarity</h3>
+                        <p>Make content easy for AI to understand, summarize, and reuse with clear messaging and logical structure.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="nav-button" onclick="previousSlide()">←</button>
+                <button class="nav-button" onclick="nextSlide()">→</button>
+            </div>
+            <div class="progress-bar"></div>
+        </div>
+
+        <!-- Slide 12: Five-Day Fix -->
+        <div class="slide" data-slide="11">
+            <div class="branding">
+                <div class="brand-name">brandrank.ai</div>
+                <div class="brand-tagline">prompting your brand truth™</div>
+            </div>
+            <div class="slide-header">
+                <h1 class="slide-title">The Five-Day <span class="accent">AEO Holiday Fix</span></h1>
+            </div>
+            <div class="slide-content">
+                <div class="action-list">
+                    <div class="action-item"><span class="action-number">Day 1 —</span> Fix return/FAQ accuracy</div>
+                    <div class="action-item"><span class="action-number">Day 2 —</span> Publish a 'Holiday Truth Page' (Book of Truth starter)</div>
+                    <div class="action-item"><span class="action-number">Day 3 —</span> Refresh top 10 algorithmic anchors (facts every AI needs)</div>
+                    <div class="action-item"><span class="action-number">Day 4 —</span> Update PDPs for Rufus/Sparky ingestion</div>
+                    <div class="action-item"><span class="action-number">Day 5 —</span> Add value-oriented, gift-oriented FAQs</div>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="nav-button" onclick="previousSlide()">←</button>
+                <button class="nav-button" onclick="nextSlide()">→</button>
+            </div>
+            <div class="progress-bar"></div>
+        </div>
+
+        <!-- Slide 13: Executive Risk -->
+        <div class="slide" data-slide="12">
+            <div class="branding">
+                <div class="brand-name">brandrank.ai</div>
+                <div class="brand-tagline">prompting your brand truth™</div>
+            </div>
+            <div class="slide-header">
+                <h1 class="slide-title">The Executive <span class="accent">Risk Angle</span> (Why CMOs Care Now)</h1>
+            </div>
+            <div class="slide-content">
+                <div class="content-box">
+                    <ul class="content-list">
+                        <li>Losing answers = invisible losses</li>
+                        <li>Board-level trust & misinformation concerns</li>
+                        <li>AI answers influencing brand equity, not just conversion</li>
+                        <li>Your competitor's truth is beating your truth</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="nav-button" onclick="previousSlide()">←</button>
+                <button class="nav-button" onclick="nextSlide()">→</button>
+            </div>
+            <div class="progress-bar"></div>
+        </div>
+
+        <!-- Slide 14: How BrandRank Helps -->
+        <div class="slide" data-slide="13">
+            <div class="branding">
+                <div class="brand-name">brandrank.ai</div>
+                <div class="brand-tagline">prompting your brand truth™</div>
+            </div>
+            <div class="slide-header">
+                <h1 class="slide-title">How <span class="accent">BrandRank</span> Helps</h1>
+            </div>
+            <div class="slide-content">
+                <div class="content-box">
+                    <ul class="content-list">
+                        <li>Visibility, Vulnerability, Readiness dashboard</li>
+                        <li>Real-time answer engine benchmarking</li>
+                        <li>AI accuracy scoring</li>
+                        <li>Retail agent optimization (Rufus/Sparky)</li>
+                        <li>Content guidance: FAQs, page-level recommendations, trust anchors</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="nav-button" onclick="previousSlide()">←</button>
+                <button class="nav-button" onclick="nextSlide()">→</button>
+            </div>
+            <div class="progress-bar"></div>
+        </div>
+
+        <!-- Slide 15: AEO Definition -->
+        <div class="slide" data-slide="14">
+            <div class="branding">
+                <div class="brand-name">brandrank.ai</div>
+                <div class="brand-tagline">prompting your brand truth™</div>
+            </div>
+            <div class="slide-header">
+                <h1 class="slide-title">Answer Engine <span class="accent">Optimization (AEO)</span></h1>
+            </div>
+            <div class="slide-content">
+                <p class="quote-large">The practice of optimizing your <span class="accent">brand presence</span> and <span class="accent">authority</span> in Answer Engine results.</p>
+                <div class="two-column" style="margin-top: 60px;">
+                    <div class="column-card">
+                        <div class="column-title">Short/Near Term<br/>Content Optimization</div>
+                        <div class="column-content" style="margin-top: 20px; font-size: 24px; font-weight: 600;">25-30% Influence</div>
+                    </div>
+                    <div class="column-card">
+                        <div class="column-title">Foundational Brand Bedrock:<br/>Trust, Performance, Delivery, Service, Experience</div>
+                        <div class="column-content" style="margin-top: 20px; font-size: 24px; font-weight: 600;">70-75% Influence</div>
+                    </div>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="nav-button" onclick="previousSlide()">←</button>
+                <button class="nav-button" onclick="nextSlide()">→</button>
+            </div>
+            <div class="progress-bar"></div>
+        </div>
+
+        <!-- Slide 16: What to Do Before Dec 1 -->
+        <div class="slide" data-slide="15">
+            <div class="branding">
+                <div class="brand-name">brandrank.ai</div>
+                <div class="brand-tagline">prompting your brand truth™</div>
+            </div>
+            <div class="slide-header">
+                <h1 class="slide-title">What to Do <span class="accent">Before December 1st</span></h1>
+            </div>
+            <div class="slide-content">
+                <div class="content-box">
+                    <ul class="content-list">
+                        <li>Run misrepresentation sweep</li>
+                        <li>Fix return policies & holiday-specific FAQs</li>
+                        <li>Patch misinformation</li>
+                        <li>Publish holiday-ready clarity pages</li>
+                        <li>Prep for peak answer queries: value, trust, returns, gifting</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="nav-button" onclick="previousSlide()">←</button>
+                <button class="nav-button" onclick="nextSlide()">→</button>
+            </div>
+            <div class="progress-bar"></div>
+        </div>
+
+        <!-- Slide 17: Tensions CMOs Must Address -->
+        <div class="slide" data-slide="16">
+            <div class="branding">
+                <div class="brand-name">brandrank.ai</div>
+                <div class="brand-tagline">prompting your brand truth™</div>
+            </div>
+            <div class="slide-header">
+                <h1 class="slide-title">Tensions CMOs <span class="accent">Must Address</span></h1>
+            </div>
+            <div class="slide-content">
+                <ul class="tension-list">
+                    <li>Owned & Earned vs. Paid</li>
+                    <li>Substance vs Spin</li>
+                    <li>Answering (No Clicks) vs. Performance (Clicks)</li>
+                    <li>Optimize Today vs. Earn Tomorrow</li>
+                    <li>Premiumization vs. Agent-Powered Store Brands</li>
+                </ul>
+            </div>
+            <div class="navigation">
+                <button class="nav-button" onclick="previousSlide()">←</button>
+                <button class="nav-button" onclick="nextSlide()">→</button>
+            </div>
+            <div class="progress-bar"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function createProgressDots() {
+            const progressBars = document.querySelectorAll('.progress-bar');
+            progressBars.forEach(bar => {
+                bar.innerHTML = '';
+                for (let i = 0; i < totalSlides; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'progress-dot';
+                    if (i === currentSlide) dot.classList.add('active');
+                    bar.appendChild(dot);
+                }
+            });
+        }
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+            currentSlide = index;
+            createProgressDots();
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        }
+
+        function previousSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            showSlide(currentSlide);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+        });
+
+        createProgressDots();
+    </script>
+</body>
+</html>
