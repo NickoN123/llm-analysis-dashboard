@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helen Lin - BrandRank Marketing Leadership Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+            padding: 60px 80px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .slide-header {
+            border-bottom: 2px solid #00d4ff;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+
+        .slide-title {
+            font-size: 48px;
+            font-weight: 300;
+            color: #00d4ff;
+            margin-bottom: 10px;
+        }
+
+        .slide-subtitle {
+            font-size: 24px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .three-column {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .metric-card {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .metric-value {
+            font-size: 56px;
+            font-weight: 300;
+            color: #00d4ff;
+            margin-bottom: 10px;
+        }
+
+        .metric-label {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background: rgba(0, 212, 255, 0.1);
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #00d4ff;
+        }
+
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .data-table tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .score-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #4ecdc4);
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        .attribute-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .attribute-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 3px solid #00d4ff;
+            border-radius: 4px;
+        }
+
+        .attribute-name {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .attribute-score {
+            font-size: 24px;
+            font-weight: 300;
+            color: #00d4ff;
+        }
+
+        .text-block {
+            font-size: 18px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .highlight {
+            color: #00d4ff;
+            font-weight: 500;
+        }
+
+        .archetype-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .archetype-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .archetype-type {
+            font-size: 14px;
+            color: #00d4ff;
+            margin-bottom: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .archetype-value {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .archetype-desc {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.4;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 40px;
+            right: 80px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            color: #ffffff;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:hover {
+            background: #00d4ff;
+            border-color: #00d4ff;
+            transform: scale(1.1);
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #00d4ff;
+            transition: width 0.3s ease;
+        }
+
+        .slide-number {
+            position: fixed;
+            bottom: 40px;
+            left: 80px;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.5);
+            z-index: 1000;
+        }
+
+        .persona-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #00d4ff;
+            margin-top: 10px;
+        }
+
+        .vulnerability-item {
+            padding: 20px;
+            background: rgba(255, 107, 107, 0.1);
+            border-left: 3px solid #ff6b6b;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        .vulnerability-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ff6b6b;
+            margin-bottom: 8px;
+        }
+
+        .strength-item {
+            padding: 20px;
+            background: rgba(78, 205, 196, 0.1);
+            border-left: 3px solid #4ecdc4;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        .strength-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #4ecdc4;
+            margin-bottom: 8px;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide.active .card {
+            animation: slideIn 0.6s ease forwards;
+        }
+
+        .slide.active .card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .slide.active .card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="slide-number" id="slideNumber"></div>
+
+    <div class="presentation-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active" data-slide="1">
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; text-align: center;">
+                <div style="font-size: 72px; font-weight: 300; color: #00d4ff; margin-bottom: 30px;">HELEN LIN</div>
+                <div style="font-size: 36px; font-weight: 300; color: rgba(255, 255, 255, 0.9); margin-bottom: 20px;">Publicis Groupe</div>
+                <div style="font-size: 24px; color: rgba(255, 255, 255, 0.7); margin-bottom: 40px;">BrandRank Marketing Leadership Profile</div>
+                <div style="width: 200px; height: 2px; background: #00d4ff; margin-bottom: 40px;"></div>
+                <div class="metric-value">8.1 / 10</div>
+                <div class="metric-label">Executive Score</div>
+                <div style="font-size: 20px; color: rgba(255, 255, 255, 0.8); margin-top: 40px; max-width: 800px; line-height: 1.6;">
+                    "Driving Inclusive Digital Transformation and High-Trust Media Innovation"
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Executive Overview -->
+        <div class="slide" data-slide="2">
+            <div class="slide-header">
+                <div class="slide-title">Executive Overview</div>
+                <div class="slide-subtitle">Brand Archetype: Dolphin - Strategic, Social, Intelligent Communicator</div>
+            </div>
+            <div class="slide-content">
+                <div class="card">
+                    <div class="text-block">
+                        Helen Lin stands as one of the most respected digital transformation leaders in the global media industry, elevated further through her role as Chair of the American Advertising Federation. She is known for shaping responsible digital standards, elevating programmatic maturity, and driving inclusive culture across Publicis Groupe and the broader ecosystem.
+                    </div>
+                </div>
+                <div class="two-column">
+                    <div class="strength-item">
+                        <div class="strength-title">Surprising Strength</div>
+                        <div class="text-block" style="font-size: 16px;">
+                            An unusually effective combination of programmatic investment leadership and ecosystem-level policy influence.
+                        </div>
+                    </div>
+                    <div class="vulnerability-item">
+                        <div class="vulnerability-title">Surprising Weakness</div>
+                        <div class="text-block" style="font-size: 16px;">
+                            Limited publicly shared performance metrics that directly link transformation to business outcomes.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Brand Essence & Promise -->
+        <div class="slide" data-slide="3">
+            <div class="slide-header">
+                <div class="slide-title">Brand Essence & Promise</div>
+                <div class="slide-subtitle">Brand Promise Alignment Score: 8.0 / 10</div>
+            </div>
+            <div class="slide-content">
+                <div class="card">
+                    <div style="font-size: 20px; font-weight: 600; margin-bottom: 20px;">Brand Essence & Character</div>
+                    <div class="text-block">
+                        Helen Lin embodies responsible digital transformation—combining innovation, platform leadership, and cultural inclusivity. She integrates programmatic investment strategy, global partnerships, and digital governance while maintaining a human-centered leadership approach. Her essence reflects a modern digital leader focused on ethical growth and transparent ecosystem evolution.
+                    </div>
+                </div>
+                <div class="two-column">
+                    <div class="card">
+                        <div style="font-size: 18px; font-weight: 600; color: #4ecdc4; margin-bottom: 15px;">Sustainability Promise</div>
+                        <div class="text-block" style="font-size: 16px;">
+                            Championing ethical, inclusive, and responsible media standards worldwide.
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div style="font-size: 18px; font-weight: 600; color: #4ecdc4; margin-bottom: 15px;">Innovation Promise</div>
+                        <div class="text-block" style="font-size: 16px;">
+                            Driving scaled programmatic transformation and advanced platform partnerships globally.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Core Values -->
+        <div class="slide" data-slide="4">
+            <div class="slide-header">
+                <div class="slide-title">Core Values Representation</div>
+                <div class="slide-subtitle">Foundational Leadership Principles</div>
+            </div>
+            <div class="slide-content">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Core Value</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="highlight">Consumer Trust</span></td>
+                            <td>Elevates brand safety, transparency, and ethical digital investment.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Global Responsibility</span></td>
+                            <td>Leads cross-market strategies that reinforce fairness and responsible digital behavior.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Employee Well-Being & Growth</span></td>
+                            <td>Advocates mentorship and women's leadership across internal BRGs and industry platforms.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Innovation & Agility</span></td>
+                            <td>Advances programmatic, data and platform innovation to sustain long-term competitiveness.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="highlight">Diversity & Inclusion</span></td>
+                            <td>Serves as a powerful, visible advocate for DE&I in media leadership.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Slide 5: Marketing Leader Segmentation -->
+        <div class="slide" data-slide="5">
+            <div class="slide-header">
+                <div class="slide-title">Marketing Leader Segmentation</div>
+                <div class="slide-subtitle">Persona Alignment Analysis</div>
+            </div>
+            <div class="slide-content">
+                <div class="attribute-list">
+                    <div class="attribute-item">
+                        <div>
+                            <div class="attribute-name">The Digital Experience Operator</div>
+                            <div style="font-size: 14px; color: rgba(255, 255, 255, 0.6); margin-top: 5px;">Leads digital systems, platforms, retail media, and surfaces</div>
+                            <span class="persona-badge">PRIMARY PERSONA</span>
+                        </div>
+                        <div class="attribute-score">8.8</div>
+                    </div>
+                    <div class="attribute-item">
+                        <div>
+                            <div class="attribute-name">The Full-Funnel Integrator</div>
+                            <div style="font-size: 14px; color: rgba(255, 255, 255, 0.6); margin-top: 5px;">Balances long-term brand and short-term performance</div>
+                            <span class="persona-badge">SECONDARY PERSONA</span>
+                        </div>
+                        <div class="attribute-score">7.5</div>
+                    </div>
+                    <div class="attribute-item">
+                        <div>
+                            <div class="attribute-name">The Brand Steward</div>
+                            <div style="font-size: 14px; color: rgba(255, 255, 255, 0.6); margin-top: 5px;">Builds trust and protects long-term equity</div>
+                        </div>
+                        <div class="attribute-score">7.0</div>
+                    </div>
+                    <div class="attribute-item">
+                        <div>
+                            <div class="attribute-name">The Performance Optimizer</div>
+                            <div style="font-size: 14px; color: rgba(255, 255, 255, 0.6); margin-top: 5px;">Prioritizes efficiency, conversion, and ROI</div>
+                        </div>
+                        <div class="attribute-score">7.0</div>
+                    </div>
+                    <div class="attribute-item">
+                        <div>
+                            <div class="attribute-name">The Growth Driver</div>
+                            <div style="font-size: 14px; color: rgba(255, 255, 255, 0.6); margin-top: 5px;">Focuses on acceleration, pipeline, and commercial impact</div>
+                        </div>
+                        <div class="attribute-score">6.5</div>
+                    </div>
+                    <div class="attribute-item">
+                        <div>
+                            <div class="attribute-name">The Creative Catalyst</div>
+                            <div style="font-size: 14px; color: rgba(255, 255, 255, 0.6); margin-top: 5px;">Drives cultural storytelling and distinctiveness</div>
+                        </div>
+                        <div class="attribute-score">6.0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Leadership Attributes -->
+        <div class="slide" data-slide="6">
+            <div class="slide-header">
+                <div class="slide-title">Leadership Attribute Scores</div>
+                <div class="slide-subtitle">Competency Assessment</div>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div class="attribute-list">
+                        <div class="attribute-item">
+                            <div class="attribute-name">The Innovation Catalyst</div>
+                            <div class="attribute-score">8.5</div>
+                        </div>
+                        <div class="attribute-item">
+                            <div class="attribute-name">The Digital Pioneer</div>
+                            <div class="attribute-score">8.5</div>
+                        </div>
+                        <div class="attribute-item">
+                            <div class="attribute-name">The Global Bridge Builder</div>
+                            <div class="attribute-score">8.0</div>
+                        </div>
+                        <div class="attribute-item">
+                            <div class="attribute-name">The Culture Cultivator</div>
+                            <div class="attribute-score">8.0</div>
+                        </div>
+                        <div class="attribute-item">
+                            <div class="attribute-name">The Partnership Weaver</div>
+                            <div class="attribute-score">8.0</div>
+                        </div>
+                    </div>
+                    <div class="attribute-list">
+                        <div class="attribute-item">
+                            <div class="attribute-name">The Sustainable Strategist</div>
+                            <div class="attribute-score">7.5</div>
+                        </div>
+                        <div class="attribute-item">
+                            <div class="attribute-name">The Brand Architect</div>
+                            <div class="attribute-score">7.5</div>
+                        </div>
+                        <div class="attribute-item">
+                            <div class="attribute-name">The Ethical Entrepreneur</div>
+                            <div class="attribute-score">7.5</div>
+                        </div>
+                        <div class="attribute-item">
+                            <div class="attribute-name">The Insight Explorer</div>
+                            <div class="attribute-score">7.0</div>
+                        </div>
+                        <div class="attribute-item">
+                            <div class="attribute-name">The Efficiency Optimizer</div>
+                            <div class="attribute-score">6.5</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Brand Vulnerability -->
+        <div class="slide" data-slide="7">
+            <div class="slide-header">
+                <div class="slide-title">Brand Vulnerability</div>
+                <div class="slide-subtitle">Areas for Strategic Attention</div>
+            </div>
+            <div class="slide-content">
+                <div class="vulnerability-item">
+                    <div class="vulnerability-title">Metrics Gap</div>
+                    <div class="text-block" style="font-size: 16px;">
+                        Impact narrative exceeds publicly documented financial KPIs.
+                    </div>
+                </div>
+                <div class="vulnerability-item">
+                    <div class="vulnerability-title">Regional Execution Risk</div>
+                    <div class="text-block" style="font-size: 16px;">
+                        Global strategies require localization, creating potential inconsistencies.
+                    </div>
+                </div>
+                <div class="vulnerability-item">
+                    <div class="vulnerability-title">Platform & Regulation Sensitivity</div>
+                    <div class="text-block" style="font-size: 16px;">
+                        High dependency on privacy rules, platform shifts, and compliance.
+                    </div>
+                </div>
+                <div class="vulnerability-item">
+                    <div class="vulnerability-title">Narrative Skew</div>
+                    <div class="text-block" style="font-size: 16px;">
+                        Ethical and DE&I messaging may overshadow performance-oriented positioning.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Archetype Mapping Part 1 -->
+        <div class="slide" data-slide="8">
+            <div class="slide-header">
+                <div class="slide-title">Archetype Mapping</div>
+                <div class="slide-subtitle">Brand Identity Associations - Part 1</div>
+            </div>
+            <div class="slide-content">
+                <div class="archetype-grid">
+                    <div class="archetype-card">
+                        <div class="archetype-type">Animal</div>
+                        <div class="archetype-value">Dolphin</div>
+                        <div class="archetype-desc">Strategic, social, intelligent communicator</div>
+                    </div>
+                    <div class="archetype-card">
+                        <div class="archetype-type">Technology</div>
+                        <div class="archetype-value">Blockchain</div>
+                        <div class="archetype-desc">Transparent, trustworthy, ecosystem-stabilizing</div>
+                    </div>
+                    <div class="archetype-card">
+                        <div class="archetype-type">Movie</div>
+                        <div class="archetype-value">Hidden Figures</div>
+                        <div class="archetype-desc">Quiet powerhouse shaping systems behind scenes</div>
+                    </div>
+                    <div class="archetype-card">
+                        <div class="archetype-type">Tree</div>
+                        <div class="archetype-value">Bamboo</div>
+                        <div class="archetype-desc">Flexible, resilient, rapid growth</div>
+                    </div>
+                    <div class="archetype-card">
+                        <div class="archetype-type">App</div>
+                        <div class="archetype-value">TikTok</div>
+                        <div class="archetype-desc">Fast-moving, adaptive, culturally informed</div>
+                    </div>
+                    <div class="archetype-card">
+                        <div class="archetype-type">Mythical</div>
+                        <div class="archetype-value">Phoenix</div>
+                        <div class="archetype-desc">Reinvents and evolves through disruption</div>
+                    </div>
+                    <div class="archetype-card">
+                        <div class="archetype-type">Vehicle</div>
+                        <div class="archetype-value">Tesla Model S</div>
+                        <div class="archetype-desc">High-performance, future-facing acceleration</div>
+                    </div>
+                    <div class="archetype-card">
+                        <div class="archetype-type">Historical</div>
+                        <div class="archetype-value">Grace Hopper</div>
+                        <div class="archetype-desc">Pioneering digital and systems innovation</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Archetype Mapping Part 2 -->
+        <div class="slide" data-slide="9">
+            <div class="slide-header">
+                <div class="slide-title">Archetype Mapping</div>
+                <div class="slide-subtitle">Brand Identity Associations - Part 2</div>
+            </div>
+            <div class="slide-content">
+                <div class="archetype-grid">
+                    <div class="archetype-card">
+                        <div class="archetype-type">Art</div>
+                        <div class="archetype-value">Banksy Graffiti</div>
+                        <div class="archetype-desc">Bold, unconventional, culturally resonant</div>
+                    </div>
+                    <div class="archetype-card">
+                        <div class="archetype-type">Instrument</div>
+                        <div class="archetype-value">Electric Guitar</div>
+                        <div class="archetype-desc">Clear, amplified, influential presence</div>
+                    </div>
+                    <div class="archetype-card">
+                        <div class="archetype-type">Sport</div>
+                        <div class="archetype-value">Boxing</div>
+                        <div class="archetype-desc">Strategic, disciplined, competitive</div>
+                    </div>
+                    <div class="archetype-card">
+                        <div class="archetype-type">Cuisine</div>
+                        <div class="archetype-value">Street Food</div>
+                        <div class="archetype-desc">Accessible, diverse, globally appealing</div>
+                    </div>
+                    <div class="archetype-card">
+                        <div class="archetype-type">Game</div>
+                        <div class="archetype-value">Fortnite</div>
+                        <div class="archetype-desc">Dynamic, evolving, ecosystem-driven</div>
+                    </div>
+                    <div class="archetype-card">
+                        <div class="archetype-type">Hashtag</div>
+                        <div class="archetype-value">#LeadDigitalNow</div>
+                        <div class="archetype-desc">Captures urgency and mission</div>
+                    </div>
+                </div>
+                <div style="margin-top: 40px;">
+                    <div style="font-size: 20px; font-weight: 600; margin-bottom: 20px;">Visual Accessibility & Authenticity</div>
+                    <div class="card">
+                        <div class="text-block">
+                            Helen Lin's LinkedIn presence highlights frequent engagement in industry events, DE&I initiatives, mentorship moments, and leadership forums. Her visibility—consistent but not overproduced—suggests she is a <span class="highlight">Transparent Connector</span>, balancing professional authority with accessible, human-centered communication.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Summary -->
+        <div class="slide" data-slide="10">
+            <div class="slide-header">
+                <div class="slide-title">Executive Leadership Brand Alignment</div>
+                <div class="slide-subtitle">Strategic Summary & Recommendations</div>
+            </div>
+            <div class="slide-content">
+                <div class="card">
+                    <div class="text-block">
+                        Helen Lin strongly aligns with Publicis Groupe's ambitions as a digital-forward, ethically grounded organization. Her leadership excels in responsible media transformation, scaled digital innovation, DE&I advocacy, and global partnership strategy. She is most aligned with the persona of <span class="highlight">Digital Experience Operator</span>, reflecting her influence in shaping digital ecosystems and industry standards.
+                    </div>
+                </div>
+                <div class="two-column">
+                    <div class="card">
+                        <div style="font-size: 20px; font-weight: 600; margin-bottom: 20px; color: #4ecdc4;">Equivalent Executives</div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Executive</th>
+                                    <th>Company</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Megan Pagliuca</td>
+                                    <td>Omnicom Media Group</td>
+                                </tr>
+                                <tr>
+                                    <td>Sarah Personette</td>
+                                    <td>Former Meta/Twitter</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card">
+                        <div style="font-size: 20px; font-weight: 600; margin-bottom: 20px; color: #00d4ff;">Strategic Recommendation</div>
+                        <div class="text-block" style="font-size: 16px;">
+                            Continued momentum in publicizing measurable commercial outcomes would further elevate her strategic narrative and strengthen her already impressive executive brand positioning.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn">←</button>
+        <button class="nav-btn" id="nextBtn">→</button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 10;
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            if (n > totalSlides) currentSlide = 1;
+            if (n < 1) currentSlide = totalSlides;
+            
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[currentSlide - 1].classList.add('active');
+            
+            document.getElementById('progressFill').style.width = (currentSlide / totalSlides * 100) + '%';
+            document.getElementById('slideNumber').textContent = currentSlide + ' / ' + totalSlides;
+        }
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            currentSlide++;
+            showSlide(currentSlide);
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            currentSlide--;
+            showSlide(currentSlide);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                currentSlide++;
+                showSlide(currentSlide);
+            } else if (e.key === 'ArrowLeft') {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>
