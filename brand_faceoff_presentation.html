@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Face-Off Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            width: 90vw;
+            max-width: 1400px;
+            height: 85vh;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 60px 80px;
+            display: none;
+            flex-direction: column;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #ffffff;
+            letter-spacing: -1px;
+        }
+
+        h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+        }
+
+        h3 {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .content-grid {
+            display: grid;
+            gap: 30px;
+            flex: 1;
+        }
+
+        .two-column {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .three-column {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+        }
+
+        .score-card {
+            text-align: center;
+        }
+
+        .score-number {
+            font-size: 64px;
+            font-weight: 300;
+            color: #00d4ff;
+            margin: 20px 0;
+        }
+
+        .brand-name {
+            font-size: 20px;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            color: #00d4ff;
+            font-weight: 400;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        td {
+            font-size: 16px;
+        }
+
+        .score-high {
+            color: #4ecdc4;
+        }
+
+        .score-mid {
+            color: #ffd93d;
+        }
+
+        .score-low {
+            color: #ff6b6b;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 12px 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #00d4ff;
+            border-color: #00d4ff;
+            color: #0a0e1a;
+        }
+
+        .progress-indicator {
+            position: fixed;
+            top: 30px;
+            right: 40px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .winner-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            color: #0a0e1a;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 20px;
+            height: 300px;
+            margin-top: 30px;
+        }
+
+        .bar {
+            flex: 1;
+            background: linear-gradient(to top, #00d4ff 0%, #0099cc 100%);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            transition: all 0.3s ease;
+            animation: barGrow 0.8s ease-out;
+        }
+
+        @keyframes barGrow {
+            from {
+                transform: scaleY(0);
+                transform-origin: bottom;
+            }
+            to {
+                transform: scaleY(1);
+                transform-origin: bottom;
+            }
+        }
+
+        .bar:hover {
+            filter: brightness(1.2);
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -35px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: #00d4ff;
+        }
+
+        .key-insights {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .insight-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 3px solid #00d4ff;
+            padding: 15px 20px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .title-slide {
+            justify-content: center;
+            text-align: center;
+        }
+
+        .title-slide h1 {
+            font-size: 72px;
+            margin-bottom: 30px;
+        }
+
+        .powered-by {
+            font-size: 18px;
+            color: #00d4ff;
+            margin-top: 50px;
+            font-weight: 400;
+        }
+
+        .title-slide .subtitle {
+            font-size: 28px;
+            margin-bottom: 60px;
+        }
+
+        .brand-list {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .about-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 30px;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .contact-section {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 6px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .contact-section h3 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .contact-info {
+            font-size: 18px;
+            color: #ffffff;
+            margin-top: 10px;
+        }
+
+        .contact-email {
+            color: #00d4ff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-email:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-indicator">
+        <span id="currentSlide">1</span> / <span id="totalSlides">8</span>
+    </div>
+
+    <div class="presentation-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <h1>Brand Face-Off</h1>
+            <div class="subtitle">Private Label Strategic Analysis</div>
+            <div class="brand-list">
+                <span>Kroger Private Selection</span>
+                <span>Target Up & Up</span>
+                <span>Costco Kirkland Signature</span>
+                <span>Amazon Basics</span>
+            </div>
+            <div class="powered-by">Powered by BrandRank.AI</div>
+        </div>
+
+        <!-- Slide 2: Overview -->
+        <div class="slide">
+            <h2>Analysis Framework</h2>
+            <div class="subtitle">Dimensions of Brand Excellence Across Key LLMs including ChatGPT</div>
+            <div class="content-grid two-column">
+                <div class="card">
+                    <h3>AI Content Readiness</h3>
+                    <p style="color: rgba(255,255,255,0.7); line-height: 1.8;">E-commerce content richness, AI personalization capabilities, visual content strategy, product review integration, and social channel optimization.</p>
+                </div>
+                <div class="card">
+                    <h3>Product Performance</h3>
+                    <p style="color: rgba(255,255,255,0.7); line-height: 1.8;">Consumer reviews and ratings, pricing versus quality ratio, category depth, availability consistency, and innovation in formulation.</p>
+                </div>
+                <div class="card">
+                    <h3>Brand Promise</h3>
+                    <p style="color: rgba(255,255,255,0.7); line-height: 1.8;">Clarity of value proposition, emotional resonance, differentiation from competitors, messaging consistency, and relevance to current trends.</p>
+                </div>
+                <div class="card">
+                    <h3>Brand Vulnerabilities</h3>
+                    <p style="color: rgba(255,255,255,0.7); line-height: 1.8;">Susceptibility to store brand wars, retailer exclusivity risk, consumer switching costs, innovation defensibility, and supply chain fragility.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: AI Content Readiness -->
+        <div class="slide">
+            <h2>AI Content Readiness</h2>
+            <div class="subtitle">Digital Sophistication & Content Optimization</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Criteria</th>
+                        <th>Kroger Private Selection</th>
+                        <th>Target Up & Up</th>
+                        <th>Kirkland Signature</th>
+                        <th>Amazon Basics</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>E-commerce Content Richness</td>
+                        <td class="score-mid">7.0</td>
+                        <td class="score-high">8.0</td>
+                        <td class="score-mid">7.0</td>
+                        <td class="score-high">9.0</td>
+                    </tr>
+                    <tr>
+                        <td>Use of AI Personalization</td>
+                        <td class="score-low">6.0</td>
+                        <td class="score-high">8.0</td>
+                        <td class="score-low">5.0</td>
+                        <td class="score-high">10.0</td>
+                    </tr>
+                    <tr>
+                        <td>Visual Content Strategy</td>
+                        <td class="score-mid">7.0</td>
+                        <td class="score-mid">7.0</td>
+                        <td class="score-low">6.0</td>
+                        <td class="score-high">8.0</td>
+                    </tr>
+                    <tr>
+                        <td>Product Review Integration</td>
+                        <td class="score-low">6.0</td>
+                        <td class="score-high">8.0</td>
+                        <td class="score-low">6.0</td>
+                        <td class="score-high">9.0</td>
+                    </tr>
+                    <tr>
+                        <td>Social Channel Optimization</td>
+                        <td class="score-low">6.0</td>
+                        <td class="score-mid">7.0</td>
+                        <td class="score-low">5.0</td>
+                        <td class="score-mid">7.0</td>
+                    </tr>
+                    <tr style="font-weight: 600; background: rgba(0,212,255,0.1);">
+                        <td>AVERAGE SCORE</td>
+                        <td>6.4</td>
+                        <td>7.6</td>
+                        <td>5.8</td>
+                        <td class="score-high">8.6</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Slide 4: Product Performance -->
+        <div class="slide">
+            <h2>Product Performance</h2>
+            <div class="subtitle">Quality, Value & Consumer Satisfaction</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Criteria</th>
+                        <th>Kroger Private Selection</th>
+                        <th>Target Up & Up</th>
+                        <th>Kirkland Signature</th>
+                        <th>Amazon Basics</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Consumer Reviews & Ratings</td>
+                        <td class="score-high">8.0</td>
+                        <td class="score-mid">7.0</td>
+                        <td class="score-high">9.0</td>
+                        <td class="score-mid">7.0</td>
+                    </tr>
+                    <tr>
+                        <td>Pricing vs. Quality</td>
+                        <td class="score-high">9.0</td>
+                        <td class="score-high">8.0</td>
+                        <td class="score-high">10.0</td>
+                        <td class="score-high">8.0</td>
+                    </tr>
+                    <tr>
+                        <td>Category Depth</td>
+                        <td class="score-high">8.0</td>
+                        <td class="score-mid">7.0</td>
+                        <td class="score-high">10.0</td>
+                        <td class="score-high">9.0</td>
+                    </tr>
+                    <tr>
+                        <td>Availability & Consistency</td>
+                        <td class="score-mid">7.0</td>
+                        <td class="score-high">8.0</td>
+                        <td class="score-high">9.0</td>
+                        <td class="score-high">10.0</td>
+                    </tr>
+                    <tr>
+                        <td>Innovation in Formulation</td>
+                        <td class="score-mid">7.0</td>
+                        <td class="score-low">6.0</td>
+                        <td class="score-mid">7.0</td>
+                        <td class="score-low">6.0</td>
+                    </tr>
+                    <tr style="font-weight: 600; background: rgba(0,212,255,0.1);">
+                        <td>AVERAGE SCORE</td>
+                        <td>7.8</td>
+                        <td>7.2</td>
+                        <td class="score-high">9.0</td>
+                        <td>8.0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Slide 5: Brand Promise & Vulnerabilities -->
+        <div class="slide">
+            <h2>Brand Promise & Strategic Vulnerabilities</h2>
+            <div class="content-grid two-column">
+                <div>
+                    <h3>Brand Promise Scores</h3>
+                    <div class="bar-chart" style="height: 250px;">
+                        <div class="bar" style="height: 72%;">
+                            <div class="bar-value">7.2</div>
+                            <div class="bar-label">Kroger</div>
+                        </div>
+                        <div class="bar" style="height: 70%;">
+                            <div class="bar-value">7.0</div>
+                            <div class="bar-label">Target</div>
+                        </div>
+                        <div class="bar" style="height: 86%;">
+                            <div class="bar-value">8.6</div>
+                            <div class="bar-label">Kirkland</div>
+                        </div>
+                        <div class="bar" style="height: 60%;">
+                            <div class="bar-value">6.0</div>
+                            <div class="bar-label">Amazon</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3>Brand Vulnerabilities</h3>
+                    <div class="bar-chart" style="height: 250px;">
+                        <div class="bar" style="height: 60%; background: linear-gradient(to top, #ff6b6b 0%, #cc5555 100%);">
+                            <div class="bar-value">6.0</div>
+                            <div class="bar-label">Kroger</div>
+                        </div>
+                        <div class="bar" style="height: 58%; background: linear-gradient(to top, #ff6b6b 0%, #cc5555 100%);">
+                            <div class="bar-value">5.8</div>
+                            <div class="bar-label">Target</div>
+                        </div>
+                        <div class="bar" style="height: 72%; background: linear-gradient(to top, #ffd93d 0%, #ccaa33 100%);">
+                            <div class="bar-value">7.2</div>
+                            <div class="bar-label">Kirkland</div>
+                        </div>
+                        <div class="bar" style="height: 64%; background: linear-gradient(to top, #ff6b6b 0%, #cc5555 100%);">
+                            <div class="bar-value">6.4</div>
+                            <div class="bar-label">Amazon</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Brand Archetypes -->
+        <div class="slide">
+            <h2>Brand Archetypes</h2>
+            <div class="subtitle">Strategic Personality & Positioning</div>
+            <div class="content-grid three-column" style="grid-template-columns: repeat(4, 1fr);">
+                <div class="card score-card">
+                    <div class="brand-name">Kroger Private Selection</div>
+                    <div class="score-number">7.6</div>
+                    <div style="color: #00d4ff; font-size: 18px; margin-top: 10px;">The Creator</div>
+                    <p style="color: rgba(255,255,255,0.6); margin-top: 15px; font-size: 14px;">Gourmet language, elevated packaging, specialty positioning</p>
+                </div>
+                <div class="card score-card">
+                    <div class="brand-name">Target Up & Up</div>
+                    <div class="score-number">6.6</div>
+                    <div style="color: #00d4ff; font-size: 18px; margin-top: 10px;">The Everyman</div>
+                    <p style="color: rgba(255,255,255,0.6); margin-top: 15px; font-size: 14px;">Simple, accessible, helpful, functional</p>
+                </div>
+                <div class="card score-card">
+                    <div class="brand-name">Kirkland Signature</div>
+                    <div class="score-number score-high">8.8</div>
+                    <div style="color: #00d4ff; font-size: 18px; margin-top: 10px;">The Hero</div>
+                    <p style="color: rgba(255,255,255,0.6); margin-top: 15px; font-size: 14px;">Saves consumers from overpaying, delivers trust and reliability</p>
+                </div>
+                <div class="card score-card">
+                    <div class="brand-name">Amazon Basics</div>
+                    <div class="score-number">6.0</div>
+                    <div style="color: #00d4ff; font-size: 18px; margin-top: 10px;">The Ruler</div>
+                    <p style="color: rgba(255,255,255,0.6); margin-top: 15px; font-size: 14px;">Control through pricing and presence, not personality</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Final Results -->
+        <div class="slide">
+            <h2>Final Results</h2>
+            <div class="subtitle">Overall Performance Comparison</div>
+            <div class="bar-chart" style="height: 400px; margin-bottom: 40px;">
+                <div class="bar" style="height: 70%; background: linear-gradient(to top, #4ecdc4 0%, #3aa89f 100%);">
+                    <div class="bar-value">7.00</div>
+                    <div class="bar-label">Kroger Private Selection</div>
+                </div>
+                <div class="bar" style="height: 68.4%; background: linear-gradient(to top, #4ecdc4 0%, #3aa89f 100%);">
+                    <div class="bar-value">6.84</div>
+                    <div class="bar-label">Target Up & Up</div>
+                </div>
+                <div class="bar" style="height: 78.8%; background: linear-gradient(to top, #00d4ff 0%, #0099cc 100%);">
+                    <div class="bar-value">7.88</div>
+                    <div class="bar-label">Kirkland Signature</div>
+                </div>
+                <div class="bar" style="height: 70%; background: linear-gradient(to top, #4ecdc4 0%, #3aa89f 100%);">
+                    <div class="bar-value">7.00</div>
+                    <div class="bar-label">Amazon Basics</div>
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 32px; color: #00d4ff; margin-bottom: 15px;">WINNER: COSTCO KIRKLAND SIGNATURE</div>
+                <div style="font-size: 18px; color: rgba(255,255,255,0.7);">Won by a mile: 0.88 point advantage over second place</div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Key Insights -->
+        <div class="slide">
+            <h2>Strategic Insights</h2>
+            <div class="subtitle">What The Data Reveals</div>
+            <div class="key-insights">
+                <div class="insight-item">
+                    <strong>Kirkland dominates traditional brand metrics</strong> while showing weakness in digital sophistication. Product performance and brand promise carry more strategic weight than AI readiness in private label success.
+                </div>
+                <div class="insight-item">
+                    <strong>Amazon Basics leads in AI capabilities</strong> but lacks emotional depth and brand identity. Algorithm-driven merchandising cannot yet replace authentic brand building.
+                </div>
+                <div class="insight-item">
+                    <strong>Kroger Private Selection offers premium positioning</strong> in niche categories but cannot match Kirkland's breadth or Amazon's digital optimization. Strong in food, limited elsewhere.
+                </div>
+                <div class="insight-item">
+                    <strong>Target Up & Up trails in distinctiveness</strong> despite solid execution across categories. Functional utility brand with limited emotional resonance or strategic differentiation.
+                </div>
+                <div class="insight-item">
+                    <strong>High switching costs matter</strong> more than retailer exclusivity. Kirkland benefits from membership model, Amazon from Prime dependency. In-store brands face higher vulnerability.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: About BrandRank.AI -->
+        <div class="slide">
+            <h2>About BrandRank.AI</h2>
+            <div class="about-section">
+                <p style="color: rgba(255,255,255,0.9); font-size: 18px;">
+                    Cincinnati-based BrandRank helps Brands measure, protect, and grow trust through the power of AI-driven search and discovery. Combining AI with expert insight, we monitor the major AI "Answer Engines" to pinpoint vulnerabilities and opportunities, identify key insights driving purchase behavior, and uncover category needs and opportunities to strengthen brand equity and consumer loyalty.
+                </p>
+            </div>
+            <div class="contact-section">
+                <h3>Questions:</h3>
+                <div class="contact-info">
+                    <div>Adam Bittner</div>
+                    <a href="mailto:Adam@brandrank.ai" class="contact-email">Adam@brandrank.ai</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" onclick="previousSlide()">Previous</button>
+        <button class="nav-btn" onclick="nextSlide()">Next</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        document.getElementById('totalSlides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            document.getElementById('currentSlide').textContent = currentSlide + 1;
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+        });
+    </script>
+</body>
+</html>
