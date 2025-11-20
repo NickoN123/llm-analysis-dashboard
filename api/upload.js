@@ -47,8 +47,15 @@ export default async function handler(req, res) {
     // GitHub API URL to upload the file to the repository
     const githubUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(path)}`;
 
-    // Base64 encode the file content
-    const contentBase64 = Buffer.from(fileContent, 'utf8').toString('base64');
+    // Check if file content is base64 or regular text (Binary vs Text check)
+    let contentBase64;
+    if (Buffer.from(fileContent, 'base64').toString('base64') === fileContent) {
+      // Binary file (like images, PDFs, etc.)
+      contentBase64 = fileContent; // Use directly if it's a base64-encoded binary string
+    } else {
+      // Regular text file (HTML, TXT, etc.)
+      contentBase64 = Buffer.from(fileContent, 'utf8').toString('base64');
+    }
 
     // GitHub request body
     const body = {
