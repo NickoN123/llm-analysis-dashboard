@@ -16,10 +16,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { fileName, html } = req.body || {};
+    const { fileName, fileContent } = req.body || {};
 
-    if (!fileName || !html) {
-      return res.status(400).json({ error: 'fileName and html are required' });
+    if (!fileName || !fileContent) {
+      return res.status(400).json({ error: 'fileName and fileContent are required' });
     }
 
     // === CONFIG: edit these for your repo ===
@@ -41,18 +41,18 @@ export default async function handler(req, res) {
       .replace(/^-+|-+$/g, '') || 'uploaded';
 
     const uniqueSuffix = Date.now().toString(36);
-    const safeFileName = `${baseName}-${uniqueSuffix}.html`;
+    const safeFileName = `${baseName}-${uniqueSuffix}${fileName.substring(fileName.lastIndexOf('.'))}`; // Keep the original file extension
     const path = `${safeFileName}`;  // Files uploaded to the root directory (no subfolders)
 
     // GitHub API URL to upload the file to the repository
     const githubUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(path)}`;
 
-    // Base64 encode the HTML content
-    const contentBase64 = Buffer.from(html, 'utf8').toString('base64');
+    // Base64 encode the file content
+    const contentBase64 = Buffer.from(fileContent, 'utf8').toString('base64');
 
     // GitHub request body
     const body = {
-      message: `Add uploaded page ${safeFileName} via Index Hub`,  // Commit message
+      message: `Add uploaded file ${safeFileName} via Index Hub`,  // Commit message
       content: contentBase64,
       branch  // Specify the branch (e.g., 'main')
     };
