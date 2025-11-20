@@ -16,10 +16,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { fileName, html } = req.body || {};
+    const { fileName, fileContent } = req.body || {};
 
-    if (!fileName || !html) {
-      return res.status(400).json({ error: 'fileName and html are required' });
+    if (!fileName || !fileContent) {
+      return res.status(400).json({ error: 'fileName and fileContent are required' });
     }
 
     // === CONFIG: edit these for your repo ===
@@ -41,19 +41,29 @@ export default async function handler(req, res) {
       .replace(/^-+|-+$/g, '') || 'uploaded';
 
     const uniqueSuffix = Date.now().toString(36);
-   const safeFileName = `${baseName}.html`;  // Removes the suffix
+    const fileExtension = fileName.split('.').pop().toLowerCase();
 
-    const path = `${safeFileName}`;  // This saves it directly to the root folder
+    // Check for .html or .mp3 extension and handle accordingly
+    let safeFileName;
+    let contentBase64;
 
+    if (fileExtension === 'html') {
+      safeFileName = `${baseName}-${uniqueSuffix}.html`; // If it's HTML file
+      contentBase64 = Buffer.from(fileContent, 'utf8').toString('base64');
+    } else if (fileExtension === 'mp3') {
+      safeFileName = `${baseName}-${uniqueSuffix}.mp3`; // If it's MP3 file
+      contentBase64 = Buffer.from(fileContent, 'binary').toString('base64');  // For MP3 files, use binary encoding
+    } else {
+      return res.status(400).json({ error: 'Unsupported file type. Only .html and .mp3 are allowed.' });
+    }
+
+    const path = `uploads/${safeFileName}`;
 
     // GitHub Contents API URL
     const githubUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(path)}`;
 
-    // Base64 encode HTML for GitHub API
-    const contentBase64 = Buffer.from(html, 'utf8').toString('base64');
-
     const body = {
-      message: `Add uploaded page ${safeFileName} via Index Hub`,
+      message: `Add uploaded file ${safeFileName} via Index Hub`,
       content: contentBase64,
       branch
     };
@@ -77,9 +87,7 @@ export default async function handler(req, res) {
     }
 
     // This is the URL GitHub Pages will serve it from:
-    // If the file is in the root folder:
-const publicUrl = `https://brandrankai-dashboard-index.com/${safeFileName}`;
-
+    const publicUrl = `https://nickon123.github.io/llm-analysis-dashboard/${path}`;
 
     return res.status(200).json({ url: publicUrl });
   } catch (err) {
