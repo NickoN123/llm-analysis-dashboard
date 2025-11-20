@@ -1,5 +1,4 @@
 // api/upload.js
-
 export default async function handler(req, res) {
   // CORS handling so your GitHub Pages frontend can call this
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -49,9 +48,11 @@ export default async function handler(req, res) {
 
     // Check if file content is base64 or regular text (Binary vs Text check)
     let contentBase64;
-    if (Buffer.from(fileContent, 'base64').toString('base64') === fileContent) {
+    const isBinaryFile = fileContent.includes('data:') || fileContent.includes('base64'); // Check for base64 data (images, PDFs, etc.)
+
+    if (isBinaryFile) {
       // Binary file (like images, PDFs, etc.)
-      contentBase64 = fileContent; // Use directly if it's a base64-encoded binary string
+      contentBase64 = fileContent.split(',')[1]; // For base64 encoded files (skip data URL prefix)
     } else {
       // Regular text file (HTML, TXT, etc.)
       contentBase64 = Buffer.from(fileContent, 'utf8').toString('base64');
