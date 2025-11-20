@@ -23,11 +23,11 @@ export default async function handler(req, res) {
     }
 
     // === CONFIG: edit these for your repo ===
-    const owner = 'NickoN123';
-    const repo = 'llm-analysis-dashboard';
-    const branch = 'main'; // or 'master' if that is your default
+    const owner  = 'NickoN123';       // Your GitHub username or organization name
+    const repo   = 'llm-analysis-dashboard';  // Your GitHub repo name
+    const branch = 'main';           // GitHub branch name (use 'main' or 'gh-pages' depending on your setup)
 
-    // GitHub PAT stored as env var in Vercel
+    // GitHub Personal Access Token (PAT) stored as env var in Vercel
     const token = process.env.GITHUB_TOKEN;
     if (!token) {
       return res.status(500).json({ error: 'GITHUB_TOKEN not configured on server' });
@@ -35,28 +35,29 @@ export default async function handler(req, res) {
 
     // Sanitize filename and make it unique
     const baseName = (fileName || 'uploaded')
-      .replace(/\.[^/.]+$/, '')           // remove extension
-      .replace(/[^a-zA-Z0-9-_]+/g, '-')   // replace weird chars
+      .replace(/\.[^/.]+$/, '')           // Remove file extension
+      .replace(/[^a-zA-Z0-9-_]+/g, '-')   // Replace special characters
       .replace(/-+/g, '-')
       .replace(/^-+|-+$/g, '') || 'uploaded';
 
     const uniqueSuffix = Date.now().toString(36);
-    const safeFileName = `${baseName}.html`; // Keeps the original file extension
+    const safeFileName = `${baseName}-${uniqueSuffix}.html`;
+    const path = `${safeFileName}`;  // Files uploaded to the root directory (no subfolders)
 
-    const path = `${safeFileName}`;  // This saves it directly to the root folder
-
-    // GitHub Contents API URL
+    // GitHub API URL to upload the file to the repository
     const githubUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(path)}`;
 
-    // Base64 encode HTML for GitHub API
+    // Base64 encode the HTML content
     const contentBase64 = Buffer.from(html, 'utf8').toString('base64');
 
+    // GitHub request body
     const body = {
-      message: `Add uploaded page ${safeFileName} via Index Hub`,
+      message: `Add uploaded page ${safeFileName} via Index Hub`,  // Commit message
       content: contentBase64,
-      branch
+      branch  // Specify the branch (e.g., 'main')
     };
 
+    // Make the request to GitHub API to upload the file
     const ghRes = await fetch(githubUrl, {
       method: 'PUT',
       headers: {
@@ -75,12 +76,11 @@ export default async function handler(req, res) {
       });
     }
 
-    // This is the URL GitHub Pages will serve it from:
-    // If the file is in the root folder:
-    const publicUrl = `https://brandrankai-dashboard-index.com/${safeFileName}`;
+    // This is the public URL GitHub Pages will serve it from:
+    const publicUrl = `https://${owner}.github.io/${repo}/${path}`;
 
+    // Return the public URL of the uploaded file
     return res.status(200).json({ url: publicUrl });
-
   } catch (err) {
     console.error('Upload handler error', err);
     return res.status(500).json({ error: 'Server error', details: String(err) });
