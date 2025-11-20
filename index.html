@@ -713,17 +713,7 @@
       });
     }
 
-    // Updated upload handler with GitHub integration
     uploadBtnEl.addEventListener('click', async () => {
-  const file = uploadFileEl.files && uploadFileEl.files[0];
-  if (!file) {
-    alert('Please choose a file first.');
-    return;
-  }
-
-  // Allow all file types
-  // You can optionally check file extensions to show an alert for unsupported types if needed
-  uploadBtnEl.addEventListener('click', async () => {
   const file = uploadFileEl.files && uploadFileEl.files[0];
   if (!file) {
     alert('Please choose a file first.');
@@ -746,13 +736,24 @@
 
     let url = null;
 
-    // Try to upload to GitHub to get a shareable URL (if configured)
+    // Try to upload to Vercel or GitHub to get a shareable URL (if configured)
     if (githubConfigured()) {
       try {
-        url = await uploadToGitHub({
-          fileName: file.name,
-          html: contentText
-        });
+        // If it's an audio file (.mp3), handle it as binary data
+        if (file.name.endsWith('.mp3')) {
+          // For binary data (audio), send the file content as base64
+          const fileContentBase64 = e.target.result.split(',')[1]; // Remove base64 prefix
+          url = await uploadToGitHub({
+            fileName: file.name,
+            fileContent: fileContentBase64
+          });
+        } else {
+          // For text-based files (HTML, TXT), send as base64-encoded text
+          url = await uploadToGitHub({
+            fileName: file.name,
+            fileContent: contentText
+          });
+        }
       } catch (err) {
         console.error('Upload to GitHub failed:', err);
         alert('Could not upload to GitHub. This will be stored locally only.');
@@ -784,56 +785,12 @@
 
   // For .mp3 files, handle them as binary (i.e., read as data URL)
   if (file.name.endsWith('.mp3')) {
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      const audioData = e.target.result; // The mp3 file content as base64
-      // Handle the upload of the mp3 file in the same way
-      const title = (uploadTitleEl.value || file.name.replace(/\.[^/.]+$/, '')).trim();
-      const icon = '🎶'; // Optional: Add a music icon for mp3 files
-      const section = uploadSectionEl.value || 'research';
-
-      let url = null;
-
-      if (githubConfigured()) {
-        try {
-          url = await uploadToGitHub({
-            fileName: file.name,
-            fileContent: audioData
-          });
-        } catch (err) {
-          console.error('Upload to GitHub failed:', err);
-          alert('Could not upload to GitHub. This will be stored locally only.');
-        }
-      }
-
-      const item = {
-        id: 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
-        title,
-        icon,
-        section,
-        dateISO: new Date().toISOString(),
-        contentText: audioData,
-        url // may be null if GitHub upload failed or not configured
-      };
-
-      const uploads = getUploads();
-      uploads.unshift(item);
-      setUploads(uploads);
-
-      uploadTitleEl.value = '';
-      uploadIconEl.value = '';
-      uploadFileEl.value = '';
-      renderAll();
-
-      const anchor = document.getElementById(section);
-      if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    };
     reader.readAsDataURL(file); // Read .mp3 file as base64 data URL
   } else {
-    // Default text file processing
-    reader.readAsText(file);
+    reader.readAsText(file); // Read text-based files as text
   }
 });
+
 
 
 
