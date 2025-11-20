@@ -713,58 +713,84 @@
       });
     }
 
-    // Updated upload handler with GitHub integration
     uploadBtnEl.addEventListener('click', async () => {
-      const file = uploadFileEl.files && uploadFileEl.files[0];
-      if (!file) { alert('Choose a .html file first.'); return; }
-      if (!/\.html?$/i.test(file.name)) { alert('Please select a .html file.'); return; }
+  const file = uploadFileEl.files && uploadFileEl.files[0];
+  if (!file) {
+    alert('Please choose a file first.');
+    return;
+  }
 
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const contentText = e.target.result;
-        const title = (uploadTitleEl.value || file.name.replace(/\.[^/.]+$/, '')).trim();
-        const icon  = (uploadIconEl.value || '').trim() || '🧩';
-        const section = uploadSectionEl.value || 'research';
+  // Allow the following file types, including .mp3
+  const allowedExtensions = /(\.html|\.txt|\.jpg|\.jpeg|\.png|\.gif|\.pdf|\.csv|\.mp3)$/i;
+  if (!allowedExtensions.exec(file.name)) {
+    alert('Please select a valid file type. Supported types: .html, .txt, .jpg, .jpeg, .png, .gif, .pdf, .csv, .mp3');
+    return;
+  }
 
-        let url = null;
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    const contentText = e.target.result;
+    const title = (uploadTitleEl.value || file.name.replace(/\.[^/.]+$/, '')).trim();
+    const icon  = (uploadIconEl.value || '').trim() || '🧩';
+    const section = uploadSectionEl.value || 'research';
 
-        // Try to upload to GitHub to get a shareable URL
-        if (githubConfigured()) {
-          try {
-            url = await uploadToGitHub({
-              fileName: file.name,
-              html: contentText
-            });
-          } catch (err) {
-            console.error('Upload to GitHub failed:', err);
-            alert('Could not upload to GitHub. This will be stored locally only.');
-          }
+    let url = null;
+
+    // Try to upload to Vercel or GitHub to get a shareable URL (if configured)
+    if (githubConfigured()) {
+      try {
+        // If it's an audio file (.mp3), handle it as binary data
+        if (file.name.endsWith('.mp3')) {
+          // For binary data (audio), send the file content as base64
+          const fileContentBase64 = e.target.result.split(',')[1]; // Remove base64 prefix
+          url = await uploadToGitHub({
+            fileName: file.name,
+            fileContent: fileContentBase64
+          });
+        } else {
+          // For text-based files (HTML, TXT), send as base64-encoded text
+          url = await uploadToGitHub({
+            fileName: file.name,
+            fileContent: contentText
+          });
         }
+      } catch (err) {
+        console.error('Upload to GitHub failed:', err);
+        alert('Could not upload to GitHub. This will be stored locally only.');
+      }
+    }
 
-        const item = {
-          id: 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
-          title,
-          icon,
-          section,
-          dateISO: new Date().toISOString(),
-          contentText,
-          url // may be null if GitHub upload failed or not configured
-        };
+    const item = {
+      id: 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+      title,
+      icon,
+      section,
+      dateISO: new Date().toISOString(),
+      contentText,
+      url // may be null if GitHub upload failed or not configured
+    };
 
-        const uploads = getUploads();
-        uploads.unshift(item);
-        setUploads(uploads);
+    const uploads = getUploads();
+    uploads.unshift(item);
+    setUploads(uploads);
 
-        uploadTitleEl.value = '';
-        uploadIconEl.value  = '';
-        uploadFileEl.value  = '';
-        renderAll();
+    uploadTitleEl.value = '';
+    uploadIconEl.value  = '';
+    uploadFileEl.value  = '';
+    renderAll();
 
-        const anchor = document.getElementById(section);
-        if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      };
-      reader.readAsText(file);
-    });
+    const anchor = document.getElementById(section);
+    if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  // For .mp3 files, handle them as binary (i.e., read as data URL)
+  if (file.name.endsWith('.mp3')) {
+    reader.readAsDataURL(file); // Read .mp3 file as base64 data URL
+  } else {
+    reader.readAsText(file); // Read text-based files as text
+  }
+});
+
 
     renderAll();
   })();
