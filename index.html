@@ -746,13 +746,13 @@
           const fileContentBase64 = e.target.result.split(',')[1]; // Remove base64 prefix
           url = await uploadToGitHub({
             fileName: file.name,
-            fileContent: fileContentBase64
+            fileContent: fileContentBase64 // Send as base64
           });
         } else {
           // For text-based files (HTML, TXT), send as base64-encoded text
           url = await uploadToGitHub({
             fileName: file.name,
-            fileContent: contentText
+            fileContent: contentText // Send as text
           });
         }
       } catch (err) {
@@ -791,6 +791,7 @@
     reader.readAsText(file); // Read text-based files as text
   }
 });
+
 
 
 
