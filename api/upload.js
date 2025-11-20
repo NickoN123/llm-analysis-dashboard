@@ -22,18 +22,18 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'fileName and contentBase64 are required' });
     }
 
-    // === CONFIG: edit these for your repo ===
-    const owner  = 'NickoN123';
-    const repo   = 'llm-analysis-dashboard';
-    const branch = 'main'; // or 'master' if that is your default
+    // === CONFIG: Edit these for your repo ===
+    const owner  = 'NickoN123'; // GitHub username
+    const repo   = 'llm-analysis-dashboard'; // Repository name
+    const branch = 'main'; // default branch, change if needed
 
-    // GitHub PAT stored as env var in Vercel
+    // GitHub Personal Access Token stored as an environment variable
     const token = process.env.GITHUB_TOKEN;
     if (!token) {
       return res.status(500).json({ error: 'GITHUB_TOKEN not configured on server' });
     }
 
-    // Sanitize base name, keep original extension
+    // Sanitize base name, keep the original extension
     const extMatch = fileName.match(/\.[^./]+$/);
     const ext = extMatch ? extMatch[0].toLowerCase() : '';
 
@@ -47,14 +47,14 @@ export default async function handler(req, res) {
     const uniqueSuffix = Date.now().toString(36);
     const safeFileName = `${baseNameSanitized}-${uniqueSuffix}${ext}`;
 
-    // Optional: put everything under an "uploads" folder in the repo
-    const folder = 'uploads'; // change to '' to put them in repo root
+    // Optional: Put everything under an "uploads" folder in the repo
+    const folder = 'uploads'; // Change to '' for the root of the repo
     const path = folder ? `${folder}/${safeFileName}` : safeFileName;
 
     // GitHub Contents API URL
     const githubUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(path)}`;
 
-    // contentBase64 is already base64 from the browser Data URL
+    // Content is already base64-encoded from the frontend
     const body = {
       message: `Add uploaded file ${safeFileName} via Index Hub`,
       content: contentBase64,
@@ -80,8 +80,7 @@ export default async function handler(req, res) {
     }
 
     // Public GitHub Pages URL for this file:
-    // NOTE: adjust the base URL if your custom domain is different
-    const publicBase = 'https://brandrankai-dashboard-index.com';
+    const publicBase = 'https://brandrankai-dashboard-index.com'; // Your GitHub Pages URL
     const publicUrl = folder
       ? `${publicBase}/${folder}/${safeFileName}`
       : `${publicBase}/${safeFileName}`;
