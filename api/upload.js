@@ -16,10 +16,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { fileName, html } = req.body || {};
+    const { fileName, contentBase64 } = req.body || {};
 
-    if (!fileName || !html) {
-      return res.status(400).json({ error: 'fileName and html are required' });
+    if (!fileName || !contentBase64) {
+      return res.status(400).json({ error: 'fileName and contentBase64 are required' });
     }
 
     // === CONFIG: edit these for your repo ===
@@ -33,27 +33,30 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'GITHUB_TOKEN not configured on server' });
     }
 
-    // Sanitize filename and make it unique
-    const baseName = (fileName || 'uploaded')
-      .replace(/\.[^/.]+$/, '')           // remove extension
-      .replace(/[^a-zA-Z0-9-_]+/g, '-')   // replace weird chars
+    // Sanitize base name, keep original extension
+    const extMatch = fileName.match(/\.[^./]+$/);
+    const ext = extMatch ? extMatch[0].toLowerCase() : '';
+
+    const baseNameRaw = fileName.replace(/\.[^/.]+$/, '');
+    const baseNameSanitized = baseNameRaw
+      .replace(/[^a-zA-Z0-9-_]+/g, '-')
       .replace(/-+/g, '-')
       .replace(/^-+|-+$/g, '') || 'uploaded';
 
+    // Ensure uniqueness so you don't overwrite previous uploads
     const uniqueSuffix = Date.now().toString(36);
-   const safeFileName = `${baseName}.html`;  // Removes the suffix
+    const safeFileName = `${baseNameSanitized}-${uniqueSuffix}${ext}`;
 
-    const path = `${safeFileName}`;  // This saves it directly to the root folder
-
+    // Optional: put everything under an "uploads" folder in the repo
+    const folder = 'uploads'; // change to '' to put them in repo root
+    const path = folder ? `${folder}/${safeFileName}` : safeFileName;
 
     // GitHub Contents API URL
     const githubUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(path)}`;
 
-    // Base64 encode HTML for GitHub API
-    const contentBase64 = Buffer.from(html, 'utf8').toString('base64');
-
+    // contentBase64 is already base64 from the browser Data URL
     const body = {
-      message: `Add uploaded page ${safeFileName} via Index Hub`,
+      message: `Add uploaded file ${safeFileName} via Index Hub`,
       content: contentBase64,
       branch
     };
@@ -76,10 +79,12 @@ export default async function handler(req, res) {
       });
     }
 
-    // This is the URL GitHub Pages will serve it from:
-    // If the file is in the root folder:
-const publicUrl = `https://brandrankai-dashboard-index.com/${safeFileName}`;
-
+    // Public GitHub Pages URL for this file:
+    // NOTE: adjust the base URL if your custom domain is different
+    const publicBase = 'https://brandrankai-dashboard-index.com';
+    const publicUrl = folder
+      ? `${publicBase}/${folder}/${safeFileName}`
+      : `${publicBase}/${safeFileName}`;
 
     return res.status(200).json({ url: publicUrl });
   } catch (err) {
