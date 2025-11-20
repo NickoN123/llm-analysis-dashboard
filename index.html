@@ -715,56 +715,67 @@
 
     // Updated upload handler with GitHub integration
     uploadBtnEl.addEventListener('click', async () => {
-      const file = uploadFileEl.files && uploadFileEl.files[0];
-      if (!file) { alert('Choose a .html file first.'); return; }
-      if (!/\.html?$/i.test(file.name)) { alert('Please select a .html file.'); return; }
+  const file = uploadFileEl.files && uploadFileEl.files[0];
+  if (!file) {
+    alert('Please choose a file first.');
+    return;
+  }
 
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const contentText = e.target.result;
-        const title = (uploadTitleEl.value || file.name.replace(/\.[^/.]+$/, '')).trim();
-        const icon  = (uploadIconEl.value || '').trim() || '🧩';
-        const section = uploadSectionEl.value || 'research';
+  // Allow all file types
+  // You can optionally check file extensions to show an alert for unsupported types if needed
+  const allowedExtensions = /(\.html|\.txt|\.jpg|\.jpeg|\.png|\.gif|\.pdf|\.csv)$/i;
+  if (!allowedExtensions.exec(file.name)) {
+    alert('Please select a valid file type. Supported types: .html, .txt, .jpg, .jpeg, .png, .gif, .pdf, .csv');
+    return;
+  }
 
-        let url = null;
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    const contentText = e.target.result;
+    const title = (uploadTitleEl.value || file.name.replace(/\.[^/.]+$/, '')).trim();
+    const icon  = (uploadIconEl.value || '').trim() || '🧩';
+    const section = uploadSectionEl.value || 'research';
 
-        // Try to upload to GitHub to get a shareable URL
-        if (githubConfigured()) {
-          try {
-            url = await uploadToGitHub({
-              fileName: file.name,
-              html: contentText
-            });
-          } catch (err) {
-            console.error('Upload to GitHub failed:', err);
-            alert('Could not upload to GitHub. This will be stored locally only.');
-          }
-        }
+    let url = null;
 
-        const item = {
-          id: 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
-          title,
-          icon,
-          section,
-          dateISO: new Date().toISOString(),
-          contentText,
-          url // may be null if GitHub upload failed or not configured
-        };
+    // Try to upload to GitHub to get a shareable URL (if configured)
+    if (githubConfigured()) {
+      try {
+        url = await uploadToGitHub({
+          fileName: file.name,
+          html: contentText
+        });
+      } catch (err) {
+        console.error('Upload to GitHub failed:', err);
+        alert('Could not upload to GitHub. This will be stored locally only.');
+      }
+    }
 
-        const uploads = getUploads();
-        uploads.unshift(item);
-        setUploads(uploads);
+    const item = {
+      id: 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+      title,
+      icon,
+      section,
+      dateISO: new Date().toISOString(),
+      contentText,
+      url // may be null if GitHub upload failed or not configured
+    };
 
-        uploadTitleEl.value = '';
-        uploadIconEl.value  = '';
-        uploadFileEl.value  = '';
-        renderAll();
+    const uploads = getUploads();
+    uploads.unshift(item);
+    setUploads(uploads);
 
-        const anchor = document.getElementById(section);
-        if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      };
-      reader.readAsText(file);
-    });
+    uploadTitleEl.value = '';
+    uploadIconEl.value  = '';
+    uploadFileEl.value  = '';
+    renderAll();
+
+    const anchor = document.getElementById(section);
+    if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+  reader.readAsText(file); // This method can handle text files. You can modify this to handle binary files if needed.
+});
+
 
     renderAll();
   })();
