@@ -16,47 +16,43 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { fileName, contentBase64 } = req.body || {};
+    const { fileName, html } = req.body || {};
 
-    if (!fileName || !contentBase64) {
-      return res.status(400).json({ error: 'fileName and contentBase64 are required' });
+    if (!fileName || !html) {
+      return res.status(400).json({ error: 'fileName and html are required' });
     }
 
-    // === CONFIG: Edit these for your repo ===
-    const owner  = 'NickoN123'; // GitHub username
-    const repo   = 'llm-analysis-dashboard'; // Repository name
-    const branch = 'main'; // default branch, change if needed
+    // === CONFIG: edit these for your repo ===
+    const owner = 'NickoN123';
+    const repo = 'llm-analysis-dashboard';
+    const branch = 'main'; // or 'master' if that is your default
 
-    // GitHub Personal Access Token stored as an environment variable
+    // GitHub PAT stored as env var in Vercel
     const token = process.env.GITHUB_TOKEN;
     if (!token) {
       return res.status(500).json({ error: 'GITHUB_TOKEN not configured on server' });
     }
 
-    // Sanitize base name, keep the original extension
-    const extMatch = fileName.match(/\.[^./]+$/);
-    const ext = extMatch ? extMatch[0].toLowerCase() : '';
-
-    const baseNameRaw = fileName.replace(/\.[^/.]+$/, '');
-    const baseNameSanitized = baseNameRaw
-      .replace(/[^a-zA-Z0-9-_]+/g, '-')
+    // Sanitize filename and make it unique
+    const baseName = (fileName || 'uploaded')
+      .replace(/\.[^/.]+$/, '')           // remove extension
+      .replace(/[^a-zA-Z0-9-_]+/g, '-')   // replace weird chars
       .replace(/-+/g, '-')
       .replace(/^-+|-+$/g, '') || 'uploaded';
 
-    // Ensure uniqueness so you don't overwrite previous uploads
     const uniqueSuffix = Date.now().toString(36);
-    const safeFileName = `${baseNameSanitized}-${uniqueSuffix}${ext}`;
+    const safeFileName = `${baseName}.html`; // Keeps the original file extension
 
-    // Optional: Put everything under an "uploads" folder in the repo
-    const folder = 'uploads'; // Change to '' for the root of the repo
-    const path = folder ? `${folder}/${safeFileName}` : safeFileName;
+    const path = `${safeFileName}`;  // This saves it directly to the root folder
 
     // GitHub Contents API URL
     const githubUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(path)}`;
 
-    // Content is already base64-encoded from the frontend
+    // Base64 encode HTML for GitHub API
+    const contentBase64 = Buffer.from(html, 'utf8').toString('base64');
+
     const body = {
-      message: `Add uploaded file ${safeFileName} via Index Hub`,
+      message: `Add uploaded page ${safeFileName} via Index Hub`,
       content: contentBase64,
       branch
     };
@@ -79,13 +75,12 @@ export default async function handler(req, res) {
       });
     }
 
-    // Public GitHub Pages URL for this file:
-    const publicBase = 'https://brandrankai-dashboard-index.com'; // Your GitHub Pages URL
-    const publicUrl = folder
-      ? `${publicBase}/${folder}/${safeFileName}`
-      : `${publicBase}/${safeFileName}`;
+    // This is the URL GitHub Pages will serve it from:
+    // If the file is in the root folder:
+    const publicUrl = `https://brandrankai-dashboard-index.com/${safeFileName}`;
 
     return res.status(200).json({ url: publicUrl });
+
   } catch (err) {
     console.error('Upload handler error', err);
     return res.status(500).json({ error: 'Server error', details: String(err) });
