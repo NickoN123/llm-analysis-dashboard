@@ -121,11 +121,13 @@
 
   <script>
     // Smooth scrolling
-    document.querySelectorAll('.navbar-links a').forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        const target = document.querySelector(link.getAttribute('href'));
-        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.navbar-links a').forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          const target = document.querySelector(link.getAttribute('href'));
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
       });
     });
   </script>
@@ -145,7 +147,7 @@
       <div class="index-card-icon">🗂️</div>
       <h3 class="index-card-title" style="margin-bottom:8px;">Add an HTML Page</h3>
       <p class="index-card-description" style="margin-bottom:16px;">
-        Choose a section, pick an icon, and upload an .html file. It will appear as a card at the top of that section. If your GitHub settings are configured below, it will also generate a hosted link you can share.
+        Choose a section, pick an icon, and upload an .html file. It will appear as a card at the top of that section. If your upload API is configured, it will also generate a hosted link you can share.
       </p>
       <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
         <input id="uploadTitle" class="input" type="text" placeholder="Optional title (defaults to file name)"/>
@@ -156,11 +158,11 @@
           <option value="dashboards">Dashboards</option>
           <option value="research" selected>Research</option>
         </select>
-        <input id="uploadFile" class="input" type="file" accept=".html, .mp3"/>
+        <input id="uploadFile" class="input" type="file" accept=".html"/>
         <button id="uploadBtn" class="btn">Add to Page</button>
       </div>
       <p style="color:#707070; font-size:.85rem; margin-top:10px;">
-        Note: if GitHub configuration is valid, uploads are pushed to your repo and given a shareable URL. Otherwise they are stored locally in this browser only.
+        Note: if the upload endpoint succeeds, uploads are hosted and get a shareable URL. Otherwise they are stored locally in this browser only.
       </p>
     </div>
   </div>
@@ -397,6 +399,74 @@
         </div>
       </a>
     </div>
+
+    <!-- ===== Research, Tools & Experiments ===== -->
+    <h3 class="subsection-title" id="research">Research, Tools & Experiments</h3>
+    <div class="index-grid" id="researchGrid">
+      <a href="ai_media_prioritization_matrix (1).html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">🎛️</div>
+          <h3 class="index-card-title">AI Media Prioritization Matrix</h3>
+          <p class="index-card-description">Matrix tool for channel/keyword prioritization by AI visibility.</p>
+          <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="ai_shopping_cart_comparison.html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">🛍️</div>
+          <h3 class="index-card-title">AI Shopping Cart Comparison</h3>
+          <p class="index-card-description">Comparative carts generated across engines for identical intents.</p>
+          <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="cognitive_processing_time.html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">⏱️</div>
+          <h3 class="index-card-title">Cognitive Processing Time</h3>
+          <p class="index-card-description">Latency/effort framing for prompt interactions and outputs.</p>
+          <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="CPG-Prompted-100-Q3-2035.html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">🧰</div>
+          <h3 class="index-card-title">CPG Prompted 100 — Q3 2035</h3>
+          <p class="index-card-description">Standardized prompt pack and score rollups for CPG.</p>
+          <div class="index-card-meta"><span class="index-card-date">2035</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="Lunchline LeaderBoard _ Claude _ Claude.html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">🥇</div>
+          <h3 class="index-card-title">Lunchline Leaderboard — Claude</h3>
+          <p class="index-card-description">Engine-specific leaderboard for lunchline prompts/results.</p>
+          <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="BeanSeenCoffeeTracker.html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">☕</div>
+          <h3 class="index-card-title">BeanSeen Coffee Tracker</h3>
+          <p class="index-card-description">Coffee brand visibility and inventory mentions across engines.</p>
+          <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="financial_services_report (1) (1).html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">🏦</div>
+          <h3 class="index-card-title">Financial Services Report</h3>
+          <p class="index-card-description">Banking/fin-serv visibility, trust, and query intent coverage.</p>
+          <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="Groomdex-July2025-BrandRank.html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">✂️</div>
+          <h3 class="index-card-title">Groomdex — July 2025</h3>
+          <p class="index-card-description">Personal care & grooming brand exposure across LLMs.</p>
+          <div class="index-card-meta"><span class="index-card-date">Jul 2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+      <a href="autism-research-dashboard.html" class="index-card-link">
+        <div class="index-card"><div class="index-card-icon">💊</div>
+          <h3 class="index-card-title">Autism Research — September 2025</h3>
+          <p class="index-card-description">Over the counter medication analysis.</p>
+          <div class="index-card-meta"><span class="index-card-date">Sept 2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+    </div>
   </div>
 
   <div class="footer">
@@ -406,17 +476,244 @@
 
   <!-- Uploads logic -->
   <script>
-    /*
-      Stores uploads in localStorage under "ihUploads" as:
-        { id, title, dateISO, contentText, section, icon, url }
+  (function() {
+    'use strict';
 
-      If "url" is set, the card links directly to that URL (shareable).
-      If "url" is missing, the card falls back to local-only behavior.
+    // ============================
+    // CONFIG: Upload endpoint
+    // ============================
+    const UPLOAD_ENDPOINT = 'https://llm-analysis-dashboard.vercel.app/api/upload';
 
-      WARNING: To push files directly to GitHub from the browser, you must
-      embed a GitHub Personal Access Token. This is not secure for public
-      sites. Use for internal or testing only, or put a server in front.
-    */
+    async function uploadToServer({ fileName, html }) {
+      const res = await fetch(UPLOAD_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fileName, html })
+      });
+
+      if (!res.ok) {
+        const text = await res.text().catch(() => '');
+        throw new Error('Upload failed: ' + res.status + ' ' + text);
+      }
+
+      const data = await res.json();
+      if (!data.url) {
+        throw new Error('Upload response did not include a URL');
+      }
+      return data.url;
+    }
+
+    const STORAGE_KEY = 'ihUploads';
+    const SECTION_IDS = {
+      brandrank: 'brandrankGrid',
+      industry: 'industryGrid',
+      dashboards: 'dashboardsGrid',
+      research: 'researchGrid'
+    };
+
+    function getUploads() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+      catch { return []; }
+    }
+    function setUploads(arr) { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
+
+    function openUpload(u) {
+      const w = window.open('', '_blank');
+      if (!w) { alert('Popup blocked. Please allow popups for this site.'); return; }
+      const title = u.title || 'Uploaded Page';
+      w.document.open();
+      w.document.write(u.contentText || '<!DOCTYPE html><html><body><p>No content stored.</p></body></html>');
+      try { w.document.title = title; } catch {}
+      w.document.close();
+    }
+
+    function deleteUpload(id) {
+      const next = getUploads().filter(x => x.id !== id);
+      setUploads(next);
+      renderAll();
+    }
+
+    function buildCard(u) {
+      const a = document.createElement('a');
+      a.className = 'index-card-link';
+      a.setAttribute('data-upload', '1');
+      a.setAttribute('data-upload-id', u.id);
+
+      if (u.url) {
+        a.href = u.url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+      } else {
+        a.href = '#';
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          openUpload(u);
+        });
+      }
+
+      const card = document.createElement('div');
+      card.className = 'index-card';
+
+      const icon = document.createElement('div');
+      icon.className = 'index-card-icon';
+      icon.textContent = u.icon || '🧩';
+
+      const title = document.createElement('h3');
+      title.className = 'index-card-title';
+      title.textContent = u.title || 'Uploaded HTML';
+
+      const desc = document.createElement('p');
+      desc.className = 'index-card-description';
+      desc.textContent = u.url
+        ? 'User-uploaded page with a shareable link. Click to open or copy link.'
+        : 'User-uploaded page stored locally in your browser. Click to open.';
+
+      const meta = document.createElement('div');
+      meta.className = 'index-card-meta';
+
+      const dateSpan = document.createElement('span');
+      dateSpan.className = 'index-card-date';
+      const niceDate = new Date(u.dateISO).toLocaleDateString(undefined, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+      dateSpan.textContent = niceDate;
+
+      const right = document.createElement('span');
+      right.style.display = 'flex';
+      right.style.gap = '8px';
+      right.style.alignItems = 'center';
+
+      const badge = document.createElement('span');
+      badge.className = 'index-card-badge';
+      badge.textContent = u.url ? 'Hosted' : 'Uploaded';
+
+      if (u.url) {
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'del-pill';
+        copyBtn.type = 'button';
+        copyBtn.textContent = 'Copy link';
+        copyBtn.style.color = '#00d4ff';
+        copyBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          navigator.clipboard.writeText(u.url)
+            .then(() => alert('Link copied to clipboard.'))
+            .catch(() => alert('Could not copy link.'));
+        });
+        right.appendChild(copyBtn);
+      }
+
+      const del = document.createElement('button');
+      del.className = 'del-pill';
+      del.type = 'button';
+      del.textContent = 'Delete';
+      del.title = 'Remove from this browser';
+      del.addEventListener('click', (e) => {
+        e.stopPropagation(); e.preventDefault();
+        if (confirm('Delete this uploaded page from your browser?')) {
+          deleteUpload(u.id);
+        }
+      });
+
+      right.appendChild(badge);
+      right.appendChild(del);
+
+      meta.appendChild(dateSpan);
+      meta.appendChild(right);
+
+      card.appendChild(icon);
+      card.appendChild(title);
+      card.appendChild(desc);
+      card.appendChild(meta);
+      a.appendChild(card);
+      return a;
+    }
+
+    function renderAll() {
+      Object.values(SECTION_IDS).forEach(gridId => {
+        const grid = document.getElementById(gridId);
+        if (!grid) return;
+        grid.querySelectorAll('[data-upload="1"]').forEach(node => node.remove());
+      });
+
+      const uploads = getUploads();
+      uploads.sort((a,b) => new Date(b.dateISO) - new Date(a.dateISO));
+
+      uploads.forEach(u => {
+        const gridId = SECTION_IDS[u.section] || SECTION_IDS.research;
+        const grid = document.getElementById(gridId);
+        if (!grid) return;
+        const card = buildCard(u);
+        if (grid.firstChild) grid.insertBefore(card, grid.firstChild);
+        else grid.appendChild(card);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const uploadTitleEl   = document.getElementById('uploadTitle');
+      const uploadIconEl    = document.getElementById('uploadIcon');
+      const uploadSectionEl = document.getElementById('uploadSection');
+      const uploadFileEl    = document.getElementById('uploadFile');
+      const uploadBtnEl     = document.getElementById('uploadBtn');
+
+      if (!uploadBtnEl) {
+        console.error('Upload button not found in DOM.');
+        return;
+      }
+
+      uploadBtnEl.addEventListener('click', () => {
+        const file = uploadFileEl.files && uploadFileEl.files[0];
+        if (!file) { alert('Choose a .html file first.'); return; }
+        if (!/\.html?$/i.test(file.name)) { alert('Please select a .html file.'); return; }
+
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          const contentText = e.target.result;
+          const title = (uploadTitleEl.value || file.name.replace(/\.[^/.]+$/, '')).trim();
+          const icon  = (uploadIconEl.value || '').trim() || '🧩';
+          const section = uploadSectionEl.value || 'research';
+
+          let url = null;
+          try {
+            url = await uploadToServer({
+              fileName: file.name,
+              html: contentText
+            });
+          } catch (err) {
+            console.error('Upload to server failed:', err);
+            alert('Could not upload to GitHub. This will be stored locally only.');
+          }
+
+          const item = {
+            id: 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+            title,
+            icon,
+            section,
+            dateISO: new Date().toISOString(),
+            contentText,
+            url
+          };
+
+          const uploads = getUploads();
+          uploads.unshift(item);
+          setUploads(uploads);
+
+          uploadTitleEl.value = '';
+          uploadIconEl.value  = '';
+          uploadFileEl.value  = '';
+          renderAll();
+
+          const anchor = document.getElementById(section);
+          if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+        reader.readAsText(file);
+      });
+
+      renderAll();
+    });
+  })();
   </script>
 </body>
 </html>
