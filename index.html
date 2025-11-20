@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Index Hub - Data Intelligence Center</title>
   <style>
-    /* CSS remains the same as the previous design */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -22,48 +21,205 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: sticky; top: 0; z-index: 1000;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
-    .navbar-title { color: #00d4ff; font-weight: 700; font-size: 1.3rem; text-decoration: none; }
+
+    .navbar-title {
+      color: #00d4ff;
+      font-weight: 700;
+      font-size: 1.3rem;
+      text-decoration: none;
+    }
+
     .navbar-links a {
-      color: #e0e0e0; margin-left: 20px; text-decoration: none; font-size: 1rem; transition: color .2s ease;
+      color: #e0e0e0;
+      margin-left: 20px;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color .2s ease;
     }
+
     .navbar-links a:hover { color: #00d4ff; }
 
     /* Hero Section */
     .hero {
       background: linear-gradient(135deg, #0a0e1a 0%, #141822 100%);
-      padding: 80px 20px; text-align: center; border-bottom: 3px solid #00d4ff;
+      padding: 80px 20px;
+      text-align: center;
+      border-bottom: 3px solid #00d4ff;
     }
+
     .hero-title {
-      font-size: 3.5rem; font-weight: 700; color: #00d4ff; margin-bottom: 20px;
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: #00d4ff;
+      margin-bottom: 20px;
       text-shadow: 0 0 20px rgba(0,212,255,.3);
     }
-    .hero-subtitle { font-size: 1.3rem; color: #b0b0b0; font-weight: 300; max-width: 700px; margin: 0 auto 40px; }
-    .hero-description { font-size: 1rem; color: #909090; max-width: 600px; margin: 0 auto; line-height: 1.8; }
 
-    .container { max-width: 1400px; margin: 0 auto; padding: 60px 20px; }
-    .section-title { font-size: 2rem; color: #00d4ff; margin-bottom: 20px; text-align: center; font-weight: 600; }
+    .hero-subtitle {
+      font-size: 1.3rem;
+      color: #b0b0b0;
+      font-weight: 300;
+      max-width: 700px;
+      margin: 0 auto 40px;
+    }
+
+    .hero-description {
+      font-size: 1rem;
+      color: #909090;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      color: #00d4ff;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    /* Subsection header */
+    .subsection-title {
+      margin: 30px 0 15px;
+      font-size: 1.25rem;
+      color: #b8eaff;
+      font-weight: 600;
+      border-left: 4px solid #00d4ff;
+      padding-left: 12px;
+    }
+
+    .index-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .index-card {
+      background: #141822;
+      border: 1px solid #1a2030;
+      border-radius: 12px;
+      padding: 30px;
+      transition: all .3s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .index-card:hover {
+      transform: translateY(-5px);
+      border-color: #00d4ff;
+      box-shadow: 0 10px 30px rgba(0,212,255,.2);
+    }
+
+    .index-card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #00d4ff;
+    }
+
+    .index-card-title {
+      font-size: 1.5rem;
+      color: #00d4ff;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .index-card-description {
+      color: #b0b0b0;
+      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+
+    .index-card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #1a2030;
+    }
+
+    .index-card-date {
+      color: #707070;
+      font-size: .85rem;
+    }
+
+    .index-card-badge {
+      background: #1a2030;
+      color: #00d4ff;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: .8rem;
+      font-weight: 600;
+    }
+
+    a.index-card-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
 
     /* Upload UI */
     .btn {
-      display:inline-block; padding:10px 16px; border:1px solid #00d4ff;
-      border-radius:10px; color:#00d4ff; background:transparent; cursor:pointer;
-      font-weight:600; transition:all .2s ease; text-decoration:none;
-    }
-    .btn:hover { background:#001b22; box-shadow:0 6px 16px rgba(0,212,255,.2);}
-    .input {
-      background:#0f1422; border:1px solid #1a2030; color:#e0e0e0;
-      padding:10px 12px; border-radius:10px;
-    }
-    .select { appearance:none; }
-    .del-pill {
-      background:#1a2030; color:#ff6b6b; border:1px solid #2a2a2a;
-      padding:4px 8px; border-radius:999px; font-size:.75rem; cursor:pointer;
+      display:inline-block;
+      padding:10px 16px;
+      border:1px solid #00d4ff;
+      border-radius:10px;
+      color:#00d4ff;
+      background:transparent;
+      cursor:pointer;
+      font-weight:600;
+      transition:all .2s ease;
+      text-decoration:none;
     }
 
-    .footer { text-align: center; padding: 40px 20px; color: #707070; border-top: 1px solid #1a2030; margin-top: 60px; }
-    .footer a { color: #00d4ff; text-decoration: none; }
+    .btn:hover { background:#001b22; box-shadow:0 6px 16px rgba(0,212,255,.2);}
+
+    .input {
+      background:#0f1422;
+      border:1px solid #1a2030;
+      color:#e0e0e0;
+      padding:10px 12px;
+      border-radius:10px;
+    }
+
+    .select { appearance:none; }
+
+    .del-pill {
+      background:#1a2030;
+      color:#ff6b6b;
+      border:1px solid #2a2a2a;
+      padding:4px 8px;
+      border-radius:999px;
+      font-size:.75rem;
+      cursor:pointer;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: #707070;
+      border-top: 1px solid #1a2030;
+      margin-top: 60px;
+    }
+
+    .footer a {
+      color: #00d4ff;
+      text-decoration: none;
+    }
+
     .footer a:hover { text-decoration: underline; }
 
     @media (max-width: 768px) {
@@ -91,6 +247,19 @@
     </div>
   </div>
 
+  <script>
+    // Smooth scrolling
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.navbar-links a').forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          const target = document.querySelector(link.getAttribute('href'));
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+    });
+  </script>
+
   <div class="hero">
     <h1 class="hero-title">Index Hub</h1>
     <p class="hero-subtitle">Data Intelligence & Analytics Center</p>
@@ -99,29 +268,29 @@
     </p>
   </div>
 
-  <!-- ===== Uploads Section ===== -->
+  <!-- ===== Uploads (control panel at top) ===== -->
   <div class="container" id="uploads" style="padding-top:30px;">
     <h3 class="subsection-title">Uploads</h3>
     <div class="index-card" style="margin-bottom:24px;">
       <div class="index-card-icon">🗂️</div>
-      <h3 class="index-card-title" style="margin-bottom:8px;">Upload a File</h3>
+      <h3 class="index-card-title" style="margin-bottom:8px;">Add an HTML Page</h3>
       <p class="index-card-description" style="margin-bottom:16px;">
-        Choose a section, pick an icon, and upload any file (e.g., audio, PDF, HTML, images). It will appear as a card at the top of that section. If your upload API is configured, it will also generate a hosted link you can share.
+        Choose a section, pick an icon, and upload an .html file. It will appear as a card at the top of that section. If your upload API is configured, it will also generate a hosted link you can share.
       </p>
       <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
         <input id="uploadTitle" class="input" type="text" placeholder="Optional title (defaults to file name)"/>
-        <input id="uploadIcon" class="input" type="text" placeholder="Icon (e.g., 🎧)" style="width:120px"/>
+        <input id="uploadIcon" class="input" type="text" placeholder="Icon (e.g., 🧩)" style="width:120px"/>
         <select id="uploadSection" class="input select" aria-label="Section">
           <option value="brandrank">BrandRank</option>
           <option value="industry">Industry</option>
           <option value="dashboards">Dashboards</option>
           <option value="research" selected>Research</option>
         </select>
-        <input id="uploadFile" class="input" type="file" />
+        <input id="uploadFile" class="input" type="file" accept=".html"/>
         <button id="uploadBtn" class="btn">Add to Page</button>
       </div>
       <p style="color:#707070; font-size:.85rem; margin-top:10px;">
-        Note: if the upload endpoint succeeds, uploads are hosted and get a shareable URL. Otherwise, they are stored locally in this browser only.
+        Note: if the upload endpoint succeeds, uploads are hosted and get a shareable URL. Otherwise they are stored locally in this browser only.
       </p>
     </div>
   </div>
@@ -129,7 +298,22 @@
   <!-- All -->
   <div class="container" id="all">
     <h2 class="section-title">Available Indexes</h2>
-    <!-- Your other sections go here... -->
+
+    <!-- ===== BrandRank Index Suite ===== -->
+    <h3 class="subsection-title" id="brandrank">BrandRank Index Suite</h3>
+    <div class="index-grid" id="brandrankGrid">
+      <!-- Example of a card; repeat as needed -->
+      <a href="BR-BrandRank100-BestOfCPG (3).html" class="index-card-link">
+        <div class="index-card">
+          <div class="index-card-icon">🏆</div>
+          <h3 class="index-card-title">BrandRank 100 — Best of CPG</h3>
+          <p class="index-card-description">Best-of CPG leaderboard derived from BrandRank signals.</p>
+          <div class="index-card-meta"><span class="index-card-date">2025</span><span class="index-card-badge">Live</span></div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Other sections go here -->
   </div>
 
   <div class="footer">
@@ -142,13 +326,14 @@
     (function() {
       'use strict';
 
+      // CONFIG: Upload endpoint
       const UPLOAD_ENDPOINT = 'https://llm-analysis-dashboard.vercel.app/api/upload';
 
-      async function uploadToServer({ fileName, contentBase64 }) {
+      async function uploadToServer({ fileName, html }) {
         const res = await fetch(UPLOAD_ENDPOINT, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ fileName, contentBase64 })
+          body: JSON.stringify({ fileName, html })
         });
 
         if (!res.ok) {
@@ -180,7 +365,7 @@
       function openUpload(u) {
         const w = window.open('', '_blank');
         if (!w) { alert('Popup blocked. Please allow popups for this site.'); return; }
-        const title = u.title || 'Uploaded File';
+        const title = u.title || 'Uploaded Page';
         w.document.open();
         w.document.write(u.contentText || '<!DOCTYPE html><html><body><p>No content stored.</p></body></html>');
         try { w.document.title = title; } catch {}
@@ -220,13 +405,13 @@
 
         const title = document.createElement('h3');
         title.className = 'index-card-title';
-        title.textContent = u.title || 'Uploaded File';
+        title.textContent = u.title || 'Uploaded HTML';
 
         const desc = document.createElement('p');
         desc.className = 'index-card-description';
         desc.textContent = u.url
-          ? 'User-uploaded file with a shareable link. Click to open or copy link.'
-          : 'User-uploaded HTML stored locally in your browser.';
+          ? 'User-uploaded page with a shareable link. Click to open or copy link.'
+          : 'User-uploaded page stored locally in your browser. Click to open.';
 
         const meta = document.createElement('div');
         meta.className = 'index-card-meta';
@@ -272,7 +457,7 @@
         del.title = 'Remove from this browser';
         del.addEventListener('click', (e) => {
           e.stopPropagation(); e.preventDefault();
-          if (confirm('Delete this uploaded file from your browser?')) {
+          if (confirm('Delete this uploaded page from your browser?')) {
             deleteUpload(u.id);
           }
         });
@@ -312,11 +497,11 @@
       }
 
       document.addEventListener('DOMContentLoaded', () => {
-        const uploadTitleEl   = document.getElementById('uploadTitle');
-        const uploadIconEl    = document.getElementById('uploadIcon');
+        const uploadTitleEl = document.getElementById('uploadTitle');
+        const uploadIconEl = document.getElementById('uploadIcon');
         const uploadSectionEl = document.getElementById('uploadSection');
-        const uploadFileEl    = document.getElementById('uploadFile');
-        const uploadBtnEl     = document.getElementById('uploadBtn');
+        const uploadFileEl = document.getElementById('uploadFile');
+        const uploadBtnEl = document.getElementById('uploadBtn');
 
         if (!uploadBtnEl) {
           console.error('Upload button not found in DOM.');
@@ -325,28 +510,24 @@
 
         uploadBtnEl.addEventListener('click', () => {
           const file = uploadFileEl.files && uploadFileEl.files[0];
-          if (!file) { alert('Choose a file first.'); return; }
+          if (!file) { alert('Choose a .html file first.'); return; }
 
           const reader = new FileReader();
-
-          // Use Data URL to easily extract base64 for ANY file type
           reader.onload = async (e) => {
-            const dataUrl = e.target.result; // e.g. "data:audio/mpeg;base64,AAAA..."
-            const base64 = String(dataUrl).split(',')[1]; // strip "data:*/*;base64,"
-
+            const contentText = e.target.result;
             const title = (uploadTitleEl.value || file.name.replace(/\.[^/.]+$/, '')).trim();
-            const icon  = (uploadIconEl.value || '').trim() || '🧩';
+            const icon = (uploadIconEl.value || '').trim() || '🧩';
             const section = uploadSectionEl.value || 'research';
 
             let url = null;
             try {
               url = await uploadToServer({
                 fileName: file.name,
-                contentBase64: base64
+                html: contentText
               });
             } catch (err) {
               console.error('Upload to server failed:', err);
-              alert('Could not upload to GitHub. This will be stored locally only (HTML files only).');
+              alert('Could not upload to GitHub. This will be stored locally only.');
             }
 
             const item = {
@@ -355,8 +536,7 @@
               icon,
               section,
               dateISO: new Date().toISOString(),
-              // Only meaningful for local HTML fallback; for binary this will usually be null
-              contentText: null,
+              contentText,
               url
             };
 
@@ -365,15 +545,15 @@
             setUploads(uploads);
 
             uploadTitleEl.value = '';
-            uploadIconEl.value  = '';
-            uploadFileEl.value  = '';
+            uploadIconEl.value = '';
+            uploadFileEl.value = '';
             renderAll();
 
             const anchor = document.getElementById(section);
             if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
           };
 
-          reader.readAsDataURL(file);
+          reader.readAsText(file);
         });
 
         renderAll();
