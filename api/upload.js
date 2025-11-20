@@ -18,7 +18,7 @@
   const GITHUB_OWNER = 'NickoN123';                 // your GitHub username or org
   const GITHUB_REPO = 'llm-analysis-dashboard';     // your repo name
   const GITHUB_BRANCH = 'main';                     // branch that GitHub Pages serves from
-  const GITHUB_TOKEN = 'YOUR_GITHUB_PAT_HERE';      // personal access token (internal use only)
+  const GITHUB_TOKEN = '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';      // personal access token (internal use only)
   const GITHUB_PAGES_BASE = 'https://nickon123.github.io/llm-analysis-dashboard'; // pages base URL
 
   // If token is missing or left as placeholder, upload will skip GitHub and stay local only.
