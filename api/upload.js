@@ -18,7 +18,7 @@
   const GITHUB_OWNER = 'NickoN123';                 // your GitHub username or org
   const GITHUB_REPO = 'llm-analysis-dashboard';     // your repo name
   const GITHUB_BRANCH = 'main';                     // branch that GitHub Pages serves from
-  const GITHUB_TOKEN = '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';      // personal access token (internal use only)
+  const GITHUB_TOKEN = 'YOUR_GITHUB_PAT_HERE';      // personal access token (internal use only)
   const GITHUB_PAGES_BASE = 'https://nickon123.github.io/llm-analysis-dashboard'; // pages base URL
 
   // If token is missing or left as placeholder, upload will skip GitHub and stay local only.
@@ -31,8 +31,8 @@
     return btoa(unescape(encodeURIComponent(str)));
   }
 
-  // Upload HTML file content to GitHub via Contents API and return the public Pages URL.
-  async function uploadToGitHub({ fileName, html }) {
+  // Upload file content to GitHub via Contents API and return the public Pages URL.
+  async function uploadToGitHub({ fileName, content }) {
     if (!githubConfigured()) {
       throw new Error('GitHub is not configured');
     }
@@ -45,14 +45,14 @@
       .replace(/^-+|-+$/g, '') || 'uploaded';
 
     const uniqueSuffix = Date.now().toString(36);
-    const safeFileName = `${baseName}-${uniqueSuffix}.html`;
+    const safeFileName = `${baseName}-${uniqueSuffix}${fileName.substring(fileName.lastIndexOf('.'))}`;
     const path = `uploads/${safeFileName}`;
 
     const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${encodeURIComponent(path)}`;
 
     const body = {
-      message: `Add uploaded page ${safeFileName} via Index Hub`,
-      content: toBase64Unicode(html),
+      message: `Add uploaded file ${safeFileName} via Index Hub`,
+      content: toBase64Unicode(content),
       branch: GITHUB_BRANCH
     };
 
@@ -129,13 +129,13 @@
 
     const title = document.createElement('h3');
     title.className = 'index-card-title';
-    title.textContent = u.title || 'Uploaded HTML';
+    title.textContent = u.title || 'Uploaded File';
 
     const desc = document.createElement('p');
     desc.className = 'index-card-description';
     desc.textContent = u.url
-      ? 'User-uploaded page with a shareable link. Click to open or copy link.'
-      : 'User-uploaded page stored locally in your browser. Click to open.';
+      ? 'User-uploaded file with a shareable link. Click to open or copy link.'
+      : 'User-uploaded file stored locally in your browser. Click to open.';
 
     const meta = document.createElement('div');
     meta.className = 'index-card-meta';
@@ -182,7 +182,7 @@
     del.title = 'Remove from this browser';
     del.addEventListener('click', (e) => {
       e.stopPropagation(); e.preventDefault();
-      if (confirm('Delete this uploaded page from your browser?')) {
+      if (confirm('Delete this uploaded file from your browser?')) {
         deleteUpload(u.id);
       }
     });
@@ -204,7 +204,7 @@
   function openUpload(u) {
     const w = window.open('', '_blank');
     if (!w) { alert('Popup blocked. Please allow popups for this site.'); return; }
-    const title = u.title || 'Uploaded Page';
+    const title = u.title || 'Uploaded File';
     w.document.open();
     w.document.write(u.contentText || '<!DOCTYPE html><html><body><p>No content stored.</p></body></html>');
     try { w.document.title = title; } catch {}
@@ -244,27 +244,27 @@
       return;
     }
 
-    // Ensure file is an HTML file
-    if (!file.name.endsWith('.html, .mp3')) {
-      alert('Please select a valid .html file.');
+    // Ensure file is a valid type (.html or .mp3)
+    if (!file.name.match(/\.html$|\.mp3$/)) {
+      alert('Please select a valid .html or .mp3 file.');
       return;
     }
 
     const reader = new FileReader();
     reader.onload = async (e) => {
-      const contentText = e.target.result;
+      const content = e.target.result;
       const title = (uploadTitleEl.value || file.name.replace(/\.[^/.]+$/, '')).trim();
       const icon  = (uploadIconEl.value || '').trim() || '🧩';
       const section = uploadSectionEl.value || 'research';
 
       let url = null;
 
-      // Try to upload to GitHub to get a shareable URL (if configured)
+      // Try to upload to GitHub if configured
       if (githubConfigured()) {
         try {
           url = await uploadToGitHub({
             fileName: file.name,
-            html: contentText
+            content: content // sending the content (either HTML or mp3)
           });
         } catch (err) {
           console.error('Upload to GitHub failed:', err);
@@ -278,7 +278,7 @@
         icon,
         section,
         dateISO: new Date().toISOString(),
-        contentText,
+        contentText: content,
         url // may be null if GitHub upload failed or not configured
       };
 
@@ -295,7 +295,12 @@
       if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
-    reader.readAsText(file); // Only reading HTML files as text
+    // For .mp3 files, read as data URL (binary content)
+    if (file.name.endsWith('.mp3')) {
+      reader.readAsDataURL(file); // Read .mp3 file as base64 data URL
+    } else {
+      reader.readAsText(file); // Read .html file as text
+    }
   });
 
   renderAll();
