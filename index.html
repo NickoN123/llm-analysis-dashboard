@@ -723,9 +723,17 @@
 
   // Allow all file types
   // You can optionally check file extensions to show an alert for unsupported types if needed
-  const allowedExtensions = /(\.html|\.txt|\.jpg|\.jpeg|\.png|\.gif|\.pdf|\.csv)$/i;
+  uploadBtnEl.addEventListener('click', async () => {
+  const file = uploadFileEl.files && uploadFileEl.files[0];
+  if (!file) {
+    alert('Please choose a file first.');
+    return;
+  }
+
+  // Allow the following file types, including .mp3
+  const allowedExtensions = /(\.html|\.txt|\.jpg|\.jpeg|\.png|\.gif|\.pdf|\.csv|\.mp3)$/i;
   if (!allowedExtensions.exec(file.name)) {
-    alert('Please select a valid file type. Supported types: .html, .txt, .jpg, .jpeg, .png, .gif, .pdf, .csv');
+    alert('Please select a valid file type. Supported types: .html, .txt, .jpg, .jpeg, .png, .gif, .pdf, .csv, .mp3');
     return;
   }
 
@@ -773,8 +781,60 @@
     const anchor = document.getElementById(section);
     if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
-  reader.readAsText(file); // This method can handle text files. You can modify this to handle binary files if needed.
+
+  // For .mp3 files, handle them as binary (i.e., read as data URL)
+  if (file.name.endsWith('.mp3')) {
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const audioData = e.target.result; // The mp3 file content as base64
+      // Handle the upload of the mp3 file in the same way
+      const title = (uploadTitleEl.value || file.name.replace(/\.[^/.]+$/, '')).trim();
+      const icon = '🎶'; // Optional: Add a music icon for mp3 files
+      const section = uploadSectionEl.value || 'research';
+
+      let url = null;
+
+      if (githubConfigured()) {
+        try {
+          url = await uploadToGitHub({
+            fileName: file.name,
+            fileContent: audioData
+          });
+        } catch (err) {
+          console.error('Upload to GitHub failed:', err);
+          alert('Could not upload to GitHub. This will be stored locally only.');
+        }
+      }
+
+      const item = {
+        id: 'u_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+        title,
+        icon,
+        section,
+        dateISO: new Date().toISOString(),
+        contentText: audioData,
+        url // may be null if GitHub upload failed or not configured
+      };
+
+      const uploads = getUploads();
+      uploads.unshift(item);
+      setUploads(uploads);
+
+      uploadTitleEl.value = '';
+      uploadIconEl.value = '';
+      uploadFileEl.value = '';
+      renderAll();
+
+      const anchor = document.getElementById(section);
+      if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+    reader.readAsDataURL(file); // Read .mp3 file as base64 data URL
+  } else {
+    // Default text file processing
+    reader.readAsText(file);
+  }
 });
+
 
 
     renderAll();
