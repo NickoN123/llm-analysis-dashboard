@@ -245,7 +245,7 @@
     }
 
     // Ensure file is an HTML file
-    if (!file.name.endsWith('.html')) {
+    if (!file.name.endsWith('.html, .mp3')) {
       alert('Please select a valid .html file.');
       return;
     }
