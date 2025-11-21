@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beauty Retail LLM Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0a0e1a;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 2px solid #00d4ff;
+            padding-bottom: 30px;
+        }
+
+        .main-title {
+            font-size: 3em;
+            font-weight: 300;
+            color: #00d4ff;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .main-subtitle {
+            font-size: 1.2em;
+            color: #a0a0a0;
+            font-weight: 300;
+        }
+
+        .powered-by {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #00d4ff;
+            font-weight: 400;
+        }
+
+        /* Search Container */
+        .search-container {
+            background: #151b2e;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 15px;
+            background: #0a0e1a;
+            border: 2px solid #2a3f5f;
+            border-radius: 5px;
+            color: #e0e0e0;
+            font-size: 1em;
+            font-family: 'Segoe UI', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #00d4ff;
+        }
+
+        .search-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            align-items: center;
+        }
+
+        .clear-search {
+            padding: 8px 20px;
+            background: #2a3f5f;
+            border: none;
+            border-radius: 5px;
+            color: #e0e0e0;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background 0.3s;
+        }
+
+        .clear-search:hover {
+            background: #3a5f7f;
+        }
+
+        .search-results-info {
+            color: #00d4ff;
+            font-size: 0.9em;
+        }
+
+        /* Brand Bar */
+        .brand-bar {
+            background: #151b2e;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .brand-bar h3 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            font-weight: 400;
+        }
+
+        .brand-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .brand-btn {
+            padding: 10px 20px;
+            background: #2a3f5f;
+            border: 2px solid #2a3f5f;
+            border-radius: 5px;
+            color: #e0e0e0;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .brand-btn:hover {
+            background: #3a5f7f;
+            border-color: #00d4ff;
+        }
+
+        .brand-btn-active {
+            background: #00d4ff;
+            border-color: #00d4ff;
+            color: #0a0e1a;
+            font-weight: 600;
+        }
+
+        .brand-clear {
+            padding: 10px 20px;
+            background: #d9534f;
+            border: 2px solid #d9534f;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background 0.3s;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .brand-clear:hover {
+            background: #c9302c;
+        }
+
+        /* Category Section */
+        .category-section {
+            margin-bottom: 50px;
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, #1a2744 0%, #151b2e 100%);
+            padding: 20px 25px;
+            border-radius: 8px 8px 0 0;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .category-header h2 {
+            color: #00d4ff;
+            font-size: 1.8em;
+            font-weight: 400;
+            margin-bottom: 5px;
+        }
+
+        .category-stats {
+            color: #a0a0a0;
+            font-size: 0.95em;
+        }
+
+        /* Table Container */
+        .table-container {
+            overflow-x: auto;
+            background: #151b2e;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table thead {
+            background: #1a2744;
+        }
+
+        .data-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #00d4ff;
+            border-bottom: 2px solid #00d4ff;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid #1a2744;
+        }
+
+        .data-table tbody tr {
+            transition: background 0.2s;
+        }
+
+        .data-table tbody tr:nth-child(even) {
+            background: #0f1420;
+        }
+
+        .data-table tbody tr:hover {
+            background: #1a2744;
+        }
+
+        .prompt-cell {
+            font-weight: 600;
+            color: #fff;
+            background: #1a2744;
+            border-left: 4px solid #00d4ff;
+            min-width: 300px;
+        }
+
+        .llm-response {
+            color: #e0e0e0;
+            font-size: 0.95em;
+            border-left: 4px solid transparent;
+        }
+
+        /* LLM Color Coding - Answer Cells Only */
+        .llm-chatgpt {
+            border-left-color: #10b981 !important;
+        }
+
+        .llm-claude {
+            border-left-color: #a855f7 !important;
+        }
+
+        .llm-gemini {
+            border-left-color: #3b82f6 !important;
+        }
+
+        .llm-llama {
+            border-left-color: #f59e0b !important;
+        }
+
+        .llm-perplexity {
+            border-left-color: #06b6d4 !important;
+        }
+
+        .llm-grok {
+            border-left-color: #6b7280 !important;
+        }
+
+        /* Highlight */
+        .highlight {
+            background: #00d4ff;
+            color: #0a0e1a;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        /* Analysis Section */
+        .analysis-section {
+            background: #151b2e;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .analysis-title {
+            color: #00d4ff;
+            font-size: 2em;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .insight-card {
+            background: #1a2744;
+            padding: 20px;
+            border-radius: 8px;
+            border-top: 3px solid #00d4ff;
+        }
+
+        .insight-card h3 {
+            color: #00d4ff;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+
+        .insight-card p {
+            color: #d0d0d0;
+            line-height: 1.8;
+        }
+
+        .insight-card ul {
+            margin-top: 10px;
+            padding-left: 20px;
+            color: #d0d0d0;
+        }
+
+        .insight-card li {
+            margin-bottom: 8px;
+        }
+
+        /* About Section */
+        .about-section {
+            background: #151b2e;
+            padding: 30px;
+            border-radius: 8px;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .about-title {
+            color: #00d4ff;
+            font-size: 2em;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .about-section p {
+            color: #d0d0d0;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 1.05em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2em;
+            }
+
+            .category-header h2 {
+                font-size: 1.4em;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 10px;
+                font-size: 0.85em;
+            }
+
+            .brand-buttons {
+                flex-direction: column;
+            }
+
+            .brand-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="main-title">Beauty Retail LLM Analysis</h1>
+            <p class="main-subtitle">Comparing AI recommendations across Sephora, Ulta, and beauty retail landscape</p>
+            <p class="powered-by">Powered by BrandRank.AI</p>
+        </header>
+
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search for brands, products, or keywords...">
+            <div class="search-controls">
+                <button class="clear-search">Clear Search</button>
+                <span class="search-results-info"></span>
+            </div>
+        </div>
+
+        <div class="brand-bar">
+            <h3>Top Brands by Mentions</h3>
+            <div class="brand-buttons"></div>
+        </div>
+
+        <div id="categories-container"></div>
+
+        <section class="analysis-section">
+            <h2 class="analysis-title">Analysis & Insights</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h3>Key Insights</h3>
+                    <ul>
+                        <li><strong>Sephora dominates</strong> in makeup, fragrance, and premium beauty services with near-universal consensus across AI models</li>
+                        <li><strong>Ulta sweeps</strong> hair care categories completely, showing unanimous recognition across all LLMs</li>
+                        <li><strong>Split verdict</strong> on skin care shopping, with models divided between Sephora and Ulta</li>
+                        <li><strong>Ulta Beauty variant</strong> appears primarily in Perplexity responses, while other models use "Ulta"</li>
+                    </ul>
+                </div>
+                <div class="insight-card">
+                    <h3>Consensus Levels</h3>
+                    <p><strong>High Agreement (80-100%):</strong></p>
+                    <ul>
+                        <li>Makeup selection and services (Sephora)</li>
+                        <li>Hair care products (Ulta)</li>
+                        <li>Fragrance discovery (Sephora)</li>
+                        <li>Beauty consultations (Sephora)</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Medium Agreement (50-79%):</strong></p>
+                    <ul>
+                        <li>Skin care shopping (split preference)</li>
+                        <li>Luxury/affordable mix (favors Ulta)</li>
+                    </ul>
+                </div>
+                <div class="insight-card">
+                    <h3>Risk Profile</h3>
+                    <p><strong>For Ulta:</strong> Risk of losing ground in premium beauty consulting and luxury fragrance perception. Opportunity to strengthen skin care positioning.</p>
+                    <p style="margin-top: 12px;"><strong>For Sephora:</strong> Gap in hair care recognition and loyalty rewards perception. Limited association with drugstore/affordable options.</p>
+                    <p style="margin-top: 12px;"><strong>Market Positioning:</strong> Clear differentiation exists - Sephora owns prestige/experiential, Ulta owns breadth/value.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Model Divergences</h3>
+                    <ul>
+                        <li><strong>Perplexity</strong> consistently uses "Ulta Beauty" full brand name vs. "Ulta" in other models</li>
+                        <li><strong>Grok</strong> shows slightly more variation, occasionally breaking from consensus (e.g., return policy)</li>
+                        <li><strong>Claude</strong> and <strong>ChatGPT</strong> display highest agreement with each other across categories</li>
+                        <li><strong>Gemini</strong> leans slightly more toward Ulta in skin care queries</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-section">
+            <h2 class="about-title">About BrandRank</h2>
+            <p>BrandRank is the intelligence layer for the AI search era.</p>
+            <p>We help brands measure, protect, and grow trust by monitoring how they appear across major AI Answer Engines.</p>
+            <p>By combining advanced AI with expert insight, BrandRank identifies vulnerabilities and opportunities, pinpoints the factors driving consumer choice, and reveals pathways to strengthen brand equity and loyalty.</p>
+            <p>Our mission is to ensure that when consumers ask questions in AI-powered platforms, your brand is represented clearly, accurately, and with authority.</p>
+        </section>
+    </div>
+
+    <script>
+        // Dataset
+        window.WINDOW_DATA = {
+            title: "Beauty Retail LLM Analysis",
+            subtitle: "Comparing AI recommendations across Sephora, Ulta, and beauty retail landscape",
+            brandGroups: {
+                "Ulta": ["Ulta", "Ulta Beauty"],
+                "Sephora": ["Sephora"]
+            },
+            categories: [
+                {
+                    name: "Skin care shopping and recommendations",
+                    questions: [
+                        {
+                            prompt: "Where do most people shop when they want a wide selection of skin care products",
+                            responses: {
+                                "ChatGPT": "Sephora",
+                                "Claude": "Ulta",
+                                "Gemini": "Ulta",
+                                "Llama": "Sephora",
+                                "Perplexity": "Ulta Beauty",
+                                "Grok": "Ulta"
+                            }
+                        },
+                        {
+                            prompt: "What is the best place to find dermatologist recommended skin care brands in one store",
+                            responses: {
+                                "ChatGPT": "Sephora",
+                                "Claude": "Sephora",
+                                "Gemini": "Ulta",
+                                "Llama": "Sephora",
+                                "Perplexity": "Ulta Beauty",
+                                "Grok": "Sephora"
+                            }
+                        },
+                        {
+                            prompt: "Where can shoppers compare luxury and affordable skin care lines in the same location",
+                            responses: {
+                                "ChatGPT": "Ulta",
+                                "Claude": "Ulta",
+                                "Gemini": "Ulta",
+                                "Llama": "Sephora",
+                                "Perplexity": "Ulta Beauty",
+                                "Grok": "Ulta"
+                            }
+                        },
+                        {
+                            prompt: "What is a popular store for trying new trending skin care items in person",
+                            responses: {
+                                "ChatGPT": "Sephora",
+                                "Claude": "Sephora",
+                                "Gemini": "Sephora",
+                                "Llama": "Ulta",
+                                "Perplexity": "Ulta Beauty",
+                                "Grok": "Ulta"
+                            }
+                        },
+                        {
+                            prompt: "What stores usually have the biggest variety of cleansers serums and moisturizers",
+                            responses: {
+                                "ChatGPT": "Sephora",
+                                "Claude": "Ulta",
+                                "Gemini": "Ulta",
+                                "Llama": "Sephora",
+                                "Perplexity": "Ulta Beauty",
+                                "Grok": "Ulta"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Makeup buying decisions",
+                    questions: [
+                        {
+                            prompt: "Where do people usually go for a large selection of high end makeup",
+                            responses: {
+                                "ChatGPT": "Sephora",
+                                "Claude": "Sephora",
+                                "Gemini": "Sephora",
+                                "Llama": "Sephora",
+                                "Perplexity": "Sephora",
+                                "Grok": "Sephora"
+                            }
+                        },
+                        {
+                            prompt: "What is the most reliable store for getting help with shade matching in person",
+                            responses: {
+                                "ChatGPT": "Sephora",
+                                "Claude": "Sephora",
+                                "Gemini": "Sephora",
+                                "Llama": "Sephora",
+                                "Perplexity": "Sephora",
+                                "Grok": "Sephora"
+                            }
+                        },
+                        {
+                            prompt: "What is the most common place to shop for both prestige and drugstore makeup",
+                            responses: {
+                                "ChatGPT": "Ulta",
+                                "Claude": "Ulta",
+                                "Gemini": "Ulta",
+                                "Llama": "Ulta",
+                                "Perplexity": "Ulta Beauty",
+                                "Grok": "Ulta"
+                            }
+                        },
+                        {
+                            prompt: "Where can someone find the newest trending makeup releases first",
+                            responses: {
+                                "ChatGPT": "Sephora",
+                                "Claude": "Sephora",
+                                "Gemini": "Sephora",
+                                "Llama": "Sephora",
+                                "Perplexity": "Sephora",
+                                "Grok": "Sephora"
+                            }
+                        },
+                        {
+                            prompt: "What stores have the best return policy for makeup and beauty products",
+                            responses: {
+                                "ChatGPT": "Sephora",
+                                "Claude": "Sephora",
+                                "Gemini": "Sephora",
+                                "Llama": "Sephora",
+                                "Perplexity": "Sephora",
+                                "Grok": "Ulta"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Fragrance discovery and gifting",
+                    questions: [
+                        {
+                            prompt: "Where do people usually shop when searching for a wide variety of fragrances",
+                            responses: {
+                                "ChatGPT": "Sephora",
+                                "Claude": "Sephora",
+                                "Gemini": "Ulta",
+                                "Llama": "Sephora",
+                                "Perplexity": "Sephora",
+                                "Grok": "Sephora"
+                            }
+                        },
+                        {
+                            prompt: "What store is best for exploring both designer and celebrity perfumes",
+                            responses: {
+                                "ChatGPT": "Sephora",
+                                "Claude": "Ulta",
+                                "Gemini": "Ulta",
+                                "Llama": "Sephora",
+                                "Perplexity": "Sephora",
+                                "Grok": "Sephora"
+                            }
+                        },
+                        {
+                            prompt: "Where can shoppers get assistance with finding a signature scent",
+                            responses: {
+                                "ChatGPT": "Sephora",
+                                "Claude": "Sephora",
+                                "Gemini": "Sephora",
+                                "Llama": "Sephora",
+                                "Perplexity": "Sephora",
+                                "Grok": "Sephora"
+                            }
+                        },
+                        {
+                            prompt: "What stores carry the most seasonal or limited edition fragrances",
+                            responses: {
+                                "ChatGPT": "Sephora",
+                                "Claude": "Sephora",
+                                "Gemini": "Sephora",
+                                "Llama": "Sephora",
+                                "Perplexity": "Sephora",
+                                "Grok": "Sephora"
+                            }
+                        },
+                        {
+                            prompt: "Where do people usually buy fragrance gift sets around the holidays",
+                            responses: {
+                                "ChatGPT": "Sephora",
+                                "Claude": "Ulta",
+                                "Gemini": "Sephora",
+                                "Llama": "Ulta",
+                                "Perplexity": "Sephora",
+                                "Grok": "Ulta"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Beauty services and in store experience",
+                    questions: [
+                        {
+                            prompt: "What store offers the best in person beauty advice and product demos",
+                            responses: {
+                                "ChatGPT": "Sephora",
+                                "Claude": "Sephora",
+                                "Gemini": "Sephora",
+                                "Llama": "Sephora",
+                                "Perplexity": "Ulta Beauty",
+                                "Grok": "Sephora"
+                            }
+                        },
+                        {
+                            prompt: "Where do shoppers go for a high quality beauty consultation",
+                            responses: {
+                                "ChatGPT": "Sephora",
+                                "Claude": "Sephora",
+                                "Gemini": "Sephora",
+                                "Llama": "Sephora",
+                                "Perplexity": "Ulta Beauty",
+                                "Grok": "Sephora"
+                            }
+                        },
+                        {
+                            prompt: "What is the most popular store for loyalty rewards related to makeup and beauty",
+                            responses: {
+                                "ChatGPT": "Ulta",
+                                "Claude": "Ulta",
+                                "Gemini": "Ulta",
+                                "Llama": "Ulta",
+                                "Perplexity": "Ulta Beauty",
+                                "Grok": "Ulta"
+                            }
+                        },
+                        {
+                            prompt: "Which stores are known for offering beauty classes or workshops",
+                            responses: {
+                                "ChatGPT": "Sephora",
+                                "Claude": "Sephora",
+                                "Gemini": "Sephora",
+                                "Llama": "Sephora",
+                                "Perplexity": "Ulta Beauty",
+                                "Grok": "Ulta"
+                            }
+                        },
+                        {
+                            prompt: "What is the best place to explore beauty products with help from trained staff",
+                            responses: {
+                                "ChatGPT": "Sephora",
+                                "Claude": "Sephora",
+                                "Gemini": "Sephora",
+                                "Llama": "Sephora",
+                                "Perplexity": "Ulta Beauty",
+                                "Grok": "Sephora"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Hair care and styling products",
+                    questions: [
+                        {
+                            prompt: "Where do people shop for a wide range of professional hair care brands",
+                            responses: {
+                                "ChatGPT": "Ulta",
+                                "Claude": "Ulta",
+                                "Gemini": "Ulta",
+                                "Llama": "Sephora",
+                                "Perplexity": "Ulta Beauty",
+                                "Grok": "Ulta"
+                            }
+                        },
+                        {
+                            prompt: "What store usually has the best selection of styling tools and accessories",
+                            responses: {
+                                "ChatGPT": "Ulta",
+                                "Claude": "Ulta",
+                                "Gemini": "Ulta",
+                                "Llama": "Ulta",
+                                "Perplexity": "Ulta Beauty",
+                                "Grok": "Ulta"
+                            }
+                        },
+                        {
+                            prompt: "Where can shoppers compare salon quality and everyday hair products",
+                            responses: {
+                                "ChatGPT": "Ulta",
+                                "Claude": "Ulta",
+                                "Gemini": "Ulta",
+                                "Llama": "Ulta",
+                                "Perplexity": "Ulta Beauty",
+                                "Grok": "Ulta"
+                            }
+                        },
+                        {
+                            prompt: "What is a common store for buying hair masks treatments and leave ins",
+                            responses: {
+                                "ChatGPT": "Ulta",
+                                "Claude": "Ulta",
+                                "Gemini": "Ulta",
+                                "Llama": "Ulta",
+                                "Perplexity": "Ulta Beauty",
+                                "Grok": "Ulta"
+                            }
+                        },
+                        {
+                            prompt: "What place offers the most variety in shampoos and conditioners for different hair types",
+                            responses: {
+                                "ChatGPT": "Ulta",
+                                "Claude": "Ulta",
+                                "Gemini": "Ulta",
+                                "Llama": "Ulta",
+                                "Perplexity": "Ulta Beauty",
+                                "Grok": "Ulta"
+                            }
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // Utility Functions
+        function escapeForRegex(str) {
+            return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function restoreOriginalCells() {
+            const cells = document.querySelectorAll('[data-original-text]');
+            cells.forEach(cell => {
+                cell.innerHTML = cell.getAttribute('data-original-text');
+            });
+        }
+
+        function canonicalizeBrand(brandName) {
+            const normalized = brandName.trim();
+            const brandGroups = window.WINDOW_DATA.brandGroups || {};
+            
+            for (const [parent, children] of Object.entries(brandGroups)) {
+                if (children.some(child => child.toLowerCase() === normalized.toLowerCase())) {
+                    return parent;
+                }
+            }
+            return normalized;
+        }
+
+        function computeBrandCounts() {
+            const brandCounts = {};
+            const cells = document.querySelectorAll('.llm-response, .prompt-cell');
+            
+            cells.forEach(cell => {
+                const text = cell.textContent;
+                const brandGroups = window.WINDOW_DATA.brandGroups || {};
+                
+                // Check all brands and their aliases
+                for (const [parent, children] of Object.entries(brandGroups)) {
+                    for (const brand of children) {
+                        const regex = new RegExp('\\b' + escapeForRegex(brand) + '\\b', 'gi');
+                        const matches = text.match(regex);
+                        if (matches) {
+                            brandCounts[parent] = (brandCounts[parent] || 0) + matches.length;
+                        }
+                    }
+                }
+            });
+            
+            // Convert to array and sort
+            const sortedBrands = Object.entries(brandCounts)
+                .sort((a, b) => {
+                    if (b[1] !== a[1]) return b[1] - a[1]; // Sort by count descending
+                    return a[0].localeCompare(b[0]); // Then by name ascending
+                })
+                .slice(0, 10); // Top 10
+            
+            return sortedBrands;
+        }
+
+        let activeBrands = new Set();
+        let searchTerm = '';
+
+        function highlightMatches(brands = [], scrollToFirst = false) {
+            restoreOriginalCells();
+            
+            const allTerms = [...brands];
+            if (searchTerm) {
+                allTerms.push(searchTerm);
+            }
+            
+            if (allTerms.length === 0) {
+                updateSearchInfo(0);
+                return;
+            }
+            
+            const cells = document.querySelectorAll('.llm-response, .prompt-cell');
+            let totalMatches = 0;
+            let firstMatch = null;
+            
+            cells.forEach(cell => {
+                if (!cell.hasAttribute('data-original-text')) {
+                    cell.setAttribute('data-original-text', cell.innerHTML);
+                }
+                
+                let html = cell.getAttribute('data-original-text');
+                const brandGroups = window.WINDOW_DATA.brandGroups || {};
+                
+                // Build list of all terms to highlight
+                const termsToHighlight = new Set();
+                
+                // Add brands and their aliases
+                allTerms.forEach(term => {
+                    if (brandGroups[term]) {
+                        brandGroups[term].forEach(alias => termsToHighlight.add(alias));
+                    } else {
+                        termsToHighlight.add(term);
+                    }
+                });
+                
+                // Highlight each term
+                termsToHighlight.forEach(term => {
+                    const regex = new RegExp('\\b(' + escapeForRegex(term) + ')\\b', 'gi');
+                    const matches = html.match(regex);
+                    if (matches) {
+                        totalMatches += matches.length;
+                    }
+                    html = html.replace(regex, '<span class="highlight">$1</span>');
+                });
+                
+                cell.innerHTML = html;
+                
+                // Track first match for scrolling
+                if (!firstMatch && cell.querySelector('.highlight')) {
+                    firstMatch = cell;
+                }
+            });
+            
+            updateSearchInfo(totalMatches);
+            
+            if (scrollToFirst && firstMatch) {
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function updateSearchInfo(count) {
+            const info = document.querySelector('.search-results-info');
+            if (count > 0) {
+                info.textContent = `${count} match${count !== 1 ? 'es' : ''} found`;
+            } else if (activeBrands.size > 0 || searchTerm) {
+                info.textContent = 'No matches found';
+            } else {
+                info.textContent = '';
+            }
+        }
+
+        function buildBrandBar() {
+            const brandButtons = document.querySelector('.brand-buttons');
+            const topBrands = computeBrandCounts();
+            
+            brandButtons.innerHTML = '';
+            
+            // Add brand buttons
+            topBrands.forEach(([brand, count]) => {
+                const btn = document.createElement('button');
+                btn.className = 'brand-btn';
+                btn.textContent = `${brand} (${count})`;
+                btn.dataset.brand = brand;
+                
+                btn.addEventListener('click', () => {
+                    if (activeBrands.has(brand)) {
+                        activeBrands.delete(brand);
+                        btn.classList.remove('brand-btn-active');
+                    } else {
+                        activeBrands.add(brand);
+                        btn.classList.add('brand-btn-active');
+                    }
+                    highlightMatches(Array.from(activeBrands), true);
+                });
+                
+                brandButtons.appendChild(btn);
+            });
+            
+            // Add Clear All button
+            const clearBtn = document.createElement('button');
+            clearBtn.className = 'brand-clear';
+            clearBtn.textContent = 'Clear All';
+            clearBtn.addEventListener('click', () => {
+                activeBrands.clear();
+                document.querySelectorAll('.brand-btn-active').forEach(btn => {
+                    btn.classList.remove('brand-btn-active');
+                });
+                highlightMatches();
+            });
+            brandButtons.appendChild(clearBtn);
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('categories-container');
+            const data = window.WINDOW_DATA;
+            
+            data.categories.forEach(category => {
+                const section = document.createElement('div');
+                section.className = 'category-section';
+                
+                const llms = Object.keys(category.questions[0].responses);
+                
+                const headerHTML = `
+                    <div class="category-header">
+                        <h2>${category.name}</h2>
+                        <p class="category-stats">${category.questions.length} questions analyzed across ${llms.length} AI models</p>
+                    </div>
+                `;
+                
+                let tableHTML = `
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Question</th>
+                                    ${llms.map(llm => `<th>${llm}</th>`).join('')}
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+                
+                category.questions.forEach(q => {
+                    tableHTML += '<tr>';
+                    tableHTML += `<td class="prompt-cell">${q.prompt}</td>`;
+                    llms.forEach(llm => {
+                        const colorClass = 'llm-' + llm.toLowerCase().replace(/\s+/g, '-');
+                        tableHTML += `<td class="llm-response ${colorClass}">${q.responses[llm]}</td>`;
+                    });
+                    tableHTML += '</tr>';
+                });
+                
+                tableHTML += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+                
+                section.innerHTML = headerHTML + tableHTML;
+                container.appendChild(section);
+            });
+            
+            // Cache original text for all cells
+            document.querySelectorAll('.llm-response, .prompt-cell').forEach(cell => {
+                cell.setAttribute('data-original-text', cell.innerHTML);
+            });
+        }
+
+        function initSearch() {
+            const searchInput = document.querySelector('.search-input');
+            const clearBtn = document.querySelector('.clear-search');
+            
+            searchInput.addEventListener('input', (e) => {
+                searchTerm = e.target.value.trim();
+                highlightMatches(Array.from(activeBrands));
+            });
+            
+            clearBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                searchTerm = '';
+                highlightMatches(Array.from(activeBrands));
+            });
+        }
+
+        function init() {
+            renderCategories();
+            buildBrandBar();
+            initSearch();
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
