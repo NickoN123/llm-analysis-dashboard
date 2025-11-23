@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 Brand Review</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.75rem;
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            opacity: 0.8;
+        }
+
+        .filter-section {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .filter-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255,255,255,0.05);
+            color: #ffffff;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .filter-btn.active {
+            background: #00d4ff;
+            color: #0a0e1a;
+            border: 2px solid #00d4ff;
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            font-size: 1.125rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0.5rem;
+            color: #ffffff;
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.4);
+        }
+
+        .table-container {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .section-header {
+            background: rgba(0,212,255,0.15);
+        }
+
+        .section-header td {
+            padding: 1rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .column-headers {
+            background: rgba(0,0,0,0.3);
+        }
+
+        .column-headers th {
+            padding: 1rem;
+            font-weight: bold;
+            border-bottom: 2px solid #00d4ff;
+        }
+
+        .column-headers th:first-child {
+            text-align: left;
+            width: 25%;
+        }
+
+        .column-headers th:not(:first-child) {
+            text-align: center;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.2s;
+        }
+
+        tbody tr:hover {
+            background: rgba(0,212,255,0.05);
+        }
+
+        tbody tr.brand-of-year {
+            background: rgba(255,215,0,0.08);
+        }
+
+        tbody tr.brand-of-year:hover {
+            background: rgba(255,215,0,0.12);
+        }
+
+        tbody td {
+            padding: 1rem;
+            font-size: 0.95rem;
+        }
+
+        tbody td:first-child {
+            font-weight: normal;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .category-tooltip {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 8px;
+            background: rgba(10,14,26,0.98);
+            border: 2px solid #00d4ff;
+            border-radius: 8px;
+            padding: 12px 16px;
+            width: 350px;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #ffffff;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 1000;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+        }
+
+        tbody td:first-child:hover .category-tooltip {
+            opacity: 1;
+        }
+
+        .category-tooltip strong {
+            color: #00d4ff;
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        tbody tr.brand-of-year td:first-child {
+            font-weight: bold;
+        }
+
+        tbody td:not(:first-child) {
+            text-align: center;
+            position: relative;
+        }
+
+        .brand-cell {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .brand-cell:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,212,255,0.3);
+        }
+
+        .brand-cell.highlighted {
+            background: rgba(0,212,255,0.2);
+            color: #00d4ff;
+            font-weight: bold;
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: calc(100% + 12px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(10,14,26,0.98);
+            border: 2px solid #00d4ff;
+            border-radius: 8px;
+            padding: 12px 16px;
+            width: 300px;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #ffffff;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 1000;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+            text-align: left;
+        }
+
+        .brand-cell:hover .tooltip {
+            opacity: 1;
+        }
+
+        .tooltip strong {
+            color: #00d4ff;
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-icon {
+            color: #00d4ff;
+        }
+
+        .stat-title {
+            font-size: 1.125rem;
+            font-weight: bold;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00d4ff;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-description {
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>2025 In Review: Top Brand By Category</h1>
+            <p>Cross-Platform Analysis Across Six Major Answer Engines | <span style="color: #00d4ff;">Powered by BrandRank.AI (Nov/Dec 2025)</span></p>
+        </div>
+
+        <div style="margin-bottom: 2rem; padding: 1.5rem; background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.2); border-radius: 0.5rem;">
+            <p style="line-height: 1.8; opacity: 0.9;">
+                BrandRank is a SaaS platform and service that helps brands to strengthen trust and purchase intent by uncovering vulnerabilities, purchase-driving insights, and growth opportunities across AI answer engines. This is a snapshot of top performing brands across at the end of 2025.
+            </p>
+        </div>
+
+        <div class="filter-section">
+            <h2>FILTER BY BRAND</h2>
+            <div class="filter-buttons" id="filterButtons"></div>
+        </div>
+
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Search brands or categories...">
+        </div>
+
+        <div class="table-container">
+            <table id="dataTable"></table>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-icon">🏆</span>
+                    <div class="stat-title">HIGHEST CONSENSUS</div>
+                </div>
+                <div class="stat-value">Amazon</div>
+                <div class="stat-description">Best Commerce Brand - 83% Agreement (5/6 LLMs)</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-icon">📊</span>
+                    <div class="stat-title">TOTAL EVALUATIONS</div>
+                </div>
+                <div class="stat-value">150 Assessments</div>
+                <div class="stat-description">6 LLMs × 25 Categories = Complete Dataset</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-icon">📈</span>
+                    <div class="stat-title">BRAND OF THE YEAR</div>
+                </div>
+                <div class="stat-value">Apple & Microsoft</div>
+                <div class="stat-description">Tied at 2 votes each - No consensus winner</div>
+            </div>
+        </div>
+
+        <div style="margin-top: 3rem; padding: 2rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem;">
+            <h2 style="font-size: 2rem; margin-bottom: 1.5rem; color: #00d4ff;">ANALYSIS: Answer Engine Bias & Brand Strategy Insights</h2>
+            
+            <div style="margin-bottom: 2rem;">
+                <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #ffffff;">The Answer Divide: What This Data Reveals</h3>
+                <p style="line-height: 1.8; margin-bottom: 1rem; opacity: 0.9;">
+                    This cross-LLM evaluation exposes fundamental differences in how AI answer engines perceive and prioritize brand excellence. The lack of consensus across 25 categories isn't a bug—it's a feature that reveals each engine's training data, corporate incentives, and algorithmic priorities. For CMOs, this represents both the <strong style="color: #00d4ff;">"Answer Divide"</strong> (brand performance variance across engines) and the <strong style="color: #00d4ff;">"Prompted Moment of Truth"</strong> (the critical instant when consumers query AI instead of searching Google).
+                </p>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #ffffff;">Answer Engine Bias Patterns</h3>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: #00d4ff;">ChatGPT: The Tech Giant Preference</h4>
+                    <p style="line-height: 1.8; opacity: 0.9;">
+                        ChatGPT shows clear bias toward established tech infrastructure brands (Google, Microsoft, Apple, Amazon). In categories 1-5 (Answer Economy Leadership), it defaults to brands with the most structured documentation and developer ecosystems. This reflects OpenAI's training on technical content and its Microsoft partnership influence. <strong>Strategic implication:</strong> Brands must invest in comprehensive, structured technical documentation and schema markup to win ChatGPT visibility.
+                    </p>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: #00d4ff;">Claude: The Trust & Transparency Champion</h4>
+                    <p style="line-height: 1.8; opacity: 0.9;">
+                        Claude (Anthropic) demonstrates the strongest bias toward verified trust signals and third-party certifications. It uniquely champions brands like Patagonia, Wikipedia Foundation, and Costco—organizations with measurable commitment to transparency. Claude's emphasis on "verifiable evidence" and third-party validation (B Corp, Fair Trade) suggests Anthropic's Constitutional AI training prioritizes ethical sourcing. <strong>Strategic implication:</strong> Brands winning on Claude need documented sustainability credentials and public audit trails, not just marketing claims.
+                    </p>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: #00d4ff;">Gemini: The Innovation & Market Power Bias</h4>
+                    <p style="line-height: 1.8; opacity: 0.9;">
+                        Google's Gemini shows preference for brands with clear market dominance and quantifiable innovation metrics (NVIDIA, Ørsted, Wikipedia). Its selections correlate with brands that have extensive Wikipedia entries and Google Knowledge Graph presence. Gemini's "Most Innovative Brand" pick (NVIDIA) reflects real-time market data integration. <strong>Strategic implication:</strong> Winning on Gemini requires authoritative third-party coverage, patents, and presence in Google's structured data ecosystem.
+                    </p>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: #00d4ff;">DeepSeek, Grok & Llama: The Pragmatic Middle</h4>
+                    <p style="line-height: 1.8; opacity: 0.9;">
+                        These three engines show convergence toward brands with clear, measurable excellence (Microsoft, Patagonia, Apple, Tesla, Nike). Their overlap suggests training on similar corpus and lack of corporate bias. DeepSeek's choice of Lego for accuracy reflects preference for brands with discrete, fact-based product catalogs. <strong>Strategic implication:</strong> Brands with clear product hierarchies, structured catalogs, and unambiguous facts perform better across open-source and alternative models.
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #ffffff;">Critical Vulnerabilities Exposed</h3>
+                
+                <div style="margin-bottom: 1rem;">
+                    <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: #ffffff;">1. The Patagonia vs. Tech Giant Divide</h4>
+                    <p style="line-height: 1.8; opacity: 0.9;">
+                        Patagonia wins Claude's "Brand of the Year" but barely registers in other categories across ChatGPT, Gemini, or Grok. This exposes a fundamental tension: <em>Is brand excellence measured by revenue scale and technical infrastructure (Apple, Microsoft) or by values alignment and verified ethics (Patagonia)?</em> This divide will define the next decade of brand competition in the Answer Economy.
+                    </p>
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: #ffffff;">2. The Visibility vs. Vulnerability Gap</h4>
+                    <p style="line-height: 1.8; opacity: 0.9;">
+                        Brands dominating "Answer Economy Leadership" (Microsoft, Google, Amazon) face higher vulnerability in trust categories. ChatGPT names Microsoft for "Best Direct-to-Agent Strategy" but Claude awards it "Best Corporate Communications Integrity"—these are different competencies. <strong>The lesson:</strong> High AI visibility without trust credentials creates brand risk when consumers ask comparative questions like "Is Microsoft more trustworthy than Apple?"
+                    </p>
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: #ffffff;">3. Commerce Brands Are Overexposed</h4>
+                    <p style="line-height: 1.8; opacity: 0.9;">
+                        Amazon achieves rare consensus (5/6 LLMs) for "Best Commerce Brand," but this dominance makes it vulnerable. When 83% of AI agents cite Amazon, any negative news or trust incident has 5x the impact. Nike's consistent presence across ambassador, marketing, and community categories creates similar overexposure risk.
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #ffffff;">Strategic Implications for Fortune 500 CMOs</h3>
+                
+                <div style="background: rgba(0,212,255,0.1); padding: 1.5rem; border-left: 4px solid #00d4ff; margin-bottom: 1rem;">
+                    <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: #00d4ff;">1. You Must Optimize for the Answer Divide</h4>
+                    <p style="line-height: 1.8; opacity: 0.9;">
+                        With zero consensus on "Brand of the Year" (Apple, Microsoft, Patagonia, NVIDIA all win on different engines), brands can no longer optimize for a single algorithm. <strong>The BrandRank.AI framework—measuring Visibility, Vulnerability, and Content Readiness across all engines—is now essential infrastructure.</strong> Brands optimizing only for ChatGPT risk invisibility on Claude; brands winning on ethics (Claude) may lack commerce discoverability (ChatGPT).
+                    </p>
+                </div>
+
+                <div style="background: rgba(0,212,255,0.1); padding: 1.5rem; border-left: 4px solid #00d4ff; margin-bottom: 1rem;">
+                    <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: #00d4ff;">2. Trust Credentials Are the New SEO</h4>
+                    <p style="line-height: 1.8; opacity: 0.9;">
+                        Claude's emphasis on third-party validation (B Corp, Fair Trade, Footprint Chronicles) signals a shift: <strong>AI engines increasingly weight verifiable trust signals over brand marketing claims.</strong> Brands like Patagonia and Everlane win because their transparency can be independently verified. This means CMOs must now treat sustainability certifications, supply chain audits, and ESG reporting as core content strategy—not CSR theater.
+                    </p>
+                </div>
+
+                <div style="background: rgba(0,212,255,0.1); padding: 1.5rem; border-left: 4px solid #00d4ff; margin-bottom: 1rem;">
+                    <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: #00d4ff;">3. The "Best Commerce Brand" Is Fragile</h4>
+                    <p style="line-height: 1.8; opacity: 0.9;">
+                        Amazon's 5/6 consensus makes it the "safest" answer for AI agents recommending commerce platforms—but this creates brittleness. A single trust incident (labor controversy, antitrust ruling, sustainability scandal) gets amplified 5x because every engine cites Amazon. <strong>Brands dominating a single category need defensive AEO strategies</strong> to prevent vulnerability when the AI narrative shifts.
+                    </p>
+                </div>
+
+                <div style="background: rgba(0,212,255,0.1); padding: 1.5rem; border-left: 4px solid #00d4ff; margin-bottom: 1rem;">
+                    <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: #00d4ff;">4. Product Catalogs Beat Brand Storytelling</h4>
+                    <p style="line-height: 1.8; opacity: 0.9;">
+                        DeepSeek's pick of Lego for "Most Accurate Brand in AI Answers" is revealing: brands with discrete, fact-based product structures (set numbers, piece counts, themes) minimize hallucination risk. Compare this to fashion or CPG brands where product lines blur. <strong>Implication:</strong> Brands must create "AI-ingestible" product hierarchies with clear attributes, not just lifestyle marketing.
+                    </p>
+                </div>
+
+                <div style="background: rgba(0,212,255,0.1); padding: 1.5rem; border-left: 4px solid #00d4ff;">
+                    <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: #00d4ff;">5. The Prompted Moment of Truth Is Here</h4>
+                    <p style="line-height: 1.8; opacity: 0.9;">
+                        When consumers ask "What's the most sustainable brand?" or "Who makes the best organic products?" they're no longer clicking through ten blue links—they're accepting a single AI answer. The brands winning those prompts (Patagonia for sustainability, Whole Foods for organic) own the category. <strong>For brands not listed, the Answer Economy represents invisibility risk.</strong> Traditional SEO won't save you when the answer engine skips your site entirely.
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #ffffff;">The Answer Economy Endgame</h3>
+                <p style="line-height: 1.8; opacity: 0.9;">
+                    This evaluation proves that <strong>AI answer engines are not neutral arbiters—they're biased by training data, corporate incentives, and algorithmic priorities.</strong> ChatGPT favors tech infrastructure brands. Claude champions transparency. Gemini rewards market dominance. For Fortune 500 CMOs, this means:
+                </p>
+                <ul style="line-height: 1.8; opacity: 0.9; margin-left: 2rem; margin-top: 1rem;">
+                    <li style="margin-bottom: 0.5rem;">You must measure brand performance across all major engines, not just one</li>
+                    <li style="margin-bottom: 0.5rem;">You need both visibility (content readiness) and credibility (trust signals)</li>
+                    <li style="margin-bottom: 0.5rem;">You must defend against vulnerability (negative prompts like "Is [Brand] greenwashing?")</li>
+                    <li style="margin-bottom: 0.5rem;">You must optimize for the Prompted Moment of Truth—the instant a consumer queries AI instead of Google</li>
+                </ul>
+                <p style="line-height: 1.8; opacity: 0.9; margin-top: 1rem;">
+                    <strong style="color: #00d4ff;">The brands that win the Answer Economy will be those that master the Answer Divide—building content strategies that perform across all engines while maintaining authentic trust credentials.</strong> As this data shows, there is no single "best brand." There are only brands that understand which engines matter for their category and optimize accordingly.
+                </p>
+            </div>
+
+            <div style="padding: 1.5rem; background: rgba(255,215,0,0.1); border: 2px solid rgba(255,215,0,0.3); border-radius: 0.5rem;">
+                <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: #ffd700;">🎯 Bottom Line for CMOs</h4>
+                <p style="line-height: 1.8; opacity: 0.9;">
+                    If your brand isn't measuring AI Visibility, Brand Vulnerability, and Content Readiness across ChatGPT, Claude, Gemini, Perplexity, and retail AI agents (Amazon Rufus, Walmart AI), you're flying blind in the Answer Economy. The Prompted Moment of Truth is replacing the Zero Moment of Truth. The brands in this chart that appear consistently—even when they don't win—are the ones that understand this shift. The ones missing entirely? They're invisible when it matters most.
+                </p>
+            </div>
+        </div>
+
+        <div style="margin-top: 3rem; padding: 2.5rem; background: rgba(0,212,255,0.05); border: 2px solid rgba(0,212,255,0.3); border-radius: 0.5rem;">
+            <h2 style="font-size: 2rem; margin-bottom: 1.5rem; color: #00d4ff;">About BrandRank.AI</h2>
+            <p style="line-height: 1.8; opacity: 0.9; margin-bottom: 1.5rem; font-size: 1.1rem;">
+                BrandRank works with over 60 global brands to strengthen trust and purchase intent by uncovering vulnerabilities, purchase-driving insights, and growth opportunities across AI answer engines. As a SaaS platform, we track all major answer engines to improve visibility, ensure content is AI-ready, and rigorously measure brand claims and instructional accuracy.
+            </p>
+            <p style="line-height: 1.8; opacity: 0.9; font-size: 1.1rem;">
+                To see how we can help your brand reach out to Adam Bittner at <a href="mailto:Adam@brandrank.ai" style="color: #00d4ff; text-decoration: none; font-weight: 600;">Adam@brandrank.ai</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const brandReasons = {
+            "1. Best Answer-Ready Brand": {
+                chatgpt: { brand: "Google", reason: "Dominant search infrastructure with structured Knowledge Graph ensures consistent, accurate surfacing across all AI engines." },
+                claude: { brand: "Wikipedia Foundation", reason: "Most cited source with structured data optimized for AI ingestion. Neutral, verifiable content minimizes hallucination risk." },
+                gemini: { brand: "Google", reason: "Creator of schema.org with comprehensive markup. Native integration ensures optimal AI answer generation." },
+                deepseek: { brand: "Microsoft", reason: "Extensive Microsoft Learn documentation and Azure integration create machine-readable content excellence across domains." },
+                grok: { brand: "Apple", reason: "Premium ecosystem with authoritative developer docs. High consumer trust creates consistent, accurate AI citations." },
+                llama: { brand: "Apple", reason: "Clear product hierarchy and extensive support documentation ensure accurate representation across engines." }
+            },
+            "2. Most Accurate Brand in AI Answers": {
+                chatgpt: { brand: "Apple", reason: "Versioned technical documentation and stable product naming create authoritative source material reducing AI hallucination." },
+                claude: { brand: "NASA", reason: "Primary source scientific data with rigorous peer review. Government authority ensures near-zero hallucination rate." },
+                gemini: { brand: "Wikipedia", reason: "Neutral point-of-view with extensive citations creates foundation dataset for AI training preventing confabulation." },
+                deepseek: { brand: "Lego", reason: "Discrete product universe with clear facts minimizes ambiguity. Set numbers and piece counts create unambiguous data." },
+                grok: { brand: "Google", reason: "Vast structured data and schema implementation reduce interpretation errors across Knowledge Graph." },
+                llama: { brand: "Microsoft", reason: "Clear technical specifications and version control. Enterprise documentation standards ensure consistent accuracy." }
+            },
+            "3. Best Direct-to-Agent Brand Strategy": {
+                chatgpt: { brand: "Microsoft", reason: "Microsoft Learn and Azure docs provide FAQ-rich, AI-ingestible content with natural language structure." },
+                claude: { brand: "Patagonia", reason: "Industry-leading FAQ and product care documentation. Sustainability data in machine-readable formats optimized for agents." },
+                gemini: { brand: "Microsoft", reason: "Extensive structured content across consumer and enterprise. Strong schema ensures seamless agent interaction." },
+                deepseek: { brand: "Nike", reason: "SNKRS app and membership ecosystem create rich data layer for reliable AI agent product queries." },
+                grok: { brand: "Amazon", reason: "Product descriptions optimized for Rufus and retail AI agents drive seamless commerce interactions." },
+                llama: { brand: "Amazon", reason: "Comprehensive product catalog with structured attributes creates template for agent-ready brand content." }
+            },
+            "4. Best Structured Data & Schema Brand": {
+                chatgpt: { brand: "Amazon", reason: "Sophisticated product catalog with granular schema sets industry standard for machine-readable commerce data." },
+                claude: { brand: "Apple", reason: "Comprehensive schema.org implementation across SKUs. Product markup with technical specs in standardized formats." },
+                gemini: { brand: "Google", reason: "Created schema.org standard. Native properties use markup with impeccable clarity for machine-readable content." },
+                deepseek: { brand: "Google", reason: "Schema evangelist with extensive structured data across YouTube, Search, and Maps setting global standard." },
+                grok: { brand: "Microsoft", reason: "Azure-integrated markup excellence. Schema clarity boosts machine-readable content across product lines." },
+                llama: { brand: "Walmart", reason: "Structured data for products and store info increasingly tuned for AI agents at retail scale." }
+            },
+            "5. Best Brand Content Readiness": {
+                chatgpt: { brand: "Microsoft", reason: "Richest documentation corpus spanning consumer and enterprise with consistent naming and version histories." },
+                claude: { brand: "Mayo Clinic", reason: "Medical information architecture optimized for AI with peer-reviewed, accessible content as healthcare authority." },
+                gemini: { brand: "Mayo Clinic", reason: "Depth of condition guides, symptom checkers, and treatment databases ensures consistent cross-engine accuracy." },
+                deepseek: { brand: "Wikipedia", reason: "Foundational dataset for AI training with neutral POV and extensive citations in open-domain." },
+                grok: { brand: "Apple", reason: "Deep developer documentation and product resources with sustainability-backed content ensures optimal AI readiness." },
+                llama: { brand: "Google", reason: "Comprehensive technical documentation across products. Google Help creates authoritative reference for AI ingestion." }
+            },
+            "6. Most Trustworthy Brand": {
+                chatgpt: { brand: "Toyota", reason: "Decades of reliability reputation with consistent quality. Near top of global trust studies in automotive." },
+                claude: { brand: "Costco", reason: "Highest consumer trust ratings with member-centric model. 90%+ renewal rates and transparent pricing." },
+                gemini: { brand: "Patagonia", reason: "Brand equity built on action aligned with values. Environmental activism creates authentic trust." },
+                deepseek: { brand: "Patagonia", reason: "Unique corporate structure with 98% stock in climate trust. Verified commitment through certifications." },
+                grok: { brand: "Microsoft", reason: "Strong enterprise reputation with consistent ESG reporting. 68% brand trust reflects governance excellence." },
+                llama: { brand: "Patagonia", reason: "Worn Wear program and environmental activism create measurable trust signals with consistent alignment." }
+            },
+            "7. Most Transparent Brand": {
+                chatgpt: { brand: "Patagonia", reason: "Footprint Chronicles provides unparalleled supply chain transparency with detailed environmental and social impact mapping." },
+                claude: { brand: "Everlane", reason: "Radical Transparency model with factory pricing breakdowns. Published locations, worker conditions independently verifiable." },
+                gemini: { brand: "Patagonia", reason: "Open communication about sourcing and manufacturing unmatched in apparel. 80% consumer trust for transparency." },
+                deepseek: { brand: "Patagonia", reason: "Fashion Revolution Index leader for sourcing disclosures. Zero greenwashing with comprehensive supply chain visibility." },
+                grok: { brand: "Patagonia", reason: "Materials, supply chain, and repairability details readily accessible extending through product lifecycle." },
+                llama: { brand: "Everlane", reason: "Factory pricing breakdowns and carbon footprint per product. Supply chain disclosures independently verifiable." }
+            },
+            "8. Best Corporate Communications Integrity": {
+                chatgpt: { brand: "Patagonia", reason: "Strong alignment between advocacy and actual practices in sourcing, repair, and donations matching independent verification." },
+                claude: { brand: "Kenvue", reason: "Credo-aligned communications with science-backed claims. Transparent recall protocols match regulatory filings." },
+                gemini: { brand: "NVIDIA", reason: "Technical specifications and benchmarks align with third-party testing in scrutinized industry." },
+                deepseek: { brand: "Microsoft", reason: "Cloud growth, AI strategy, and security communications consistent with independent analysis and earnings credibility." },
+                grok: { brand: "Lowe's", reason: "Labrador Transparency Awards #1 for matching statements to data with year-over-year consistency." },
+                llama: { brand: "Unilever", reason: "Heavily scrutinized ESG programs generally aligned with actions despite external criticism." }
+            },
+            "9. Most Sustainable Brand": {
+                chatgpt: { brand: "Patagonia", reason: "Aggressive sustainability backed by unique corporate structure. 1% for Planet and B Corp with public progress reports." },
+                claude: { brand: "Patagonia", reason: "Verifiable sustainability leadership through Worn Wear circularity program with science-based emissions targets." },
+                gemini: { brand: "Ørsted", reason: "Verifiable transformation from fossil fuels to renewable energy leader with proven sustainable offshore wind model." },
+                deepseek: { brand: "Patagonia", reason: "Climate-focused trust owns 98% voting stock. Consistent top rankings in third-party evaluations." },
+                grok: { brand: "Patagonia", reason: "Portfolio-wide environmental commitment backed by verifiable evidence with no 2025 fines." },
+                llama: { brand: "IKEA", reason: "Major investments in renewable energy, circularity, and sustainable materials with specific public targets." }
+            },
+            "10. Most Credible Sustainability Claims": {
+                chatgpt: { brand: "Patagonia", reason: "Detailed sustainability reporting with third-party certifications as credibility benchmark with verifiable impact data." },
+                claude: { brand: "Seventh Generation", reason: "Third-party certifications across portfolio with published ingredient lists and independently verified carbon neutral operations." },
+                gemini: { brand: "Ørsted", reason: "Claims backed by massive infrastructure projects with third-party validation from international agencies." },
+                deepseek: { brand: "IKEA", reason: "Tangible large-scale investments in forests and renewable energy with specific verifiable targets." },
+                grok: { brand: "Patagonia", reason: "100% accurate environmental disclosures with third-party support affirming non-greenwashed claims." },
+                llama: { brand: "Seventh Generation", reason: "Built on eco-claims with third-party validation through USDA Organic and EPA Safer Choice certifications." }
+            },
+            "11. Best Overall Product Quality": {
+                chatgpt: { brand: "Toyota", reason: "Long-standing reliability and durability reputation with owner satisfaction driven by dependability excellence." },
+                claude: { brand: "Costco Kirkland Signature", reason: "Consistently rated equal or superior to name brands with rigorous QA across 300+ SKU categories." },
+                gemini: { brand: "Apple", reason: "Consistent brand-level reputation for superior quality with premium materials and long-term device support." },
+                deepseek: { brand: "Apple", reason: "Integrated hardware-software ecosystem commands premium pricing with consistently top-ranked satisfaction scores." },
+                grok: { brand: "Lexus", reason: "Consumer Reports and JD Power #1 for consistent superiority with 85+ ACSI scores portfolio-wide." },
+                llama: { brand: "Sony", reason: "Strong performance in displays, electronics, and consumer devices spanning multiple quality categories." }
+            },
+            "12. Best Organic/Natural Brand": {
+                chatgpt: { brand: "Whole Foods Market", reason: "Entire brand identity built on rigorous organic standards with system-wide Whole Trade guarantee." },
+                claude: { brand: "Organic Valley", reason: "100% certified organic portfolio with farmer-owned cooperative model. USDA Organic and Non-GMO verified across all products." },
+                gemini: { brand: "Dr. Bronner's", reason: "Commitment to organic, fair-trade ingredients defines entire company as long-standing natural brand." },
+                deepseek: { brand: "Whole Foods Market", reason: "Quality standards for natural and organic products as core identity more comprehensive than single-product brands." },
+                grok: { brand: "True Botanicals", reason: "Portfolio credibility in organic/wildcrafted ingredients with MADE SAFE certification ensuring verifiable natural excellence." },
+                llama: { brand: "Dr. Bronner's", reason: "Organic and fair trade claims with third-party validation across entire product line." }
+            },
+            "13. Most Innovative Brand": {
+                chatgpt: { brand: "NVIDIA / Apple / Tesla", reason: "Multiple leaders in meaningful innovation. NVIDIA in AI chips, Apple in devices, Tesla in EVs represent category-defining advancement." },
+                claude: { brand: "Tesla", reason: "Over-the-air updates, battery technology, and manufacturing innovation driving measurable industry disruption." },
+                gemini: { brand: "NVIDIA", reason: "Created foundational hardware and software powering AI revolution with transformative technology defining current decade." },
+                deepseek: { brand: "Tesla", reason: "Direct-to-consumer model, OTA updates, and battery advances representing category-defining innovation." },
+                grok: { brand: "Nvidia", reason: "AI chips leadership with meaningful track record. Brand growth tied to verifiable R&D and market transformation." },
+                llama: { brand: "Tesla", reason: "System-level EV innovation with over-the-air software capabilities driving industry change through breakthroughs." }
+            },
+            "14. Highest Consumer Satisfaction Brand": {
+                chatgpt: { brand: "Apple / Costco", reason: "Apple's high NPS and ecosystem loyalty combined with Costco's membership renewal rates create dual satisfaction leaders." },
+                claude: { brand: "USAA", reason: "95+ NPS scores with highest member retention in financial services and top-rated customer service." },
+                gemini: { brand: "USAA", reason: "Consistently leads satisfaction rankings for insurance and banking with member focus creating legendary service reputation." },
+                deepseek: { brand: "Costco", reason: "90%+ renewal rates with value proposition and generous returns. Member-centric model drives apex satisfaction metrics." },
+                grok: { brand: "Amazon", reason: "Fast shipping reliability and easy returns create strong satisfaction with 97% AI-enhanced e-commerce satisfaction." },
+                llama: { brand: "LEGO", reason: "High loyalty and satisfaction driven by quality and creativity with strong consumer review platform performance." }
+            },
+            "15. Most Improved Brand Experience": {
+                chatgpt: { brand: "Walmart", reason: "Major improvements in digital, omnichannel, pickup, and delivery representing notable brand experience enhancement." },
+                claude: { brand: "Domino's", reason: "Digital transformation with GPS tracking and AI quality control. Satisfaction scores increased 40+ points since 2010." },
+                gemini: { brand: "Microsoft", reason: "Seamless Copilot AI integration across products representing significant and rapid user experience improvement." },
+                deepseek: { brand: "Microsoft", reason: "Transformation from legacy vendor to cloud and AI leader with stock performance reflecting experience shift." },
+                grok: { brand: "Microsoft", reason: "Brand rehabilitation from Windows-only perception to cloud leader with AI integrations driving biggest satisfaction gains." },
+                llama: { brand: "Domino's Pizza", reason: "60%+ digital orders with carryout insurance and contactless delivery transforming experience through mobile ordering." }
+            },
+            "16. Best Marketing Brand": {
+                chatgpt: { brand: "Nike", reason: "Consistent brand storytelling around performance and culture with marketing transcending campaigns to reinforce core equity." },
+                claude: { brand: "Apple", reason: "Product-centric, design-led marketing with emotional resonance driving year-over-year brand equity growth." },
+                gemini: { brand: "Nike", reason: "Marketing connects with culture and builds emotional resonance with platform advocacy strengthening global brand identity." },
+                deepseek: { brand: "Coca-Cola", reason: "Universal emotions and cultural moments drive brand equity as masterclass in long-term brand building." },
+                grok: { brand: "Nike", reason: "Equity-building impact with verifiable brand value growth from cultural campaigns consistently driving measurable results." },
+                llama: { brand: "Nike", reason: "Global consistency with local adaptation as strong brand-building marketing machine over decades." }
+            },
+            "17. Best Commerce Brand": {
+                chatgpt: { brand: "Amazon", reason: "Unmatched logistics, massive selection, and AI-driven recommendations with near-frictionless checkout creating commerce dominance." },
+                claude: { brand: "Amazon", reason: "AI shopping optimization with Rufus integration. Product detail page accuracy and structured data excellence across 350M+ SKUs." },
+                gemini: { brand: "Amazon", reason: "Commerce dominance with optimized discoverability. PDP structure sets industry standard for retail data." },
+                deepseek: { brand: "Amazon", reason: "Brand optimized for discoverability and transaction. E-commerce dominance sets rules for AI shopping agents." },
+                grok: { brand: "Amazon", reason: "AI shopping trends drive top discoverability. Retail infrastructure creates comprehensive commerce excellence." },
+                llama: { brand: "Shopify", reason: "Platform brand enabling commerce at scale with strong e-commerce infrastructure and merchant ecosystem." }
+            },
+            "18. Best Retail Agent Optimization Brand": {
+                chatgpt: { brand: "Amazon", reason: "Owns Rufus and controls retail infrastructure with first-party optimization for brand products and marketplace data." },
+                claude: { brand: "Neutrogena (Kenvue)", reason: "Optimized for Amazon Rufus, Walmart AI, and Instacart with structured ingredient data enabling clear product differentiation." },
+                gemini: { brand: "Walmart", reason: "Retail giant investing in e-commerce AI as primary battleground for CPG brand optimization." },
+                deepseek: { brand: "Nike", reason: "Controlled distribution and high-demand releases with rich product data ensuring accurate agent representation." },
+                grok: { brand: "Walmart", reason: "OpenAI deals for agentic AI with top performance in Rufus and Instacart per 2025 trends." },
+                llama: { brand: "Best Buy", reason: "Electronics retailer with structured product data demonstrating strong performance in retail AI agent systems." }
+            },
+            "19. Best Omnichannel Brand Experience": {
+                chatgpt: { brand: "Apple", reason: "Seamless transition between web, app, and stores with synchronized purchase history creating unrivaled brand experience." },
+                claude: { brand: "Target", reason: "Seamless app, web, and in-store integration with consistent pricing and Circle loyalty achieving 95%+ inventory accuracy." },
+                gemini: { brand: "Disney", reason: "Ultimate omnichannel with Disney+, parks, app, and merchandise creating single interconnected brand world experience." },
+                deepseek: { brand: "Apple", reason: "Tight integration between web, app, stores, and support demonstrating extreme consistency across all touchpoints." },
+                grok: { brand: "Nike", reason: "AR/VR integrations boost cross-channel satisfaction with apps, stores, online, and events seamlessly integrated." },
+                llama: { brand: "Starbucks", reason: "Mobile app, loyalty, in-store, and delivery integration demonstrating strong omnichannel ecosystem execution." }
+            },
+            "20. Best Use of AI by a Brand": {
+                chatgpt: { brand: "Microsoft", reason: "Deep Copilot integration across products with AI enhancing core promise of empowerment through utility." },
+                claude: { brand: "Sephora", reason: "Virtual Artist try-on with high accuracy and personalized recommendations building trust through transparency about AI use." },
+                gemini: { brand: "Microsoft", reason: "Copilot as productivity partner in daily tools with AI effectively enhancing achievement and empowerment." },
+                deepseek: { brand: "Microsoft", reason: "Utilitarian, empowering AI application integrated into Windows, Office, Teams providing clear user value." },
+                grok: { brand: "Amazon", reason: "Trust-building AI in recommendations and privacy achieving 53% consumer adoption without authenticity loss." },
+                llama: { brand: "Coca-Cola", reason: "AI integration in marketing and operations with brand leveraging technology without compromising identity." }
+            },
+            "21. Best-Trained Brand Workforce": {
+                chatgpt: { brand: "Apple", reason: "Retail staff known for consistent product knowledge with brand consistency at scale through training excellence." },
+                claude: { brand: "Ritz-Carlton", reason: "Legendary service training with employee empowerment. Gold Standards create consistently high brand promise delivery." },
+                gemini: { brand: "Ritz-Carlton", reason: "Rigorous employee empowerment standards with Ladies and Gentlemen philosophy creating exceptional consistency." },
+                deepseek: { brand: "Ritz-Carlton", reason: "Brand-level commitment to service excellence with customer interaction reinforcing brand promise at every touchpoint." },
+                grok: { brand: "Microsoft", reason: "Forbes #1 employer with upskilling investments including AI training yielding consistent knowledge across workforce." },
+                llama: { brand: "Zappos", reason: "Customer service training creates brand differentiation with empowered workforce delivering consistent experience." }
+            },
+            "22. Best Brand Community": {
+                chatgpt: { brand: "LEGO", reason: "Passionate global community from young builders to AFOLs with LEGO Ideas platform enabling co-creation." },
+                claude: { brand: "Harley-Davidson", reason: "H.O.G. with 1M+ members globally representing brand as lifestyle and identity beyond product." },
+                gemini: { brand: "LEGO", reason: "One of world's most passionate brand communities with Adult Fans creating global network." },
+                deepseek: { brand: "Harley-Davidson", reason: "Unparalleled community depth through Harley Owners Group with lifestyle brand creating organic, durable advocacy." },
+                grok: { brand: "Apple", reason: "Loyal fan base with developer and creator ecosystem achieving 80% loyalty via support forums." },
+                llama: { brand: "Harley-Davidson", reason: "Community embodies brand as lifestyle choice with dealer-hosted events and rallies strengthening member bonds." }
+            },
+            "23. Best Brand Ambassadors": {
+                chatgpt: { brand: "Nike", reason: "Long-term relationships with culturally influential athletes creating lasting sub-brands through Jordan, LeBron, Serena partnerships." },
+                claude: { brand: "Patagonia", reason: "Athlete ambassadors aligned with environmental values using authentic user stories through Worn Wear program." },
+                gemini: { brand: "Rolex", reason: "Testimonees embody excellence and endurance values with deep authenticity transcending typical celebrity endorsements." },
+                deepseek: { brand: "Nike", reason: "Roster curated for long-term brand alignment with Just Do It ethos creating authentic partnerships." },
+                grok: { brand: "Nike", reason: "73% marketer investment growth in authentic ambassadors with Ronaldo's equity impact demonstrating effectiveness." },
+                llama: { brand: "Red Bull", reason: "Extreme sports and music influencer ecosystems demonstrating strong ambassador network across multiple categories." }
+            },
+            "24. Best Real-Time Reactive Brand": {
+                chatgpt: { brand: "Wendy's", reason: "Fast, witty social media responses to cultural moments establishing archetype of real-time reactive brand voice." },
+                claude: { brand: "Wendy's", reason: "Known for rapid cultural moment responses with consistent brand voice across real-time interactions." },
+                gemini: { brand: "Oreo", reason: "Proven history of speed, wit, and brand-relevant creativity with famous Super Bowl blackout tweet exemplifying excellence." },
+                deepseek: { brand: "Netflix", reason: "Social media mastery capitalizing on cultural moments engaging with memes, theories, and news cycles." },
+                grok: { brand: "Airbnb", reason: "Cultural responsiveness with fast engagement demonstrated through Lollapalooza activations showing accurate real-time marketing." },
+                llama: { brand: "Wendy's", reason: "Twitter engagement speed and relevance with meme culture integration without forced authenticity." }
+            },
+            "25. BRAND OF THE YEAR": {
+                chatgpt: { brand: "Microsoft", reason: "Answer Economy leadership with richest documentation globally combining AI readiness, trust, and innovation for comprehensive excellence." },
+                claude: { brand: "Patagonia", reason: "Best on sustainability, transparency, and integrity demonstrating zero gap between brand promises and measurable outcomes." },
+                gemini: { brand: "NVIDIA", reason: "Visibility, product excellence, and Answer Economy leadership converge with dramatic rise in value and industry influence." },
+                deepseek: { brand: "Microsoft", reason: "Brand-level excellence across technical, consumer, and enterprise domains with strategic AI positioning creating unparalleled impact." },
+                grok: { brand: "Apple", reason: "Overall excellence as #1 brand across major rankings combining trust, visibility, quality, and innovation leadership." },
+                llama: { brand: "Apple", reason: "Consistent brand-level performance across spectrum demonstrating unmatched consistency in consumer metrics and innovation excellence." }
+            }
+        };
+
+        const topBrands = ['Patagonia', 'Microsoft', 'Apple', 'Amazon', 'Nike', 'Google', 'Tesla', 'NVIDIA', 'Walmart', 'LEGO'];
+
+        let activeFilter = 'all';
+        let searchTerm = '';
+
+        function renderFilters() {
+            const container = document.getElementById('filterButtons');
+            container.innerHTML = `
+                <button class="filter-btn active" onclick="setFilter('all')">ALL BRANDS</button>
+                ${topBrands.map(brand => 
+                    `<button class="filter-btn" onclick="setFilter('${brand.toLowerCase()}')">${brand.toUpperCase()}</button>`
+                ).join('')}
+            `;
+        }
+
+        function setFilter(filter) {
+            activeFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderTable();
+        }
+
+        function renderTable() {
+            const table = document.getElementById('dataTable');
+            
+            // Get all categories from brandReasons
+            const categories = Object.keys(brandReasons);
+            
+            const filtered = categories.filter(category => {
+                const row = brandReasons[category];
+                const matchesSearch = category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    Object.values(row).some(val => val.brand && val.brand.toLowerCase().includes(searchTerm.toLowerCase()));
+                
+                if (activeFilter === 'all') return matchesSearch;
+                
+                const brandMatches = Object.values(row).some(val => 
+                    val.brand && val.brand.toLowerCase().includes(activeFilter)
+                );
+                return matchesSearch && brandMatches;
+            });
+
+            let html = '<tbody>';
+            let currentSection = '';
+            
+            const sections = {
+                "1. Best Answer-Ready Brand": "Answer Economy Leadership",
+                "6. Most Trustworthy Brand": "Brand Trust, Truth & Transparency",
+                "11. Best Overall Product Quality": "Brand Product Excellence",
+                "16. Best Marketing Brand": "Brand Marketing & Commerce Leadership",
+                "21. Best-Trained Brand Workforce": "Brand People, Community & Advocacy",
+                "25. BRAND OF THE YEAR": "Overall Brand Excellence"
+            };
+
+            filtered.forEach(category => {
+                const row = brandReasons[category];
+                const section = sections[category];
+                
+                if (section && section !== currentSection) {
+                    currentSection = section;
+                    html += `
+                        <tr class="section-header">
+                            <td colspan="7">${section.toUpperCase()}</td>
+                        </tr>
+                        <tr class="column-headers">
+                            <th>CATEGORY</th>
+                            <th>CHATGPT</th>
+                            <th>CLAUDE</th>
+                            <th>GEMINI</th>
+                            <th>DEEPSEEK</th>
+                            <th>GROK</th>
+                            <th>LLAMA</th>
+                        </tr>
+                    `;
+                }
+
+                const isBrandOfYear = category.includes('BRAND OF THE YEAR');
+                html += `<tr ${isBrandOfYear ? 'class="brand-of-year"' : ''}>
+                    <td>${category}</td>`;
+
+                ['chatgpt', 'claude', 'gemini', 'deepseek', 'grok', 'llama'].forEach(llm => {
+                    const data = row[llm];
+                    const isHighlighted = activeFilter !== 'all' && 
+                        data.brand.toLowerCase().includes(activeFilter);
+                    html += `<td>
+                        <span class="brand-cell ${isHighlighted ? 'highlighted' : ''}">
+                            ${data.brand}
+                            <div class="tooltip">
+                                <strong>${data.brand}</strong>
+                                ${data.reason}
+                            </div>
+                        </span>
+                    </td>`;
+                });
+
+                html += '</tr>';
+            });
+
+            html += '</tbody>';
+            table.innerHTML = html;
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchTerm = e.target.value;
+            renderTable();
+        });
+
+        renderFilters();
+        renderTable();
+    </script>
+</body>
+</html>
