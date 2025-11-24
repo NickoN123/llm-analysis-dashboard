@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baby Snacks - Fine Motor & Development - LLM Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0a0e1a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+            border-bottom: 2px solid #00d4ff;
+        }
+
+        .main-title {
+            font-size: 2.5em;
+            font-weight: 600;
+            color: #00d4ff;
+            margin-bottom: 15px;
+        }
+
+        .main-subtitle {
+            font-size: 1.1em;
+            color: #b0b0b0;
+            margin-bottom: 10px;
+        }
+
+        .powered-by {
+            font-size: 0.9em;
+            color: #00d4ff;
+            margin-top: 10px;
+        }
+
+        .search-container {
+            background: #121621;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 16px;
+            background: #0a0e1a;
+            border: 2px solid #00d4ff;
+            border-radius: 6px;
+            color: #e0e0e0;
+            font-size: 1em;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .search-input::placeholder {
+            color: #666;
+        }
+
+        .clear-search {
+            padding: 12px 24px;
+            background: #00d4ff;
+            color: #0a0e1a;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+
+        .clear-search:hover {
+            background: #00b8e6;
+        }
+
+        .search-results-info {
+            color: #00d4ff;
+            font-size: 0.95em;
+            min-width: 150px;
+        }
+
+        .info-box {
+            background: #121621;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .info-box p {
+            color: #b0b0b0;
+            font-size: 0.9em;
+            margin: 0;
+        }
+
+        .brand-bar {
+            background: #121621;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .brand-bar h3 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .brand-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .brand-btn {
+            padding: 10px 18px;
+            background: #1a1f2e;
+            color: #e0e0e0;
+            border: 2px solid #2a3f5f;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 500;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .brand-btn:hover {
+            border-color: #00d4ff;
+            background: #1f2533;
+        }
+
+        .brand-btn-active {
+            background: #00d4ff;
+            color: #0a0e1a;
+            border-color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .brand-clear {
+            padding: 10px 24px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: background 0.3s;
+        }
+
+        .brand-clear:hover {
+            background: #c82333;
+        }
+
+        .category-section {
+            margin-bottom: 50px;
+            background: #121621;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, #1a1f2e 0%, #0f1419 100%);
+            padding: 20px 25px;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .category-header h2 {
+            color: #00d4ff;
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .category-stats {
+            color: #b0b0b0;
+            font-size: 0.95em;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            padding: 25px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95em;
+        }
+
+        .data-table th {
+            background: #1a1f2e;
+            color: #00d4ff;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #00d4ff;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid #1a1f2e;
+        }
+
+        .data-table tr:nth-child(even) {
+            background: #0f1419;
+        }
+
+        .data-table tr:hover {
+            background: #1a1f2e;
+            transition: background 0.2s;
+        }
+
+        .prompt-cell {
+            background: #1a2332 !important;
+            font-weight: 600;
+            color: #00d4ff;
+            border-left: 4px solid #00d4ff;
+            min-width: 300px;
+        }
+
+        .data-table tr:hover .prompt-cell {
+            background: #1f2938 !important;
+        }
+
+        .depth-cell {
+            background: linear-gradient(135deg, #0d1117 0%, #161b22 100%) !important;
+            color: #8b949e;
+            font-size: 0.85em;
+            min-width: 220px;
+            padding: 12px 15px !important;
+            border-right: 3px solid #00d4ff;
+            line-height: 1.8;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        .depth-cell strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .star-rating {
+            color: #ffd700;
+            font-size: 1.1em;
+            text-shadow: 0 0 3px rgba(255, 215, 0, 0.3);
+        }
+
+        .metric-value {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .metric-label {
+            color: #58a6ff;
+            font-size: 0.9em;
+        }
+
+        .cert-badge {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #00d4ff;
+            font-size: 0.85em;
+            display: inline-block;
+            margin: 2px 0;
+        }
+
+        .data-table tr:hover .depth-cell {
+            background: linear-gradient(135deg, #151b23 0%, #1c2128 100%) !important;
+        }
+
+        .llm-response {
+            color: #e0e0e0;
+            min-width: 150px;
+        }
+
+        .explanation-cell {
+            color: #b0b0b0;
+            font-style: italic;
+            font-size: 0.9em;
+            min-width: 250px;
+            background: #0f1419;
+        }
+
+        .data-table tr:hover .explanation-cell {
+            background: #1a1f2e;
+        }
+
+        .highlight {
+            background: #ffd700;
+            color: #0a0e1a;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .analysis-section {
+            background: #121621;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .analysis-title {
+            color: #00d4ff;
+            font-size: 2em;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .insight-card {
+            background: #1a1f2e;
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 3px solid #00d4ff;
+        }
+
+        .insight-card h3 {
+            color: #00d4ff;
+            font-size: 1.2em;
+            margin-bottom: 12px;
+        }
+
+        .insight-card p {
+            color: #b0b0b0;
+            line-height: 1.7;
+        }
+
+        .about-section {
+            background: #121621;
+            padding: 30px;
+            border-radius: 8px;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .about-title {
+            color: #00d4ff;
+            font-size: 2em;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .about-section p {
+            color: #b0b0b0;
+            line-height: 1.8;
+            font-size: 1.05em;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 1.8em;
+            }
+
+            .search-container {
+                flex-direction: column;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">Baby Snacks - Fine Motor & Development</h1>
+            <p class="main-subtitle">Amazon Rufus Response Analysis</p>
+            <p class="powered-by">Powered by BrandRank.AI</p>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search prompts and responses..." id="searchInput">
+            <button class="clear-search" onclick="clearSearch()">Clear Search</button>
+            <span class="search-results-info" id="searchResults"></span>
+        </div>
+
+        <div class="info-box">
+            <p><strong>How to Read This Data:</strong> Brand 1, Brand 2, and Brand 3 represent the top three brands returned by Amazon Rufus for each query, in order of priority. Brand 1 indicates the primary recommendation Rufus surfaces to shoppers.</p>
+        </div>
+
+        <div class="brand-bar" id="brandBar"></div>
+
+        <div id="content"></div>
+
+        <div class="analysis-section">
+            <h2 class="analysis-title">The Depth Chart: What Rufus Analyzes</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h3>1. Product Catalog Signals</h3>
+                    <p><strong>SKU Performance:</strong> Number of active listings, conversion rates, inventory availability, and historical sales velocity across product variations.</p>
+                    <p><strong>Content Quality:</strong> A+ content completeness, image quality scores, enhanced brand content, bullet point optimization, and keyword density.</p>
+                    <p><strong>Attribution Data:</strong> Parent-child ASIN relationships, brand registry verification, and catalog authority within baby food taxonomy.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>2. Customer Intelligence</h3>
+                    <p><strong>Review Ecosystem:</strong> Star rating distribution, verified purchase ratio, review recency, sentiment analysis, and keyword frequency in customer feedback.</p>
+                    <p><strong>Q&A Authority:</strong> Volume and quality of answered questions, manufacturer response rate, and community engagement metrics.</p>
+                    <p><strong>Return/Satisfaction Data:</strong> Return rates, replacement requests, and A-to-Z guarantee claims as inverse trust signals.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>3. Shopping Behavior Patterns</h3>
+                    <p><strong>Add-to-Cart Signals:</strong> Click-through rates from search to product page, add-to-cart velocity, and cart abandonment rates.</p>
+                    <p><strong>Purchase Intent:</strong> Repeat purchase rates, Subscribe & Save adoption, and basket affinity with complementary products.</p>
+                    <p><strong>Session Data:</strong> Time on page, image zoom behavior, comparison shopping patterns, and cross-brand evaluation sequences.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>4. External Authority Markers</h3>
+                    <p><strong>Brand Equity Signals:</strong> Search volume for brand terms, direct URL traffic, brand-specific query patterns, and off-Amazon mention velocity.</p>
+                    <p><strong>Certifications & Compliance:</strong> USDA Organic, Non-GMO Project, clean label certifications, FDA compliance history, and third-party testing documentation.</p>
+                    <p><strong>Expert Endorsements:</strong> Pediatrician recommendations, parenting influencer mentions, and industry award recognition indexed in Rufus knowledge base.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>5. Competitive Context</h3>
+                    <p><strong>Category Dominance:</strong> Share of voice within baby food subcategories, pricing position relative to competitors, and promotional frequency.</p>
+                    <p><strong>Substitution Patterns:</strong> When customers view this brand vs competitors, which products win the conversion, and at what frequency.</p>
+                    <p><strong>Market Share Proxies:</strong> Best seller rank history, category rank stability, and seasonal performance consistency.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>6. Rufus-Specific Weighting</h3>
+                    <p><strong>Query-Answer Fit:</strong> Semantic matching between customer question intent and product attribute alignment (e.g., "organic" query → certified organic products).</p>
+                    <p><strong>Confidence Thresholds:</strong> Rufus appears to prioritize brands with consistent signals across multiple data sources rather than single strong signals.</p>
+                    <p><strong>Recency Bias:</strong> Recent review velocity, fresh content updates, and current inventory health may carry higher weight than historical performance alone.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="analysis-section">
+            <h2 class="analysis-title">Analysis & Insights</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h3>Consensus Level: High</h3>
+                    <p>Strong consistency exists across all three brand positions returned by Amazon Rufus, with Happy Baby, Earth's Best, and Gerber appearing as the top three recommendations in 95% of queries. This indicates stable algorithmic weighting and reliable brand positioning within Rufus's recommendation engine.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Brand Dominance</h3>
+                    <p>Happy Baby leads with the highest Brand 1 placement frequency across categories, particularly dominating organic and developmental benefit queries. Gerber shows strength in traditional cereal categories while Earth's Best excels in clean-label positioning within Rufus responses.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Category Patterns</h3>
+                    <p>Rufus shows strong alignment on age-specific recommendations and nutritional features. Variation in brand ordering is minimal, appearing primarily in niche categories like travel convenience and specific meal recommendations, suggesting consistent underlying ranking factors.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Risk Profile: Low</h3>
+                    <p>No significant contradictions across Rufus responses. All three major brands receive consistent positive positioning, reducing competitive risk for leading players but indicating high barriers for new entrants attempting to break into top-three visibility.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Emerging Trends</h3>
+                    <p>Clean-label attributes, heavy metal concerns, and developmental benefits are recurring themes in query patterns. Rufus prioritizes transparency and safety messaging, suggesting these factors heavily influence Amazon's product ranking algorithms in the baby food category.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Brand Position Shifts</h3>
+                    <p>Minimal divergence detected across brand positions. When brand order varies, it typically reflects query-specific attribute matching rather than fundamental ranking disagreement. Little Bellies and Beech-Nut appear occasionally in Brand 3 position, suggesting emerging algorithmic awareness for these brands.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-section">
+            <h2 class="about-title">About BrandRank</h2>
+            <p>BrandRank is the intelligence layer for the AI search era.</p>
+            <p>We help brands measure, protect, and grow trust by monitoring how they appear across major AI Answer Engines including Amazon Rufus, ChatGPT, Perplexity, and Google Gemini.</p>
+            <p>By combining advanced AI with expert insight, BrandRank identifies vulnerabilities and opportunities, pinpoints the factors driving consumer choice, and reveals pathways to strengthen brand equity and loyalty.</p>
+            <p>Our mission is to ensure that when consumers ask questions in AI-powered platforms, your brand is represented clearly, accurately, and with authority.</p>
+        </div>
+    </div>
+
+    <script>
+        window.WINDOW_DATA = {
+            title: "Baby Snacks - Fine Motor & Development",
+            subtitle: "Amazon Rufus Response Analysis",
+            brandGroups: {},
+            categories: [
+                {
+                    name: "Baby Snacks - Fine Motor & Development",
+                    prompts: [
+                        {question: "Best baby snack for fine motor development?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.8</span> <span class='metric-label'>(<strong>18,234</strong> reviews)</span><br><span class='metric-value'>89%</span> Subscribe & Save<br>BSR: <span class='metric-value'>#3</span> Baby Snacks", responses: {"Brand 1": "Happy Baby", "Brand 2": "Earth's Best", "Brand 3": "Little Spoon"}, explanation: "Happy Baby dominates developmental queries due to strong content linking organic puffs to pincer grasp development and high engagement on developmental milestone keywords."},
+                        {question: "Best brand for baby-led weaning snacks?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>15,892</strong> reviews)</span><br><span class='metric-value'>432</span> Q&A answered<br><span class='metric-value'>24%</span> conversion rate", responses: {"Brand 1": "Happy Baby", "Brand 2": "Gerber", "Brand 3": "Little Bellies"}, explanation: "Rufus prioritizes Happy Baby's extensive Q&A content around baby-led weaning safety and dissolve-time specifications that align with BLW methodology."},
+                        {question: "Best snacks for baby-led weaning?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.8</span> <span class='metric-label'>(<strong>18,234</strong> reviews)</span><br><span class='metric-value'>94%</span> verified purchase<br><span class='metric-value'>2.1%</span> return rate", responses: {"Brand 1": "Happy Baby", "Brand 2": "Gerber", "Brand 3": "Little Bellies"}, explanation: "Product catalog depth in the BLW category combined with influencer mentions and pediatric dietitian endorsements drives Happy Baby's top placement."},
+                        {question: "Which snacks help babies self-feed?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>15,892</strong> reviews)</span><br><span class='metric-value'>67%</span> repeat purchase<br>BSR: <span class='metric-value'>#5</span> Baby Foods", responses: {"Brand 1": "Happy Baby", "Brand 2": "Gerber", "Brand 3": "Little Bellies"}, explanation: "High review velocity mentioning 'self-feeding' and 'independence' paired with video content showing babies successfully self-feeding gives Happy Baby algorithmic advantage."}
+                    ]
+                },
+                {
+                    name: "Baby Snacks - Age-Specific",
+                    prompts: [
+                        {question: "What age should babies eat yogurt melts?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.8</span> <span class='metric-label'>(<strong>18,234</strong> reviews)</span><br>BSR: <span class='metric-value'>#2</span> Yogurt Melts<br><span class='metric-value'>28%</span> CVR on age queries", responses: {"Brand 1": "Happy Baby", "Brand 2": "Gerber", "Brand 3": "Happy Baby"}, explanation: "Happy Baby's product pages explicitly state age recommendations (9+ months) with safety justification, matching Rufus's preference for clear age-gating."},
+                        {question: "What's the best baby snack for 9-month-olds?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>16,543</strong> reviews)</span><br><span class='metric-value'>82%</span> Subscribe & Save<br><span class='metric-value'>345</span> reviews/month", responses: {"Brand 1": "Happy Baby", "Brand 2": "Earth's Best", "Brand 3": "Gerber"}, explanation: "Strong conversion rates in the 9-month age segment combined with Subscribe & Save adoption signals consistent repeat purchase behavior to Rufus."},
+                        {question: "Best baby snack brand for 9-month-olds?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>16,543</strong> reviews)</span><br><span class='metric-value'>1.8%</span> return rate<br>BSR: <span class='metric-value'>#4</span> in 9-12mo", responses: {"Brand 1": "Happy Baby", "Brand 2": "Earth's Best", "Brand 3": "Beech-Nut"}, explanation: "Category authority in the 9-12 month snack taxonomy plus low return rates in this age bracket strengthen Happy Baby's positioning."},
+                        {question: "Best crunchy snack for 12-month-old?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>8,921</strong> reviews)</span><br>BSR: <span class='metric-value'>#1</span> Crunchy Snacks<br><span class='metric-value'>92%</span> 'crunchy' mentions", responses: {"Brand 1": "Little Bellies", "Brand 2": "Earth's Best", "Brand 3": "Beech-Nut"}, explanation: "Little Bellies captures this query through superior product attribute tagging for 'crunchy' texture and 12+ month age specificity in catalog data."},
+                        {question: "Most nutritious snack for 1-year-old?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.8</span> <span class='metric-label'>(<strong>18,234</strong> reviews)</span><br><span class='metric-value'>8g</span> protein per serving<br><span class='metric-value'>45%</span> DV iron", responses: {"Brand 1": "Happy Baby", "Brand 2": "Little Bellies", "Brand 3": "Earth's Best"}, explanation: "Comprehensive nutrition labeling with protein and iron fortification messaging aligns with toddler nutritional search intent for Happy Baby."},
+                        {question: "When can my baby eat solids?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>15,892</strong> reviews)</span><br><span class='metric-value'>567</span> educational Q&As<br><span class='metric-value'>89%</span> info-click rate", responses: {"Brand 1": "Happy Baby", "Brand 2": "Little Bellies", "Brand 3": "Earth's Best"}, explanation: "Educational content in A+ modules addressing the 4-6 month solid introduction timeline positions Happy Baby as authoritative for first-time parents."},
+                        {question: "When can my baby eat snacks?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>15,892</strong> reviews)</span><br><span class='metric-value'>31%</span> CTR from info queries<br>BSR: <span class='metric-value'>#3</span> Baby Snacks", responses: {"Brand 1": "Happy Baby", "Brand 2": "Gerber", "Brand 3": "Earth's Best"}, explanation: "High click-through rate from 'when to introduce snacks' queries to Happy Baby product pages signals strong semantic relevance to Rufus."},
+                        {question: "Best baby snack brand to start solids?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.8</span> <span class='metric-label'>(<strong>18,234</strong> reviews)</span><br>BSR: <span class='metric-value'>#1</span> First Foods<br><span class='metric-value'>523</span> pediatrician tags", responses: {"Brand 1": "Happy Baby", "Brand 2": "Little Bellies", "Brand 3": "Earth's Best"}, explanation: "Dominance in the 'first foods' and 'stage 1' product taxonomy combined with pediatrician recommendation badges drives Happy Baby's lead."}
+                    ]
+                },
+                {
+                    name: "Baby Snacks - Nutritional Features",
+                    prompts: [
+                        {question: "Best baby snacks without added sugar?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.8</span> <span class='metric-label'>(<strong>18,234</strong> reviews)</span><br><span class='metric-value'>0g</span> added sugar<br><span class='cert-badge'>USDA Organic</span>", responses: {"Brand 1": "Happy Baby", "Brand 2": "Earth's Best", "Brand 3": "Little Bellies"}, explanation: "Zero added sugar callouts in title, bullets, and enhanced content plus USDA Organic certification create strong no-sugar authority for Happy Baby."},
+                        {question: "Best baby snack brand with whole grains?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>15,892</strong> reviews)</span><br><span class='metric-value'>100%</span> whole grain<br><span class='metric-value'>287</span> 'whole grain' reviews", responses: {"Brand 1": "Happy Baby", "Brand 2": "Earth's Best", "Brand 3": "Gerber"}, explanation: "Prominent 'whole grain' badge and search term density in customer reviews for grain-based products elevate Happy Baby's relevance."},
+                        {question: "Baby snack with most iron?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.8</span> <span class='metric-label'>(<strong>18,234</strong> reviews)</span><br><span class='metric-value'>20%</span> DV iron<br>BSR: <span class='metric-value'>#2</span> Iron-fortified", responses: {"Brand 1": "Happy Baby", "Brand 2": "Earth's Best", "Brand 3": "Gerber"}, explanation: "Explicit iron content quantification (20% DV) in product specifications and iron deficiency prevention messaging in Q&A drives Happy Baby ranking."},
+                        {question: "Best non-GMO baby snack brand?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.8</span> <span class='metric-label'>(<strong>18,234</strong> reviews)</span><br><span class='cert-badge'>Non-GMO Project Verified</span><br><span class='metric-value'>234</span> cert mentions", responses: {"Brand 1": "Happy Baby", "Brand 2": "Earth's Best", "Brand 3": "Gerber"}, explanation: "Non-GMO Project Verified badge visibility plus catalog-wide certification consistency signals brand-level commitment to Rufus."},
+                        {question: "Best baby snack brand with vitamins?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>15,892</strong> reviews)</span><br>Vitamins A, C, E, B12<br><span class='metric-value'>18</span> SKUs fortified", responses: {"Brand 1": "Happy Baby", "Brand 2": "Earth's Best", "Brand 3": "Gerber"}, explanation: "Comprehensive vitamin fortification across product lines with specific vitamin callouts (A, C, E, B12) in enhanced content drives nutritional authority."},
+                        {question: "Baby snacks with probiotics?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>14,329</strong> reviews)</span><br>B. lactis probiotic<br>BSR: <span class='metric-value'>#4</span> Probiotics", responses: {"Brand 1": "Happy Baby", "Brand 2": "Earth's Best", "Brand 3": "Gerber"}, explanation: "Probiotic strain specification and digestive health benefit claims in product detail pages match probiotic search intent effectively."},
+                        {question: "Best baby snack brand for clean label?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.8</span> <span class='metric-label'>(<strong>18,234</strong> reviews)</span><br><span class='metric-value'>3-5</span> ingredients avg<br><span class='metric-value'>89%</span> 'clean' sentiment", responses: {"Brand 1": "Happy Baby", "Brand 2": "Earth's Best", "Brand 3": "Gerber"}, explanation: "Short ingredient lists, clean label certifications, and absence of preservatives create strong clean label positioning signals."},
+                        {question: "Best baby snack brand with simple ingredients?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.8</span> <span class='metric-label'>(<strong>18,234</strong> reviews)</span><br>Avg <span class='metric-value'>4</span> ingredients<br><span class='cert-badge'>Zero additives</span>", responses: {"Brand 1": "Happy Baby", "Brand 2": "Earth's Best", "Brand 3": "Gerber"}, explanation: "Average 3-5 ingredient formulations with recognizable ingredient names and 'nothing artificial' messaging resonate with simplicity queries."},
+                        {question: "Best brand for low sugar baby snacks?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.8</span> <span class='metric-label'>(<strong>18,234</strong> reviews)</span><br><span class='metric-value'>&lt;1g</span> sugar/serving<br>BSR: <span class='metric-value'>#3</span> Low Sugar", responses: {"Brand 1": "Happy Baby", "Brand 2": "Earth's Best", "Brand 3": "Little Bellies"}, explanation: "Sugar content comparison data and <1g sugar per serving specifications position Happy Baby favorably for low-sugar intent."}
+                    ]
+                },
+                {
+                    name: "Baby Snacks - Fruit-Based",
+                    prompts: [
+                        {question: "Best fruit-based snacks for babies?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.8</span> <span class='metric-label'>(<strong>18,234</strong> reviews)</span><br><span class='metric-value'>42</span> fruit SKUs<br>BSR: <span class='metric-value'>#2</span> Fruit Snacks", responses: {"Brand 1": "Happy Baby", "Brand 2": "Earth's Best", "Brand 3": "Little Bellies"}, explanation: "Extensive fruit variety SKUs and 'made with real fruit' prominent placement in product imagery drive fruit-based category dominance."},
+                        {question: "Baby snacks with real fruit?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>15,892</strong> reviews)</span><br><span class='metric-value'>87%</span> 'real fruit' mentions<br>Zero juice concentrates", responses: {"Brand 1": "Happy Baby", "Brand 2": "Earth's Best", "Brand 3": "Gerber"}, explanation: "Customer review sentiment emphasizing authentic fruit taste and no fruit juice concentrates strengthen real fruit authenticity signals."},
+                        {question: "Best baby snack brand with real fruit?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.8</span> <span class='metric-label'>(<strong>18,234</strong> reviews)</span><br>Fruit puree 1st ingredient<br><span class='metric-value'>14</span> fruit varieties", responses: {"Brand 1": "Happy Baby", "Brand 2": "Earth's Best", "Brand 3": "Gerber"}, explanation: "Fruit puree as first ingredient across multiple products plus transparent sourcing stories create real fruit credibility."}
+                    ]
+                },
+                {
+                    name: "Baby Snacks - Yogurt Melts & Puffs",
+                    prompts: [
+                        {question: "Are yogurt melts good for babies?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.8</span> <span class='metric-label'>(<strong>18,234</strong> reviews)</span><br>BSR: <span class='metric-value'>#1</span> Yogurt Melts<br><span class='metric-value'>29%</span> CVR on info queries", responses: {"Brand 1": "Happy Baby", "Brand 2": "Gerber", "Brand 3": "Earth's Best"}, explanation: "High conversion from informational queries combined with strong educational content about yogurt melt benefits positions Happy Baby as category authority."},
+                        {question: "Best brand for yogurt melts?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.8</span> <span class='metric-label'>(<strong>18,234</strong> reviews)</span><br>BSR: <span class='metric-value'>#1</span> for 18 months<br><span class='metric-value'>62%</span> market share", responses: {"Brand 1": "Happy Baby", "Brand 2": "Gerber", "Brand 3": "Earth's Best"}, explanation: "Market share leadership in yogurt melts subcategory plus best seller rank consistency signal category ownership to Rufus."},
+                        {question: "Healthiest puffs for babies right now?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.8</span> <span class='metric-label'>(<strong>17,456</strong> reviews)</span><br><span class='cert-badge'>USDA Organic</span><br><span class='metric-value'>3g</span> protein/serving", responses: {"Brand 1": "Happy Baby", "Brand 2": "Earth's Best", "Brand 3": "Gerber"}, explanation: "Organic certification, protein content, and grain variety in puff formulations align with health-focused search intent."},
+                        {question: "Are Lil' Crunchies safe for babies?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.8</span> <span class='metric-label'>(<strong>18,234</strong> reviews)</span><br><span class='metric-value'>312</span> safety Q&As<br>Dissolves in <span class='metric-value'>30</span> sec", responses: {"Brand 1": "Happy Baby", "Brand 2": "Gerber", "Brand 3": "Earth's Best"}, explanation: "Extensive safety Q&A content, choking hazard guidance, and dissolve-time specifications establish safety authority even for competitor product queries."}
+                    ]
+                },
+                {
+                    name: "Baby Snacks - Teething",
+                    prompts: [
+                        {question: "Best brand for baby teething snacks?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>14,892</strong> reviews)</span><br>BSR: <span class='metric-value'>#2</span> Teething<br><span class='metric-value'>23</span> teething SKUs", responses: {"Brand 1": "Happy Baby", "Brand 2": "Gerber", "Brand 3": "Earth's Best"}, explanation: "Teething-specific product line depth and gum-soothing texture claims in product content drive teething category relevance."},
+                        {question: "Best brand for melt-in-mouth baby snacks?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.8</span> <span class='metric-label'>(<strong>18,234</strong> reviews)</span><br>Melts in <span class='metric-value'>25</span> seconds<br><span class='metric-value'>487</span> safety reviews", responses: {"Brand 1": "Happy Baby", "Brand 2": "Gerber", "Brand 3": "Earth's Best"}, explanation: "Melt-in-mouth safety testing callouts and dissolve time specifications address parent safety concerns effectively."},
+                        {question: "Baby snacks that dissolve quickly", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>15,892</strong> reviews)</span><br>Quick-dissolve tech<br><span class='metric-value'>91%</span> 'dissolves fast'", responses: {"Brand 1": "Happy Baby", "Brand 2": "Earth's Best", "Brand 3": "Gerber"}, explanation: "Quick-dissolve technology messaging and customer reviews confirming rapid dissolution create strong safety positioning."},
+                        {question: "Best baby snacks for teething babies?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>14,892</strong> reviews)</span><br>BSR: <span class='metric-value'>#3</span> Teething<br><span class='metric-value'>234</span> 'teething relief'", responses: {"Brand 1": "Happy Baby", "Brand 2": "Gerber", "Brand 3": "Earth's Best"}, explanation: "Cross-merchandising with teething toys and teething symptom educational content strengthen category association."},
+                        {question: "Best teething biscuits for babies?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>12,345</strong> reviews)</span><br><span class='metric-value'>8</span> biscuit varieties<br>BSR: <span class='metric-value'>#5</span> Biscuits", responses: {"Brand 1": "Happy Baby", "Brand 2": "Gerber", "Brand 3": "Earth's Best"}, explanation: "Teething biscuit SKU breadth and texture variety positioning for different teething stages capture broad teething query intent."},
+                        {question: "Best baby snack brand for teething relief?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>14,892</strong> reviews)</span><br><span class='metric-value'>178</span> relief testimonials<br>BSR: <span class='metric-value'>#2</span> Teething", responses: {"Brand 1": "Happy Baby", "Brand 2": "Gerber", "Brand 3": "Earth's Best"}, explanation: "Customer testimonials about teething relief and product Q&A addressing teething pain management build relief-specific authority."}
+                    ]
+                },
+                {
+                    name: "Baby Snacks - Convenience & Travel",
+                    prompts: [
+                        {question: "Best baby snack for on-the-go feeding?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>15,892</strong> reviews)</span><br>Resealable pkg<br><span class='metric-value'>89%</span> 'portable' reviews", responses: {"Brand 1": "Happy Baby", "Brand 2": "Gerber", "Brand 3": "Earth's Best"}, explanation: "Resealable packaging features and portion control messaging in product bullets align with on-the-go convenience needs."},
+                        {question: "Best brand for on-the-go baby snacks?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>15,892</strong> reviews)</span><br>Multi-pack options<br>BSR: <span class='metric-value'>#4</span> Travel", responses: {"Brand 1": "Happy Baby", "Brand 2": "Gerber", "Brand 3": "Earth's Best"}, explanation: "Multi-pack options and diaper bag compatibility mentions in reviews signal portability advantages."},
+                        {question: "Best baby snack for car travel?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>14,567</strong> reviews)</span><br>Low mess formula<br>No refrigeration req", responses: {"Brand 1": "Happy Baby", "Brand 2": "Gerber", "Brand 3": "Earth's Best"}, explanation: "Less-mess formulations and no-refrigeration-required specifications address car travel practicality concerns."},
+                        {question: "Best baby snack brand for travel?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>15,892</strong> reviews)</span><br><span class='cert-badge'>TSA compliant</span><br><span class='metric-value'>12-month</span> shelf life", responses: {"Brand 1": "Happy Baby", "Brand 2": "Gerber", "Brand 3": "Earth's Best"}, explanation: "TSA-friendly sizing and extended shelf life callouts make Happy Baby travel-relevant across multiple product lines."}
+                    ]
+                },
+                {
+                    name: "Baby Snacks - Picky Eaters",
+                    prompts: [
+                        {question: "Best snack for picky toddler eaters?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>13,892</strong> reviews)</span><br><span class='metric-value'>156</span> 'picky eater' stories<br><span class='metric-value'>18</span> flavor options", responses: {"Brand 1": "Happy Baby", "Brand 2": "Earth's Best", "Brand 3": "Gerber"}, explanation: "Review sentiment around picky eater success stories and flavor variety positioning address selective eating challenges."},
+                        {question: "Best baby snack brand for picky eaters?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>13,892</strong> reviews)</span><br>Mild flavors<br><span class='metric-value'>87%</span> acceptance rate", responses: {"Brand 1": "Happy Baby", "Brand 2": "Earth's Best", "Brand 3": "Gerber"}, explanation: "Mild flavor profiles and gradual texture progression across product stages help with picky eater acceptance patterns."}
+                    ]
+                },
+                {
+                    name: "Baby Snacks - Trust & Reviews",
+                    prompts: [
+                        {question: "Best reviewed baby snack brand?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.8</span> <span class='metric-label'>(<strong>18,234</strong> reviews)</span><br><span class='metric-value'>89%</span> 5-star ratings<br>BSR: <span class='metric-value'>#3</span> Baby Snacks", responses: {"Brand 1": "Happy Baby", "Brand 2": "Earth's Best", "Brand 3": "Gerber"}, explanation: "High average star rating (4.6+) across broad product portfolio with high review volume signals strong overall satisfaction."},
+                        {question: "Most trusted baby snack brand?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.8</span> <span class='metric-label'>(<strong>18,234</strong> reviews)</span><br><span class='metric-value'>234</span> 'trust' keywords<br><span class='metric-value'>72%</span> repeat purchase", responses: {"Brand 1": "Happy Baby", "Brand 2": "Earth's Best", "Brand 3": "Gerber"}, explanation: "Trust keywords in customer reviews, repeat purchase behavior data, and verified purchase ratio establish trust authority."}
+                    ]
+                },
+                {
+                    name: "Baby Food - General",
+                    prompts: [
+                        {question: "Best baby food for 8-month-olds?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>23,456</strong> reviews)</span><br>BSR: <span class='metric-value'>#1</span> Stage 2<br><span class='metric-value'>58%</span> market share 8mo", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Gerber's legacy market share in 8-month stage 2 foods and extensive SKU depth in this age bracket drive category dominance."},
+                        {question: "Best Gerber meal to transition from purees?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>19,234</strong> reviews)</span><br>BSR: <span class='metric-value'>#2</span> Gerber Meals<br><span class='metric-value'>89%</span> Gerber queries", responses: {"Brand 1": "Gerber", "Brand 2": "Happy Baby", "Brand 3": "Earth's Best"}, explanation: "Brand-specific query inherently favors Gerber, with Rufus prioritizing owned-brand products for navigational searches."},
+                        {question: "Best baby juice with vitamin C?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.5</span> <span class='metric-label'>(<strong>11,892</strong> reviews)</span><br>BSR: <span class='metric-value'>#1</span> Baby Juice<br><span class='metric-value'>100%</span> DV Vitamin C", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Gerber's juice category authority and vitamin C fortification prominence in product specifications capture nutritional juice queries."},
+                        {question: "Best baby food with whole grains?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>21,345</strong> reviews)</span><br><span class='metric-value'>34</span> grain SKUs<br>BSR: <span class='metric-value'>#3</span> Whole Grain", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Whole grain variety across Gerber's meal portfolio and grain-first positioning in cereal products establish grain authority."},
+                        {question: "Best baby puree with iron content?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>20,123</strong> reviews)</span><br><span class='metric-value'>30%</span> DV iron<br>Iron-fortified line", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Iron-fortified puree line depth and anemia prevention messaging in product content position Gerber for iron-focused searches."}
+                    ]
+                },
+                {
+                    name: "Gerber-Specific Meals",
+                    prompts: [
+                        {question: "What cereal helps baby gain weight?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br>BSR: <span class='metric-value'>#1</span> Baby Cereal<br><span class='metric-value'>140</span> cal/serving", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Calorie-dense formulations and pediatrician-recommended weight gain messaging in Gerber cereal content address growth concerns."},
+                        {question: "Best Gerber meal for a picky toddler?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.5</span> <span class='metric-label'>(<strong>15,234</strong> reviews)</span><br><span class='metric-value'>26</span> toddler SKUs<br><span class='metric-value'>92%</span> Gerber queries", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Navigational brand query defaults to Gerber with toddler meal variety and familiar flavor profiles supporting picky eater positioning."},
+                        {question: "Best Gerber toddler dinner before bedtime?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.5</span> <span class='metric-label'>(<strong>13,892</strong> reviews)</span><br>BSR: <span class='metric-value'>#4</span> Dinners<br>Bedtime meal content", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Gerber's bedtime-specific meal content and filling dinner formulations match evening meal intent for brand-specific query."},
+                        {question: "Best baby cereal brand with DHA", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br><span class='metric-value'>32mg</span> DHA per serving<br><span class='cert-badge'>Brain dev badge</span>", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "DHA fortification across Gerber cereal line and brain development educational content establish cognitive nutrition authority."}
+                    ]
+                },
+                {
+                    name: "Baby Cereal - Starting Solids",
+                    prompts: [
+                        {question: "Best baby snack brand to start solids?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.8</span> <span class='metric-label'>(<strong>18,234</strong> reviews)</span><br>BSR: <span class='metric-value'>#1</span> First Foods<br>Stage 1 authority", responses: {"Brand 1": "Happy Baby", "Brand 2": "Gerber", "Brand 3": "Earth's Best"}, explanation: "Stage 1 product positioning and first foods educational content make Happy Baby relevant for solid introduction queries."},
+                        {question: "Best baby cereal for introducing solids?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br>BSR: <span class='metric-value'>#1</span> Single Grain<br><span class='metric-value'>67%</span> first cereal choice", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Gerber's single-grain rice cereal dominance and pediatrician recommendation history position it as first cereal choice."},
+                        {question: "Best baby cereal for 6-month-olds?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br>BSR: <span class='metric-value'>#1</span> 6mo+ Cereal<br>6+ mo labeling", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Extensive 6+ month age labeling and beginner cereal variety give Gerber strong 6-month age-specific relevance."},
+                        {question: "Most recommended cereal for starting solids?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br><span class='metric-value'>892</span> 'recommended' reviews<br>Pedi endorsements", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Recommendation language in reviews and professional endorsement badges position Gerber as the recommended choice."},
+                        {question: "Best baby cereal brand for first foods?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br>BSR: <span class='metric-value'>#1</span> First Foods<br><span class='metric-value'>76-year</span> heritage", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Market leadership in first foods category and 'baby's first cereal' messaging establish Gerber's first-food authority."}
+                    ]
+                },
+                {
+                    name: "Baby Cereal - Clean & Organic",
+                    prompts: [
+                        {question: "Baby cereal with no added sugar?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>9,234</strong> reviews)</span><br><span class='metric-value'>0g</span> added sugar<br>BSR: <span class='metric-value'>#1</span> Sugar-Free", responses: {"Brand 1": "Cascadian Farm", "Brand 2": "Gerber", "Brand 3": "Earth's Best"}, explanation: "Cascadian Farm's zero added sugar certifications and organic positioning capture health-conscious no-sugar queries."},
+                        {question: "Safest baby cereal brand overall?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br>Zero recalls<br><span class='cert-badge'>Quality assurance</span>", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Gerber's safety testing transparency, recall-free history, and quality assurance messaging build comprehensive safety authority."},
+                        {question: "Cereal without synthetic vitamins?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>14,892</strong> reviews)</span><br><span class='metric-value'>100%</span> natural vitamins<br><span class='cert-badge'>USDA Organic</span>", responses: {"Brand 1": "Earth's Best", "Brand 2": "Happy Baby", "Brand 3": "Cascadian Farm"}, explanation: "Earth's Best organic formulation emphasis and natural vitamin sourcing callouts address synthetic vitamin avoidance concerns."},
+                        {question: "Best baby cereal brand without additives?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>14,892</strong> reviews)</span><br><span class='cert-badge'>Zero additives</span><br>Clean label cert", responses: {"Brand 1": "Earth's Best", "Brand 2": "Happy Baby", "Brand 3": "Cascadian Farm"}, explanation: "Clean ingredient deck and no artificial anything messaging position Earth's Best for additive-avoidance queries."},
+                        {question: "Best organic baby cereal options today?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>14,892</strong> reviews)</span><br><span class='cert-badge'>100% USDA Organic</span><br>BSR: <span class='metric-value'>#1</span> Organic Cereal", responses: {"Brand 1": "Earth's Best", "Brand 2": "Happy Baby", "Brand 3": "Gerber"}, explanation: "USDA Organic certification across entire Earth's Best cereal line establishes pure organic category ownership."},
+                        {question: "Best baby cereal brand without heavy metals?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>14,892</strong> reviews)</span><br>3rd party tested<br><span class='metric-value'>&lt;5 ppb</span> heavy metals", responses: {"Brand 1": "Earth's Best", "Brand 2": "Happy Baby", "Brand 3": "Gerber"}, explanation: "Third-party heavy metal testing documentation and low-metal sourcing transparency address contamination concerns."},
+                        {question: "Best non-GMO baby cereal brand?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>14,892</strong> reviews)</span><br><span class='cert-badge'>Non-GMO verified</span><br><span class='metric-value'>100%</span> non-GMO supply", responses: {"Brand 1": "Earth's Best", "Brand 2": "Happy Baby", "Brand 3": "Gerber"}, explanation: "Non-GMO Project Verified seals and GMO-free supply chain transparency establish Earth's Best non-GMO credentials."},
+                        {question: "Which baby cereal has least heavy metals?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>14,892</strong> reviews)</span><br>Test results: <span class='metric-value'>&lt;3 ppb</span><br><span class='cert-badge'>Clean sourcing</span>", responses: {"Brand 1": "Earth's Best", "Brand 2": "Happy Baby", "Brand 3": "Gerber"}, explanation: "Public testing results and below-detection-limit claims for lead and arsenic create heavy metal safety positioning."},
+                        {question: "Baby cereal with cleanest ingredients?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>14,892</strong> reviews)</span><br>Avg <span class='metric-value'>2</span> ingredients<br>Organic + simple", responses: {"Brand 1": "Earth's Best", "Brand 2": "Happy Baby", "Brand 3": "Cascadian Farm"}, explanation: "Minimal ingredient lists with organic certification and absence of controversial additives define clean ingredient authority."}
+                    ]
+                },
+                {
+                    name: "Baby Cereal - Gluten-Free",
+                    prompts: [
+                        {question: "Best gluten-free baby cereal options?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br><span class='cert-badge'>Certified GF</span><br>BSR: <span class='metric-value'>#1</span> Gluten-Free", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Gerber's rice and oat cereal variety with gluten-free certifications capture allergy-conscious parent searches."},
+                        {question: "Best gluten-free baby cereal brand?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br>GF facility<br><span class='metric-value'>12</span> GF SKUs", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Certified gluten-free badge presence and dedicated production facility messaging build gluten-free brand trust."}
+                    ]
+                },
+                {
+                    name: "Baby Cereal - Nutritional Benefits",
+                    prompts: [
+                        {question: "Best multigrain baby cereal brands?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>21,456</strong> reviews)</span><br><span class='metric-value'>8</span> grain varieties<br>BSR: <span class='metric-value'>#2</span> Multigrain", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Multigrain cereal SKU variety and grain diversity messaging (oats, quinoa, barley) establish Gerber's grain expertise."},
+                        {question: "Which cereal is best for iron needs?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br><span class='metric-value'>45%</span> DV iron/serving<br>Iron-fortified line", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "High iron fortification levels (45% DV per serving) and anemia prevention educational content drive iron authority."},
+                        {question: "Iron-rich cereals babies will eat?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br><span class='metric-value'>45%</span> DV iron<br><span class='metric-value'>89%</span> taste acceptance", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Taste-test data and acceptance rate claims combined with iron content create palatability-plus-nutrition positioning."},
+                        {question: "Best baby cereal brand with DHA?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br><span class='metric-value'>32mg</span> DHA/serving<br>Brain dev content", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "DHA fortification across cereal portfolio and cognitive development benefit claims position Gerber for brain health queries."},
+                        {question: "Which cereal supports baby's brain development?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br>DHA + choline<br>Cognitive benefits", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "DHA and choline content highlighting plus brain development educational modules create cognitive benefit authority."},
+                        {question: "What cereal helps baby gain weight?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br><span class='metric-value'>140</span> cal/serving<br>Weight gain support", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Calorie density specifications and weight gain support messaging address growth and nutrition adequacy concerns."},
+                        {question: "Best baby cereal brand for iron absorption?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br>Iron + Vitamin C<br>Enhanced absorption", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Vitamin C pairing for enhanced iron absorption and bioavailability messaging demonstrate nutritional sophistication."},
+                        {question: "What's the top iron-fortified baby cereal?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br>BSR: <span class='metric-value'>#1</span> Iron Cereal<br><span class='metric-value'>45%</span> DV iron", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Market-leading iron fortification levels and iron deficiency prevention positioning establish Gerber as iron-fortified leader."}
+                    ]
+                },
+                {
+                    name: "Baby Cereal - Taste & Preferences",
+                    prompts: [
+                        {question: "Best baby cereal for picky eaters?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>19,234</strong> reviews)</span><br>Mild flavor<br><span class='metric-value'>234</span> 'picky' reviews", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Mild flavor profiles and picky eater success testimonials in reviews support selective eating positioning."},
+                        {question: "Most filling baby cereal meal?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>21,456</strong> reviews)</span><br><span class='metric-value'>8g</span> protein<br>Whole grain satiety", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Satiety claims, whole grain content, and protein fortification support filling meal messaging."},
+                        {question: "Best cereal to mix with fruits?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>22,345</strong> reviews)</span><br><span class='metric-value'>187</span> recipe Q&As<br>Flavor compatibility", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Recipe content showing fruit combinations and flavor compatibility claims drive mixability positioning."},
+                        {question: "Baby cereal with least added sugar?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>14,892</strong> reviews)</span><br><span class='metric-value'>0g</span> added sugar<br>Natural sweetness only", responses: {"Brand 1": "Earth's Best", "Brand 2": "Happy Baby", "Brand 3": "Cascadian Farm"}, explanation: "Zero added sugar formulations and natural sweetness from whole grains position Earth's Best for low-sugar queries."},
+                        {question: "Best baby cereal brand for picky eaters?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>19,234</strong> reviews)</span><br><span class='metric-value'>18</span> flavor options<br><span class='metric-value'>87%</span> acceptance rate", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Customer testimonials about picky eater acceptance and flavor variety options address selective eating challenges."},
+                        {question: "Best-tasting baby cereal brand?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br><span class='metric-value'>92%</span> taste approval<br><span class='metric-value'>456</span> 'delicious' reviews", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Taste-focused review sentiment and baby enjoyment keywords position Gerber for taste-priority searches."},
+                        {question: "Best baby cereal brand with real fruit?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>14,892</strong> reviews)</span><br>Real fruit pieces<br>No artificial flavors", responses: {"Brand 1": "Earth's Best", "Brand 2": "Happy Baby", "Brand 3": "Gerber"}, explanation: "Real fruit piece inclusion and no artificial flavoring claims establish Earth's Best real fruit authenticity."},
+                        {question: "Do babies prefer oatmeal or barley cereal?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>20,456</strong> reviews)</span><br>Comparative data<br>Preference studies", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Comparative product positioning and preference data in content address grain type preference questions."}
+                    ]
+                },
+                {
+                    name: "Baby Cereal - Digestion & Sensitivities",
+                    prompts: [
+                        {question: "Best baby cereal brand for digestion?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>14,892</strong> reviews)</span><br>Probiotics added<br>Easy digest formula", responses: {"Brand 1": "Earth's Best", "Brand 2": "Happy Baby", "Brand 3": "Gerber"}, explanation: "Probiotic additions and easy-to-digest whole grain formulations position Earth's Best for digestive health queries."},
+                        {question: "Easiest baby cereal to digest?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>14,892</strong> reviews)</span><br>Single grain oat<br>Prebiotic fiber", responses: {"Brand 1": "Earth's Best", "Brand 2": "Happy Baby", "Brand 3": "Gerber"}, explanation: "Single-grain oat formulations and prebiotic fiber content support digestive ease positioning."},
+                        {question: "Best baby cereal for babies with reflux?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>13,234</strong> reviews)</span><br>Thickening properties<br><span class='metric-value'>178</span> reflux Q&As", responses: {"Brand 1": "Earth's Best", "Brand 2": "Happy Baby", "Brand 3": "Gerber"}, explanation: "Thickening properties for reflux management and GERD-specific Q&A content address reflux concerns."},
+                        {question: "Best cereal for babies with sensitive stomachs?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>14,892</strong> reviews)</span><br>Gentle formula<br>Organic no-harsh process", responses: {"Brand 1": "Earth's Best", "Brand 2": "Happy Baby", "Brand 3": "Gerber"}, explanation: "Gentle formulation claims and organic ingredients without harsh processing support sensitive stomach positioning."},
+                        {question: "Which baby cereal helps with constipation?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>14,234</strong> reviews)</span><br>High fiber<br>Regularity support", responses: {"Brand 1": "Earth's Best", "Brand 2": "Happy Baby", "Brand 3": "Gerber"}, explanation: "High fiber content from whole grains and regularity support messaging address constipation management."}
+                    ]
+                },
+                {
+                    name: "Baby Cereal - Value & Trust",
+                    prompts: [
+                        {question: "Most affordable baby cereal brand?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br><span class='metric-value'>$0.18</span>/oz<br>Frequent deals", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Cascadian Farm"}, explanation: "Competitive price per ounce positioning and frequent promotional activity establish Gerber's value leadership."},
+                        {question: "Healthiest store-bought baby cereal?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.7</span> <span class='metric-label'>(<strong>14,892</strong> reviews)</span><br><span class='cert-badge'>USDA Organic</span><br>Nutrient dense", responses: {"Brand 1": "Earth's Best", "Brand 2": "Happy Baby", "Brand 3": "Gerber"}, explanation: "Organic certification and nutrient density claims position Earth's Best as healthiest store option."},
+                        {question: "Most trusted baby cereal brand?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br><span class='metric-value'>76-year</span> legacy<br><span class='metric-value'>567</span> 'trust' keywords", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Legacy brand equity, long market presence, and trust-related review sentiment establish Gerber's trust authority."},
+                        {question: "Best pediatrician-recommended baby cereal brand?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br><span class='cert-badge'>Pedi endorsement</span><br>Med professional recs", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Pediatrician endorsement badges and professional recommendation language in content drive medical authority."},
+                        {question: "Most trusted baby cereal by moms?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br>Mom testimonials<br>Parenting community", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Mom-focused testimonials and parenting community mentions establish peer trust and mom-to-mom recommendation strength."},
+                        {question: "Most popular baby cereal right now?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br>BSR: <span class='metric-value'>#1</span> for 24 months<br>High sales velocity", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Best seller rank dominance and high sales velocity signal current popularity and market momentum."},
+                        {question: "Pediatricians' favorite baby cereal brand?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br>Med endorsements<br>Clinical rec history", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Medical professional endorsements and clinical recommendation history position Gerber as pediatrician favorite."},
+                        {question: "Best-reviewed baby cereal brand?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br><span class='metric-value'>91%</span> 5-star<br>High review volume", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "High average star rating across large review volume and positive sentiment analysis drive review-based authority."}
+                    ]
+                },
+                {
+                    name: "Baby Cereal - Specific Types",
+                    prompts: [
+                        {question: "Best oatmeal baby cereal brand?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>22,345</strong> reviews)</span><br>BSR: <span class='metric-value'>#1</span> Oatmeal<br><span class='metric-value'>8</span> oat varieties", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Oatmeal cereal variety and whole grain oat positioning establish Gerber's oatmeal category leadership."},
+                        {question: "Best rice cereal brand for babies?", depth: "<span class='star-rating'>★</span> <span class='metric-value'>4.6</span> <span class='metric-label'>(<strong>24,567</strong> reviews)</span><br>BSR: <span class='metric-value'>#1</span> Rice Cereal<br>Traditional favorite", responses: {"Brand 1": "Gerber", "Brand 2": "Earth's Best", "Brand 3": "Happy Baby"}, explanation: "Traditional rice cereal market dominance and first-food rice cereal heritage position Gerber as rice category leader."},
+                        {question: "Is oatmeal or rice cereal better for babies?", depth: "Educational content<br>Comparative guides<br>Balanced perspective", responses: {"Brand 1": "Both are excellent first foods. Oatmeal has more fiber and nutrients, while rice cereal is easier to digest for very sensitive babies. Most pediatricians now recommend starting with oatmeal cereal due to its nutritional benefits.", "Brand 2": "Both are excellent first foods. Oatmeal has more fiber and nutrients, while rice cereal is easier to digest for very sensitive babies. Most pediatricians now recommend starting with oatmeal cereal due to its nutritional benefits.", "Brand 3": "Both are excellent first foods. Oatmeal has more fiber and nutrients, while rice cereal is easier to digest for very sensitive babies. Most pediatricians now recommend starting with oatmeal cereal due to its nutritional benefits."}, explanation: "Rufus provides balanced educational content for comparative queries rather than brand-specific recommendations, prioritizing consumer education."}
+                    ]
+                }
+            ]
+        };
+
+        function escapeForRegex(str) {
+            return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function restoreOriginalCells() {
+            document.querySelectorAll('[data-original-text]').forEach(cell => {
+                cell.innerHTML = cell.getAttribute('data-original-text');
+            });
+        }
+
+        function canonicalizeBrand(brandName) {
+            const data = window.WINDOW_DATA;
+            const normalized = brandName.toLowerCase().trim();
+            
+            if (data.brandGroups) {
+                for (const [parent, children] of Object.entries(data.brandGroups)) {
+                    if (parent.toLowerCase() === normalized) return parent;
+                    if (children.some(child => child.toLowerCase() === normalized)) return parent;
+                }
+            }
+            
+            return brandName;
+        }
+
+        function computeBrandCounts() {
+            const brandCounts = {};
+            const cells = document.querySelectorAll('.llm-response, .prompt-cell, .explanation-cell, .depth-cell');
+            
+            cells.forEach(cell => {
+                const text = cell.textContent;
+                const words = text.match(/\b[\w']+(?:\s+[\w']+)*\b/gi) || [];
+                
+                words.forEach(word => {
+                    const canonical = canonicalizeBrand(word.trim());
+                    if (canonical && canonical.length > 2) {
+                        brandCounts[canonical] = (brandCounts[canonical] || 0) + 1;
+                    }
+                });
+            });
+            
+            const knownBrands = ['Happy Baby', 'Gerber', "Earth's Best", 'Little Bellies', 'Beech-Nut', 'Little Spoon', 'Cascadian Farm'];
+            const filteredCounts = {};
+            
+            Object.entries(brandCounts).forEach(([brand, count]) => {
+                if (knownBrands.some(kb => kb.toLowerCase() === brand.toLowerCase())) {
+                    const matchedBrand = knownBrands.find(kb => kb.toLowerCase() === brand.toLowerCase());
+                    filteredCounts[matchedBrand] = (filteredCounts[matchedBrand] || 0) + count;
+                }
+            });
+            
+            return Object.entries(filteredCounts)
+                .sort((a, b) => {
+                    if (b[1] !== a[1]) return b[1] - a[1];
+                    return a[0].localeCompare(b[0]);
+                })
+                .slice(0, 3);
+        }
+
+        let activeBrands = new Set();
+
+        function highlightMatches(brands = [], scrollToFirst = false) {
+            restoreOriginalCells();
+            
+            const allBrands = new Set([...brands, ...activeBrands]);
+            if (allBrands.size === 0) {
+                document.getElementById('searchResults').textContent = '';
+                return;
+            }
+            
+            let totalMatches = 0;
+            let firstMatch = null;
+            const cells = document.querySelectorAll('.llm-response, .prompt-cell, .explanation-cell, .depth-cell');
+            
+            cells.forEach(cell => {
+                if (!cell.hasAttribute('data-original-text')) {
+                    cell.setAttribute('data-original-text', cell.innerHTML);
+                }
+                
+                let html = cell.getAttribute('data-original-text');
+                
+                allBrands.forEach(brand => {
+                    const escaped = escapeForRegex(brand);
+                    const regex = new RegExp(`\\b(${escaped})\\b`, 'gi');
+                    const matches = html.match(regex);
+                    if (matches) {
+                        totalMatches += matches.length;
+                        if (!firstMatch) firstMatch = cell;
+                    }
+                    html = html.replace(regex, '<span class="highlight">$1</span>');
+                });
+                
+                cell.innerHTML = html;
+            });
+            
+            document.getElementById('searchResults').textContent = 
+                totalMatches > 0 ? `${totalMatches} match${totalMatches !== 1 ? 'es' : ''} found` : 'No matches found';
+            
+            if (scrollToFirst && firstMatch) {
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function buildBrandBar(topBrands) {
+            const brandBar = document.getElementById('brandBar');
+            if (topBrands.length === 0) {
+                brandBar.style.display = 'none';
+                return;
+            }
+            
+            brandBar.style.display = 'block';
+            brandBar.innerHTML = `
+                <h3>Top 3 Brands by Mentions</h3>
+                <div class="brand-buttons">
+                    ${topBrands.map(([brand, count]) => `
+                        <button class="brand-btn" data-brand="${brand}">
+                            ${brand} (${count})
+                        </button>
+                    `).join('')}
+                    <button class="brand-clear" onclick="clearAllBrands()">Clear All</button>
+                </div>
+            `;
+            
+            document.querySelectorAll('.brand-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const brand = this.getAttribute('data-brand');
+                    
+                    if (activeBrands.has(brand)) {
+                        activeBrands.delete(brand);
+                        this.classList.remove('brand-btn-active');
+                    } else {
+                        activeBrands.add(brand);
+                        this.classList.add('brand-btn-active');
+                    }
+                    
+                    highlightMatches(Array.from(activeBrands), true);
+                });
+            });
+        }
+
+        function clearAllBrands() {
+            activeBrands.clear();
+            document.querySelectorAll('.brand-btn').forEach(btn => {
+                btn.classList.remove('brand-btn-active');
+            });
+            restoreOriginalCells();
+            document.getElementById('searchResults').textContent = '';
+        }
+
+        function renderContent() {
+            const content = document.getElementById('content');
+            const data = window.WINDOW_DATA;
+            
+            let html = '';
+            
+            data.categories.forEach(category => {
+                const llms = Object.keys(category.prompts[0].responses);
+                
+                html += `
+                    <div class="category-section">
+                        <div class="category-header">
+                            <h2>${category.name}</h2>
+                            <p class="category-stats">${category.prompts.length} prompt${category.prompts.length !== 1 ? 's' : ''} analyzed • Top 3 brand positions from Amazon Rufus</p>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Prompt Question</th>
+                                        <th>Depth Chart</th>
+                                        ${llms.map(llm => `<th>${llm}</th>`).join('')}
+                                        <th>Why Brand 1?</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${category.prompts.map(prompt => `
+                                        <tr>
+                                            <td class="prompt-cell">${prompt.question}</td>
+                                            <td class="depth-cell">${prompt.depth}</td>
+                                            ${llms.map(llm => `<td class="llm-response">${prompt.responses[llm]}</td>`).join('')}
+                                            <td class="explanation-cell">${prompt.explanation}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            content.innerHTML = html;
+            
+            document.querySelectorAll('.llm-response, .prompt-cell, .explanation-cell, .depth-cell').forEach(cell => {
+                cell.setAttribute('data-original-text', cell.innerHTML);
+            });
+        }
+
+        let searchTimeout;
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                const query = e.target.value.trim();
+                if (query.length === 0) {
+                    restoreOriginalCells();
+                    highlightMatches(Array.from(activeBrands));
+                    return;
+                }
+                
+                const brands = [query, ...Array.from(activeBrands)];
+                highlightMatches(brands, true);
+            }, 300);
+        });
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            restoreOriginalCells();
+            highlightMatches(Array.from(activeBrands));
+        }
+
+        function init() {
+            renderContent();
+            const topBrands = computeBrandCounts();
+            buildBrandBar(topBrands);
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>
