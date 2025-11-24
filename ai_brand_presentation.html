@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Models on Great Brands</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 80px 60px;
+        }
+
+        section {
+            margin-bottom: 120px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        section:nth-child(1) { animation-delay: 0.1s; }
+        section:nth-child(2) { animation-delay: 0.2s; }
+        section:nth-child(3) { animation-delay: 0.3s; }
+        section:nth-child(4) { animation-delay: 0.4s; }
+        section:nth-child(5) { animation-delay: 0.5s; }
+        section:nth-child(6) { animation-delay: 0.6s; }
+        section:nth-child(7) { animation-delay: 0.7s; }
+        section:nth-child(8) { animation-delay: 0.8s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 64px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 42px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 40px;
+            letter-spacing: -0.5px;
+        }
+
+        h3 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.7;
+            color: #ffffff;
+            margin-bottom: 16px;
+        }
+
+        .subtitle {
+            font-size: 24px;
+            color: #ffffff;
+            opacity: 0.8;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            margin: 60px 0 80px 0;
+        }
+
+        .stat-number {
+            font-size: 72px;
+            font-weight: 700;
+            color: #00d4ff;
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+
+        .stat-label {
+            font-size: 18px;
+            color: #ffffff;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: #00d4ff;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .accent {
+            color: #00d4ff;
+        }
+
+        .positive {
+            color: #4ecdc4;
+        }
+
+        .neutral {
+            color: #ffd93d;
+        }
+
+        .negative {
+            color: #ff6b6b;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background: rgba(0, 212, 255, 0.15);
+            color: #00d4ff;
+            font-weight: 700;
+            padding: 20px 16px;
+            text-align: left;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+            font-size: 15px;
+        }
+
+        td {
+            padding: 18px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            vertical-align: top;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .model-name {
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 15px;
+        }
+
+        .bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-top: 30px;
+        }
+
+        .bar-item {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .bar-label {
+            width: 240px;
+            font-size: 16px;
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .bar-visual {
+            flex: 1;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #4ecdc4);
+            transition: width 1.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 16px;
+        }
+
+        .bar-value {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .highlight-box {
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 4px solid #00d4ff;
+            padding: 30px;
+            margin: 30px 0;
+            font-style: italic;
+            border-radius: 4px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 40px;
+        }
+
+        ul, ol {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        ul li:before {
+            content: "•";
+            color: #00d4ff;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 18px;
+        }
+
+        ol {
+            counter-reset: item;
+        }
+
+        ol li {
+            counter-increment: item;
+        }
+
+        ol li:before {
+            content: counter(item) ".";
+            color: #00d4ff;
+            font-weight: 700;
+            position: absolute;
+            left: 0;
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
+            margin: 80px 0;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        @media (max-width: 1200px) {
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 48px;
+            }
+            
+            h2 {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <section>
+            <h1>AI Models on Great Brands</h1>
+            <p class="subtitle">Comparative Analysis of How Answer Engines Define Brand Excellence: Powered by BrandRank</p>
+            <div class="hero-stats">
+                <div class="text-center">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">AI Models Analyzed</div>
+                </div>
+                <div class="text-center">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Trust Consensus</div>
+                </div>
+                <div class="text-center">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Consistency Consensus</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comprehensive Comparison Table -->
+        <section>
+            <h2>Prompt: "What Makes a Great Brand"</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 10%;">Model</th>
+                            <th style="width: 22%;">Brand Definition</th>
+                            <th style="width: 20%;">Top 5 Attributes</th>
+                            <th style="width: 20%;">Evaluation Sources</th>
+                            <th style="width: 28%;">Importance of Website as Source</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="model-name">ChatGPT</span></td>
+                            <td>Consistently delivers distinctive value, earns deep trust, communicates clearly, behaves ethically, adapts intelligently</td>
+                            <td>
+                                <ol>
+                                    <li>Trust & Credibility</li>
+                                    <li>Product Quality</li>
+                                    <li>Consistency</li>
+                                    <li>Distinctiveness</li>
+                                    <li>Transparency</li>
+                                </ol>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Third-party rankings</li>
+                                    <li>News & analysis</li>
+                                    <li>Official docs</li>
+                                    <li>Consumer feedback</li>
+                                    <li>Technical signals</li>
+                                </ul>
+                            </td>
+                            <td>Primary authoritative source for facts, structured data, messaging, SEO, trust cues</td>
+                        </tr>
+                        <tr>
+                            <td><span class="model-name">Gemini</span></td>
+                            <td>Consistently delivers clear promise, earning deep resilient trust, creating genuine emotional connection with community</td>
+                            <td>
+                                <ol>
+                                    <li>Trust & Transparency</li>
+                                    <li>Product Excellence</li>
+                                    <li>Answer Economy Leadership</li>
+                                    <li>Consistency</li>
+                                    <li>Brand Community</li>
+                                </ol>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Consumer satisfaction data</li>
+                                    <li>Financial & ESG reports</li>
+                                    <li>News outlets</li>
+                                    <li>Search & AI analysis</li>
+                                    <li>Academic research</li>
+                                </ul>
+                            </td>
+                            <td>Single source of truth, foundational hub, provides canonical information for AI and consumers</td>
+                        </tr>
+                        <tr>
+                            <td><span class="model-name">Claude</span></td>
+                            <td>Consistently delivers on promises, earns trust through transparency, creates measurable value, maintains accuracy across touchpoints</td>
+                            <td>
+                                <ol>
+                                    <li>Trustworthiness</li>
+                                    <li>Transparency</li>
+                                    <li>Product Excellence</li>
+                                    <li>AI Answer Accuracy</li>
+                                    <li>Sustainability Credibility</li>
+                                </ol>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>AI engine outputs</li>
+                                    <li>Third-party certifications</li>
+                                    <li>Consumer trust indices</li>
+                                    <li>Satisfaction metrics</li>
+                                    <li>Regulatory filings</li>
+                                </ul>
+                            </td>
+                            <td>Critical for AI training and structured data, but requires third-party verification to validate claims</td>
+                        </tr>
+                        <tr>
+                            <td><span class="model-name">DeepSeek</span></td>
+                            <td>Consistently delivers on promise, creating authentic value and trust that resonates emotionally and functionally with audience</td>
+                            <td>
+                                <ol>
+                                    <li>Trustworthiness & Consistency</li>
+                                    <li>Product Excellence</li>
+                                    <li>Clear Value Proposition</li>
+                                    <li>Customer Experience</li>
+                                    <li>Authentic Purpose</li>
+                                </ol>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Consumer sentiment aggregators</li>
+                                    <li>Brand equity studies</li>
+                                    <li>Financial performance</li>
+                                    <li>AI cross-engine analysis</li>
+                                    <li>Sustainability reporting</li>
+                                </ul>
+                            </td>
+                            <td>Primary source of truth for AI, defining digital identity, authority, and accuracy across ecosystems</td>
+                        </tr>
+                        <tr>
+                            <td><span class="model-name">Llama</span></td>
+                            <td>Consistently delivers high-quality products, fosters trust, engages customers through authenticity and meaningful experiences always</td>
+                            <td>
+                                <ol>
+                                    <li>Trust & Authenticity</li>
+                                    <li>Product Quality</li>
+                                    <li>Customer Engagement</li>
+                                    <li>Sustainability</li>
+                                    <li>Innovation & Adaptability</li>
+                                </ol>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Consumer reviews</li>
+                                    <li>Sustainability reports</li>
+                                    <li>Brand transparency</li>
+                                    <li>Quality metrics</li>
+                                    <li>Social media engagement</li>
+                                </ul>
+                            </td>
+                            <td>Crucial source providing first-party data, transparency, and direct insight into brand identity</td>
+                        </tr>
+                        <tr>
+                            <td><span class="model-name">Perplexity</span></td>
+                            <td>Authentic, consistent, customer-focused, innovative, trustworthy, building emotional connections and lasting loyalty through clear values</td>
+                            <td>
+                                <ol>
+                                    <li>Authenticity</li>
+                                    <li>Consistency</li>
+                                    <li>Customer-Centricity</li>
+                                    <li>Trustworthiness</li>
+                                    <li>Innovation</li>
+                                </ol>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Nine Blaess</li>
+                                    <li>Branding Strategy Insider</li>
+                                    <li>Moburst</li>
+                                    <li>Anpar Research</li>
+                                    <li>Ramotion Agency</li>
+                                </ul>
+                            </td>
+                            <td>Central hub for credibility, visibility, customer engagement, brand consistency, and direct communication, shaping how audiences perceive and interact with the business</td>
+                        </tr>
+                        <tr>
+                            <td><span class="model-name">Grok</span></td>
+                            <td>Builds emotional connections, delivers consistent value, innovates boldly, stands uniquely, fosters unwavering trust and loyalty</td>
+                            <td>
+                                <ol>
+                                    <li>Authenticity & Consistency</li>
+                                    <li>Uniqueness</li>
+                                    <li>Emotional Connection</li>
+                                    <li>Innovation & Adaptability</li>
+                                    <li>Trust & Reliability</li>
+                                </ol>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Forbes articles</li>
+                                    <li>Marketing blogs</li>
+                                    <li>Adobe insights</li>
+                                    <li>Alchemer resources</li>
+                                    <li>Brafton guides</li>
+                                </ul>
+                            </td>
+                            <td>The single owned source of truth—controls the full narrative, experience, credibility, and data, making it critically important</td>
+                        </tr>
+                        <tr>
+                            <td><span class="model-name">Copilot</span></td>
+                            <td>Delivers consistent value, builds emotional trust, communicates clearly, adapts to change, and inspires lasting loyalty worldwide</td>
+                            <td>
+                                <ol>
+                                    <li>Trust & Credibility</li>
+                                    <li>Consistency</li>
+                                    <li>Emotional Connection</li>
+                                    <li>Differentiation</li>
+                                    <li>Adaptability</li>
+                                </ol>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Customer reviews & sentiment</li>
+                                    <li>Market research reports</li>
+                                    <li>Financial performance data</li>
+                                    <li>Brand rankings & indexes</li>
+                                    <li>Media & cultural impact</li>
+                                </ul>
+                            </td>
+                            <td>Vital for centralizing authentic messaging, showcasing products, building trust, driving engagement, ensuring consistency, and reflecting evolving identity</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Universal Truth -->
+        <section>
+            <h2>Universal Truths: Trust and Consistency</h2>
+            <div class="grid-2">
+                <div>
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label" style="font-size: 24px; margin-bottom: 40px;">Consensus on Trust & Consistency</div>
+                    <p style="font-size: 20px; line-height: 1.8;">All 8 AI models ranked both <span class="accent">trust</span> and <span class="accent">consistency</span> in their top 5 attributes, making them the only factors with complete unanimous agreement.</p>
+                    <div class="highlight-box">
+                        <p style="font-size: 19px;">Trust is the foundation upon which all brand equity is built. Consistency reinforces that trust across every touchpoint, ensuring reliable experiences that strengthen recognition and loyalty.</p>
+                    </div>
+                </div>
+                <div>
+                    <div class="bar-chart">
+                        <div class="bar-item">
+                            <div class="bar-label">Trust / Trustworthiness</div>
+                            <div class="bar-visual">
+                                <div class="bar-fill" style="width: 100%;">
+                                    <span class="bar-value">8/8</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-label">Consistency</div>
+                            <div class="bar-visual">
+                                <div class="bar-fill" style="width: 100%;">
+                                    <span class="bar-value">8/8</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-label">Product Excellence / Quality</div>
+                            <div class="bar-visual">
+                                <div class="bar-fill" style="width: 63%;">
+                                    <span class="bar-value">5/8</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-label">Authenticity</div>
+                            <div class="bar-visual">
+                                <div class="bar-fill" style="width: 50%;">
+                                    <span class="bar-value">4/8</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-label">Emotional Connection</div>
+                            <div class="bar-visual">
+                                <div class="bar-fill" style="width: 38%;">
+                                    <span class="bar-value">3/8</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-label">Innovation / Adaptability</div>
+                            <div class="bar-visual">
+                                <div class="bar-fill" style="width: 50%;">
+                                    <span class="bar-value">4/8</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- AI Generation Gap -->
+        <section>
+            <h2>The AI Generation Gap</h2>
+            <p class="subtitle" style="margin-bottom: 50px;">New Criteria That Did Not Exist in Traditional Brand Evaluation</p>
+            <div class="grid-2">
+                <div class="card">
+                    <h3><span class="accent">AI Answer Accuracy</span></h3>
+                    <p style="margin-bottom: 24px; opacity: 0.9; font-size: 16px;">Introduced by Claude</p>
+                    <p style="font-size: 19px; line-height: 1.8;">How correctly your brand is represented in AI responses across multiple platforms and queries.</p>
+                    <div class="highlight-box" style="margin-top: 30px;">
+                        <p style="font-size: 17px;">Critical for AI training and structured data, but requires third-party verification to validate claims.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3><span class="accent">Answer Economy Leadership</span></h3>
+                    <p style="margin-bottom: 24px; opacity: 0.9; font-size: 16px;">Introduced by Gemini</p>
+                    <p style="font-size: 19px; line-height: 1.8;">Visibility and authority in AI-generated results, becoming the source of truth in answer engines.</p>
+                    <div class="highlight-box" style="margin-top: 30px;">
+                        <p style="font-size: 17px;">Single source of truth, foundational hub, provides canonical information for AI and consumers.</p>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 50px; padding: 40px; background: rgba(0, 212, 255, 0.08); border-radius: 8px; text-align: center; border: 1px solid rgba(0, 212, 255, 0.2);">
+                <p style="font-size: 22px; line-height: 1.7;">These represent a fundamental shift in how brands must manage their reputation and visibility in an AI-mediated world.</p>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Verification Paradox -->
+        <section>
+            <h2>The Verification Paradox</h2>
+            <p class="subtitle" style="margin-bottom: 50px;">Websites Are Critical But Insufficient</p>
+            <div class="card" style="padding: 50px;">
+                <p style="font-size: 24px; line-height: 1.8; margin-bottom: 40px;">Claude uniquely emphasized that brand websites are <span class="accent">critical but insufficient</span> on their own.</p>
+                <div class="highlight-box">
+                    <p style="font-size: 20px; line-height: 1.7;">Brand website provides the framework, third-party sources provide validation. Both are essential—website for depth and structure, external sources for credibility and truth-testing.</p>
+                </div>
+                <p style="font-size: 18px; margin-top: 40px; opacity: 0.9; line-height: 1.8;">This reflects a post-hallucination era where AI models are learning to distrust single-source information and require corroboration from multiple authoritative sources.</p>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Source Sophistication -->
+        <section>
+            <h2>Source Sophistication Hierarchy</h2>
+            <div style="display: flex; flex-direction: column; gap: 30px;">
+                <div class="card">
+                    <h3><span class="positive">Most Advanced:</span> Claude & DeepSeek</h3>
+                    <p style="font-size: 18px; line-height: 1.8;">Evaluate AI engines themselves, treating cross-engine consistency as a validation source. Meta-level evaluation of how brands appear across multiple AI platforms.</p>
+                </div>
+                <div class="card">
+                    <h3><span class="neutral">Traditional:</span> ChatGPT, Gemini, Llama</h3>
+                    <p style="font-size: 18px; line-height: 1.8;">Focus on established sources including third-party rankings, consumer reviews, financial reports, news outlets, and regulatory filings.</p>
+                </div>
+                <div class="card">
+                    <h3><span class="accent">Citation-Based:</span> Perplexity & Grok</h3>
+                    <p style="font-size: 18px; line-height: 1.8;">Cite specific articles and publications rather than source categories, providing granular attribution to individual pieces of content.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Consistency Phenomenon -->
+        <section>
+            <h2>The Consistency Phenomenon</h2>
+            <div class="grid-2">
+                <div>
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label" style="font-size: 24px; margin-bottom: 40px;">Models Prioritizing Consistency</div>
+                    <p style="font-size: 20px; line-height: 1.8; margin-bottom: 30px;">All eight models ranked <span class="accent">consistency</span> in their top 5 attributes—achieving complete consensus alongside trust.</p>
+                    <p style="font-size: 18px; margin-bottom: 20px; font-weight: 600;">All models emphasizing consistency:</p>
+                    <ul style="font-size: 17px; line-height: 2.2;">
+                        <li>ChatGPT</li>
+                        <li>Gemini</li>
+                        <li>Claude</li>
+                        <li>DeepSeek</li>
+                        <li>Llama</li>
+                        <li>Perplexity</li>
+                        <li>Grok</li>
+                        <li>Copilot</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 style="margin-bottom: 30px;">Why Consistency Matters</h3>
+                    <p style="font-size: 18px; line-height: 1.8; margin-bottom: 30px;">In an omnichannel world, brands must maintain coherent experiences across:</p>
+                    <ul style="font-size: 17px; line-height: 2.2;">
+                        <li>Brand websites</li>
+                        <li>Social media platforms</li>
+                        <li>Retail environments</li>
+                        <li>AI-generated responses</li>
+                        <li>Physical locations</li>
+                        <li>Customer service interactions</li>
+                    </ul>
+                    <p style="font-size: 19px; line-height: 1.8; margin-top: 30px; color: #00d4ff; font-weight: 600;">Inconsistency equals trust erosion.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Sustainability Split -->
+        <section>
+            <h2>The Sustainability Split</h2>
+            <p class="subtitle" style="margin-bottom: 50px;">Important But Not Yet Universal</p>
+            <div class="grid-2">
+                <div>
+                    <div class="card" style="margin-bottom: 40px;">
+                        <h3>Models Prioritizing Sustainability</h3>
+                        <p style="margin-bottom: 24px; font-size: 18px;">Only <span class="accent">3 of 7 models</span> explicitly mentioned sustainability or ethics in their top 5 attributes:</p>
+                        <ul style="font-size: 17px; line-height: 2.2;">
+                            <li><strong>Claude:</strong> Sustainability Credibility (Position 5)</li>
+                            <li><strong>Llama:</strong> Sustainability & Social Responsibility (Position 4)</li>
+                            <li><strong>ChatGPT:</strong> Transparency & Responsibility (Position 5)</li>
+                        </ul>
+                    </div>
+                    <div class="text-center">
+                        <div class="stat-number" style="font-size: 96px;">43%</div>
+                        <div class="stat-label" style="font-size: 20px;">Include Sustainability in Top 5</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>The Interpretation</h3>
+                    <p style="font-size: 18px; line-height: 1.8; margin-bottom: 30px;">This suggests sustainability and ethical practices remain <span class="accent">important but not yet universally prioritized</span> at the highest level of brand evaluation.</p>
+                    <p style="font-size: 18px; line-height: 1.8; margin-bottom: 30px;">The split indicates a transition period where some AI models are incorporating ESG factors into core brand assessment while others still focus primarily on traditional business fundamentals.</p>
+                    <p style="font-size: 18px; line-height: 1.8;">Expect this percentage to increase as consumer demand and regulatory requirements for sustainability transparency continue to grow.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- The New Brand Equation -->
+        <section>
+            <h2 class="text-center">The New Brand Equation</h2>
+            <div style="display: flex; flex-direction: column; align-items: center; margin: 60px 0;">
+                <div style="display: flex; align-items: center; gap: 60px; margin-bottom: 80px;">
+                    <div class="text-center">
+                        <div class="stat-number" style="color: #4ecdc4; font-size: 84px;">Trust</div>
+                        <div class="stat-label" style="font-size: 18px;">The universal foundation<br>100% consensus</div>
+                    </div>
+                    <div style="font-size: 72px; color: #00d4ff; font-weight: 700;">+</div>
+                    <div class="text-center">
+                        <div class="stat-number" style="font-size: 84px;">AI Accuracy</div>
+                        <div class="stat-label" style="font-size: 18px;">The emerging imperative<br>29% now, rising fast</div>
+                    </div>
+                </div>
+                <div class="card" style="max-width: 1000px; padding: 50px;">
+                    <p style="font-size: 22px; line-height: 1.8; text-align: center;">Great brands in 2025 must excel at <span class="positive">traditional virtues</span> like trust, quality, and consistency while simultaneously mastering the <span class="accent">new frontier</span> of how they are represented in AI-mediated interactions.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Executive Summary -->
+        <section>
+            <h2 class="text-center">Executive Summary</h2>
+            <div class="grid-3">
+                <div class="card text-center">
+                    <h3>Universal Foundation</h3>
+                    <div class="stat-number" style="font-size: 56px; margin: 30px 0;">100%</div>
+                    <p style="font-size: 17px; line-height: 1.7;">Trust is the only attribute with complete consensus across all AI models. It remains the immovable foundation of brand excellence.</p>
+                </div>
+                <div class="card text-center">
+                    <h3>Emerging Imperative</h3>
+                    <div class="stat-number" style="font-size: 56px; margin: 30px 0;">25%</div>
+                    <p style="font-size: 17px; line-height: 1.7;">AI Answer Accuracy and Answer Economy Leadership represent entirely new evaluation criteria that will only grow in importance.</p>
+                </div>
+                <div class="card text-center">
+                    <h3>Consistency Matters</h3>
+                    <div class="stat-number" style="font-size: 56px; margin: 30px 0;">100%</div>
+                    <p style="font-size: 17px; line-height: 1.7;">All eight models now emphasize consistency across touchpoints as critical for maintaining brand integrity in an omnichannel world.</p>
+                </div>
+            </div>
+            <div style="margin-top: 60px; padding: 50px; background: rgba(0, 212, 255, 0.08); border-radius: 8px; border-left: 4px solid #00d4ff;">
+                <p style="font-size: 22px; line-height: 1.8; text-align: center;">The future of brand management requires mastering both established principles and emerging AI-driven evaluation frameworks.</p>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- About BrandRank -->
+        <section>
+            <h2 class="text-center">About BrandRank</h2>
+            <div class="card" style="padding: 60px; text-align: center; background: rgba(0, 212, 255, 0.05); border: 2px solid rgba(0, 212, 255, 0.2);">
+                <p style="font-size: 22px; line-height: 1.9; margin-bottom: 40px;">BrandRank works with over <span class="accent">60 global brands</span> to strengthen trust and purchase intent by uncovering vulnerabilities, purchase-driving insights, and growth opportunities across AI answer engines.</p>
+                <p style="font-size: 20px; line-height: 1.9; margin-bottom: 40px;">As a SaaS platform, we track all major answer engines to improve visibility, ensure content is AI-ready, and rigorously measure brand claims and instructional accuracy.</p>
+                <div style="margin-top: 50px; display: flex; justify-content: center; gap: 80px;">
+                    <div>
+                        <div class="stat-number" style="font-size: 64px;">60+</div>
+                        <div class="stat-label" style="font-size: 18px;">Global Brands</div>
+                    </div>
+                    <div>
+                        <div class="stat-number" style="font-size: 64px;">8</div>
+                        <div class="stat-label" style="font-size: 18px;">AI Engines Tracked</div>
+                    </div>
+                    <div>
+                        <div class="stat-number" style="font-size: 64px;">3</div>
+                        <div class="stat-label" style="font-size: 18px;">Core Metrics</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
