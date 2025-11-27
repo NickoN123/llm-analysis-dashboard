@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2025 Answer Awards</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#0a0e1a 0%,#1a1f35 100%);min-height:100vh;color:#fff;padding:24px}
+.container{max-width:1700px;margin:0 auto}
+h1{font-size:2.2rem;font-weight:700;color:#fff;margin-bottom:4px;letter-spacing:-0.5px;text-align:center}
+.subtitle{color:rgba(255,255,255,0.7);font-size:0.95rem;margin-bottom:20px;text-align:center}
+.accent{color:#00d4ff}
+.summary{color:rgba(255,255,255,0.8);font-size:0.85rem;line-height:1.6;max-width:1100px;margin-bottom:20px;padding:16px 20px;background:rgba(255,255,255,0.03);border-left:3px solid #00d4ff;border-radius:0 8px 8px 0}
+.brand-filters{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.filter-label{color:rgba(255,255,255,0.6);font-size:0.8rem;margin-right:4px}
+.filter-btn{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:6px 14px;border-radius:20px;font-size:0.75rem;cursor:pointer;transition:all 0.2s;font-family:'Segoe UI',sans-serif}
+.filter-btn:hover{background:rgba(0,212,255,0.2);border-color:#00d4ff}
+.filter-btn.active{background:#00d4ff;color:#0a0e1a;border-color:#00d4ff;font-weight:600}
+.clear-btn{background:rgba(255,107,107,0.15);border-color:rgba(255,107,107,0.3)}
+.clear-btn:hover{background:rgba(255,107,107,0.3);border-color:#ff6b6b}
+.brand.highlighted{background:#00d4ff;color:#0a0e1a;font-weight:600;box-shadow:0 0 12px rgba(0,212,255,0.5)}
+.brand.dimmed{opacity:0.3}
+.table-wrapper{overflow-x:auto;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1)}
+table{width:100%;border-collapse:collapse;font-size:0.72rem}
+th{background:rgba(255,255,255,0.08);color:#fff;font-weight:600;padding:10px 6px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.15);position:sticky;top:0}
+th:first-child{min-width:180px}
+th.consensus-col{min-width:100px;text-align:center;background:rgba(0,212,255,0.15)}
+th:not(:first-child):not(.consensus-col){min-width:85px;text-align:center}
+td{padding:8px 6px;border-bottom:1px solid rgba(255,255,255,0.06);vertical-align:middle}
+td:first-child{font-weight:500;color:rgba(255,255,255,0.9)}
+td:not(:first-child){text-align:center}
+td.consensus-cell{background:rgba(0,212,255,0.05)}
+tr:hover{background:rgba(0,212,255,0.05)}
+.brand{display:inline-block;padding:3px 6px;border-radius:4px;background:rgba(255,255,255,0.08);cursor:pointer;transition:all 0.2s ease;font-size:0.68rem}
+.brand:hover{background:#00d4ff;color:#0a0e1a;transform:scale(1.05)}
+.consensus-brand{background:rgba(0,212,255,0.25);color:#fff;font-weight:600;border:1px solid rgba(0,212,255,0.4)}
+.consensus-brand:hover{background:#00d4ff;color:#0a0e1a}
+.no-consensus{color:rgba(255,255,255,0.35);font-style:italic;font-size:0.65rem}
+.tooltip{position:fixed;background:#1a1f35;border:1px solid #00d4ff;border-radius:8px;padding:12px 16px;max-width:380px;font-size:0.75rem;line-height:1.5;color:#fff;z-index:1000;pointer-events:none;opacity:0;transition:opacity 0.2s;box-shadow:0 8px 32px rgba(0,0,0,0.5)}
+.tooltip.visible{opacity:1}
+.tooltip-brand{color:#00d4ff;font-weight:600;margin-bottom:6px;display:block;font-size:0.85rem}
+.tooltip-votes{color:rgba(255,255,255,0.6);font-size:0.7rem;margin-bottom:8px}
+.cat-num{color:#00d4ff;font-weight:600;margin-right:4px}
+.section-label{background:rgba(0,212,255,0.15);color:#00d4ff;font-size:0.6rem;padding:2px 5px;border-radius:3px;margin-left:6px}
+.analysis{margin-top:32px;display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.analysis-wide{grid-column:span 2}
+.analysis-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:20px}
+.analysis-title{color:#00d4ff;font-weight:600;font-size:0.9rem;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px}
+.analysis-list{list-style:none}
+.analysis-list li{padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.06);color:rgba(255,255,255,0.85);font-size:0.78rem;line-height:1.5}
+.analysis-list li:last-child{border-bottom:none}
+.analysis-list li::before{content:"";display:inline-block;width:6px;height:6px;background:#00d4ff;border-radius:50%;margin-right:10px}
+.hl{color:#00d4ff;font-weight:500}
+.press{margin-top:40px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:28px 32px}
+.press-hdr{color:#00d4ff;font-size:0.7rem;font-weight:600;letter-spacing:1.5px;margin-bottom:12px}
+.press-ttl{color:#fff;font-size:1.3rem;font-weight:700;line-height:1.3;margin-bottom:8px}
+.press-sub{color:rgba(255,255,255,0.7);font-size:0.9rem;font-style:italic;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.1)}
+.press p{color:rgba(255,255,255,0.85);font-size:0.82rem;line-height:1.7;margin-bottom:14px}
+.press-cta{margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);font-size:0.75rem}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>2025 Answer Awards<sup style="font-size:0.5em;vertical-align:super">℠</sup>: <span class="accent">Consumer Tech Edition</span></h1>
+<p class="subtitle">Which Brands Are Built for the AI Answer Economy? — Powered by BrandRank.AI</p>
+<p class="summary">We asked eight leading AI answer engines a simple question: which consumer electronics brands are most "answer-ready"? The results reveal a new competitive landscape where documentation depth, FAQ structure, and community engagement determine whether AI recommends your brand — or your competitor's. Here's who's winning.</p>
+<div class="brand-filters">
+<span class="filter-label">Highlight Top Brands:</span>
+<button class="filter-btn" data-brand="Apple">Apple</button>
+<button class="filter-btn" data-brand="Samsung">Samsung</button>
+<button class="filter-btn" data-brand="Garmin">Garmin</button>
+<button class="filter-btn" data-brand="Sony">Sony</button>
+<button class="filter-btn" data-brand="Canon">Canon</button>
+<button class="filter-btn" data-brand="Elgato">Elgato</button>
+<button class="filter-btn clear-btn" data-brand="">Clear</button>
+</div>
+<div class="table-wrapper">
+<table id="awards-table">
+<thead>
+<tr><th>Category</th><th class="consensus-col">Consensus</th><th>ChatGPT</th><th>Google</th><th>Claude</th><th>Perplexity</th><th>Grok</th><th>Llama</th><th>DeepSeek</th><th>Copilot</th></tr>
+</thead>
+<tbody id="tbody"></tbody>
+</table>
+</div>
+<div class="analysis">
+<div class="analysis-card">
+<div class="analysis-title">Key Observations</div>
+<ul class="analysis-list">
+<li><span class="hl">Garmin</span> and <span class="hl">Elgato</span> achieved rare unanimous consensus (8/8 LLMs) — proving that deep, specialized documentation wins across all AI evaluators</li>
+<li><span class="hl">Canon</span> dominated Camera/Imaging with 7/8 votes, showing that legacy brands with decades of structured content maintain strong AI visibility</li>
+<li>The <span class="hl">Apple vs Samsung</span> rivalry for "Overall CE Brand" split evenly — ecosystem breadth (Samsung) vs ecosystem depth (Apple)</li>
+<li>Emerging categories showed more fragmentation, suggesting <span class="hl">newer markets lack documentation maturity</span> that AI systems need</li>
+<li><span class="hl">Niche brands</span> like Aqara, RME, and Focusrite prove that smaller players can win by out-documenting larger competitors</li>
+</ul>
+</div>
+<div class="analysis-card">
+<div class="analysis-title">How Answer Engines Picked Winners</div>
+<ul class="analysis-list">
+<li><span class="hl">FAQ depth and structure</span> — LLMs consistently cited comprehensive, well-organized FAQ databases as the primary differentiator</li>
+<li><span class="hl">Community forums</span> — Active user communities create rich Q&A content that trains AI models on real-world issues</li>
+<li><span class="hl">Developer documentation</span> — API docs, SDKs, and technical guides signal brand commitment to structured, parseable content</li>
+<li><span class="hl">Multi-format support</span> — Brands offering manuals, videos, and interactive guides received higher marks for accessibility</li>
+<li><span class="hl">Error code databases</span> — Systematic troubleshooting content enables precise, actionable AI responses</li>
+<li><span class="hl">Regular content updates</span> — Firmware notes, changelog FAQs, and version-specific guides show content freshness</li>
+</ul>
+</div>
+<div class="analysis-card">
+<div class="analysis-title">Winning Brand Attributes</div>
+<ul class="analysis-list">
+<li><span class="hl">Structured knowledge bases</span> — Device-specific, feature-level articles organized for both human and AI consumption</li>
+<li><span class="hl">Empathetic language</span> — Clear, accessible explanations that avoid jargon and guide users step-by-step</li>
+<li><span class="hl">Scenario-based help</span> — Content organized around user tasks and use cases, not just product features</li>
+<li><span class="hl">Cross-platform integration guides</span> — Documentation covering ecosystem interoperability (Matter, HomeKit, SmartThings)</li>
+<li><span class="hl">Responsive feedback loops</span> — Brands that actively update content based on community questions and support tickets</li>
+<li><span class="hl">Metric explanations</span> — Health, performance, and technical data explained in human-understandable terms</li>
+</ul>
+</div>
+<div class="analysis-card">
+<div class="analysis-title">Answer Engine Perspectives</div>
+<ul class="analysis-list">
+<li><span class="hl">ChatGPT</span> emphasized developer ecosystems and API documentation, uniquely selecting ASUS as overall CE leader</li>
+<li><span class="hl">Google</span> showed preference for customer satisfaction metrics, citing ACSI scores and repair rates</li>
+<li><span class="hl">Claude</span> prioritized content structure and AI-parseability over volume alone</li>
+<li><span class="hl">Perplexity</span> focused on searchability and corpus density, revealing its search-engine DNA</li>
+<li><span class="hl">Grok</span> uniquely valued empathy, selecting outliers like ADT, Bose, and Lenovo</li>
+<li><span class="hl">DeepSeek</span> demonstrated technical depth, citing specific features like webOS and VRR</li>
+</ul>
+</div>
+</div>
+<div class="press">
+<div class="press-hdr">FOR IMMEDIATE RELEASE</div>
+<div class="press-ttl">Garmin and Elgato Achieve Perfect Scores in Inaugural 2025 Answer Awards℠</div>
+<div class="press-sub">BrandRank.AI Analysis Reveals Which Consumer Tech Brands Are Best Positioned for the AI Answer Economy</div>
+<p><strong>CINCINNATI, OH</strong> — BrandRank.AI today announced the results of the inaugural 2025 Answer Awards℠: Consumer Tech Edition, evaluating which brands are most "answer-ready" across eight leading AI answer engines including ChatGPT, Google, Claude, Perplexity, Grok, Llama, DeepSeek, and Microsoft Copilot.</p>
+<p><strong>Unanimous Winners (8/8 AI Engines):</strong></p>
+<p><strong>Garmin</strong> (Fitness Smartwatches) earned perfect consensus for its scientifically-grounded health metric explanations, unified documentation across devices, and the Connect app's deep training resources that make complex fitness data accessible to both consumers and AI systems.</p>
+<p><strong>Elgato</strong> (Creator/Streaming Accessories) achieved unanimous recognition for its "Elgato University" knowledge base, Stream Deck plugin APIs, and workflow-focused tutorials that set the gold standard for creator-focused documentation.</p>
+<p><strong>Strong Consensus Winners:</strong></p>
+<p><strong>Canon</strong> (Cameras, 7/8) dominated imaging with model-organized support, the "Learn" portal's beginner-to-pro tutorials, and comprehensive lens compatibility charts. <strong>Apple</strong> (Smartphones, 6/8) won for its meticulously structured support ecosystem and empathetic Genius Bar interactions. <strong>Xbox</strong> (Gaming Consoles, 6/8) stood out for community ambassador programs and detailed network troubleshooting. <strong>Samsung</strong> (Smart TVs, 6/8) excelled with Tizen OS guides and Gaming Hub documentation. <strong>Aqara</strong> (Smart Home Sensors, 6/8) proved niche brands can win through superior HomeKit/Matter integration docs and automation scenario guides.</p>
+<p><strong>Sony</strong> (Wireless Headphones, 5/8), <strong>Amazon Echo</strong> (Smart Speakers, 5/8), and <strong>Logitech</strong> (Gaming Accessories, 5/8) also earned consensus for deep product documentation and active community support.</p>
+<p>"We wanted to kick off our first edition of the Answer Awards not only because CES is around the corner, but this category sets a very high bar for answer readiness relative to other brand categories — and we felt this would serve as inspiration going into 2025," said Pete Blackshaw, CEO of BrandRank.AI.</p>
+<p>Blackshaw added: "Every brand needs to raise their game in not only marketing to algorithms but in meeting the new 'answer' expectations of consumers."</p>
+<p><strong>Upcoming Webinar:</strong> BrandRank.AI will host a live webinar on <strong>December 11th at 11:00 AM ET</strong> to discuss the 2025 Answer Awards findings and provide a preview of the Consumer Electronics category heading into CES. Registration details available at BrandRank.AI.</p>
+<p class="press-cta"><strong>Media Contact:</strong> BrandRank.AI | press@brandrank.ai | www.brandrank.ai</p>
+</div>
+</div>
+<div class="tooltip" id="tooltip"></div>
+<script>
+const D=[
+{cat:"1. Wearable Technology",gpt:{b:"Apple",r:"Apple excels with its comprehensive support site, detailed FAQs, empathetic troubleshooting guides, and vast ecosystem documentation."},goo:{b:"Garmin",r:"Garmin excels with comprehensive manuals, detailed FAQs, and a vast library of fitness-focused content."},cla:{b:"Fitbit",r:"Fitbit maintains exceptionally detailed help articles with step-by-step troubleshooting and comprehensive device-specific FAQs."},per:{b:"Garmin",r:"Garmin maintains detailed device-specific manuals, extensive FAQs, regular firmware update notes, and active community forums."},gro:{b:"Apple",r:"Apple's comprehensive support ecosystem, including detailed FAQs, empathetic chat options, and vast online resources."},lla:{b:"Fitbit",r:"Fitbit stands out for its comprehensive FAQs, clear user guides, and responsive customer support."},dee:{b:"Fitbit",r:"Google's integration provides extensive, structured health data, a comprehensive help center with clear FAQs."},cop:{b:"Fitbit",r:"Fitbit offers clear health-focused FAQs, responsive support, and extensive content."}},
+{cat:"2. Smartphone",gpt:{b:"Samsung",r:"Samsung provides clear, multilingual FAQs, a responsive community forum, and extensive developer resources."},goo:{b:"Samsung",r:"Samsung leads with its extensive support hub, responsive chat/phone options, and rich troubleshooting videos."},cla:{b:"Apple",r:"Apple's support ecosystem combines meticulously organized support documents and device-specific troubleshooting guides."},per:{b:"Apple",r:"Apple's smartphone ecosystem is supported by a highly structured support site with device- and feature-level articles."},gro:{b:"Apple",r:"Apple excels with intuitive troubleshooting guides in its support app and 24/7 responsive services."},lla:{b:"Apple",r:"Apple's extensive support website, detailed user manuals, and robust customer service provide clear answers."},dee:{b:"Apple",r:"Apple Support offers exceptionally clear, step-by-step troubleshooting guides and a vast searchable knowledge base."},cop:{b:"Apple",r:"Apple provides comprehensive support articles, empathetic troubleshooting guides, and a robust ecosystem of FAQs."}},
+{cat:"3. Smart Home Device",gpt:{b:"Google Nest",r:"Google Nest offers developer-friendly documentation, detailed setup guides, and Matter protocol support."},goo:{b:"SimpliSafe",r:"SimpliSafe offers intuitive FAQs, quick-response customer service, and detailed setup guides."},cla:{b:"Philips Hue",r:"Philips Hue provides exhaustive setup guides, compatibility matrices, and detailed API documentation."},per:{b:"Google Nest",r:"Google Nest combines a large, searchable help center with explicit how-to and troubleshooting flows."},gro:{b:"ADT",r:"ADT's dedicated monitoring teams deliver clear resolutions backed by extensive integration FAQs."},lla:{b:"Philips Hue",r:"Philips Hue excels with its intuitive help center, detailed FAQs, and responsive support."},dee:{b:"Philips Hue",r:"Signify's support features detailed, visually-rich technical documentation and an extensive developer portal."},cop:{b:"Google Nest",r:"Google Nest maintains detailed help centers, responsive community forums, and rich documentation."}},
+{cat:"4. Wireless Headphones/Earbuds",gpt:{b:"Sony",r:"Sony delivers detailed product manuals, comprehensive FAQs, and active support communities."},goo:{b:"Sony",r:"Sony provides a robust help center with precise troubleshooting and multilingual FAQs."},cla:{b:"Sony",r:"Sony's headphone support combines detailed product manuals, firmware update explanations, and compatibility guides."},per:{b:"Sony",r:"Sony's lineup is backed by product-specific support pages and FAQ-style troubleshooting."},gro:{b:"Bose",r:"Bose provides detailed product manuals with step-by-step audio troubleshooting."},lla:{b:"Sennheiser",r:"Sennheiser's detailed product manuals and comprehensive FAQs make it a leader."},dee:{b:"Apple AirPods",r:"Deep iOS integration provides unparalleled clarity for setup and feature explanations."},cop:{b:"Sony",r:"Sony delivers thorough product FAQs, responsive customer service, and detailed manuals."}},
+{cat:"5. Gaming Console",gpt:{b:"Xbox",r:"Microsoft Xbox features an extensive developer hub, troubleshooting FAQs, and community forums."},goo:{b:"Xbox",r:"Microsoft Xbox dominates with callback options and community ambassador programs."},cla:{b:"PlayStation",r:"PlayStation's layered support includes detailed error code databases and game-specific troubleshooting."},per:{b:"Xbox",r:"Xbox offers a comprehensive online support hub with system- and game-service articles."},gro:{b:"Xbox",r:"Microsoft's Xbox support portal features empathetic live chat and an extensive knowledge base."},lla:{b:"Nintendo",r:"Nintendo's extensive support resources include detailed user guides and active community forums."},dee:{b:"Xbox",r:"Microsoft's Xbox Support site has a vast, well-organized database of clear answers."},cop:{b:"Xbox",r:"Xbox offers extensive support hubs, empathetic troubleshooting, and strong community responsiveness."}},
+{cat:"6. Camera/Digital Imaging",gpt:{b:"Canon",r:"Canon provides in-depth knowledge bases, firmware update guides, and professional support resources."},goo:{b:"Fujifilm",r:"Fujifilm stands out with high repair satisfaction and detailed manuals."},cla:{b:"Canon",r:"Canon maintains extensive lens compatibility charts, shooting mode explanations, and technique guides."},per:{b:"Canon",r:"Canon's online support center organizes manuals, FAQs, and how-to articles by camera model."},gro:{b:"Canon",r:"Canon's help center offers clear video tutorials on lens compatibility and shooting modes."},lla:{b:"Canon",r:"Canon's comprehensive support website and detailed user manuals provide clear information."},dee:{b:"Canon",r:"Canon's 'Learn' portal offers exhaustive, beginner-to-pro tutorials with exceptional clarity."},cop:{b:"Canon",r:"Canon provides clear product guides, strong FAQs, and responsive service."}},
+{cat:"7. Home Wi-Fi/Router",gpt:{b:"TP-Link",r:"TP-Link offers searchable help centers, detailed setup FAQs, and community forums."},goo:{b:"Asus",r:"Asus delivers exceptional router documentation and AiMesh setup guides."},cla:{b:"Eero",r:"Eero's support stands out for plain language explanations and visual setup guides."},per:{b:"Asus",r:"Asus routers pair well-documented interfaces with extensive online manuals and FAQs."},gro:{b:"TP-Link",r:"TP-Link's Tether app includes multilingual setup FAQs and quick-response community threads."},lla:{b:"Netgear",r:"Netgear's detailed product documentation and comprehensive FAQs make it a leader."},dee:{b:"TP-Link",r:"TP-Link provides clear and accessible setup guides for complex networking concepts."},cop:{b:"Netgear",r:"Netgear's support site features detailed FAQs and troubleshooting flows."}},
+{cat:"8. Fitness Smartwatch",gpt:{b:"Garmin",r:"Garmin supplies extensive health tracking manuals and community-driven forums."},goo:{b:"Garmin",r:"Garmin's in-depth health tracking manuals and responsive support offer clear answers."},cla:{b:"Garmin",r:"Garmin provides detailed sport-specific guides, metric explanations, and data accuracy documentation."},per:{b:"Garmin",r:"Garmin's fitness watches benefit from unified documentation and metric-specific help articles."},gro:{b:"Garmin",r:"Garmin's Connect app boasts in-depth training resources with wellness coaching tips."},lla:{b:"Garmin",r:"Garmin's extensive support resources demonstrate strong commitment to clear information."},dee:{b:"Garmin",r:"Garmin Connect includes highly detailed, data-rich explanations of health metrics."},cop:{b:"Garmin",r:"Garmin combines clear fitness-focused FAQs, responsive support, and rich training content."}},
+{cat:"9. Gaming PC/Laptop",gpt:{b:"ASUS ROG",r:"ASUS ROG includes comprehensive support FAQs, driver portals, and gaming optimization guides."},goo:{b:"Alienware",r:"Alienware provides expert troubleshooting guides and robust documentation."},cla:{b:"ASUS ROG",r:"ASUS ROG combines detailed specification databases and thermal management explanations."},per:{b:"ASUS ROG",r:"ASUS ROG products are supported by detailed driver/BIOS documentation and performance guides."},gro:{b:"Lenovo",r:"Lenovo's Vantage software provides detailed diagnostic tools and warranty FAQs."},lla:{b:"Alienware",r:"Alienware's comprehensive support and detailed product documentation make it a leader."},dee:{b:"Alienware",r:"Dell's support ecosystem offers precise diagnostics tools and technical specification documents."},cop:{b:"Alienware",r:"Alienware offers strong documentation, responsive support channels, and detailed FAQs."}},
+{cat:"10. Smart TV",gpt:{b:"Samsung",r:"Samsung's Tizen platform features intuitive FAQs and gaming hub documentation."},goo:{b:"Samsung",r:"Samsung tops with high ACSI satisfaction and Tizen OS guides."},cla:{b:"Samsung",r:"Samsung's smart TV support offers app-specific troubleshooting and picture setting guides."},per:{b:"Samsung",r:"Samsung smart TVs offer extensive online manuals and Gaming Hub feature explainers."},gro:{b:"Sony",r:"Sony's support site features intuitive guides and detailed gaming input FAQs."},lla:{b:"Samsung",r:"Samsung's extensive support resources provide clear and helpful information."},dee:{b:"LG",r:"LG's support features intuitive visual guides for webOS and gaming features like VRR."},cop:{b:"Samsung",r:"Samsung provides extensive FAQs and clear troubleshooting guides."}},
+{cat:"11. Smart Speaker",gpt:{b:"Sonos",r:"Sonos provides privacy-focused FAQs and local voice control guides."},goo:{b:"Amazon Echo",r:"Amazon Echo features seamless app integration and vast Alexa skill FAQs."},cla:{b:"Amazon Echo",r:"Amazon's Alexa ecosystem documentation includes comprehensive skill explanations and voice command databases."},per:{b:"Google Nest",r:"Google Nest smart speakers have rich, scenario-based help articles and command examples."},gro:{b:"Amazon",r:"Amazon's Alexa developer console includes vast skill libraries with clear FAQs."},lla:{b:"Amazon Alexa",r:"Amazon's comprehensive support for Alexa-enabled devices makes it a leader."},dee:{b:"Google Nest",r:"Google's natural language help system provides direct, conversational answers."},cop:{b:"Amazon Echo",r:"Amazon Echo has rich help content and empathetic FAQs."}},
+{cat:"12. Connected Kitchen",gpt:{b:"Bosch",r:"Bosch Home Connect app offers detailed manuals and recipe integration guides."},goo:{b:"Bosch",r:"Bosch offers reliable service networks and detailed smart appliance manuals."},cla:{b:"GE Appliances",r:"GE Appliances provides model-specific troubleshooting and SmartHQ app guides."},per:{b:"Samsung",r:"Samsung's connected kitchen line is backed by appliance-specific manuals and connectivity guides."},gro:{b:"Whirlpool",r:"Whirlpool's app offers clear recipe-linked control guides and maintenance videos."},lla:{b:"Whirlpool",r:"Whirlpool's detailed product documentation demonstrates commitment to clear information."},dee:{b:"Samsung Bespoke",r:"Samsung's SmartThings ecosystem offers integrated support with clear visual guides."},cop:{b:"LG",r:"LG offers detailed connected appliance FAQs and responsive support."}},
+{cat:"13. Security Camera/Doorbell",gpt:{b:"Arlo",r:"Arlo delivers product-specific FAQs, community forums, and setup videos."},goo:{b:"SimpliSafe",r:"SimpliSafe provides easy-to-use support portals and comprehensive security FAQs."},cla:{b:"Ring",r:"Ring offers detailed installation videos, subscription comparisons, and privacy setting guides."},per:{b:"Ring",r:"Ring maintains detailed device- and feature-level support content."},gro:{b:"SimpliSafe",r:"SimpliSafe's intuitive app delivers straightforward alert FAQs and 24/7 support."},lla:{b:"Ring",r:"Ring's comprehensive support resources make it a leader in this category."},dee:{b:"Google Nest",r:"Nest's help center provides exceptionally clear, security-focused troubleshooting."},cop:{b:"Ring",r:"Ring provides clear security-focused FAQs and responsive community support."}},
+{cat:"14. Gaming Accessories",gpt:{b:"Logitech",r:"Logitech G series features technical support libraries and programmable gear guides."},goo:{b:"Logitech",r:"Logitech excels with intuitive setup guides and active community support."},cla:{b:"Razer",r:"Razer combines Synapse documentation, RGB guides, and macro programming tutorials."},per:{b:"Logitech G",r:"Logitech G provides broad documentation and configuration guides."},gro:{b:"SteelSeries",r:"SteelSeries' GG software provides customizable peripheral tutorials."},lla:{b:"Razer",r:"Razer's detailed documentation and active community forums demonstrate commitment."},dee:{b:"Logitech G",r:"Logitech's G Hub software has contextual help and detailed configuration guides."},cop:{b:"Logitech",r:"Logitech maintains strong FAQs, responsive support, and detailed documentation."}},
+{cat:"15. Overall CE Brand",gpt:{b:"ASUS",r:"ASUS unifies support across ROG, TUF, and ZenWiFi with extensive FAQs and driver portals."},goo:{b:"Apple",r:"Apple leads with Genius Bar accessibility and ecosystem-wide documentation."},cla:{b:"Apple",r:"Apple's unified ecosystem creates consistent documentation standards and integration guides."},per:{b:"Samsung",r:"Samsung spans TVs, phones, appliances with unified portals and SmartThings integration guides."},gro:{b:"Apple",r:"Apple's seamless ecosystem integrates empathetic Genius Bar advice and unified FAQs."},lla:{b:"Apple",r:"Apple's extensive support across its ecosystem makes it a leader."},dee:{b:"Samsung",r:"Samsung maintains a cohesive, detailed support portal with clear FAQs across its lineup."},cop:{b:"Samsung",r:"Samsung's broad ecosystem and extensive FAQs make it the most answer-ready overall."}},
+{cat:"16. Niche Audio Gear",sec:"Emerging",gpt:{b:"RME",r:"RME provides studio-grade parametric EQ guides and pro-audio FAQs."},goo:{b:"Meze Audio",r:"Meze Audio prioritizes durable builds and excellent customer service."},cla:{b:"Focusrite",r:"Focusrite provides exceptional detail in driver documentation and DAW integration guides."},per:{b:"RME",r:"RME offers unusually in-depth manuals and technical FAQs for its interfaces."},gro:{b:"iFi Audio",r:"iFi Audio's whitepapers detail amplification specs with clear setup FAQs."},lla:{b:"AudioQuest",r:"AudioQuest's detailed documentation provides clear and helpful information."},dee:{b:"Focusrite",r:"Focusrite's 'Focusrite Answers' hub offers incredibly clear, professional-grade tutorials."},cop:{b:"Schiit Audio",r:"Schiit Audio offers unusually clear product explanations and strong FAQs."}},
+{cat:"17. Smart Home Sensors",sec:"Emerging",gpt:{b:"Aqara",r:"Aqara offers hub-compatible sensor manuals and automation guides."},goo:{b:"Zooz",r:"Zooz delivers fantastic community support and Z-Wave resources."},cla:{b:"Aqara",r:"Aqara excels with detailed automation scenario guides and HomeKit/Matter compatibility docs."},per:{b:"Aqara",r:"Aqara supports its broad sensor catalog with detailed compatibility charts."},gro:{b:"Aqara",r:"Aqara's Hub app features multilingual sensor integration docs and automation recipes."},lla:{b:"SmartThings",r:"Samsung SmartThings' comprehensive support resources make it a leader."},dee:{b:"Aqara",r:"Aqara provides meticulous technical documentation for its extensive sensor lineup."},cop:{b:"Aqara",r:"Aqara provides detailed sensor documentation and strong FAQs."}},
+{cat:"18. Pet Tech",sec:"Emerging",gpt:{b:"Petcube",r:"Petcube supplies AI event detection FAQs and app integration guides."},goo:{b:"Petcube",r:"Petcube offers interactive camera guides and health monitoring FAQs."},cla:{b:"Whistle",r:"Whistle offers clear health metric explanations and GPS tracking troubleshooting."},per:{b:"Whistle",r:"Whistle's pet trackers come with clear app walkthroughs and behavior explanations."},gro:{b:"Furbo",r:"Furbo's app includes intuitive monitoring FAQs and treat-scheduling support."},lla:{b:"Furbo",r:"Furbo's detailed documentation demonstrates strong commitment to pet owners."},dee:{b:"Furbo",r:"Furbo's support is highly specialized with clear, empathetic FAQs."},cop:{b:"Whistle",r:"Whistle offers clear FAQs and empathetic guidance."}},
+{cat:"19. Creator/Streaming",sec:"Emerging",gpt:{b:"Elgato",r:"Elgato delivers OBS integration guides, capture card FAQs, and streaming workflow documentation."},goo:{b:"Elgato",r:"Elgato provides seamless integration guides and Stream Deck FAQs."},cla:{b:"Elgato",r:"Elgato maintains software-specific tutorials, OBS integration guides, and lighting setup diagrams."},per:{b:"Elgato",r:"Elgato combines an extensive help center with a dedicated maker documentation portal."},gro:{b:"Elgato",r:"Elgato's Stream Deck ecosystem delivers detailed workflow videos and responsive support."},lla:{b:"Elgato",r:"Elgato's comprehensive support resources make it a leader in this category."},dee:{b:"Elgato",r:"Elgato's 'University' knowledge base offers exceptionally well-produced tutorials."},cop:{b:"Elgato",r:"Elgato provides rich tutorials, strong FAQs, and responsive support."}},
+{cat:"20. E-Bike/Scooter",sec:"Emerging",gpt:{b:"Inmotion",r:"Inmotion provides detailed assembly manuals and firmware update guides."},goo:{b:"Specialized",r:"Specialized ensures great warranty service and detailed maintenance guides."},cla:{b:"Rad Power Bikes",r:"Rad Power Bikes stands out with detailed maintenance videos and battery care guides."},per:{b:"Rad Power Bikes",r:"Rad Power Bikes provides bike-specific support pages and maintenance tutorials."},gro:{b:"Rad Power Bikes",r:"Rad Power Bikes' rider manuals provide clear maintenance guides and safety webinars."},lla:{b:"VanMoof",r:"VanMoof's detailed product documentation provides clear and helpful information."},dee:{b:"VanMoof",r:"VanMoof's support platform features intuitive, bike-specific diagnostic tools."},cop:{b:"Rad Power Bikes",r:"Rad Power Bikes offers clear FAQs, responsive support, and detailed documentation."}}
+];
+const C={"1. Wearable Technology":{b:"Fitbit",v:4,r:null},"2. Smartphone":{b:"Apple",v:6,r:"Apple dominated smartphone rankings with its meticulously organized support ecosystem. LLMs praised its structured support documents, device-level articles, intuitive troubleshooting guides, 24/7 responsive services, and empathetic Genius Bar interactions that generate vast content for AI training."},"3. Smart Home Device":{b:"Philips Hue",v:3,r:null},"4. Wireless Headphones/Earbuds":{b:"Sony",v:5,r:"Sony achieved strong consensus for wireless audio with its robust, product-specific support pages covering detailed manuals, firmware updates, and troubleshooting flowcharts. LLMs highlighted its multilingual FAQs and accessible explanations of technical features like codecs and ANC."},"5. Gaming Console":{b:"Xbox",v:6,r:"Microsoft Xbox dominated gaming console rankings with its comprehensive online support hub featuring system articles, community Q&A, ambassador programs, and detailed network troubleshooting. LLMs consistently praised its empathetic live chat and vibrant community forums."},"6. Camera/Digital Imaging":{b:"Canon",v:7,r:"Canon achieved near-unanimous consensus with 7/8 LLMs citing its exceptional support infrastructure. Its online support center organizes manuals, drivers, and FAQs by camera model, while the 'Learn' portal offers beginner-to-pro tutorials and detailed error code explanations."},"7. Home Wi-Fi/Router":{b:"TP-Link",v:3,r:null},"8. Fitness Smartwatch":{b:"Garmin",v:8,r:"Garmin achieved perfect unanimous consensus across all 8 LLMs for fitness smartwatches. Every evaluator praised its unified documentation, metric-specific help articles, scientifically-grounded health explanations, and the Connect app's in-depth training resources."},"9. Gaming PC/Laptop":{b:"Alienware",v:4,r:null},"10. Smart TV":{b:"Samsung",v:6,r:"Samsung dominated Smart TV rankings with its extensive Tizen OS documentation, app compatibility lists, Gaming Hub guides, and feature explainers. LLMs praised its intuitive FAQs and high customer satisfaction scores."},"11. Smart Speaker":{b:"Amazon Echo",v:5,r:"Amazon Echo earned consensus through its vast Alexa ecosystem documentation including skill libraries, voice command databases, and developer console resources. LLMs highlighted its 24/7 responsive support and conversational data essential for AI training."},"12. Connected Kitchen":{b:null,v:0,r:null},"13. Security Camera/Doorbell":{b:"Ring",v:4,r:null},"14. Gaming Accessories":{b:"Logitech",v:5,r:"Logitech G earned consensus through its broad documentation covering configuration guides, G Hub software with contextual help, and active community discussions. LLMs cited its intuitive setup guides and clear answers on software profiles and macros."},"15. Overall CE Brand":{b:"Apple",v:4,r:null},"16. Niche Audio Gear":{b:null,v:0,r:null},"17. Smart Home Sensors":{b:"Aqara",v:6,r:"Aqara dominated smart home sensors with 6/8 LLMs praising its meticulous technical documentation. Evaluators highlighted its detailed compatibility charts, automation scenario guides, and HomeKit/Matter integration docs."},"18. Pet Tech":{b:null,v:0,r:null},"19. Creator/Streaming":{b:"Elgato",v:8,r:"Elgato achieved perfect unanimous consensus across all 8 LLMs for creator/streaming accessories. Every evaluator praised its extensive help center, 'University' knowledge base with step-by-step tutorials, and Stream Deck plugin APIs."},"20. E-Bike/Scooter":{b:"Rad Power Bikes",v:4,r:null}};
+const tbody=document.getElementById('tbody');
+const tooltip=document.getElementById('tooltip');
+D.forEach(row=>{
+const tr=document.createElement('tr');
+const con=C[row.cat];
+let catCell=`<td><span class="cat-num">${row.cat.split('.')[0]}.</span>${row.cat.split('. ')[1]}`;
+if(row.sec)catCell+=`<span class="section-label">${row.sec}</span>`;
+catCell+=`</td>`;
+let consCell;
+if(con&&con.b&&con.v>=5){
+consCell=`<td class="consensus-cell"><span class="brand consensus-brand" data-brand="${con.b}" data-rationale="${con.r?con.r.replace(/"/g,'&quot;'):''}" data-votes="${con.v}">${con.b}</span></td>`;
+}else{
+consCell=`<td class="consensus-cell"><span class="no-consensus">No consensus</span></td>`;
+}
+tr.innerHTML=catCell+consCell+
+`<td>${mkB(row.gpt)}</td><td>${mkB(row.goo)}</td><td>${mkB(row.cla)}</td><td>${mkB(row.per)}</td><td>${mkB(row.gro)}</td><td>${mkB(row.lla)}</td><td>${mkB(row.dee)}</td><td>${mkB(row.cop)}</td>`;
+tbody.appendChild(tr);
+});
+function mkB(d){
+if(!d||d.b==='—')return`<span style="color:rgba(255,255,255,0.3)">—</span>`;
+return`<span class="brand" data-brand="${d.b}" data-rationale="${d.r.replace(/"/g,'&quot;')}">${d.b}</span>`;
+}
+document.querySelectorAll('.brand').forEach(el=>{
+el.addEventListener('mouseenter',e=>{
+const b=e.target.dataset.brand,r=e.target.dataset.rationale,v=e.target.dataset.votes;
+let html=`<span class="tooltip-brand">${b}</span>`;
+if(v)html+=`<span class="tooltip-votes">${v}/8 LLMs agree</span>`;
+html+=r;
+tooltip.innerHTML=html;
+tooltip.classList.add('visible');
+});
+el.addEventListener('mousemove',e=>{
+let x=e.clientX+15,y=e.clientY+15;
+if(x+400>window.innerWidth)x=e.clientX-400;
+if(y+180>window.innerHeight)y=e.clientY-180;
+tooltip.style.left=x+'px';tooltip.style.top=y+'px';
+});
+el.addEventListener('mouseleave',()=>{tooltip.classList.remove('visible');});
+});
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+btn.addEventListener('click',e=>{
+const target=e.target.dataset.brand;
+document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+if(target){
+e.target.classList.add('active');
+document.querySelectorAll('.brand').forEach(b=>{
+const nm=b.dataset.brand;
+if(nm&&nm.toLowerCase().includes(target.toLowerCase())){b.classList.add('highlighted');b.classList.remove('dimmed');}
+else{b.classList.remove('highlighted');b.classList.add('dimmed');}
+});
+}else{document.querySelectorAll('.brand').forEach(b=>{b.classList.remove('highlighted','dimmed');});}
+});
+});
+</script>
+</body>
+</html>
