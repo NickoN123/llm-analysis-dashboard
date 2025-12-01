@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Year-End Brand Snapshot | Tylenol</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --navy: #1a3a5c;
+            --teal: #0d9488;
+            --amber: #d97706;
+            --red: #dc2626;
+            --light-gray: #f8f9fa;
+            --dark-gray: #374151;
+            --medium-gray: #6b7280;
+            --border-gray: #e5e7eb;
+            --light-pink: #fef2f2;
+        }
+        
+        @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .page-break { page-break-before: always; }
+        }
+        
+        body {
+            font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+            font-size: 10pt;
+            line-height: 1.5;
+            color: var(--dark-gray);
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.5in 0.6in;
+            background: white;
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--navy);
+            margin-bottom: 16px;
+        }
+        
+        .header-logo {
+            font-weight: 700;
+            color: var(--navy);
+            font-size: 11pt;
+        }
+        
+        .header-brand {
+            font-style: italic;
+            color: var(--medium-gray);
+            font-size: 10pt;
+        }
+        
+        /* Title */
+        .report-title {
+            font-size: 22pt;
+            font-weight: 700;
+            color: var(--navy);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 2px;
+        }
+        
+        .report-subtitle {
+            font-size: 11pt;
+            color: var(--dark-gray);
+            margin-bottom: 14px;
+        }
+        
+        /* Headline */
+        .headline {
+            font-size: 14pt;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 14px;
+            line-height: 1.3;
+        }
+        
+        /* Callout Boxes */
+        .callout-box {
+            background: var(--light-gray);
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            border-radius: 2px;
+        }
+        
+        .callout-box.navy-border { border-left: 4px solid var(--navy); }
+        .callout-box.amber-border { border-left: 4px solid var(--amber); }
+        .callout-box.red-border { border-left: 4px solid var(--red); background: var(--light-pink); }
+        
+        .callout-title {
+            font-size: 11pt;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+        
+        .callout-text {
+            font-size: 10pt;
+            line-height: 1.6;
+        }
+        
+        .callout-caption {
+            font-size: 9pt;
+            font-style: italic;
+            color: var(--medium-gray);
+            margin-top: 10px;
+        }
+        
+        /* Section Headers */
+        .section-header {
+            font-size: 12pt;
+            font-weight: 700;
+            color: var(--navy);
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--navy);
+            margin-top: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .section-header:first-of-type {
+            margin-top: 0;
+        }
+        
+        /* Subsection Headers */
+        .subsection-header {
+            font-weight: 700;
+            color: var(--dark-gray);
+            margin-top: 12px;
+            margin-bottom: 4px;
+        }
+        
+        /* Engine Breakdown */
+        .engine-breakdown {
+            background: var(--light-gray);
+            padding: 12px 16px;
+            margin: 12px 0;
+            display: flex;
+            justify-content: space-between;
+            text-align: center;
+            border-radius: 2px;
+        }
+        
+        .engine-item {
+            flex: 1;
+        }
+        
+        .engine-name {
+            font-size: 9pt;
+            color: var(--medium-gray);
+            margin-bottom: 2px;
+        }
+        
+        .engine-score {
+            font-size: 14pt;
+            font-weight: 700;
+            color: var(--navy);
+        }
+        
+        /* Score Boxes */
+        .score-boxes {
+            display: flex;
+            gap: 12px;
+            margin: 12px 0;
+        }
+        
+        .score-box {
+            flex: 1;
+            background: var(--light-gray);
+            padding: 12px;
+            text-align: center;
+            border-radius: 2px;
+            border-top: 3px solid var(--navy);
+        }
+        
+        .score-box-label {
+            font-size: 9pt;
+            color: var(--medium-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        
+        .score-box-value {
+            font-size: 20pt;
+            font-weight: 700;
+        }
+        
+        .score-box-value.green { color: var(--teal); }
+        .score-box-value.amber { color: var(--amber); }
+        .score-box-value.red { color: var(--red); }
+        
+        /* Inline Score */
+        .inline-score {
+            font-weight: 700;
+        }
+        
+        .inline-score.green { color: var(--teal); }
+        .inline-score.amber { color: var(--amber); }
+        .inline-score.red { color: var(--red); }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 9.5pt;
+        }
+        
+        th {
+            background: var(--navy);
+            color: white;
+            font-weight: 600;
+            text-align: left;
+            padding: 8px 10px;
+        }
+        
+        th:nth-child(2) {
+            text-align: center;
+        }
+        
+        td {
+            padding: 7px 10px;
+            border-bottom: 1px solid var(--border-gray);
+        }
+        
+        td:nth-child(2) {
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background: var(--light-gray);
+        }
+        
+        /* SWOT Grid */
+        .swot-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: var(--border-gray);
+            margin: 10px 0;
+        }
+        
+        .swot-cell {
+            background: var(--light-gray);
+            padding: 10px 12px;
+        }
+        
+        .swot-label {
+            font-size: 9pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        
+        .swot-label.strength { color: var(--teal); }
+        .swot-label.weakness { color: var(--amber); }
+        .swot-label.opportunity { color: var(--navy); }
+        .swot-label.threat { color: var(--red); }
+        
+        .swot-text {
+            font-size: 9pt;
+            line-height: 1.4;
+        }
+        
+        /* Divider */
+        .divider {
+            border: none;
+            border-top: 2px solid var(--navy);
+            margin: 18px 0;
+        }
+        
+        /* Wins/Gaps inline */
+        .wins-gaps {
+            margin: 8px 0;
+            line-height: 1.7;
+        }
+        
+        /* Opportunities */
+        .opportunity-item {
+            margin-bottom: 10px;
+        }
+        
+        .opportunity-label {
+            font-weight: 700;
+            color: var(--navy);
+        }
+        
+        /* Persona Table */
+        .persona-table td:first-child {
+            font-weight: 600;
+            width: 18%;
+        }
+        
+        .persona-table td:nth-child(2) {
+            text-align: left;
+            font-weight: normal;
+            font-style: italic;
+            width: 22%;
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 24px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-gray);
+            display: flex;
+            justify-content: space-between;
+            font-size: 9pt;
+            color: var(--medium-gray);
+        }
+        
+        /* About Section */
+        .about-section {
+            margin-top: 16px;
+            font-size: 9pt;
+            color: var(--medium-gray);
+        }
+        
+        .about-section strong {
+            color: var(--navy);
+        }
+        
+        /* Addendum */
+        .addendum-title {
+            font-size: 16pt;
+            font-weight: 700;
+            color: var(--navy);
+            text-align: center;
+            margin-bottom: 20px;
+            padding-top: 20px;
+        }
+        
+        .term-item {
+            margin-bottom: 10px;
+        }
+        
+        .term-name {
+            font-weight: 700;
+            color: var(--navy);
+        }
+        
+        /* Content Catalysts */
+        .catalyst-item {
+            margin-bottom: 10px;
+        }
+        
+        .catalyst-headline {
+            font-weight: 700;
+            color: var(--dark-gray);
+        }
+        
+        /* Surprise bullets */
+        .surprise-item {
+            margin-bottom: 10px;
+            padding-left: 8px;
+        }
+        
+        .surprise-item strong {
+            color: var(--dark-gray);
+        }
+
+        /* Status indicators */
+        .status-green::before { content: "🟢 "; }
+        .status-amber::before { content: "🟡 "; }
+        .status-red::before { content: "🔴 "; }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-logo">BrandRank.AI</div>
+        <div class="header-brand">[Tylenol Logo]</div>
+    </div>
+    
+    <!-- TITLE -->
+    <div class="report-title">Year-End Brand Snapshot</div>
+    <div class="report-subtitle">TYLENOL: Q4 2025</div>
+    
+    <!-- HEADLINE -->
+    <div class="headline">AI Engines Trust Tylenol on Safety—But Headache Gap and Pregnancy Questions Cloud Full Endorsement</div>
+    
+    <!-- AT A GLANCE -->
+    <div class="callout-box navy-border">
+        <div class="callout-title">At a Glance</div>
+        <div class="callout-text">
+            Tylenol scores a strong 7.6/10 overall, dominating AI visibility in post-surgical care, pediatric fever, and safety-for-sensitive-patients. AI engines validate clinical efficacy and doctor recommendations. <strong>The risk: neurologist headache queries score just 3.3/10, and pregnancy controversy creates hedging on the "#1 Doctor Recommended" promise.</strong> The unlock: authoritative migraine content and empathetic pregnancy guidance.
+        </div>
+        <div class="callout-caption">All data is sourced from the BrandRank reporting dashboard and reviewed by an analyst.</div>
+    </div>
+    
+    <!-- 1. BRAND HEALTH -->
+    <div class="section-header">1. Brand Health & Trust Score: <span class="inline-score green">7.6</span>/10 →</div>
+    <p>Tylenol is winning the AI narrative on safety—but defending it on transparency. AI engines cite Tylenol as the safest OTC option for NSAID-sensitive patients, consistently recommending it for pediatric fever and post-surgical care. This 7.6 reflects a brand with strong clinical credibility, though pregnancy controversy creates pockets of doubt at discovery.</p>
+    
+    <!-- 2. AI VISIBILITY -->
+    <div class="section-header">2. AI Visibility: <span class="inline-score green">8.0</span>/10 →</div>
+    <p>Tylenol appears prominently when consumers ask AI about post-surgical pain, pediatric fever, and options for cardiovascular/GI-sensitive patients—the brand owns "safe for sensitive patients" across all major AI platforms.</p>
+    
+    <div class="engine-breakdown">
+        <div class="engine-item"><div class="engine-name">ChatGPT</div><div class="engine-score">8.0</div></div>
+        <div class="engine-item"><div class="engine-name">Gemini</div><div class="engine-score">8.5</div></div>
+        <div class="engine-item"><div class="engine-name">Claude</div><div class="engine-score">7.2</div></div>
+        <div class="engine-item"><div class="engine-name">Perplexity</div><div class="engine-score">8.0</div></div>
+        <div class="engine-item"><div class="engine-name">Meta AI</div><div class="engine-score">7.2</div></div>
+        <div class="engine-item"><div class="engine-name">Grok</div><div class="engine-score">9.1</div></div>
+    </div>
+    
+    <p class="subsection-header">ChatGPT Performance</p>
+    <p>ChatGPT recommends Tylenol for post-operative recovery (10/10), pediatric fever (10/10), and elderly patients (10/10). However, <strong style="color: var(--red);">ChatGPT scores 0/10 for migraine recommendations</strong>—neurologists aren't associating Tylenol with migraine relief, ceding this category entirely to Advil and Aleve.</p>
+    
+    <p class="subsection-header">Where the Brand Wins</p>
+    <p class="wins-gaps">🟢 <strong>Infant Fever Safety</strong> (9.5) • 🟢 <strong>Safety Record</strong> (8.7) • 🟢 <strong>Pediatrician Recommendations</strong> (7.8)</p>
+    
+    <p class="subsection-header">Critical Gaps</p>
+    <p class="wins-gaps">🔴 <strong>Neurologist Headache Recs</strong> (3.3)—AI directs consumers to Advil/Aleve • 🔴 <strong>Migraine Relief</strong> (1.7)—Tylenol invisible in migraine queries • 🟡 <strong>Liver Safety Perception</strong> (5.3)—AI hedges despite correct-use safety</p>
+    
+    <table>
+        <tr><th>Category</th><th>Avg Score</th><th>Top Prompt (Score)</th></tr>
+        <tr><td>Infant & Pediatric Safety</td><td><span class="inline-score green">9.5</span></td><td>"What is the safest fever reducer for infants?" (9.5)</td></tr>
+        <tr><td>Safety Record</td><td><span class="inline-score green">8.7</span></td><td>"Which pain reliever has the strongest safety record?" (8.7)</td></tr>
+        <tr><td>Pediatrician Recommendations</td><td><span class="inline-score green">7.8</span></td><td>"Which fever medication do pediatricians recommend most?" (7.8)</td></tr>
+        <tr><td>Liver Safety</td><td><span class="inline-score amber">5.3</span></td><td>"Which pain medication has lowest risk of liver damage?" (5.3)</td></tr>
+        <tr><td>Neurologist Headache Recs</td><td><span class="inline-score red">3.3</span></td><td>"What medication do neurologists recommend for headaches?" (3.3)</td></tr>
+        <tr><td>Migraine Specialist</td><td><span class="inline-score red">1.7</span></td><td>"What do neurologists recommend for migraines?" (0.0)</td></tr>
+    </table>
+    
+    <p class="subsection-header">Competitive Position</p>
+    <p>Advil outscores Tylenol in headache, migraine, and "fastest relief" categories. When consumers ask "which medication works fastest," Advil scores 8/10 vs. Tylenol's 4.8/10. This speed-of-relief gap costs Tylenol consideration in acute pain moments.</p>
+    
+    <!-- 3. BRAND VULNERABILITY -->
+    <div class="section-header">3. Brand Vulnerability: <span class="inline-score green">7.8</span>/10 →</div>
+    <p>AI is largely protecting Tylenol's reputation, validating clinical efficacy and safety claims. The 7.8 score reflects strong defense against misinformation, though pregnancy-related queries introduce some hedging language.</p>
+    
+    <p class="subsection-header">Brand Promise Alignment: <span class="inline-score amber">6.8</span>/10</p>
+    <p>AI engines are unconvinced by Tylenol's "#1 Doctor Recommended" promise. When consumers ask about doctor recommendations, AI hedges with qualifiers about "appropriate use" rather than full endorsement. This credibility gap erodes trust at the moment of discovery. Perplexity scores highest (8.2) citing ACOG statements; Anthropic/Claude scores lowest (4.0) with explicit FDA label discussion.</p>
+    
+    <p class="subsection-header">Statements of Fact Assessment</p>
+    <p>Of 8 monitored statements, <strong>8 are accurate</strong>, 0 are partially accurate, and 0 are inaccurate. AI engines correctly represent claims including "#1 doctor-recommended," pregnancy safety when used as directed, and infant safety.</p>
+    
+    <p class="subsection-header">Source Influence</p>
+    <p><strong>~35%</strong> of sources shaping AI's brand perception are owned properties (tylenol.com, kenvue.com, tylenolprofessional.com), giving Tylenol moderate ability to correct misrepresentations. Top third-party sources: FDA.gov, Wikipedia, Yahoo Finance. Monitor drugwatch.com and lawsuit-information-center.com which appear discussing litigation.</p>
+    
+    <div class="swot-grid">
+        <div class="swot-cell">
+            <div class="swot-label strength">Strength</div>
+            <div class="swot-text">Professional credibility through #1 doctor-recommended positioning and "Get Relief Responsibly" safety platform</div>
+        </div>
+        <div class="swot-cell">
+            <div class="swot-label weakness">Weakness</div>
+            <div class="swot-text">Single-active dependence (acetaminophen); phenylephrine FDA removal; Kimberly-Clark acquisition distraction</div>
+        </div>
+        <div class="swot-cell">
+            <div class="swot-label opportunity">Opportunity</div>
+            <div class="swot-text">ACOG pregnancy guidance provides message cover; phenylephrine exit enables category simplification</div>
+        </div>
+        <div class="swot-cell">
+            <div class="swot-label threat">Threat</div>
+            <div class="swot-text">Texas AG lawsuit sustains headline risk; FDA label-change process creates uncertainty; political discourse amplifies claims</div>
+        </div>
+    </div>
+    
+    <!-- 4. CONTENT READINESS -->
+    <div class="section-header">4. Content Readiness: <span class="inline-score amber">6.9</span>/10 →</div>
+    <p>AI can find Tylenol's content but struggles to extract authoritative citations—site is structurally sound but lacks statistical depth and expert quotations.</p>
+    
+    <div class="score-boxes">
+        <div class="score-box">
+            <div class="score-box-label">Availability</div>
+            <div class="score-box-value green">7.2</div>
+        </div>
+        <div class="score-box">
+            <div class="score-box-label">Depth</div>
+            <div class="score-box-value amber">5.3</div>
+        </div>
+        <div class="score-box">
+            <div class="score-box-label">Clarity</div>
+            <div class="score-box-value green">8.2</div>
+        </div>
+    </div>
+    
+    <p><strong>Availability (7.2):</strong> Content Liquidity 7.4 | Search Capital 7.6 | Algorithmic Anchors 6.5. AI crawlers discover content through open robots.txt; comprehensive schema markup is missing.</p>
+    <p><strong>Depth (5.3):</strong> Authoritative 6.5 | Technical 5.6 | Statistics w/Citations 4.6. <span style="color: var(--red); font-weight: 600;">🔴 CRITICAL: Quotation Addition 3.3—content lacks named reviewers and machine-readable citations.</span></p>
+    <p><strong>Clarity (8.2):</strong> Easy to Understand 8.3 | Fluency 8.0. Content excels at consumer comprehension—dosing tables support AI extraction.</p>
+    <p><strong>ChatGPT Readiness:</strong> 7.4/10. Priority fix: Implement FAQPage and Product schema markup across consumer site.</p>
+    
+    <!-- 5. BIGGEST SURPRISES -->
+    <div class="section-header">5. Biggest Surprises</div>
+    <div class="callout-box amber-border">
+        <div class="surprise-item">
+            <strong>• Market leader, AI invisible:</strong> Tylenol scores just 3.3/10 on neurologist headache recommendations despite decades of headache marketing—when consumers ask what neurologists recommend, AI points to competitors.
+        </div>
+        <div class="surprise-item">
+            <strong>• Liver safety perception gap:</strong> Despite correct-use safety data, Tylenol scores only 5.3/10 on "lowest risk of liver damage" queries—AI surfaces overdose warnings that create hesitation.
+        </div>
+        <div class="surprise-item">
+            <strong>• Safety dominance is real:</strong> 9.5/10 on infant fever safety and 8.7/10 on safety record—AI engines genuinely trust Tylenol's core safety positioning.
+        </div>
+    </div>
+    
+    <!-- 6. SURPRISING STRENGTHS -->
+    <div class="section-header">6. Surprising Strengths</div>
+    <p><strong>Heritage pays dividends:</strong> AI engines consistently cite Tylenol's safety record, scoring 8.7/10 on "strongest safety record" queries—a foundation that validates decades of positioning.</p>
+    <p><strong>Pediatric dominance is absolute:</strong> Tylenol scores 9.5/10 on infant fever safety and 7.8/10 on pediatrician recommendations—AI engines unequivocally trust Tylenol for children.</p>
+    <p><strong>Vulnerability score stronger than expected:</strong> At 7.8/10, AI is largely protecting Tylenol's reputation despite pregnancy controversy headlines—misinformation is not taking hold.</p>
+    
+    <!-- 7. OPPORTUNITIES -->
+    <div class="section-header">7. Opportunities Going Into 2026</div>
+    
+    <div class="opportunity-item">
+        <span class="opportunity-label">1. URGENT CONTENT PRIORITIES:</span> Create authoritative neurologist headache content (currently 3.3/10) featuring specialist perspectives to capture visibility being ceded to Advil and Aleve.
+    </div>
+    <div class="opportunity-item">
+        <span class="opportunity-label">2. STRENGTHEN MESSAGING AROUND:</span> Address liver safety perception gap (5.3/10)—AI surfaces overdose warnings despite correct-use safety. Develop content emphasizing proper dosing and safety when used as directed.
+    </div>
+    <div class="opportunity-item">
+        <span class="opportunity-label">3. ADDRESS COMPETITIVE GAP IN:</span> Reclaim headache/migraine category from Advil where Tylenol scores 3.3/10 vs competitors' higher rankings by creating neurologist-endorsed content.
+    </div>
+    <div class="opportunity-item">
+        <span class="opportunity-label">4. CORRECT MISINFORMATION ON:</span> Maintain monitoring—7.8/10 vulnerability score indicates AI is largely accurate. Proactively update FAQs as FDA guidance evolves.
+    </div>
+    <div class="opportunity-item">
+        <span class="opportunity-label">5. OPTIMIZE CONTENT FOR:</span> Improve Depth score (5.3/10) by adding peer-reviewed references, named medical reviewers, and machine-readable citations AI can confidently attribute.
+    </div>
+    <div class="opportunity-item">
+        <span class="opportunity-label">6. STRENGTHEN SOURCE AUTHORITY:</span> Leverage strong 7.8/10 vulnerability score—expand owned content around neurologist recommendations before AI defaults to competitor-favoring third-party sources.
+    </div>
+    
+    <hr class="divider">
+    
+    <!-- 8. CONTENT CATALYSTS -->
+    <div class="section-header">8. Content Catalysts</div>
+    <p style="font-style: italic; color: var(--medium-gray); margin-bottom: 10px;">Suggested Headlines to Fill the Gap</p>
+    
+    <div class="catalyst-item">
+        <span class="catalyst-headline">"What Neurologists Actually Say About OTC Pain Relief for Headaches"</span> — Expert interview series targeting neurologist headache category (3.3/10), featuring named specialists to build AI citability.
+    </div>
+    <div class="catalyst-item">
+        <span class="catalyst-headline">"Understanding Acetaminophen Safety: What the Liver Research Actually Shows"</span> — Evidence-based content addressing liver safety perception gap (5.3/10), designed to become AI's authoritative correct-use source.
+    </div>
+    <div class="catalyst-item">
+        <span class="catalyst-headline">"Why Pediatricians Trust Tylenol: 50 Years of Infant Fever Safety Data"</span> — Reinforcement content leveraging 9.5/10 infant safety score to extend credibility into adjacent categories.
+    </div>
+    
+    <hr class="divider">
+    
+    <!-- 9. WHO SHOULD ACT -->
+    <div class="section-header">9. Who Should Act On This</div>
+    <table>
+        <tr><th>Function</th><th style="text-align: left;">Priority Actions</th></tr>
+        <tr><td><strong>Corporate Communications</strong></td><td style="text-align: left;">Own Brand Promise messaging, SWOT threat monitoring, empathetic crisis response, third-party source surveillance</td></tr>
+        <tr><td><strong>Digital & Content Teams</strong></td><td style="text-align: left;">Implement FAQPage/Product schema, add medical reviewer attributions, create citation-rich content</td></tr>
+        <tr><td><strong>Brand Marketing</strong></td><td style="text-align: left;">Address migraine visibility gap, develop "speed of relief" content, create pregnancy guidance with ACOG</td></tr>
+        <tr><td><strong>R&D / Innovation</strong></td><td style="text-align: left;">Develop clinical data for speed-of-onset claims; prepare phenylephrine reformulation communications</td></tr>
+        <tr><td><strong>Executive Leadership</strong></td><td style="text-align: left;">Strong 7.6/10 overall validates safety positioning—authorize investment in neurologist content to close 3.3/10 headache gap</td></tr>
+    </table>
+    
+    <hr class="divider">
+    
+    <!-- 10. PERSONA REACTIONS -->
+    <div class="section-header">10. Persona / Stakeholder Reactions</div>
+    <table class="persona-table">
+        <tr><th>Persona</th><th style="text-align: left;">Description</th><th style="text-align: left;">Likely Reaction</th></tr>
+        <tr><td>Health & Safety First Parents</td><td>Seeking safest option for family</td><td>Will feel strongly validated by 9.5/10 infant fever safety and 7.8/10 pediatrician recommendation scores.</td></tr>
+        <tr><td>Convenience-Driven Buyers</td><td>Want fastest relief possible</td><td>May bypass Tylenol for headaches based on 3.3/10 neurologist recommendation score—AI is directing them elsewhere.</td></tr>
+        <tr><td>Financial Analysts</td><td>Evaluating brand equity risk</td><td>Strong 7.6/10 overall and 7.8/10 vulnerability scores suggest stable brand equity; headache gap is addressable.</td></tr>
+        <tr><td>Media & Opinion Shapers</td><td>Looking for compelling narratives</td><td>The 3.3/10 neurologist headache gap despite Tylenol's headache marketing heritage is a potential story angle.</td></tr>
+        <tr><td>Regulators & Policy Influencers</td><td>Monitoring consumer safety</td><td>9.5/10 infant safety score and 8.7/10 safety record provide strong evidence of responsible positioning.</td></tr>
+    </table>
+    
+    <!-- ABOUT -->
+    <div class="about-section">
+        <strong>About BrandRank.AI</strong><br>
+        BrandRank works with over 60 global brands to strengthen trust and purchase intent by uncovering vulnerabilities, purchase-driving insights, and growth opportunities across AI answer engines. As a SaaS platform, we track all major answer engines to improve visibility, ensure content is AI-ready, and rigorously measure brand claims and instructional accuracy.<br><br>
+        To explore your complete data, access your dashboard at <strong>[DASHBOARD_URL]</strong>.
+    </div>
+    
+    <!-- FOOTER -->
+    <div class="footer">
+        <span>BrandRank.AI | Year-End Brand Snapshot | Tylenol</span>
+        <span>Page 1 of 2 | November 2025 | Confidential</span>
+    </div>
+    
+    <!-- PAGE BREAK -->
+    <div class="page-break"></div>
+    
+    <!-- ADDENDUM -->
+    <div class="addendum-title">ADDENDUM</div>
+    
+    <div class="section-header" style="margin-top: 0;">Essential Terms</div>
+    
+    <div class="term-item">
+        <span class="term-name">AI Visibility</span> — "Do I show up?" Measures how often your brand appears when consumers ask AI category-relevant questions. 7+ = AI recommends you; <4 = invisible.
+    </div>
+    <div class="term-item">
+        <span class="term-name">Brand Vulnerability</span> — "What does AI say about me?" Measures whether AI protects or undermines your reputation.
+    </div>
+    <div class="term-item">
+        <span class="term-name">Brand Promise Alignment</span> — "Does AI believe my story?" Score below 7 means AI hedges rather than endorses.
+    </div>
+    <div class="term-item">
+        <span class="term-name">Content Readiness</span> — "Is my site ready for AI?" Can AI find (Availability), trust (Depth), and extract (Clarity) your content?
+    </div>
+    <div class="term-item">
+        <span class="term-name">Source Influence</span> — "Who shapes my AI narrative?" High owned-source % = greater control over your story.
+    </div>
+    <div class="term-item">
+        <span class="term-name">Statements of Fact</span> — "Is AI telling the truth?" Monitors accuracy of specific brand claims across engines.
+    </div>
+    
+    <div class="section-header">Why Check Your Dashboard Regularly</div>
+    
+    <p><strong>AI models update frequently.</strong> Scores can shift overnight with platform updates.</p>
+    <p><strong>Competitors are moving.</strong> See their gains in scores before you see them in market share.</p>
+    <p><strong>Prepare for key moments.</strong> Check before earnings calls, board meetings, campaign launches.</p>
+    <p><strong>Track your investments.</strong> See if content and PR translate to AI visibility.</p>
+    <p><strong>Catch misinformation early.</strong> Before it spreads across platforms.</p>
+    <p><strong>Spot emerging opportunities.</strong> New questions consumers are asking.</p>
+    
+    <!-- FOOTER PAGE 2 -->
+    <div class="footer">
+        <span>BrandRank.AI | Year-End Brand Snapshot | Tylenol</span>
+        <span>Page 2 of 2 | November 2025 | Confidential</span>
+    </div>
+</body>
+</html>
