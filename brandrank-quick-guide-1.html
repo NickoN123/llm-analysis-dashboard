@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>15-Minute BrandRank Report Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #374151;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #1a3a5c;
+            color: white;
+            padding: 2.5rem 2rem;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .header .caption {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+        
+        .content {
+            padding: 2.5rem 2rem;
+        }
+        
+        .intro {
+            font-size: 1.05rem;
+            color: #374151;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-left: 4px solid #0d9488;
+            border-radius: 4px;
+        }
+        
+        .examples-section {
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background: #fff;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+        }
+        
+        .examples-section h3 {
+            color: #1a3a5c;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .examples-section p {
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+        
+        .example-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        
+        .example-btn {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .example-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nestle-btn {
+            border-color: #8b4513;
+        }
+        
+        .nestle-btn:hover {
+            border-color: #8b4513;
+            background: #fef3e9;
+        }
+        
+        .tylenol-btn {
+            border-color: #dc2626;
+        }
+        
+        .tylenol-btn:hover {
+            border-color: #dc2626;
+            background: #fef2f2;
+        }
+        
+        .walmart-btn {
+            border-color: #0d9488;
+        }
+        
+        .walmart-btn:hover {
+            border-color: #0d9488;
+            background: #f0fdfa;
+        }
+        
+        .align-btn {
+            border-color: #16a34a;
+        }
+        
+        .align-btn:hover {
+            border-color: #16a34a;
+            background: #f0fdf4;
+        }
+        
+        .jobsohio-btn {
+            border-color: #7c3aed;
+        }
+        
+        .jobsohio-btn:hover {
+            border-color: #7c3aed;
+            background: #faf5ff;
+        }
+        
+        .amazon-btn {
+            border-color: #f97316;
+        }
+        
+        .amazon-btn:hover {
+            border-color: #f97316;
+            background: #fff7ed;
+        }
+        
+        .example-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+        
+        .example-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .example-text strong {
+            color: #1a3a5c;
+            font-size: 1.05rem;
+        }
+        
+        .example-text small {
+            color: #6b7280;
+            font-size: 0.85rem;
+        }
+        
+        .files-section {
+            margin-top: 2rem;
+        }
+        
+        .file-card {
+            background: #fff;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .file-card:hover {
+            border-color: #0d9488;
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
+        }
+        
+        .file-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .file-icon {
+            width: 48px;
+            height: 48px;
+            background: #0d9488;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .file-info h3 {
+            color: #1a3a5c;
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .file-type {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        
+        .file-description {
+            color: #374151;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 0.95rem;
+        }
+        
+        .btn-primary {
+            background: #0d9488;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #0f766e;
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+        
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+        
+        .copy-feedback {
+            display: none;
+            color: #0d9488;
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .copy-feedback.show {
+            display: inline;
+        }
+        
+        .instructions {
+            margin-top: 2.5rem;
+            padding: 1.5rem;
+            background: #fef3c7;
+            border-left: 4px solid #d97706;
+            border-radius: 4px;
+        }
+        
+        .instructions h3 {
+            color: #92400e;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .instructions ol {
+            margin-left: 1.5rem;
+            color: #78350f;
+        }
+        
+        .instructions li {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .instructions ul {
+            margin-top: 0.5rem;
+            margin-left: 1.5rem;
+        }
+        
+        .instructions ul li {
+            margin-bottom: 0.4rem;
+            font-size: 0.95rem;
+        }
+        
+        .pro-tips {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: #dbeafe;
+            border-left: 4px solid #0d9488;
+            border-radius: 4px;
+        }
+        
+        .pro-tips h3 {
+            color: #1a3a5c;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .pro-tips ul {
+            margin-left: 1.5rem;
+            color: #1e40af;
+        }
+        
+        .pro-tips li {
+            margin-bottom: 0.75rem;
+            line-height: 1.6;
+        }
+        
+        .output-note {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: #f0fdf4;
+            border-left: 4px solid #16a34a;
+            border-radius: 4px;
+        }
+        
+        .output-note h3 {
+            color: #166534;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+        
+        .output-note p {
+            color: #15803d;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        @media (max-width: 640px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .content {
+                padding: 1.5rem 1rem;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>The 15-Minute BrandRank Report</h1>
+            <div class="caption">Quick Insights to Prime Full Analysis and Lure Clients to the Dashboard</div>
+        </div>
+        
+        <div class="content">
+            <div class="intro">
+                Here is end-of-year guidance for getting quick pulse-checks on BrandRank customers using a basic prompt template. Simply download or copy either file format below and upload it directly into any AI prompt box to generate instant brand analysis reports. While not a perfect source of truth, this is a great way to quickly grasp what's happening with the brand.
+            </div>
+            
+            <div class="examples-section">
+                <h3>📊 View Sample Reports</h3>
+                <p>See the template in action with these real brand examples:</p>
+                <div class="example-buttons">
+                    <a href="https://brandrankai-dashboard-index.com/sample-report-1.html" target="_blank" class="example-btn nestle-btn">
+                        <span class="example-icon">🏢</span>
+                        <span class="example-text">
+                            <strong>Nestlé Corporate</strong>
+                            <small>Year-End Brand Snapshot</small>
+                        </span>
+                    </a>
+                    <a href="https://brandrankai-dashboard-index.com/Tylenol_Year_End_Brand_Snapshot.html" target="_blank" class="example-btn tylenol-btn">
+                        <span class="example-icon">💊</span>
+                        <span class="example-text">
+                            <strong>Tylenol</strong>
+                            <small>Healthcare Brand Analysis</small>
+                        </span>
+                    </a>
+                    <a href="https://brandrankai-dashboard-index.com/Walmart_Year_End_Brand_Snapshot_Q4_2025.html" target="_blank" class="example-btn walmart-btn">
+                        <span class="example-icon">🛒</span>
+                        <span class="example-text">
+                            <strong>Walmart</strong>
+                            <small>Q4 2025 Snapshot</small>
+                        </span>
+                    </a>
+                    <a href="https://brandrankai-dashboard-index.com/Align_Year_End_Brand_Snapshot_Q4_2025.html" target="_blank" class="example-btn align-btn">
+                        <span class="example-icon">🌿</span>
+                        <span class="example-text">
+                            <strong>Align Probiotics</strong>
+                            <small>Q4 2025 Snapshot</small>
+                        </span>
+                    </a>
+                    <a href="https://brandrankai-dashboard-index.com/JobsOhio_Year_End_Brand_Snapshot_Q4_2025.html" target="_blank" class="example-btn jobsohio-btn">
+                        <span class="example-icon">🏭</span>
+                        <span class="example-text">
+                            <strong>JobsOhio</strong>
+                            <small>Q4 2025 Snapshot</small>
+                        </span>
+                    </a>
+                    <a href="https://brandrankai-dashboard-index.com/Amazon_Year_End_Brand_Snapshot_Q4_2025.html" target="_blank" class="example-btn amazon-btn">
+                        <span class="example-icon">📦</span>
+                        <span class="example-text">
+                            <strong>Amazon</strong>
+                            <small>Q4 2025 Snapshot</small>
+                        </span>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="files-section">
+                <div class="file-card">
+                    <div class="file-header">
+                        <div class="file-icon">📄</div>
+                        <div class="file-info">
+                            <h3>Markdown Template</h3>
+                            <div class="file-type">brand-year-review-prompt.md</div>
+                        </div>
+                    </div>
+                    <div class="file-description">
+                        Complete prompt template in Markdown format. Perfect for text editors, GitHub, or direct copy-paste into AI interfaces.
+                    </div>
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="downloadMarkdown()">
+                            ⬇ Download .md File
+                        </button>
+                        <button class="btn btn-secondary" onclick="copyMarkdown()">
+                            📋 Copy to Clipboard
+                        </button>
+                        <span class="copy-feedback" id="md-feedback">✓ Copied!</span>
+                    </div>
+                </div>
+                
+                <div class="file-card">
+                    <div class="file-header">
+                        <div class="file-icon">📝</div>
+                        <div class="file-info">
+                            <h3>Text Template</h3>
+                            <div class="file-type">brand-year-review-template.txt</div>
+                        </div>
+                    </div>
+                    <div class="file-description">
+                        Plain text version with complete template content. Works with all AI tools and easy to edit in any text editor.
+                    </div>
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="downloadPDF()">
+                            ⬇ Download .txt File
+                        </button>
+                        <button class="btn btn-secondary" onclick="copyTxt()">
+                            📋 Copy to Clipboard
+                        </button>
+                        <span class="copy-feedback" id="txt-feedback">✓ Copied!</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="instructions">
+                <h3>📋 Step-by-Step Instructions</h3>
+                <ol>
+                    <li><strong>Go to the BrandRank Dashboard</strong> for the customer you're analyzing</li>
+                    
+                    <li><strong>Screenshot the overview page</strong> that displays all four core scores:
+                        <ul>
+                            <li>Brand Health & Trust</li>
+                            <li>Visibility</li>
+                            <li>Vulnerability</li>
+                            <li>Readiness</li>
+                        </ul>
+                    </li>
+                    
+                    <li><strong>Download data from each section</strong> using the new export tabs we created:
+                        <ul>
+                            <li>Navigate to each of the four score sections</li>
+                            <li>Use the download/export functionality for each</li>
+                        </ul>
+                    </li>
+                    
+                    <li><strong>For Sources: Download visibility data only</strong> (not all source data)</li>
+                    
+                    <li><strong>Create a fresh prompt</strong> on <strong>Claude.ai</strong> (first choice, though results are comparable on ChatGPT):
+                        <ul>
+                            <li>Upload the prompt template (.md preferred) from above</li>
+                            <li>Upload all the data files you downloaded</li>
+                            <li>Upload your screenshot</li>
+                            <li>Ask it to run the report</li>
+                        </ul>
+                    </li>
+                    
+                    <li><strong>Quality check (10 minutes):</strong> Review the generated report to verify all data is aligning correctly with your source files</li>
+                    
+                    <li><strong>Extra quality control (optional):</strong> Run the same report on ChatGPT (or whichever tool you didn't start with) and compare results for consistency</li>
+                </ol>
+            </div>
+            
+            <div class="pro-tips">
+                <h3>💡 Pro Tips</h3>
+                <ul>
+                    <li><strong>Claude.ai is recommended</strong> as the primary tool for best formatting and analysis depth</li>
+                    <li><strong>Use .md files</strong> when possible—they're easier to edit and work better with AI tools</li>
+                    <li><strong>Keep all files together</strong> in a folder before uploading to avoid missing data</li>
+                    <li><strong>Cross-reference</strong> between AI tools if you spot inconsistencies</li>
+                </ul>
+            </div>
+            
+            <div class="output-note">
+                <h3>📄 Report Output</h3>
+                <p>Quality varies in report output between <strong>HTML</strong> (more professional) and <strong>Word</strong> (clunkier but easier to edit). Just be sure to clarify in the prompt which format you want.</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const markdownContent = `# BrandRank Year-End Brand Snapshot – AI Generation Prompt
+
+You are generating a "Year-End Brand Snapshot" executive report using BrandRank.AI dashboard data. This report is for C-suite executives who need to understand what AI is saying about their brand and what to do about it.
+
+**CRITICAL: Match the exact format, spacing, and design of the reference report. No extra line breaks between sections. Continuous flow throughout.**
+
+---
+
+## VISUAL DESIGN SPECIFICATIONS
+
+### Design Principles
+1. **Restraint signals authority.** Limit color to functional use only.
+2. **Data should breathe.** Generous whitespace around scores and tables.
+3. **Hierarchy is everything.** Reader grasps structure in 3 seconds through type weight.
+4. **One insight per visual.** Each table or callout conveys one point.
+
+### Typography
+| Element | Treatment |
+|---------|-----------|
+| Report Title | 22pt bold, navy (#1a3a5c), uppercase letterspaced |
+| Section Headers | 12pt bold, navy, numbered, with bottom border |
+| Subsection Headers | Bold, dark gray (#374151) |
+| Body Text | 10pt regular, dark gray, 1.5 line height |
+| Captions | 9pt italic, medium gray (#6b7280) |
+
+### Color Palette
+| Color | Hex | Use For |
+|-------|-----|---------|
+| Navy | #1a3a5c | Headers, scores, borders |
+| Teal | #0d9488 | 🟢 Positive (scores 7+) |
+| Amber | #d97706 | 🟡 Caution (scores 4-6.9) |
+| Red | #dc2626 | 🔴 Critical (scores <4) |
+| Light Gray | #f8f9fa | Callout box backgrounds |
+| Dark Gray | #374151 | Body text |
+
+### Layout Rules
+- **Header:** BrandRank.AI logo (top left), Brand logo (top right), navy bottom border
+- **At a Glance box:** Light gray background, 4px navy left border
+- **Surprise box:** Light gray background, 4px amber left border
+- **Alert box:** Light pink background (#fef2f2), 4px red left border
+- **Engine breakdown:** Horizontal row, light gray background, centered scores
+- **Score boxes:** Three-column row for Availability/Depth/Clarity
+- **SWOT:** 2x2 grid with light gray cells
+- **Tables:** Navy header row with white text, no vertical lines, alternating row shading
+- **Dividers:** Thin navy line before sections 8, 9, 10 only
+
+---
+
+## REPORT OUTPUT – EXACT FORMAT
+
+### [HEADER]
+\`\`\`
+BrandRank.AI                                                    [BRAND LOGO]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+YEAR-END BRAND SNAPSHOT
+[BRAND NAME]: Q4 2025
+\`\`\`
+
+### [HEADLINE]
+**[8-12 word headline capturing central tension—specific, provocative, actionable]**
+
+Examples:
+- "Nestlé Invisible in Categories It Dominates—AI Trusts the Company, Not the Story"
+- "[Brand] Owns [Category] in Reality But Disappears When Consumers Ask AI"
+
+### [AT A GLANCE BOX]
+\`\`\`
+┌─────────────────────────────────────────────────────────────────────────┐
+│ At a Glance                                                             │
+│                                                                         │
+│ [50-60 words: Overall verdict. Primary strength and why it matters.    │
+│ Urgent risk and what's at stake. The unlock/opportunity.]              │
+│                                                                         │
+│ All data is sourced from the BrandRank reporting dashboard and         │
+│ reviewed by an analyst.                                                 │
+└─────────────────────────────────────────────────────────────────────────┘
+\`\`\`
+
+### 1. Brand Health & Trust Score: [X.X]/10 [↑↓→]
+[Exactly 2 sentences interpreting the score. Is the brand winning or losing the AI narrative? What does this mean for consumer discovery?]
+
+### 2. AI Visibility: [X.X]/10 [↑↓→]
+[One sentence: How often does this brand show up when consumers ask AI for help in this category?]
+
+**[ENGINE BREAKDOWN - Horizontal gray bar]**
+\`\`\`
+┌─────────────────────────────────────────────────────────────────────────┐
+│  ChatGPT    Gemini    Claude    Perplexity    Meta AI    Grok         │
+│    X.X       X.X       X.X        X.X          X.X       X.X          │
+└─────────────────────────────────────────────────────────────────────────┘
+\`\`\`
+
+**ChatGPT Performance:** [2-3 sentences on ChatGPT specifically—where brand appears, where invisible]
+
+**Where the Brand Wins:** 🟢 [Category] (X.X) • 🟢 [Category] (X.X) • 🟢 [Category] (X.X)
+
+**Critical Gaps:** 🔴 [Category] (X.X)—[business impact] • 🔴 [Category] (X.X)—[impact] • 🔴 [Category] (X.X)—[impact]
+
+**[CATEGORY PERFORMANCE TABLE]**
+| Category | Avg Score | Top Prompt (Score) |
+|----------|:---------:|-------------------|
+| [Category] | 🟢 X.X | "[Abbreviated prompt...]" (X.X) |
+| [Category] | 🟢 X.X | "[Abbreviated prompt...]" (X.X) |
+| [Category] | 🟡 X.X | "[Abbreviated prompt...]" (X.X) |
+| [Category] | 🟡 X.X | "[Abbreviated prompt...]" (X.X) |
+| [Category] | 🔴 X.X | "[Abbreviated prompt...]" (X.X) |
+| [Category] | 🔴 X.X | "[Abbreviated prompt...]" (X.X) |
+
+**Competitive Position:** [2-3 sentences on where competitors are winning and market share of attention at risk]
+
+### 3. Brand Vulnerability: [X.X]/10 [↑↓→]
+[One sentence: Is AI protecting or undermining the brand's reputation?]
+
+**Brand Promise Alignment: [X.X]/10**
+[Interpret with weight based on score:
+- 8-10: "AI engines validate [BRAND]'s promise. The brand story is landing."
+- 6-7: "AI engines are unconvinced by [BRAND]'s promise. When consumers ask about [promise], AI hedges rather than endorses. This credibility gap erodes trust at discovery."
+- 4-5: "AI engines are skeptical of [BRAND]'s promise."
+- 0-3: "AI engines contradict [BRAND]'s promise."]
+
+[State strongest and weakest engine with brief explanation]
+
+**Statements of Fact Assessment**
+Of [X] monitored statements, [Y] are accurate, [Z] are partially accurate, and [W] are inaccurate.
+
+**[IF INACCURATE - ALERT BOX]**
+\`\`\`
+┌─────────────────────────────────────────────────────────────────────────┐
+│ 🔴 IMMEDIATE ACTION: [Statement] is being misrepresented. This creates │
+│ legal, reputational, or competitive exposure.                          │
+└─────────────────────────────────────────────────────────────────────────┘
+\`\`\`
+
+**Source Influence**
+[X]% of sources shaping AI's brand perception are owned properties ([brand].com), giving [BRAND] [strong/moderate/limited] ability to correct misrepresentations. Top third-party sources: [Source 1], [Source 2], [Source 3]. [If applicable: Monitor [risk source] which appears in X% of queries.]
+
+**[SWOT 2x2 GRID]**
+| **STRENGTH** | **WEAKNESS** |
+|--------------|--------------|
+| [One sentence] | [One sentence] |
+| **OPPORTUNITY** | **THREAT** |
+| [One sentence] | [One sentence] |
+
+### 4. Content Readiness: [X.X]/10 [↑↓→]
+[One sentence: Can AI find, understand, and extract this brand's content?]
+
+**[SCORE BOXES - Three columns]**
+\`\`\`
+┌──────────────────┬──────────────────┬──────────────────┐
+│   Availability   │      Depth       │     Clarity      │
+│       X.X        │       X.X        │       X.X        │
+└──────────────────┴──────────────────┴──────────────────┘
+\`\`\`
+
+**Availability ([X.X]):** Content Liquidity X.X | Search Capital X.X | Algorithmic Anchors X.X. [One sentence on whether AI can discover brand content.]
+
+**Depth ([X.X]):** Authoritative Content X.X | Technical Content X.X | Statistics with Citations X.X. [One sentence on content substance.]
+
+**Clarity ([X.X]):** Easy to Understand X.X | Fluency Optimization X.X. [One sentence on AI extraction readiness.]
+
+**ChatGPT Readiness:** [X.X]/10. Priority fix: [One specific technical action].
+
+### 5. Biggest Surprises
+**[AMBER LEFT-BORDER BOX]**
+\`\`\`
+┌─────────────────────────────────────────────────────────────────────────┐
+│ • Market leader, AI invisible: [BRAND] leads [category] in market      │
+│   share but scores X.X in AI visibility—consumers asking AI never      │
+│   hear the brand.                                                      │
+│                                                                         │
+│ • Investment not translating: Despite [investment/credential], AI does │
+│   not associate [BRAND] with [expected attribute].                     │
+│                                                                         │
+│ • Promise rejected: [Engine] describes [brand claim] as "[damaging     │
+│   quote]"—a direct contradiction of brand positioning.                 │
+└─────────────────────────────────────────────────────────────────────────┘
+\`\`\`
+
+### 6. Surprising Strengths
+**Heritage pays dividends:** AI engines consistently cite [BRAND]'s [legacy attribute], scoring X.X—a foundation to build on.
+
+**Unexpected category strength:** [BRAND] scores X.X on [category], outperforming [competitor] despite less visible investment.
+
+**Trust signal landing:** AI validates [specific claim or credential], providing credibility that can be leveraged into adjacent categories.
+
+### 7. Opportunities Going Into 2026
+**1. URGENT CONTENT PRIORITIES:** Create authoritative content on [category] (currently X.X/10) to capture visibility being ceded to [competitor or generic results].
+
+**2. STRENGTHEN MESSAGING AROUND:** Address the [attribute] credibility gap (X.X/10)—AI engines are not buying [specific claim]. [Specific action].
+
+**3. ADDRESS COMPETITIVE GAP IN:** Reclaim [category] from [competitor] who scores X.X vs. brand's Y.Y by [specific action].
+
+**4. CORRECT MISINFORMATION ON:** Correct AI misrepresentation of [statement]—currently [describe error]. [Remediation step].
+
+**5. OPTIMIZE CONTENT FOR:** Improve [subscore] (X.X/10) by [specific technical action].
+
+**6. STRENGTHEN SOURCE AUTHORITY:** [BRAND].com is cited in [X]% of vulnerability queries. [Specific action].
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+### 8. Content Catalysts
+*Suggested Headlines to Fill the Gap*
+
+**"[Headline 1]"** — [One sentence: content piece, target category, why it improves AI discoverability]
+
+**"[Headline 2]"** — [One sentence: content piece and strategic purpose]
+
+**"[Headline 3]"** — [One sentence: content piece and strategic purpose]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+### 9. Who Should Act On This
+| Function | Priority Actions |
+|----------|------------------|
+| **Corporate Communications** | [One sentence—Brand Promise, statement accuracy, source risk] |
+| **Digital & Content Teams** | [One sentence—Content Readiness, schema, owned sources] |
+| **Brand Marketing** | [One sentence—competitive positioning, category visibility] |
+| **R&D / Innovation** | [One sentence—product visibility gaps, innovation narratives] |
+| **Executive Leadership** | [One sentence—Brand Health trend, resource allocation, risks] |
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+### 10. Persona / Stakeholder Reactions
+| Persona | Description | Likely Reaction |
+|---------|-------------|-----------------|
+| **[Persona 1]** | [4-6 word motivation] | [One sentence referencing specific scores/findings] |
+| **[Persona 2]** | [4-6 word motivation] | [One sentence referencing specific scores/findings] |
+| **[Persona 3]** | [4-6 word motivation] | [One sentence referencing specific scores/findings] |
+| **[Persona 4]** | [4-6 word motivation] | [One sentence referencing specific scores/findings] |
+| **[Persona 5]** | [4-6 word motivation] | [One sentence referencing specific scores/findings] |
+
+**Select from Consumer Personas:** Premium Quality Seekers, Value Shoppers, Eco-Conscious Consumers, Health & Safety First, Convenience-Driven Buyers, Tradition-Oriented Loyalists, Variety Seekers
+
+**Select from Stakeholder Personas:** Financial Analysts/Investors, Activists/Climate Advocates, Employees/Internal Ambassadors, Regulators/Policy Influencers, Retail & Channel Partners, Competitors/Category Peers, Media & Opinion Shapers
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+### About BrandRank.AI
+BrandRank works with over 60 global brands to strengthen trust and purchase intent by uncovering vulnerabilities, purchase-driving insights, and growth opportunities across AI answer engines. As a SaaS platform, we track all major answer engines to improve visibility, ensure content is AI-ready, and rigorously measure brand claims and instructional accuracy.
+
+To explore your complete data, access your dashboard at **[DASHBOARD_URL]**.
+
+\`\`\`
+Page 1 of 2 | [Month] 2025 | Confidential
+\`\`\`
+
+---
+
+## ADDENDUM (Separate Page)
+
+### Essential Terms
+
+**AI Visibility** — "Do I show up?" Measures how often your brand appears when consumers ask AI category-relevant questions. 7+ = AI recommends you; <4 = invisible.
+
+**Brand Vulnerability** — "What does AI say about me?" Measures whether AI protects or undermines your reputation.
+
+**Brand Promise Alignment** — "Does AI believe my story?" Score below 7 means AI hedges rather than endorses.
+
+**Content Readiness** — "Is my site ready for AI?" Can AI find (Availability), trust (Depth), and extract (Clarity) your content?
+
+**Source Influence** — "Who shapes my AI narrative?" High owned-source % = greater control over your story.
+
+**Statements of Fact** — "Is AI telling the truth?" Monitors accuracy of specific brand claims across engines.
+
+### Why Check Your Dashboard Regularly
+
+**AI models update frequently.** Scores can shift overnight with platform updates.
+
+**Competitors are moving.** See their gains in scores before you see them in market share.
+
+**Prepare for key moments.** Check before earnings calls, board meetings, campaign launches.
+
+**Track your investments.** See if content and PR translate to AI visibility.
+
+**Catch misinformation early.** Before it spreads across platforms.
+
+**Spot emerging opportunities.** New questions consumers are asking.
+
+---
+
+## FORMAT REQUIREMENTS
+
+- Match exact spacing and design of reference report
+- No extra blank lines between sections 1-7
+- Divider lines (━━━) only before sections 8, 9, 10
+- Use 🟢 (7+) | 🟡 (4-6.9) | 🔴 (<4) sparingly
+- Callout boxes: At a Glance (navy border), Surprises (amber border), Alerts (red border)
+- Tables: Navy headers, no vertical lines, alternating rows
+- Total length: 2 pages max (excluding Addendum)
+- No hedging language ("moderate," "room for improvement")
+- Page numbers bottom right with date`;
+        
+        function downloadMarkdown() {
+            const blob = new Blob([markdownContent], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'brand-year-review-prompt.md';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        function copyMarkdown() {
+            navigator.clipboard.writeText(markdownContent).then(() => {
+                const feedback = document.getElementById('md-feedback');
+                feedback.classList.add('show');
+                setTimeout(() => {
+                    feedback.classList.remove('show');
+                }, 2000);
+            }).catch(err => {
+                alert('Failed to copy. Please try the download option instead.');
+            });
+        }
+        
+        function copyTxt() {
+            navigator.clipboard.writeText(markdownContent).then(() => {
+                const feedback = document.getElementById('txt-feedback');
+                feedback.classList.add('show');
+                setTimeout(() => {
+                    feedback.classList.remove('show');
+                }, 2000);
+            }).catch(err => {
+                alert('Failed to copy. Please try the download option instead.');
+            });
+        }
+        
+        function generatePDFContent() {
+            // Create a simple text-based PDF representation
+            return markdownContent;
+        }
+        
+        function downloadPDF() {
+            // Since we can't create actual PDFs in the browser without libraries,
+            // we'll create a formatted text file with the same content
+            const pdfContent = generatePDFContent();
+            const blob = new Blob([pdfContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'brand-year-review-template.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        function viewPDFInfo() {
+            alert('This will download the template content as a text file.\n\nThe content is identical to the Markdown version and can be uploaded to any AI tool.\n\nFor a formatted PDF with visual styling, please use a tool like Markdown to PDF converter after downloading the .md file.');
+        }
+    </script>
+</body>
+</html>
