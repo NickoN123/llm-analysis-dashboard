@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Answer Media Navigator - BrandRank Intelligence</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px 60px;
+            margin-bottom: 40px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #ffffff;
+            font-size: 42px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .header .subtitle {
+            color: #00d4ff;
+            font-size: 18px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 40px;
+        }
+
+        .control-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 4px;
+            height: fit-content;
+            position: sticky;
+            top: 40px;
+        }
+
+        .metric-section {
+            margin-bottom: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .metric-section:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 24px;
+            color: #00d4ff;
+        }
+
+        .slider-container {
+            margin-bottom: 24px;
+        }
+
+        .slider-container:last-child {
+            margin-bottom: 0;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 12px;
+        }
+
+        .slider-label {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 400;
+        }
+
+        .slider-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #00d4ff;
+            min-width: 50px;
+            text-align: right;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+            border-radius: 2px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #00d4ff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 12px rgba(0, 212, 255, 0.6);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #00d4ff;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .recommendations-area {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .recommendation-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 4px solid;
+            padding: 32px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .recommendation-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(4px);
+        }
+
+        .recommendation-card.visibility { border-left-color: #00d4ff; }
+        .recommendation-card.vulnerability { border-left-color: #ff6b6b; }
+        .recommendation-card.readiness { border-left-color: #4ecdc4; }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .priority-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 2px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .priority-critical {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+            border: 1px solid rgba(255, 107, 107, 0.4);
+        }
+
+        .priority-high {
+            background: rgba(255, 217, 61, 0.2);
+            color: #ffd93d;
+            border: 1px solid rgba(255, 217, 61, 0.4);
+        }
+
+        .priority-medium {
+            background: rgba(78, 205, 196, 0.2);
+            color: #4ecdc4;
+            border: 1px solid rgba(78, 205, 196, 0.4);
+        }
+
+        .card-description {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .actions-section {
+            margin-bottom: 20px;
+        }
+
+        .actions-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 12px;
+        }
+
+        .actions-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px 16px;
+        }
+
+        .actions-list li {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 13px;
+            line-height: 1.5;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .actions-list li:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 4px;
+            height: 4px;
+            background: #00d4ff;
+            border-radius: 50%;
+        }
+
+        .budget-display {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .budget-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .budget-amount {
+            font-size: 16px;
+            font-weight: 600;
+            color: #00d4ff;
+        }
+
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .control-panel {
+                position: static;
+            }
+
+            .actions-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>BrandRank Answer Media Navigator</h1>
+            <div class="subtitle">Where Answer Signals Meet Media Planning</div>
+        </div>
+
+        <div class="main-layout">
+            <div class="control-panel">
+                <div class="metric-section">
+                    <div class="section-title">AI Visibility Score</div>
+                    
+                    <div class="slider-container">
+                        <div class="slider-header">
+                            <span class="slider-label">Overall Score</span>
+                            <span class="slider-value" id="visibility-value">5.0</span>
+                        </div>
+                        <input type="range" id="visibility" min="0" max="10" value="5.0" step="0.1">
+                    </div>
+                </div>
+
+                <div class="metric-section">
+                    <div class="section-title">Vulnerability Score</div>
+                    
+                    <div class="slider-container">
+                        <div class="slider-header">
+                            <span class="slider-label">Overall Score</span>
+                            <span class="slider-value" id="vulnerability-value">5.0</span>
+                        </div>
+                        <input type="range" id="vulnerability" min="0" max="10" value="5.0" step="0.1">
+                    </div>
+                </div>
+
+                <div class="metric-section">
+                    <div class="section-title">Content Readiness Score</div>
+                    
+                    <div class="slider-container">
+                        <div class="slider-header">
+                            <span class="slider-label">Overall Score</span>
+                            <span class="slider-value" id="readiness-value">5.0</span>
+                        </div>
+                        <input type="range" id="readiness" min="0" max="10" value="5.0" step="0.1">
+                    </div>
+                </div>
+            </div>
+
+            <div class="recommendations-area" id="recommendations">
+                <!-- Recommendations will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sliders = [
+            { id: 'visibility', display: 'visibility-value' },
+            { id: 'vulnerability', display: 'vulnerability-value' },
+            { id: 'readiness', display: 'readiness-value' }
+        ];
+
+        sliders.forEach(slider => {
+            const input = document.getElementById(slider.id);
+            const display = document.getElementById(slider.display);
+            
+            input.addEventListener('input', (e) => {
+                display.textContent = parseFloat(e.target.value).toFixed(1);
+                updateRecommendations();
+            });
+        });
+
+        function getScores() {
+            return {
+                visibility: parseFloat(document.getElementById('visibility').value),
+                vulnerability: parseFloat(document.getElementById('vulnerability').value),
+                readiness: parseFloat(document.getElementById('readiness').value)
+            };
+        }
+
+        function updateRecommendations() {
+            const scores = getScores();
+            const recommendations = generateRecommendations(scores);
+            renderRecommendations(recommendations);
+        }
+
+        function generateRecommendations(scores) {
+            const recs = [];
+
+            // LOW VISIBILITY - Need paid intervention
+            if (scores.visibility < 4.0) {
+                recs.push({
+                    category: 'visibility',
+                    priority: 'critical',
+                    title: 'Paid AI Media - Immediate Action Required',
+                    description: `At ${scores.visibility.toFixed(1)}/10 visibility, your brand is invisible in AI answers. Deploy paid media now to establish presence while building organic foundations.`,
+                    actions: [
+                        'Launch Perplexity sponsored prompts',
+                        'Activate Google AI Overview ads',
+                        'Deploy Amazon Rufus sponsorships',
+                        'Set up ChatGPT visibility monitoring'
+                    ],
+                    budget: '25-35% of search budget'
+                });
+            } else if (scores.visibility < 7.0) {
+                recs.push({
+                    category: 'visibility',
+                    priority: 'high',
+                    title: 'Paid AI Media - Scale Presence',
+                    description: `Visibility at ${scores.visibility.toFixed(1)}/10 needs improvement. Use paid placements to accelerate Share of Answer growth.`,
+                    actions: [
+                        'Expand sponsored prompt coverage',
+                        'Test AI Overview ad formats',
+                        'Optimize retail AI placements',
+                        'Track competitive Share of Answer'
+                    ],
+                    budget: '15-25% of search budget'
+                });
+            }
+
+            // HIGH VULNERABILITY - Need PR/authority building
+            if (scores.vulnerability > 7.0) {
+                recs.push({
+                    category: 'vulnerability',
+                    priority: 'critical',
+                    title: 'PR & Authority Building - Defensive Action',
+                    description: `Vulnerability at ${scores.vulnerability.toFixed(1)}/10 is severe. AI is spreading misinformation or favoring competitors. Build authoritative sources immediately.`,
+                    actions: [
+                        'Secure third-party certifications',
+                        'Partner with Consumer Reports / Wirecutter',
+                        'Launch PR campaign to major publications',
+                        'Correct inaccurate AI statements'
+                    ],
+                    budget: '20-30% reallocated to earned media'
+                });
+            } else if (scores.vulnerability > 4.0) {
+                recs.push({
+                    category: 'vulnerability',
+                    priority: 'high',
+                    title: 'PR & Authority Building - Strengthen Sources',
+                    description: `Moderate vulnerability at ${scores.vulnerability.toFixed(1)}/10. Strengthen third-party citations and trust signals.`,
+                    actions: [
+                        'Pursue industry publication features',
+                        'Build expert partnerships',
+                        'Increase trade publication presence',
+                        'Monitor source authority metrics'
+                    ],
+                    budget: '10-15% of marketing budget'
+                });
+            }
+
+            // LOW READINESS - Need content infrastructure
+            if (scores.readiness < 5.0) {
+                recs.push({
+                    category: 'readiness',
+                    priority: 'critical',
+                    title: 'Content Infrastructure - Pause Paid Expansion',
+                    description: `Readiness at ${scores.readiness.toFixed(1)}/10 is too low. Paid media without AI-ready content funds competitors. Build foundation first.`,
+                    actions: [
+                        'Deploy JSON-LD schema on all pages',
+                        'Create structured FAQ content',
+                        'Optimize product feeds for AI',
+                        'Add transcripts to video content'
+                    ],
+                    budget: 'Reallocate to content infrastructure'
+                });
+            } else if (scores.readiness < 7.0) {
+                recs.push({
+                    category: 'readiness',
+                    priority: 'high',
+                    title: 'Content Infrastructure - Optimization',
+                    description: `Readiness at ${scores.readiness.toFixed(1)}/10 needs improvement. Enhance discoverability before scaling paid efforts.`,
+                    actions: [
+                        'Improve schema coverage',
+                        'Expand content depth and detail',
+                        'Optimize for AI extraction',
+                        'Build comparison content'
+                    ],
+                    budget: '15-20% of content budget'
+                });
+            }
+
+            // GOOD VISIBILITY - Maintain and optimize
+            if (scores.visibility >= 7.0) {
+                recs.push({
+                    category: 'visibility',
+                    priority: 'medium',
+                    title: 'Maintain AI Presence',
+                    description: `Strong visibility at ${scores.visibility.toFixed(1)}/10. Focus on optimization and competitive monitoring.`,
+                    actions: [
+                        'Monitor Share of Answer trends',
+                        'Test new AI surfaces',
+                        'Optimize cost per answer',
+                        'Defend against competitor moves'
+                    ],
+                    budget: '10-15% of search budget'
+                });
+            }
+
+            // LOW VULNERABILITY - Maintain authority
+            if (scores.vulnerability <= 4.0) {
+                recs.push({
+                    category: 'vulnerability',
+                    priority: 'medium',
+                    title: 'Maintain Source Authority',
+                    description: `Low vulnerability at ${scores.vulnerability.toFixed(1)}/10. Continue building authority partnerships.`,
+                    actions: [
+                        'Maintain trust authority relationships',
+                        'Publish thought leadership',
+                        'Monitor brand promise alignment',
+                        'Track statement accuracy'
+                    ],
+                    budget: '5-10% of marketing budget'
+                });
+            }
+
+            // GOOD READINESS - Scale paid
+            if (scores.readiness >= 7.0 && scores.visibility < 7.0) {
+                recs.push({
+                    category: 'readiness',
+                    priority: 'high',
+                    title: 'Scale Paid Media - Foundation Ready',
+                    description: `Strong readiness at ${scores.readiness.toFixed(1)}/10. Your content is AI-ready. Scale paid media to convert readiness into visibility.`,
+                    actions: [
+                        'Increase paid AI placement budget',
+                        'Expand to new AI surfaces',
+                        'Accelerate sponsored prompt deployment',
+                        'Test higher bid strategies'
+                    ],
+                    budget: '25-35% increase in AI media spend'
+                });
+            }
+
+            return recs;
+        }
+
+        function renderRecommendations(recommendations) {
+            const container = document.getElementById('recommendations');
+            container.innerHTML = '';
+
+            if (recommendations.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: rgba(255,255,255,0.5); padding: 40px;">Your BrandRank scores are strong across all dimensions. Focus on maintenance and competitive monitoring.</div>';
+                return;
+            }
+
+            recommendations.forEach(rec => {
+                const card = document.createElement('div');
+                card.className = `recommendation-card ${rec.category}`;
+                
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">${rec.title}</div>
+                            <span class="priority-indicator priority-${rec.priority}">${rec.priority}</span>
+                        </div>
+                    </div>
+                    <p class="card-description">${rec.description}</p>
+                    <div class="actions-section">
+                        <div class="actions-title">Media Considerations</div>
+                        <ul class="actions-list">
+                            ${rec.actions.map(action => `<li>${action}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="budget-display">
+                        <span class="budget-label">Recommended Budget</span>
+                        <span class="budget-amount">${rec.budget}</span>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        updateRecommendations();
+    </script>
+</body>
+</html>
