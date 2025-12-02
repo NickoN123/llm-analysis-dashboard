@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrandRank Year-End Brand Snapshot - IAMS Cat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica', Arial, sans-serif;
+            color: #374151;
+            background: white;
+            line-height: 1.5;
+            font-size: 10pt;
+        }
+
+        .page {
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.75in;
+            background: white;
+            min-height: 11in;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #1a3a5c;
+            margin-bottom: 24px;
+        }
+
+        .header-logo {
+            font-weight: bold;
+            color: #1a3a5c;
+            font-size: 11pt;
+        }
+
+        .brand-logo {
+            color: #d97706;
+            font-weight: bold;
+            font-size: 14pt;
+        }
+
+        .report-title {
+            font-size: 22pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+        }
+
+        .report-subtitle {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            margin-bottom: 20px;
+        }
+
+        .headline {
+            font-size: 13pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        .callout-box {
+            background: #f8f9fa;
+            border-left: 4px solid #1a3a5c;
+            padding: 16px 20px;
+            margin-bottom: 18px;
+        }
+
+        .callout-box.amber {
+            border-left-color: #d97706;
+        }
+
+        .callout-box.alert {
+            background: #fef2f2;
+            border-left-color: #dc2626;
+        }
+
+        .callout-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #1a3a5c;
+        }
+
+        .callout-text {
+            font-size: 10pt;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin-bottom: 16px;
+        }
+
+        .section-header {
+            font-size: 12pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            border-bottom: 1px solid #1a3a5c;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+        }
+
+        .subsection-header {
+            font-weight: bold;
+            color: #374151;
+            margin-top: 10px;
+            margin-bottom: 6px;
+        }
+
+        .score-display {
+            display: inline;
+            font-weight: bold;
+            color: #1a3a5c;
+            font-size: 11pt;
+        }
+
+        .engine-breakdown {
+            background: #f8f9fa;
+            padding: 16px;
+            margin: 12px 0;
+            text-align: center;
+        }
+
+        .engine-row {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 4px;
+            font-size: 9pt;
+            color: #6b7280;
+        }
+
+        .engine-scores {
+            display: flex;
+            justify-content: space-around;
+            font-weight: bold;
+            font-size: 11pt;
+            color: #1a3a5c;
+        }
+
+        .score-boxes {
+            display: flex;
+            gap: 12px;
+            margin: 12px 0;
+        }
+
+        .score-box {
+            flex: 1;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            border: 2px solid #0d9488;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .score-box-title {
+            font-size: 9pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .score-box-value {
+            font-size: 32pt;
+            font-weight: bold;
+            color: #0d9488;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 9.5pt;
+        }
+
+        th {
+            background: #1a3a5c;
+            color: white;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .swot-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            background: #d1d5db;
+            margin: 12px 0;
+        }
+
+        .swot-cell {
+            background: white;
+            padding: 16px;
+        }
+
+        .swot-cell.strength {
+            background: linear-gradient(to bottom right, #f0fdf4, #ffffff);
+            border-left: 4px solid #0d9488;
+        }
+
+        .swot-cell.weakness {
+            background: linear-gradient(to bottom right, #fef2f2, #ffffff);
+            border-left: 4px solid #dc2626;
+        }
+
+        .swot-cell.opportunity {
+            background: linear-gradient(to bottom right, #eff6ff, #ffffff);
+            border-left: 4px solid #2563eb;
+        }
+
+        .swot-cell.threat {
+            background: linear-gradient(to bottom right, #fffbeb, #ffffff);
+            border-left: 4px solid #d97706;
+        }
+
+        .swot-cell-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 10pt;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .swot-cell.strength .swot-cell-title {
+            color: #0d9488;
+        }
+
+        .swot-cell.weakness .swot-cell-title {
+            color: #dc2626;
+        }
+
+        .swot-cell.opportunity .swot-cell-title {
+            color: #2563eb;
+        }
+
+        .swot-cell.threat .swot-cell-title {
+            color: #d97706;
+        }
+
+        .divider {
+            border-top: 1px solid #1a3a5c;
+            margin: 20px 0;
+        }
+
+        .bullet-list {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .bullet-list li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 16px;
+            border-top: 1px solid #d1d5db;
+            font-size: 8pt;
+            color: #6b7280;
+            text-align: right;
+        }
+
+        .green { color: #0d9488; }
+        .amber { color: #d97706; }
+        .red { color: #dc2626; }
+
+        .caption {
+            font-size: 9pt;
+            font-style: italic;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        p {
+            margin-bottom: 8px;
+        }
+
+        .compact {
+            margin-bottom: 4px;
+        }
+
+        .page-break {
+            page-break-before: always;
+        }
+
+        .addendum-title {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            margin-bottom: 16px;
+            margin-top: 30px;
+        }
+
+        .term {
+            margin-bottom: 12px;
+        }
+
+        .term-title {
+            font-weight: bold;
+            color: #1a3a5c;
+        }
+
+        .catalyst-headline {
+            font-weight: bold;
+            font-size: 10.5pt;
+            margin-bottom: 4px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .catalyst-headline.primary {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            color: #065f46;
+            border-left: 4px solid #0d9488;
+        }
+
+        .catalyst-headline.secondary {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            color: #1e40af;
+            border-left: 4px solid #2563eb;
+        }
+
+        .catalyst-headline.tertiary {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+            border-left: 4px solid #d97706;
+        }
+
+        .catalyst-description {
+            margin-left: 16px;
+            margin-bottom: 12px;
+        }
+
+        .dashboard-link {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 8px 0;
+            background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 9pt;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(13, 148, 136, 0.2);
+        }
+
+        .dashboard-link:hover {
+            background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+            box-shadow: 0 4px 6px rgba(13, 148, 136, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .dashboard-link-wrapper {
+            text-align: center;
+            margin: 16px 0;
+        }
+
+        @media print {
+            .page {
+                padding: 0.5in;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-logo">BrandRank.AI</div>
+            <div class="brand-logo">IAMS</div>
+        </div>
+
+        <!-- Title -->
+        <div class="report-title">YEAR-END BRAND SNAPSHOT</div>
+        <div class="report-subtitle">IAMS Cat: Q4 2025</div>
+
+        <!-- Headline -->
+        <div class="headline">IAMS Dominates Direct Queries But Disappears When Consumers Ask AI For Help</div>
+
+        <!-- At a Glance -->
+        <div class="callout-box">
+            <div class="callout-title">At a Glance</div>
+            <div class="callout-text">
+                IAMS scores 3.9/10 in AI visibility—consumers asking AI for cat food recommendations rarely hear the brand. IAMS wins on branded queries (7.6/10) but scores near-zero in Trust & Transparency (0.4/10), the fastest-growing category consideration. The unlock: IAMS' strong science credentials and safety record are invisible to AI engines, ceding discovery to competitors who document less but communicate more.
+                <br><br>
+                All data is sourced from the BrandRank reporting dashboard and reviewed by an analyst.
+            </div>
+        </div>
+
+        <!-- Section 1: Brand Health -->
+        <div class="section">
+            <div class="section-header">1. Brand Health & Trust Score: <span class="score-display">5.9/10 →</span></div>
+            <p>IAMS holds mid-tier positioning with solid product credentials but suffers from AI invisibility when consumers seek guidance. The brand is losing the discovery battle while maintaining reasonable trust among existing customers who know to ask for it by name.</p>
+        </div>
+
+        <!-- Section 2: AI Visibility -->
+        <div class="section">
+            <div class="section-header">2. AI Visibility: <span class="score-display">3.9/10 →</span></div>
+            <p>IAMS appears in only 39% of category-relevant queries—consumers asking AI for cat food help rarely hear the brand name.</p>
+            
+            <!-- Engine Breakdown -->
+            <div class="engine-breakdown">
+                <div class="engine-row">
+                    <span>ChatGPT</span>
+                    <span>Gemini</span>
+                    <span>Claude</span>
+                    <span>Perplexity</span>
+                    <span>Meta AI</span>
+                    <span>Grok</span>
+                </div>
+                <div class="engine-scores">
+                    <span>3.7</span>
+                    <span>4.2</span>
+                    <span>3.9</span>
+                    <span>2.5</span>
+                    <span>2.3</span>
+                    <span>4.7</span>
+                </div>
+            </div>
+
+            <p class="subsection-header">ChatGPT Performance:</p>
+            <p>IAMS scores 3.7/10 on ChatGPT, appearing sporadically in product comparisons but largely absent from general category recommendations. The brand shows up when consumers specifically compare IAMS to competitors (9-10/10) but vanishes for "best cat food" queries (0-2/10).</p>
+
+            <p class="subsection-header">Where the Brand Wins:</p>
+            <p>🟢 Comparison Queries (8.5) • 🟢 Branded Questions (7.6) • 🟡 Senior Cat Nutrition (3.8)</p>
+
+            <p class="subsection-header">Critical Gaps:</p>
+            <p>🔴 Trust & Transparency (0.4)—consumers asking about ingredient quality never hear IAMS • 🔴 General Category (2.5)—"best cat food" searches exclude the brand • 🔴 Kitten Health (2.9)—missing from growth and development conversations</p>
+
+            <!-- Category Performance Table -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th style="text-align: center;">Avg Score</th>
+                        <th>Top Prompt (Score)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Comparison</td>
+                        <td style="text-align: center;"><span class="green">🟢 8.5</span></td>
+                        <td>"Iams vs Rachel Ray Nutrish ingredient quality?" (10.0)</td>
+                    </tr>
+                    <tr>
+                        <td>Branded</td>
+                        <td style="text-align: center;"><span class="green">🟢 7.6</span></td>
+                        <td>"How does Iams nutrition differ for kittens, adults..." (10.0)</td>
+                    </tr>
+                    <tr>
+                        <td>Seniors/Mature</td>
+                        <td style="text-align: center;"><span class="amber">🟡 3.8</span></td>
+                        <td>"Is senior cat food more expensive than regular..." (5.8)</td>
+                    </tr>
+                    <tr>
+                        <td>Healthy Weight</td>
+                        <td style="text-align: center;"><span class="amber">🟡 3.5</span></td>
+                        <td>"What kind of dry cat food helps cats lose weight..." (4.2)</td>
+                    </tr>
+                    <tr>
+                        <td>Vet Recommended</td>
+                        <td style="text-align: center;"><span class="amber">🟡 3.2</span></td>
+                        <td>"What's the top vet-recommended cat food?" (5.0)</td>
+                    </tr>
+                    <tr>
+                        <td>Kitten Health</td>
+                        <td style="text-align: center;"><span class="amber">🟡 2.9</span></td>
+                        <td>"Which dry kitten food is best for healthy growth..." (4.8)</td>
+                    </tr>
+                    <tr>
+                        <td>Tailored Nutrition</td>
+                        <td style="text-align: center;"><span class="amber">🟡 2.7</span></td>
+                        <td>"How does cat food help prevent urinary crystals?" (3.3)</td>
+                    </tr>
+                    <tr>
+                        <td>General Category</td>
+                        <td style="text-align: center;"><span class="amber">🟡 2.5</span></td>
+                        <td>"What's the best indoor dry cat food?" (5.2)</td>
+                    </tr>
+                    <tr>
+                        <td>Portfolio (All Brands)</td>
+                        <td style="text-align: center;"><span class="amber">🟡 2.3</span></td>
+                        <td>"How do I pick a dry food for my kitten?" (4.7)</td>
+                    </tr>
+                    <tr>
+                        <td>Trust & Transparency</td>
+                        <td style="text-align: center;"><span class="red">🔴 0.4</span></td>
+                        <td>"Which dry cat food brands have best reputation..." (2.3)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p class="subsection-header">Competitive Position:</p>
+            <p>IAMS trails Purina, Royal Canin, and Hill's in general category queries, despite comparable product quality. Competitors score 2-3 points higher in Trust & Transparency by explicitly documenting safety testing and ingredient sourcing—information IAMS possesses but doesn't communicate in AI-friendly formats.</p>
+        </div>
+
+        <!-- Section 3: Brand Vulnerability -->
+        <div class="section">
+            <div class="section-header">3. Brand Vulnerability: <span class="score-display">7.7/10 ↑</span></div>
+            <p>AI engines protect IAMS' reputation—when the brand is discussed, it's portrayed favorably with minimal negative sentiment or misinformation.</p>
+
+            <p class="subsection-header">Brand Promise Alignment: 7.0/10</p>
+            <p>AI engines validate IAMS' promise of "science-backed recipes to keep your pet full of life for more of life." The lifestage segmentation (Kitten, Adult, Senior 7+, Senior 11+) provides tangible credibility. However, engines hedge on the "backed by science" claim—citing the 70+ year history and Mars/Waltham connection but noting the absence of published research studies and concerns about by-product ingredients that conflict with modern feline nutrition science.</p>
+            <p><strong>Strongest Engine:</strong> Grok (8.5/10) emphasizes November 2025 Garfield campaign promoting Healthy Weight formulas backed by clinical data. <strong>Weakest Engine:</strong> Anthropic (6.0/10) notes limited recipe-level transparency and missing AAFCO substantiation details.</p>
+
+            <p class="subsection-header">Statements of Fact Assessment</p>
+            <p>Of 10 monitored statements, 10 are accurate, 0 are partially accurate, and 0 are inaccurate.</p>
+
+            <p class="subsection-header">Source Influence</p>
+            <p>37% of sources shaping AI's brand perception are owned properties (iams.com), giving IAMS moderate ability to correct misrepresentations. Top third-party sources: Chewy.com, Walmart.com, FDA.gov. Third-party retailer reviews (Chewy, Walmart) appear in 24% of queries and carry substantial weight with AI engines—prioritize cultivating these channels.</p>
+
+            <!-- SWOT Grid -->
+            <div class="swot-grid">
+                <div class="swot-cell strength">
+                    <div class="swot-cell-title">● STRENGTH</div>
+                    <div>Mars R&D credentials, PETconnect advisor access, and VCA integration create differentiated science-plus-service positioning that no mid-tier competitor can match.</div>
+                </div>
+                <div class="swot-cell weakness">
+                    <div class="swot-cell-title">● WEAKNESS</div>
+                    <div>Complex SKU portfolio with inconsistent transition communication creates palatability concerns and friction at retail where Autoship enrollment happens.</div>
+                </div>
+                <div class="swot-cell opportunity">
+                    <div class="swot-cell-title">● OPPORTUNITY</div>
+                    <div>Mars' recyclable packaging blueprint and AI health tools can reinforce sustainability and science leadership in mass retail where traditional competitors lack innovation credibility.</div>
+                </div>
+                <div class="swot-cell threat">
+                    <div class="swot-cell-title">● THREAT</div>
+                    <div>Blue Buffalo's fresh/topper launch and Freshpet's expanded distribution shift attention from kibble-led mid-tier brands while private label gains record share on value positioning.</div>
+                </div>
+            </div>
+            
+            <div class="dashboard-link-wrapper">
+                <a href="https://studio-brandrank-ai.auth.us-east-2.amazoncognito.com/login?client_id=1jhfr98fv1lgvrgcc78ge24qve&response_type=code&redirect_uri=https%3A%2F%2Fstudio.brandrank.ai%2Fauth%2Fcallback&state=eyJwYXRoIjoiIiwiZXhwOjE3NTQzMzY4MzUwNzYsInBvb2xIdDbmullfQ%3D%3D" class="dashboard-link" target="_blank">Learn More on the Dashboard →</a>
+            </div>
+        </div>
+
+        <!-- Section 4: Content Readiness -->
+        <div class="section">
+            <div class="section-header">4. Content Readiness: <span class="score-display">6.0/10 →</span></div>
+            <p>AI engines can find IAMS content but struggle to extract authoritative evidence—the science credentials exist but aren't packaged for AI consumption.</p>
+
+            <!-- Score Boxes -->
+            <div class="score-boxes">
+                <div class="score-box">
+                    <div class="score-box-title">Availability</div>
+                    <div class="score-box-value">6.0</div>
+                </div>
+                <div class="score-box">
+                    <div class="score-box-title">Depth</div>
+                    <div class="score-box-value">4.8</div>
+                </div>
+                <div class="score-box">
+                    <div class="score-box-title">Clarity</div>
+                    <div class="score-box-value">7.4</div>
+                </div>
+            </div>
+
+            <p><strong>Availability (6.0):</strong> Content Liquidity 7.8 | Search Capital 6.7 | Algorithmic Anchors 7.8. AI can discover IAMS content through FAQs and life-stage architecture, but missing structured data (JSON-LD, schema markup) prevents engines from establishing the brand as a category authority.</p>
+
+            <p><strong>Depth (4.8):</strong> Authoritative Content 6.7 | Technical Content 5.6 | Statistics with Citations 5.6. IAMS mentions Ph.D. nutritionists but lacks prominent expert bylines, peer-reviewed citations, and published research—the weakest performance area. Competitors showcase clinical trial data and veterinary credentials more explicitly.</p>
+
+            <p><strong>Clarity (7.4):</strong> Easy to Understand 6.7 | Fluency Optimization 7.8. Content is AI-extractable with clear product descriptions and feeding guides, though technical terminology occasionally obscures key selling points.</p>
+
+            <p><strong>ChatGPT Readiness:</strong> 3.7/10. Priority fix: Implement expert attribution with credentials—add named nutritionist bylines, published research links, and veterinary endorsement pages with full bios to strengthen E-E-A-T signals.</p>
+        </div>
+
+        <!-- Section 5: Surprising Strengths -->
+        <div class="section">
+            <div class="section-header">5. Surprising Strengths</div>
+            <p><strong>Heritage pays dividends:</strong> AI engines consistently cite IAMS' 70+ year history and Mars/Waltham connection, scoring 7.6/10 on branded queries—a foundation to build on.</p>
+            <p><strong>Comparison performance:</strong> IAMS scores 8.5/10 when consumers explicitly compare the brand to competitors—engines validate product quality, value positioning, and nutritional adequacy when given the chance.</p>
+            <p><strong>Promise validation:</strong> AI confirms IAMS delivers on lifestage nutrition with clear Kitten/Adult/Senior segmentation scoring 7.0/10—the architecture works, it just needs visibility.</p>
+        </div>
+
+        <!-- Section 6: Opportunities -->
+        <div class="section">
+            <div class="section-header">6. Opportunities Going Into 2026</div>
+            <p><strong>1. URGENT CONTENT PRIORITIES:</strong> Create authoritative content on ingredient sourcing and safety testing (currently 0.4/10 Trust & Transparency) to capture consumers asking "which cat food is safest" and "best ingredient quality"—high-value queries currently dominated by Royal Canin and Hill's.</p>
+            <p><strong>2. STRENGTHEN MESSAGING AROUND:</strong> Document the science credentials with named experts, published research links, and veterinary endorsements (Depth score 4.8/10)—AI engines want to validate "backed by science" but can't find the evidence. Add Ph.D. nutritionist profiles with credentials and peer-reviewed citations.</p>
+            <p><strong>3. ADDRESS COMPETITIVE GAP IN:</strong> Reclaim general category queries (2.5/10) from Purina and Royal Canin by implementing structured data (JSON-LD, schema markup) to establish IAMS as a category authority. Competitors score 2-3 points higher through superior technical infrastructure.</p>
+            <p><strong>4. CORRECT MISINFORMATION ON:</strong> None identified—IAMS has exemplary factual accuracy (10/10 statements correct). Maintain this strength.</p>
+            <p><strong>5. OPTIMIZE CONTENT FOR:</strong> Improve Statistics with Citations (5.6/10) by adding AAFCO substantiation methods, digestibility percentages, and feeding trial results to product pages—technical transparency that competitors use to win professional audiences and AI engines.</p>
+            
+            <div class="dashboard-link-wrapper">
+                <a href="https://studio-brandrank-ai.auth.us-east-2.amazoncognito.com/login?client_id=1jhfr98fv1lgvrgcc78ge24qve&response_type=code&redirect_uri=https%3A%2F%2Fstudio.brandrank.ai%2Fauth%2Fcallback&state=eyJwYXRoIjoiIiwiZXhwOjE3NTQzMzY4MzUwNzYsInBvb2xIdDbmullfQ%3D%3D" class="dashboard-link" target="_blank">Learn More on the Dashboard →</a>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Section 7: Content Catalysts -->
+        <div class="section">
+            <div class="section-header">7. Content Catalysts</div>
+            <p class="caption">Suggested Headlines to Fill the Gap</p>
+            
+            <div style="margin-top: 16px;">
+                <div class="catalyst-headline primary">"How IAMS Tests Every Batch: Inside Our Quality Control Process"</div>
+                <p class="catalyst-description">Trust & Transparency content addressing the 0.4/10 gap. Document safety testing protocols, ingredient traceability, and 2013-present recall-free record to capture "safest cat food" queries currently dominated by Hill's.</p>
+            </div>
+            
+            <div style="margin-top: 12px;">
+                <div class="catalyst-headline secondary">"The Science Behind IAMS Lifestage Nutrition: Kitten to Senior"</div>
+                <p class="catalyst-description">General Category content to lift 2.5/10 score. Feature named Ph.D. nutritionists explaining protein requirements, digestibility targets, and nutrient profiles across life stages with supporting research citations.</p>
+            </div>
+            
+            <div style="margin-top: 12px;">
+                <div class="catalyst-headline tertiary">"IAMS Ingredient Sourcing Standards: What Goes Into Every Formula"</div>
+                <p class="catalyst-description">Trust & Transparency content filling critical visibility gap. Detail chicken by-product meal sourcing, quality standards for grains, and Mars' supplier audits to address consumer concerns AI engines surface about ingredient transparency.</p>
+            </div>
+            
+            <div class="dashboard-link-wrapper">
+                <a href="https://studio-brandrank-ai.auth.us-east-2.amazoncognito.com/login?client_id=1jhfr98fv1lgvrgcc78ge24qve&response_type=code&redirect_uri=https%3A%2F%2Fstudio.brandrank.ai%2Fauth%2Fcallback&state=eyJwYXRoIjoiIiwiZXhwOjE3NTQzMzY4MzUwNzYsInBvb2xIdDbmullfQ%3D%3D" class="dashboard-link" target="_blank">Learn More on the Dashboard →</a>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Section 8: Who Should Act -->
+        <div class="section">
+            <div class="section-header">8. Who Should Act On This</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Function</th>
+                        <th>Priority Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Corporate Communications</strong></td>
+                        <td>Document safety record and quality control processes—10-year recall-free performance is invisible to AI engines, creating massive Trust & Transparency gap (0.4/10).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Digital & Content Teams</strong></td>
+                        <td>Implement structured data (JSON-LD, schema) and create expert attribution pages—technical infrastructure gaps prevent AI from establishing IAMS as category authority despite strong product credentials.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Brand Marketing</strong></td>
+                        <td>Activate science positioning through named expert content and research citations—"backed by science" promise scores 7.0/10 but could reach 9.0+ with evidence documentation competitors already provide.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>R&D / Innovation</strong></td>
+                        <td>Surface existing clinical data and feeding trials on public-facing pages—depth gap (4.8/10) is content packaging, not product quality, as Healthy Weight clinical evidence demonstrates.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Executive Leadership</strong></td>
+                        <td>Brand Health trend is stable (5.9/10) but competitive threats are rising—Blue Buffalo's fresh launch and private label growth require strategic response on visibility and value positioning.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Agency Partners</strong></td>
+                        <td>Prioritize content depth infrastructure over paid amplification—0.4/10 Trust & Transparency and 4.8/10 Depth gaps require foundational content creation before performance marketing investment delivers ROI.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Section 9: Persona Reactions -->
+        <div class="section">
+            <div class="section-header">9. Persona / Stakeholder Reactions</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Persona</th>
+                        <th>Description</th>
+                        <th>Likely Reaction</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Value Shoppers</strong></td>
+                        <td>Price-conscious, comparison-focused</td>
+                        <td>Frustrated IAMS scores 8.5/10 in direct comparisons but remains invisible in general searches—losing discovery opportunities to higher-priced competitors.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Health & Safety First</strong></td>
+                        <td>Prioritize ingredient quality</td>
+                        <td>Alarmed by 0.4/10 Trust & Transparency score despite IAMS' exceptional safety record—safety credentials exist but AI can't find them.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Premium Quality Seekers</strong></td>
+                        <td>Willing to pay for documentation</td>
+                        <td>Skeptical of 7.0/10 Promise Alignment due to missing research citations and expert attribution—"backed by science" needs published evidence to justify premium positioning.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Financial Analysts/Investors</strong></td>
+                        <td>Track market share and positioning</td>
+                        <td>Concerned about 3.9/10 AI Visibility as consumer discovery shifts to AI engines—IAMS risks share loss to competitors with stronger digital infrastructure despite comparable products.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Employees/Internal Ambassadors</strong></td>
+                        <td>Brand advocates and morale</td>
+                        <td>Demoralized by 4.8/10 Depth score when team knows Mars/Waltham science credentials are industry-leading—communication gap, not capability gap.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Page 1 of 2 | December 2025 | Confidential
+        </div>
+    </div>
+
+    <!-- PAGE 2: ADDENDUM -->
+    <div class="page" style="page-break-before: always;">
+        <div class="addendum-title">Essential Terms</div>
+
+        <div class="term">
+            <span class="term-title">AI Visibility</span> — "Do I show up?" Measures how often your brand appears when consumers ask AI category-relevant questions. 7+ = AI recommends you; &lt;4 = invisible.
+        </div>
+
+        <div class="term">
+            <span class="term-title">Brand Vulnerability</span> — "What does AI say about me?" Measures whether AI protects or undermines your reputation.
+        </div>
+
+        <div class="term">
+            <span class="term-title">Brand Promise Alignment</span> — "Does AI believe my story?" Score below 7 means AI hedges rather than endorses.
+        </div>
+
+        <div class="term">
+            <span class="term-title">Content Readiness</span> — "Is my site ready for AI?" Can AI find (Availability), trust (Depth), and extract (Clarity) your content?
+        </div>
+
+        <div class="term">
+            <span class="term-title">Source Influence</span> — "Who shapes my AI narrative?" High owned-source % = greater control over your story.
+        </div>
+
+        <div class="term">
+            <span class="term-title">Statements of Fact</span> — "Is AI telling the truth?" Monitors accuracy of specific brand claims across engines.
+        </div>
+
+        <div class="addendum-title" style="margin-top: 40px;">Why Check Your Dashboard Regularly</div>
+
+        <div class="term">
+            <span class="term-title">AI models update frequently.</span> Scores can shift overnight with platform updates.
+        </div>
+
+        <div class="term">
+            <span class="term-title">Competitors are moving.</span> See their gains in scores before you see them in market share.
+        </div>
+
+        <div class="term">
+            <span class="term-title">Prepare for key moments.</span> Check before earnings calls, board meetings, campaign launches.
+        </div>
+
+        <div class="term">
+            <span class="term-title">Track your investments.</span> See if content and PR translate to AI visibility.
+        </div>
+
+        <div class="term">
+            <span class="term-title">Catch misinformation early.</span> Before it spreads across platforms.
+        </div>
+
+        <div class="term">
+            <span class="term-title">Spot emerging opportunities.</span> New questions consumers are asking.
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- About Section -->
+        <div class="section">
+            <div class="section-header">About BrandRank.AI</div>
+            <p>BrandRank works with over 60 global brands to strengthen trust and purchase intent by uncovering vulnerabilities, purchase-driving insights, and growth opportunities across AI answer engines. As a SaaS platform, we track all major answer engines to improve visibility, ensure content is AI-ready, and rigorously measure brand claims and instructional accuracy.</p>
+            <p>To explore your complete data, access your dashboard at <strong>brandrank.ai/dashboard</strong>.</p>
+        </div>
+
+        <div class="footer">
+            Page 2 of 2 | December 2025 | Confidential
+        </div>
+    </div>
+
+</body>
+</html>
