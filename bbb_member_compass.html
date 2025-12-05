@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BBB Member Compass - Powered by BrandRank</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: #00d4ff;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .instructions {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .score-elite { background: #4ecdc4; }
+        .score-strong { background: #00d4ff; }
+        .score-good { background: #ffd93d; }
+        .score-fair { background: #ff9f40; }
+        .score-needs-help { background: #ff6b6b; }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .table-section {
+            min-width: 0;
+        }
+
+        .table-container {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-x: auto;
+        }
+
+        .letter-section {
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+
+        .letter-container {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .letter-placeholder {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            padding: 40px 20px;
+        }
+
+        .letter-placeholder h3 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .letter-content h3 {
+            color: #00d4ff;
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .letter-content .subject {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .letter-content .score-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .letter-content p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .letter-content .signature {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+            white-space: pre-line;
+        }
+
+        .analysis-section {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 2px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .analysis-section h2 {
+            color: #ffffff;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .analysis-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .analysis-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #00d4ff;
+            transform: translateY(-5px);
+        }
+
+        .analysis-card h3 {
+            color: #00d4ff;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .analysis-card p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
+        .analysis-card strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+
+        .stat-value {
+            color: #00d4ff;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .methodology {
+            background: rgba(0, 212, 255, 0.05);
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .methodology h3 {
+            color: #00d4ff;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .methodology p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        .score-header {
+            cursor: help;
+            position: relative;
+        }
+
+        .score-header:hover {
+            color: #00d4ff;
+        }
+
+        .header-tooltip {
+            position: absolute;
+            background: linear-gradient(135deg, #1a1f35 0%, #2a2f45 100%);
+            border: 2px solid #00d4ff;
+            border-radius: 8px;
+            padding: 12px 16px;
+            max-width: 300px;
+            z-index: 1000;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #ffffff;
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: normal;
+        }
+
+        .header-tooltip.show {
+            opacity: 1;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            background: rgba(0, 212, 255, 0.1);
+            color: #00d4ff;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 18px 12px;
+            text-align: left;
+            border-bottom: 2px solid #00d4ff;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        tbody tr:hover {
+            background: rgba(0, 212, 255, 0.05);
+            transform: scale(1.01);
+        }
+
+        tbody td {
+            padding: 16px 12px;
+            font-size: 15px;
+            color: #ffffff;
+        }
+
+        .company-name {
+            font-weight: 600;
+            color: #ffffff;
+            position: relative;
+            cursor: help;
+        }
+
+        .score-cell {
+            font-weight: 700;
+            text-align: center;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 50px;
+        }
+
+        .score-cell:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        .archetype {
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+
+        .total-score {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: absolute;
+            background: linear-gradient(135deg, #1a1f35 0%, #2a2f45 100%);
+            border: 2px solid #00d4ff;
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 400px;
+            z-index: 1000;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .tooltip.show {
+            opacity: 1;
+        }
+
+        .tooltip h3 {
+            color: #00d4ff;
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .tooltip p {
+            color: #ffffff;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        @media (max-width: 1200px) {
+            h1 { font-size: 36px; }
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            .letter-section {
+                position: static;
+            }
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 28px; }
+            .legend { flex-direction: column; align-items: center; }
+            tbody td { font-size: 13px; padding: 12px 8px; }
+            .table-container { padding: 15px; }
+            .letter-container { padding: 20px; }
+            .analysis-card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>BBB Member Compass</h1>
+            <p class="subtitle">Empowering ABs to Keep Getting Better: Powered by BrandRank</p>
+            <p class="instructions">Hover over companies for insights • Click scores to view BBB support templates</p>
+        </header>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color score-elite"></div>
+                <span>Elite (8.0+)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color score-strong"></div>
+                <span>Strong (7.0-7.9)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color score-good"></div>
+                <span>Good (6.0-6.9)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color score-fair"></div>
+                <span>Fair (5.0-5.9)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color score-needs-help"></div>
+                <span>Needs Support (Below 5.0)</span>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="table-section">
+                <div class="table-container">
+                    <table id="brandTable">
+                        <thead>
+                            <tr>
+                                <th>Company Name</th>
+                                <th class="score-header" data-explanation="Measures digital content quality, SEO optimization, and AI platform visibility (ChatGPT, Claude, Perplexity, etc.)">AI Content</th>
+                                <th class="score-header" data-explanation="Evaluates service delivery quality, customer satisfaction, and operational excellence">Product Perf.</th>
+                                <th class="score-header" data-explanation="Assesses brand clarity, unique value proposition, and market positioning strength">Brand Promise</th>
+                                <th class="score-header" data-explanation="Identifies weaknesses in brand protection, competitive threats, and market exposure">Vulnerabilities</th>
+                                <th class="score-header" data-explanation="Score for how well the brand embodies its archetype characteristics">Archetype</th>
+                                <th>Archetype</th>
+                                <th class="score-header" data-explanation="Overall brand performance across all measured dimensions">Total Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="letter-section">
+                <div class="letter-container" id="letterContainer">
+                    <div class="letter-placeholder">
+                        <h3>BBB Support Letter</h3>
+                        <p>Click any score to view the corresponding BBB outreach template based on the company's performance tier.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="analysis-section">
+            <h2>Strategic Analysis & Key Insights</h2>
+            
+            <div class="analysis-grid">
+                <div class="analysis-card">
+                    <h3>Performance Distribution</h3>
+                    <div class="stat-row">
+                        <span class="stat-label">Elite Performers (8.0+):</span>
+                        <span class="stat-value">1 brand (5%)</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Strong Performers (7.0-7.9):</span>
+                        <span class="stat-value">1 brand (5%)</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Good Performers (6.0-6.9):</span>
+                        <span class="stat-value">5 brands (25%)</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Fair Performers (5.0-5.9):</span>
+                        <span class="stat-value">10 brands (50%)</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Needs Support (Below 5.0):</span>
+                        <span class="stat-value">3 brands (15%)</span>
+                    </div>
+                </div>
+
+                <div class="analysis-card">
+                    <h3>Critical Gaps Identified</h3>
+                    <p><strong>AI Content Readiness:</strong> 70% of brands score 5 or below on AI content, indicating severe digital visibility gaps in modern search environments.</p>
+                    <p><strong>Brand Promise Clarity:</strong> Most brands (65%) struggle to articulate compelling value propositions, limiting differentiation in competitive markets.</p>
+                    <p><strong>Digital-Physical Divide:</strong> Strong product performance doesn't translate to digital visibility—many capable contractors remain invisible online.</p>
+                </div>
+
+                <div class="analysis-card">
+                    <h3>Archetype Insights</h3>
+                    <p><strong>Dominant Archetype:</strong> Everyman/Regular Guy (7 brands) - reflects humble, relatable positioning but lacks premium market access.</p>
+                    <p><strong>Highest Performing:</strong> Ruler and Hero archetypes command premium positioning and clearer brand narratives.</p>
+                    <p><strong>Underutilized:</strong> Creator and Sage archetypes offer differentiation opportunities for innovation-focused brands.</p>
+                </div>
+
+                <div class="analysis-card">
+                    <h3>BBB Opportunity Matrix</h3>
+                    <p><strong>High Priority:</strong> 13 brands (65%) would benefit immediately from BBB digital visibility training and AI optimization workshops.</p>
+                    <p><strong>Partnership Ready:</strong> Top 6 brands are positioned for BBB spotlight features and thought leadership opportunities.</p>
+                    <p><strong>Intervention Needed:</strong> 3 brands require comprehensive brand strategy and digital transformation support.</p>
+                </div>
+
+                <div class="analysis-card">
+                    <h3>Market Dynamics</h3>
+                    <p><strong>Winner Takes All:</strong> Neyer Properties leads by 1.2 points—a massive margin indicating market dominance through superior digital strategy.</p>
+                    <p><strong>Mid-Tier Compression:</strong> 15 brands clustered between 5.0-6.4, creating intense competition for market share with minimal differentiation.</p>
+                    <p><strong>Vulnerability Crisis:</strong> Average vulnerability score of 5.3 reveals widespread brand protection weaknesses across the sector.</p>
+                </div>
+
+                <div class="analysis-card">
+                    <h3>Recommended Actions</h3>
+                    <p><strong>Immediate:</strong> Launch AI visibility training for 70% of brands scoring below 5 on AI Content Readiness.</p>
+                    <p><strong>Short-term:</strong> Develop brand promise workshops to help mid-tier brands articulate unique value propositions.</p>
+                    <p><strong>Strategic:</strong> Create tiered BBB partnership programs matching performance levels—from basic training to executive spotlight opportunities.</p>
+                </div>
+            </div>
+
+            <div class="methodology">
+                <h3>Scoring Methodology</h3>
+                <p>Each brand was evaluated on a 10-point scale across five dimensions: AI Content Readiness (digital visibility in AI-powered search), Product Performance (service delivery quality), Brand Promise (clarity and differentiation), Brand Vulnerabilities (competitive threats and weaknesses), and Archetype Strength (alignment with brand persona). Scores were synthesized from public data, BBB insights, digital presence analysis, and competitive positioning research. The Total Score represents the average performance across all dimensions, providing a comprehensive view of brand health and market readiness.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        const companies = [
+            {
+                name: "Neyer Properties Inc.",
+                scores: [8, 9, 9, 7, 8],
+                archetype: "Ruler / Creator",
+                total: 8.2,
+                description: "A standout Ruler/Creator brand in real estate and construction. Dominates in digital readiness, brand promise, and multi-sector capabilities. Neyer shows how vision, polish, and execution combine to lead. Strong across every category, it's the clear winner and most future-ready brand on the list."
+            },
+            {
+                name: "HGC Construction Co.",
+                scores: [6, 8, 8, 6, 7],
+                archetype: "Hero",
+                total: 7.0,
+                description: "A high-performing general contractor with a Hero archetype that resonates. Strong delivery, reputable service, and a clear brand promise elevate HGC into the top tier. More investment in AI-driven content could push it into leadership territory."
+            },
+            {
+                name: "Interdyne Corporation",
+                scores: [6, 7, 7, 6, 6],
+                archetype: "Sage / Creator",
+                total: 6.4,
+                description: "An environmentally driven contractor with dual Sage and Creator archetypes. This blend supports a unique positioning as both expert and innovator. Strong performance, strategic advantage, and a respectable digital strategy give Interdyne a competitive edge — just shy of top-tier status."
+            },
+            {
+                name: "Brogan Lawns & Landscapes",
+                scores: [5, 7, 7, 6, 6],
+                archetype: "Caregiver",
+                total: 6.2,
+                description: "Well-positioned in the landscaping and general contracting niche, Brogan's Caregiver archetype reflects strong customer focus. Reasonable performance and a dependable reputation. However, limited AI content and brand differentiation keep it from breaking into the top tier."
+            },
+            {
+                name: "R. Horton Construction",
+                scores: [5, 7, 7, 6, 6],
+                archetype: "Ruler",
+                total: 6.2,
+                description: "A high-functioning Ruler archetype builder with solid construction credibility and performance. While not as digitally advanced as Neyer, Horton's clear brand structure and consistent service delivery make it a strong contender. With enhanced storytelling, it could become a leader."
+            },
+            {
+                name: "Urban Expansion",
+                scores: [5, 7, 7, 6, 6],
+                archetype: "Creator",
+                total: 6.2,
+                description: "A Creator-led remodeling company with vision and flair. Urban Expansion performs well across categories, especially in service delivery and brand alignment. Stronger content strategy could make it a regional leader in creative, residential remodeling."
+            },
+            {
+                name: "Blue Seal Restoration",
+                scores: [5, 7, 6, 6, 6],
+                archetype: "Hero / Caregiver",
+                total: 6.0,
+                description: "A capable general contractor and restoration firm with a moderate online presence and reliable customer service. Its Hero/Caregiver archetype suggests a brand built on responsiveness and trust. Strong performance reviews, but could enhance AI content and digital outreach to compete with more sophisticated industry players."
+            },
+            {
+                name: "First Choice Lead Abatement",
+                scores: [5, 7, 6, 6, 6],
+                archetype: "Caregiver / Hero",
+                total: 6.0,
+                description: "Combines niche expertise in lead abatement with broader home improvement. The Caregiver/Hero blend signals protection and reliability. Stronger than average in performance and brand promise, but digital marketing remains underdeveloped. Solid growth potential with strategic storytelling and AI-driven content."
+            },
+            {
+                name: "Gary St. Clair Exteriors",
+                scores: [4, 7, 6, 5, 5],
+                archetype: "Caregiver",
+                total: 5.4,
+                description: "Roofing and exteriors expert with a Caregiver archetype rooted in protection and quality. Consistent performance reviews but low visibility in AI and online strategy. With stronger digital positioning and clearer storytelling, it could move from functional to standout."
+            },
+            {
+                name: "Jefferson Enterprises",
+                scores: [4, 6, 6, 5, 5],
+                archetype: "Everyman",
+                total: 5.2,
+                description: "A modest general contractor with a humble Everyman identity. Solid in delivery but lacking brand polish and strategic outreach. Moderate scores across all categories show it performs well but without the structure or identity needed for leadership in a crowded space."
+            },
+            {
+                name: "Scott Segers & Company",
+                scores: [4, 6, 6, 5, 5],
+                archetype: "Regular Guy",
+                total: 5.2,
+                description: "A trusted local builder with a dependable, down-to-earth reputation. Fits squarely in the Regular Guy archetype. The brand does its job well but remains underleveraged in terms of brand storytelling and digital innovation."
+            },
+            {
+                name: "Hibbards Quality Home",
+                scores: [4, 6, 6, 5, 5],
+                archetype: "Caregiver",
+                total: 5.2,
+                description: "Caregiver-led and community-focused, this brand performs steadily in service and brand promise. Limited in its digital strategy and AI readiness. A friendly brand, but more innovation and presence are needed to remain competitive in a rapidly evolving industry."
+            },
+            {
+                name: "Mil Mil Remodeling",
+                scores: [4, 6, 6, 5, 5],
+                archetype: "Everyman / Creator",
+                total: 5.2,
+                description: "A generalist remodeling company with steady execution and a mix of Everyman and Creator traits. Good service quality, though branding and marketing remain rudimentary. More targeted messaging and brand development could elevate its standing in a competitive remodeling segment."
+            },
+            {
+                name: "Zoe Consulting",
+                scores: [4, 6, 5, 5, 5],
+                archetype: "Explorer",
+                total: 5.0,
+                description: "An Explorer archetype brand that offers diversified services but lacks clarity in its identity. Its experimental energy works for niche innovation but results in low coherence and inconsistent messaging. Scores reflect moderate potential restrained by a fragmented presence."
+            },
+            {
+                name: "Carthage Roofing",
+                scores: [4, 6, 5, 5, 5],
+                archetype: "Hero / Creator",
+                total: 5.0,
+                description: "A dependable roofing contractor with strong Hero/Creator energy. While service delivery is consistent, the brand lacks standout digital presence or a compelling brand narrative. With better positioning and tech-forward content, Carthage could elevate its visibility and differentiation."
+            },
+            {
+                name: "Rasheed's Roofing",
+                scores: [4, 6, 5, 5, 5],
+                archetype: "Hero",
+                total: 5.0,
+                description: "A Hero-led roofing brand that aims to solve critical problems fast. Customer satisfaction is central, though limited digital strategy hampers visibility. It has heart but needs modernization and more digital sophistication to thrive against larger players."
+            },
+            {
+                name: "DBG Builders",
+                scores: [4, 6, 5, 5, 5],
+                archetype: "Everyman / Creator",
+                total: 5.0,
+                description: "A jack-of-all-trades offering construction and handyman services. Embraces the Everyman/Creator archetype but struggles to define a clear brand promise or digital voice. Scores reflect adequate performance, but low brand power and content readiness keep it in the middle tier."
+            },
+            {
+                name: "Holmes by Troy",
+                scores: [3, 6, 5, 5, 4],
+                archetype: "Everyman",
+                total: 4.6,
+                description: "A personable handyman and general contractor firm that leans into the Everyman identity. While approachable, its limited digital footprint and brand polish limit reach and growth potential. Strong service is not yet matched by an equally strong public presence."
+            },
+            {
+                name: "G&G Debris Removal",
+                scores: [3, 5, 5, 5, 4],
+                archetype: "Everyman / Innocent",
+                total: 4.4,
+                description: "A modest, hardworking general contractor focused on post-construction cleaning. The Innocent/Everyman archetype gives it a grounded, no-frills feel. Reliable but not brand-driven. Weak digital content and limited differentiation affect long-term competitive standing."
+            },
+            {
+                name: "Roth Star",
+                scores: [3, 6, 5, 4, 4],
+                archetype: "Everyman",
+                total: 4.4,
+                description: "Everyman contractor with limited reach and branding. Serviceable but not differentiated. Its low scores in content readiness and brand promise reflect a company that performs the basics but lacks direction or standout value propositions."
+            }
+        ];
+
+        const letters = {
+            elite: {
+                subject: "Congratulations on Your Outstanding Performance!",
+                content: `Dear [Company Name],
+
+Congratulations! Your brand recently scored among the highest in a comparative industry analysis conducted using Better Business Bureau insights. Your strong digital presence, customer satisfaction, and brand clarity make you a standout in your field. We're proud to count you among our accredited businesses and would love to feature your story in an upcoming BBB spotlight. Please let us know if you'd be open to sharing insights on what drives your success.
+
+We salute your leadership and commitment to excellence. Thank you for setting a high bar in the Greater Cincinnati market.`,
+                signature: "Warm regards,\n[Your Name]\nBetter Business Bureau"
+            },
+            strong: {
+                subject: "Great Work – Let's Share Your Story",
+                content: `Dear [Company Name],
+
+Congratulations on scoring well in a recent comparative industry review conducted using BBB and public data. Your performance demonstrates solid brand trust and service excellence. We believe your success story could inspire others in your sector. We'd love to invite you to join a panel or submit a feature for our BBB Business Insight Series.
+
+Your brand is well-positioned, and we want to amplify that with our network. Let us know if you're interested in collaboration or exposure opportunities with BBB.`,
+                signature: "Appreciatively,\n[Your Name]\nBetter Business Bureau"
+            },
+            good: {
+                subject: "You're On the Rise — Let's Boost Your Brand Further",
+                content: `Dear [Company Name],
+
+Your business shows promise and scored well in areas like product delivery and customer satisfaction in a recent comparative review. There's a strong foundation to build on — especially with brand clarity and digital strategy.
+
+As a BBB-accredited business, you're eligible for our Brand Growth Clinic, where we help companies improve visibility, digital trust signals, and AI-readiness. Would you be interested in a free one-on-one consultation?
+
+Let's work together to unlock even more value for your business.`,
+                signature: "Sincerely,\n[Your Name]\nBetter Business Bureau"
+            },
+            fair: {
+                subject: "Let's Strengthen Your Brand Together",
+                content: `Dear [Company Name],
+
+Thank you for being part of the BBB-accredited business community. Your brand scored in the mid-range in a recent review of service providers in your category. This suggests customers trust you — but also highlights areas for growth, especially in digital presence and AI content readiness.
+
+We'd like to invite you to a BBB Growth Lab Webinar focused on improving visibility, trust, and modern brand practices. Let us help you sharpen your competitive edge.
+
+Your success is our mission, and we're here to support your next step.`,
+                signature: "Warmly,\n[Your Name]\nBetter Business Bureau"
+            },
+            needs_support: {
+                subject: "We're Here to Help You Grow",
+                content: `Dear [Company Name],
+
+Our recent business review revealed opportunities for your brand to grow in areas like online visibility, brand storytelling, and digital trust. You're doing meaningful work — and with a little support, you can elevate how the public sees and finds you.
+
+The Better Business Bureau is offering personalized strategy sessions for accredited businesses like yours. We'd be honored to walk through best practices for building a stronger digital presence and attracting higher-value clients.
+
+Would you be open to a no-cost discovery call with one of our specialists?`,
+                signature: "In partnership,\n[Your Name]\nBetter Business Bureau"
+            },
+            critical: {
+                subject: "Let's Build a Stronger Brand – Together",
+                content: `Dear [Company Name],
+
+We noticed that your brand scored in the lower tier during a recent analysis of BBB-accredited businesses in your field. This may reflect low digital visibility or unclear branding — not your quality of service. The good news? These are solvable challenges.
+
+We'd like to invite you to an exclusive BBB Business Booster Training, where we walk through simple, actionable steps to improve your online presence, leverage AI tools, and communicate your brand's value more clearly.
+
+Your commitment to BBB shows you care — let's turn that into long-term advantage.`,
+                signature: "Respectfully,\n[Your Name]\nBetter Business Bureau"
+            }
+        };
+
+        function getScoreClass(score) {
+            if (score >= 8) return 'score-elite';
+            if (score >= 7) return 'score-strong';
+            if (score >= 6) return 'score-good';
+            if (score >= 5) return 'score-fair';
+            return 'score-needs-help';
+        }
+
+        function getLetterType(score) {
+            if (score >= 8) return 'elite';
+            if (score >= 7) return 'strong';
+            if (score >= 6) return 'good';
+            if (score >= 5) return 'fair';
+            if (score >= 4.5) return 'needs_support';
+            return 'critical';
+        }
+
+        function renderTable() {
+            const tbody = document.querySelector('#brandTable tbody');
+            
+            companies.forEach(company => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="company-name" data-description="${company.description}">${company.name}</td>
+                    <td class="score-cell ${getScoreClass(company.scores[0])}" data-score="${company.total}" data-company="${company.name}">${company.scores[0]}</td>
+                    <td class="score-cell ${getScoreClass(company.scores[1])}" data-score="${company.total}" data-company="${company.name}">${company.scores[1]}</td>
+                    <td class="score-cell ${getScoreClass(company.scores[2])}" data-score="${company.total}" data-company="${company.name}">${company.scores[2]}</td>
+                    <td class="score-cell ${getScoreClass(company.scores[3])}" data-score="${company.total}" data-company="${company.name}">${company.scores[3]}</td>
+                    <td class="score-cell ${getScoreClass(company.scores[4])}" data-score="${company.total}" data-company="${company.name}">${company.scores[4]}</td>
+                    <td class="archetype">${company.archetype}</td>
+                    <td class="score-cell total-score ${getScoreClass(company.total)}" data-score="${company.total}" data-company="${company.name}">${company.total}</td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            // Add event listeners
+            document.querySelectorAll('.company-name').forEach(el => {
+                el.addEventListener('mouseenter', showTooltip);
+                el.addEventListener('mouseleave', hideTooltip);
+            });
+
+            document.querySelectorAll('.score-cell').forEach(el => {
+                el.addEventListener('click', showLetter);
+            });
+        }
+
+        function showTooltip(e) {
+            const tooltip = document.getElementById('tooltip');
+            const description = e.target.dataset.description;
+            const companyName = e.target.textContent;
+            
+            tooltip.innerHTML = `
+                <h3>${companyName}</h3>
+                <p>${description}</p>
+            `;
+            
+            const rect = e.target.getBoundingClientRect();
+            tooltip.style.left = rect.left + 'px';
+            tooltip.style.top = (rect.bottom + 10) + 'px';
+            tooltip.classList.add('show');
+        }
+
+        function hideTooltip() {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.classList.remove('show');
+        }
+
+        function showLetter(e) {
+            const score = parseFloat(e.target.dataset.score);
+            const companyName = e.target.dataset.company;
+            const letterType = getLetterType(score);
+            const letter = letters[letterType];
+            const scoreClass = getScoreClass(score);
+            
+            const letterContainer = document.getElementById('letterContainer');
+            
+            letterContainer.innerHTML = `
+                <div class="letter-content">
+                    <h3>${companyName}</h3>
+                    <div class="score-badge ${scoreClass}">Score: ${score} / 10</div>
+                    <div class="subject"><strong>Subject:</strong> ${letter.subject}</div>
+                    <p>${letter.content.replace('[Company Name]', companyName)}</p>
+                    <div class="signature">${letter.signature}</div>
+                </div>
+            `;
+            
+            // Scroll to letter section on mobile
+            if (window.innerWidth <= 1200) {
+                letterContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function showHeaderTooltip(e) {
+            const explanation = e.target.dataset.explanation;
+            if (!explanation) return;
+            
+            const tooltip = document.createElement('div');
+            tooltip.className = 'header-tooltip show';
+            tooltip.textContent = explanation;
+            tooltip.id = 'headerTooltip';
+            
+            document.body.appendChild(tooltip);
+            
+            const rect = e.target.getBoundingClientRect();
+            tooltip.style.position = 'fixed';
+            tooltip.style.left = rect.left + 'px';
+            tooltip.style.top = (rect.bottom + 10) + 'px';
+        }
+
+        function hideHeaderTooltip() {
+            const tooltip = document.getElementById('headerTooltip');
+            if (tooltip) {
+                tooltip.remove();
+            }
+        }
+
+        // Initialize
+        renderTable();
+        
+        // Add header tooltip listeners
+        document.querySelectorAll('.score-header').forEach(el => {
+            el.addEventListener('mouseenter', showHeaderTooltip);
+            el.addEventListener('mouseleave', hideHeaderTooltip);
+        });
+    </script>
+</body>
+</html>
