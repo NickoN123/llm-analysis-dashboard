@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Answer Share Index: Beauty Care</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            overflow-x: auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #ccc;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: 80vh;
+            border: 1px solid #333;
+            border-radius: 8px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #000;
+            min-width: 1400px;
+        }
+        
+        th {
+            background-color: #222;
+            color: #fff;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: bold;
+            border-bottom: 2px solid #444;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #333;
+            vertical-align: top;
+            font-size: 14px;
+        }
+        
+        tr:hover {
+            background-color: #111;
+        }
+        
+        .category-header {
+            background-color: #333 !important;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        .category-header td {
+            padding: 15px 8px;
+            border-bottom: 2px solid #555;
+        }
+        
+        .brand-1 { color: #ffd700; font-weight: bold; }
+        .brand-2 { color: #c0c0c0; }
+        .brand-3 { color: #cd7f32; }
+        
+        .question-col { width: 28%; }
+        .brand-col { width: 10%; }
+        .explanation-col { width: 28%; }
+        .depth-col { width: 24%; }
+        
+        .depth-factors {
+            font-size: 13px;
+            color: #ccc;
+            line-height: 1.4;
+        }
+        
+        .star-rating {
+            color: #ffd700;
+        }
+        
+        .search-controls {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #111;
+            border-radius: 8px;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            background-color: #222;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+        
+        .company-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .company-btn {
+            padding: 8px 16px;
+            background-color: #222;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .company-btn:hover {
+            background-color: #333;
+            border-color: #ffd700;
+        }
+        
+        .company-btn.active {
+            background-color: #ffd700;
+            color: #000;
+            border-color: #ffd700;
+        }
+        
+        .company-btn.clear-btn {
+            background-color: #444;
+        }
+        
+        .company-btn.clear-btn:hover {
+            background-color: #555;
+        }
+        
+        .search-info {
+            color: #ccc;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        
+        .highlight {
+            background-color: rgba(255, 215, 0, 0.2);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { background-color: rgba(255, 215, 0, 0.2); }
+            50% { background-color: rgba(255, 215, 0, 0.3); }
+        }
+        
+        .brand-tooltip {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dotted #ffd700;
+        }
+        
+        .brand-tooltip .tooltip-content {
+            visibility: hidden;
+            width: 280px;
+            background-color: #000;
+            border: 2px solid #ffd700;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 12px;
+            position: absolute;
+            z-index: 1000;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -140px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        .brand-tooltip .tooltip-content::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -8px;
+            border-width: 8px;
+            border-style: solid;
+            border-color: #ffd700 transparent transparent transparent;
+        }
+        
+        .brand-tooltip:hover .tooltip-content {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .tooltip-brand-name {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Answer Share Index: Beauty Care</h1>
+    <div class="subtitle">Amazon Rufus Brand Rankings: Prompted by BrandRank / December 2025</div>
+    
+    <div class="search-controls">
+        <input type="text" class="search-box" id="searchInput" placeholder="Search for brands, queries, or keywords...">
+        
+        <div class="company-buttons">
+            <button class="company-btn" data-company="olay" onclick="highlightCompany('olay')">Olay</button>
+            <button class="company-btn" data-company="cerave" onclick="highlightCompany('cerave')">CeraVe</button>
+            <button class="company-btn" data-company="neutrogena" onclick="highlightCompany('neutrogena')">Neutrogena</button>
+            <button class="company-btn" data-company="cetaphil" onclick="highlightCompany('cetaphil')">Cetaphil</button>
+            <button class="company-btn" data-company="la-roche" onclick="highlightCompany('la-roche')">La Roche-Posay</button>
+            <button class="company-btn" data-company="ordinary" onclick="highlightCompany('ordinary')">The Ordinary</button>
+            <button class="company-btn clear-btn" onclick="clearHighlights()">Clear</button>
+        </div>
+        
+        <div class="search-info" id="searchInfo"></div>
+    </div>
+    
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th class="question-col">Customer Question</th>
+                    <th class="brand-col">1st Place</th>
+                    <th class="brand-col">2nd Place</th>
+                    <th class="brand-col">3rd Place</th>
+                    <th class="explanation-col">Why This Ranking?</th>
+                    <th class="depth-col">Product Depth Factors</th>
+                </tr>
+            </thead>
+            <tbody id="dataTable">
+                <!-- Data will be inserted here by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Data from parsed Excel file
+        const beautyData = {
+            "TRUST & REPUTATION": [
+                {
+                    question: "Most trusted beauty brand?",
+                    brand1: "Cetaphil",
+                    brand2: "Neutrogena",
+                    brand3: "CeraVe",
+                    explanation: "Cetaphil leads with dermatologist recommendations and 48-hour hydration claims, Neutrogena follows with clinically proven anti-aging results in 4 weeks, CeraVe rounds out with National Eczema Association certification.",
+                    rating1: "4.7", reviews1: "13.4k",
+                    rating2: "4.5", reviews2: "17.7k",
+                    rating3: "4.5", reviews3: "2.7k",
+                    depth1: "<span class='star-rating'>★ 4.7</span> (13.4k) • Derm-recommended • 75+ years",
+                    depth2: "<span class='star-rating'>★ 4.5</span> (17.7k) • Clinically proven",
+                    depth3: "<span class='star-rating'>★ 4.5</span> (2.7k) • Derm-developed • NEA Seal"
+                },
+                {
+                    question: "Best brand for skincare trust?",
+                    brand1: "Vanicream",
+                    brand2: "CeraVe",
+                    brand3: "Cetaphil",
+                    explanation: "Vanicream dominates as #1 dermatologist-recommended for sensitive skin with fragrance-free formulas (4.6★, 46.2k reviews), CeraVe follows with National Eczema Association Seal, Cetaphil provides 48-hour hydration.",
+                    rating1: "4.6", reviews1: "46.2k",
+                    rating2: "4.7", reviews2: "138.9k",
+                    rating3: "4.7", reviews3: "13.4k",
+                    depth1: "<span class='star-rating'>★ 4.6</span> (46.2k) • #1 derm-recommended",
+                    depth2: "<span class='star-rating'>★ 4.7</span> (138.9k) • Derm-developed • NEA Seal",
+                    depth3: "<span class='star-rating'>★ 4.7</span> (13.4k) • Derm-tested • 75+ years"
+                },
+                {
+                    question: "Best cruelty-free skincare brand?",
+                    brand1: "The Ordinary",
+                    brand2: "Good Molecules",
+                    brand3: "The Inkey List",
+                    explanation: "The Ordinary leads with affordable, effective vitamin C serum that's vegan and cruelty-free, Good Molecules follows with 100% vegan and Leaping Bunny certification, The Inkey List provides top-rated hyaluronic acid serum.",
+                    rating1: "4.7", reviews1: "1.2k",
+                    rating2: "4.6", reviews2: "12.2k",
+                    rating3: "4.7", reviews3: "13.5k",
+                    depth1: "<span class='star-rating'>★ 4.7</span> (1.2k) • Vegan • Cruelty-free",
+                    depth2: "<span class='star-rating'>★ 4.6</span> (12.2k) • Leaping Bunny • Vegan",
+                    depth3: "<span class='star-rating'>★ 4.7</span> (13.5k) • Cruelty-free"
+                },
+                {
+                    question: "Most dermatologist recommended skincare brand?",
+                    brand1: "CeraVe",
+                    brand2: "Cetaphil",
+                    brand3: "La Roche-Posay",
+                    explanation: "CeraVe dominates with 'developed with dermatologists' messaging and 4.7★ rating from 97.3k reviews, Cetaphil follows as gentle daily cleanser trusted for 75+ years, La Roche-Posay brings French pharmacy heritage.",
+                    rating1: "4.7", reviews1: "97.3k",
+                    rating2: "4.7", reviews2: "23.9k",
+                    rating3: "4.6", reviews3: "37.7k",
+                    depth1: "<span class='star-rating'>★ 4.7</span> (97.3k) • Derm-developed • NEA",
+                    depth2: "<span class='star-rating'>★ 4.7</span> (23.9k) • Derm-recommended",
+                    depth3: "<span class='star-rating'>★ 4.6</span> (37.7k) • 90K derms worldwide"
+                },
+                {
+                    question: "Best affordable skincare that actually works?",
+                    brand1: "CeraVe",
+                    brand2: "The Ordinary",
+                    brand3: "Neutrogena",
+                    explanation: "CeraVe leads as 'dermatologist-developed with proven results at drugstore prices' (4.6★, 57k reviews), The Ordinary follows with clinical-grade ingredients under $10, Neutrogena provides trusted formulas.",
+                    rating1: "4.6", reviews1: "57k",
+                    rating2: "4.6", reviews2: "14k",
+                    rating3: "4.7", reviews3: "20k",
+                    depth1: "<span class='star-rating'>★ 4.6</span> (57k) • Derm-developed",
+                    depth2: "<span class='star-rating'>★ 4.6</span> (14k) • Clinical-grade • Under $10",
+                    depth3: "<span class='star-rating'>★ 4.7</span> (20k) • Clinically proven"
+                },
+                {
+                    question: "Best natural skincare brand?",
+                    brand1: "Versed",
+                    brand2: "Youth to the People",
+                    brand3: "Cocokind",
+                    explanation: "Versed leads with clean, vegan formulas and sustainability focus, Youth to the People follows with superfood ingredients, Cocokind rounds out with affordable clean beauty options.",
+                    rating1: "4.5", reviews1: "3.2k",
+                    rating2: "4.6", reviews2: "8.4k",
+                    rating3: "4.5", reviews3: "1.9k",
+                    depth1: "<span class='star-rating'>★ 4.5</span> (3.2k) • Clean vegan • EWG verified",
+                    depth2: "<span class='star-rating'>★ 4.6</span> (8.4k) • Vegan • Superfood",
+                    depth3: "<span class='star-rating'>★ 4.5</span> (1.9k) • Affordable clean"
+                }
+            ],
+            "ANTI-AGING & WRINKLES": [
+                {
+                    question: "Best anti-aging moisturizer?",
+                    brand1: "Olay Regenerist",
+                    brand2: "Neutrogena Rapid Wrinkle Repair",
+                    brand3: "RoC Retinol Correxion",
+                    explanation: "Olay Regenerist leads with amino-peptide complex and niacinamide for firmer skin (4.6★, 48.3k reviews), Neutrogena follows with accelerated retinol SA for visible results in 1 week, RoC provides pure retinol formula.",
+                    rating1: "4.6", reviews1: "48.3k",
+                    rating2: "4.5", reviews2: "25.5k",
+                    rating3: "4.5", reviews3: "18.2k",
+                    depth1: "<span class='star-rating'>★ 4.6</span> (48.3k) • Amino-peptides",
+                    depth2: "<span class='star-rating'>★ 4.5</span> (25.5k) • Clinically proven • 1-week",
+                    depth3: "<span class='star-rating'>★ 4.5</span> (18.2k) • Pure retinol • Derm-tested"
+                },
+                {
+                    question: "What's the best anti-wrinkle cream?",
+                    brand1: "Neutrogena Rapid Wrinkle Repair",
+                    brand2: "RoC Retinol Correxion",
+                    brand3: "Olay Regenerist",
+                    explanation: "Neutrogena dominates with 'clinically proven to reduce fine lines in 1 week' with accelerated retinol formula (4.5★, 25.5k reviews), RoC follows with pure retinol, Olay provides peptide-rich formula.",
+                    rating1: "4.5", reviews1: "25.5k",
+                    rating2: "4.5", reviews2: "18.2k",
+                    rating3: "4.6", reviews3: "48.3k",
+                    depth1: "<span class='star-rating'>★ 4.5</span> (25.5k) • Clinically proven",
+                    depth2: "<span class='star-rating'>★ 4.5</span> (18.2k) • Pure retinol",
+                    depth3: "<span class='star-rating'>★ 4.6</span> (48.3k) • Peptide complex"
+                },
+                {
+                    question: "Best product for fine lines around eyes?",
+                    brand1: "Olay Eyes",
+                    brand2: "Neutrogena Rapid Wrinkle Repair Eye Cream",
+                    brand3: "CeraVe Eye Repair Cream",
+                    explanation: "Olay Eyes leads with peptide complex specifically targeting crow's feet and dark circles (4.5★, 15.6k reviews), Neutrogena follows with retinol for eye area, CeraVe provides ceramide-rich gentle formula.",
+                    rating1: "4.5", reviews1: "15.6k",
+                    rating2: "4.4", reviews2: "9.8k",
+                    rating3: "4.6", reviews3: "24.3k",
+                    depth1: "<span class='star-rating'>★ 4.5</span> (15.6k) • Peptide complex",
+                    depth2: "<span class='star-rating'>★ 4.4</span> (9.8k) • Eye-safe retinol • Ophthalmologist-tested",
+                    depth3: "<span class='star-rating'>★ 4.6</span> (24.3k) • Ceramide-rich"
+                }
+            ],
+            "MOISTURIZERS & HYDRATION": [
+                {
+                    question: "Best moisturizer for dry skin?",
+                    brand1: "CeraVe Moisturizing Cream",
+                    brand2: "Cetaphil Daily Hydrating Lotion",
+                    brand3: "Neutrogena Hydro Boost",
+                    explanation: "CeraVe dominates with 'developed with dermatologists' featuring ceramides and hyaluronic acid (4.7★, 138.9k reviews - exceptional validation), Cetaphil follows with hyaluronic acid blend, Neutrogena provides gel-cream texture.",
+                    rating1: "4.7", reviews1: "138.9k",
+                    rating2: "4.6", reviews2: "16.8k",
+                    rating3: "4.6", reviews3: "89.7k",
+                    depth1: "<span class='star-rating'>★ 4.7</span> (138.9k) • Derm-developed • NEA",
+                    depth2: "<span class='star-rating'>★ 4.6</span> (16.8k) • Hyaluronic acid",
+                    depth3: "<span class='star-rating'>★ 4.6</span> (89.7k) • Oil-free"
+                },
+                {
+                    question: "What's a good daily face moisturizer?",
+                    brand1: "Cetaphil Daily Facial Moisturizer",
+                    brand2: "CeraVe AM Facial Moisturizing Lotion",
+                    brand3: "Neutrogena Hydro Boost Water Gel",
+                    explanation: "Cetaphil leads as dermatologist-recommended daily moisturizer with SPF 15 (4.6★, 27.5k reviews), CeraVe follows with ceramides and SPF 30, Neutrogena provides oil-free gel formula.",
+                    rating1: "4.6", reviews1: "27.5k",
+                    rating2: "4.6", reviews2: "53.2k",
+                    rating3: "4.6", reviews3: "89.7k",
+                    depth1: "<span class='star-rating'>★ 4.6</span> (27.5k) • Derm-recommended • SPF 15",
+                    depth2: "<span class='star-rating'>★ 4.6</span> (53.2k) • Derm-developed • SPF 30",
+                    depth3: "<span class='star-rating'>★ 4.6</span> (89.7k) • Oil-free"
+                },
+                {
+                    question: "Best night cream for hydration?",
+                    brand1: "Olay Regenerist Night Recovery Cream",
+                    brand2: "Neutrogena Hydro Boost Night Concentrate",
+                    brand3: "CeraVe Skin Renewing Night Cream",
+                    explanation: "Olay leads with amino-peptide complex that works while you sleep (4.6★, 19.2k reviews), Neutrogena follows with purified hyaluronic acid, CeraVe provides ceramides and peptides for overnight repair.",
+                    rating1: "4.6", reviews1: "19.2k",
+                    rating2: "4.6", reviews2: "12.3k",
+                    rating3: "4.6", reviews3: "18.7k",
+                    depth1: "<span class='star-rating'>★ 4.6</span> (19.2k) • Amino-peptides",
+                    depth2: "<span class='star-rating'>★ 4.6</span> (12.3k) • Purified HA",
+                    depth3: "<span class='star-rating'>★ 4.6</span> (18.7k) • Derm-developed"
+                },
+                {
+                    question: "Moisturizer for sensitive skin?",
+                    brand1: "Vanicream Moisturizing Cream",
+                    brand2: "CeraVe Moisturizing Cream",
+                    brand3: "Cetaphil Moisturizing Cream",
+                    explanation: "Vanicream dominates as #1 dermatologist-recommended for sensitive skin, formulated without common irritants (4.6★, 46.2k reviews), CeraVe follows with fragrance-free ceramides, Cetaphil provides gentle hydration.",
+                    rating1: "4.6", reviews1: "46.2k",
+                    rating2: "4.7", reviews2: "138.9k",
+                    rating3: "4.7", reviews3: "8.9k",
+                    depth1: "<span class='star-rating'>★ 4.6</span> (46.2k) • #1 derm-recommended",
+                    depth2: "<span class='star-rating'>★ 4.7</span> (138.9k) • Derm-developed",
+                    depth3: "<span class='star-rating'>★ 4.7</span> (8.9k) • Gentle formula"
+                },
+                {
+                    question: "Best face cream for very dry skin?",
+                    brand1: "Eucerin Advanced Repair Cream",
+                    brand2: "CeraVe Moisturizing Cream",
+                    brand3: "Neutrogena Hydro Boost",
+                    explanation: "Eucerin leads with intensive moisture for very dry skin with ceramide-3 and natural moisturizing factors (4.7★, 12.4k reviews), CeraVe follows with MVE technology, Neutrogena provides hyaluronic acid boost.",
+                    rating1: "4.7", reviews1: "12.4k",
+                    rating2: "4.7", reviews2: "138.9k",
+                    rating3: "4.6", reviews3: "89.7k",
+                    depth1: "<span class='star-rating'>★ 4.7</span> (12.4k) • Ceramide-3",
+                    depth2: "<span class='star-rating'>★ 4.7</span> (138.9k) • Derm-developed",
+                    depth3: "<span class='star-rating'>★ 4.6</span> (89.7k) • Hyaluronic acid"
+                },
+                {
+                    question: "Lightweight moisturizer for oily skin?",
+                    brand1: "Neutrogena Hydro Boost Water Gel",
+                    brand2: "CeraVe Ultra-Light Moisturizing Lotion",
+                    brand3: "Cetaphil Daily Oil-Free Hydrating Lotion",
+                    explanation: "Neutrogena dominates with oil-free gel-cream that won't clog pores (4.6★, 89.7k reviews - massive validation), CeraVe follows with SPF 30 protection, Cetaphil provides shine control.",
+                    rating1: "4.6", reviews1: "89.7k",
+                    rating2: "4.5", reviews2: "8.3k",
+                    rating3: "4.5", reviews3: "3.2k",
+                    depth1: "<span class='star-rating'>★ 4.6</span> (89.7k) • Oil-free",
+                    depth2: "<span class='star-rating'>★ 4.5</span> (8.3k) • SPF 30",
+                    depth3: "<span class='star-rating'>★ 4.5</span> (3.2k) • Shine control"
+                },
+                {
+                    question: "Best body lotion for extremely dry skin?",
+                    brand1: "CeraVe Moisturizing Cream",
+                    brand2: "Eucerin Advanced Repair",
+                    brand3: "Cetaphil Pro Eczema Soothing Moisturizer",
+                    explanation: "CeraVe leads with full-body ceramide-rich formula (4.7★, 138.9k reviews), Eucerin follows with intensive repair, Cetaphil provides colloidal oatmeal for eczema-prone skin.",
+                    rating1: "4.7", reviews1: "138.9k",
+                    rating2: "4.7", reviews2: "43.6k",
+                    rating3: "4.6", reviews3: "7.2k",
+                    depth1: "<span class='star-rating'>★ 4.7</span> (138.9k) • Derm-developed",
+                    depth2: "<span class='star-rating'>★ 4.7</span> (43.6k) • Intensive repair",
+                    depth3: "<span class='star-rating'>★ 4.6</span> (7.2k) • Colloidal oatmeal"
+                },
+                {
+                    question: "Best hand cream for dry hands?",
+                    brand1: "Neutrogena Norwegian Formula Hand Cream",
+                    brand2: "Eucerin Advanced Repair Hand Cream",
+                    brand3: "CeraVe Therapeutic Hand Cream",
+                    explanation: "Neutrogena leads with concentrated formula that absorbs quickly (4.6★, 47.8k reviews), Eucerin follows with ceramide-enriched formula, CeraVe provides hyaluronic acid for hands.",
+                    rating1: "4.6", reviews1: "47.8k",
+                    rating2: "4.7", reviews2: "9.1k",
+                    rating3: "4.6", reviews3: "15.3k",
+                    depth1: "<span class='star-rating'>★ 4.6</span> (47.8k) • Concentrated formula",
+                    depth2: "<span class='star-rating'>★ 4.7</span> (9.1k) • Ceramide-enriched",
+                    depth3: "<span class='star-rating'>★ 4.6</span> (15.3k) • Hyaluronic acid"
+                },
+                {
+                    question: "Best lip balm for chapped lips?",
+                    brand1: "Aquaphor Lip Repair",
+                    brand2: "Burt's Bees Lip Balm",
+                    brand3: "Neutrogena Norwegian Formula Lip Moisturizer",
+                    explanation: "Aquaphor dominates with immediate relief and long-lasting protection (4.7★, 52.1k reviews), Burt's Bees follows with natural beeswax formula, Neutrogena provides SPF 15 protection.",
+                    rating1: "4.7", reviews1: "52.1k",
+                    rating2: "4.7", reviews2: "41.3k",
+                    rating3: "4.6", reviews3: "8.9k",
+                    depth1: "<span class='star-rating'>★ 4.7</span> (52.1k) • Immediate relief",
+                    depth2: "<span class='star-rating'>★ 4.7</span> (41.3k) • Natural beeswax",
+                    depth3: "<span class='star-rating'>★ 4.6</span> (8.9k) • SPF 15"
+                }
+            ],
+            "ACNE & PROBLEM SKIN": [
+                {
+                    question: "Best acne brand that doesn't irritate?",
+                    brand1: "Paula's Choice",
+                    brand2: "CeraVe",
+                    brand3: "Neutrogena",
+                    explanation: "Paula's Choice leads with maximum strength 2% salicylic acid that treats without stripping (4.6★, 567 reviews), CeraVe follows with ultra-mild 0.5% salicylic acid with botanicals, Neutrogena provides gentle formulas.",
+                    rating1: "4.6", reviews1: "567",
+                    rating2: "4.6", reviews2: "5.4k",
+                    rating3: "4.7", reviews3: "31.6k",
+                    depth1: "<span class='star-rating'>★ 4.6</span> (567) • 2% salicylic acid",
+                    depth2: "<span class='star-rating'>★ 4.6</span> (5.4k) • Ultra-mild • Derm-developed",
+                    depth3: "<span class='star-rating'>★ 4.7</span> (31.6k) • Gentle formulas"
+                },
+                {
+                    question: "What helps with acne without drying out skin?",
+                    brand1: "CeraVe Acne Control Cleanser",
+                    brand2: "Neutrogena Oil-Free Acne Wash",
+                    brand3: "La Roche-Posay Effaclar",
+                    explanation: "CeraVe leads with 2% salicylic acid plus ceramides to maintain skin barrier (4.6★, 5.4k reviews), Neutrogena follows with oil-free salicylic acid formula, La Roche-Posay provides thermal spring water for soothing.",
+                    rating1: "4.6", reviews1: "5.4k",
+                    rating2: "4.6", reviews2: "18.9k",
+                    rating3: "4.5", reviews3: "8.2k",
+                    depth1: "<span class='star-rating'>★ 4.6</span> (5.4k) • Derm-developed • Ceramides",
+                    depth2: "<span class='star-rating'>★ 4.6</span> (18.9k) • Oil-free",
+                    depth3: "<span class='star-rating'>★ 4.5</span> (8.2k) • Thermal spring water"
+                },
+                {
+                    question: "Best product for clearing acne scars?",
+                    brand1: "The Ordinary Niacinamide 10% + Zinc 1%",
+                    brand2: "Neutrogena Stubborn Marks Treatment",
+                    brand3: "Paula's Choice Vitamin C Serum",
+                    explanation: "The Ordinary dominates with clinical-strength niacinamide to fade marks (4.5★, 89.3k reviews - exceptional validation), Neutrogena follows with targeted mark treatment, Paula's Choice provides vitamin C brightening.",
+                    rating1: "4.5", reviews1: "89.3k",
+                    rating2: "4.4", reviews2: "3.7k",
+                    rating3: "4.6", reviews3: "12.1k",
+                    depth1: "<span class='star-rating'>★ 4.5</span> (89.3k) • Clinical-strength 10%",
+                    depth2: "<span class='star-rating'>★ 4.4</span> (3.7k) • Targeted treatment",
+                    depth3: "<span class='star-rating'>★ 4.6</span> (12.1k) • Vitamin C • Evidence-based"
+                }
+            ],
+            "CLEANSERS & BASICS": [
+                {
+                    question: "Best face wash for daily use?",
+                    brand1: "CeraVe Hydrating Facial Cleanser",
+                    brand2: "Cetaphil Gentle Skin Cleanser",
+                    brand3: "Neutrogena Ultra Gentle Daily Cleanser",
+                    explanation: "CeraVe leads as 'developed with dermatologists' with ceramides and hyaluronic acid (4.7★, 97.3k reviews - massive validation), Cetaphil follows trusted for 75+ years, Neutrogena provides ultra-gentle formula.",
+                    rating1: "4.7", reviews1: "97.3k",
+                    rating2: "4.7", reviews2: "23.9k",
+                    rating3: "4.6", reviews3: "12.7k",
+                    depth1: "<span class='star-rating'>★ 4.7</span> (97.3k) • Derm-developed",
+                    depth2: "<span class='star-rating'>★ 4.7</span> (23.9k) • Derm-recommended • 75+ years",
+                    depth3: "<span class='star-rating'>★ 4.6</span> (12.7k) • Ultra-gentle"
+                },
+                {
+                    question: "Gentle cleanser for sensitive skin?",
+                    brand1: "Cetaphil Gentle Skin Cleanser",
+                    brand2: "CeraVe Hydrating Cleanser",
+                    brand3: "Vanicream Gentle Facial Cleanser",
+                    explanation: "Cetaphil dominates as dermatologist-recommended for sensitive skin for 75+ years (4.7★, 23.9k reviews), CeraVe follows with fragrance-free ceramides, Vanicream provides zero irritants formula.",
+                    rating1: "4.7", reviews1: "23.9k",
+                    rating2: "4.7", reviews2: "97.3k",
+                    rating3: "4.6", reviews3: "18.4k",
+                    depth1: "<span class='star-rating'>★ 4.7</span> (23.9k) • Derm-recommended • 75+ years",
+                    depth2: "<span class='star-rating'>★ 4.7</span> (97.3k) • Derm-developed",
+                    depth3: "<span class='star-rating'>★ 4.6</span> (18.4k) • Zero irritants"
+                },
+                {
+                    question: "Best makeup remover that doesn't irritate eyes?",
+                    brand1: "Neutrogena Makeup Remover Cleansing Towelettes",
+                    brand2: "Bioderma Sensibio H2O Micellar Water",
+                    brand3: "Garnier SkinActive Micellar Cleansing Water",
+                    explanation: "Neutrogena leads with ophthalmologist-tested towelettes safe for contact lens wearers (4.7★, 79.5k reviews), Bioderma follows with French pharmacy favorite, Garnier provides affordable micellar water.",
+                    rating1: "4.7", reviews1: "79.5k",
+                    rating2: "4.7", reviews2: "42.8k",
+                    rating3: "4.7", reviews3: "68.2k",
+                    depth1: "<span class='star-rating'>★ 4.7</span> (79.5k) • Ophthalmologist-tested",
+                    depth2: "<span class='star-rating'>★ 4.7</span> (42.8k) • French pharmacy",
+                    depth3: "<span class='star-rating'>★ 4.7</span> (68.2k) • Affordable"
+                }
+            ],
+            "SUN PROTECTION": [
+                {
+                    question: "Best sunscreen brand for dark skin?",
+                    brand1: "Black Girl Sunscreen",
+                    brand2: "Supergoop Glowscreen",
+                    brand3: "La Roche-Posay Anthelios",
+                    explanation: "Black Girl Sunscreen leads as pioneering brand for dark skin with no white residue (4.7★, 5.8k reviews), Supergoop follows with SPF 40 and even-tone defender, La Roche-Posay provides universal tint.",
+                    rating1: "4.7", reviews1: "5.8k",
+                    rating2: "4.5", reviews2: "31",
+                    rating3: "4.6", reviews3: "317",
+                    depth1: "<span class='star-rating'>★ 4.7</span> (5.8k) • No white cast",
+                    depth2: "<span class='star-rating'>★ 4.5</span> (31) • SPF 40 • Even-tone",
+                    depth3: "<span class='star-rating'>★ 4.6</span> (317) • Universal tint"
+                },
+                {
+                    question: "Best daily facial sunscreen?",
+                    brand1: "EltaMD UV Clear Face Sunscreen",
+                    brand2: "La Roche-Posay Anthelios",
+                    brand3: "CeraVe AM Facial Moisturizing Lotion SPF 30",
+                    explanation: "EltaMD dominates as #1 dermatologist-recommended with zinc oxide and niacinamide (4.6★, 18.7k reviews), La Roche-Posay follows with broad spectrum UVA/UVB, CeraVe provides moisturizer + SPF combo.",
+                    rating1: "4.6", reviews1: "18.7k",
+                    rating2: "4.6", reviews2: "37.7k",
+                    rating3: "4.6", reviews3: "53.2k",
+                    depth1: "<span class='star-rating'>★ 4.6</span> (18.7k) • #1 derm-recommended",
+                    depth2: "<span class='star-rating'>★ 4.6</span> (37.7k) • Broad spectrum",
+                    depth3: "<span class='star-rating'>★ 4.6</span> (53.2k) • Derm-developed • SPF 30"
+                },
+                {
+                    question: "Sunscreen that doesn't leave white cast?",
+                    brand1: "Supergoop Unseen Sunscreen SPF 40",
+                    brand2: "Black Girl Sunscreen",
+                    brand3: "La Roche-Posay Anthelios Ultra-Light Fluid",
+                    explanation: "Supergoop leads with invisible, weightless feel (4.5★, 14.2k reviews), Black Girl Sunscreen follows specifically designed for melanin-rich skin, La Roche-Posay provides ultra-light texture.",
+                    rating1: "4.5", reviews1: "14.2k",
+                    rating2: "4.7", reviews2: "5.8k",
+                    rating3: "4.6", reviews3: "37.7k",
+                    depth1: "<span class='star-rating'>★ 4.5</span> (14.2k) • Invisible • Weightless",
+                    depth2: "<span class='star-rating'>★ 4.7</span> (5.8k) • Melanin-rich formula",
+                    depth3: "<span class='star-rating'>★ 4.6</span> (37.7k) • Ultra-light"
+                },
+                {
+                    question: "Best mineral sunscreen?",
+                    brand1: "EltaMD UV Physical",
+                    brand2: "La Roche-Posay Anthelios Mineral",
+                    brand3: "CeraVe Hydrating Mineral Sunscreen",
+                    explanation: "EltaMD leads with 100% mineral (zinc oxide + titanium dioxide) tinted formula (4.5★, 6.3k reviews), La Roche-Posay follows with cell-ox shield, CeraVe provides ceramide-enriched protection.",
+                    rating1: "4.5", reviews1: "6.3k",
+                    rating2: "4.5", reviews2: "12.8k",
+                    rating3: "4.6", reviews3: "8.9k",
+                    depth1: "<span class='star-rating'>★ 4.5</span> (6.3k) • 100% mineral • Derm-recommended",
+                    depth2: "<span class='star-rating'>★ 4.5</span> (12.8k) • Cell-ox shield",
+                    depth3: "<span class='star-rating'>★ 4.6</span> (8.9k) • Derm-developed"
+                }
+            ],
+            "SPECIALTY PRODUCTS": [
+                {
+                    question: "Best vitamin C serum?",
+                    brand1: "The Ordinary Vitamin C Suspension 23%",
+                    brand2: "SkinCeuticals C E Ferulic",
+                    brand3: "Paula's Choice C15 Super Booster",
+                    explanation: "The Ordinary leads with clinical 23% concentration at affordable price (4.4★, 89.8k reviews - exceptional scale), SkinCeuticals follows as gold-standard professional formula, Paula's Choice provides stable vitamin C.",
+                    rating1: "4.4", reviews1: "89.8k",
+                    rating2: "4.5", reviews2: "8.9k",
+                    rating3: "4.5", reviews3: "3.2k",
+                    depth1: "<span class='star-rating'>★ 4.4</span> (89.8k)",
+                    depth2: "<span class='star-rating'>★ 4.5</span> (8.9k)",
+                    depth3: "<span class='star-rating'>★ 4.5</span> (3.2k)"
+                },
+                {
+                    question: "What's the best retinol for beginners?",
+                    brand1: "CeraVe Resurfacing Retinol Serum",
+                    brand2: "Neutrogena Rapid Wrinkle Repair",
+                    brand3: "The Ordinary Retinol 0.5% in Squalane",
+                    explanation: "CeraVe leads with encapsulated retinol plus ceramides to minimize irritation (4.5★, 27.8k reviews), Neutrogena follows with accelerated retinol SA, The Ordinary provides gentle starter strength.",
+                    rating1: "4.5", reviews1: "27.8k",
+                    rating2: "4.5", reviews2: "25.5k",
+                    rating3: "4.5", reviews3: "34.6k",
+                    depth1: "<span class='star-rating'>★ 4.5</span> (27.8k)",
+                    depth2: "<span class='star-rating'>★ 4.5</span> (25.5k)",
+                    depth3: "<span class='star-rating'>★ 4.5</span> (34.6k)"
+                },
+                {
+                    question: "Best hyaluronic acid serum?",
+                    brand1: "The Ordinary Hyaluronic Acid 2% + B5",
+                    brand2: "Neutrogena Hydro Boost Serum",
+                    brand3: "The Inkey List Hyaluronic Acid",
+                    explanation: "The Ordinary dominates with pure hyaluronic acid at multiple molecular weights (4.6★, 149.2k reviews - massive validation), Neutrogena follows with purified HA, The Inkey List provides affordable option.",
+                    rating1: "4.6", reviews1: "149.2k",
+                    rating2: "4.5", reviews2: "8.7k",
+                    rating3: "4.7", reviews3: "13.5k",
+                    depth1: "<span class='star-rating'>★ 4.6</span> (149.2k)",
+                    depth2: "<span class='star-rating'>★ 4.5</span> (8.7k)",
+                    depth3: "<span class='star-rating'>★ 4.7</span> (13.5k)"
+                },
+                {
+                    question: "Best niacinamide serum?",
+                    brand1: "The Ordinary Niacinamide 10% + Zinc 1%",
+                    brand2: "Paula's Choice 10% Niacinamide Booster",
+                    brand3: "Good Molecules Niacinamide Serum",
+                    explanation: "The Ordinary leads with clinical 10% concentration for pores and texture (4.5★, 89.3k reviews), Paula's Choice follows with additional antioxidants, Good Molecules provides affordable clean option.",
+                    rating1: "4.5", reviews1: "89.3k",
+                    rating2: "4.5", reviews2: "6.7k",
+                    rating3: "4.6", reviews3: "12.2k",
+                    depth1: "<span class='star-rating'>★ 4.5</span> (89.3k)",
+                    depth2: "<span class='star-rating'>★ 4.5</span> (6.7k)",
+                    depth3: "<span class='star-rating'>★ 4.6</span> (12.2k)"
+                },
+                {
+                    question: "Best eye cream for dark circles?",
+                    brand1: "Olay Eyes Brightening Eye Cream",
+                    brand2: "CeraVe Eye Repair Cream",
+                    brand3: "Neutrogena Rapid Dark Circle Repair Eye Cream",
+                    explanation: "Olay leads with brightening complex and niacinamide (4.5★, 15.6k reviews), CeraVe follows with ceramides and peptides, Neutrogena provides vitamin C and retinol combo.",
+                    rating1: "4.5", reviews1: "15.6k",
+                    rating2: "4.6", reviews2: "24.3k",
+                    rating3: "4.4", reviews3: "6.8k",
+                    depth1: "<span class='star-rating'>★ 4.5</span> (15.6k)",
+                    depth2: "<span class='star-rating'>★ 4.6</span> (24.3k)",
+                    depth3: "<span class='star-rating'>★ 4.4</span> (6.8k)"
+                },
+                {
+                    question: "Best eye cream for puffiness?",
+                    brand1: "Olay Eyes Deep Hydrating Eye Gel",
+                    brand2: "Neutrogena Hydro Boost Eye Gel-Cream",
+                    brand3: "CeraVe Eye Repair Cream",
+                    explanation: "Olay leads with cooling gel formula that reduces puffiness (4.5★, 8.9k reviews), Neutrogena follows with hyaluronic acid eye gel, CeraVe provides caffeine and peptides.",
+                    rating1: "4.5", reviews1: "8.9k",
+                    rating2: "4.5", reviews2: "12.4k",
+                    rating3: "4.6", reviews3: "24.3k",
+                    depth1: "<span class='star-rating'>★ 4.5</span> (8.9k)",
+                    depth2: "<span class='star-rating'>★ 4.5</span> (12.4k)",
+                    depth3: "<span class='star-rating'>★ 4.6</span> (24.3k)"
+                },
+                {
+                    question: "Best face mask for glowing skin?",
+                    brand1: "Youth to the People Superberry Hydrate + Glow Dream Mask",
+                    brand2: "Glow Recipe Watermelon Glow Sleeping Mask",
+                    brand3: "Origins Drink Up Intensive Overnight Mask",
+                    explanation: "Youth to the People leads with superfood-packed overnight mask (4.6★, 2.3k reviews), Glow Recipe follows with watermelon extract, Origins provides deep hydration boost.",
+                    rating1: "4.6", reviews1: "2.3k",
+                    rating2: "4.5", reviews2: "8.7k",
+                    rating3: "4.6", reviews3: "5.2k",
+                    depth1: "<span class='star-rating'>★ 4.6</span> (2.3k)",
+                    depth2: "<span class='star-rating'>★ 4.5</span> (8.7k)",
+                    depth3: "<span class='star-rating'>★ 4.6</span> (5.2k)"
+                },
+                {
+                    question: "Best exfoliator for sensitive skin?",
+                    brand1: "Paula's Choice 2% BHA Liquid Exfoliant",
+                    brand2: "CeraVe SA Smoothing Cleanser",
+                    brand3: "The Ordinary Lactic Acid 5% + HA",
+                    explanation: "Paula's Choice leads with gentle BHA that won't irritate (4.5★, 67.8k reviews - massive validation), CeraVe follows with salicylic acid plus ceramides, The Ordinary provides mild AHA option.",
+                    rating1: "4.5", reviews1: "67.8k",
+                    rating2: "4.6", reviews2: "5.4k",
+                    rating3: "4.5", reviews3: "28.9k",
+                    depth1: "<span class='star-rating'>★ 4.5</span> (67.8k)",
+                    depth2: "<span class='star-rating'>★ 4.6</span> (5.4k)",
+                    depth3: "<span class='star-rating'>★ 4.5</span> (28.9k)"
+                },
+                {
+                    question: "What toner should I use?",
+                    brand1: "Paula's Choice Pore-Reducing Toner",
+                    brand2: "The Ordinary Glycolic Acid 7% Toning Solution",
+                    brand3: "Thayers Witch Hazel Toner",
+                    explanation: "Paula's Choice leads with niacinamide-rich formula (4.4★, 3.2k reviews), The Ordinary follows with AHA exfoliating toner, Thayers provides alcohol-free witch hazel classic.",
+                    rating1: "4.4", reviews1: "3.2k",
+                    rating2: "4.4", reviews2: "47.3k",
+                    rating3: "4.7", reviews3: "82.4k",
+                    depth1: "<span class='star-rating'>★ 4.4</span> (3.2k)",
+                    depth2: "<span class='star-rating'>★ 4.4</span> (47.3k)",
+                    depth3: "<span class='star-rating'>★ 4.7</span> (82.4k)"
+                },
+                {
+                    question: "Best treatment for hyperpigmentation?",
+                    brand1: "The Ordinary Alpha Arbutin 2% + HA",
+                    brand2: "Neutrogena Rapid Tone Repair",
+                    brand3: "Paula's Choice Discoloration Repair Serum",
+                    explanation: "The Ordinary leads with targeted alpha arbutin for dark spots (4.5★, 34.2k reviews), Neutrogena follows with vitamin C complex, Paula's Choice provides tranexamic acid formula.",
+                    rating1: "4.5", reviews1: "34.2k",
+                    rating2: "4.4", reviews2: "7.9k",
+                    rating3: "4.4", reviews3: "2.1k",
+                    depth1: "<span class='star-rating'>★ 4.5</span> (34.2k)",
+                    depth2: "<span class='star-rating'>★ 4.4</span> (7.9k)",
+                    depth3: "<span class='star-rating'>★ 4.4</span> (2.1k)"
+                },
+                {
+                    question: "Best peptide serum?",
+                    brand1: "The Ordinary Buffet",
+                    brand2: "Olay Regenerist Micro-Sculpting Serum",
+                    brand3: "Paula's Choice Peptide Booster",
+                    explanation: "The Ordinary leads with multi-peptide complex (4.5★, 42.7k reviews), Olay follows with amino-peptide complex and niacinamide, Paula's Choice provides concentrated peptide boost.",
+                    rating1: "4.5", reviews1: "42.7k",
+                    rating2: "4.6", reviews2: "18.3k",
+                    rating3: "4.5", reviews3: "3.8k",
+                    depth1: "<span class='star-rating'>★ 4.5</span> (42.7k)",
+                    depth2: "<span class='star-rating'>★ 4.6</span> (18.3k)",
+                    depth3: "<span class='star-rating'>★ 4.5</span> (3.8k)"
+                },
+                {
+                    question: "Best face oil for dry skin?",
+                    brand1: "The Ordinary 100% Organic Cold-Pressed Rose Hip Seed Oil",
+                    brand2: "Biossance Squalane + Vitamin C Rose Oil",
+                    brand3: "Youth to the People Superfood Firm + Brighten Vitamin C Serum",
+                    explanation: "The Ordinary leads with pure rose hip oil rich in essential fatty acids (4.6★, 89.2k reviews - exceptional validation), Biossance follows with squalane blend, Youth to the People provides vitamin C oil.",
+                    rating1: "4.6", reviews1: "89.2k",
+                    rating2: "4.5", reviews2: "5.3k",
+                    rating3: "4.6", reviews3: "2.3k",
+                    depth1: "<span class='star-rating'>★ 4.6</span> (89.2k)",
+                    depth2: "<span class='star-rating'>★ 4.5</span> (5.3k)",
+                    depth3: "<span class='star-rating'>★ 4.6</span> (2.3k)"
+                },
+                {
+                    question: "Best essence or treatment water?",
+                    brand1: "SK-II Facial Treatment Essence",
+                    brand2: "Fresh Rose Deep Hydration Facial Toner",
+                    brand3: "Tatcha The Essence",
+                    explanation: "SK-II dominates as cult-favorite with Pitera (4.6★, 8.9k reviews), Fresh follows with rose water and hyaluronic acid, Tatcha provides anti-aging essence.",
+                    rating1: "4.6", reviews1: "8.9k",
+                    rating2: "4.5", reviews2: "3.7k",
+                    rating3: "4.6", reviews3: "2.1k",
+                    depth1: "<span class='star-rating'>★ 4.6</span> (8.9k)",
+                    depth2: "<span class='star-rating'>★ 4.5</span> (3.7k)",
+                    depth3: "<span class='star-rating'>★ 4.6</span> (2.1k)"
+                },
+                {
+                    question: "What's a good facial mist?",
+                    brand1: "Mario Badescu Facial Spray",
+                    brand2: "Caudalie Beauty Elixir",
+                    brand3: "Evian Facial Spray",
+                    explanation: "Mario Badescu leads with aloe, herbs and rosewater (4.6★, 31.2k reviews), Caudalie follows with grape extract and essential oils, Evian provides pure thermal water.",
+                    rating1: "4.6", reviews1: "31.2k",
+                    rating2: "4.5", reviews2: "8.4k",
+                    rating3: "4.7", reviews3: "12.8k",
+                    depth1: "<span class='star-rating'>★ 4.6</span> (31.2k)",
+                    depth2: "<span class='star-rating'>★ 4.5</span> (8.4k)",
+                    depth3: "<span class='star-rating'>★ 4.7</span> (12.8k)"
+                },
+                {
+                    question: "Best spot treatment for pimples?",
+                    brand1: "La Roche-Posay Effaclar Duo",
+                    brand2: "Neutrogena On-The-Spot Acne Treatment",
+                    brand3: "Paula's Choice Clear Extra Strength Daily Skin Clearing Treatment",
+                    explanation: "La Roche-Posay leads with benzoyl peroxide and LHA micro-exfoliation (4.4★, 3.8k reviews), Neutrogena follows with 2.5% benzoyl peroxide, Paula's Choice provides salicylic acid treatment.",
+                    rating1: "4.4", reviews1: "3.8k",
+                    rating2: "4.5", reviews2: "9.7k",
+                    rating3: "4.6", reviews3: "567",
+                    depth1: "<span class='star-rating'>★ 4.4</span> (3.8k)",
+                    depth2: "<span class='star-rating'>★ 4.5</span> (9.7k)",
+                    depth3: "<span class='star-rating'>★ 4.6</span> (567)"
+                }
+            ],
+            "INGREDIENTS & FORMULATIONS": [
+                {
+                    question: "Best products with ceramides?",
+                    brand1: "CeraVe",
+                    brand2: "Cetaphil Pro",
+                    brand3: "Eucerin",
+                    explanation: "CeraVe dominates across multiple products with essential ceramides 1, 3, 6-II (4.7★ average across portfolio), Cetaphil Pro follows with ceramide technology, Eucerin provides ceramide-enriched formulas.",
+                    rating1: "4.7", reviews1: "97.3k",
+                    rating2: "4.6", reviews2: "7.2k",
+                    rating3: "4.7", reviews3: "12.4k",
+                    depth1: "<span class='star-rating'>★ 4.7</span> (97.3k)",
+                    depth2: "<span class='star-rating'>★ 4.6</span> (7.2k)",
+                    depth3: "<span class='star-rating'>★ 4.7</span> (12.4k)"
+                },
+                {
+                    question: "What has the most hyaluronic acid?",
+                    brand1: "The Ordinary Hyaluronic Acid 2% + B5",
+                    brand2: "Neutrogena Hydro Boost",
+                    brand3: "The Inkey List Hyaluronic Acid",
+                    explanation: "The Ordinary leads with 2% pure hyaluronic acid at multiple molecular weights (4.6★, 149.2k reviews - massive validation), Neutrogena follows with purified HA technology, The Inkey List provides high concentration.",
+                    rating1: "4.6", reviews1: "149.2k",
+                    rating2: "4.6", reviews2: "89.7k",
+                    rating3: "4.7", reviews3: "13.5k",
+                    depth1: "<span class='star-rating'>★ 4.6</span> (149.2k)",
+                    depth2: "<span class='star-rating'>★ 4.6</span> (89.7k)",
+                    depth3: "<span class='star-rating'>★ 4.7</span> (13.5k)"
+                },
+                {
+                    question: "Best products with niacinamide?",
+                    brand1: "The Ordinary Niacinamide 10% + Zinc 1%",
+                    brand2: "Olay Regenerist",
+                    brand3: "Paula's Choice 10% Niacinamide Booster",
+                    explanation: "The Ordinary leads with clinical 10% concentration (4.5★, 89.3k reviews), Olay follows with niacinamide across their Regenerist line, Paula's Choice provides concentrated booster.",
+                    rating1: "4.5", reviews1: "89.3k",
+                    rating2: "4.6", reviews2: "48.3k",
+                    rating3: "4.5", reviews3: "6.7k",
+                    depth1: "<span class='star-rating'>★ 4.5</span> (89.3k)",
+                    depth2: "<span class='star-rating'>★ 4.6</span> (48.3k)",
+                    depth3: "<span class='star-rating'>★ 4.5</span> (6.7k)"
+                }
+            ]
+        };
+
+        // Generate table rows
+        function generateTable() {
+            const tbody = document.getElementById('dataTable');
+            let html = '';
+
+            for (const [category, questions] of Object.entries(beautyData)) {
+                html += `
+                    <tr class="category-header">
+                        <td colspan="6">${category}</td>
+                    </tr>
+                `;
+
+                questions.forEach(q => {
+                    // Single line per product: rating + 1-2 credentials
+                    const depth1 = q.depth1 || `<span class="star-rating">★ ${q.rating1}</span> (${q.reviews1})`;
+                    const depth2 = q.depth2 || `<span class="star-rating">★ ${q.rating2}</span> (${q.reviews2})`;
+                    const depth3 = q.depth3 || `<span class="star-rating">★ ${q.rating3}</span> (${q.reviews3})`;
+                    
+                    html += `
+                        <tr>
+                            <td>${q.question}</td>
+                            <td class="brand-1">${q.brand1}</td>
+                            <td class="brand-2">${q.brand2}</td>
+                            <td class="brand-3">${q.brand3}</td>
+                            <td>${q.explanation}</td>
+                            <td class="depth-factors">
+                                ${depth1}<br>
+                                ${depth2}<br>
+                                ${depth3}
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            tbody.innerHTML = html;
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#dataTable tr:not(.category-header)');
+            let matchCount = 0;
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    row.style.display = '';
+                    matchCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            document.getElementById('searchInfo').textContent = 
+                searchTerm ? `Found ${matchCount} matching rows` : '';
+        });
+
+        // Company highlight functionality
+        function highlightCompany(company) {
+            clearHighlights();
+            
+            const rows = document.querySelectorAll('#dataTable tr:not(.category-header)');
+            let matchCount = 0;
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                
+                // Check brand cells (columns 1, 2, 3 - which are indices 1, 2, 3)
+                for (let i = 1; i <= 3; i++) {
+                    if (cells[i]) {
+                        const cellText = cells[i].textContent.toLowerCase();
+                        if (cellText.includes(company.toLowerCase())) {
+                            cells[i].classList.add('highlight');
+                            matchCount++;
+                        }
+                    }
+                }
+            });
+
+            // Update button state
+            document.querySelectorAll('.company-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            document.getElementById('searchInfo').textContent = `${matchCount} mentions of ${company}`;
+        }
+
+        function clearHighlights() {
+            document.querySelectorAll('.highlight').forEach(el => {
+                el.classList.remove('highlight');
+            });
+            document.querySelectorAll('.company-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById('searchInfo').textContent = '';
+        }
+
+        // Initialize
+        generateTable();
+    </script>
+    
+    <div style="margin-top: 30px; padding: 30px; background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%); border-radius: 12px; border: 2px solid #444;">
+        <h2 style="color: #ffd700; margin-top: 0; margin-bottom: 25px; font-size: 24px; border-bottom: 2px solid #ffd700; padding-bottom: 10px;">Executive Summary: Olay's Competitive Position</h2>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+            <div style="background-color: #1a3d1a; padding: 20px; border-radius: 8px; border-left: 4px solid #4CAF50;">
+                <h3 style="color: #4CAF50; margin-top: 0; margin-bottom: 15px; font-size: 18px;">✓ Dominant Categories</h3>
+                <ul style="color: #ccc; line-height: 1.8; margin: 0; padding-left: 20px;">
+                    <li><strong>Anti-Aging Leadership:</strong> Olay Regenerist captures #1 position in best anti-aging moisturizer (4.6★, 48.3k reviews)</li>
+                    <li><strong>Eye Care Expertise:</strong> Owns 2 of 3 eye cream categories (dark circles and puffiness)</li>
+                    <li><strong>Night Treatments:</strong> Leads night cream hydration with Regenerist formulation</li>
+                    <li><strong>Peptide Innovation:</strong> Micro-Sculpting Serum ranks #2 in peptide serum category</li>
+                    <li><strong>Heritage Brand Trust:</strong> Strong presence in established beauty shopper segments</li>
+                </ul>
+            </div>
+            
+            <div style="background-color: #3d1a1a; padding: 20px; border-radius: 8px; border-left: 4px solid #f44336;">
+                <h3 style="color: #f44336; margin-top: 0; margin-bottom: 15px; font-size: 18px;">⚠ Vulnerable Categories</h3>
+                <ul style="color: #ccc; line-height: 1.8; margin: 0; padding-left: 20px;">
+                    <li><strong>Trust & Authority:</strong> Zero #1 positions across 6 trust/brand queries - CeraVe dominates</li>
+                    <li><strong>Daily Moisturizers:</strong> Absent from 9 moisturizer/hydration #1 rankings</li>
+                    <li><strong>Clinical Positioning:</strong> CeraVe's "developed with dermatologists" captures medical authority</li>
+                    <li><strong>Specialty Serums:</strong> The Ordinary dominates with clinical ingredients at disruptive prices</li>
+                    <li><strong>Clean Beauty Movement:</strong> Missing from cruelty-free and natural skincare queries</li>
+                    <li><strong>Sun Protection:</strong> Zero presence in 4 sunscreen category queries</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div style="background-color: #1f2d3d; padding: 25px; border-radius: 8px; margin-top: 20px; border: 1px solid #555;">
+            <h3 style="color: #4da6ff; margin-top: 0; margin-bottom: 15px; font-size: 18px;">Key Strategic Insights</h3>
+            <p style="color: #fff; line-height: 1.8; margin: 0 0 15px 0; font-size: 15px;">
+                <strong>Olay's Critical Challenge:</strong> While the brand maintains strong positioning in anti-aging and eye care (heritage strengths), it faces <strong>three fundamental competitive threats</strong> that limit AI discoverability:
+            </p>
+            <ul style="color: #ccc; line-height: 1.8; margin: 0; padding-left: 20px;">
+                <li><strong>Dermatologist Authority Gap:</strong> CeraVe dominates with "developed with dermatologists" messaging and National Eczema Association seals, capturing 138.9k reviews (4.7★) on flagship products. This medical positioning creates unassailable trust moats across daily moisturizer, cleanser, and hydration queries where Olay has minimal presence.</li>
+                <li><strong>Disruptive Ingredient Transparency:</strong> The Ordinary revolutionizes with clinical-strength formulations (23% Vitamin C, 10% Niacinamide, 2% Hyaluronic Acid) at $5-15 price points versus Olay's $20-40 range. Their 89k-149k review volumes with 4.4-4.6★ ratings prove efficacy claims resonate stronger than heritage brand messaging.</li>
+                <li><strong>Category Specialist Displacement:</strong> La Roche-Posay (sun protection), Neutrogena (acne/cleansers), Paula's Choice (chemical exfoliants), and Cetaphil (sensitive skin) own condition-specific segments with focused clinical positioning that Olay's broad anti-aging narrative cannot address.</li>
+            </ul>
+            <p style="color: #fff; line-height: 1.8; margin: 15px 0 0 0; font-size: 15px;">
+                <strong>Critical Opportunity:</strong> Olay's amino-peptide complex and niacinamide formulations represent genuine innovation, but the brand must urgently develop dermatologist endorsement programs, transparent ingredient communications, and condition-specific line extensions to compete in the AI recommendation era. Current positioning as "luxury you can afford" fails to address the trust signals (medical authority, clinical testing, ingredient transparency) that drive Rufus recommendations.
+            </p>
+        </div>
+    </div>
+    
+    <div style="margin-top: 30px; padding: 30px; background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%); border-radius: 12px; border: 2px solid #444;">
+        <h2 style="color: #ffd700; margin-top: 0; margin-bottom: 25px; font-size: 24px; border-bottom: 2px solid #ffd700; padding-bottom: 10px;">Competitive Landscape: Top Contenders</h2>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+            <div style="background-color: #1a1a1a; padding: 20px; border-radius: 8px; border: 1px solid #444;">
+                <h3 style="color: #ffd700; margin-top: 0; margin-bottom: 12px; font-size: 16px;">🏆 CeraVe (L'Oréal)</h3>
+                <p style="color: #ccc; line-height: 1.6; margin: 0; font-size: 14px;">
+                    Dominant market leader with "developed with dermatologists" positioning across entire portfolio. Essential ceramides (1, 3, 6-II) with MVE technology for 24-hour hydration. National Eczema Association Seal of Acceptance on multiple products. Leads 15+ category #1 positions including daily moisturizers (4.7★, 138.9k reviews), cleansers (4.7★, 97.3k reviews), and acne treatments. Fragrance-free formulations with hyaluronic acid standard. Combines medical authority with accessible $12-18 price points.
+                </p>
+            </div>
+            
+            <div style="background-color: #1a1a1a; padding: 20px; border-radius: 8px; border: 1px solid #444;">
+                <h3 style="color: #c0c0c0; margin-top: 0; margin-bottom: 12px; font-size: 16px;">🥈 The Ordinary (Estée Lauder/DECIEM)</h3>
+                <p style="color: #ccc; line-height: 1.6; margin: 0; font-size: 14px;">
+                    Clinical ingredient transparency disruptor with pharmaceutical-grade actives at unprecedented price points ($5-15). Dominates specialty serum categories: Hyaluronic Acid 2% + B5 (4.6★, 149.2k reviews), Niacinamide 10% + Zinc (4.5★, 89.3k reviews), Vitamin C 23% (4.4★, 89.8k reviews). "No-frills packaging, pure formulation" messaging resonates with ingredient-educated consumers. Captures Gen Z/Millennial segments seeking clinical efficacy without premium pricing. Vegan and cruelty-free across portfolio.
+                </p>
+            </div>
+            
+            <div style="background-color: #1a1a1a; padding: 20px; border-radius: 8px; border: 1px solid #444;">
+                <h3 style="color: #cd7f32; margin-top: 0; margin-bottom: 12px; font-size: 16px;">🥉 Neutrogena (Kenvue)</h3>
+                <p style="color: #ccc; line-height: 1.6; margin: 0; font-size: 14px;">
+                    Dermatologist-recommended heritage brand with clinical testing emphasis. Leads anti-wrinkle category with Rapid Wrinkle Repair (accelerated retinol SA, 4.5★, 25.5k reviews) claiming visible results in 1 week. Hydro Boost line dominates lightweight hydration (4.6★, 89.7k reviews) with purified hyaluronic acid. Norwegian Formula hand cream (4.6★, 47.8k reviews) and makeup remover towelettes (4.7★, 79.5k reviews) show category breadth. Strong in acne treatments and oil-free formulations for combination skin.
+                </p>
+            </div>
+            
+            <div style="background-color: #1a1a1a; padding: 20px; border-radius: 8px; border: 1px solid #444;">
+                <h3 style="color: #8b7355; margin-top: 0; margin-bottom: 12px; font-size: 16px;">Olay (Procter & Gamble)</h3>
+                <p style="color: #ccc; line-height: 1.6; margin: 0; font-size: 14px;">
+                    Anti-aging specialist with amino-peptide complex and niacinamide technology. Regenerist line leads moisturizer category (4.6★, 48.3k reviews) with "firmer skin" claims. Dominates eye care: Eyes Brightening Cream for dark circles (4.5★, 15.6k reviews) and Deep Hydrating Eye Gel for puffiness (4.5★, 8.9k reviews). Micro-Sculpting Serum provides peptide innovation (4.6★, 18.3k reviews). "Luxury you can afford" positioning bridges mass and prestige. Strong with 35+ demographic seeking visible anti-aging results.
+                </p>
+            </div>
+            
+            <div style="background-color: #1a1a1a; padding: 20px; border-radius: 8px; border: 1px solid #444;">
+                <h3 style="color: #8b7355; margin-top: 0; margin-bottom: 12px; font-size: 16px;">Cetaphil (Galderma)</h3>
+                <p style="color: #ccc; line-height: 1.6; margin: 0; font-size: 14px;">
+                    Trusted for 75+ years as dermatologist-recommended gentle skincare. Dominates sensitive skin cleanser category (4.7★, 23.9k reviews) with "48-hour hydration" messaging. Gentle Skin Cleanser works without water, suitable for eczema and rosacea. Daily Facial Moisturizer with SPF 15 (4.6★, 27.5k reviews) combines hydration and protection. Pro line addresses eczema with colloidal oatmeal. "Dermatologist tested" and "clinically proven" messaging throughout. Accessible $11-15 price points maintain market penetration.
+                </p>
+            </div>
+            
+            <div style="background-color: #1a1a1a; padding: 20px; border-radius: 8px; border: 1px solid #444;">
+                <h3 style="color: #8b7355; margin-top: 0; margin-bottom: 12px; font-size: 16px;">La Roche-Posay (L'Oréal)</h3>
+                <p style="color: #ccc; line-height: 1.6; margin: 0; font-size: 14px;">
+                    French pharmacy heritage with thermal spring water in all formulations. Anthelios sunscreen line leads daily facial SPF category (4.6★, 37.7k reviews) with broad-spectrum UVA/UVB protection. Ultra-Light Fluid and Mineral formulations address white-cast concerns. Effaclar line targets acne with benzoyl peroxide and LHA micro-exfoliation (4.4★, 3.8k reviews). "Recommended by 90,000 dermatologists worldwide" builds global clinical authority. Premium $18-48 positioning justifies specialized formulations.
+                </p>
+            </div>
+            
+            <div style="background-color: #1a1a1a; padding: 20px; border-radius: 8px; border: 1px solid #444;">
+                <h3 style="color: #8b7355; margin-top: 0; margin-bottom: 12px; font-size: 16px;">Paula's Choice (Private)</h3>
+                <p style="color: #ccc; line-height: 1.6; margin: 0; font-size: 14px;">
+                    Evidence-based skincare with published ingredient research. 2% BHA Liquid Exfoliant dominates chemical exfoliation for sensitive skin (4.5★, 67.8k reviews - massive validation). 10% Niacinamide Booster and C15 Super Booster provide concentrated actives. Maximum strength 2% salicylic acid treats acne without irritation (4.6★, 567 reviews). "Science-backed formulations" and "ingredient transparency" resonate with educated consumers. $20-49 price points position as accessible clinical alternative to prestige brands.
+                </p>
+            </div>
+            
+            <div style="background-color: #1a1a1a; padding: 20px; border-radius: 8px; border: 1px solid #444;">
+                <h3 style="color: #8b7355; margin-top: 0; margin-bottom: 12px; font-size: 16px;">Vanicream (Pharmaceutical Specialties)</h3>
+                <p style="color: #ccc; line-height: 1.6; margin: 0; font-size: 14px;">
+                    "#1 dermatologist-recommended for sensitive skin" with zero common irritants (4.6★, 46.2k reviews). Formulated without dyes, fragrance, masking fragrance, lanolin, parabens, formaldehyde releasers. Moisturizing Cream with pump dispenser leads trust/brand queries. Gentle Facial Cleanser provides irritant-free cleansing (4.6★, 18.4k reviews). Medical heritage builds authority with eczema, psoriasis, and rosacea patients. $13-16 price points make clinical-grade accessible for daily use.
+                </p>
+            </div>
+            
+            <div style="background-color: #1a1a1a; padding: 20px; border-radius: 8px; border: 1px solid #444;">
+                <h3 style="color: #8b7355; margin-top: 0; margin-bottom: 12px; font-size: 16px;">EltaMD (Estée Lauder)</h3>
+                <p style="color: #ccc; line-height: 1.6; margin: 0; font-size: 14px;">
+                    Professional-grade sunscreen "#1 dermatologist-recommended" for daily facial protection. UV Clear Face Sunscreen combines zinc oxide with niacinamide for acne-prone skin (4.6★, 18.7k reviews). UV Physical provides 100% mineral (zinc + titanium dioxide) tinted formula (4.5★, 6.3k reviews). Sheer, lightweight texture eliminates white-cast concerns. Broad-spectrum SPF 40-46 with oil-free formulations. Premium $32-48 pricing positions as medical-grade daily essential sold through dermatologist offices.
+                </p>
+            </div>
+            
+            <div style="background-color: #1a1a1a; padding: 20px; border-radius: 8px; border: 1px solid #444;">
+                <h3 style="color: #8b7355; margin-top: 0; margin-bottom: 12px; font-size: 16px;">Good Molecules (Beautycounter)</h3>
+                <p style="color: #ccc; line-height: 1.6; margin: 0; font-size: 14px;">
+                    Clean beauty at accessible price points with vegan and cruelty-free certification. Niacinamide Serum provides 10% concentration (4.6★, 12.2k reviews) competing directly with The Ordinary. 100% vegan formulations with Leaping Bunny certification address ethical consumer concerns. Daily Moisturizer captures affordable clean beauty segment ($8.97 price point). Transparent ingredient lists and "no compromise" formulations resonate with conscious consumers seeking clean ingredients without prestige pricing.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Brand profile definitions for tooltips
+        const brandProfiles = {
+            'CeraVe': {
+                name: 'CeraVe (L\'Oréal)',
+                description: 'Dominant market leader with "developed with dermatologists" positioning. Essential ceramides (1, 3, 6-II) with MVE technology for 24-hour hydration. National Eczema Association Seal on multiple products. Leads 15+ #1 positions including daily moisturizers (4.7★, 138.9k reviews) and cleansers (4.7★, 97.3k reviews).'
+                },
+            'The Ordinary': {
+                name: 'The Ordinary (Estée Lauder/DECIEM)',
+                description: 'Clinical ingredient transparency disruptor with pharmaceutical-grade actives at $5-15 price points. Dominates specialty serums: Hyaluronic Acid 2% (4.6★, 149.2k reviews), Niacinamide 10% (4.5★, 89.3k reviews), Vitamin C 23% (4.4★, 89.8k reviews). Pure formulation messaging resonates with ingredient-educated consumers.'
+            },
+            'Neutrogena': {
+                name: 'Neutrogena (Kenvue)',
+                description: 'Dermatologist-recommended heritage brand with clinical testing emphasis. Rapid Wrinkle Repair with accelerated retinol SA (4.5★, 25.5k reviews) claims visible results in 1 week. Hydro Boost line dominates lightweight hydration (4.6★, 89.7k reviews). Strong in acne treatments and oil-free formulations.'
+            },
+            'Olay': {
+                name: 'Olay (Procter & Gamble)',
+                description: 'Anti-aging specialist with amino-peptide complex and niacinamide technology. Regenerist line (4.6★, 48.3k reviews) leads moisturizer category. Dominates eye care with brightening and de-puffing formulas. Micro-Sculpting Serum provides peptide innovation. Strong with 35+ demographic seeking visible anti-aging results.'
+            },
+            'Cetaphil': {
+                name: 'Cetaphil (Galderma)',
+                description: 'Trusted for 75+ years as dermatologist-recommended gentle skincare. Gentle Skin Cleanser (4.7★, 23.9k reviews) dominates sensitive skin category. Daily Facial Moisturizer with SPF 15 (4.6★, 27.5k reviews) combines hydration and protection. Suitable for eczema and rosacea with accessible $11-15 pricing.'
+            },
+            'La Roche-Posay': {
+                name: 'La Roche-Posay (L\'Oréal)',
+                description: 'French pharmacy heritage with thermal spring water in all formulations. Anthelios sunscreen line leads daily SPF category (4.6★, 37.7k reviews). Effaclar targets acne with LHA micro-exfoliation. "Recommended by 90,000 dermatologists worldwide" builds clinical authority. Premium $18-48 positioning.'
+            },
+            'Paula\'s Choice': {
+                name: 'Paula\'s Choice (Private)',
+                description: 'Evidence-based skincare with published ingredient research. 2% BHA Liquid Exfoliant dominates chemical exfoliation (4.5★, 67.8k reviews). 10% Niacinamide Booster and C15 Super Booster provide concentrated actives. Science-backed formulations resonate with educated consumers. $20-49 accessible clinical positioning.'
+            },
+            'Vanicream': {
+                name: 'Vanicream (Pharmaceutical Specialties)',
+                description: '"#1 dermatologist-recommended for sensitive skin" with zero common irritants (4.6★, 46.2k reviews). Formulated without dyes, fragrance, parabens. Medical heritage builds authority with eczema, psoriasis, and rosacea patients. Clinical-grade accessible at $13-16 price points.'
+            },
+            'EltaMD': {
+                name: 'EltaMD (Estée Lauder)',
+                description: 'Professional-grade sunscreen "#1 dermatologist-recommended" for daily facial protection. UV Clear with zinc oxide and niacinamide (4.6★, 18.7k reviews). UV Physical 100% mineral tinted formula. Broad-spectrum SPF 40-46 with oil-free formulations. Premium $32-48 medical-grade positioning.'
+            },
+            'Good Molecules': {
+                name: 'Good Molecules (Beautycounter)',
+                description: 'Clean beauty at accessible price points with vegan and Leaping Bunny cruelty-free certification. Niacinamide Serum 10% (4.6★, 12.2k reviews) competes with The Ordinary. Daily Moisturizer at $8.97. Transparent ingredient lists resonate with conscious consumers.'
+            },
+            'Eucerin': {
+                name: 'Eucerin (Beiersdorf)',
+                description: 'Intensive moisture specialist for very dry skin with ceramide-3 and natural moisturizing factors. Advanced Repair Cream (4.7★, 12.4k reviews) leads very dry skin category. Dermatologist-tested formulations at accessible price points. Strong in body care and hand cream segments.'
+            },
+            'The Inkey List': {
+                name: 'The Inkey List (Estée Lauder)',
+                description: 'Affordable clinical ingredients with educational approach. Hyaluronic Acid serum (4.7★, 13.5k reviews) provides high concentration at accessible price. Clean formulations competing with The Ordinary. Ingredient transparency and simplicity resonate with Gen Z consumers.'
+            },
+            'Versed': {
+                name: 'Versed (Clean Beauty)',
+                description: 'Clean, vegan formulas with sustainability focus. Appeals to eco-conscious consumers seeking effective clean beauty. Cruelty-free certification and transparent ingredient sourcing. Mid-tier pricing bridges drugstore and prestige segments.'
+            },
+            'Youth to the People': {
+                name: 'Youth to the People (L\'Oréal)',
+                description: 'Superfood ingredients and vegan formulations. Superberry Hydrate + Glow Dream Mask (4.6★, 2.3k reviews) and Vitamin C Serum lead clean prestige category. Appeals to wellness-focused consumers. Premium positioning with clean ingredient philosophy.'
+            },
+            'Cocokind': {
+                name: 'Cocokind (Independent)',
+                description: 'Affordable clean beauty options with sustainable packaging. Transparent sourcing and minimal ingredient lists. Captures conscious consumers seeking clean ingredients without premium pricing. Appeals to younger demographics.'
+            },
+            'RoC': {
+                name: 'RoC (Gryphon Investors)',
+                description: 'Pure retinol specialist with Retinol Correxion line (4.5★, 18.2k reviews). Clinical-strength anti-aging formulations. Dermatologist-tested retinol technology. Strong with mature skin demographics seeking proven anti-aging results.'
+            },
+            'Bioderma': {
+                name: 'Bioderma (NAOS)',
+                description: 'French pharmacy favorite with Sensibio H2O Micellar Water (4.7★, 42.8k reviews). Gentle cleansing for sensitive skin. Ophthalmologist-tested formulations. Premium positioning with European dermatological authority.'
+            },
+            'Garnier': {
+                name: 'Garnier (L\'Oréal)',
+                description: 'Mass-market leader with SkinActive Micellar Cleansing Water (4.7★, 68.2k reviews). Affordable gentle cleansing solutions. Broad distribution and accessible price points. Appeals to budget-conscious consumers seeking effective basics.'
+            },
+            'Black Girl Sunscreen': {
+                name: 'Black Girl Sunscreen (Independent)',
+                description: 'Pioneering brand specifically designed for melanin-rich skin with no white residue (4.7★, 5.8k reviews). Moisturizing SPF benefits address underserved market. Celebrates and serves diverse skin tones with targeted formulations.'
+            },
+            'Supergoop': {
+                name: 'Supergoop! (Private)',
+                description: 'SPF-focused lifestyle brand with Unseen Sunscreen SPF 40 (4.5★, 14.2k reviews) featuring invisible, weightless feel. Glowscreen with SPF 40 and even-tone defender. Premium positioning makes sun protection aspirational rather than clinical.'
+            },
+            'Aquaphor': {
+                name: 'Aquaphor (Beiersdorf)',
+                description: 'Lip Repair dominates chapped lips category (4.7★, 52.1k reviews) with immediate relief and long-lasting protection. Healing ointment technology. Dermatologist-recommended for damaged skin. Trusted for extreme dryness situations.'
+            },
+            'Burt\'s Bees': {
+                name: 'Burt\'s Bees (Clorox)',
+                description: 'Natural beeswax formula for lip balm (4.7★, 41.3k reviews). Clean ingredients and sustainable practices. Appeals to natural product enthusiasts. Accessible pricing with natural positioning differentiation.'
+            },
+            'Drunk Elephant': {
+                name: 'Drunk Elephant (Shiseido)',
+                description: 'Clean clinical prestige brand with biocompatible formulations. "Suspicious 6" free philosophy excludes common irritants. Appeals to affluent consumers seeking luxury clean beauty. Premium $40-70 positioning with cult following.'
+            },
+            'SkinCeuticals': {
+                name: 'SkinCeuticals (L\'Oréal)',
+                description: 'Professional gold-standard vitamin C with C E Ferulic serum (4.5★, 8.9k reviews). Medical-grade formulations sold through dermatologist offices. Premium $165+ pricing justified by clinical efficacy. Targets affluent consumers seeking proven results.'
+            },
+            'First Aid Beauty': {
+                name: 'First Aid Beauty (Procter & Gamble)',
+                description: 'Skin pharmacy positioning with gentle, effective formulations for sensitive skin. Ultra Repair Cream and FAB Pharma line target barrier repair. Clean ingredients with clinical efficacy. Mid-prestige positioning bridges accessible and luxury.'
+            },
+            'Kiehl\'s': {
+                name: 'Kiehl\'s (L\'Oréal)',
+                description: 'Apothecary heritage with natural ingredients and scientific formulations. Ultra Facial Cream provides long-lasting hydration. Premium $20-50 positioning with pharmacy-inspired packaging. Appeals to consumers seeking natural-scientific blend.'
+            },
+            'Mario Badescu': {
+                name: 'Mario Badescu (Private)',
+                description: 'Facial Spray with Aloe, Herbs and Rosewater (4.6★, 31.2k reviews) dominates mist category. New York salon heritage. Accessible prestige positioning. Cult products with multi-generational appeal.'
+            },
+            'Caudalie': {
+                name: 'Caudalie (Private)',
+                description: 'Beauty Elixir with grape extract and essential oils (4.5★, 8.4k reviews). French vineyard heritage. Natural formulations with clinical testing. Premium positioning appeals to natural luxury consumers.'
+            },
+            'Evian': {
+                name: 'Evian (Danone)',
+                description: 'Pure thermal water facial spray (4.7★, 12.8k reviews). Minimalist hydration and refreshment. Premium mineral water heritage. Appeals to consumers seeking pure, simple hydration.'
+            },
+            'SK-II': {
+                name: 'SK-II (Procter & Gamble)',
+                description: 'Cult-favorite Facial Treatment Essence with Pitera (4.6★, 8.9k reviews). Japanese luxury skincare with fermentation technology. Ultra-premium $99-185 positioning. Appeals to affluent Asian and global consumers.'
+            },
+            'Fresh': {
+                name: 'Fresh (LVMH)',
+                description: 'Rose Deep Hydration Facial Toner with rose water and hyaluronic acid (4.5★, 3.7k reviews). Luxury natural ingredients with sensorial experience. Premium $40-60 positioning. Appeals to prestige consumers seeking indulgent self-care.'
+            },
+            'Tatcha': {
+                name: 'Tatcha (Unilever)',
+                description: 'The Essence anti-aging essence (4.6★, 2.1k reviews) with Japanese botanicals. Luxury Japanese beauty rituals. Premium $95-105 positioning. Appeals to consumers seeking exotic luxury with ritual experience.'
+            },
+            'Glow Recipe': {
+                name: 'Glow Recipe (Private)',
+                description: 'Watermelon Glow Sleeping Mask (4.5★, 8.7k reviews) with fruit extracts. K-beauty inspired clean formulations. Instagram-friendly packaging. Appeals to Gen Z/Millennial seeking fun, effective clean beauty.'
+            },
+            'Summer Fridays': {
+                name: 'Summer Fridays (Estée Lauder)',
+                description: 'Jet Lag Mask and Cloud Dew provide clean hydration. Minimalist luxury aesthetic. Mid-prestige $22-48 positioning. Appeals to millennial consumers seeking effortless luxury.'
+            },
+            'Biossance': {
+                name: 'Biossance (Amyris)',
+                description: 'Squalane + Vitamin C Rose Oil (4.5★, 5.3k reviews) with sustainable sugarcane-derived squalane. Clean, vegan formulations. Premium $20-70 positioning. Appeals to eco-conscious prestige consumers.'
+            },
+            'REN': {
+                name: 'REN Clean Skincare (Unilever)',
+                description: 'Clean formulations free from unnecessary chemicals. Sustainable packaging commitments. Mid-prestige positioning. Appeals to consumers seeking environmental responsibility with clinical efficacy.'
+            },
+            'Origins': {
+                name: 'Origins (Estée Lauder)',
+                description: 'Drink Up Intensive Overnight Mask (4.6★, 5.2k reviews) with natural ingredients. Plant-powered formulations. Mid-prestige $25-45 positioning. Appeals to natural product enthusiasts seeking proven results.'
+            },
+            'Thayers': {
+                name: 'Thayers (Private)',
+                description: 'Witch Hazel Toner (4.7★, 82.4k reviews - exceptional validation) with alcohol-free formula. Heritage natural brand at accessible price points. Classic formulation with multi-generational trust.'
+            },
+            'Dove': {
+                name: 'Dove (Unilever)',
+                description: 'Mass-market leader in gentle cleansing and moisturization. "1/4 moisturizing cream" messaging. Accessible pricing with dermatologist-recommended trust. Broad distribution and household penetration.'
+            },
+            'Aveeno': {
+                name: 'Aveeno (Kenvue)',
+                description: 'Active Naturals with colloidal oatmeal. Dermatologist-recommended for sensitive and eczema-prone skin. Accessible pricing with clinical backing. Appeals to families seeking gentle, proven care.'
+            },
+            'Nivea': {
+                name: 'Nivea (Beiersdorf)',
+                description: 'Heritage moisturization brand with iconic blue tin. Global recognition and multi-generational trust. Accessible pricing with broad product range. Appeals to budget-conscious consumers seeking reliable basics.'
+            },
+            'Pond\'s': {
+                name: 'Pond\'s (Unilever)',
+                description: 'Cold cream heritage with global presence. Classic formulations at accessible price points. Strong in Asian markets. Appeals to consumers seeking traditional, affordable beauty solutions.'
+            }
+        };
+        
+        // Add tooltips to brand names in table
+        function addBrandTooltips() {
+            const brandCells = document.querySelectorAll('td.brand-1, td.brand-2, td.brand-3');
+            brandCells.forEach(cell => {
+                const brandText = cell.textContent.trim();
+                
+                // Check for exact or partial match in brand profiles
+                for (const [key, profile] of Object.entries(brandProfiles)) {
+                    if (brandText.includes(key) || key.toLowerCase().includes(brandText.toLowerCase().split(' ')[0]) || brandText.toLowerCase().includes(key.toLowerCase())) {
+                        const wrapper = document.createElement('span');
+                        wrapper.className = 'brand-tooltip';
+                        wrapper.innerHTML = brandText + `<span class="tooltip-content"><span class="tooltip-brand-name">${profile.name}</span>${profile.description}</span>`;
+                        cell.innerHTML = '';
+                        cell.appendChild(wrapper);
+                        break;
+                    }
+                }
+            });
+        }
+        
+        // Initialize tooltips after table is generated
+        setTimeout(addBrandTooltips, 100);
+    </script>
+</body>
+</html>
