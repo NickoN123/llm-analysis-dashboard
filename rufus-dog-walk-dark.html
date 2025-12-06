@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The 20 Minute Dog Walk - Amazon Rufus Sampling Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(10, 14, 26, 0.95);
+            min-height: 100vh;
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            background: linear-gradient(135deg, rgba(10, 14, 26, 0.98) 0%, rgba(26, 31, 53, 0.98) 100%);
+            padding: 45px 50px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00d4ff 0%, transparent 100%);
+        }
+
+        .header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+            text-align: center;
+        }
+
+        .header .subtitle {
+            font-size: 20px;
+            color: #ffffff;
+            opacity: 0.8;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .header .powered-by {
+            font-size: 14px;
+            color: #00d4ff;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-x: auto;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-tab {
+            padding: 22px 30px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-size: 15px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.6);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            position: relative;
+            font-family: 'Segoe UI', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-tab:hover {
+            background: rgba(0, 212, 255, 0.1);
+            color: #00d4ff;
+        }
+
+        .nav-tab.active {
+            color: #ffffff;
+            background: rgba(0, 212, 255, 0.15);
+        }
+
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #00d4ff;
+        }
+
+        .content {
+            padding: 40px 50px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            font-size: 36px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 25px;
+            letter-spacing: -0.5px;
+        }
+
+        h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 12px;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .overview-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #00d4ff;
+            padding: 28px;
+            margin-bottom: 25px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .overview-box:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(5px);
+        }
+
+        .stat-highlight {
+            color: #ffffff;
+            padding: 4px 8px;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .checklist {
+            margin: 25px 0;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 20px;
+            margin: 12px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(0, 212, 255, 0.3);
+            transform: translateX(5px);
+        }
+
+        .checkbox {
+            width: 28px;
+            height: 28px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            margin-right: 20px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item.checked .checkbox {
+            background: #00d4ff;
+            border-color: #00d4ff;
+        }
+
+        .checklist-item.checked .checkbox::after {
+            content: '✓';
+            color: #0a0e1a;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .checklist-item.checked {
+            opacity: 0.5;
+        }
+
+        .checklist-item strong {
+            color: #ffffff;
+            font-size: 18px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .checklist-item span {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .step-section {
+            margin: 25px 0;
+            padding: 28px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            border-left: 4px solid #00d4ff;
+            transition: all 0.3s ease;
+        }
+
+        .step-section:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #00d4ff 0%, #0088cc 100%);
+            color: #0a0e1a;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 20px;
+            margin-right: 15px;
+            margin-bottom: 15px;
+        }
+
+        .step-section h3 {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .step-section ul {
+            margin-left: 20px;
+            margin-top: 15px;
+        }
+
+        .step-section li {
+            margin: 10px 0;
+            color: rgba(255, 255, 255, 0.85);
+            padding-left: 15px;
+            position: relative;
+            font-size: 14px;
+        }
+
+        .step-section li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 6px;
+            height: 6px;
+            background: #00d4ff;
+            border-radius: 50%;
+        }
+
+        .link-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #00d4ff 0%, #0088cc 100%);
+            color: #0a0e1a;
+            text-decoration: none;
+            border-radius: 6px;
+            margin: 20px 10px 20px 0;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            font-family: 'Segoe UI', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+        }
+
+        .link-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .warning-box {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            border-left: 4px solid #ff6b6b;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+
+        .warning-box h4 {
+            color: #ff6b6b;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .tip-box {
+            background: rgba(78, 205, 196, 0.1);
+            border: 1px solid rgba(78, 205, 196, 0.3);
+            border-left: 4px solid #4ecdc4;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+
+        .tip-box h4 {
+            color: #4ecdc4;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .contact-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 28px;
+            margin: 20px 0;
+        }
+
+        .contact-section h4 {
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .contact-item strong {
+            color: #00d4ff;
+            margin-right: 10px;
+        }
+
+        .accordion {
+            margin: 25px 0;
+        }
+
+        .accordion-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .accordion-item:hover {
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .accordion-header {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 22px 30px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .accordion-header:hover {
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .accordion-header h4 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .accordion-icon {
+            font-size: 20px;
+            color: #00d4ff;
+            transition: transform 0.3s ease;
+            font-weight: 700;
+        }
+
+        .accordion-item.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .accordion-item.active .accordion-content {
+            max-height: 1000px;
+        }
+
+        .accordion-inner {
+            padding: 20px 25px;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .accordion-inner ul {
+            margin: 15px 0 15px 20px;
+        }
+
+        .accordion-inner li {
+            margin: 8px 0;
+            padding-left: 15px;
+            position: relative;
+            font-size: 14px;
+        }
+
+        .accordion-inner li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 6px;
+            height: 6px;
+            background: #00d4ff;
+            border-radius: 50%;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 6px;
+            border-left: 4px solid #00d4ff;
+            transition: all 0.3s ease;
+        }
+
+        .stat-box:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .stat-box .stat-number {
+            font-size: 52px;
+            font-weight: 700;
+            color: #00d4ff;
+            line-height: 1;
+            margin-bottom: 15px;
+        }
+
+        .stat-box .stat-label {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .table-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 25px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: rgba(0, 212, 255, 0.15);
+            color: #00d4ff;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 20px;
+            text-align: left;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+        }
+
+        td {
+            padding: 18px 20px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.85);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .accent-text {
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00d4ff 0%, #0088cc 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+            z-index: 1000;
+        }
+
+        @media (max-width: 1200px) {
+            .header h1 {
+                font-size: 42px;
+            }
+
+            h2 {
+                font-size: 32px;
+            }
+
+            .content {
+                padding: 40px 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 40px 25px;
+            }
+
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .nav-tab {
+                padding: 18px 20px;
+                font-size: 13px;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>The 20 Minute Dog Walk</h1>
+            <div class="subtitle">Sampling Amazon Rufus in Five Steps</div>
+            <div class="powered-by">Powered By BrandRank</div>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab('overview')">Home</button>
+            <button class="nav-tab" onclick="switchTab('requirements')">1. Ingredients</button>
+            <button class="nav-tab" onclick="switchTab('preparation')">2. Prep</button>
+            <button class="nav-tab" onclick="switchTab('collection')">3. Cooking</button>
+            <button class="nav-tab" onclick="switchTab('reporting')">4. Serving</button>
+            <button class="nav-tab" onclick="switchTab('samples')">Sample Reports</button>
+            <button class="nav-tab" onclick="switchTab('troubleshooting')">Troubleshooting</button>
+        </div>
+
+        <div class="content">
+            <!-- Overview Tab -->
+            <div id="overview" class="tab-content active">
+                <h2>Basic Dog Training</h2>
+                
+                <div class="overview-box">
+                    <p>Amazon recently reported that Rufus generated <span class="stat-highlight">$10 billion</span> in incremental revenue and that <span class="stat-highlight">60% of all users</span> purchased more. Increasingly, BrandRank clients want supplemental Rufus perspective to inform their overall perspective on the role and impact of answer engines. This exercise meets that requirement without overburdening our analyst or tech platform with extra work.</p>
+                    
+                    <p style="margin-top: 20px;">By following this guide, you'll conduct a Rufus Answer Share Pulse Check (quarterly or monthly) using simple, pre-prepared templates that you can customize as needed. While the tool is called "The 20 Minute Dog Walk," the actual execution time is 20-30 minutes for running queries. Total time including setup and reporting is typically 45-60 minutes.</p>
+                </div>
+
+                <div class="contact-section">
+                    <h4>Need Help?</h4>
+                    <div class="contact-item">
+                        <strong>Pete:</strong> Pete@brandrank.ai | 513-739-4969
+                    </div>
+                    <div class="contact-item">
+                        <strong>Nicko:</strong> Nicko@brandrank.ai
+                    </div>
+                    <div class="contact-item">
+                        <strong>Slack:</strong> #rufus-help-desk
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sample Reports Tab -->
+            <div id="samples" class="tab-content">
+                <h2>Sample Reports</h2>
+
+                <div class="overview-box">
+                    <h3>Example Analysis Reports</h3>
+                    <p>Review these sample reports to understand the quality and depth of analysis that can be achieved using the Dog Walker methodology. These examples demonstrate how Rufus answer share data can be transformed into actionable brand insights.</p>
+                </div>
+
+                <div class="step-section">
+                    <h3>Beauty Answer Share Index</h3>
+                    <p>This comprehensive analysis showcases Olay's performance across Amazon Rufus queries in the beauty category. The report demonstrates how to measure brand visibility, competitive positioning, and identify strategic opportunities for improvement.</p>
+                    
+                    <a href="https://brandrankai-dashboard-index.com/olay-rufus-analysis-1.html" class="link-button" target="_blank">
+                        View Beauty Answer Share Report
+                    </a>
+                </div>
+
+                <div class="step-section">
+                    <h3>Pain Relief Answer Share Index</h3>
+                    <p>This analysis examines Tylenol's presence and performance across Amazon Rufus queries in the pain relief category. The report provides insights into competitive dynamics, brand positioning, and opportunities for enhanced visibility in answer engine results.</p>
+                    
+                    <a href="https://brandrankai-dashboard-index.com/tylenol-rufus-analysis-2.html" class="link-button" target="_blank">
+                        View Pain Relief Answer Share Report
+                    </a>
+                </div>
+
+                <div class="step-section">
+                    <h3>Power Brush Answer Share Index</h3>
+                    <p>This analysis evaluates power brush brand performance across Amazon Rufus queries in the electric toothbrush and oral care category. The report demonstrates category-specific visibility patterns and competitive positioning insights for consumer durables.</p>
+                    
+                    <a href="https://brandrankai-dashboard-index.com/power-brush-index_Updated.html" class="link-button" target="_blank">
+                        View Power Brush Answer Share Report
+                    </a>
+                </div>
+
+                <div class="tip-box">
+                    <h4>Using Sample Reports</h4>
+                    <p>When creating your own reports, you can reference these samples to ensure consistency in structure, data presentation, and strategic recommendations. Upload a sample report to Claude along with your new data and request the same look and feel for your analysis.</p>
+                </div>
+
+                <div class="overview-box">
+                    <h3>Additional Sample Reports</h3>
+                    <p>More sample reports covering different categories and industries will be added here as they become available. Check back regularly or contact the team for access to category-specific examples relevant to your clients.</p>
+                </div>
+
+                <div style="margin-top: 30px; padding: 25px; background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 6px;">
+                    <h3 style="color: #00d4ff; margin-bottom: 12px;">Download Prompt Template</h3>
+                    <p style="margin-bottom: 15px;">Use this standardized prompt template for consistent report generation across all your Rufus analyses:</p>
+                    <a href="https://brandrankai-dashboard-index.com/RUFUS_ANSWER_INDEX_PROMPT-1.html" class="link-button" target="_blank">
+                        View Prompt Template
+                    </a>
+                </div>
+            </div>
+
+            <!-- Ingredients Tab -->
+            <div id="requirements" class="tab-content">
+                <h2>1. Ingredients</h2>
+
+                <div class="checklist">
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <div>
+                            <strong>Personal Amazon Account</strong><br>
+                            <span>An account that has NOT been biased by your purchase history. Consider creating a fresh account or using one with minimal purchase history.</span>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <div>
+                            <strong>Claude Account with Sufficient Capacity</strong><br>
+                            <span>Personal or Enterprise Claude account with capacity to run complex reports. Enterprise accounts recommended for optimal performance.</span>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <div>
+                            <strong>Chrome Browser</strong><br>
+                            <span>Required for the Dog Walker extension to function properly.</span>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <div>
+                            <strong>Patience & Curiosity</strong><br>
+                            <span>A small dash to improve! The process requires some wait time but delivers valuable insights.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <h4>Pro Tip</h4>
+                    <p>Set aside a focused hour when you can complete the entire process from start to finish. Having all materials ready beforehand makes the workflow much smoother.</p>
+                </div>
+            </div>
+
+            <!-- Preparation Tab -->
+            <div id="preparation" class="tab-content">
+                <h2>2. Prep</h2>
+
+                <div class="step-section">
+                    <h3><span class="step-number">1</span> Prepare Your Prompts</h3>
+                    <p>Take the standard 200 prompts and condense them strategically:</p>
+                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Specification</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Total Prompts</td>
+                                    <td><span class="accent-text">60 prompts</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Categories</td>
+                                    <td><span class="accent-text">6-8 different categories</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Question Length</td>
+                                    <td><span class="accent-text">6-8 words</span> (optimal for Rufus)</td>
+                                </tr>
+                                <tr>
+                                    <td>Order</td>
+                                    <td>Most obvious to more specific questions</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h4>Prompt Optimization</h4>
+                    <p>Tightening questions to 6-8 words is ideal for Rufus. Shorter, more direct questions tend to produce cleaner, more comparable results.</p>
+                </div>
+
+                <div class="step-section">
+                    <h3><span class="step-number">2</span> Install Dog Walker Extension</h3>
+                    <p>Download and install the Amazon Dog Walker Chrome extension:</p>
+                    <a href="https://chromewebstore.google.com/detail/dog-walker-for-rufus/kilpocdjalhgghjolmbjnelcfankjgpg?pli=1" class="link-button" target="_blank">
+                        Get Dog Walker for Chrome
+                    </a>
+                    <ul>
+                        <li>Click the link above to access the Chrome Web Store</li>
+                        <li>Click "Add to Chrome" to install the extension</li>
+                        <li>Pin the extension to your Chrome toolbar for easy access</li>
+                    </ul>
+                </div>
+
+                <div class="step-section">
+                    <h3><span class="step-number">3</span> Set Up Your Workspace</h3>
+                    <ul>
+                        <li>Open the Dog Walker extension on your Chrome toolbar</li>
+                        <li>Open Amazon Rufus in your Amazon account</li>
+                        <li>Have your 60 prepared prompts ready to paste</li>
+                    </ul>
+                </div>
+
+                <div class="tip-box">
+                    <h4>Visual Reference</h4>
+                    <p>Check the <strong>#rufus-help-desk</strong> Slack channel for photos showing the proper setup and interface layout.</p>
+                </div>
+
+                <div class="contact-section">
+                    <h4>Questions?</h4>
+                    <div class="contact-item">
+                        <strong>Pete:</strong> Pete@brandrank.ai | 513-739-4969
+                    </div>
+                    <div class="contact-item">
+                        <strong>Nicko:</strong> Nicko@brandrank.ai
+                    </div>
+                    <div class="contact-item">
+                        <strong>Slack:</strong> #rufus-help-desk
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cooking Tab -->
+            <div id="collection" class="tab-content">
+                <h2>3. Cooking</h2>
+
+                <div class="step-section">
+                    <h3><span class="step-number">1</span> Load Your Prompts</h3>
+                    <p>Drop all 60 prompts into the Dog Walker tool interface.</p>
+                </div>
+
+                <div class="warning-box">
+                    <h4>Critical: Do Not Multitask</h4>
+                    <p>While Dog Walker is running continuous prompts, <strong>do not multitask</strong> on your computer. This can disrupt the data collection process. Best practices:</p>
+                    <ul>
+                        <li>Run this before you sleep</li>
+                        <li>Run during a lunch or coffee break</li>
+                        <li>Schedule during downtime when you don't need your computer</li>
+                    </ul>
+                </div>
+
+                <div class="step-section">
+                    <h3><span class="step-number">2</span> Execute Queries</h3>
+                    <p>Press "Execute Queries" in the Dog Walker interface.</p>
+                    <p style="margin-top: 15px;"><span class="accent-text">Expected Duration: 20-30 minutes</span></p>
+                </div>
+
+                <div class="step-section">
+                    <h3><span class="step-number">3</span> Extract Results</h3>
+                    <p>When the process completes:</p>
+                    <ul>
+                        <li><strong>Step 1:</strong> Carefully highlight ALL content that appears in the Rufus bar</li>
+                        <li><strong>Step 2:</strong> Cut and paste the content into a Word document</li>
+                        <li><strong>Step 3:</strong> Save the Word document</li>
+                        <li><strong>Step 4:</strong> Convert to PDF with a memorable name</li>
+                    </ul>
+                </div>
+
+                <div class="tip-box">
+                    <h4>File Size Expectations</h4>
+                    <p>Your final document could be <strong>100+ pages</strong> depending on font size. This is normal and expected for comprehensive Rufus analysis.</p>
+                </div>
+
+                <div class="contact-section">
+                    <h4>Need Assistance?</h4>
+                    <div class="contact-item">
+                        <strong>Pete:</strong> Pete@brandrank.ai | 513-739-4969
+                    </div>
+                    <div class="contact-item">
+                        <strong>Nicko:</strong> Nicko@brandrank.ai
+                    </div>
+                    <div class="contact-item">
+                        <strong>Slack:</strong> #rufus-help-desk
+                    </div>
+                </div>
+            </div>
+
+            <!-- Serving Tab -->
+            <div id="reporting" class="tab-content">
+                <h2>4. Serving</h2>
+
+                <div class="step-section">
+                    <h3><span class="step-number">1</span> Upload to Claude</h3>
+                    <p>Navigate to your Claude Enterprise Account and upload two files:</p>
+                    <ul>
+                        <li><strong>The prompt template</strong> (provided by BrandRank)</li>
+                        <li><strong>Your saved Rufus data PDF</strong> (from the Collection phase)</li>
+                    </ul>
+
+                    <div style="margin-top: 20px; padding: 20px; background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 6px;">
+                        <h4 style="color: #00d4ff; margin-bottom: 12px;">Download Prompt Template</h4>
+                        <p style="margin-bottom: 15px;">Use this standardized prompt template for consistent report generation:</p>
+                        <a href="https://brandrankai-dashboard-index.com/RUFUS_ANSWER_INDEX_PROMPT-1.html" class="link-button" target="_blank">
+                            View Prompt Template
+                        </a>
+                    </div>
+                </div>
+
+                <div class="step-section">
+                    <h3><span class="step-number">2</span> Run the Report</h3>
+                    <p>Execute the report generation process in Claude.</p>
+                </div>
+
+                <div class="step-section">
+                    <h3><span class="step-number">3</span> Season to Taste</h3>
+                    <p>Iterate and refine the output based on your specific needs and preferences. Think of this as the customization phase where you adjust:</p>
+                    <ul>
+                        <li>Report formatting and structure</li>
+                        <li>Emphasis on specific categories</li>
+                        <li>Additional analysis or insights</li>
+                        <li>Visual presentation elements</li>
+                    </ul>
+                </div>
+
+                <div class="tip-box">
+                    <h4>Template Flexibility</h4>
+                    <p>The templates are designed to be customizable. Don't hesitate to adjust them to better fit your client's needs or your analysis style.</p>
+                </div>
+            </div>
+
+            <!-- Troubleshooting Tab -->
+            <div id="troubleshooting" class="tab-content">
+                <h2>Troubleshooting</h2>
+
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <h4>Report doesn't look as expected</h4>
+                            <span class="accordion-icon">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-inner">
+                                <p><strong>Solution:</strong></p>
+                                <ul>
+                                    <li>Upload a report you like (even from another brand or category)</li>
+                                    <li>Instruct Claude to ensure the new report has the same "look and feel"</li>
+                                    <li>Emphasize that the data should be preserved while matching the style</li>
+                                </ul>
+                                <p style="margin-top: 15px;">This approach allows you to maintain consistency across reports while customizing for specific analyses.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <h4>Dog Walker isn't running prompts</h4>
+                            <span class="accordion-icon">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-inner">
+                                <p><strong>Common Causes:</strong></p>
+                                <ul>
+                                    <li>Extension not properly installed or enabled</li>
+                                    <li>Rufus not open in the Amazon tab</li>
+                                    <li>Browser interference from other extensions</li>
+                                    <li>Chrome not updated to latest version</li>
+                                </ul>
+                                <p><strong>Try:</strong></p>
+                                <ul>
+                                    <li>Refresh the Amazon page</li>
+                                    <li>Disable other Chrome extensions temporarily</li>
+                                    <li>Check the Slack channel for recent troubleshooting updates</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <h4>Results are incomplete or cut off</h4>
+                            <span class="accordion-icon">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-inner">
+                                <p><strong>Solution:</strong></p>
+                                <ul>
+                                    <li>Make sure you highlighted ALL content in the Rufus bar before copying</li>
+                                    <li>Scroll to the very top and bottom to ensure complete capture</li>
+                                    <li>If needed, re-run specific queries that appear incomplete</li>
+                                    <li>Check that your Word document saved the full content before converting to PDF</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <h4>Claude report generation fails</h4>
+                            <span class="accordion-icon">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-inner">
+                                <p><strong>Possible Issues:</strong></p>
+                                <ul>
+                                    <li>PDF file too large for upload</li>
+                                    <li>Insufficient Claude account capacity</li>
+                                    <li>Template file missing or corrupted</li>
+                                </ul>
+                                <p><strong>Solutions:</strong></p>
+                                <ul>
+                                    <li>Break large PDFs into smaller sections if needed</li>
+                                    <li>Ensure you're using Enterprise Claude for best results</li>
+                                    <li>Verify both template and data files are uploaded correctly</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <h4>Prompts taking longer than 30 minutes</h4>
+                            <span class="accordion-icon">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-inner">
+                                <p><strong>This can happen when:</strong></p>
+                                <ul>
+                                    <li>Amazon servers are experiencing high traffic</li>
+                                    <li>Your internet connection is slow</li>
+                                    <li>Rufus is processing complex queries</li>
+                                </ul>
+                                <p><strong>Recommendations:</strong></p>
+                                <ul>
+                                    <li>Let it continue running - it should complete eventually</li>
+                                    <li>Check your internet connection stability</li>
+                                    <li>Try running during off-peak hours (early morning or late evening)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-section" style="margin-top: 40px;">
+                    <h4>Still Need Help?</h4>
+                    <p style="margin-bottom: 20px;">Don't hesitate to reach out to the team:</p>
+                    <div class="contact-item">
+                        <strong>Pete:</strong> Pete@brandrank.ai | 513-739-4969
+                    </div>
+                    <div class="contact-item">
+                        <strong>Nicko:</strong> Nicko@brandrank.ai
+                    </div>
+                    <div class="contact-item">
+                        <strong>Slack:</strong> #rufus-help-desk
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+
+            const tabIndex = Array.from(tabs).indexOf(event.target);
+            const progress = ((tabIndex + 1) / tabs.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleCheck(element) {
+            element.classList.toggle('checked');
+        }
+
+        function toggleAccordion(header) {
+            const item = header.parentElement;
+            const wasActive = item.classList.contains('active');
+            
+            document.querySelectorAll('.accordion-item').forEach(i => {
+                i.classList.remove('active');
+            });
+
+            if (!wasActive) {
+                item.classList.add('active');
+            }
+        }
+
+        window.addEventListener('load', () => {
+            document.getElementById('progressBar').style.width = '14.29%';
+        });
+    </script>
+</body>
+</html>
