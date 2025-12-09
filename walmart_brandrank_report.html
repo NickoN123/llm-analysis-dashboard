@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Walmart - BrandRank Year-End Brand Snapshot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica', Arial, sans-serif;
+            color: #374151;
+            background: white;
+            line-height: 1.5;
+            font-size: 10pt;
+        }
+
+        .page {
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.75in;
+            background: white;
+            min-height: 11in;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #1a3a5c;
+            margin-bottom: 24px;
+        }
+
+        .header-logo {
+            font-weight: bold;
+            color: #1a3a5c;
+            font-size: 11pt;
+        }
+
+        .brand-logo {
+            color: #6b7280;
+            font-style: italic;
+            font-size: 9pt;
+        }
+
+        .report-title {
+            font-size: 22pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+        }
+
+        .report-subtitle {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            margin-bottom: 20px;
+        }
+
+        .headline {
+            font-size: 13pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        .callout-box {
+            background: #f8f9fa;
+            border-left: 4px solid #1a3a5c;
+            padding: 16px 20px;
+            margin-bottom: 18px;
+        }
+
+        .callout-box.amber {
+            border-left-color: #d97706;
+        }
+
+        .callout-box.alert {
+            background: #fef2f2;
+            border-left-color: #dc2626;
+        }
+
+        .callout-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #1a3a5c;
+        }
+
+        .callout-text {
+            font-size: 10pt;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin-bottom: 16px;
+        }
+
+        .section-header {
+            font-size: 12pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            border-bottom: 1px solid #1a3a5c;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+        }
+
+        .subsection-header {
+            font-weight: bold;
+            color: #374151;
+            margin-top: 10px;
+            margin-bottom: 6px;
+        }
+
+        .score-display {
+            display: inline;
+            font-weight: bold;
+            color: #1a3a5c;
+            font-size: 11pt;
+        }
+
+        .engine-breakdown {
+            background: #f8f9fa;
+            padding: 16px;
+            margin: 12px 0;
+            text-align: center;
+        }
+
+        .engine-row {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 4px;
+            font-size: 9pt;
+            color: #6b7280;
+        }
+
+        .engine-scores {
+            display: flex;
+            justify-content: space-around;
+            font-weight: bold;
+            font-size: 11pt;
+            color: #1a3a5c;
+        }
+
+        .score-boxes {
+            display: flex;
+            gap: 12px;
+            margin: 12px 0;
+        }
+
+        .score-box {
+            flex: 1;
+            background: #f8f9fa;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .score-box-title {
+            font-size: 9pt;
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .score-box-value {
+            font-size: 18pt;
+            font-weight: bold;
+            color: #1a3a5c;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 9.5pt;
+        }
+
+        th {
+            background: #1a3a5c;
+            color: white;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .swot-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: #d1d5db;
+            margin: 12px 0;
+        }
+
+        .swot-cell {
+            background: #f8f9fa;
+            padding: 12px;
+        }
+
+        .swot-label {
+            font-weight: bold;
+            color: #1a3a5c;
+            font-size: 10pt;
+            margin-bottom: 6px;
+        }
+
+        .swot-content {
+            font-size: 9.5pt;
+            line-height: 1.5;
+        }
+
+        .key-findings {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 12px 0;
+        }
+
+        .finding-box {
+            background: #f8f9fa;
+            padding: 14px;
+            border-left: 3px solid #1a3a5c;
+        }
+
+        .finding-title {
+            font-weight: bold;
+            color: #1a3a5c;
+            margin-bottom: 6px;
+            font-size: 9.5pt;
+        }
+
+        .finding-text {
+            font-size: 9.5pt;
+            line-height: 1.5;
+        }
+
+        .divider {
+            border-top: 1px solid #d1d5db;
+            margin: 24px 0;
+        }
+
+        .footer {
+            margin-top: 24px;
+            padding-top: 12px;
+            border-top: 1px solid #d1d5db;
+            font-size: 9pt;
+            color: #6b7280;
+            text-align: center;
+        }
+
+        .green { color: #16a34a; }
+        .amber { color: #d97706; }
+        .red { color: #dc2626; }
+
+        .caption {
+            font-size: 9pt;
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        .addendum-title {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #1a3a5c;
+        }
+
+        .term {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .term-title {
+            font-weight: bold;
+            color: #1a3a5c;
+        }
+    </style>
+</head>
+<body>
+    <!-- PAGE 1 -->
+    <div class="page">
+        <div class="header">
+            <div class="header-logo">BRANDRANK.AI</div>
+            <div class="brand-logo">Walmart</div>
+        </div>
+
+        <div class="report-title">WALMART</div>
+        <div class="report-subtitle">AI Answer Engine Performance Report | December 2025</div>
+
+        <!-- Section 1: Executive Summary -->
+        <div class="headline">Walmart is winning on scale and losing on perception—AI sees a giant retailer, not a trusted authority.</div>
+
+        <div class="callout-box">
+            <div class="callout-title">Bottom Line</div>
+            <div class="callout-text">Walmart scores <span class="score-display">6.1/10</span> in AI Visibility across six major answer engines. The company dominates logistics and price-driven prompts (same-day pickup: 8.8/10, back-to-school deals: 9.3/10) but struggles with trust-driven queries (transparency: 2.4/10, customer service: 2.0/10). With <span class="score-display">90% accuracy</span> on factual claims and <span class="score-display">7.4/10 Brand Promise Alignment</span>, Walmart's "Save Money. Live Better" value proposition lands solidly on price but weakly on broader stakeholder value. Content Readiness at <span class="score-display">7.1/10</span> positions Walmart ahead of competitors technically, yet marketplace inconsistency and thin expert depth leave authority gaps that AI engines notice. Brand Vulnerability at <span class="score-display">7.5/10</span> reveals moderate reputation risk, particularly around authenticity (5.4/10) and labor practices.</div>
+        </div>
+
+        <!-- Section 2: Core Metrics -->
+        <div class="section">
+            <div class="section-header">1. Core Metrics Snapshot</div>
+            <div class="score-boxes">
+                <div class="score-box">
+                    <div class="score-box-title">AI VISIBILITY</div>
+                    <div class="score-box-value">3.8</div>
+                </div>
+                <div class="score-box">
+                    <div class="score-box-title">BRAND VULNERABILITY</div>
+                    <div class="score-box-value">7.5</div>
+                </div>
+                <div class="score-box">
+                    <div class="score-box-title">CONTENT READINESS</div>
+                    <div class="score-box-value">7.1</div>
+                </div>
+                <div class="score-box">
+                    <div class="score-box-title">OVERALL SCORE</div>
+                    <div class="score-box-value">6.1</div>
+                </div>
+            </div>
+
+            <div class="engine-breakdown">
+                <div class="engine-row">
+                    <span>OpenAI</span>
+                    <span>Gemini</span>
+                    <span>Anthropic</span>
+                    <span>Perplexity</span>
+                    <span>Meta AI</span>
+                    <span>Grok</span>
+                </div>
+                <div class="engine-scores">
+                    <span>3.8</span>
+                    <span>3.2</span>
+                    <span>3.9</span>
+                    <span>3.1</span>
+                    <span>3.7</span>
+                    <span>4.2</span>
+                </div>
+            </div>
+
+            <p><strong>Key Insight:</strong> Walmart outperforms on operational queries but underperforms on trust and expertise. Grok (4.2) favors Walmart's scale advantage most, while Perplexity (3.1) surfaces more quality and service critiques in recommendations.</p>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Section 3: Critical Finding -->
+        <div class="section">
+            <div class="section-header">2. The Critical Finding</div>
+            <div class="callout-box alert">
+                <div class="callout-title">🔴 Visibility Paradox: Maximum Presence, Minimal Preference</div>
+                <div class="callout-text">AI engines know Walmart exists everywhere but hesitate to recommend it first. On "most trustworthy online retailers" Walmart scores 7.2 (vs. Amazon 10, Target 7), yet visibility drops to 0.0 on sustainability queries and 1.3 on traceable sourcing. This creates a fundamental disconnect: Walmart has the reach to win every query but lacks the narrative authority to convert awareness into recommendation. The gap between <strong>Content Readiness (7.1)</strong> and <strong>AI Visibility (3.8)</strong> indicates infrastructure without storytelling—a digital shelf without a credible voice.</div>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Section 4: AI Visibility Details -->
+        <div class="section">
+            <div class="section-header">3. AI Visibility: Where Walmart Wins and Loses</div>
+            
+            <p><strong>Top Performing Categories:</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Score</th>
+                        <th>Trend</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Regional & Global Presence</td>
+                        <td><strong>6.6</strong></td>
+                        <td><span class="green">↑ Increasing</span></td>
+                    </tr>
+                    <tr>
+                        <td>Product Availability & Inventory</td>
+                        <td><strong>6.0</strong></td>
+                        <td><span class="red">↓ Decreasing</span></td>
+                    </tr>
+                    <tr>
+                        <td>Shipping & Delivery Experience</td>
+                        <td><strong>5.4</strong></td>
+                        <td><span class="red">↓ Decreasing</span></td>
+                    </tr>
+                    <tr>
+                        <td>Price, Value & Deals</td>
+                        <td><strong>4.6</strong></td>
+                        <td><span class="red">↓ Decreasing</span></td>
+                    </tr>
+                    <tr>
+                        <td>Management Quality & Corporate Leadership</td>
+                        <td><strong>4.5</strong></td>
+                        <td>Neutral</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="margin-top: 12px;"><strong>Weakest Performing Categories:</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Score</th>
+                        <th>Why It Matters</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sustainability & Environmental Leadership</td>
+                        <td><strong>0.9</strong></td>
+                        <td>Despite Project Gigaton success, AI engines associate Walmart with plastic waste and delayed climate targets</td>
+                    </tr>
+                    <tr>
+                        <td>Lifestyle, Loyalty & Experience</td>
+                        <td><strong>1.3</strong></td>
+                        <td>Walmart+ benefits underrepresented; gamification and curation efforts invisible to AI</td>
+                    </tr>
+                    <tr>
+                        <td>Returns, Refunds & Warranties</td>
+                        <td><strong>1.8</strong></td>
+                        <td>Policy exists but lacks AI-friendly FAQs and comparative clarity vs. competitors</td>
+                    </tr>
+                    <tr>
+                        <td>Sourcing & Supply Chain Responsibility</td>
+                        <td><strong>2.0</strong></td>
+                        <td>Supplier codes exist but third-party validation underrepresented in AI answers</td>
+                    </tr>
+                    <tr>
+                        <td>Customer Service & Support</td>
+                        <td><strong>2.0</strong></td>
+                        <td>GenAI assistant exists but not surfaced as differentiator in answer engine results</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="margin-top: 12px;"><strong>Competitive Position:</strong> Across 188 search prompts, Walmart appears in recommendations for 61% of queries but leads in only 18%. Amazon dominates (appears in 75%, leads 42%), while Costco captures premium trust queries and Target wins on experience and inclusivity.</p>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Section 5: Brand Vulnerability -->
+        <div class="section">
+            <div class="section-header">4. Brand Vulnerability: Reputation Risks in AI Content</div>
+            
+            <p><strong>Vulnerability Score: 7.5/10</strong> — AI engines surface moderate concerns that could undermine trust if amplified.</p>
+
+            <div class="key-findings">
+                <div class="finding-box">
+                    <div class="finding-title">🟡 Sustainability (6.4/10)</div>
+                    <div class="finding-text">Project Gigaton achievements acknowledged, but AI notes missed 2025/2030 targets and ongoing plastic packaging criticism. Gemini: "Doing 'less bad' at massive scale."</div>
+                </div>
+                <div class="finding-box">
+                    <div class="finding-title">🟠 Authenticity (5.4/10)</div>
+                    <div class="finding-text">Gap between "Live Better" messaging and public perception of labor practices. Perplexity cites repeated overtime violations; AI sees "calculated PR rather than genuine altruism."</div>
+                </div>
+                <div class="finding-box">
+                    <div class="finding-title">🟡 Customer Experience (5.6/10)</div>
+                    <div class="finding-text">ACSI score of 73 (general merchandise) surfaces consistently. OpenAI: "Meeting but not exceeding baseline expectations." Store inconsistency noted across engines.</div>
+                </div>
+                <div class="finding-box">
+                    <div class="finding-title">🟢 Innovation & Technology (7.8/10)</div>
+                    <div class="finding-text">AI partnership with OpenAI, drone delivery, and GenAI tools strengthen positioning. Seen as "people-led, tech-powered" leader in retail transformation.</div>
+                </div>
+            </div>
+
+            <p style="margin-top: 12px;"><strong>Critical Risk:</strong> Labor practice allegations and authenticity gaps appear frequently enough to create pattern recognition in AI training data. Recent body camera rollouts and CFPB lawsuit over Spark driver pay amplify scrutiny.</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Page 1 of 2 | December 2025 | Confidential
+        </div>
+    </div>
+
+    <!-- PAGE 2 -->
+    <div class="page" style="page-break-before: always;">
+        <div class="header">
+            <div class="header-logo">BRANDRANK.AI</div>
+            <div class="brand-logo">Walmart</div>
+        </div>
+
+        <!-- Section 6: Brand Promise Alignment -->
+        <div class="section">
+            <div class="section-header">5. Brand Promise Alignment</div>
+            
+            <p><strong>Overall Score: 7.4/10</strong> — "Save money so they can live better" lands strongly on price, moderately on convenience, weakly on stakeholder value.</p>
+
+            <div class="engine-breakdown">
+                <div class="engine-row">
+                    <span>Grok</span>
+                    <span>OpenAI</span>
+                    <span>Meta AI</span>
+                    <span>Perplexity</span>
+                    <span>Gemini</span>
+                </div>
+                <div class="engine-scores">
+                    <span>8.5</span>
+                    <span>7.6</span>
+                    <span>8.2</span>
+                    <span>6.5</span>
+                    <span>6.0</span>
+                </div>
+            </div>
+
+            <p style="margin-top: 12px;"><strong>What AI Engines Say:</strong></p>
+            <ul style="margin-left: 20px; line-height: 1.7;">
+                <li><strong>Save Money:</strong> Consistently validated. Q3 FY26 eCommerce +27%, Thanksgiving basket under $40, and everyday-low-price (EDLP) strategy recognized across all engines.</li>
+                <li><strong>Live Better:</strong> Mixed evidence. Wage increases and Live Better U program noted positively, but exit from Walmart Health and ACSI satisfaction scores below competitors create friction.</li>
+                <li><strong>Shared Value:</strong> Weakest area. Associates see improved compensation but turnover remains high; suppliers face price pressure; community impact via food donation acknowledged but offset by store closures.</li>
+            </ul>
+
+            <p style="margin-top: 12px;"><strong>Gap Analysis:</strong> Gemini notes Walmart "delivers exceptionally on economic promise to customers but struggles to integrate broader social and environmental ambitions into core operations." The promise is aspirational; execution is transactional.</p>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Section 7: Content Readiness -->
+        <div class="section">
+            <div class="section-header">6. Content Readiness: AI Accessibility Analysis</div>
+            
+            <p><strong>Overall Score: 7.1/10</strong> — Infrastructure is strong; storytelling and authority are underdeveloped.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Factor</th>
+                        <th>Score</th>
+                        <th>Assessment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Availability</strong></td>
+                        <td>7.6/10</td>
+                        <td>Excellent sitemap coverage, strong domain authority (Search Capital: 8.9). Occasional bot challenges create friction for non-transactional content.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Clarity</strong></td>
+                        <td>7.3/10</td>
+                        <td>Core pages clear and conversational. Marketplace seller variability reduces fluency—inconsistent copy quality dilutes AI summarization.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Depth</strong></td>
+                        <td>6.2/10</td>
+                        <td>Weakest area. ESG reports provide statistics, but product pages lack expert voices. "Transaction over education"—AI sees a shelf, not a guide.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="margin-top: 12px;"><strong>Key Recommendations:</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Priority</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="red">🔴 Critical</span></td>
+                        <td>Enforce marketplace seller content standards—require readability scores, structured "At a glance" bullets, and automated QA to reduce hallucination risk in AI summaries</td>
+                    </tr>
+                    <tr>
+                        <td><span class="red">🔴 Critical</span></td>
+                        <td>Build expert review partnerships for health, electronics, and home improvement. Add "Expert Verified" badges and contributor profiles to establish authority</td>
+                    </tr>
+                    <tr>
+                        <td><span class="amber">🟡 Medium</span></td>
+                        <td>Expand FAQPage and HowTo schema across priority categories. Standardize JSON-LD implementation to improve AI answer grounding</td>
+                    </tr>
+                    <tr>
+                        <td><span class="green">🟢 High</span></td>
+                        <td>Publish centralized "Stats & Facts" hub with versioned snapshots—assortment size, delivery speeds, sustainability progress—all with stable URLs for AI citation</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Section 8: Statements of Fact -->
+        <div class="section">
+            <div class="section-header">7. Statements of Fact: Accuracy Monitoring</div>
+            
+            <p><strong>Overall Accuracy: 90%</strong> — 9 of 10 key claims validated across five answer engines.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Statement</th>
+                        <th>Verified?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Average U.S. hourly wage is about $18</td>
+                        <td><span class="green">✓ TRUE</span></td>
+                    </tr>
+                    <tr>
+                        <td>90% of U.S. population within 10 miles of a Walmart</td>
+                        <td><span class="green">✓ TRUE</span></td>
+                    </tr>
+                    <tr>
+                        <td>Prices 10-25% lower than competitors on average</td>
+                        <td><span class="red">✗ FALSE</span></td>
+                    </tr>
+                    <tr>
+                        <td>$350 billion investment in U.S.-made products over 10 years</td>
+                        <td><span class="green">✓ TRUE</span></td>
+                    </tr>
+                    <tr>
+                        <td>Project Gigaton achieved 1 billion tons of emissions reductions six years early</td>
+                        <td><span class="green">✓ TRUE</span></td>
+                    </tr>
+                    <tr>
+                        <td>Donated 665 million pounds of food in 2022 (57% fresh)</td>
+                        <td><span class="green">✓ TRUE</span></td>
+                    </tr>
+                    <tr>
+                        <td>Has a Responsible AI Pledge covering transparency and fairness</td>
+                        <td><span class="green">✓ TRUE</span></td>
+                    </tr>
+                    <tr>
+                        <td>$1 billion investment in career training by 2026</td>
+                        <td><span class="green">✓ TRUE</span></td>
+                    </tr>
+                    <tr>
+                        <td>Acres for America protected 2 million acres across 42 states</td>
+                        <td><span class="green">✓ TRUE</span></td>
+                    </tr>
+                    <tr>
+                        <td>Uses AI and automation for most online orders through 4,700 stores</td>
+                        <td><span class="green">✓ TRUE</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="margin-top: 12px;"><strong>False Claim Risk:</strong> The "10-25% lower prices" claim lacks consistent third-party validation and varies by category. AI engines hedge or omit specific percentage claims, reducing confidence in broader value messaging.</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Page 2 of 2 | December 2025 | Confidential
+        </div>
+    </div>
+
+    <!-- PAGE 3 -->
+    <div class="page" style="page-break-before: always;">
+        <div class="header">
+            <div class="header-logo">BRANDRANK.AI</div>
+            <div class="brand-logo">Walmart</div>
+        </div>
+
+        <!-- Section 9: SWOT Analysis -->
+        <div class="section">
+            <div class="section-header">8. SWOT Analysis: AI Answer Engine Context</div>
+            
+            <div class="swot-grid">
+                <div class="swot-cell">
+                    <div class="swot-label">STRENGTHS</div>
+                    <div class="swot-content">
+                        <strong>Proximity moat:</strong> 4,700 stores place 90% of Americans within 10 miles—enables low-cost pickup/delivery density. Q3 FY26 eCommerce +27%, ~35% of store-fulfilled orders arrive in under 3 hours.<br><br>
+                        <strong>High-margin engines:</strong> Global advertising up 53% (Walmart Connect +33% U.S.), eCommerce profitability achieved Q1 FY26. VIZIO acquisition adds CTV closed-loop measurement.<br><br>
+                        <strong>Supply chain automation:</strong> 60%+ of stores receive freight from automated DCs; 50%+ eCommerce volume automated. Vertical integration: second Walmart-owned milk plant, case-ready beef facility.<br><br>
+                        <strong>Authority signals:</strong> Nasdaq relisting (Dec 9, 2025), OpenAI partnership, robust ESG reporting aligned to SASB/TCFD/GRI frameworks.
+                    </div>
+                </div>
+                <div class="swot-cell">
+                    <div class="swot-label">WEAKNESSES</div>
+                    <div class="swot-content">
+                        <strong>Marketplace governance:</strong> Sept 2025 investigation highlighted counterfeit/impersonation risks. Vetting gaps undermine catalog integrity and AI trust.<br><br>
+                        <strong>Health narrative void:</strong> Walmart Health exit (2024) leaves pharmacy-anchored care story unclear. Requires rebuild around immunizations, testing, specialty pharmacy.<br><br>
+                        <strong>Payment transition friction:</strong> Capital One partnership ended; OnePay-Synchrony rollout creates approval/rewards/servicing risk during integration.<br><br>
+                        <strong>Front-end execution:</strong> Balancing staffed lanes, self-checkout, Scan & Go, and theft deterrence is labor-intensive. Body camera pilots signal safety concerns.<br><br>
+                        <strong>CX consistency:</strong> ACSI 73 in general merchandise—well below top performers. In-store experience variability drags digital gains.
+                    </div>
+                </div>
+                <div class="swot-cell">
+                    <div class="swot-label">OPPORTUNITIES</div>
+                    <div class="swot-content">
+                        <strong>Conversational commerce:</strong> OpenAI partnership (Oct 14, 2025) enables chat-and-buy via ChatGPT Instant Checkout—positions Walmart earlier in discovery journey.<br><br>
+                        <strong>CTV retail media:</strong> VIZIO acquisition closes living-room-to-cart loop with measurable attribution. Higher-margin profit pool as linear TV budgets shift.<br><br>
+                        <strong>Drone expansion:</strong> Wing partnership across 5 states, 100+ stores—30-minute delivery halo for OTC and fill-ins in eligible ZIPs.<br><br>
+                        <strong>Physical growth:</strong> First ground-up "store of the future" (April 2025); 150+ new stores planned over several years—expands last-mile density.<br><br>
+                        <strong>Embedded fintech:</strong> JPMorgan partnership gives marketplace sellers faster payouts and working capital—tailwind for assortment and ad demand.
+                    </div>
+                </div>
+                <div class="swot-cell">
+                    <div class="swot-label">THREATS</div>
+                    <div class="swot-content">
+                        <strong>ALDI expansion:</strong> 225+ new U.S. stores in 2025, converting 220 Winn-Dixie/Harveys locations through 2027—intensifies price pressure on staples.<br><br>
+                        <strong>Privacy enforcement escalation:</strong> California CPPA + Colorado/Connecticut AGs launched joint GPC compliance sweep (Sept 2025)—raises bar for opt-out signals across retail media.<br><br>
+                        <strong>Local regulation:</strong> Long Beach, CA self-checkout staffing ordinance (first-of-its-kind) creates operational complexity and copycat risk in other municipalities.<br><br>
+                        <strong>Trade policy fluidity:</strong> Section 301 tariff exclusions extended Nov 2025, but directionality can reverse—sourcing/margin headwinds for home, toys, appliances.<br><br>
+                        <strong>Safety and legal exposure:</strong> July 26, 2025 Michigan mass stabbing highlights in-store risk. CFPB lawsuit over Spark driver pay practices shines spotlight on gig compliance.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Section 10: Investment Implications -->
+        <div class="section">
+            <div class="section-header">9. Investment Implications for Marketing Functions</div>
+            
+            <p><strong>Context:</strong> With Visibility at 3.8/10 and Vulnerability at 7.5/10, Walmart faces a dual challenge: insufficient AI recommendation frequency and moderate reputation risk amplification. Marketing investment should prioritize content authority, trust signals, and category-specific narrative gaps.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Marketing Function</th>
+                        <th>Strategic Implication</th>
+                        <th>Priority</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Content & SEO</strong></td>
+                        <td>Depth score of 6.2/10 indicates need for expert partnerships, cited statistics, and FAQ expansion across underperforming categories (sustainability, returns, customer service). Build "Stats & Facts" hub with stable URLs for AI citation.</td>
+                        <td><span class="red">🔴 Critical</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Brand Communications</strong></td>
+                        <td>Brand Promise Alignment of 7.4 suggests "Save Money" lands but "Live Better" needs reinforcement. Address authenticity gap (5.4/10) by amplifying associate stories, supplier partnerships, and community impact with third-party validation.</td>
+                        <td><span class="red">🔴 Critical</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Product & Innovation Marketing</strong></td>
+                        <td>AI Visibility for tech innovation is strong (7.8/10 on vulnerability) but underrepresented in search results. Amplify OpenAI partnership, GenAI assistant, and drone delivery in category-specific content to capture "best tech retailer" queries.</td>
+                        <td><span class="green">🟢 High</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Paid Social & Display</strong></td>
+                        <td>Brand Promise Alignment of 7.4 suggests messaging is landing but needs traffic to optimized content. Use paid channels to drive to sustainability hub, Walmart+ benefits explainers, and return policy FAQs where AI perception gaps exist.</td>
+                        <td><span class="amber">🟡 Medium</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Partnership & Co-Marketing</strong></td>
+                        <td>Category gaps in sustainability (0.9/10) and lifestyle/loyalty (1.3/10) present co-marketing opportunities with eco-brands and wellness partners. Shared content could improve visibility where Walmart scores below 2.0.</td>
+                        <td><span class="amber">🟡 Medium</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance Marketing</strong></td>
+                        <td>Competitive analysis shows Amazon capturing higher AI recommendation share in electronics (Walmart 6.5 vs. Amazon 9.0) and online trust (Walmart 7.2 vs. Amazon 10). Consider whether performance investment in these categories should emphasize price or accelerate while content strategy develops.</td>
+                        <td><span class="green">🟢 High</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="margin-top: 12px;"><strong>Budget Allocation Considerations:</strong> With Overall Score at 6.1/10, Walmart sits in the middle tier—not invisible but not preferred. The authenticity gap and depth deficit suggest a content-first approach may yield higher ROI than awareness-building alone. The credibility gap (particularly around "Live Better" promise) requires sustained trust investment, not just reach.</p>
+
+            <p><strong>Timing Considerations:</strong> AI model updates occur regularly and can shift competitive dynamics. Nasdaq relisting (Dec 9, 2025) amplifies investor scrutiny on governance and data practices. ALDI expansion and privacy enforcement create near-term pressure. Current investments should align with both immediate needs (marketplace content standards, FAQ expansion) and longer-term positioning (expert partnerships, sustainability storytelling).</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Page 3 of 3 | December 2025 | Confidential
+        </div>
+    </div>
+
+    <!-- PAGE 4 -->
+    <div class="page" style="page-break-before: always;">
+        <div class="header">
+            <div class="header-logo">BRANDRANK.AI</div>
+            <div class="brand-logo">Walmart</div>
+        </div>
+
+        <!-- Section 11: Who Should Act -->
+        <div class="section">
+            <div class="section-header">10. Who Should Act On This</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Function</th>
+                        <th>Priority Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Corporate Communications</strong></td>
+                        <td>Close authenticity gap (5.4/10) by amplifying third-party validation of "Live Better" promise—associate advancement stories, supplier partnerships, and food donation impact with independent verification to counter AI-surfaced labor criticisms.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Digital & Content Teams</strong></td>
+                        <td>Enforce marketplace seller content standards (automated QA, readability scoring, structured bullets) to reduce AI hallucination risk; expand FAQPage schema across returns, sustainability, and customer service categories where visibility scores below 2.0.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Brand Marketing</strong></td>
+                        <td>Address visibility paradox—maximum presence (6.1), minimal preference (3.8)—by developing expert-backed buying guides and category authority hubs that position Walmart as trusted advisor, not just transactional shelf.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>R&D / Innovation</strong></td>
+                        <td>Amplify OpenAI partnership, GenAI assistant, and drone delivery in AI-friendly content; current tech innovation strength (7.8/10 on vulnerability) not translating to search visibility—create product visibility narratives around automation and convenience tech.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Executive Leadership</strong></td>
+                        <td>Overall Score of 6.1 indicates mid-tier positioning with reputation risk (Vulnerability 7.5)—resource allocation should prioritize content authority and trust-building over pure awareness; authenticity gaps and marketplace quality issues require executive sponsorship and cross-functional alignment.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Section 12: Persona Reactions -->
+        <div class="section">
+            <div class="section-header">11. Persona / Stakeholder Reactions</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Persona</th>
+                        <th>Description</th>
+                        <th>Likely Reaction</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Value Shoppers</strong></td>
+                        <td>Budget-conscious families seeking deals</td>
+                        <td>Reinforced—AI consistently validates Walmart's price leadership (back-to-school: 9.3/10, grocery bundles: 7.8/10), confirming their choice for essentials and seasonal savings.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Convenience-Driven Buyers</strong></td>
+                        <td>Time-poor consumers prioritizing speed</td>
+                        <td>Mixed—same-day pickup (8.8/10) and delivery scores strong, but ACSI 73 and store experience inconsistency create friction that AI surfaces in comparisons.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Eco-Conscious Consumers</strong></td>
+                        <td>Sustainability-focused shoppers</td>
+                        <td>Disappointed—Project Gigaton success acknowledged, but AI visibility for sustainability queries at 0.9/10 and authenticity concerns (5.4/10) around plastic waste undermine green credentials.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Financial Analysts/Investors</strong></td>
+                        <td>Evaluating long-term value creation</td>
+                        <td>Cautiously optimistic—Q3 FY26 eCommerce +27% and advertising +53% demonstrate margin expansion, but moderate vulnerability (7.5/10) and authenticity gap (5.4/10) flag execution risks around reputation and stakeholder alignment.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Regulators/Policy Influencers</strong></td>
+                        <td>Monitoring compliance and ethics</td>
+                        <td>Scrutinizing—CFPB lawsuit, privacy enforcement sweep, and labor practice allegations surface consistently in AI content; Vulnerability score of 7.5 indicates pattern recognition that could attract regulatory attention.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="caption" style="margin-top: 8px;"><strong>Select from Consumer Personas:</strong> Premium Quality Seekers, Value Shoppers, Eco-Conscious Consumers, Health & Safety First, Convenience-Driven Buyers, Tradition-Oriented Loyalists, Variety Seekers</p>
+            <p class="caption"><strong>Select from Stakeholder Personas:</strong> Financial Analysts/Investors, Activists/Climate Advocates, Employees/Internal Ambassadors, Regulators/Policy Influencers, Retail & Channel Partners, Competitors/Category Peers, Media & Opinion Shapers</p>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Section 13: Brand Jam -->
+        <div class="section">
+            <div class="section-header">12. Brand Jam 🎵</div>
+            <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 20px; margin: 12px 0; border-left: 4px solid #0d9488; border-radius: 4px; text-align: center;">
+                <p style="font-size: 11pt; line-height: 1.8; color: #1a3a5c; font-weight: 500; margin: 0; font-style: italic;">
+                    <strong style="font-size: 12pt;">🎵</strong><br><br>
+                    Walmart's got the scale but AI's not sold,<br>
+                    Everywhere you look but rarely first told.<br>
+                    Amazon's the answer when trust is the ask,<br>
+                    Time to own the story—not just the task.<br>
+                    <br>
+                    Marketplace is messy, the content's not deep,<br>
+                    Expert voices missing while competitors leap.<br>
+                    From transaction giant to trusted guide,<br>
+                    Build authority now—let the proof preside!<br>
+                    <br>
+                    <strong style="font-size: 12pt;">🎵</strong>
+                </p>
+            </div>
+            <p class="caption" style="text-align: center; margin-top: 8px;">A memorable summary to rally the team around 2026 AI visibility priorities</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Page 4 of 4 | December 2025 | Confidential
+        </div>
+    </div>
+
+    <!-- PAGE 5: ADDENDUM -->
+    <div class="page" style="page-break-before: always;">
+        <div class="addendum-title">Essential Terms</div>
+
+        <div class="term">
+            <span class="term-title">AI Visibility</span> — "Do I show up?" Measures how often your brand appears when consumers ask AI category-relevant questions. 7+ = AI recommends you; &lt;4 = invisible.
+        </div>
+
+        <div class="term">
+            <span class="term-title">Brand Vulnerability</span> — "What does AI say about me?" Measures whether AI protects or undermines your reputation.
+        </div>
+
+        <div class="term">
+            <span class="term-title">Brand Promise Alignment</span> — "Does AI believe my story?" Score below 7 means AI hedges rather than endorses.
+        </div>
+
+        <div class="term">
+            <span class="term-title">Content Readiness</span> — "Is my site ready for AI?" Can AI find (Availability), trust (Depth), and extract (Clarity) your content?
+        </div>
+
+        <div class="term">
+            <span class="term-title">Source Influence</span> — "Who shapes my AI narrative?" High owned-source % = greater control over your story.
+        </div>
+
+        <div class="term">
+            <span class="term-title">Statements of Fact</span> — "Is AI telling the truth?" Monitors accuracy of specific brand claims across engines.
+        </div>
+
+        <div class="addendum-title" style="margin-top: 30px;">Why Check Your Dashboard Regularly</div>
+
+        <div class="term">
+            <span class="term-title">AI models update frequently.</span> Scores can shift overnight with platform updates.
+        </div>
+
+        <div class="term">
+            <span class="term-title">Competitors are moving.</span> See their gains in scores before you see them in market share.
+        </div>
+
+        <div class="term">
+            <span class="term-title">Prepare for key moments.</span> Check before earnings calls, board meetings, campaign launches.
+        </div>
+
+        <div class="term">
+            <span class="term-title">Track your investments.</span> See if content and PR translate to AI visibility.
+        </div>
+
+        <div class="term">
+            <span class="term-title">Catch misinformation early.</span> Before it spreads across platforms.
+        </div>
+
+        <div class="term">
+            <span class="term-title">Spot emerging opportunities.</span> New questions consumers are asking.
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- About Section -->
+        <div class="section">
+            <div class="section-header">About BrandRank.AI</div>
+            <p>BrandRank works with over 60 global brands to strengthen trust and purchase intent by uncovering vulnerabilities, purchase-driving insights, and growth opportunities across AI answer engines. As a SaaS platform, we track all major answer engines to improve visibility, ensure content is AI-ready, and rigorously measure brand claims and instructional accuracy.</p>
+            <p>To explore your complete data, access your dashboard at <strong>dashboard.brandrank.ai/walmart</strong>.</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Page 5 of 5 | December 2025 | Confidential
+        </div>
+    </div>
+</body>
+</html>
