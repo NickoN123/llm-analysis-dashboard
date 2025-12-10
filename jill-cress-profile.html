@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Leadership Profile: Jill Cress</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 60px;
+        }
+
+        /* Scroll Progress */
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+        }
+
+        .scroll-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff 0%, #4ecdc4 100%);
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 80px 0;
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-size: 72px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+
+        .hero-subtitle {
+            font-size: 32px;
+            color: #ffffff;
+            margin-bottom: 16px;
+            font-weight: 300;
+        }
+
+        .hero-tagline {
+            font-size: 24px;
+            color: #00d4ff;
+            font-style: italic;
+            margin-top: 24px;
+            font-weight: 400;
+        }
+
+        .hero-archetype {
+            font-size: 18px;
+            color: #ffffff;
+            margin-top: 32px;
+            padding: 20px 40px;
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 4px solid #00d4ff;
+            display: inline-block;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Section Styling */
+        .section {
+            padding: 60px 0;
+            position: relative;
+        }
+
+        .section-header {
+            margin-bottom: 40px;
+        }
+
+        .section-header h2 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        .section-header p {
+            font-size: 18px;
+            color: #ffffff;
+            opacity: 0.8;
+            max-width: 800px;
+        }
+
+        /* Score Display */
+        .score-display {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .score-value {
+            font-size: 64px;
+            font-weight: 700;
+            color: #00d4ff;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .score-label {
+            font-size: 18px;
+            color: #ffffff;
+            font-weight: 400;
+        }
+
+        /* Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        /* Card Styling */
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 40px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #00d4ff;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 212, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.1);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card h3 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 16px;
+        }
+
+        .card p {
+            font-size: 16px;
+            color: #ffffff;
+            opacity: 0.9;
+            line-height: 1.7;
+        }
+
+        .card-accent {
+            color: #00d4ff;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        /* Highlight Cards */
+        .highlight-card {
+            background: rgba(0, 212, 255, 0.08);
+            border-left: 4px solid #00d4ff;
+            padding: 40px;
+            margin: 40px 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .highlight-card h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 16px;
+        }
+
+        .highlight-card p {
+            font-size: 18px;
+            color: #ffffff;
+            line-height: 1.8;
+        }
+
+        /* Values List */
+        .values-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .values-list li {
+            padding: 24px;
+            margin-bottom: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #00d4ff;
+            border-radius: 0 8px 8px 0;
+            transition: all 0.3s ease;
+        }
+
+        .values-list li:hover {
+            background: rgba(0, 212, 255, 0.1);
+            transform: translateX(8px);
+        }
+
+        .values-list li strong {
+            font-size: 20px;
+            color: #00d4ff;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .values-list li p {
+            font-size: 16px;
+            color: #ffffff;
+            opacity: 0.9;
+        }
+
+        /* Attributes Table */
+        .attributes-grid {
+            display: grid;
+            gap: 24px;
+        }
+
+        .attribute-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 3fr;
+            gap: 24px;
+            padding: 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .attribute-row:hover {
+            background: rgba(0, 212, 255, 0.08);
+            transform: translateX(8px);
+        }
+
+        .attribute-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .attribute-score {
+            font-size: 32px;
+            font-weight: 700;
+            color: #00d4ff;
+            text-align: center;
+        }
+
+        .attribute-description {
+            font-size: 16px;
+            color: #ffffff;
+            opacity: 0.9;
+        }
+
+        /* Archetype Grid */
+        .archetype-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .archetype-item {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            align-items: center;
+        }
+
+        .archetype-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #00d4ff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .archetype-value {
+            font-size: 16px;
+            color: #ffffff;
+        }
+
+        /* Alignment Table */
+        .alignment-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 40px 0;
+        }
+
+        .alignment-table thead {
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .alignment-table th {
+            padding: 20px;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 700;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .alignment-table td {
+            padding: 24px 20px;
+            font-size: 16px;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .alignment-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .alignment-table tr:hover td {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        /* Score Badge */
+        .score-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #00d4ff 0%, #4ecdc4 100%);
+            color: #0a0e1a;
+            font-weight: 700;
+            font-size: 18px;
+            border-radius: 20px;
+        }
+
+        /* Brand List */
+        .brand-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .brand-list li {
+            padding: 20px;
+            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            font-size: 16px;
+            color: #ffffff;
+            position: relative;
+            padding-left: 50px;
+        }
+
+        .brand-list li::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background: #00d4ff;
+            border-radius: 50%;
+        }
+
+        .brand-list.negative li::before {
+            background: #ff6b6b;
+        }
+
+        /* Opportunities List */
+        .opportunities-list {
+            counter-reset: opportunity-counter;
+            list-style: none;
+            padding: 0;
+        }
+
+        .opportunities-list li {
+            padding: 24px;
+            padding-left: 80px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #00d4ff;
+            border-radius: 0 8px 8px 0;
+            position: relative;
+            counter-increment: opportunity-counter;
+        }
+
+        .opportunities-list li::before {
+            content: counter(opportunity-counter);
+            position: absolute;
+            left: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: #00d4ff;
+            color: #0a0e1a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .opportunities-list li strong {
+            font-size: 20px;
+            color: #ffffff;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .opportunities-list li p {
+            font-size: 16px;
+            color: #ffffff;
+            opacity: 0.9;
+        }
+
+        /* Conclusion Box */
+        .conclusion-box {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(78, 205, 196, 0.1) 100%);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 60px;
+            margin: 60px 0;
+            text-align: center;
+        }
+
+        .conclusion-box h3 {
+            font-size: 36px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 24px;
+        }
+
+        .conclusion-box p {
+            font-size: 18px;
+            color: #ffffff;
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .recommendation {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .recommendation h4 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 16px;
+        }
+
+        .recommendation p {
+            font-size: 18px;
+            color: #ffffff;
+            line-height: 1.8;
+        }
+
+        /* Section Divider */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.3) 50%, transparent 100%);
+            margin: 40px 0;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease forwards;
+            opacity: 0;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+
+        /* Social Metrics */
+        .social-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .social-metric {
+            text-align: center;
+            padding: 30px;
+            background: rgba(0, 212, 255, 0.05);
+            border-radius: 12px;
+        }
+
+        .social-metric-value {
+            font-size: 48px;
+            font-weight: 700;
+            color: #00d4ff;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .social-metric-label {
+            font-size: 16px;
+            color: #ffffff;
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .grid-2, .grid-3, .archetype-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-content h1 {
+                font-size: 56px;
+            }
+
+            .section-header h2 {
+                font-size: 40px;
+            }
+
+            .attribute-row {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 30px;
+            }
+
+            .hero-content h1 {
+                font-size: 40px;
+            }
+
+            .hero-subtitle {
+                font-size: 24px;
+            }
+
+            .section {
+                padding: 60px 0;
+            }
+
+            .social-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-indicator">
+        <div class="scroll-progress" id="scrollProgress"></div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content fade-in-up">
+                <h1>Jill Cress</h1>
+                <p class="hero-subtitle">Chief Marketing Officer, H&R Block</p>
+                <p class="hero-tagline">Modernizing Tax Confidence: Making Filing Simple, Trusted and Empowering</p>
+                <div class="hero-archetype">Archetype: Phoenix — Rebuilding legacy with creativity and resilience</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Executive Score -->
+    <section class="section" style="padding-top: 0;">
+        <div class="container">
+            <div class="score-display">
+                <span class="score-value">8.7/10</span>
+                <p class="score-label">BrandRank Executive Score</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="section-divider"></div>
+    </div>
+
+    <!-- Executive Summary -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Executive Summary</h2>
+            </div>
+
+            <div class="grid-2">
+                <div class="highlight-card fade-in-up delay-1">
+                    <h3>Most Recent Highlight</h3>
+                    <p>Jill Cress has demonstrated remarkable agility in aligning the legacy tax giant H&R Block with the expectations of a new generation. She introduced AI-driven tools like Tax Assist, celebrated cultural moments in real time, and built deep brand equity through storytelling and innovation. Her personal side hustle, the launch of Hetta Gløgg, a Scandinavian mulled wine brand, amplifies her authenticity as a human-centric leader.</p>
+                </div>
+
+                <div class="grid-2" style="gap: 20px;">
+                    <div class="highlight-card fade-in-up delay-2" style="margin: 0;">
+                        <h3>Surprising Strength</h3>
+                        <p>Her ability to use culture as a marketing tool, tapping into zeitgeist moments to make H&R Block relevant beyond tax season.</p>
+                    </div>
+
+                    <div class="highlight-card fade-in-up delay-3" style="margin: 0; border-left-color: #ffd93d;">
+                        <h3>Surprising Weakness</h3>
+                        <p>Her wide-ranging focus on tech innovation, CX, brand, small business, and side ventures occasionally diffuses a single, coherent executive narrative.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="section-divider"></div>
+    </div>
+
+    <!-- Brand Essence -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Brand Essence and Character</h2>
+                <p>Leadership philosophy and executive presence</p>
+            </div>
+
+            <div class="card">
+                <p style="font-size: 18px; line-height: 1.8;">Jill Cress embodies a visionary leadership style grounded in empathy, innovation, and cultural fluency. At H&R Block, she has made a significant impact by moving the brand beyond transactional tax preparation toward financial empowerment and customer trust. Her leadership champions humanized AI, inclusive CX, and personalized support for both clients and teams.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="section-divider"></div>
+    </div>
+
+    <!-- Brand Promise Alignment -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Brand Promise Alignment</h2>
+                <p>How leadership commitments align with organizational delivery</p>
+            </div>
+
+            <table class="alignment-table">
+                <thead>
+                    <tr>
+                        <th>Promise Type</th>
+                        <th>Cress's Approach</th>
+                        <th>Alignment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Sustainability Promise</strong></td>
+                        <td>Sustain long-term brand trust through consistent value delivery</td>
+                        <td><span class="score-badge">9.5/10</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Innovation Promise</strong></td>
+                        <td>Embed AI and digital tools for simple accessible tax experiences</td>
+                        <td><span class="score-badge">9.5/10</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <p style="font-size: 24px; color: #ffffff;"><strong>Overall Alignment Score:</strong> <span class="score-badge" style="font-size: 28px; padding: 12px 30px;">9.5/10</span></p>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="section-divider"></div>
+    </div>
+
+    <!-- Core Values -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Core Values Representation</h2>
+                <p>Fundamental principles driving leadership decisions and brand strategy</p>
+            </div>
+
+            <ul class="values-list">
+                <li class="fade-in-up delay-1">
+                    <strong>Consumer Trust & Confidence</strong>
+                    <p>Builds dependable experiences rooted in empathy, clarity, and expert support.</p>
+                </li>
+                <li class="fade-in-up delay-2">
+                    <strong>Accessibility & Inclusion</strong>
+                    <p>Champions tools for underserved markets — gig workers, Gen Z, women entrepreneurs.</p>
+                </li>
+                <li class="fade-in-up delay-3">
+                    <strong>Innovation & Adaptability</strong>
+                    <p>Implements and promotes agile, AI-enabled experiences with measurable results.</p>
+                </li>
+                <li class="fade-in-up delay-4">
+                    <strong>Team Empowerment</strong>
+                    <p>Actively uplifts internal teams, celebrates collaboration and supports inclusive leadership.</p>
+                </li>
+                <li class="fade-in-up delay-4">
+                    <strong>Human-Centered Leadership</strong>
+                    <p>Shares personal stories, shows vulnerability, and fosters mentorship and growth.</p>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="section-divider"></div>
+    </div>
+
+    <!-- Brand Vulnerability -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Brand Vulnerability</h2>
+                <p>Potential risks and challenges requiring strategic attention</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <span class="card-accent">Perception Risk</span>
+                    <h3>Legacy Perception</h3>
+                    <p>Persistent associations with tax season only may slow repositioning efforts.</p>
+                </div>
+
+                <div class="card">
+                    <span class="card-accent">Technology Risk</span>
+                    <h3>Over-tech Risk</h3>
+                    <p>AI reliance risks alienating traditional customers if not balanced with human support.</p>
+                </div>
+
+                <div class="card">
+                    <span class="card-accent">Strategic Risk</span>
+                    <h3>Narrative Dilution</h3>
+                    <p>Multiple concurrent ventures may weaken a singular strategic focus.</p>
+                </div>
+
+                <div class="card">
+                    <span class="card-accent">Brand Risk</span>
+                    <h3>Cultural Sensitivity</h3>
+                    <p>Missteps during real-time cultural participation, if tone-deaf, could backfire.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="section-divider"></div>
+    </div>
+
+    <!-- Leadership Attributes -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Leadership Attributes</h2>
+                <p>Persona mapping across key executive dimensions</p>
+            </div>
+
+            <div class="attributes-grid">
+                <div class="attribute-row">
+                    <div class="attribute-name">The Sustainable Strategist</div>
+                    <div class="attribute-score">8.5</div>
+                    <div class="attribute-description">Long-term brand equity and CX investment</div>
+                </div>
+
+                <div class="attribute-row">
+                    <div class="attribute-name">The Innovation Catalyst</div>
+                    <div class="attribute-score">9.5</div>
+                    <div class="attribute-description">AI, CX design, Gen Z marketing</div>
+                </div>
+
+                <div class="attribute-row">
+                    <div class="attribute-name">The Global Bridge Builder</div>
+                    <div class="attribute-score">6.5</div>
+                    <div class="attribute-description">U.S.-centric strategy</div>
+                </div>
+
+                <div class="attribute-row">
+                    <div class="attribute-name">The Culture Cultivator</div>
+                    <div class="attribute-score">9.0</div>
+                    <div class="attribute-description">Employee-first and team-empowering</div>
+                </div>
+
+                <div class="attribute-row">
+                    <div class="attribute-name">The Digital Pioneer</div>
+                    <div class="attribute-score">9.5</div>
+                    <div class="attribute-description">Leading digital transformation</div>
+                </div>
+
+                <div class="attribute-row">
+                    <div class="attribute-name">The Insight Explorer</div>
+                    <div class="attribute-score">9.0</div>
+                    <div class="attribute-description">Data-first CX optimization</div>
+                </div>
+
+                <div class="attribute-row">
+                    <div class="attribute-name">The Partnership Weaver</div>
+                    <div class="attribute-score">8.0</div>
+                    <div class="attribute-description">Strong agency and thought-leader collabs</div>
+                </div>
+
+                <div class="attribute-row">
+                    <div class="attribute-name">The Brand Architect</div>
+                    <div class="attribute-score">10.0</div>
+                    <div class="attribute-description">Rebuilding and modernizing the brand</div>
+                </div>
+
+                <div class="attribute-row">
+                    <div class="attribute-name">The Efficiency Optimizer</div>
+                    <div class="attribute-score">7.5</div>
+                    <div class="attribute-description">Focuses more on innovation than cost</div>
+                </div>
+
+                <div class="attribute-row">
+                    <div class="attribute-name">The Ethical Entrepreneur</div>
+                    <div class="attribute-score">9.0</div>
+                    <div class="attribute-description">Human-first, impact-focused, inclusive voice</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="section-divider"></div>
+    </div>
+
+    <!-- Visual Accessibility -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Visual Accessibility & Authenticity</h2>
+                <p>The Approachable Leader and Transparent Connector</p>
+            </div>
+
+            <div class="social-metrics">
+                <div class="social-metric">
+                    <span class="social-metric-value">14,420+</span>
+                    <p class="social-metric-label">LinkedIn Followers</p>
+                </div>
+                <div class="social-metric">
+                    <span class="social-metric-value">2-3</span>
+                    <p class="social-metric-label">Posts Per Week</p>
+                </div>
+                <div class="social-metric">
+                    <span class="social-metric-value">200-500</span>
+                    <p class="social-metric-label">Reactions Per Post</p>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 40px;">
+                <h3>Communication Style</h3>
+                <p style="font-size: 18px; line-height: 1.8;">Jill Cress brings vibrant visibility to her executive persona with casual, inclusive, humanized content. She frequently shares reflections, celebrations, behind-the-scenes moments, and cultural insights. Her images feel genuine and spontaneous — not overly posed. Photos include real moments with teams, panels, AI summits, studio shoots, and even casual market booths for her wine brand. This visual openness enhances relatability and trust, supporting her brand as a human-first, emotionally intelligent leader who confidently shares both the polished and the personal.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="section-divider"></div>
+    </div>
+
+    <!-- Archetype Mapping -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Archetype Mapping</h2>
+                <p>Multi-dimensional brand identity across cultural references</p>
+            </div>
+
+            <div class="archetype-grid">
+                <div class="archetype-item">
+                    <div class="archetype-label">Animal</div>
+                    <div class="archetype-value">Phoenix — Rebuilding legacy with creativity and resilience</div>
+                </div>
+
+                <div class="archetype-item">
+                    <div class="archetype-label">Technology</div>
+                    <div class="archetype-value">AI Tax Assist — Human-centered AI transforming CX</div>
+                </div>
+
+                <div class="archetype-item">
+                    <div class="archetype-label">Movie</div>
+                    <div class="archetype-value">Hidden Figures — Elevates the unseen; empowers through tech</div>
+                </div>
+
+                <div class="archetype-item">
+                    <div class="archetype-label">Tree</div>
+                    <div class="archetype-value">Bamboo — Rooted, flexible, quick to adapt</div>
+                </div>
+
+                <div class="archetype-item">
+                    <div class="archetype-label">App</div>
+                    <div class="archetype-value">Instagram Stories — Real-time, personal storytelling with clarity</div>
+                </div>
+
+                <div class="archetype-item">
+                    <div class="archetype-label">Mythical Creature</div>
+                    <div class="archetype-value">Phoenix — Reinvents with each disruption</div>
+                </div>
+
+                <div class="archetype-item">
+                    <div class="archetype-label">Vehicle</div>
+                    <div class="archetype-value">Tesla — Smart, modern, purpose-driven</div>
+                </div>
+
+                <div class="archetype-item">
+                    <div class="archetype-label">Historical Figure</div>
+                    <div class="archetype-value">Steve Jobs — Visionary creative with user empathy</div>
+                </div>
+
+                <div class="archetype-item">
+                    <div class="archetype-label">Art</div>
+                    <div class="archetype-value">Street Art — Bold, creative, public, expressive</div>
+                </div>
+
+                <div class="archetype-item">
+                    <div class="archetype-label">Instrument</div>
+                    <div class="archetype-value">Electric Guitar — Loud, magnetic, energetic brand personality</div>
+                </div>
+
+                <div class="archetype-item">
+                    <div class="archetype-label">Sport</div>
+                    <div class="archetype-value">Boxing — Relentless, high-stakes competitor</div>
+                </div>
+
+                <div class="archetype-item">
+                    <div class="archetype-label">Cuisine</div>
+                    <div class="archetype-value">Street Food — Accessible, diverse, community-based</div>
+                </div>
+
+                <div class="archetype-item">
+                    <div class="archetype-label">Game</div>
+                    <div class="archetype-value">Fortnite — Evolving, immersive, youth-forward</div>
+                </div>
+
+                <div class="archetype-item">
+                    <div class="archetype-label">Hashtag</div>
+                    <div class="archetype-value">#ItsBetterWithBlock — Brand revival with confidence and optimism</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="section-divider"></div>
+    </div>
+
+    <!-- Equivalent Executives -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Equivalent Executives</h2>
+                <p>Leadership peers with similar approaches and impact</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Antonio Lucio</h3>
+                    <span class="card-accent">HP, Facebook</span>
+                    <p>Purpose-led transformation of large legacy brands</p>
+                </div>
+
+                <div class="card">
+                    <h3>Bozoma Saint John</h3>
+                    <span class="card-accent">Netflix, Apple</span>
+                    <p>Bold, culturally attuned storytelling and digital reinvention</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="section-divider"></div>
+    </div>
+
+    <!-- Brand Alignment -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Brand Alignment Analysis</h2>
+                <p>Measuring consistency between narrative and execution</p>
+            </div>
+
+            <table class="alignment-table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>LinkedIn Narrative</th>
+                        <th>External Evidence</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Overall Brand Promise</strong></td>
+                        <td>Human-first innovation, trust, access</td>
+                        <td>Measurable digital results and cultural relevance</td>
+                        <td><span class="score-badge">9.5/10</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Green Promise</strong><br>(Sustainability of Brand Equity)</td>
+                        <td>Building trust over time</td>
+                        <td>Deep employee and consumer investment</td>
+                        <td><span class="score-badge">8.5/10</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Innovation Promise</strong></td>
+                        <td>AI, automation, creator economy, mobile tools</td>
+                        <td>Proves through growth KPIs and adoption metrics</td>
+                        <td><span class="score-badge">9.5/10</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="section-divider"></div>
+    </div>
+
+    <!-- Brand Portfolio Alignment -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Brand Portfolio Alignment</h2>
+                <p>Products and services most aligned with leadership vision</p>
+            </div>
+
+            <div class="grid-2">
+                <div>
+                    <h3 style="color: #00d4ff; margin-bottom: 30px; font-size: 28px;">Most Aligned</h3>
+                    <ul class="brand-list">
+                        <li><strong>Spruce Mobile Banking</strong> — Financial inclusion and empowerment</li>
+                        <li><strong>Block Advisors</strong> — Small business CX and women's funding</li>
+                        <li><strong>DIY Tax Platform</strong> — Digital-first transformation and AI assist</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 style="color: #ff6b6b; margin-bottom: 30px; font-size: 28px;">Least Aligned</h3>
+                    <ul class="brand-list negative">
+                        <li><strong>In-Office Legacy Services</strong> — Lower digital transformation alignment</li>
+                        <li><strong>High Net-Worth Advisory</strong> — Not mass-accessible or inclusion-focused</li>
+                        <li><strong>Tax Season-Only Messaging</strong> — Conflicts with year-round engagement goals</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="section-divider"></div>
+    </div>
+
+    <!-- Future Growth Opportunities -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Future Growth Opportunities</h2>
+                <p>Strategic pathways for continued brand evolution and market expansion</p>
+            </div>
+
+            <ol class="opportunities-list">
+                <li>
+                    <strong>Year-Round Financial Tools</strong>
+                    <p>Expand brand equity beyond tax season with budgeting, debt management, and AI financial advisors.</p>
+                </li>
+
+                <li>
+                    <strong>Spruce Ecosystem</strong>
+                    <p>Transform Spruce into a cultural and financial wellness brand serving underserved communities.</p>
+                </li>
+
+                <li>
+                    <strong>Creator Economy Engagement</strong>
+                    <p>Empower Gen Z gig workers and entrepreneurs with specialized financial tools and education.</p>
+                </li>
+
+                <li>
+                    <strong>AI CX Innovation</strong>
+                    <p>Scale real-time, intelligent tools across tax, payroll, and retirement planning platforms.</p>
+                </li>
+
+                <li>
+                    <strong>Global Licensing</strong>
+                    <p>Explore potential long-term expansion to global tax and finance platforms in international markets.</p>
+                </li>
+            </ol>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="section-divider"></div>
+    </div>
+
+    <!-- Conclusion -->
+    <section class="section">
+        <div class="container">
+            <div class="conclusion-box">
+                <h3>Brand Alignment Monitor</h3>
+                <p>Jill Cress brings a deeply human, inclusive, and visionary approach to brand transformation at H&R Block. Her public-facing narrative is fully aligned with external performance: she doesn't just promise innovation, she delivers it with cultural relevance and emotional intelligence.</p>
+
+                <div class="recommendation">
+                    <h4>Strategic Recommendation</h4>
+                    <p>To increase clarity of vision, Cress could hone her external messaging to consolidate her expansive leadership brand into a singular, focused story — one that links her entrepreneurial, digital, and ethical qualities under a common mission.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About BrandRank -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>About BrandRank</h2>
+            </div>
+
+            <div class="card" style="background: rgba(0, 212, 255, 0.08); border: 2px solid rgba(0, 212, 255, 0.2);">
+                <p style="font-size: 18px; line-height: 1.8; margin-bottom: 20px;">BrandRank works with over 60 global brands to strengthen trust and purchase intent by uncovering vulnerabilities, purchase-driving insights, and growth opportunities across AI answer engines.</p>
+                <p style="font-size: 18px; line-height: 1.8;">As a SaaS platform, we track all major answer engines to improve visibility, ensure content is AI-ready, and rigorously measure brand claims and instructional accuracy.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <section class="section" style="padding-bottom: 80px;">
+        <div class="container">
+            <div style="text-align: center; padding: 60px 0; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                <p style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Brand Leadership Profile — December 2025</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Scroll Progress Indicator
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scrollProgress').style.width = scrolled + '%';
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
