@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>General Best of Skincare - LLM Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0a0e1a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            aspect-ratio: 16 / 9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            border-bottom: 2px solid #00d4ff;
+            margin-bottom: 30px;
+        }
+
+        .main-title {
+            font-size: 2.5em;
+            font-weight: 300;
+            color: #00d4ff;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .main-subtitle {
+            font-size: 1.1em;
+            color: #b0b0b0;
+            font-weight: 300;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+
+        .search-input {
+            flex: 1;
+            max-width: 500px;
+            padding: 12px 18px;
+            background-color: #1a1f2e;
+            border: 1px solid #00d4ff;
+            border-radius: 6px;
+            color: #e0e0e0;
+            font-size: 1em;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        }
+
+        .clear-search {
+            padding: 12px 24px;
+            background-color: #1a1f2e;
+            border: 1px solid #00d4ff;
+            border-radius: 6px;
+            color: #00d4ff;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .clear-search:hover {
+            background-color: #00d4ff;
+            color: #0a0e1a;
+        }
+
+        .search-results-info {
+            color: #00d4ff;
+            font-size: 0.95em;
+        }
+
+        .brand-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            background-color: #0f1420;
+            border-radius: 8px;
+            border: 1px solid #1a1f2e;
+        }
+
+        .brand-btn {
+            padding: 10px 18px;
+            background-color: #1a1f2e;
+            border: 1px solid #2a3040;
+            border-radius: 6px;
+            color: #e0e0e0;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .brand-btn:hover {
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+        }
+
+        .brand-btn-active {
+            background-color: #00d4ff;
+            color: #0a0e1a;
+            border-color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .brand-clear {
+            padding: 10px 24px;
+            background-color: #ff4444;
+            border: 1px solid #ff4444;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .brand-clear:hover {
+            background-color: #cc0000;
+            border-color: #cc0000;
+        }
+
+        .category-section {
+            margin-bottom: 40px;
+            background-color: #0f1420;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #1a1f2e;
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, #1a1f2e 0%, #0f1420 100%);
+            padding: 20px;
+            border-bottom: 2px solid #00d4ff;
+        }
+
+        .category-header h2 {
+            color: #00d4ff;
+            font-size: 1.8em;
+            font-weight: 400;
+            margin-bottom: 5px;
+        }
+
+        .category-stats {
+            color: #b0b0b0;
+            font-size: 0.95em;
+            font-weight: 300;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            padding: 20px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #0f1420;
+        }
+
+        .data-table th {
+            background-color: #1a1f2e;
+            color: #00d4ff;
+            padding: 15px;
+            text-align: left;
+            font-weight: 500;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #00d4ff;
+        }
+
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid #1a1f2e;
+        }
+
+        .data-table tr:nth-child(even) {
+            background-color: #0d1018;
+        }
+
+        .data-table tr:hover {
+            background-color: #1a1f2e;
+        }
+
+        .prompt-cell {
+            background-color: #1a1f2e;
+            font-weight: 600;
+            border-left: 4px solid #00d4ff;
+            color: #ffffff;
+            min-width: 300px;
+        }
+
+        .llm-response {
+            color: #d0d0d0;
+            font-size: 0.95em;
+        }
+
+        .highlight {
+            background-color: #00d4ff;
+            color: #0a0e1a;
+            font-weight: 600;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .analysis-section {
+            background-color: #0f1420;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid #1a1f2e;
+        }
+
+        .analysis-title {
+            color: #00d4ff;
+            font-size: 2em;
+            font-weight: 400;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .insight-card {
+            background-color: #1a1f2e;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .insight-card h3 {
+            color: #00d4ff;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .insight-card p {
+            color: #b0b0b0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .about-section {
+            background-color: #0f1420;
+            border-radius: 8px;
+            padding: 30px;
+            border: 1px solid #1a1f2e;
+            margin-bottom: 30px;
+        }
+
+        .about-title {
+            color: #00d4ff;
+            font-size: 2em;
+            font-weight: 400;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .about-section p {
+            color: #b0b0b0;
+            font-size: 1.05em;
+            line-height: 1.8;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 1.8em;
+            }
+
+            .search-container {
+                flex-direction: column;
+            }
+
+            .search-input {
+                max-width: 100%;
+            }
+
+            .brand-bar {
+                gap: 8px;
+            }
+
+            .data-table {
+                font-size: 0.9em;
+            }
+
+            .prompt-cell {
+                min-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">General Best of Skincare</h1>
+            <p class="main-subtitle">LLM Brand Analysis Dashboard | Powered by BrandRank.AI</p>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search brands, prompts, or responses...">
+            <button class="clear-search">Clear</button>
+            <span class="search-results-info"></span>
+        </div>
+
+        <div class="brand-bar"></div>
+
+        <div id="categories-container"></div>
+
+        <div class="analysis-section">
+            <h2 class="analysis-title">Analysis & Insights</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h3>Brand Dominance</h3>
+                    <p>CeraVe leads with overwhelming consensus across LLMs, mentioned in 60% of all responses. La Roche-Posay follows as the second most recommended brand, appearing in 43% of responses. These two brands dominate the affordable and dermatologist-recommended segments.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Consensus Levels</h3>
+                    <p><strong>High:</strong> CeraVe for dry skin and moisturizers (5-6 LLM agreement). <strong>Medium:</strong> La Roche-Posay for sensitive skin and SkinCeuticals for anti-aging (3-4 LLM agreement). <strong>Low:</strong> Most acne and specialty treatments show divergent recommendations across models.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Category Patterns</h3>
+                    <p>Budget-conscious queries heavily favor CeraVe and Neutrogena. Premium/clinical queries lean toward SkinCeuticals and La Roche-Posay. Sensitive skin prompts show strongest alignment on La Roche-Posay. Anti-aging queries demonstrate clear preference for SkinCeuticals.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Model Divergences</h3>
+                    <p>Perplexity tends to provide multiple brand options per response, while other LLMs typically suggest single brands. Claude shows preference for specialized brands like Vanicream for sensitive skin. Llama occasionally suggests mass-market brands like Olay where others recommend clinical options.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Risk Profile</h3>
+                    <p><strong>Low Risk:</strong> CeraVe and La Roche-Posay maintain consistent positive positioning. <strong>Medium Risk:</strong> Brands like Cetaphil and Aveeno appear occasionally but lack dominant presence. <strong>High Risk:</strong> Premium brands like Obagi and Alastin receive minimal mentions despite strong clinical credentials.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Strategic Opportunities</h3>
+                    <p>Underrepresented clinical brands (EltaMD, PCA Skin, Obagi) could improve AI visibility through enhanced digital presence. Paula's Choice shows emerging strength in acne/pore-focused queries. Vanicream dominates reactive/sensitive skin despite lower overall mentions, indicating niche leadership.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-section">
+            <h2 class="about-title">About BrandRank</h2>
+            <p>BrandRank is the intelligence layer for the AI search era. We help brands measure, protect, and grow trust by monitoring how they appear across major AI Answer Engines. By combining advanced AI with expert insight, BrandRank identifies vulnerabilities and opportunities, pinpoints the factors driving consumer choice, and reveals pathways to strengthen brand equity and loyalty. Our mission is to ensure that when consumers ask questions in AI-powered platforms, your brand is represented clearly, accurately, and with authority.</p>
+        </div>
+    </div>
+
+    <script>
+        window.WINDOW_DATA = {
+            title: "General Best of Skincare",
+            subtitle: "LLM Brand Analysis Dashboard",
+            llms: ["ChatGPT", "Claude", "Gemini", "Llama", "Perplexity", "Grok"],
+            brandGroups: {
+                "Obagi": ["Obagi Medical", "Obagi"],
+                "La Roche-Posay": ["La Roche-Posay", "La Roche Posay"],
+                "Paula's Choice": ["Paula's Choice", "Paulas Choice"],
+                "Dr. Dennis Gross": ["Dr. Dennis Gross", "Dr Dennis Gross"]
+            },
+            categories: [
+                {
+                    name: "General best of skincare",
+                    description: "5 prompts analyzing overall best skincare brand recommendations",
+                    prompts: [
+                        {
+                            question: "What are the best skincare brands dermatologists recommend right now",
+                            responses: {
+                                "ChatGPT": "CeraVe",
+                                "Claude": "CeraVe",
+                                "Gemini": "La Roche-Posay",
+                                "Llama": "La Roche-Posay",
+                                "Perplexity": "La Roche-Posay",
+                                "Grok": "CeraVe"
+                            }
+                        },
+                        {
+                            question: "Which skincare brands are most trusted for long term skin health",
+                            responses: {
+                                "ChatGPT": "CeraVe",
+                                "Claude": "La Roche-Posay",
+                                "Gemini": "CeraVe",
+                                "Llama": "Cetaphil",
+                                "Perplexity": "CeraVe, La Roche-Posay, Aveeno, Cetaphil",
+                                "Grok": "La Roche-Posay"
+                            }
+                        },
+                        {
+                            question: "What skincare brands are considered high quality but affordable",
+                            responses: {
+                                "ChatGPT": "The Ordinary",
+                                "Claude": "The Ordinary",
+                                "Gemini": "The Ordinary",
+                                "Llama": "Neutrogena",
+                                "Perplexity": "CeraVe, Neutrogena",
+                                "Grok": "CeraVe"
+                            }
+                        },
+                        {
+                            question: "What are the top drugstore skincare brands in the US",
+                            responses: {
+                                "ChatGPT": "CeraVe",
+                                "Claude": "CeraVe",
+                                "Gemini": "CeraVe",
+                                "Llama": "Neutrogena",
+                                "Perplexity": "CeraVe, Neutrogena, Aveeno, Cetaphil",
+                                "Grok": "CeraVe"
+                            }
+                        },
+                        {
+                            question: "Which skincare brands have the strongest scientific backing",
+                            responses: {
+                                "ChatGPT": "La Roche-Posay",
+                                "Claude": "SkinCeuticals",
+                                "Gemini": "SkinCeuticals",
+                                "Llama": "La Roche-Posay",
+                                "Perplexity": "La Roche-Posay, SkinCeuticals, PCA Skin",
+                                "Grok": "Paula's Choice"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Sensitive and dermatologist focused",
+                    description: "5 prompts analyzing sensitive skin and dermatologist-recommended brands",
+                    prompts: [
+                        {
+                            question: "What skincare brands are best for sensitive skin",
+                            responses: {
+                                "ChatGPT": "La Roche-Posay",
+                                "Claude": "Vanicream",
+                                "Gemini": "La Roche-Posay",
+                                "Llama": "La Roche-Posay",
+                                "Perplexity": "CeraVe, La Roche-Posay, EltaMD",
+                                "Grok": "La Roche-Posay"
+                            }
+                        },
+                        {
+                            question: "Which brands do dermatologists recommend for eczema prone skin",
+                            responses: {
+                                "ChatGPT": "CeraVe",
+                                "Claude": "CeraVe",
+                                "Gemini": "CeraVe",
+                                "Llama": "Cetaphil",
+                                "Perplexity": "La Roche-Posay, Aveeno, Cetaphil, Eucerin",
+                                "Grok": "CeraVe"
+                            }
+                        },
+                        {
+                            question: "What skincare products are safest for reactive skin types",
+                            responses: {
+                                "ChatGPT": "La Roche-Posay Toleriane",
+                                "Claude": "Vanicream",
+                                "Gemini": "Vanicream",
+                                "Llama": "Vanicream",
+                                "Perplexity": "Vanicream, La Roche-Posay, EltaMD",
+                                "Grok": "Cetaphil"
+                            }
+                        },
+                        {
+                            question: "What brands are best for people with rosacea",
+                            responses: {
+                                "ChatGPT": "La Roche-Posay",
+                                "Claude": "La Roche-Posay",
+                                "Gemini": "Avène",
+                                "Llama": "La Roche-Posay",
+                                "Perplexity": "La Roche-Posay, EltaMD",
+                                "Grok": "La Roche-Posay"
+                            }
+                        },
+                        {
+                            question: "What skincare brands are fragrance free and non irritating",
+                            responses: {
+                                "ChatGPT": "CeraVe",
+                                "Claude": "Vanicream",
+                                "Gemini": "Cetaphil",
+                                "Llama": "Cetaphil",
+                                "Perplexity": "Vanicream, CeraVe, La Roche-Posay",
+                                "Grok": "Vanicream"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Acne and oil control",
+                    description: "5 prompts analyzing acne treatment and oil control brands",
+                    prompts: [
+                        {
+                            question: "What skincare brands are best for adult acne",
+                            responses: {
+                                "ChatGPT": "La Roche-Posay",
+                                "Claude": "Differin",
+                                "Gemini": "SkinCeuticals",
+                                "Llama": "Dermalogica",
+                                "Perplexity": "CeraVe, Neutrogena, PCA Skin",
+                                "Grok": "La Roche-Posay"
+                            }
+                        },
+                        {
+                            question: "Which brands are effective for hormonal acne",
+                            responses: {
+                                "ChatGPT": "La Roche-Posay",
+                                "Claude": "Paula's Choice",
+                                "Gemini": "Murad",
+                                "Llama": "La Roche-Posay",
+                                "Perplexity": "Dr. Dennis Gross, SkinCeuticals",
+                                "Grok": "Paula's Choice"
+                            }
+                        },
+                        {
+                            question: "What skincare products help control oily skin without overdrying",
+                            responses: {
+                                "ChatGPT": "La Roche-Posay Effaclar",
+                                "Claude": "CeraVe",
+                                "Gemini": "La Roche-Posay",
+                                "Llama": "Neutrogena",
+                                "Perplexity": "La Roche-Posay, Neutrogena",
+                                "Grok": "CeraVe"
+                            }
+                        },
+                        {
+                            question: "What brands make the best acne cleansers",
+                            responses: {
+                                "ChatGPT": "CeraVe",
+                                "Claude": "CeraVe",
+                                "Gemini": "CeraVe",
+                                "Llama": "CeraVe",
+                                "Perplexity": "CeraVe, Neutrogena",
+                                "Grok": "CeraVe"
+                            }
+                        },
+                        {
+                            question: "What dermatologist recommended brands help with clogged pores",
+                            responses: {
+                                "ChatGPT": "La Roche-Posay",
+                                "Claude": "Paula's Choice",
+                                "Gemini": "Paula's Choice",
+                                "Llama": "Paula's Choice",
+                                "Perplexity": "PCA Skin, Paula's Choice",
+                                "Grok": "Paula's Choice"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Anti aging and skin repair",
+                    description: "5 prompts analyzing anti-aging and skin repair brands",
+                    prompts: [
+                        {
+                            question: "What skincare brands are best for anti aging",
+                            responses: {
+                                "ChatGPT": "SkinCeuticals",
+                                "Claude": "SkinCeuticals",
+                                "Gemini": "SkinCeuticals",
+                                "Llama": "Olay",
+                                "Perplexity": "SkinCeuticals, Neutrogena",
+                                "Grok": "SkinCeuticals"
+                            }
+                        },
+                        {
+                            question: "Which brands are most effective for wrinkles and fine lines",
+                            responses: {
+                                "ChatGPT": "SkinCeuticals",
+                                "Claude": "SkinCeuticals",
+                                "Gemini": "RoC",
+                                "Llama": "La Roche-Posay",
+                                "Perplexity": "Neutrogena, Paula's Choice",
+                                "Grok": "SkinCeuticals"
+                            }
+                        },
+                        {
+                            question: "What skincare products help repair the skin barrier",
+                            responses: {
+                                "ChatGPT": "CeraVe Moisturizing Cream",
+                                "Claude": "CeraVe",
+                                "Gemini": "Skinfix",
+                                "Llama": "CeraVe",
+                                "Perplexity": "CeraVe, La Roche-Posay",
+                                "Grok": "CeraVe"
+                            }
+                        },
+                        {
+                            question: "What brands are best for collagen support and skin firmness",
+                            responses: {
+                                "ChatGPT": "SkinCeuticals",
+                                "Claude": "SkinCeuticals",
+                                "Gemini": "Alastin Skincare",
+                                "Llama": "Olay",
+                                "Perplexity": "SkinCeuticals, Alastin",
+                                "Grok": "SkinCeuticals"
+                            }
+                        },
+                        {
+                            question: "What are the best retinol products according to dermatologists",
+                            responses: {
+                                "ChatGPT": "Retin-A",
+                                "Claude": "RoC",
+                                "Gemini": "SkinCeuticals",
+                                "Llama": "SkinCeuticals",
+                                "Perplexity": "Neutrogena, Paula's Choice",
+                                "Grok": "Paula's Choice"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Dry skin and hydration",
+                    description: "5 prompts analyzing dry skin and hydration brands",
+                    prompts: [
+                        {
+                            question: "What skincare brands are best for very dry skin",
+                            responses: {
+                                "ChatGPT": "CeraVe",
+                                "Claude": "CeraVe",
+                                "Gemini": "Kiehl's",
+                                "Llama": "Cetaphil",
+                                "Perplexity": "La Roche-Posay, Eucerin, CeraVe",
+                                "Grok": "CeraVe"
+                            }
+                        },
+                        {
+                            question: "Which brands make the most effective facial moisturizers",
+                            responses: {
+                                "ChatGPT": "CeraVe",
+                                "Claude": "CeraVe",
+                                "Gemini": "CeraVe",
+                                "Llama": "CeraVe",
+                                "Perplexity": "La Roche-Posay, CeraVe",
+                                "Grok": "CeraVe"
+                            }
+                        },
+                        {
+                            question: "What skincare products actually improve skin hydration",
+                            responses: {
+                                "ChatGPT": "CeraVe Moisturizing Cream",
+                                "Claude": "CeraVe",
+                                "Gemini": "Neutrogena",
+                                "Llama": "Neutrogena",
+                                "Perplexity": "La Roche-Posay, Good Molecules",
+                                "Grok": "CeraVe"
+                            }
+                        },
+                        {
+                            question: "What brands are best for winter skincare routines",
+                            responses: {
+                                "ChatGPT": "CeraVe",
+                                "Claude": "Eucerin",
+                                "Gemini": "La Roche-Posay",
+                                "Llama": "Cetaphil",
+                                "Perplexity": "Aveeno, La Roche-Posay, CeraVe",
+                                "Grok": "CeraVe"
+                            }
+                        },
+                        {
+                            question: "What dermatologist recommended brands help restore moisture",
+                            responses: {
+                                "ChatGPT": "CeraVe",
+                                "Claude": "CeraVe",
+                                "Gemini": "CeraVe",
+                                "Llama": "CeraVe",
+                                "Perplexity": "La Roche-Posay, EltaMD, CeraVe",
+                                "Grok": "CeraVe"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Clinical credibility and safety",
+                    description: "5 prompts analyzing clinical research and safety reputations",
+                    prompts: [
+                        {
+                            question: "What skincare brands are backed by clinical research",
+                            responses: {
+                                "ChatGPT": "SkinCeuticals",
+                                "Claude": "SkinCeuticals",
+                                "Gemini": "SkinCeuticals",
+                                "Llama": "La Roche-Posay",
+                                "Perplexity": "La Roche-Posay, SkinCeuticals, PCA Skin",
+                                "Grok": "SkinCeuticals"
+                            }
+                        },
+                        {
+                            question: "Which skincare brands are recommended by dermatologists worldwide",
+                            responses: {
+                                "ChatGPT": "La Roche-Posay",
+                                "Claude": "CeraVe",
+                                "Gemini": "La Roche-Posay",
+                                "Llama": "Cetaphil",
+                                "Perplexity": "La Roche-Posay, CeraVe, Neutrogena",
+                                "Grok": "La Roche-Posay"
+                            }
+                        },
+                        {
+                            question: "What brands test their skincare products clinically",
+                            responses: {
+                                "ChatGPT": "La Roche-Posay",
+                                "Claude": "SkinCeuticals",
+                                "Gemini": "SkinMedica",
+                                "Llama": "La Roche-Posay",
+                                "Perplexity": "La Roche-Posay, PCA Skin, SkinCeuticals",
+                                "Grok": "SkinCeuticals"
+                            }
+                        },
+                        {
+                            question: "What skincare brands are considered medical grade or derm approved",
+                            responses: {
+                                "ChatGPT": "SkinCeuticals",
+                                "Claude": "Obagi",
+                                "Gemini": "Obagi Medical",
+                                "Llama": "SkinCeuticals",
+                                "Perplexity": "PCA Skin, SkinCeuticals",
+                                "Grok": "SkinCeuticals"
+                            }
+                        },
+                        {
+                            question: "What skincare brands have the strongest safety reputations",
+                            responses: {
+                                "ChatGPT": "La Roche-Posay",
+                                "Claude": "Vanicream",
+                                "Gemini": "Vanicream",
+                                "Llama": "Cetaphil",
+                                "Perplexity": "Vanicream, La Roche-Posay, CeraVe",
+                                "Grok": "CeraVe"
+                            }
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // Helper Functions
+        function escapeForRegex(str) {
+            return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function restoreOriginalCells() {
+            document.querySelectorAll('[data-original-text]').forEach(cell => {
+                cell.innerHTML = cell.getAttribute('data-original-text');
+            });
+        }
+
+        function canonicalizeBrand(brandName) {
+            const data = window.WINDOW_DATA;
+            const normalized = brandName.trim();
+            
+            // Check brandGroups for parent mapping
+            if (data.brandGroups) {
+                for (const [parent, children] of Object.entries(data.brandGroups)) {
+                    if (children.some(child => child.toLowerCase() === normalized.toLowerCase())) {
+                        return parent;
+                    }
+                }
+            }
+            
+            return normalized;
+        }
+
+        function computeBrandCounts() {
+            const brandCounts = {};
+            const data = window.WINDOW_DATA;
+            
+            // Scan all table cells except headers
+            document.querySelectorAll('.data-table td').forEach(cell => {
+                const text = cell.textContent;
+                const words = text.split(/[\s,]+/);
+                
+                words.forEach(word => {
+                    const cleaned = word.trim();
+                    if (cleaned.length > 1) {
+                        const canonical = canonicalizeBrand(cleaned);
+                        brandCounts[canonical] = (brandCounts[canonical] || 0) + 1;
+                    }
+                });
+            });
+            
+            // Convert to array and sort
+            const sorted = Object.entries(brandCounts)
+                .sort((a, b) => {
+                    if (b[1] !== a[1]) return b[1] - a[1];
+                    return a[0].localeCompare(b[0]);
+                })
+                .slice(0, 10);
+            
+            return sorted;
+        }
+
+        function getAllBrandVariants(canonicalBrand) {
+            const data = window.WINDOW_DATA;
+            const variants = [canonicalBrand];
+            
+            if (data.brandGroups && data.brandGroups[canonicalBrand]) {
+                variants.push(...data.brandGroups[canonicalBrand]);
+            }
+            
+            return variants;
+        }
+
+        function highlightMatches(brands, scrollToFirst = false) {
+            restoreOriginalCells();
+            
+            if (!brands || brands.length === 0) {
+                document.querySelector('.search-results-info').textContent = '';
+                return;
+            }
+            
+            let totalMatches = 0;
+            let firstMatch = null;
+            const allVariants = [];
+            
+            brands.forEach(brand => {
+                allVariants.push(...getAllBrandVariants(brand));
+            });
+            
+            // Build regex pattern for whole-word matching
+            const escapedBrands = allVariants.map(b => escapeForRegex(b));
+            const pattern = new RegExp(`\\b(${escapedBrands.join('|')})\\b`, 'gi');
+            
+            document.querySelectorAll('.data-table td').forEach(cell => {
+                const original = cell.getAttribute('data-original-text');
+                let newHTML = original;
+                let matches = 0;
+                
+                newHTML = newHTML.replace(pattern, (match) => {
+                    matches++;
+                    totalMatches++;
+                    if (!firstMatch) firstMatch = cell;
+                    return `<span class="highlight">${match}</span>`;
+                });
+                
+                if (matches > 0) {
+                    cell.innerHTML = newHTML;
+                }
+            });
+            
+            document.querySelector('.search-results-info').textContent = 
+                totalMatches > 0 ? `${totalMatches} matches found` : 'No matches found';
+            
+            if (scrollToFirst && firstMatch) {
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function buildBrandBar(brands) {
+            const brandBar = document.querySelector('.brand-bar');
+            brandBar.innerHTML = '';
+            
+            const activeBrands = new Set();
+            
+            brands.forEach(([brand, count]) => {
+                const btn = document.createElement('button');
+                btn.className = 'brand-btn';
+                btn.textContent = `${brand} (${count})`;
+                btn.dataset.brand = brand;
+                
+                btn.addEventListener('click', () => {
+                    if (activeBrands.has(brand)) {
+                        activeBrands.delete(brand);
+                        btn.classList.remove('brand-btn-active');
+                    } else {
+                        activeBrands.add(brand);
+                        btn.classList.add('brand-btn-active');
+                    }
+                    
+                    highlightMatches(Array.from(activeBrands), true);
+                });
+                
+                brandBar.appendChild(btn);
+            });
+            
+            const clearBtn = document.createElement('button');
+            clearBtn.className = 'brand-clear';
+            clearBtn.textContent = 'Clear All';
+            clearBtn.addEventListener('click', () => {
+                activeBrands.clear();
+                document.querySelectorAll('.brand-btn').forEach(btn => {
+                    btn.classList.remove('brand-btn-active');
+                });
+                restoreOriginalCells();
+                document.querySelector('.search-results-info').textContent = '';
+            });
+            
+            brandBar.appendChild(clearBtn);
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('categories-container');
+            const data = window.WINDOW_DATA;
+            
+            data.categories.forEach(category => {
+                const section = document.createElement('div');
+                section.className = 'category-section';
+                
+                const header = document.createElement('div');
+                header.className = 'category-header';
+                header.innerHTML = `
+                    <h2>${category.name}</h2>
+                    <p class="category-stats">${category.description}</p>
+                `;
+                
+                const tableContainer = document.createElement('div');
+                tableContainer.className = 'table-container';
+                
+                const table = document.createElement('table');
+                table.className = 'data-table';
+                
+                // Create header row
+                const thead = document.createElement('thead');
+                const headerRow = document.createElement('tr');
+                headerRow.innerHTML = '<th class="prompt-cell">Prompt Question</th>';
+                data.llms.forEach(llm => {
+                    headerRow.innerHTML += `<th>${llm}</th>`;
+                });
+                thead.appendChild(headerRow);
+                table.appendChild(thead);
+                
+                // Create body rows
+                const tbody = document.createElement('tbody');
+                category.prompts.forEach(prompt => {
+                    const row = document.createElement('tr');
+                    const questionCell = document.createElement('td');
+                    questionCell.className = 'prompt-cell';
+                    questionCell.textContent = prompt.question;
+                    questionCell.setAttribute('data-original-text', prompt.question);
+                    row.appendChild(questionCell);
+                    
+                    data.llms.forEach(llm => {
+                        const responseCell = document.createElement('td');
+                        responseCell.className = 'llm-response';
+                        const response = prompt.responses[llm] || '';
+                        responseCell.textContent = response;
+                        responseCell.setAttribute('data-original-text', response);
+                        row.appendChild(responseCell);
+                    });
+                    
+                    tbody.appendChild(row);
+                });
+                table.appendChild(tbody);
+                
+                tableContainer.appendChild(table);
+                section.appendChild(header);
+                section.appendChild(tableContainer);
+                container.appendChild(section);
+            });
+        }
+
+        function initSearch() {
+            const searchInput = document.querySelector('.search-input');
+            const clearBtn = document.querySelector('.clear-search');
+            
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.trim();
+                if (searchTerm) {
+                    highlightMatches([searchTerm], false);
+                } else {
+                    restoreOriginalCells();
+                    document.querySelector('.search-results-info').textContent = '';
+                }
+            });
+            
+            clearBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                restoreOriginalCells();
+                document.querySelector('.search-results-info').textContent = '';
+            });
+        }
+
+        function init() {
+            renderCategories();
+            initSearch();
+            const brandCounts = computeBrandCounts();
+            buildBrandBar(brandCounts);
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
