@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retail Brand Perception Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0a0e1a;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #00d4ff;
+        }
+
+        .main-title {
+            font-size: 2.8em;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 15px;
+            letter-spacing: -0.5px;
+        }
+
+        .main-subtitle {
+            font-size: 1.2em;
+            color: #a0a0a0;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+
+        .powered-by {
+            font-size: 0.95em;
+            color: #00d4ff;
+            font-weight: 500;
+            margin-top: 8px;
+        }
+
+        .search-container {
+            background: #151a2e;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 1px solid #1a2238;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 18px;
+            background: #0a0e1a;
+            border: 2px solid #2a3550;
+            border-radius: 6px;
+            color: #e0e0e0;
+            font-size: 1em;
+            font-family: 'Segoe UI', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #00d4ff;
+        }
+
+        .clear-search {
+            padding: 12px 24px;
+            background: #2a3550;
+            border: none;
+            border-radius: 6px;
+            color: #e0e0e0;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Segoe UI', sans-serif;
+            font-weight: 500;
+        }
+
+        .clear-search:hover {
+            background: #3a4560;
+        }
+
+        .search-results-info {
+            color: #00d4ff;
+            font-size: 0.95em;
+            font-weight: 500;
+            min-width: 150px;
+        }
+
+        .brand-bar {
+            background: #151a2e;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 1px solid #1a2238;
+        }
+
+        .brand-bar h3 {
+            color: #00d4ff;
+            font-size: 1.3em;
+            margin-bottom: 18px;
+            font-weight: 600;
+        }
+
+        .brand-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .brand-btn {
+            padding: 10px 18px;
+            background: #1a2238;
+            border: 2px solid #2a3550;
+            border-radius: 6px;
+            color: #e0e0e0;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Segoe UI', sans-serif;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .brand-btn:hover {
+            background: #2a3550;
+            border-color: #00d4ff;
+        }
+
+        .brand-btn-active {
+            background: #00d4ff;
+            color: #0a0e1a;
+            border-color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .brand-clear {
+            padding: 10px 20px;
+            background: #8b2635;
+            border: 2px solid #a03545;
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Segoe UI', sans-serif;
+            font-weight: 600;
+        }
+
+        .brand-clear:hover {
+            background: #a03545;
+        }
+
+        .category-section {
+            background: #151a2e;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            overflow: hidden;
+            border: 1px solid #1a2238;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, #1a2238 0%, #252d48 100%);
+            padding: 25px 30px;
+            border-bottom: 3px solid #00d4ff;
+        }
+
+        .category-header h2 {
+            color: #00d4ff;
+            font-size: 1.8em;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .category-stats {
+            color: #a0a0a0;
+            font-size: 0.95em;
+            font-weight: 400;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            padding: 20px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #0a0e1a;
+        }
+
+        .data-table th {
+            background: #1a2238;
+            color: #00d4ff;
+            padding: 16px 14px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #00d4ff;
+        }
+
+        .data-table td {
+            padding: 16px 14px;
+            border-bottom: 1px solid #1a2238;
+            font-size: 0.95em;
+        }
+
+        .data-table tr:hover {
+            background: #151a2e;
+        }
+
+        .data-table tr:nth-child(even) {
+            background: #0f1220;
+        }
+
+        .data-table tr:nth-child(even):hover {
+            background: #151a2e;
+        }
+
+        .prompt-cell {
+            background: #1a2238 !important;
+            font-weight: 600;
+            color: #ffffff;
+            border-left: 4px solid #00d4ff;
+            min-width: 300px;
+        }
+
+        .llm-response {
+            color: #d0d0d0;
+        }
+
+        .highlight {
+            background: #00d4ff;
+            color: #0a0e1a;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .analysis-section {
+            background: linear-gradient(135deg, #1a2238 0%, #252d48 100%);
+            padding: 40px 35px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            border: 1px solid #1a2238;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .analysis-title {
+            color: #00d4ff;
+            font-size: 2em;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .insight-card {
+            background: #0a0e1a;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .insight-card h3 {
+            color: #00d4ff;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .insight-card p {
+            color: #d0d0d0;
+            line-height: 1.8;
+            font-size: 0.98em;
+        }
+
+        .insight-card ul {
+            margin-top: 12px;
+            padding-left: 20px;
+            color: #d0d0d0;
+        }
+
+        .insight-card li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .about-section {
+            background: #151a2e;
+            padding: 40px 35px;
+            border-radius: 10px;
+            border: 1px solid #1a2238;
+            text-align: center;
+        }
+
+        .about-title {
+            color: #00d4ff;
+            font-size: 2em;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .about-section p {
+            color: #d0d0d0;
+            line-height: 1.9;
+            font-size: 1.05em;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        @media (max-aspect-ratio: 9/16) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .main-title {
+                font-size: 2em;
+            }
+            
+            .search-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-input,
+            .clear-search {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title" id="mainTitle">Retail Brand Perception Analysis</h1>
+            <p class="main-subtitle" id="mainSubtitle">LLM Response Analysis Across Major AI Platforms</p>
+            <p class="powered-by">Powered by BrandRank.AI</p>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search for brands or keywords...">
+            <button class="clear-search" id="clearSearchBtn">Clear Search</button>
+            <span class="search-results-info" id="searchResultsInfo"></span>
+        </div>
+
+        <div class="brand-bar">
+            <h3>Top Brands by Mentions</h3>
+            <div class="brand-buttons" id="brandButtons"></div>
+        </div>
+
+        <div id="categoriesContainer"></div>
+
+        <div class="analysis-section">
+            <h2 class="analysis-title">Analysis</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h3>Key Insights & Trends</h3>
+                    <p>Walmart demonstrates dominant market position across multiple categories, achieving near-universal consensus as the primary destination for everyday household essentials. Home Depot and Best Buy show similarly strong performance within their specialized categories, while Target emerges as the clear leader in fashion and lifestyle retail with excellent consistency across all LLMs.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Consensus Levels</h3>
+                    <p><strong>High Consensus Categories:</strong></p>
+                    <ul>
+                        <li>Electronics (Best Buy: 100% agreement)</li>
+                        <li>Home Improvement (Home Depot: 95%+ consensus)</li>
+                        <li>Fashion/Department (Target: strong majority)</li>
+                    </ul>
+                    <p><strong>Medium Consensus:</strong> Value shopping shows more diversity with Dollar General, Walmart, and Dollar Tree competing for recognition.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Risk Profiles</h3>
+                    <p>Lower brand diversity in specialized categories (electronics, home improvement) creates vulnerability if primary brands face reputation issues. Dollar stores show fragmented perception with no clear market leader emerging consistently. Perplexity demonstrates tendency to provide multiple brand options, suggesting more comprehensive but potentially less decisive responses.</p>
+                </div>
+                <div class="insight-card">
+                    <h3>Model Divergences</h3>
+                    <p>Most models show strong alignment on category leaders, though some interesting variations emerge. Claude consistently uses formal brand names ("The Home Depot") while others use colloquial versions. Llama occasionally suggests alternatives (Target for convenience, TJ Maxx for seasonal fashion) indicating different training emphasis. Perplexity shows more diverse responses across categories, sometimes selecting Costco over Walmart or 7-Eleven for quick essentials. Grok demonstrates strong alignment with majority consensus across all categories.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-section">
+            <h2 class="about-title">About BrandRank</h2>
+            <p>BrandRank is the intelligence layer for the AI search era. We help brands measure, protect, and grow trust by monitoring how they appear across major AI Answer Engines. By combining advanced AI with expert insight, BrandRank identifies vulnerabilities and opportunities, pinpoints the factors driving consumer choice, and reveals pathways to strengthen brand equity and loyalty. Our mission is to ensure that when consumers ask questions in AI-powered platforms, your brand is represented clearly, accurately, and with authority.</p>
+        </div>
+    </div>
+
+    <script>
+        window.WINDOW_DATA = {
+            title: "Retail Brand Perception Analysis",
+            subtitle: "LLM Response Analysis Across Major AI Platforms",
+            categories: [
+                {
+                    name: "Everyday Shopping",
+                    description: "5 prompts analyzing everyday household and big box retail preferences",
+                    prompts: [
+                        {
+                            question: "Where do most people shop for everyday household essentials in the US",
+                            responses: {
+                                ChatGPT: "Walmart",
+                                Claude: "Walmart",
+                                Gemini: "Walmart",
+                                Llama: "Walmart",
+                                Perplexity: "Walmart",
+                                Grok: "Walmart"
+                            }
+                        },
+                        {
+                            question: "What are the most popular big box retail stores right now",
+                            responses: {
+                                ChatGPT: "Walmart",
+                                Claude: "Walmart",
+                                Gemini: "Walmart",
+                                Llama: "Walmart",
+                                Perplexity: "Costco",
+                                Grok: "Walmart"
+                            }
+                        },
+                        {
+                            question: "Which national retailers offer the widest variety of products under one roof",
+                            responses: {
+                                ChatGPT: "Walmart",
+                                Claude: "Walmart",
+                                Gemini: "Walmart",
+                                Llama: "Walmart",
+                                Perplexity: "Walmart",
+                                Grok: "Walmart"
+                            }
+                        },
+                        {
+                            question: "What stores do Americans rely on most for weekly in person shopping",
+                            responses: {
+                                ChatGPT: "Walmart",
+                                Claude: "Walmart",
+                                Gemini: "Walmart",
+                                Llama: "Walmart",
+                                Perplexity: "Walmart",
+                                Grok: "Walmart"
+                            }
+                        },
+                        {
+                            question: "Which retailers are considered the most convenient for everyday purchases",
+                            responses: {
+                                ChatGPT: "Walmart",
+                                Claude: "Walmart",
+                                Gemini: "Walmart",
+                                Llama: "Target",
+                                Perplexity: "7-Eleven",
+                                Grok: "Walmart"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Home Improvement",
+                    description: "5 prompts examining home improvement and DIY retail preferences",
+                    prompts: [
+                        {
+                            question: "What are the best stores for home improvement projects",
+                            responses: {
+                                ChatGPT: "Home Depot",
+                                Claude: "The Home Depot",
+                                Gemini: "The Home Depot",
+                                Llama: "Home Depot",
+                                Perplexity: "Home Depot",
+                                Grok: "Home Depot"
+                            }
+                        },
+                        {
+                            question: "Where should homeowners shop for tools and building supplies",
+                            responses: {
+                                ChatGPT: "Home Depot",
+                                Claude: "The Home Depot",
+                                Gemini: "The Home Depot",
+                                Llama: "Home Depot",
+                                Perplexity: "Home Depot",
+                                Grok: "Home Depot"
+                            }
+                        },
+                        {
+                            question: "What retailers are known for DIY and repair supplies",
+                            responses: {
+                                ChatGPT: "Home Depot",
+                                Claude: "The Home Depot",
+                                Gemini: "The Home Depot",
+                                Llama: "Home Depot",
+                                Perplexity: "Home Depot",
+                                Grok: "Home Depot"
+                            }
+                        },
+                        {
+                            question: "Where do professionals and DIYers buy tools and hardware",
+                            responses: {
+                                ChatGPT: "Home Depot",
+                                Claude: "The Home Depot",
+                                Gemini: "The Home Depot",
+                                Llama: "Home Depot",
+                                Perplexity: "Home Depot",
+                                Grok: "Home Depot"
+                            }
+                        },
+                        {
+                            question: "What stores are best for seasonal home maintenance needs",
+                            responses: {
+                                ChatGPT: "Home Depot",
+                                Claude: "The Home Depot",
+                                Gemini: "Lowe's",
+                                Llama: "Home Depot",
+                                Perplexity: "Home Depot",
+                                Grok: "Home Depot"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Electronics & Appliances",
+                    description: "5 prompts exploring electronics and appliance retail preferences",
+                    prompts: [
+                        {
+                            question: "Where do people usually buy electronics and appliances in the US",
+                            responses: {
+                                ChatGPT: "Best Buy",
+                                Claude: "Best Buy",
+                                Gemini: "Best Buy",
+                                Llama: "Best Buy",
+                                Perplexity: "Best Buy",
+                                Grok: "Best Buy"
+                            }
+                        },
+                        {
+                            question: "What stores are best for buying TVs laptops and home electronics",
+                            responses: {
+                                ChatGPT: "Best Buy",
+                                Claude: "Best Buy",
+                                Gemini: "Best Buy",
+                                Llama: "Best Buy",
+                                Perplexity: "Best Buy",
+                                Grok: "Best Buy"
+                            }
+                        },
+                        {
+                            question: "Which retailers offer strong in store support for tech purchases",
+                            responses: {
+                                ChatGPT: "Best Buy",
+                                Claude: "Best Buy",
+                                Gemini: "Best Buy",
+                                Llama: "Best Buy",
+                                Perplexity: "Best Buy",
+                                Grok: "Best Buy"
+                            }
+                        },
+                        {
+                            question: "Where can consumers compare electronics before buying",
+                            responses: {
+                                ChatGPT: "Best Buy",
+                                Claude: "Best Buy",
+                                Gemini: "Best Buy",
+                                Llama: "Best Buy",
+                                Perplexity: "Best Buy",
+                                Grok: "Best Buy"
+                            }
+                        },
+                        {
+                            question: "What stores are most trusted for large electronics purchases",
+                            responses: {
+                                ChatGPT: "Best Buy",
+                                Claude: "Best Buy",
+                                Gemini: "Best Buy",
+                                Llama: "Best Buy",
+                                Perplexity: "Best Buy",
+                                Grok: "Best Buy"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Value & Budget Shopping",
+                    description: "5 prompts analyzing value retail and budget-focused shopping preferences",
+                    prompts: [
+                        {
+                            question: "Where do shoppers go for the best deals on everyday goods",
+                            responses: {
+                                ChatGPT: "Walmart",
+                                Claude: "Dollar General",
+                                Gemini: "Walmart",
+                                Llama: "Walmart",
+                                Perplexity: "Dollar General",
+                                Grok: "Walmart"
+                            }
+                        },
+                        {
+                            question: "What retailers focus on low prices for basic household items",
+                            responses: {
+                                ChatGPT: "Dollar General",
+                                Claude: "Dollar General",
+                                Gemini: "Dollar General",
+                                Llama: "Dollar Tree",
+                                Perplexity: "Dollar General",
+                                Grok: "Dollar General"
+                            }
+                        },
+                        {
+                            question: "Which stores are popular for budget conscious shoppers",
+                            responses: {
+                                ChatGPT: "Walmart",
+                                Claude: "Dollar General",
+                                Gemini: "Walmart",
+                                Llama: "Dollar General",
+                                Perplexity: "Dollar General",
+                                Grok: "Walmart"
+                            }
+                        },
+                        {
+                            question: "Where can you buy essentials quickly without spending much",
+                            responses: {
+                                ChatGPT: "Dollar Tree",
+                                Claude: "Dollar General",
+                                Gemini: "Dollar General",
+                                Llama: "Dollar Tree",
+                                Perplexity: "7-Eleven",
+                                Grok: "Dollar General"
+                            }
+                        },
+                        {
+                            question: "What retail chains are strongest in small or rural communities",
+                            responses: {
+                                ChatGPT: "Dollar General",
+                                Claude: "Dollar General",
+                                Gemini: "Dollar General",
+                                Llama: "Dollar General",
+                                Perplexity: "Dollar General",
+                                Grok: "Dollar General"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Fashion & Department Stores",
+                    description: "5 prompts examining fashion, apparel, and department store preferences",
+                    prompts: [
+                        {
+                            question: "Where do people shop for affordable clothing and home goods",
+                            responses: {
+                                ChatGPT: "Target",
+                                Claude: "Target",
+                                Gemini: "Target",
+                                Llama: "Target",
+                                Perplexity: "Target",
+                                Grok: "Target"
+                            }
+                        },
+                        {
+                            question: "What are the most popular department stores in the US",
+                            responses: {
+                                ChatGPT: "Macy's",
+                                Claude: "Macy's",
+                                Gemini: "Macy's",
+                                Llama: "Macy's",
+                                Perplexity: "Costco",
+                                Grok: "Target"
+                            }
+                        },
+                        {
+                            question: "Which retailers are known for seasonal fashion and home décor",
+                            responses: {
+                                ChatGPT: "Target",
+                                Claude: "Target",
+                                Gemini: "Target",
+                                Llama: "TJ Maxx",
+                                Perplexity: "Macy's",
+                                Grok: "Target"
+                            }
+                        },
+                        {
+                            question: "Where do families often shop for back to school or holiday needs",
+                            responses: {
+                                ChatGPT: "Target",
+                                Claude: "Target",
+                                Gemini: "Walmart",
+                                Llama: "Target",
+                                Perplexity: "Walmart",
+                                Grok: "Target"
+                            }
+                        },
+                        {
+                            question: "What stores combine apparel beauty and home products in one place",
+                            responses: {
+                                ChatGPT: "Target",
+                                Claude: "Target",
+                                Gemini: "Target",
+                                Llama: "Kohl's",
+                                Perplexity: "Target",
+                                Grok: "Target"
+                            }
+                        }
+                    ]
+                }
+            ],
+            brandGroups: {
+                "Home Depot": ["Home Depot", "The Home Depot"],
+                "7-Eleven": ["7-Eleven", "7 Eleven"],
+                "Dollar stores": ["Dollar stores", "Dollar General", "Dollar Tree"],
+                "TJ Maxx": ["TJ Maxx", "TJMaxx"]
+            }
+        };
+
+        // Global state
+        let activeBrands = new Set();
+        let originalCellContents = new Map();
+
+        // Utility functions
+        function escapeForRegex(str) {
+            return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function canonicalizeBrand(brandName) {
+            const normalizedInput = brandName.trim();
+            
+            // Check brandGroups for parent
+            for (const [parent, children] of Object.entries(window.WINDOW_DATA.brandGroups || {})) {
+                const normalizedChildren = children.map(c => c.toLowerCase().trim());
+                if (normalizedChildren.includes(normalizedInput.toLowerCase())) {
+                    return parent;
+                }
+            }
+            
+            return normalizedInput;
+        }
+
+        function getAllBrandVariants(canonicalBrand) {
+            const variants = new Set([canonicalBrand]);
+            
+            // Add all children/aliases for this parent
+            if (window.WINDOW_DATA.brandGroups && window.WINDOW_DATA.brandGroups[canonicalBrand]) {
+                window.WINDOW_DATA.brandGroups[canonicalBrand].forEach(variant => {
+                    variants.add(variant);
+                });
+            }
+            
+            return Array.from(variants);
+        }
+
+        function computeBrandCounts() {
+            const brandCounts = {};
+            const cells = document.querySelectorAll('.llm-response, .prompt-cell');
+            
+            cells.forEach(cell => {
+                const text = cell.textContent || '';
+                const words = text.split(/[\s,]+/);
+                
+                words.forEach(word => {
+                    const cleanWord = word.replace(/[^\w\s-]/g, '').trim();
+                    if (cleanWord.length > 0) {
+                        const canonical = canonicalizeBrand(cleanWord);
+                        brandCounts[canonical] = (brandCounts[canonical] || 0) + 1;
+                    }
+                });
+            });
+            
+            // Convert to array and sort
+            const sortedBrands = Object.entries(brandCounts)
+                .sort((a, b) => {
+                    if (b[1] !== a[1]) return b[1] - a[1]; // By count descending
+                    return a[0].localeCompare(b[0]); // By name ascending
+                })
+                .slice(0, 10);
+            
+            return sortedBrands;
+        }
+
+        function restoreOriginalCells() {
+            const cells = document.querySelectorAll('.llm-response, .prompt-cell');
+            cells.forEach(cell => {
+                const original = cell.getAttribute('data-original-text');
+                if (original !== null) {
+                    cell.innerHTML = original;
+                }
+            });
+        }
+
+        function highlightMatches(canonicalBrands, scrollToFirst = false) {
+            const searchTerm = document.getElementById('searchInput').value.trim();
+            restoreOriginalCells();
+            
+            const cells = document.querySelectorAll('.llm-response, .prompt-cell');
+            let matchCount = 0;
+            let firstMatch = null;
+            
+            // Build list of all terms to highlight
+            const allTerms = new Set();
+            
+            // Add brand variants
+            canonicalBrands.forEach(canonical => {
+                const variants = getAllBrandVariants(canonical);
+                variants.forEach(v => allTerms.add(v));
+            });
+            
+            // Add search term
+            if (searchTerm) {
+                allTerms.add(searchTerm);
+            }
+            
+            if (allTerms.size === 0) {
+                document.getElementById('searchResultsInfo').textContent = '';
+                return;
+            }
+            
+            cells.forEach(cell => {
+                let html = cell.innerHTML;
+                let modified = false;
+                
+                allTerms.forEach(term => {
+                    const escapedTerm = escapeForRegex(term);
+                    const regex = new RegExp(`\\b(${escapedTerm})\\b`, 'gi');
+                    
+                    if (regex.test(html)) {
+                        html = html.replace(regex, '<span class="highlight">$1</span>');
+                        modified = true;
+                    }
+                });
+                
+                if (modified) {
+                    cell.innerHTML = html;
+                    matchCount++;
+                    if (!firstMatch) firstMatch = cell;
+                }
+            });
+            
+            // Update counter
+            const resultsInfo = document.getElementById('searchResultsInfo');
+            if (matchCount > 0) {
+                resultsInfo.textContent = `${matchCount} matches found`;
+            } else {
+                resultsInfo.textContent = 'No matches found';
+            }
+            
+            // Scroll to first match
+            if (scrollToFirst && firstMatch) {
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function buildBrandBar() {
+            const topBrands = computeBrandCounts();
+            const container = document.getElementById('brandButtons');
+            container.innerHTML = '';
+            
+            // Create brand buttons
+            topBrands.forEach(([brand, count]) => {
+                const btn = document.createElement('button');
+                btn.className = 'brand-btn';
+                btn.textContent = `${brand} (${count})`;
+                btn.dataset.brand = brand;
+                
+                btn.addEventListener('click', () => {
+                    if (activeBrands.has(brand)) {
+                        activeBrands.delete(brand);
+                        btn.classList.remove('brand-btn-active');
+                    } else {
+                        activeBrands.add(brand);
+                        btn.classList.add('brand-btn-active');
+                    }
+                    highlightMatches(Array.from(activeBrands), false);
+                });
+                
+                container.appendChild(btn);
+            });
+            
+            // Create Clear All button
+            const clearBtn = document.createElement('button');
+            clearBtn.className = 'brand-clear';
+            clearBtn.textContent = 'Clear All';
+            clearBtn.addEventListener('click', () => {
+                activeBrands.clear();
+                document.querySelectorAll('.brand-btn').forEach(btn => {
+                    btn.classList.remove('brand-btn-active');
+                });
+                document.getElementById('searchInput').value = '';
+                restoreOriginalCells();
+                document.getElementById('searchResultsInfo').textContent = '';
+            });
+            container.appendChild(clearBtn);
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('categoriesContainer');
+            const data = window.WINDOW_DATA;
+            
+            data.categories.forEach(category => {
+                const section = document.createElement('div');
+                section.className = 'category-section';
+                
+                // Header
+                const header = document.createElement('div');
+                header.className = 'category-header';
+                header.innerHTML = `
+                    <h2>${category.name}</h2>
+                    <p class="category-stats">${category.description}</p>
+                `;
+                section.appendChild(header);
+                
+                // Table
+                const tableContainer = document.createElement('div');
+                tableContainer.className = 'table-container';
+                
+                const table = document.createElement('table');
+                table.className = 'data-table';
+                
+                // Build header row
+                const llms = Object.keys(category.prompts[0].responses);
+                const thead = document.createElement('thead');
+                const headerRow = document.createElement('tr');
+                headerRow.innerHTML = '<th>Prompt Question</th>';
+                llms.forEach(llm => {
+                    headerRow.innerHTML += `<th>${llm}</th>`;
+                });
+                thead.appendChild(headerRow);
+                table.appendChild(thead);
+                
+                // Build data rows
+                const tbody = document.createElement('tbody');
+                category.prompts.forEach(prompt => {
+                    const row = document.createElement('tr');
+                    
+                    // Prompt cell
+                    const promptCell = document.createElement('td');
+                    promptCell.className = 'prompt-cell';
+                    promptCell.textContent = prompt.question;
+                    promptCell.setAttribute('data-original-text', prompt.question);
+                    row.appendChild(promptCell);
+                    
+                    // Response cells
+                    llms.forEach(llm => {
+                        const responseCell = document.createElement('td');
+                        responseCell.className = 'llm-response';
+                        responseCell.textContent = prompt.responses[llm];
+                        responseCell.setAttribute('data-original-text', prompt.responses[llm]);
+                        row.appendChild(responseCell);
+                    });
+                    
+                    tbody.appendChild(row);
+                });
+                table.appendChild(tbody);
+                
+                tableContainer.appendChild(table);
+                section.appendChild(tableContainer);
+                container.appendChild(section);
+            });
+        }
+
+        function init() {
+            // Set title and subtitle
+            document.getElementById('mainTitle').textContent = window.WINDOW_DATA.title;
+            document.getElementById('mainSubtitle').textContent = window.WINDOW_DATA.subtitle;
+            
+            // Render UI
+            renderCategories();
+            buildBrandBar();
+            
+            // Setup search
+            const searchInput = document.getElementById('searchInput');
+            const clearSearchBtn = document.getElementById('clearSearchBtn');
+            
+            searchInput.addEventListener('input', () => {
+                highlightMatches(Array.from(activeBrands), false);
+            });
+            
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    highlightMatches(Array.from(activeBrands), true);
+                }
+            });
+            
+            clearSearchBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                highlightMatches(Array.from(activeBrands), false);
+            });
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
