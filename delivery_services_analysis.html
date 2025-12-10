@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>US Delivery Services Brand Analysis - BrandRank.AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0a0e1a;
+            color: #e0e6ed;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 40px 60px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #1a2332;
+        }
+
+        .main-title {
+            font-size: 2.8em;
+            font-weight: 300;
+            color: #00d4ff;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .main-subtitle {
+            font-size: 1.2em;
+            color: #8b95a5;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+
+        .powered-by {
+            font-size: 0.95em;
+            color: #00d4ff;
+            margin-top: 10px;
+            font-weight: 400;
+        }
+
+        .search-container {
+            background: #141b2b;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 1px solid #1a2332;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 1em;
+            background: #0a0e1a;
+            border: 2px solid #2a3546;
+            border-radius: 6px;
+            color: #e0e6ed;
+            font-family: 'Segoe UI', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #00d4ff;
+        }
+
+        .search-input::placeholder {
+            color: #6b7585;
+        }
+
+        .search-controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            align-items: center;
+        }
+
+        .clear-search {
+            padding: 10px 24px;
+            background: #1a2332;
+            color: #00d4ff;
+            border: 1px solid #00d4ff;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-family: 'Segoe UI', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .clear-search:hover {
+            background: #00d4ff;
+            color: #0a0e1a;
+        }
+
+        .search-results-info {
+            color: #8b95a5;
+            font-size: 0.95em;
+        }
+
+        .brand-bar {
+            background: #141b2b;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 1px solid #1a2332;
+        }
+
+        .brand-bar-title {
+            font-size: 1.1em;
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+
+        .brand-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .brand-btn {
+            padding: 10px 18px;
+            background: #1a2332;
+            color: #e0e6ed;
+            border: 1px solid #2a3546;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-family: 'Segoe UI', sans-serif;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .brand-btn:hover {
+            background: #2a3546;
+            border-color: #00d4ff;
+        }
+
+        .brand-btn-active {
+            background: #00d4ff;
+            color: #0a0e1a;
+            border-color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .brand-clear {
+            padding: 10px 18px;
+            background: #4a1a1a;
+            color: #ff6b6b;
+            border: 1px solid #6b2a2a;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-family: 'Segoe UI', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .brand-clear:hover {
+            background: #6b2a2a;
+            border-color: #ff6b6b;
+        }
+
+        .category-section {
+            background: #141b2b;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            border: 1px solid #1a2332;
+            overflow: hidden;
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, #1a2535 0%, #141b2b 100%);
+            padding: 20px 30px;
+            border-bottom: 2px solid #00d4ff;
+        }
+
+        .category-header h2 {
+            font-size: 1.6em;
+            color: #00d4ff;
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+
+        .category-stats {
+            font-size: 0.95em;
+            color: #8b95a5;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            padding: 30px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background: #1a2332;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #00d4ff;
+            border-bottom: 2px solid #00d4ff;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table td {
+            padding: 18px 15px;
+            border-bottom: 1px solid #1a2332;
+            font-size: 0.95em;
+        }
+
+        .data-table tr:hover {
+            background: #1a2332;
+        }
+
+        .data-table tr:nth-child(even) {
+            background: rgba(26, 35, 50, 0.3);
+        }
+
+        .data-table tr:nth-child(even):hover {
+            background: #1a2332;
+        }
+
+        .prompt-cell {
+            background: #1a2535;
+            font-weight: 600;
+            color: #ffffff;
+            border-left: 4px solid #00d4ff;
+            min-width: 300px;
+        }
+
+        .llm-response {
+            color: #c5d1e0;
+        }
+
+        .highlight {
+            background: #00d4ff;
+            color: #0a0e1a;
+            font-weight: 600;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .analysis-section {
+            background: #141b2b;
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid #1a2332;
+        }
+
+        .analysis-title {
+            font-size: 2em;
+            color: #00d4ff;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .insight-card {
+            background: #1a2332;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .insight-card h3 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+
+        .insight-card p {
+            color: #c5d1e0;
+            line-height: 1.7;
+            font-size: 0.95em;
+        }
+
+        .about-section {
+            background: #141b2b;
+            border-radius: 8px;
+            padding: 40px;
+            border: 1px solid #1a2332;
+        }
+
+        .about-title {
+            font-size: 2em;
+            color: #00d4ff;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        .about-section p {
+            color: #c5d1e0;
+            line-height: 1.8;
+            font-size: 1.05em;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 30px 40px;
+            }
+
+            .main-title {
+                font-size: 2.2em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .main-title {
+                font-size: 1.8em;
+            }
+
+            .table-container {
+                padding: 15px;
+            }
+
+            .prompt-cell {
+                min-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">US Delivery Services Brand Analysis</h1>
+            <p class="main-subtitle">AI Answer Engine Competitive Intelligence Across 6 Major LLMs</p>
+            <p class="powered-by">Powered by BrandRank.AI</p>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search for brands or keywords across all responses..." id="searchInput">
+            <div class="search-controls">
+                <button class="clear-search" id="clearSearchBtn">Clear Search</button>
+                <span class="search-results-info" id="searchResults"></span>
+            </div>
+        </div>
+
+        <div class="brand-bar" id="brandBar"></div>
+
+        <div id="categoriesContainer"></div>
+
+        <div class="analysis-section">
+            <h2 class="analysis-title">Analysis & Insights</h2>
+            <div class="insights-grid" id="insightsContainer"></div>
+        </div>
+
+        <div class="about-section">
+            <h2 class="about-title">About BrandRank</h2>
+            <p>BrandRank is the intelligence layer for the AI search era.</p>
+            <p>We help brands measure, protect, and grow trust by monitoring how they appear across major AI Answer Engines.</p>
+            <p>By combining advanced AI with expert insight, BrandRank identifies vulnerabilities and opportunities, pinpoints the factors driving consumer choice, and reveals pathways to strengthen brand equity and loyalty.</p>
+            <p>Our mission is to ensure that when consumers ask questions in AI-powered platforms, your brand is represented clearly, accurately, and with authority.</p>
+        </div>
+    </div>
+
+    <script>
+        window.WINDOW_DATA = {
+            title: "US Delivery Services Brand Analysis",
+            subtitle: "AI Answer Engine Competitive Intelligence Across 6 Major LLMs",
+            llms: ["ChatGPT", "Claude", "Gemini", "Llama", "Perplexity", "Grok"],
+            brandGroups: {
+                "DoorDash": ["DoorDash", "DashPass"],
+                "Uber": ["Uber Eats", "Postmates", "Uber One"],
+                "Walmart": ["Walmart+", "Walmart Grocery", "Walmart Spark"],
+                "Instacart": ["Instacart", "Instacart Express"]
+            },
+            categories: [
+                {
+                    name: "General Delivery Apps",
+                    prompts: [
+                        {
+                            question: "What are the best delivery services in the United States right now",
+                            responses: {
+                                "ChatGPT": "DoorDash",
+                                "Claude": "DoorDash",
+                                "Gemini": "DoorDash",
+                                "Llama": "Uber Eats",
+                                "Perplexity": "DoorDash",
+                                "Grok": "DoorDash"
+                            }
+                        },
+                        {
+                            question: "Which on demand delivery apps are most popular for food and groceries",
+                            responses: {
+                                "ChatGPT": "DoorDash",
+                                "Claude": "DoorDash",
+                                "Gemini": "DoorDash",
+                                "Llama": "DoorDash",
+                                "Perplexity": "DoorDash and Uber Eats (food), Instacart (grocery)",
+                                "Grok": "DoorDash"
+                            }
+                        },
+                        {
+                            question: "What are the top delivery apps for both restaurant takeout and grocery orders",
+                            responses: {
+                                "ChatGPT": "DoorDash",
+                                "Claude": "Uber Eats",
+                                "Gemini": "DoorDash",
+                                "Llama": "Instacart",
+                                "Perplexity": "DoorDash and Instacart",
+                                "Grok": "DoorDash"
+                            }
+                        },
+                        {
+                            question: "Which delivery apps are best for people without a car who rely on delivery regularly",
+                            responses: {
+                                "ChatGPT": "DoorDash",
+                                "Claude": "Instacart",
+                                "Gemini": "Instacart",
+                                "Llama": "Shipt",
+                                "Perplexity": "DoorDash, Uber Eats, Instacart",
+                                "Grok": "DoorDash"
+                            }
+                        },
+                        {
+                            question: "What delivery services are considered the most reliable overall",
+                            responses: {
+                                "ChatGPT": "DoorDash",
+                                "Claude": "Amazon Fresh",
+                                "Gemini": "Uber Eats",
+                                "Llama": "Instacart",
+                                "Perplexity": "DoorDash",
+                                "Grok": "DoorDash"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Grocery Delivery and Weekly Shopping",
+                    prompts: [
+                        {
+                            question: "What is the best app for same day grocery delivery from local supermarkets",
+                            responses: {
+                                "ChatGPT": "Instacart",
+                                "Claude": "Instacart",
+                                "Gemini": "Instacart",
+                                "Llama": "Instacart",
+                                "Perplexity": "Instacart",
+                                "Grok": "Instacart"
+                            }
+                        },
+                        {
+                            question: "Which grocery delivery services let you shop from multiple stores in one order",
+                            responses: {
+                                "ChatGPT": "Instacart",
+                                "Claude": "Instacart",
+                                "Gemini": "Instacart",
+                                "Llama": "Instacart",
+                                "Perplexity": "Instacart",
+                                "Grok": "Instacart"
+                            }
+                        },
+                        {
+                            question: "What grocery delivery apps are best for families doing large weekly grocery runs",
+                            responses: {
+                                "ChatGPT": "Instacart",
+                                "Claude": "Instacart",
+                                "Gemini": "Walmart+",
+                                "Llama": "Shipt",
+                                "Perplexity": "Instacart and Shipt",
+                                "Grok": "Instacart"
+                            }
+                        },
+                        {
+                            question: "Which grocery delivery services handle substitutions and out of stock items the best",
+                            responses: {
+                                "ChatGPT": "Instacart",
+                                "Claude": "Instacart",
+                                "Gemini": "Shipt",
+                                "Llama": "Instacart",
+                                "Perplexity": "Instacart",
+                                "Grok": "Instacart"
+                            }
+                        },
+                        {
+                            question: "What grocery delivery services work best for suburban households",
+                            responses: {
+                                "ChatGPT": "Instacart",
+                                "Claude": "Instacart",
+                                "Gemini": "Instacart",
+                                "Llama": "Shipt",
+                                "Perplexity": "Walmart Spark and Instacart",
+                                "Grok": "Shipt"
+                            }
+                        },
+                        {
+                            question: "Which grocery delivery apps offer the best discounts or savings on delivery fees",
+                            responses: {
+                                "ChatGPT": "Walmart+",
+                                "Claude": "Walmart+",
+                                "Gemini": "Walmart+",
+                                "Llama": "DoorDash",
+                                "Perplexity": "DoorDash DashPass and Instacart Express",
+                                "Grok": "Instacart"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Restaurant, Convenience, and Late Night Delivery",
+                    prompts: [
+                        {
+                            question: "What is the best app for late night food delivery in major US cities",
+                            responses: {
+                                "ChatGPT": "DoorDash",
+                                "Claude": "DoorDash",
+                                "Gemini": "DoorDash",
+                                "Llama": "Uber Eats",
+                                "Perplexity": "DoorDash",
+                                "Grok": "DoorDash"
+                            }
+                        },
+                        {
+                            question: "Which delivery apps are fastest for last minute snacks and convenience items",
+                            responses: {
+                                "ChatGPT": "Uber Eats",
+                                "Claude": "DoorDash",
+                                "Gemini": "Gopuff",
+                                "Llama": "DoorDash",
+                                "Perplexity": "DoorDash and Postmates",
+                                "Grok": "Uber Eats"
+                            }
+                        },
+                        {
+                            question: "What are the most popular food delivery platforms for local restaurants",
+                            responses: {
+                                "ChatGPT": "DoorDash",
+                                "Claude": "DoorDash",
+                                "Gemini": "DoorDash",
+                                "Llama": "Grubhub",
+                                "Perplexity": "DoorDash and Uber Eats",
+                                "Grok": "DoorDash"
+                            }
+                        },
+                        {
+                            question: "Which delivery apps are best for alcohol, beverages, and party supplies",
+                            responses: {
+                                "ChatGPT": "Drizly",
+                                "Claude": "Drizly",
+                                "Gemini": "Uber Eats",
+                                "Llama": "Drizly",
+                                "Perplexity": "DoorDash and Postmates",
+                                "Grok": "DoorDash"
+                            }
+                        },
+                        {
+                            question: "What delivery services are best for quick convenience store orders",
+                            responses: {
+                                "ChatGPT": "DoorDash",
+                                "Claude": "Gopuff",
+                                "Gemini": "DoorDash",
+                                "Llama": "DoorDash",
+                                "Perplexity": "DoorDash and Postmates",
+                                "Grok": "DoorDash"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Pricing, Fees, and Value for Users",
+                    prompts: [
+                        {
+                            question: "Which delivery apps have the lowest fees for food and grocery delivery",
+                            responses: {
+                                "ChatGPT": "Walmart Grocery",
+                                "Claude": "Grubhub",
+                                "Gemini": "Grubhub",
+                                "Llama": "Instacart",
+                                "Perplexity": "DoorDash DashPass and Instacart Express",
+                                "Grok": "DoorDash"
+                            }
+                        },
+                        {
+                            question: "What delivery services offer the best value for students and young adults",
+                            responses: {
+                                "ChatGPT": "Uber One (Uber Eats)",
+                                "Claude": "DoorDash",
+                                "Gemini": "Uber Eats",
+                                "Llama": "Uber Eats",
+                                "Perplexity": "Uber Eats and DoorDash",
+                                "Grok": "DoorDash"
+                            }
+                        },
+                        {
+                            question: "Which delivery apps are best for frequent users with subscription or pass programs",
+                            responses: {
+                                "ChatGPT": "DashPass (DoorDash)",
+                                "Claude": "DoorDash DashPass",
+                                "Gemini": "DoorDash",
+                                "Llama": "DoorDash",
+                                "Perplexity": "DoorDash DashPass and Instacart Express",
+                                "Grok": "DoorDash"
+                            }
+                        },
+                        {
+                            question: "What delivery services are most transparent about pricing, fees, and tipping",
+                            responses: {
+                                "ChatGPT": "Domino's",
+                                "Claude": "Instacart",
+                                "Gemini": "Uber Eats",
+                                "Llama": "Instacart",
+                                "Perplexity": "Grubhub and Uber Eats",
+                                "Grok": "Uber Eats"
+                            }
+                        },
+                        {
+                            question: "Which delivery apps offer the best promotions for first time users",
+                            responses: {
+                                "ChatGPT": "Uber Eats",
+                                "Claude": "Uber Eats",
+                                "Gemini": "DoorDash",
+                                "Llama": "Uber Eats",
+                                "Perplexity": "DoorDash and Uber Eats",
+                                "Grok": "DoorDash"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Delivery Speed, Coverage, and Reliability",
+                    prompts: [
+                        {
+                            question: "Which delivery services are known for the fastest delivery times",
+                            responses: {
+                                "ChatGPT": "DoorDash",
+                                "Claude": "Gopuff",
+                                "Gemini": "Gopuff",
+                                "Llama": "DoorDash",
+                                "Perplexity": "DoorDash",
+                                "Grok": "Uber Eats"
+                            }
+                        },
+                        {
+                            question: "What delivery apps have the broadest coverage across US cities and suburbs",
+                            responses: {
+                                "ChatGPT": "DoorDash",
+                                "Claude": "DoorDash",
+                                "Gemini": "DoorDash",
+                                "Llama": "Uber Eats",
+                                "Perplexity": "DoorDash and Uber Eats",
+                                "Grok": "DoorDash"
+                            }
+                        },
+                        {
+                            question: "Which delivery services perform best during peak hours or bad weather",
+                            responses: {
+                                "ChatGPT": "DoorDash",
+                                "Claude": "Amazon Fresh",
+                                "Gemini": "Uber Eats",
+                                "Llama": "Instacart",
+                                "Perplexity": "DoorDash",
+                                "Grok": "DoorDash"
+                            }
+                        },
+                        {
+                            question: "What delivery apps provide the most accurate real time order tracking",
+                            responses: {
+                                "ChatGPT": "Uber Eats",
+                                "Claude": "Uber Eats",
+                                "Gemini": "Uber Eats",
+                                "Llama": "DoorDash",
+                                "Perplexity": "DoorDash and Uber Eats",
+                                "Grok": "DoorDash"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Trust, Safety, and User Experience",
+                    prompts: [
+                        {
+                            question: "Which delivery apps have the best customer support for order issues",
+                            responses: {
+                                "ChatGPT": "DoorDash",
+                                "Claude": "Amazon Fresh",
+                                "Gemini": "Shipt",
+                                "Llama": "Instacart",
+                                "Perplexity": "DoorDash and Instacart",
+                                "Grok": "DoorDash"
+                            }
+                        },
+                        {
+                            question: "What food and grocery delivery services are considered the most trustworthy",
+                            responses: {
+                                "ChatGPT": "Amazon Fresh",
+                                "Claude": "Amazon Fresh",
+                                "Gemini": "Instacart",
+                                "Llama": "Shipt",
+                                "Perplexity": "DoorDash, Instacart, Uber Eats",
+                                "Grok": "DoorDash"
+                            }
+                        },
+                        {
+                            question: "Which delivery platforms have the highest rated drivers or shoppers",
+                            responses: {
+                                "ChatGPT": "Instacart",
+                                "Claude": "Instacart",
+                                "Gemini": "Shipt",
+                                "Llama": "Uber Eats",
+                                "Perplexity": "Instacart and Grubhub",
+                                "Grok": "Uber Eats"
+                            }
+                        },
+                        {
+                            question: "What delivery apps are easiest to use for scheduling future deliveries",
+                            responses: {
+                                "ChatGPT": "Instacart",
+                                "Claude": "Instacart",
+                                "Gemini": "Instacart",
+                                "Llama": "Instacart",
+                                "Perplexity": "Instacart and DoorDash",
+                                "Grok": "Instacart"
+                            }
+                        },
+                        {
+                            question: "Which delivery services offer the best accessibility features for older adults",
+                            responses: {
+                                "ChatGPT": "Walmart Grocery",
+                                "Claude": "Instacart",
+                                "Gemini": "Instacart",
+                                "Llama": "Shipt",
+                                "Perplexity": "DoorDash",
+                                "Grok": "Uber Eats"
+                            }
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // State management
+        let activeBrands = new Set();
+        let searchTerm = '';
+
+        // Utility functions
+        function escapeForRegex(str) {
+            return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function canonicalizeBrand(brandName) {
+            const data = window.WINDOW_DATA;
+            
+            // Check if it's a parent brand
+            if (data.brandGroups[brandName]) {
+                return brandName;
+            }
+            
+            // Check if it's a child brand
+            for (const [parent, children] of Object.entries(data.brandGroups)) {
+                if (children.includes(brandName)) {
+                    return parent;
+                }
+            }
+            
+            return brandName;
+        }
+
+        function getAllBrandVariants(canonicalBrand) {
+            const data = window.WINDOW_DATA;
+            const variants = [canonicalBrand];
+            
+            if (data.brandGroups[canonicalBrand]) {
+                variants.push(...data.brandGroups[canonicalBrand]);
+            }
+            
+            return variants;
+        }
+
+        function restoreOriginalCells() {
+            const cells = document.querySelectorAll('[data-original-text]');
+            cells.forEach(cell => {
+                cell.innerHTML = cell.getAttribute('data-original-text');
+            });
+        }
+
+        function computeBrandCounts() {
+            const brandCounts = {};
+            const data = window.WINDOW_DATA;
+            
+            // Scan all response cells
+            const cells = document.querySelectorAll('.llm-response, .prompt-cell');
+            cells.forEach(cell => {
+                const text = cell.textContent;
+                
+                // Find all brand mentions
+                for (const [parent, children] of Object.entries(data.brandGroups)) {
+                    const allVariants = [parent, ...children];
+                    allVariants.forEach(variant => {
+                        const regex = new RegExp('\\b' + escapeForRegex(variant) + '\\b', 'gi');
+                        const matches = text.match(regex);
+                        if (matches) {
+                            brandCounts[parent] = (brandCounts[parent] || 0) + matches.length;
+                        }
+                    });
+                }
+                
+                // Check for standalone brands not in groups
+                const standaloneRegex = /\b(Shipt|Amazon Fresh|Gopuff|Grubhub|Drizly|Domino's)\b/gi;
+                let match;
+                while ((match = standaloneRegex.exec(text)) !== null) {
+                    const brand = match[1];
+                    const canonical = canonicalizeBrand(brand);
+                    brandCounts[canonical] = (brandCounts[canonical] || 0) + 1;
+                }
+            });
+            
+            // Sort by count descending, then by name ascending
+            const sortedBrands = Object.entries(brandCounts)
+                .sort((a, b) => {
+                    if (b[1] !== a[1]) return b[1] - a[1];
+                    return a[0].localeCompare(b[0]);
+                })
+                .slice(0, 10);
+            
+            return sortedBrands;
+        }
+
+        function highlightMatches(brands, scrollToFirst = false) {
+            restoreOriginalCells();
+            
+            const termsToHighlight = [...brands];
+            if (searchTerm) {
+                termsToHighlight.push(searchTerm);
+            }
+            
+            if (termsToHighlight.length === 0) {
+                updateSearchCounter(0);
+                return;
+            }
+            
+            let totalMatches = 0;
+            let firstMatch = null;
+            
+            const cells = document.querySelectorAll('.llm-response, .prompt-cell');
+            cells.forEach(cell => {
+                let html = cell.getAttribute('data-original-text');
+                
+                termsToHighlight.forEach(term => {
+                    const variants = brands.includes(term) ? getAllBrandVariants(term) : [term];
+                    
+                    variants.forEach(variant => {
+                        const regex = new RegExp('\\b(' + escapeForRegex(variant) + ')\\b', 'gi');
+                        const matches = html.match(regex);
+                        if (matches) {
+                            totalMatches += matches.length;
+                        }
+                        html = html.replace(regex, '<span class="highlight">$1</span>');
+                    });
+                });
+                
+                cell.innerHTML = html;
+                
+                if (!firstMatch && cell.querySelector('.highlight')) {
+                    firstMatch = cell;
+                }
+            });
+            
+            updateSearchCounter(totalMatches);
+            
+            if (scrollToFirst && firstMatch) {
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function updateSearchCounter(count) {
+            const counter = document.getElementById('searchResults');
+            if (count > 0) {
+                counter.textContent = `${count} match${count !== 1 ? 'es' : ''} found`;
+            } else if (searchTerm || activeBrands.size > 0) {
+                counter.textContent = 'No matches found';
+            } else {
+                counter.textContent = '';
+            }
+        }
+
+        function buildBrandBar() {
+            const topBrands = computeBrandCounts();
+            const brandBar = document.getElementById('brandBar');
+            
+            if (topBrands.length === 0) {
+                brandBar.style.display = 'none';
+                return;
+            }
+            
+            let html = '<div class="brand-bar-title">Top Brands by Mentions</div>';
+            html += '<div class="brand-buttons">';
+            
+            topBrands.forEach(([brand, count]) => {
+                html += `<button class="brand-btn" data-brand="${brand}">${brand} (${count})</button>`;
+            });
+            
+            html += '<button class="brand-clear" id="clearBrandsBtn">Clear All</button>';
+            html += '</div>';
+            
+            brandBar.innerHTML = html;
+            
+            // Add event listeners
+            document.querySelectorAll('.brand-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const brand = this.getAttribute('data-brand');
+                    
+                    if (activeBrands.has(brand)) {
+                        activeBrands.delete(brand);
+                        this.classList.remove('brand-btn-active');
+                    } else {
+                        activeBrands.add(brand);
+                        this.classList.add('brand-btn-active');
+                    }
+                    
+                    highlightMatches(Array.from(activeBrands), true);
+                });
+            });
+            
+            document.getElementById('clearBrandsBtn').addEventListener('click', function() {
+                activeBrands.clear();
+                document.querySelectorAll('.brand-btn').forEach(btn => {
+                    btn.classList.remove('brand-btn-active');
+                });
+                highlightMatches([], false);
+            });
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('categoriesContainer');
+            const data = window.WINDOW_DATA;
+            
+            data.categories.forEach(category => {
+                const section = document.createElement('div');
+                section.className = 'category-section';
+                
+                let html = `
+                    <div class="category-header">
+                        <h2>${category.name}</h2>
+                        <p class="category-stats">${category.prompts.length} prompts analyzed across ${data.llms.length} AI models</p>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Prompt Question</th>
+                `;
+                
+                data.llms.forEach(llm => {
+                    html += `<th>${llm}</th>`;
+                });
+                
+                html += `
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+                
+                category.prompts.forEach(prompt => {
+                    html += '<tr>';
+                    html += `<td class="prompt-cell" data-original-text="${escapeHtml(prompt.question)}">${escapeHtml(prompt.question)}</td>`;
+                    
+                    data.llms.forEach(llm => {
+                        const response = prompt.responses[llm] || 'N/A';
+                        html += `<td class="llm-response" data-original-text="${escapeHtml(response)}">${escapeHtml(response)}</td>`;
+                    });
+                    
+                    html += '</tr>';
+                });
+                
+                html += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+                
+                section.innerHTML = html;
+                container.appendChild(section);
+            });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function generateInsights() {
+            const container = document.getElementById('insightsContainer');
+            
+            const insights = [
+                {
+                    title: "Market Dominance",
+                    content: "DoorDash emerges as the clear leader with overwhelming consensus across models, particularly for restaurant delivery and general use cases. The platform demonstrates exceptional strength in late-night delivery, broad coverage, and reliability metrics."
+                },
+                {
+                    title: "Grocery Segment Leadership",
+                    content: "Instacart shows near-unanimous agreement as the top choice for grocery delivery across all LLMs. The platform's dominance in same-day delivery, multi-store shopping, substitution handling, and future delivery scheduling indicates strong brand equity in the grocery vertical."
+                },
+                {
+                    title: "Consensus Levels",
+                    content: "High agreement (83%+): Instacart for grocery delivery, DoorDash for restaurant delivery. Medium agreement (50-70%): Uber Eats for specific use cases, Walmart+ for value. Low agreement (<50%): Customer support, trustworthiness, and accessibility features show significant model divergence."
+                },
+                {
+                    title: "Emerging Competition",
+                    content: "Uber Eats shows strength in real-time tracking, student value propositions, and convenience items. Walmart+ gains recognition for discounts and accessibility. Gopuff demonstrates authority in speed-focused convenience delivery, though with limited consensus."
+                },
+                {
+                    title: "Brand Vulnerabilities",
+                    content: "Shipt shows moderate but inconsistent mentions, primarily in grocery contexts. Amazon Fresh appears sporadically in trust and reliability discussions but lacks strong positioning. Grubhub mentions are limited to low-fee scenarios, suggesting weakened market position."
+                },
+                {
+                    title: "Strategic Insights",
+                    content: "The delivery market shows clear segmentation: DoorDash owns restaurants, Instacart dominates groceries, and Uber Eats maintains strong secondary positioning. Subscription services (DashPass, Instacart Express) receive consistent recognition, indicating the importance of loyalty programs in brand perception."
+                }
+            ];
+            
+            insights.forEach(insight => {
+                const card = document.createElement('div');
+                card.className = 'insight-card';
+                card.innerHTML = `
+                    <h3>${insight.title}</h3>
+                    <p>${insight.content}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('clearSearchBtn');
+            
+            searchInput.addEventListener('input', function() {
+                searchTerm = this.value.trim();
+                highlightMatches(Array.from(activeBrands), false);
+            });
+            
+            clearBtn.addEventListener('click', function() {
+                searchInput.value = '';
+                searchTerm = '';
+                highlightMatches(Array.from(activeBrands), false);
+            });
+        }
+
+        // Initialize
+        function init() {
+            renderCategories();
+            buildBrandBar();
+            generateInsights();
+            setupSearch();
+        }
+
+        // Run on page load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
