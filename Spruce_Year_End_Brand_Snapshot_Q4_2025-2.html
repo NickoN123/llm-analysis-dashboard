@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrandRank Year-End Brand Snapshot - Spruce</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica', Arial, sans-serif;
+            color: #374151;
+            background: white;
+            line-height: 1.5;
+            font-size: 10pt;
+        }
+
+        .page {
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.75in;
+            background: white;
+            min-height: 11in;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #1a3a5c;
+            margin-bottom: 24px;
+        }
+
+        .header-logo {
+            font-weight: bold;
+            color: #1a3a5c;
+            font-size: 11pt;
+        }
+
+        .brand-logo {
+            color: #6b7280;
+            font-style: italic;
+            font-size: 9pt;
+        }
+
+        .report-title {
+            font-size: 22pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+        }
+
+        .report-subtitle {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            margin-bottom: 20px;
+        }
+
+        .headline {
+            font-size: 13pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        .callout-box {
+            background: #f8f9fa;
+            border-left: 4px solid #1a3a5c;
+            padding: 16px 20px;
+            margin-bottom: 18px;
+        }
+
+        .callout-box.amber {
+            border-left-color: #d97706;
+        }
+
+        .callout-box.alert {
+            background: #fef2f2;
+            border-left-color: #dc2626;
+        }
+
+        .callout-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #1a3a5c;
+        }
+
+        .callout-text {
+            font-size: 10pt;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin-bottom: 16px;
+        }
+
+        .section-header {
+            font-size: 11pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            margin-bottom: 10px;
+        }
+
+        .subsection-header {
+            font-weight: bold;
+            color: #374151;
+            margin-top: 10px;
+            margin-bottom: 6px;
+        }
+
+        .score-display {
+            display: inline;
+            font-weight: bold;
+            color: #1a3a5c;
+            font-size: 11pt;
+        }
+
+        .engine-breakdown {
+            background: linear-gradient(135deg, #f1f5f9 0%, #f8f9fa 100%);
+            padding: 14px 20px;
+            margin: 12px 0;
+            border-radius: 4px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .engine-row {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 8px;
+            font-size: 9pt;
+            color: #6b7280;
+            font-weight: 600;
+        }
+
+        .engine-scores {
+            display: flex;
+            justify-content: space-around;
+            font-weight: bold;
+            font-size: 14pt;
+            color: #1a3a5c;
+        }
+
+        .score-boxes {
+            display: flex;
+            gap: 12px;
+            margin: 12px 0;
+        }
+
+        .score-box {
+            flex: 1;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            padding: 16px 12px;
+            text-align: center;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
+        }
+
+        .score-box-title {
+            font-size: 9pt;
+            font-weight: bold;
+            color: #6b7280;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .score-box-value {
+            font-size: 32pt;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .score-box-value.low {
+            color: #dc2626;
+        }
+
+        .score-box-value.medium {
+            color: #d97706;
+        }
+
+        .score-box-value.high {
+            color: #059669;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 9pt;
+        }
+
+        th {
+            background: linear-gradient(135deg, #1a3a5c 0%, #2d5a82 100%);
+            color: white;
+            padding: 8px 10px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            font-size: 8pt;
+        }
+
+        td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: top;
+        }
+
+        tr:hover {
+            background-color: #f9fafb;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .swot-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 12px 0;
+        }
+
+        .swot-cell {
+            background: #ffffff;
+            padding: 14px;
+            border-radius: 4px;
+            border-left: 4px solid;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .swot-cell.strength {
+            border-left-color: #0d9488;
+        }
+
+        .swot-cell.weakness {
+            border-left-color: #dc2626;
+        }
+
+        .swot-cell.opportunity {
+            border-left-color: #2563eb;
+        }
+
+        .swot-cell.threat {
+            border-left-color: #d97706;
+        }
+
+        .swot-cell-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 10pt;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .swot-cell.strength .swot-cell-title {
+            color: #0d9488;
+        }
+
+        .swot-cell.weakness .swot-cell-title {
+            color: #dc2626;
+        }
+
+        .swot-cell.opportunity .swot-cell-title {
+            color: #2563eb;
+        }
+
+        .swot-cell.threat .swot-cell-title {
+            color: #d97706;
+        }
+
+        .divider {
+            border-top: 1px solid #1a3a5c;
+            margin: 20px 0;
+        }
+
+        .bullet-list {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .bullet-list li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 16px;
+            border-top: 1px solid #d1d5db;
+            font-size: 8pt;
+            color: #6b7280;
+            text-align: right;
+        }
+
+        .green { color: #0d9488; }
+        .amber { color: #d97706; }
+        .red { color: #dc2626; }
+
+        .caption {
+            font-size: 9pt;
+            font-style: italic;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        p {
+            margin-bottom: 8px;
+        }
+
+        .compact {
+            margin-bottom: 4px;
+        }
+
+        .page-break {
+            page-break-before: always;
+        }
+
+        .addendum-title {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            margin-bottom: 16px;
+            margin-top: 30px;
+        }
+
+        .term {
+            margin-bottom: 12px;
+        }
+
+        .term-title {
+            font-weight: bold;
+            color: #1a3a5c;
+        }
+
+        .dashboard-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 9pt;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+            margin: 10px 0;
+        }
+
+        .dashboard-button:hover {
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+            box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .button-container {
+            text-align: right;
+            margin: 14px 0;
+        }
+
+        @media print {
+            .page {
+                padding: 0.5in;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-logo">BrandRank.AI</div>
+            <div class="brand-logo">SPRUCE BY P&G VENTURES</div>
+        </div>
+
+        <!-- Title -->
+        <div class="report-title">YEAR-END BRAND SNAPSHOT</div>
+        <div class="report-subtitle">Spruce: Q4 2025</div>
+
+        <!-- Headline -->
+        <div class="headline">Spruce Wins on Safety and Sustainability But Disappears When Consumers Ask AI for Natural Weed Killer Advice</div>
+
+        <!-- At a Glance -->
+        <div class="callout-box">
+            <div class="callout-title">At a Glance</div>
+            <div class="callout-text">
+                Spruce excels in direct brand comparisons, scoring 7.0 when explicitly named alongside Ortho, Roundup, or Sunday. But when shoppers ask AI for natural weed killer recommendations without mentioning Spruce, the brand vanishes—scoring just 4.8 in visibility. The gap exposes a critical vulnerability: exceptional safety credentials (8.8) and sustainability positioning (8.7) but invisible discovery means consumers never consider the product. The unlock: technical documentation and structured data that captures "pet-safe" and "natural alternative" queries before Sunday and Ortho do.
+                <br><br>
+                <em>All data is sourced from the BrandRank reporting dashboard and reviewed by an analyst.</em>
+            </div>
+        </div>
+
+        <!-- Section 1: Brand Health -->
+        <div class="section">
+            <div class="section-header">1. Brand Health & Trust Score: <span class="score-display">7.6/10 →</span></div>
+            <p>Spruce maintains exceptional consumer trust in safety (8.8) and sustainability (8.7), backed by P&G Ventures, Ohio State University partnership, and Good Housekeeping Seal validation. However, the brand faces emerging vulnerabilities in product performance perception (6.5) and price-to-value positioning (6.2) that undermine consideration among value-conscious and efficacy-seeking shoppers. Consumers trust Spruce's safety promise but question its contact-mode limitations versus competitors' systemic herbicides.</p>
+        </div>
+
+        <!-- Section 2: AI Visibility -->
+        <div class="section">
+            <div class="section-header">2. AI Visibility: <span class="score-display">4.8/10 →</span></div>
+            <p>Spruce appears in less than 50% of AI recommendations when consumers ask weed control questions without naming the brand.</p>
+            
+            <!-- Engine Breakdown -->
+            <div class="engine-breakdown">
+                <div class="engine-row">
+                    <span>ChatGPT</span>
+                    <span>Gemini</span>
+                    <span>Claude</span>
+                    <span>Perplexity</span>
+                    <span>Meta AI</span>
+                    <span>Grok</span>
+                </div>
+                <div class="engine-scores">
+                    <span>1.4</span>
+                    <span>6.4</span>
+                    <span>4.2</span>
+                    <span>7.2</span>
+                    <span>3.7</span>
+                    <span>5.8</span>
+                </div>
+            </div>
+
+            <p class="subsection-header">ChatGPT Performance:</p>
+            <p>Spruce scores 1.4 on ChatGPT, appearing only in direct brand comparison queries. When shoppers ask for pet-safe weed killers, natural alternatives, or glyphosate-free options without mentioning Spruce, the brand is invisible—losing discovery to Sunday (7.6), Ortho (6.8), and even Roundup (6.5).</p>
+
+            <p class="subsection-header">Where the Brand Wins:</p>
+            <p><span class="green">🟢</span> Direct Comparisons (7.0) • <span class="amber">🟡</span> Safety Positioning (6.6) • <span class="amber">🟡</span> Natural Alternatives (4.8)</p>
+
+            <p class="subsection-header">Critical Gaps:</p>
+            <p><span class="red">🔴</span> Pet-Safe Keywords (2.8)—invisible despite 8.8 safety score • <span class="red">🔴</span> Natural Weed Killers (0.0)—AI overlooks essential oil formulation • <span class="red">🔴</span> Glyphosate-Free (0.0)—zero visibility in chemical-free conversations</p>
+
+            <!-- Category Performance Table -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th style="text-align: center;">Avg Score</th>
+                        <th>Top Prompt (Score)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Competitor "best"</td>
+                        <td style="text-align: center;"><span class="green">🟢 7.0</span></td>
+                        <td>"Spruce vs Ortho: what is the best weed killer?" (9.0)</td>
+                    </tr>
+                    <tr>
+                        <td>Around kids and pets</td>
+                        <td style="text-align: center;"><span class="amber">🟡 6.6</span></td>
+                        <td>"Spruce vs Sunday: best all-natural around kids and pets" (7.8)</td>
+                    </tr>
+                    <tr>
+                        <td>All-natural</td>
+                        <td style="text-align: center;"><span class="amber">🟡 4.8</span></td>
+                        <td>"Spruce vs Sunday: what is the best all-natural weed killer?" (6.0)</td>
+                    </tr>
+                    <tr>
+                        <td>Keywords</td>
+                        <td style="text-align: center;"><span class="red">🔴 1.1</span></td>
+                        <td>"What is a pet safe weed killer?" (2.8)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p class="subsection-header">Competitive Position:</p>
+            <p>Sunday captures natural weed killer queries with scores of 7-9 while Spruce languishes at 0.0. Ortho dominates "best weed killer" recommendations at 6.8 versus Spruce's 4.8. Spruce is ceding entire lawn care subcategories to competitors in the AI discovery layer where purchase journeys begin.</p>
+        </div>
+
+        <!-- Section 3: Brand Vulnerability -->
+        <div class="section">
+            <div class="section-header">3. Brand Vulnerability: <span class="score-display">7.6/10 →</span></div>
+            <p>AI largely protects Spruce's reputation—9 of 10 monitored statements score accurate across engines (90%), and safety scores 8.8, reflecting P&G's rigorous formulation standards and EPA 25(b) minimum-risk status.</p>
+
+            <p class="subsection-header">Brand Promise Alignment: 7.3/10</p>
+            <p>AI engines are largely convinced by Spruce's "fast, effective, safe" promise. When consumers ask about "pet-safe weed control," AI endorses Spruce's essential oil formulation and visible results in one hour. Grok scores highest at 8.8, citing Ohio State University partnership and Good Housekeeping validation, while ChatGPT also scores 7.8, highlighting 55% USDA Biobased certification. However, Gemini expresses skepticism at 5.0, questioning "effective" claims for heavy-duty applications and noting contact-mode limitations.</p>
+
+            <p class="subsection-header">Statements of Fact Assessment</p>
+            <p>Of 10 monitored statements, 9 are accurate, 0 are partially accurate, and 1 is inaccurate.</p>
+
+            <p class="subsection-header">Source Influence</p>
+            <p>21% of sources shaping AI's brand perception are owned properties (spruceit.com, P&G newsroom), giving Spruce limited ability to correct misrepresentations. Top third-party sources: Good Housekeeping, Target product pages, Walmart reviews, Ohio State case study. Monitor customer review platforms where performance variability narratives appear frequently.</p>
+
+            <!-- SWOT Grid -->
+            <div class="swot-grid">
+                <div class="swot-cell strength">
+                    <div class="swot-cell-title">Strength</div>
+                    <p>90% factual accuracy and industry-leading safety credentials (8.8) with EPA 25(b) minimum-risk status give AI confidence in safety claims—validated by Good Housekeeping Seal and USDA 55% Biobased certification.</p>
+                </div>
+                <div class="swot-cell weakness">
+                    <div class="swot-cell-title">Weakness</div>
+                    <p>Technical content depth gap (1.1/10 statistics with citations) and missing structured data (4.8/10 algorithmic anchors) prevent AI from confidently recommending Spruce in discovery moments.</p>
+                </div>
+                <div class="swot-cell opportunity">
+                    <div class="swot-cell-title">Opportunity</div>
+                    <p>Rising demand for minimum-risk herbicides and continuing glyphosate litigation create white space to position Spruce as the safety-validated alternative backed by P&G science and OSU research.</p>
+                </div>
+                <div class="swot-cell threat">
+                    <div class="swot-cell-title">Threat</div>
+                    <p>Scotts Sixth Circuit appeal on trade-dress infringement (filed July 2025) could force packaging changes. Sunday's 7.6 visibility in natural queries threatens to capture eco-conscious segment before Spruce scales content.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Button -->
+        <div class="button-container">
+            <a href="https://studio.brandrank.ai/olay/olay" class="dashboard-button" target="_blank">More on the Dashboard →</a>
+        </div>
+
+        <!-- Section 4: Content Readiness -->
+        <div class="section">
+            <div class="section-header">4. Content Readiness: <span class="score-display">5.3/10 →</span></div>
+            <p>AI can extract Spruce content but struggles to discover and trust it—Availability scores 4.8, Depth scores 4.4, and Clarity scores 6.6.</p>
+
+            <!-- Score Boxes -->
+            <div class="score-boxes">
+                <div class="score-box">
+                    <div class="score-box-title">Availability</div>
+                    <div class="score-box-value low">4.8</div>
+                </div>
+                <div class="score-box">
+                    <div class="score-box-title">Depth</div>
+                    <div class="score-box-value low">4.4</div>
+                </div>
+                <div class="score-box">
+                    <div class="score-box-title">Clarity</div>
+                    <div class="score-box-value medium">6.6</div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Section 5: Competitive Context -->
+        <div class="section">
+            <div class="section-header">5. Competitive Context: Who's Winning AI Discovery</div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Spruce</th>
+                        <th>Sunday</th>
+                        <th>Ortho</th>
+                        <th>Roundup</th>
+                        <th>Spectracide</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>AI Visibility</strong></td>
+                        <td style="color: #dc2626; font-weight: bold;">4.8</td>
+                        <td style="color: #059669; font-weight: bold;">7.6</td>
+                        <td style="color: #059669; font-weight: bold;">6.8</td>
+                        <td style="color: #059669; font-weight: bold;">6.5</td>
+                        <td style="color: #059669; font-weight: bold;">6.3</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Content Liquidity</strong></td>
+                        <td>4.4</td>
+                        <td>7.0</td>
+                        <td>6.8</td>
+                        <td>7.2</td>
+                        <td>6.5</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Search Capital</strong></td>
+                        <td>3.7</td>
+                        <td>6.9</td>
+                        <td>7.5</td>
+                        <td>8.2</td>
+                        <td>7.0</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Algorithmic Anchors</strong></td>
+                        <td>4.8</td>
+                        <td>6.7</td>
+                        <td>6.9</td>
+                        <td>7.3</td>
+                        <td>6.3</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p class="subsection-header">What Competitors Do Differently:</p>
+            
+            <p><strong>1. Technical Documentation Architecture:</strong> Sunday publishes comprehensive ingredient lists with mechanism-of-action explanations. Ortho and Roundup provide downloadable SDS sheets and efficacy charts. Spruce mentions OSU research but lacks on-site quantitative data.</p>
+
+            <p><strong>2. FAQ Schema + JSON-LD Deployment:</strong> Competitors implement Product and FAQPage schema on 80%+ of product pages, allowing AI to extract structured Q&A. Spruce's content exists but isn't marked up—making it invisible to answer engines.</p>
+
+            <p><strong>3. Third-Party Validation Loop:</strong> Sunday secures editorial mentions in eco-lifestyle publications and lawn care blogs that link to product pages, reinforcing domain authority. Ortho and Roundup leverage decades of backlink equity. Spruce's newer domain limits authority signals despite strong P&G backing.</p>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Section 6: Who Needs to Act -->
+        <div class="section">
+            <div class="section-header">6. Internal Stakeholders & Responsibilities</div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Function</th>
+                        <th>Priority Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Digital & Content Teams</strong></td>
+                        <td>Deploy JSON-LD schema site-wide (priority: FAQPage, Product, HowTo, Organization schemas). Build Science & Evidence Hub with downloadable labels, SDS sheets, and OSU trial data. Launch Pet-Safe Lawn Care Resource Center.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Brand Marketing</strong></td>
+                        <td>Leverage 7.0 comparison strength with consideration-stage content positioning Spruce vs. Sunday and Ortho in "safe" and "natural" categories. Amplify Good Housekeeping Seal, USDA Biobased, and OSU partnership across channels.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>R&D / Technical Communications</strong></td>
+                        <td>Translate OSU research into consumable, citable content. Publish efficacy methodologies, comparative trial data, and quantitative specifications (active %, coverage rates, temperature ranges). Create expert-authored explainers AI can cite.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Corporate Communications</strong></td>
+                        <td>Surface third-party validations (GH Seal, USDA, OSU) on-site with proper attribution. Coordinate with P&G newsroom for cross-linking. Address PFAS-in-pesticides concerns proactively with transparency.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Executive Leadership (P&G Ventures)</strong></td>
+                        <td>Prioritize AI visibility as strategic imperative—7.6 brand health is strong but 4.8 visibility means consumers never reach product evaluation. Allocate resources before Sunday widens discovery gap further.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Section 7: How Personas React -->
+        <div class="section">
+            <div class="section-header">7. Stakeholder Reactions to This Data</div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">Persona</th>
+                        <th style="width: 25%;">What They Care About</th>
+                        <th>Their Likely Reaction</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Pet-Conscious Homeowners</strong></td>
+                        <td>Pet safety as primary decision factor</td>
+                        <td>Impressed by 8.8 safety and EPA 25(b) status but frustrated discovering Spruce through retail browsing vs. AI recommendations. "Why didn't ChatGPT suggest this when I asked for pet-safe options?"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Eco-Friendly Gardeners</strong></td>
+                        <td>Natural alternatives and sustainability</td>
+                        <td>Appreciate USDA 55% Biobased and transparent ingredient list, but 0.0 visibility in "best natural weed killers" queries means Sunday captures segment by default. Need comparative environmental impact data.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Chemical-Averse Families</strong></td>
+                        <td>Avoiding glyphosate and synthetic chemicals</td>
+                        <td>Spruce's minimum-risk status aligns perfectly with values. Alarmed AI showed Roundup first despite glyphosate concerns. 0.0 visibility in "glyphosate-free" queries is massive missed opportunity.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>P&G Investors & Board</strong></td>
+                        <td>Market share and digital transformation</td>
+                        <td>Concerned by visibility gap despite strong retail distribution (Target, Walmart, Home Depot, Kroger) and validations (GH Seal, OSU). See structural disadvantage in Answer Economy with 4.8 vs. Sunday's 7.6.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Retail Partners</strong></td>
+                        <td>Category growth and sell-through</td>
+                        <td>See solid performance when consumers find Spruce (7.0 comparison scores) but limited consideration-set inclusion hurts growth. Requesting more "why natural weed killers" educational content to drive discovery.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Section 8: Brand Jam -->
+        <div class="section">
+            <div class="section-header">8. Brand Jam 🎵</div>
+            <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 20px; margin: 12px 0; border-left: 4px solid #0d9488; border-radius: 4px; text-align: center;">
+                <p style="font-size: 11pt; line-height: 1.8; color: #1a3a5c; font-weight: 500; margin: 0; font-style: italic;">
+                    <strong style="font-size: 12pt;">🎵</strong><br><br>
+                    Nine simple ingredients, safe around your pets,<br>
+                    Good Housekeeping Seal—best credentials you can get,<br>
+                    But when shoppers ask AI "what's the best?"<br>
+                    Spruce scores 4.8—while Sunday aces the test!<br>
+                    <br>
+                    We've got the science from OSU,<br>
+                    P&G behind us, backing what we do,<br>
+                    But Sunday gets the credit for the space we should own,<br>
+                    Time to publish that data—make our expertise known!<br>
+                    <br>
+                    We're winning comparisons at 7.0 strong,<br>
+                    But keyword queries show 1.1—something's wrong!<br>
+                    Structured data and citations will close the gap,<br>
+                    2026's our year to get back on the map!<br>
+                    <br>
+                    <strong style="font-size: 12pt;">🎵</strong>
+                </p>
+            </div>
+        </div>
+                    <strong style="font-size: 12pt;">🎵</strong>
+                </p>
+            </div>
+            <p class="caption" style="text-align: center; margin-top: 8px;">A memorable summary to rally the team around 2026 AI visibility priorities</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Page 1 of 2 | BrandRank.AI Year-End Snapshot | December 2025 | Confidential
+        </div>
+    </div>
+
+    <!-- Page 2: Addendum -->
+    <div class="page page-break">
+        <div class="addendum-title">ADDENDUM</div>
+
+        <div class="section">
+            <p class="subsection-header">Essential Terms</p>
+
+            <div class="term">
+                <span class="term-title">AI Visibility</span> — "Do I show up?" Measures how often your brand appears when consumers ask AI category-relevant questions. 7+ = AI recommends you; <4 = invisible.
+            </div>
+
+            <div class="term">
+                <span class="term-title">Brand Vulnerability</span> — "What does AI say about me?" Measures whether AI protects or undermines your reputation across engines.
+            </div>
+
+            <div class="term">
+                <span class="term-title">Brand Promise Alignment</span> — "Does AI believe my story?" Score below 7 means AI hedges rather than endorses your claims.
+            </div>
+
+            <div class="term">
+                <span class="term-title">Content Readiness</span> — "Is my site ready for AI?" Can AI find (Availability), trust (Depth), and extract (Clarity) your content?
+            </div>
+
+            <div class="term">
+                <span class="term-title">Source Influence</span> — "Who shapes my AI narrative?" High owned-source % = greater control over your story.
+            </div>
+
+            <div class="term">
+                <span class="term-title">Statements of Fact</span> — "Is AI telling the truth?" Monitors accuracy of specific brand claims across all engines.
+            </div>
+        </div>
+
+        <div class="section">
+            <p class="subsection-header">Why This Matters Now</p>
+
+            <p><strong>The Discovery Layer Is Shifting.</strong> Gartner predicts 25% decline in traditional search traffic by 2026 as consumers shift to AI answer engines. Shoppers aged 18-34 increasingly bypass Google for ChatGPT product queries.</p>
+
+            <p><strong>Content Architecture, Not Keywords.</strong> Olay's current digital strategy optimizes for SEO keywords, not AI extractability—creating a structural disadvantage that compounds monthly as answer engine adoption accelerates.</p>
+
+            <p><strong>Competitors Are Moving.</strong> CeraVe, Neutrogena, and La Roche-Posay have deployed structured data and dermatologist authority frameworks. See their gains in AI visibility scores before you see them in market share.</p>
+
+            <p><strong>The 36-Month Window.</strong> Brands have negotiating leverage with AI platforms now, before consumer behavior solidifies. After purchase patterns entrench, platforms dictate terms.</p>
+        </div>
+
+        <div class="section">
+            <p class="subsection-header">What to Do Next</p>
+
+            <p><strong>Access Your Dashboard:</strong> Log in at <strong>https://studio.brandrank.ai/olay/olay</strong> to explore drill-down data, competitor benchmarks, and query-level performance.</p>
+
+            <p><strong>Schedule Monthly Reviews:</strong> AI models update frequently. Check before earnings calls, product launches, and campaign activations.</p>
+
+            <p><strong>Track Competitor Movement:</strong> Monitor CeraVe, Neutrogena, and La Roche-Posay visibility shifts to anticipate market share implications.</p>
+
+            <p><strong>Measure Content ROI:</strong> See if schema deployment and dermatologist content translate to visibility gains within 60-90 days.</p>
+        </div>
+
+        <!-- About BrandRank -->
+        <div class="section">
+            <p><strong>About BrandRank.AI</strong></p>
+            <p>BrandRank works with over 60 global brands to strengthen trust and purchase intent by uncovering vulnerabilities, purchase-driving insights, and growth opportunities across AI answer engines. As a SaaS platform, we track all major answer engines to improve visibility, ensure content is AI-ready, and rigorously measure brand claims and instructional accuracy.</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Page 2 of 2 | BrandRank.AI Year-End Snapshot | December 2025 | Confidential
+        </div>
+    </div>
+</body>
+</html>
