@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vans - BrandRank Year-End Brand Snapshot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica', Arial, sans-serif;
+            color: #374151;
+            background: white;
+            line-height: 1.5;
+            font-size: 10pt;
+        }
+
+        .page {
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.75in;
+            background: white;
+            min-height: 11in;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #1a3a5c;
+            margin-bottom: 24px;
+        }
+
+        .header-logo {
+            font-weight: bold;
+            color: #1a3a5c;
+            font-size: 11pt;
+        }
+
+        .brand-logo {
+            color: #6b7280;
+            font-style: italic;
+            font-size: 9pt;
+        }
+
+        .report-title {
+            font-size: 22pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+        }
+
+        .report-subtitle {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            margin-bottom: 20px;
+        }
+
+        .headline {
+            font-size: 13pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        .callout-box {
+            background: #f8f9fa;
+            border-left: 4px solid #1a3a5c;
+            padding: 16px 20px;
+            margin-bottom: 18px;
+        }
+
+        .callout-box.amber {
+            border-left-color: #d97706;
+        }
+
+        .callout-box.alert {
+            background: #fef2f2;
+            border-left-color: #dc2626;
+        }
+
+        .callout-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #1a3a5c;
+        }
+
+        .callout-text {
+            font-size: 10pt;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin-bottom: 16px;
+        }
+
+        .section-header {
+            font-size: 12pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            border-bottom: 1px solid #1a3a5c;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+        }
+
+        .subsection-header {
+            font-weight: bold;
+            color: #374151;
+            margin-top: 10px;
+            margin-bottom: 6px;
+        }
+
+        .score-display {
+            display: inline;
+            font-weight: bold;
+            color: #1a3a5c;
+            font-size: 11pt;
+        }
+
+        .engine-breakdown {
+            background: #f8f9fa;
+            padding: 16px;
+            margin: 12px 0;
+            text-align: center;
+        }
+
+        .engine-row {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 4px;
+            font-size: 9pt;
+            color: #6b7280;
+        }
+
+        .engine-scores {
+            display: flex;
+            justify-content: space-around;
+            font-weight: bold;
+            font-size: 11pt;
+            color: #1a3a5c;
+        }
+
+        .score-boxes {
+            display: flex;
+            gap: 12px;
+            margin: 12px 0;
+        }
+
+        .score-box {
+            flex: 1;
+            background: #f8f9fa;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .score-box-title {
+            font-size: 9pt;
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .score-box-value {
+            font-size: 18pt;
+            font-weight: bold;
+            color: #1a3a5c;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 9.5pt;
+        }
+
+        th {
+            background: #1a3a5c;
+            color: white;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .swot-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: #d1d5db;
+            margin: 12px 0;
+        }
+
+        .swot-cell {
+            background: #f8f9fa;
+            padding: 12px;
+        }
+
+        .swot-label {
+            font-weight: bold;
+            color: #1a3a5c;
+            font-size: 10pt;
+            margin-bottom: 6px;
+        }
+
+        .swot-content {
+            font-size: 9.5pt;
+            line-height: 1.5;
+        }
+
+        .key-findings {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 12px 0;
+        }
+
+        .finding-box {
+            background: #f8f9fa;
+            padding: 14px;
+            border-left: 3px solid #1a3a5c;
+        }
+
+        .finding-title {
+            font-weight: bold;
+            color: #1a3a5c;
+            margin-bottom: 6px;
+            font-size: 9.5pt;
+        }
+
+        .finding-text {
+            font-size: 9.5pt;
+            line-height: 1.5;
+        }
+
+        .divider {
+            border-top: 1px solid #d1d5db;
+            margin: 24px 0;
+        }
+
+        .footer {
+            margin-top: 24px;
+            padding-top: 12px;
+            border-top: 1px solid #d1d5db;
+            font-size: 9pt;
+            color: #6b7280;
+            text-align: center;
+        }
+
+        .green { color: #16a34a; }
+        .amber { color: #d97706; }
+        .red { color: #dc2626; }
+
+        .caption {
+            font-size: 9pt;
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        .addendum-title {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #1a3a5c;
+        }
+
+        .term {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .term-title {
+            font-weight: bold;
+            color: #1a3a5c;
+        }
+
+        p {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- PAGE 1 -->
+    <div class="page">
+        <div class="header">
+            <div class="header-logo">BRANDRANK.AI</div>
+            <div class="brand-logo">Vans</div>
+        </div>
+
+        <div class="report-title">VANS</div>
+        <div class="report-subtitle">AI Answer Engine Performance Report | December 2025</div>
+
+        <!-- Section 1: Executive Summary -->
+        <div class="headline">Vans has perfect factual accuracy but catastrophic brand promise invisibility—AI sees a commodity sneaker brand, not an "Off The Wall" cultural icon.</div>
+
+        <div class="callout-box">
+            <div class="callout-title">Bottom Line</div>
+            <div class="callout-text">Vans faces an existential visibility crisis in the Answer Economy. Despite 59 years of authentic skateboarding heritage, rebellious counterculture positioning, and iconic cultural status, AI answer engines systematically fail to communicate the brand's "Off The Wall" ethos, cultural significance, or authentic differentiation. With a Promise Alignment score of just 6.6% and Hero Score of 3.2%, the brand's genuine skateboarding roots and youth culture credentials are invisible to AI systems that increasingly mediate consumer discovery and purchase decisions. While factual accuracy is perfect (100%) and brand health remains strong in sustainability and authenticity dimensions, Vans loses critical recommendation share to Nike SB, Converse, and Adidas Skateboarding across key category queries. The brand's content infrastructure reveals significant gaps—weak technical depth (5.3/10), missing structured data, and insufficient articulation of cultural heritage that AI systems can parse and index. This creates a dangerous paradox: strong brand equity that doesn't translate into AI-driven recommendations.</div>
+        </div>
+
+        <!-- Section 2: Core Metrics -->
+        <div class="section">
+            <div class="section-header">1. Core Metrics Snapshot</div>
+            <div class="score-boxes">
+                <div class="score-box">
+                    <div class="score-box-title">AI VISIBILITY</div>
+                    <div class="score-box-value">3.2</div>
+                </div>
+                <div class="score-box">
+                    <div class="score-box-title">BRAND VULNERABILITY</div>
+                    <div class="score-box-value">7.2</div>
+                </div>
+                <div class="score-box">
+                    <div class="score-box-title">CONTENT READINESS</div>
+                    <div class="score-box-value">6.4</div>
+                </div>
+                <div class="score-box">
+                    <div class="score-box-title">PROMISE ALIGNMENT</div>
+                    <div class="score-box-value">6.6</div>
+                </div>
+            </div>
+
+            <div class="engine-breakdown">
+                <div class="engine-row">
+                    <span>OpenAI</span>
+                    <span>Gemini</span>
+                    <span>Anthropic</span>
+                    <span>Perplexity</span>
+                    <span>Meta AI</span>
+                    <span>Grok</span>
+                </div>
+                <div class="engine-scores">
+                    <span>7.5</span>
+                    <span>3.8</span>
+                    <span>7.0</span>
+                    <span>4.0</span>
+                    <span>8.5</span>
+                    <span>8.9</span>
+                </div>
+            </div>
+
+            <p><strong>Accuracy:</strong> <span class="score-display">100%</span> factual accuracy across all tested brand claims—when Vans appears, AI tells the truth about skateboarding heritage (1966), product features (ComfyCush, Wafflecup), and cultural collaborations.</p>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Section 3: Visibility Performance -->
+        <div class="section">
+            <div class="section-header">2. AI Visibility Performance</div>
+            
+            <div class="key-findings">
+                <div class="finding-box">
+                    <div class="finding-title">🟢 STRONG: Cultural Heritage Queries</div>
+                    <div class="finding-text">Fast Times at Ridgemont High reference (10.0/10), skateboard heritage recognition (strong presence in skate-specific queries)</div>
+                </div>
+                <div class="finding-box">
+                    <div class="finding-title">🟢 STRONG: Classic Product Recognition</div>
+                    <div class="finding-text">Old Skool identification (9-10/10), slip-on vs. UltraRange comparisons (9.7/10), canvas vs. suede discussions (10.0/10)</div>
+                </div>
+                <div class="finding-box">
+                    <div class="finding-title">🔴 CRITICAL: Fashion/Style Invisibility</div>
+                    <div class="finding-text">TikTok trends (0/10), indie sleaze aesthetic (0/10), fashion-forward skaters (9.3/10 but losing to Adidas), thrift-inspired outfits (0/10)</div>
+                </div>
+                <div class="finding-box">
+                    <div class="finding-title">🔴 CRITICAL: Lifestyle Crossover Gap</div>
+                    <div class="finding-text">All-day standing comfort (0/10), utility fashion (0/10), function-fashion blend (0/10), festival comfort (9.7/10 but low absolute visibility)</div>
+                </div>
+            </div>
+
+            <p class="subsection-header">Top-Performing Queries (9.0+)</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Query</th>
+                        <th>Score</th>
+                        <th>Why It Works</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>What shoes were worn in Fast Times at Ridgemont High?</td>
+                        <td class="green"><strong>10.0</strong></td>
+                        <td>Iconic cultural moment with strong attribution and multiple citations</td>
+                    </tr>
+                    <tr>
+                        <td>Canvas vs. suede: Which holds up better for skating?</td>
+                        <td class="green"><strong>10.0</strong></td>
+                        <td>Vans heritage in both materials creates category authority</td>
+                    </tr>
+                    <tr>
+                        <td>What canvas kicks have best all-season performance?</td>
+                        <td class="green"><strong>9.8</strong></td>
+                        <td>Classic Authentic and Era recognized for versatility</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p class="subsection-header">Bottom-Performing Queries (0-2.0)</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Query</th>
+                        <th>Score</th>
+                        <th>Why It Fails</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>What clothing brands are trending on TikTok right now?</td>
+                        <td class="red"><strong>0.0</strong></td>
+                        <td>No social media trend content; competitors with influencer programs dominate</td>
+                    </tr>
+                    <tr>
+                        <td>What brands define indie sleaze or thrift-inspired outfits?</td>
+                        <td class="red"><strong>0.0</strong></td>
+                        <td>Cultural positioning not indexed; missing fashion subculture content</td>
+                    </tr>
+                    <tr>
+                        <td>What brands are rethinking utility fashion for city life?</td>
+                        <td class="red"><strong>0.0</strong></td>
+                        <td>MTE and UltraRange not positioned as urban utility solutions</td>
+                    </tr>
+                    <tr>
+                        <td>Which apparel brand blends fashion and function best?</td>
+                        <td class="red"><strong>0.0</strong></td>
+                        <td>Brand promise not articulated in fashion-forward terms AI recognizes</td>
+                    </tr>
+                    <tr>
+                        <td>Most comfortable options for all-day standing</td>
+                        <td class="red"><strong>0.0</strong></td>
+                        <td>ComfyCush innovation not surfacing in comfort-focused queries</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Page 1 of 4 | December 2025 | Confidential
+        </div>
+    </div>
+
+    <!-- PAGE 2 -->
+    <div class="page" style="page-break-before: always;">
+        <div class="header">
+            <div class="header-logo">BRANDRANK.AI</div>
+            <div class="brand-logo">Vans</div>
+        </div>
+
+        <!-- Section 4: Brand Vulnerability -->
+        <div class="section">
+            <div class="section-header">3. Brand Vulnerability Analysis</div>
+            
+            <p><strong>Overall Health:</strong> <span class="score-display">7.2/10</span> — Authentic brand with critical AI discovery gaps</p>
+
+            <p class="subsection-header">Brand Promise Alignment</p>
+            
+            <p><strong>Brand Promise:</strong> "Off The Wall Since '66 - Always pushing culture forward with a fiercely forward-thinking ethos that celebrates youthful optimism and progression."</p>
+
+            <p><strong>AI Evaluation:</strong> <span class="score-display">6.6/10</span> — Heritage acknowledged, cultural ethos invisible</p>
+
+            <div class="key-findings">
+                <div class="finding-box">
+                    <div class="finding-title">What AI Sees Working</div>
+                    <div class="finding-text"><strong>Grok (8.9/10):</strong> "Fast Times at Ridgemont High solidified Vans as skateboarding icon. Collaborations with Supreme, Fear of God demonstrate cultural relevance. Old Skool silhouette transcends decades."<br><br><strong>Meta AI (8.5/10):</strong> "Authentic skateboarding roots since 1966 create genuine counterculture credibility. Waffle sole innovation shows forward-thinking product development. Community-level skatepark support demonstrates cultural commitment beyond marketing."</div>
+                </div>
+                <div class="finding-box">
+                    <div class="finding-title">What AI Sees Failing</div>
+                    <div class="finding-text"><strong>Gemini (3.8/10):</strong> "Brand promise articulates cultural ambition but delivery evidence thin. 'Progression' claim not supported by visible innovation narrative. Youth culture celebration not translating into Gen Z recommendation algorithms."<br><br><strong>Perplexity (4.0/10):</strong> "Off The Wall ethos conceptually strong but operationally vague. How does 'fiercely forward-thinking' manifest in product development, collaborations, or community initiatives? AI systems need concrete evidence, not aspirational language."</div>
+                </div>
+            </div>
+
+            <p class="subsection-header">Vulnerability by Dimension</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dimension</th>
+                        <th>Score</th>
+                        <th>AI Perception</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Authenticity</strong></td>
+                        <td class="red"><strong>8.0</strong></td>
+                        <td>AI recognizes genuine skateboarding roots but fails to articulate "Off The Wall" cultural authenticity in recommendations; competitors capture authenticity narrative</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Safety</strong></td>
+                        <td class="red"><strong>8.0</strong></td>
+                        <td>Minimal safety concerns acknowledged; MTE line not indexed for protection features; competitors dominate safety/weather protection discussions</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Promise Clarity</strong></td>
+                        <td class="amber"><strong>7.5</strong></td>
+                        <td>"Off The Wall Since '66" tagline recognized but AI struggles to translate into actionable brand differentiators; cultural positioning remains abstract</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Brand Sentiment</strong></td>
+                        <td class="green"><strong>7.2</strong></td>
+                        <td>Strong nostalgic association and skateboarding credibility; occasional quality concerns temper sentiment; cultural cache recognized but not leveraged</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Product Performance</strong></td>
+                        <td class="green"><strong>7.2</strong></td>
+                        <td>Skate-specific performance trusted; lifestyle models show variable perception; ComfyCush and Wafflecup innovations underarticulated</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Transparency</strong></td>
+                        <td class="green"><strong>7.0</strong></td>
+                        <td>VF Corporation supply chain disclosure adequate; sustainability commitments visible but less prominent than competitors' dedicated programs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Price-to-Value</strong></td>
+                        <td class="green"><strong>6.8</strong></td>
+                        <td>Accessible pricing respected ($65-90 range); premium collaborations ($120+) show mixed value perception; durability justifies cost for core users</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sustainability</strong></td>
+                        <td class="amber"><strong>6.5</strong></td>
+                        <td>Eco-friendly initiatives present but overshadowed by competitors' aggressive marketing; lacks distinctive sustainability narrative AI systems recognize</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Customer Experience</strong></td>
+                        <td class="amber"><strong>6.5</strong></td>
+                        <td>Retail experience adequate; online purchasing straightforward; customization options (Customs program) not well-indexed by AI engines</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Innovation</strong></td>
+                        <td class="amber"><strong>6.2</strong></td>
+                        <td>Material innovation (ComfyCush, Wafflecup, PopCush) present but poorly communicated; AI defaults to "classic design" narrative vs. technical advancement</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout-box amber">
+                <div class="callout-title">The Heritage Paradox</div>
+                <div class="callout-text"><strong>Anthropic (7.0/10):</strong> "Vans possesses authentic skateboarding credibility since 1966 but struggles to translate cultural heritage into AI-mediated recommendations. The brand's 'Off The Wall' philosophy remains conceptually strong yet operationally invisible—AI systems understand Vans makes skateboarding shoes, but fail to articulate why that heritage matters or how it differentiates from Nike SB."<br><br><strong>Gemini (3.8/10):</strong> "Brand identity crisis in AI systems—Vans treated as affordable commodity footwear rather than cultural icon. Competitors with newer skateboarding lines capture more AI recommendation share despite Vans' 59-year authentic heritage. The disconnect suggests content infrastructure failures, not brand equity problems."</div>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Section 5: Content Readiness -->
+        <div class="section">
+            <div class="section-header">4. Content Readiness Assessment</div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dimension</th>
+                        <th>Score</th>
+                        <th>Diagnosis</th>
+                        <th>Priority Fix</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Clarity</strong></td>
+                        <td class="green"><strong>7.5</strong></td>
+                        <td>Product pages use clear language; brand story pages lean heavily on marketing abstractions vs. concrete evidence</td>
+                        <td>Translate "Off The Wall" philosophy into specific actions, innovations, and cultural contributions AI systems can cite</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Availability</strong></td>
+                        <td class="amber"><strong>6.5</strong></td>
+                        <td>Basic product content present but critical gaps: <strong>limited FAQ schema, weak product markup, missing cultural heritage documentation</strong></td>
+                        <td>Implement comprehensive FAQ schema, Product schema on all footwear, create crawlable skateboarding heritage timeline</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Depth</strong></td>
+                        <td class="amber"><strong>5.3</strong></td>
+                        <td>Weakest area—cultural storytelling present but lacks verifiable data (2.2/10 statistics), expert validation (5.6/10), technical specifications</td>
+                        <td>Publish material innovation documentation, athlete testimonials with citations, skateboarding culture impact studies</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p class="subsection-header">Critical Content Gaps</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Content Type</th>
+                        <th>Current State</th>
+                        <th>Impact on AI Discovery</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Statistics with Citations</strong></td>
+                        <td class="red">2.2/10</td>
+                        <td>AI systems cannot verify claims about cultural impact, skateboarding heritage, or innovation leadership</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Technical Content</strong></td>
+                        <td class="red">4.4/10</td>
+                        <td>ComfyCush, Wafflecup, PopCush innovations invisible; competitors with less heritage capture technical query share</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Expert Validation</strong></td>
+                        <td class="amber">5.6/10</td>
+                        <td>Pro skater endorsements not structured for AI parsing; athlete relationships underutilized as credibility signals</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Page 2 of 4 | December 2025 | Confidential
+        </div>
+    </div>
+
+    <!-- PAGE 3 -->
+    <div class="page" style="page-break-before: always;">
+        <div class="header">
+            <div class="header-logo">BRANDRANK.AI</div>
+            <div class="brand-logo">Vans</div>
+        </div>
+
+        <!-- Section 6: Competitive Landscape -->
+        <div class="section">
+            <div class="section-header">5. Competitive Positioning in AI Engines</div>
+            
+            <p><strong>Critical Finding:</strong> Across 80+ category-relevant queries, Vans achieves <strong>3.2% average "hero score"</strong> (recommended as top choice), while competitors capture 96.8% of AI-driven recommendations despite Vans' superior skateboarding heritage.</p>
+
+            <p class="subsection-header">Competitive Share by Query Type</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Query Category</th>
+                        <th>Vans Hero %</th>
+                        <th>Primary Competitor</th>
+                        <th>Competitor Advantage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Skate Performance</td>
+                        <td class="green"><strong>9.7%</strong></td>
+                        <td>Nike SB</td>
+                        <td>Athlete partnerships, technical spec documentation</td>
+                    </tr>
+                    <tr>
+                        <td>Canvas/Material Queries</td>
+                        <td class="green"><strong>9.9%</strong></td>
+                        <td>Converse</td>
+                        <td>Lifestyle crossover positioning, broader content</td>
+                    </tr>
+                    <tr>
+                        <td>Cultural Heritage</td>
+                        <td class="green"><strong>10.0%</strong></td>
+                        <td>None</td>
+                        <td>Vans dominates specific cultural reference queries</td>
+                    </tr>
+                    <tr>
+                        <td>Fashion-Forward Style</td>
+                        <td class="red"><strong>0.0%</strong></td>
+                        <td>Adidas Skateboarding</td>
+                        <td>Fashion collaborations, trend-focused content</td>
+                    </tr>
+                    <tr>
+                        <td>All-Day Comfort</td>
+                        <td class="red"><strong>0.0%</strong></td>
+                        <td>Nike SB, Adidas</td>
+                        <td>Comfort technology marketing, ergonomic content</td>
+                    </tr>
+                    <tr>
+                        <td>Urban Lifestyle</td>
+                        <td class="red"><strong>0.0%</strong></td>
+                        <td>Converse, Nike</td>
+                        <td>Lifestyle category authority, versatility messaging</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout-box alert">
+                <div class="callout-title">The Nike SB Problem</div>
+                <div class="callout-text">Nike SB—a skateboarding line launched in 2002, 36 years after Vans—captures significantly more AI recommendation share across skate-specific queries. This represents a catastrophic failure of Vans' content strategy: authentic heritage means nothing if AI systems can't parse and communicate it. Nike's athlete documentation, technical specifications, and performance-focused content create algorithmic advantages that override Vans' cultural authenticity.</div>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Section 7: SWOT Analysis -->
+        <div class="section">
+            <div class="section-header">6. Strategic Position Assessment (SWOT)</div>
+            
+            <div class="swot-grid">
+                <div class="swot-cell">
+                    <div class="swot-label">STRENGTHS</div>
+                    <div class="swot-content">Since the previous analysis, Vans' brand engine has become more disciplined and premium-capable without abandoning its icon DNA. OTW by Vans has sustained a credible, tightly curated cadence—UNDERCOVER, Stüssy, and Noon Goons collaborations—that elevates storytelling beyond skate heritage into contemporary fashion culture. The mainline UltraRange franchise (Exo, RapidWeld) positions comfort and performance as brand pillars, not outliers, and product innovation (ComfyCush™, Wafflecup construction) suggests Vans is no longer coasting on nostalgia alone. Retail execution through owned stores and DTC reinforces premium positioning alongside accessible price points in wholesale.</div>
+                </div>
+
+                <div class="swot-cell">
+                    <div class="swot-label">WEAKNESSES</div>
+                    <div class="swot-content">Vans remains mid-turnaround. Despite sequential moderation, brand revenue has been in decline through FY25 and into Q2 FY26 (−22% in Q4 FY25; −9% in Q2 FY26), indicating that newness and comfort migration have yet to drive consistent demand. The brand's installed base skews heavily to classics (Old Skool, Authentic, Sk8-Hi), which leaves Vans exposed to saturation and trend fatigue. AI discoverability remains anemic: Promise Alignment (6.6%) and Hero Score (3.2%) reveal that Vans' cultural narrative and product benefits are poorly indexed by LLMs, meaning search and AI-mediated commerce will default to better-articulated competitors (Nike SB, Converse, Adidas). Operational vulnerabilities include tariff pressure on Vietnam sourcing and the need for continued markdown management as inventory rebalances.</div>
+                </div>
+
+                <div class="swot-cell">
+                    <div class="swot-label">OPPORTUNITIES</div>
+                    <div class="swot-content">The performance-comfort macro tailwind is still strong. HOKA and On continue to post robust top-line and margin growth, proving consumers will pay for visible comfort and modern design—headroom Vans can exploit with ComfyCush™ and UltraRange if marketed as functional innovation rather than line extensions. Action sports are regaining cultural momentum (skateboarding's Olympic presence, surf's elevated visibility), offering Vans permission to reclaim authentic leadership while Nike SB and Converse lack the same heritage credibility. The "Off The Wall" platform is ripe for reinvention: positioning Vans as the anti-tech-bro sneaker—unpretentious, creative, youth-culture-anchored—could differentiate strongly in an era of algorithmic sameness. Digital and Answer Economy readiness remains low across footwear, so early investment in LLM discoverability (structured content, product attribution, brand promise clarity) can secure asymmetric share of AI-mediated recommendations before competitors optimize.</div>
+                </div>
+
+                <div class="swot-cell">
+                    <div class="swot-label">THREATS</div>
+                    <div class="swot-content">New U.S. tariffs on Vietnamese goods (announced in 2025) materially pressure footwear sourcing costs and timing. Vietnam's footwear exports to the U.S. fell 27% in September under the tariff regime; Vans, heavily Vietnam-dependent, faces near-term gross margin risk and potential supply chain reconfiguration costs. Nike's portfolio breadth (SB, ACG, retro franchises) allows it to absorb market-share volatility; Vans, more narrowly positioned within VF Corp, has less flexibility. The skate and streetwear market is fragmenting: independent DTC brands (Cariuma, Allbirds, niche skate labels) eat into Vans' accessible-premium positioning, while luxury fashion collaborations (Salehe Bembury × New Balance, JJJJound × Reebok) redefine what "elevated skatewear" means. AI discovery poses an existential threat if Vans doesn't invest: as conversational commerce scales, low Answer Readiness locks Vans out of consideration sets, regardless of product merit or brand equity.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Page 3 of 4 | December 2025 | Confidential
+        </div>
+    </div>
+
+    <!-- PAGE 4 -->
+    <div class="page" style="page-break-before: always;">
+        <div class="header">
+            <div class="header-logo">BRANDRANK.AI</div>
+            <div class="brand-logo">Vans</div>
+        </div>
+
+        <!-- Section 8: Considerations and Strategic Recommendations -->
+        <div class="section">
+            <div class="section-header">7. Considerations and Strategic Recommendations</div>
+            
+            <div class="callout-box">
+                <div class="callout-title">1. Answer Engine Content Restructuring</div>
+                <div class="callout-text">Redesign vans.com information architecture to explicitly communicate "Off The Wall" heritage in AI-parseable formats. Create dedicated brand story hub with structured timeline (1966-present), cultural impact documentation, and skateboarding authenticity evidence. Implement FAQ schema on key category pages addressing "What makes Vans different from Nike SB?" and "Why does skateboarding heritage matter?"</div>
+            </div>
+
+            <div class="callout-box">
+                <div class="callout-title">2. Technical Innovation Documentation</div>
+                <div class="callout-text">Publish comprehensive technical specifications for ComfyCush™, Wafflecup, PopCush, and MTE technologies with material science data, lab testing results, and performance benchmarks. Create comparison frameworks that help AI systems understand when Vans innovations outperform competitors in specific use cases.</div>
+            </div>
+
+            <div class="callout-box">
+                <div class="callout-title">3. Cultural Heritage Activation</div>
+                <div class="callout-text">Develop authoritative first-party content covering skateboarding evolution (1966-2025), punk and alternative music connections, artist collaborations archive, and youth subculture documentation. Create crawlable cultural impact studies with citations that establish Vans as definitive skateboarding heritage authority.</div>
+            </div>
+
+            <div class="callout-box">
+                <div class="callout-title">4. Athlete and Expert Validation System</div>
+                <div class="callout-text">Structure pro skater endorsements, team rider interviews, and athlete testimonials for AI discovery. Create "Pro Insight" content blocks on product pages with direct quotes, performance data, and competition usage statistics. Establish expert validation across skateboarding, fashion, and materials science dimensions.</div>
+            </div>
+
+            <div class="callout-box">
+                <div class="callout-title">5. Competitive Differentiation Framework</div>
+                <div class="callout-text">Build explicit comparison content that helps AI systems understand Vans' authentic positioning vs. Nike SB (newer entrant), Converse (lifestyle-first), and Adidas (fashion crossover). Create category authority pages that claim specific territory: "original skateboarding footwear" (1966), "waffle sole innovation," "counterculture authenticity."</div>
+            </div>
+
+            <div class="callout-box">
+                <div class="callout-title">6. Structured Data Implementation</div>
+                <div class="callout-text">Deploy comprehensive schema markup: Product schema on all footwear with detailed specifications, FAQ schema addressing common queries, Organization schema with brand history and values, Article schema on cultural content, Review schema aggregating authentic user feedback.</div>
+            </div>
+
+            <div class="callout-box">
+                <div class="callout-title">7. Become the Answer Engine for Skateboarding Culture</div>
+                <div class="callout-text">Transform Vans' digital presence from product catalog to authoritative knowledge base on skateboarding history, technique, culture, and community. Create comprehensive guides, historical archives, technique documentation, skatepark directories, and cultural timelines that establish Vans as the primary source AI systems cite for skateboarding-related queries.</div>
+            </div>
+
+            <div class="callout-box">
+                <div class="callout-title">8. AI-Native Brand Expression</div>
+                <div class="callout-text">Redesign all brand communication for dual audience: human readers and AI systems. Translate aspirational marketing language ("Off The Wall," "progression") into concrete evidence, specific actions, quantifiable outcomes. Make every brand claim verifiable, attributable, and structured for algorithmic parsing.</div>
+            </div>
+
+            <div class="callout-box">
+                <div class="callout-title">9. Answer Economy Measurement & Optimization</div>
+                <div class="callout-text">Implement continuous monitoring of AI recommendation patterns across all major platforms. Track Promise Alignment, Hero Score, and Vulnerability metrics monthly. Establish feedback loops between AI performance data and content development priorities. Build organizational capability to optimize for Answer Economy dynamics.</div>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Methodology -->
+        <div class="section">
+            <div class="section-header">Methodology & Measurement Framework</div>
+            
+            <p><strong>AI Visibility (Hero Score):</strong> Measures frequency with which Vans is recommended as top choice across relevant category queries. Evaluated across 6 major AI platforms (OpenAI, Gemini, Anthropic, Perplexity, Meta AI, Grok) using 80+ consumer queries spanning product categories, brand comparisons, and purchase intent.</p>
+
+            <p><strong>Brand Vulnerability:</strong> Assesses brand health across 10 dimensions (Authenticity, Safety, Promise Clarity, Brand Sentiment, Product Performance, Transparency, Price-to-Value, Sustainability, Customer Experience, Innovation) based on AI system analysis of available information.</p>
+
+            <p><strong>Content Readiness:</strong> Evaluates technical infrastructure for AI discovery across three dimensions: Clarity (ease of understanding), Availability (structured data and schema), Depth (technical specifications, citations, expert validation).</p>
+
+            <p><strong>Promise Alignment:</strong> Measures how consistently AI platforms communicate brand promise when discussing the brand. Based on explicit evaluation of brand promise delivery across all six platforms.</p>
+
+            <p><strong>Accuracy:</strong> Tests factual correctness of brand-specific claims across AI platforms, identifying misinformation, misattribution, or contradictions.</p>
+
+            <p class="caption"><strong>Data Collection Period:</strong> Q4 2025 (October-December 2025) | <strong>Platforms Analyzed:</strong> ChatGPT (OpenAI), Claude (Anthropic), Gemini (Google), Perplexity, Meta AI, Grok (X) | <strong>Query Volume:</strong> 80+ consumer intent queries</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Page 4 of 4 | December 2025 | Confidential | BrandRank.AI
+        </div>
+    </div>
+</body>
+</html>
