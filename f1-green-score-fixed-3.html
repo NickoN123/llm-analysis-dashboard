@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Pole to Planet - Formula One Green Score Leaderboard 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0f0d;
+            --bg-secondary: #0f1612;
+            --bg-tertiary: #141d18;
+            --accent-green: #00ff9f;
+            --accent-emerald: #10b981;
+            --text-primary: #ffffff;
+            --text-secondary: #a8b5b0;
+            --text-tertiary: #6b7b75;
+            --border-subtle: rgba(0, 255, 159, 0.1);
+            --card-bg: rgba(20, 29, 24, 0.6);
+            --hover-bg: rgba(0, 255, 159, 0.05);
+            --gold: #ffd700;
+            --silver: #c0c0c0;
+            --bronze: #cd7f32;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-tertiary) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 3rem 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 159, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-emerald) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h1 .sm-mark {
+            font-size: 1.5rem;
+            vertical-align: super;
+            opacity: 1;
+            margin-left: 0.25rem;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+        }
+
+        .credit {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            font-weight: 300;
+            margin-top: 1rem;
+            letter-spacing: 0.03em;
+        }
+
+        .intro-text {
+            max-width: 900px;
+            margin: 0 auto 3rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border-subtle);
+            backdrop-filter: blur(20px);
+            animation: fadeIn 0.8s ease 0.2s backwards;
+        }
+
+        .intro-text p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            text-align: center;
+            margin: 0;
+        }
+
+        .table-wrapper {
+            background: var(--card-bg);
+            border-radius: 24px;
+            border: 1px solid var(--border-subtle);
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            animation: fadeInUp 0.8s ease 0.4s backwards;
+            margin-bottom: 3rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0;
+            table-layout: fixed;
+        }
+
+        thead {
+            position: sticky;
+            top: 0;
+            background: var(--bg-secondary);
+            z-index: 10;
+        }
+
+        th {
+            padding: 1.25rem 1rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.05em;
+            color: var(--accent-green);
+            border-bottom: 2px solid var(--border-subtle);
+            vertical-align: middle;
+        }
+        
+        /* Simple column widths that match exactly */
+        th:nth-child(1), td:nth-child(1) { 
+            width: 80px;
+            min-width: 80px;
+            text-align: center;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        
+        th:nth-child(2), td:nth-child(2) { 
+            width: 200px;
+            min-width: 200px;
+            text-align: left;
+            padding-left: 1rem;
+        }
+        
+        th:nth-child(3), td:nth-child(3) { 
+            width: 80px;
+            min-width: 80px;
+            text-align: center;
+        }
+        
+        th:nth-child(4), td:nth-child(4) { 
+            width: 120px;
+            min-width: 120px;
+            text-align: center;
+        }
+        
+        th:nth-child(5), td:nth-child(5) { 
+            width: 120px;
+            min-width: 120px;
+            text-align: center;
+        }
+        
+        th:nth-child(6), td:nth-child(6) { 
+            width: 120px;
+            min-width: 120px;
+            text-align: center;
+        }
+        
+        th:nth-child(7), td:nth-child(7) { 
+            width: 140px;
+            min-width: 140px;
+            text-align: center;
+        }
+        
+        th:nth-child(8), td:nth-child(8) { 
+            width: 120px;
+            min-width: 120px;
+            text-align: center;
+        }
+        
+        th:nth-child(9), td:nth-child(9) { 
+            width: 140px;
+            min-width: 140px;
+            text-align: center;
+        }
+
+        th:first-child {
+            border-radius: 12px 0 0 0;
+        }
+
+        th:last-child {
+            border-radius: 0 12px 0 0;
+        }
+
+        .methodology-header {
+            cursor: help;
+            position: relative;
+        }
+
+        .methodology-header:hover::after {
+            content: attr(data-methodology);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-secondary);
+            border: 1px solid var(--accent-green);
+            border-radius: 8px;
+            padding: 1rem;
+            max-width: 300px;
+            width: max-content;
+            font-size: 0.85rem;
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: 0.02em;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            z-index: 1000;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            white-space: normal;
+            text-align: left;
+        }
+
+        tbody tr {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+        }
+
+        tbody tr:hover {
+            background: var(--hover-bg);
+        }
+
+        td {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            font-size: 0.95rem;
+            vertical-align: middle;
+            color: var(--text-secondary);
+        }
+
+        .driver-name {
+            display: block;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1.05rem;
+            margin-bottom: 0.25rem;
+            text-align: left;
+        }
+
+        .team-name {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            font-weight: 400;
+            text-align: left;
+        }
+
+        .score-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            display: inline-block;
+            min-width: 50px;
+        }
+
+        .score-high {
+            background: rgba(0, 255, 159, 0.15);
+            color: var(--accent-green);
+            border: 1px solid rgba(0, 255, 159, 0.3);
+        }
+
+        .score-medium {
+            background: rgba(234, 179, 8, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(234, 179, 8, 0.3);
+        }
+
+        .score-low {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .final-score {
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-emerald));
+            color: var(--bg-primary);
+            font-weight: 700;
+            font-size: 1.25rem;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 255, 159, 0.3);
+        }
+
+        .podium-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-right: 0.5rem;
+        }
+
+        .gold {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #1a1a1a;
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+        }
+
+        .silver {
+            background: linear-gradient(135deg, #c0c0c0, #e8e8e8);
+            color: #1a1a1a;
+            box-shadow: 0 4px 12px rgba(192, 192, 192, 0.4);
+        }
+
+        .bronze {
+            background: linear-gradient(135deg, #cd7f32, #e59866);
+            color: #1a1a1a;
+            box-shadow: 0 4px 12px rgba(205, 127, 50, 0.4);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: var(--accent-green);
+        }
+
+        .profiles-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .profile-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border-subtle);
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+        }
+
+        .profile-header {
+            margin-bottom: 1rem;
+        }
+
+        .profile-driver-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-team {
+            font-size: 1rem;
+            color: var(--text-tertiary);
+        }
+
+        .profile-score {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 2rem;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-emerald));
+            color: var(--bg-primary);
+            margin: 1rem 0;
+        }
+
+        .profile-bio {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-scores {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .profile-score-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .profile-score-label {
+            font-weight: 600;
+            color: var(--accent-green);
+            min-width: 120px;
+            font-size: 0.85rem;
+        }
+
+        .profile-score-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .section-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
+            margin: 4rem 0;
+        }
+
+        .tooltip {
+            position: fixed;
+            background: var(--bg-secondary);
+            border: 1px solid var(--accent-green);
+            border-radius: 12px;
+            padding: 1.5rem;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            pointer-events: none;
+            opacity: 0;
+            transform: translateX(-50%) translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+        }
+
+        .tooltip.active {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .tooltip-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--accent-green);
+            margin-bottom: 0.75rem;
+        }
+
+        .tooltip-content {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 1200px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .table-wrapper {
+                overflow-x: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 2rem 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>F1 Pole to Planet<span class="sm-mark">SM</span> Scorecard</h1>
+            <p class="subtitle">Formula One Green Score Leaderboard 2025</p>
+            <p class="credit">Powered by The Guardian × Formula 1 Data × Claude Sonnet 4.5</p>
+        </header>
+
+        <div class="intro-text">
+            <p>
+                This Green Score evaluates drivers across five dimensions: Mobility Efficiency (personal travel choices), 
+                Lifestyle Footprint (homes, vehicles, consumption), Mitigation Credibility (offsetting & reduction actions), 
+                Values Consistency (advocacy alignment), and Industry Impact (influence on F1's sustainability transformation). 
+                Hover over any cell to see detailed analysis.
+            </p>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Driver</th>
+                        <th>Years</th>
+                        <th class="methodology-header" data-methodology="Measures personal travel choices, private jet usage, commercial flight alternatives, and geographic efficiency in reducing carbon footprint from mobility.">Mobility</th>
+                        <th class="methodology-header" data-methodology="Evaluates homes, vehicles, consumption patterns, diet choices, and overall lifestyle carbon intensity compared to F1 peer group.">Lifestyle</th>
+                        <th class="methodology-header" data-methodology="Assesses credibility and scale of carbon offsetting programs, renewable energy investments, and concrete reduction initiatives beyond rhetoric.">Mitigation</th>
+                        <th class="methodology-header" data-methodology="Examines alignment between public advocacy, private actions, and authentic commitment to environmental values over time.">Consistency</th>
+                        <th class="methodology-header" data-methodology="Measures influence on F1's sustainability transformation, platform leverage for environmental advocacy, and impact on sport-wide change.">Industry</th>
+                        <th>Final Score</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard"></tbody>
+            </table>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2 class="section-title">Extended Analysis: Reserve & Recently Departed Drivers</h2>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Driver</th>
+                        <th>Status</th>
+                        <th>Years</th>
+                        <th>Mobility</th>
+                        <th>Lifestyle</th>
+                        <th>Mitigation</th>
+                        <th>Consistency</th>
+                        <th>Industry</th>
+                        <th>Green Score</th>
+                    </tr>
+                </thead>
+                <tbody id="secondary-leaderboard"></tbody>
+            </table>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2 class="section-title">Driver Profiles</h2>
+
+        <div id="driver-profiles" class="profiles-container"></div>
+    </div>
+
+    <div id="tooltip" class="tooltip">
+        <div id="tooltipTitle" class="tooltip-title"></div>
+        <div id="tooltipContent" class="tooltip-content"></div>
+    </div>
+
+    <script>
+        const drivers = [
+            {
+                rank: 1,
+                driver: "Lewis Hamilton",
+                team: "Mercedes",
+                years: 18,
+                mobility: 85,
+                lifestyle: 75,
+                mitigation: 92,
+                consistency: 88,
+                industry: 95,
+                finalScore: 87,
+                bio: "Hamilton leads F1's sustainability transformation through Mission 44, Extreme E ownership, and consistent advocacy. His plant-based lifestyle, fashion sustainability initiatives, and direct challenge to F1's environmental impact set new standards. While his jet and supercar collection create contradictions, his mitigation efforts through verified carbon credits and renewable investments are substantial. His influence extends beyond racing, making sustainability central to his brand and leveraging his platform for systemic change.",
+                scores: {
+                    mobility: "Private jet offset through verified carbon credits, advocates commercial alternatives",
+                    lifestyle: "Plant-based diet, sustainable fashion collaborations, Monaco residence complexity",
+                    mitigation: "Extreme E investment, Mission 44 environmental programs, renewable energy portfolio",
+                    consistency: "Vocal F1 critic on sustainability, public advocacy matches private action significantly",
+                    industry: "Single most influential voice pushing F1 toward aggressive sustainability targets"
+                }
+            },
+            {
+                rank: 2,
+                driver: "Charles Leclerc",
+                team: "Ferrari",
+                years: 7,
+                mobility: 70,
+                lifestyle: 68,
+                mitigation: 75,
+                consistency: 72,
+                industry: 70,
+                finalScore: 71,
+                bio: "Leclerc represents the pragmatic middle ground of F1's new generation. His Monaco residency offers tax benefits and proximity to many races, reducing some travel. He participates in F1's sustainability programs without becoming a vocal advocate, which is honest but limits his impact. His lifestyle reflects wealth but not excess—relatively modest compared to peers. His score reflects solid citizenship without championship-level commitment to environmental transformation. As Ferrari's future, his influence could grow significantly.",
+                scores: {
+                    mobility: "Monaco base reduces some travel, standard private aviation use",
+                    lifestyle: "Monaco apartment, mainstream consumption patterns for F1 standards",
+                    mitigation: "Participates in team sustainability initiatives, no major personal programs",
+                    consistency: "Actions align with statements, but neither pushes boundaries",
+                    industry: "Could leverage Ferrari platform more aggressively for sustainability advocacy"
+                }
+            },
+            {
+                rank: 3,
+                driver: "George Russell",
+                team: "Mercedes",
+                years: 7,
+                mobility: 72,
+                lifestyle: 70,
+                mitigation: 70,
+                consistency: 75,
+                industry: 68,
+                finalScore: 71,
+                bio: "Russell embodies corporate professionalism applied to sustainability. He articulates F1's sustainability messaging effectively and participates in Mercedes' initiatives with genuine interest. However, his approach is institutional rather than activist—he works within systems rather than challenging them. His UK residence maintains stronger ties to family and reduced travel compared to Monaco-based peers. His score reflects competence and sincerity within conventional boundaries, positioning him as a reliable but not revolutionary voice for environmental change.",
+                scores: {
+                    mobility: "UK residence, standard F1 travel patterns, some commercial flight use",
+                    lifestyle: "Modest by F1 standards, professional focus over lifestyle brands",
+                    mitigation: "Strong engagement with Mercedes' sustainability programs",
+                    consistency: "Reliably supports sustainability initiatives without dramatic advocacy",
+                    industry: "GPDA director role provides platform for policy influence, moderately utilized"
+                }
+            },
+            {
+                rank: 4,
+                driver: "Lando Norris",
+                team: "McLaren",
+                years: 7,
+                mobility: 65,
+                lifestyle: 62,
+                mitigation: 68,
+                consistency: 70,
+                industry: 65,
+                finalScore: 66,
+                bio: "Norris represents F1's streaming generation—massive online influence but traditional consumption patterns. His golf obsession, gaming partnerships, and lifestyle content show wealth without particular environmental consciousness. To his credit, he doesn't greenwash; his sustainability engagement is honest about being team-driven rather than personal passion. His young audience presents enormous opportunity for influence currently underutilized. His score reflects authentic but limited commitment, with significant potential for growth as he matures into championship contention.",
+                scores: {
+                    mobility: "Monaco residence, frequent UK family visits, private aviation normalized",
+                    lifestyle: "Golf club memberships, supercar collection, gaming/streaming energy consumption",
+                    mitigation: "Follows McLaren's sustainability programs without personal initiatives",
+                    consistency: "Honest about priorities—racing first, sustainability not central to identity",
+                    industry: "Enormous youth influence via streaming largely unused for sustainability messaging"
+                }
+            },
+            {
+                rank: 5,
+                driver: "Pierre Gasly",
+                team: "Alpine",
+                years: 8,
+                mobility: 68,
+                lifestyle: 65,
+                mitigation: 65,
+                consistency: 68,
+                industry: 62,
+                finalScore: 66,
+                bio: "Gasly's sustainability profile reflects French sensibilities—fashion-conscious, culturally engaged, but not particularly activist. His Milan-Paris lifestyle creates substantial travel footprint, though his fashion partnerships increasingly emphasize sustainability. He engages with Alpine's programs professionally but hasn't developed distinctive environmental initiatives. His score represents European baseline rather than F1 leadership—acceptable by general standards but unremarkable within the sport's sustainability transformation. His influence could grow significantly if fashion partnerships evolve toward genuine circular economy advocacy.",
+                scores: {
+                    mobility: "Milan residence, frequent Paris travel, fashion week commitments add footprint",
+                    lifestyle: "Fashion industry engagement, standard F1 asset portfolio",
+                    mitigation: "Alpine sustainability participation, no signature environmental programs",
+                    consistency: "Actions match rhetoric—both moderate and professionally adequate",
+                    industry: "Fashion platform could amplify sustainable lifestyle messaging with greater focus"
+                }
+            },
+            {
+                rank: 6,
+                driver: "Oscar Piastri",
+                team: "McLaren",
+                years: 2,
+                mobility: 70,
+                lifestyle: 68,
+                mitigation: 62,
+                consistency: 65,
+                industry: 60,
+                finalScore: 65,
+                bio: "Piastri's limited F1 tenure makes comprehensive assessment challenging, but early patterns are promising. His Australian roots maintain strong family connections and some long-haul travel consciousness. He engages with McLaren's sustainability initiatives with apparent sincerity, though his youth means established personal programs haven't developed. His score reflects potential and baseline competence rather than proven commitment. As his career and platform grow, his influence could increase significantly. For now, he represents the next generation's starting point—adequate awareness without distinguishing advocacy.",
+                scores: {
+                    mobility: "UK base reduces some travel, Australia family trips create unavoidable footprint",
+                    lifestyle: "Early-career lifestyle not yet fully established, relatively modest patterns",
+                    mitigation: "Participates in team initiatives, personal programs not yet developed",
+                    consistency: "Limited track record makes consistency assessment preliminary",
+                    industry: "Youth and rising star status create future influence potential currently unrealized"
+                }
+            },
+            {
+                rank: 7,
+                driver: "Yuki Tsunoda",
+                team: "RB",
+                years: 4,
+                mobility: 65,
+                lifestyle: 60,
+                mitigation: 62,
+                consistency: 68,
+                industry: 60,
+                finalScore: 63,
+                bio: "Tsunoda's Italian residence and Japanese heritage create unique footprint challenges—regular long-haul family travel is culturally essential but environmentally intensive. His compact lifestyle and modest consumption patterns reflect Japanese cultural values more than environmental ideology. He engages adequately with team sustainability programs but hasn't developed personal initiatives. His score reflects honest baseline participation without distinctive commitment. As Red Bull's Japanese market connection, he could leverage this platform for Asian sustainability leadership but hasn't yet recognized or pursued this opportunity.",
+                scores: {
+                    mobility: "Italy residence, essential regular Japan travel for family and sponsors",
+                    lifestyle: "Modest consumption by F1 standards, compact urban living preference",
+                    mitigation: "Team sustainability compliance, no personal environmental programs",
+                    consistency: "Limited public sustainability engagement makes consistency difficult to assess",
+                    industry: "Significant potential for Asian market sustainability influence currently unused"
+                }
+            },
+            {
+                rank: 8,
+                driver: "Alex Albon",
+                team: "Williams",
+                years: 6,
+                mobility: 62,
+                lifestyle: 68,
+                mitigation: 60,
+                consistency: 65,
+                industry: 58,
+                finalScore: 63,
+                bio: "Albon's Thai-British heritage creates substantial travel footprint for family and sponsorship obligations, though his career interruption reduced accumulated impact compared to continuous competitors. His pets (cats) and personal interests show care capacity but not environmental activism. He participates adequately in Williams' modest sustainability programs—his score partly reflects team resource limitations rather than personal commitment. His genuine likability and growing platform present opportunity for authentic environmental engagement if he chooses to develop it. Currently represents adequate citizenship without distinguishing advocacy.",
+                scores: {
+                    mobility: "UK-Thailand regular travel for family, Monaco residence adds complexity",
+                    lifestyle: "Pet advocacy, golf interests, standard F1 consumption patterns",
+                    mitigation: "Limited by Williams' resource constraints, personal initiatives undeveloped",
+                    consistency: "Low public environmental profile makes consistency assessment challenging",
+                    industry: "Mid-grid position limits platform, but growing reputation creates potential"
+                }
+            },
+            {
+                rank: 9,
+                driver: "Fernando Alonso",
+                team: "Aston Martin",
+                years: 21,
+                mobility: 55,
+                lifestyle: 50,
+                mitigation: 45,
+                consistency: 55,
+                industry: 50,
+                finalScore: 51,
+                bio: "Alonso's extraordinary longevity creates substantial accumulated footprint. His lifestyle reflects traditional F1 culture with high-performance assets and global presence. While respected for technical expertise, he has not prioritized sustainability advocacy and maintains conventional patterns established over two decades. His score reflects generational norms: neither hostile nor engaged. Despite immense influence and respect within F1, he has not leveraged this capital for environmental transformation, representing opportunity cost in the sustainability evolution of the sport.",
+                scores: {
+                    mobility: "Extensive travel patterns accumulated over 21-year career",
+                    lifestyle: "Traditional F1 lifestyle with high-performance assets",
+                    mitigation: "Limited engagement with offsetting or reduction strategies",
+                    consistency: "Maintains conventional patterns without evolution",
+                    industry: "Enormous influence largely unused for sustainability transformation"
+                }
+            },
+            {
+                rank: 10,
+                driver: "Nico Hulkenberg",
+                team: "Haas",
+                years: 13,
+                mobility: 60,
+                lifestyle: 58,
+                mitigation: 55,
+                consistency: 60,
+                industry: 52,
+                finalScore: 57,
+                bio: "Hulkenberg's return after reserve years shows veteran pragmatism without notable environmental evolution. His German efficiency mentality manifests in methodical professional approach but hasn't translated to sustainability leadership. Career-long absence of podiums means reduced platform for advocacy, though his longevity provides accumulated influence. His score reflects adequate professional participation in team programs without personal environmental distinction. As experienced voice, he could mentor younger drivers toward sustainability but hasn't taken this role.",
+                scores: {
+                    mobility: "Swiss residence, career-long standard F1 travel patterns",
+                    lifestyle: "Professional focus, traditional F1 asset portfolio",
+                    mitigation: "Basic team compliance, limited personal environmental programs",
+                    consistency: "Consistent professional adequacy without environmental advocacy",
+                    industry: "Veteran status creates mentorship potential currently underutilized"
+                }
+            },
+            {
+                rank: 11,
+                driver: "Kevin Magnussen",
+                team: "Haas",
+                years: 9,
+                mobility: 58,
+                lifestyle: 55,
+                mitigation: 52,
+                consistency: 58,
+                industry: 50,
+                finalScore: 55,
+                bio: "Magnussen's interrupted career creates complicated footprint assessment—his time away from F1 reduced accumulation but his return shows conventional patterns. His family focus and Danish background suggest potential for Nordic environmental values, though these haven't manifested in public advocacy. He participates adequately in Haas' limited sustainability programs. His score reflects honest professional adequacy without distinguishing commitment. His straightforward personality could support authentic environmental messaging if he developed interest, but currently shows no indication of this direction.",
+                scores: {
+                    mobility: "Denmark-Monaco splits, family travel requirements",
+                    lifestyle: "Family-focused, standard professional F1 patterns",
+                    mitigation: "Haas team program participation, no personal initiatives",
+                    consistency: "Limited environmental messaging makes consistency difficult to assess",
+                    industry: "Mid-grid position limits platform and influence"
+                }
+            },
+            {
+                rank: 12,
+                driver: "Valtteri Bottas",
+                team: "Sauber",
+                years: 12,
+                mobility: 62,
+                lifestyle: 58,
+                mitigation: 58,
+                consistency: 60,
+                industry: 55,
+                finalScore: 59,
+                bio: "Bottas' cycling advocacy and Finnish connection to nature create foundation for environmental leadership he hasn't fully developed. His post-Mercedes career at Sauber reduced pressure and platform, limiting his influence potential. His relationship with cyclist Tiffany Cromwell provides sustainability intersection he could leverage more aggressively. His score reflects genuine interests and adequate participation without championship-level environmental commitment. His authenticity could support more aggressive advocacy if he chose to prioritize it, but currently represents unrealized potential rather than active leadership.",
+                scores: {
+                    mobility: "Monaco residence, regular Finland visits, cycling advocacy somewhat reduces travel",
+                    lifestyle: "Cycling focus, coffee business, modest consumption relative to peak F1",
+                    mitigation: "Basic sustainability participation, cycling partnerships tangentially environmental",
+                    consistency: "Nature connection authentic but not translated to aggressive advocacy",
+                    industry: "Reduced platform at Sauber limits current influence significantly"
+                }
+            },
+            {
+                rank: 13,
+                driver: "Zhou Guanyu",
+                team: "Sauber",
+                years: 4,
+                mobility: 60,
+                lifestyle: 55,
+                mitigation: 55,
+                consistency: 58,
+                industry: 52,
+                finalScore: 56,
+                bio: "Zhou's historic role as China's first F1 driver creates unique platform largely focused on market development rather than sustainability leadership. His fashion interests and lifestyle brand building reflect commercial priorities over environmental advocacy. He participates adequately in team sustainability programs but shows no distinctive environmental commitment. His enormous influence potential in China—where manufacturing and consumption patterns have global environmental impact—remains almost entirely unused for sustainability messaging. His score reflects adequate baseline without recognition of platform potential.",
+                scores: {
+                    mobility: "UK-China regular travel for family and massive sponsor obligations",
+                    lifestyle: "Fashion industry engagement, developing luxury lifestyle brand",
+                    mitigation: "Team program participation, no personal environmental initiatives",
+                    consistency: "Limited environmental messaging, focus on market development",
+                    industry: "Massive Chinese market influence potential for sustainability entirely untapped"
+                }
+            },
+            {
+                rank: 14,
+                driver: "Lance Stroll",
+                team: "Aston Martin",
+                years: 8,
+                mobility: 52,
+                lifestyle: 48,
+                mitigation: 55,
+                consistency: 52,
+                industry: 48,
+                finalScore: 51,
+                bio: "Stroll's enormous inherited wealth creates lifestyle footprint challenges that overshadow Aston Martin's aggressive sustainability programs. His family's private aviation assets, multiple properties, and consumption patterns represent peak F1 excess. While he participates in team sustainability initiatives, the contradiction between Aston Martin's green messaging and the Stroll family's visible lifestyle creates credibility problems. His score reflects this disconnect—team programs boost his numbers, but personal patterns undermine potential advocacy. Significant wealth creates both massive footprint and resources for mitigation he hasn't fully utilized.",
+                scores: {
+                    mobility: "Family private aviation fleet, multiple property portfolio creates maximum footprint",
+                    lifestyle: "Billionaire family lifestyle, luxury asset collection",
+                    mitigation: "Aston Martin team programs strong, personal mitigation initiatives unclear",
+                    consistency: "Lifestyle contradicts team's aggressive sustainability messaging",
+                    industry: "Family F1 ownership creates enormous potential for sport-wide change largely unrealized"
+                }
+            },
+            {
+                rank: 15,
+                driver: "Max Verstappen",
+                team: "Red Bull",
+                years: 10,
+                mobility: 55,
+                lifestyle: 52,
+                mitigation: 50,
+                consistency: 48,
+                industry: 45,
+                finalScore: 50,
+                bio: "Verstappen's dominance creates paradox: maximum platform with minimum environmental engagement. His Monaco residence, private jet, and sim-racing energy consumption reflect traditional F1 priorities. While he participates adequately in Red Bull's sustainability programs, he shows no personal environmental initiative or advocacy. His dismissive comments about environmental concerns and focus on pure racing excellence represent old-guard mentality. His score reflects enormous missed opportunity—as F1's dominant force, his voice could transform sport culture but currently reinforces conventional patterns. His influence potential versus actual impact creates largest gap on grid.",
+                scores: {
+                    mobility: "Private jet normalized, Monaco base, sim-racing creates additional energy footprint",
+                    lifestyle: "Supercar collection, luxury lifestyle, traditional F1 consumption patterns",
+                    mitigation: "Team program compliance, no personal environmental initiatives",
+                    consistency: "Dismissive of environmental concerns, focus on racing purity",
+                    industry: "Enormous platform and influence completely unused for sustainability advocacy"
+                }
+            },
+            {
+                rank: 16,
+                driver: "Sergio Perez",
+                team: "Red Bull",
+                years: 14,
+                mobility: 54,
+                lifestyle: 50,
+                mitigation: 52,
+                consistency: 50,
+                industry: 48,
+                finalScore: 51,
+                bio: "Perez's Mexican heritage creates unique travel footprint for family and massive sponsor obligations in Latin America. His career longevity accumulates substantial impact, though his supporting role to Verstappen reduces platform pressure. He participates adequately in Red Bull's sustainability programs without personal initiatives or advocacy. His enormous influence in Mexico and Latin America represents largely untapped potential for regional sustainability leadership—addressing manufacturing, consumption, and environmental policy where his voice could matter most. His score reflects adequate professional citizenship without strategic platform leverage.",
+                scores: {
+                    mobility: "Monaco-Mexico regular travel, extensive Latin American sponsor obligations",
+                    lifestyle: "Traditional F1 lifestyle with strong family focus",
+                    mitigation: "Red Bull program participation, limited personal environmental initiatives",
+                    consistency: "Professional adequacy without environmental advocacy",
+                    industry: "Massive Latin American influence potential for sustainability largely unused"
+                }
+            },
+            {
+                rank: 17,
+                driver: "Esteban Ocon",
+                team: "Alpine",
+                years: 8,
+                mobility: 58,
+                lifestyle: 55,
+                mitigation: 50,
+                consistency: 52,
+                industry: 50,
+                finalScore: 53,
+                bio: "Ocon's working-class background and family sacrifice narrative creates authentic relatability but hasn't translated to environmental leadership. His Nice residence and French market focus create reasonable geographic efficiency. He participates adequately in Alpine's programs without personal environmental distinction. His success-from-hardship story could powerfully support sustainable consumption messaging—addressing accessibility, efficiency, and resource consciousness—but this potential remains largely unexplored. His score reflects adequate baseline participation without recognizing platform potential for connecting sustainability to class and opportunity narratives.",
+                scores: {
+                    mobility: "Nice residence provides geographic efficiency, standard F1 travel patterns",
+                    lifestyle: "Success story narrative, transitioning to wealth without environmental consciousness",
+                    mitigation: "Alpine program participation, no signature personal initiatives",
+                    consistency: "Limited environmental messaging, professional adequacy focus",
+                    industry: "Working-class relatability creates unique sustainability messaging potential unused"
+                }
+            },
+            {
+                rank: 18,
+                driver: "Carlos Sainz Jr.",
+                team: "Ferrari",
+                years: 10,
+                mobility: 52,
+                lifestyle: 48,
+                mitigation: 50,
+                consistency: 50,
+                industry: 48,
+                finalScore: 50,
+                bio: "Sainz represents traditional F1 values—focus on racing excellence without environmental activism. His Madrid-Monaco split and rally interests create substantial footprint, while his lifestyle reflects conventional wealth. He participates professionally in Ferrari's sustainability programs without personal initiatives or advocacy. His Spanish market influence and rally heritage could support motorsport sustainability evolution, but he hasn't developed this angle. His score reflects competent professional adequacy without environmental distinction—neither hostile nor engaged, representing F1's pragmatic middle without transformation commitment.",
+                scores: {
+                    mobility: "Madrid-Monaco splits, rally competition adds footprint, golf travel",
+                    lifestyle: "Traditional F1 lifestyle, golf interests, conventional consumption",
+                    mitigation: "Ferrari program participation, limited personal environmental initiatives",
+                    consistency: "Professional racing focus without environmental advocacy",
+                    industry: "Motorsport heritage and Spanish influence underutilized for sustainability"
+                }
+            },
+            {
+                rank: 19,
+                driver: "Logan Sargeant",
+                team: "Williams (released)",
+                years: 2,
+                mobility: 55,
+                lifestyle: 52,
+                mitigation: 45,
+                consistency: 48,
+                industry: 42,
+                finalScore: 48,
+                bio: "Sargeant's brief F1 tenure and performance struggles prevented platform development for any advocacy, environmental or otherwise. His American background created unique travel footprint challenges. His score reflects short career preventing meaningful assessment rather than negative commitment. His struggle represents how performance pressure dominates environmental consideration—when fighting for career survival, sustainability necessarily becomes secondary. His experience illustrates how F1's competitive intensity marginalizes environmental consciousness for drivers not secure in their seats.",
+                scores: {
+                    mobility: "US-UK regular travel for family, Florida roots create long-haul requirements",
+                    lifestyle: "Limited establishment due to short career and performance pressure",
+                    mitigation: "Basic team compliance, no opportunity for personal program development",
+                    consistency: "Performance struggles prevented any environmental engagement",
+                    industry: "Limited platform and influence due to results and brief tenure"
+                }
+            }
+        ];
+
+        const secondaryDrivers = [
+            {
+                driver: "Sebastian Vettel",
+                status: "Retired 2022",
+                years: 16,
+                mobility: 80,
+                lifestyle: 82,
+                mitigation: 88,
+                consistency: 90,
+                industry: 92,
+                greenScore: 86,
+                bio: "Vettel's late-career transformation into environmental activism was genuine and influential. His retirement has actually amplified his impact, as he now dedicates substantial time to climate advocacy without compromising messages for sponsors or F1 politics. Pre-retirement actions like cycling to races, building insect hotels at circuits, and confronting F1 leadership on greenwashing demonstrated authentic commitment. His authenticity scores highest because his sacrifice of continuing earnings for principles is rare in sport.",
+                scores: {
+                    mobility: "Notably cycled to several GPs, maintained lower-profile travel than peers",
+                    lifestyle: "Swiss residence, family-focused lifestyle, reduced consumption patterns",
+                    mitigation: "Environmental foundation work, biodiversity advocacy at racing venues",
+                    consistency: "Post-retirement activism proves values transcend career convenience",
+                    industry: "Only retired driver maintaining active influence on F1 sustainability policy"
+                }
+            },
+            {
+                driver: "Daniel Ricciardo",
+                status: "Released mid-season",
+                years: 14,
+                mobility: 58,
+                lifestyle: 55,
+                mitigation: 52,
+                consistency: 55,
+                industry: 60,
+                greenScore: 56,
+                bio: "Ricciardo's career arc shows declining environmental engagement as performance pressure intensified. His Australian heritage creates unavoidable long-haul travel footprint, while his lifestyle brand emphasizes fun over sustainability. During peak Red Bull years, he participated adequately in team programs; his RB struggles left no bandwidth for environmental initiatives. His enormous fan affection and personality create unrealized platform for authentic environmental messaging. His score reflects capable citizenship during success without priority commitment during adversity—illustrating how F1 pressure marginalizes sustainability for struggling drivers.",
+                scores: {
+                    mobility: "Australia-Europe long-haul requirements, Monaco residence, extensive sponsor travel",
+                    lifestyle: "Lifestyle brand emphasizes enjoyment, wine venture, traditional F1 patterns",
+                    mitigation: "Peak-career team participation, declining personal initiative under pressure",
+                    consistency: "Environmental engagement correlated with career security, not core value",
+                    industry: "Massive personality platform and fan affection largely unused for sustainability"
+                }
+            },
+            {
+                driver: "Nyck de Vries",
+                status: "Reserve driver",
+                years: 1,
+                mobility: 65,
+                lifestyle: 60,
+                mitigation: 62,
+                consistency: 58,
+                industry: 55,
+                greenScore: 60,
+                bio: "De Vries' Formula E championship provides genuine sustainability credentials unique on grid. His electric racing background and technical understanding of EV technology position him as natural environmental advocate. However, his brief and unsuccessful F1 stint prevented platform development. His reserve role maintains F1 connection without racing footprint. His Formula E experience could provide valuable perspective on F1's sustainability evolution if he secured advisory role. His score reflects authentic electric motorsport commitment rather than F1-specific impact—representing road not taken by sport prioritizing traditional power over electric expertise.",
+                scores: {
+                    mobility: "Netherlands-UK base, Formula E career created lower historical footprint",
+                    lifestyle: "Technical focus, modest public profile, EV personal vehicle choices likely",
+                    mitigation: "Formula E championship demonstrates electric racing commitment",
+                    consistency: "Electric motorsport background provides authentic sustainability foundation",
+                    industry: "Formula E expertise could inform F1 transition but platform never materialized"
+                }
+            },
+            {
+                driver: "Mick Schumacher",
+                status: "Reserve driver",
+                years: 2,
+                mobility: 60,
+                lifestyle: 58,
+                mitigation: 55,
+                consistency: 60,
+                industry: 52,
+                greenScore: 57,
+                bio: "Schumacher's legacy burden overshadowed any environmental positioning development. His brief Haas tenure focused on performance validation rather than advocacy platform building. His family's environmental record—his father's limited engagement, mother's environmental foundation work—creates mixed inheritance. His reserve role maintains F1 presence without requiring full travel footprint. His Swiss upbringing suggests potential environmental consciousness, though public evidence remains limited. His score reflects unrealized potential—family name creates enormous platform he may yet leverage if securing race return or transitioning to sustainable motorsport advocacy.",
+                scores: {
+                    mobility: "Switzerland base, limited current F1 travel as reserve driver",
+                    lifestyle: "Low public profile, family wealth creates resources and challenges",
+                    mitigation: "Limited public environmental initiatives, some family foundation connection",
+                    consistency: "Performance pressure prevented environmental engagement development",
+                    industry: "Schumacher name creates massive platform currently unused"
+                }
+            },
+            {
+                driver: "Robert Shwartzman",
+                status: "Reserve driver",
+                years: 0,
+                mobility: 62,
+                lifestyle: 60,
+                mitigation: 55,
+                consistency: 58,
+                industry: 50,
+                greenScore: 57,
+                bio: "Shwartzman's reserve status without race debut means minimal F1 footprint but limited influence. His Ferrari Development Academy involvement suggests corporate sustainability program exposure. Russian nationality creates complex geopolitical situation affecting sponsor relationships and public engagement options. His score reflects potential baseline rather than established record—reserve drivers maintain readiness without race impact but also without platform for advocacy. His situation illustrates how non-racing drivers exist in F1 sustainability vacuum: present but invisible, consuming resources without voice for change.",
+                scores: {
+                    mobility: "Italy-based Ferrari reserve driver, simulator and limited track testing",
+                    lifestyle: "Development driver lifestyle, lower profile than race drivers",
+                    mitigation: "Ferrari Academy program exposure, limited personal initiatives",
+                    consistency: "Minimal public platform prevents meaningful consistency assessment",
+                    industry: "Reserve status provides no platform for influence despite Ferrari connection"
+                }
+            }
+        ];
+
+        function getScoreColor(score) {
+            if (score >= 80) return 'score-high';
+            if (score >= 65) return 'score-medium';
+            if (score >= 55) return 'score-medium';
+            return 'score-low';
+        }
+
+        function renderLeaderboard() {
+            const tbody = document.getElementById('leaderboard');
+            tbody.innerHTML = drivers.map(driver => `
+                <tr data-driver='${JSON.stringify(driver).replace(/'/g, "&apos;")}'>
+                    <td>${driver.rank}</td>
+                    <td data-type="driver">
+                        <span class="driver-name">${driver.driver}</span>
+                        <span class="team-name">${driver.team}</span>
+                    </td>
+                    <td>${driver.years}</td>
+                    <td data-type="mobility">
+                        <span class="score-value ${getScoreColor(driver.mobility)}">${driver.mobility}</span>
+                    </td>
+                    <td data-type="lifestyle">
+                        <span class="score-value ${getScoreColor(driver.lifestyle)}">${driver.lifestyle}</span>
+                    </td>
+                    <td data-type="mitigation">
+                        <span class="score-value ${getScoreColor(driver.mitigation)}">${driver.mitigation}</span>
+                    </td>
+                    <td data-type="consistency">
+                        <span class="score-value ${getScoreColor(driver.consistency)}">${driver.consistency}</span>
+                    </td>
+                    <td data-type="industry">
+                        <span class="score-value ${getScoreColor(driver.industry)}">${driver.industry}</span>
+                    </td>
+                    <td data-type="final">
+                        <span class="score-value final-score">${driver.finalScore}</span>
+                    </td>
+                </tr>
+            `).join('');
+
+            addTooltipListeners();
+        }
+
+        function renderSecondaryLeaderboard() {
+            const tbody = document.getElementById('secondary-leaderboard');
+            tbody.innerHTML = secondaryDrivers.map(driver => `
+                <tr data-driver='${JSON.stringify(driver).replace(/'/g, "&apos;")}'>
+                    <td data-type="driver">
+                        <span class="driver-name">${driver.driver}</span>
+                        <span class="team-name">${driver.status}</span>
+                    </td>
+                    <td>${driver.status}</td>
+                    <td>${driver.years}</td>
+                    <td data-type="mobility">
+                        <span class="score-value ${getScoreColor(driver.mobility)}">${driver.mobility}</span>
+                    </td>
+                    <td data-type="lifestyle">
+                        <span class="score-value ${getScoreColor(driver.lifestyle)}">${driver.lifestyle}</span>
+                    </td>
+                    <td data-type="mitigation">
+                        <span class="score-value ${getScoreColor(driver.mitigation)}">${driver.mitigation}</span>
+                    </td>
+                    <td data-type="consistency">
+                        <span class="score-value ${getScoreColor(driver.consistency)}">${driver.consistency}</span>
+                    </td>
+                    <td data-type="industry">
+                        <span class="score-value ${getScoreColor(driver.industry)}">${driver.industry}</span>
+                    </td>
+                    <td data-type="final">
+                        <span class="score-value final-score">${driver.greenScore}</span>
+                    </td>
+                </tr>
+            `).join('');
+
+            addSecondaryTooltipListeners();
+        }
+
+        function addTooltipListeners() {
+            const tooltip = document.getElementById('tooltip');
+            const tooltipTitle = document.getElementById('tooltipTitle');
+            const tooltipContent = document.getElementById('tooltipContent');
+
+            document.querySelectorAll('#leaderboard tr').forEach(row => {
+                const driverData = JSON.parse(row.getAttribute('data-driver'));
+
+                row.querySelectorAll('td').forEach(cell => {
+                    cell.addEventListener('mouseenter', (e) => {
+                        const type = cell.getAttribute('data-type');
+                        let title = '';
+                        let content = '';
+
+                        if (type === 'driver') {
+                            title = driverData.driver;
+                            content = driverData.bio;
+                        } else if (type && driverData.scores[type]) {
+                            const scoreNames = {
+                                mobility: 'Mobility Efficiency',
+                                lifestyle: 'Lifestyle Footprint',
+                                mitigation: 'Mitigation Credibility',
+                                consistency: 'Values Consistency',
+                                industry: 'Industry Impact',
+                                final: 'Final Green Score'
+                            };
+                            title = `${driverData.driver} — ${scoreNames[type]}`;
+                            content = type === 'final' ? driverData.bio : driverData.scores[type];
+                        }
+
+                        if (title && content) {
+                            tooltipTitle.textContent = title;
+                            tooltipContent.textContent = content;
+                            
+                            const rect = cell.getBoundingClientRect();
+                            tooltip.style.left = `${rect.left + rect.width / 2}px`;
+                            tooltip.style.top = `${rect.bottom + 10}px`;
+                            tooltip.style.transform = 'translateX(-50%)';
+                            
+                            tooltip.classList.add('active');
+                        }
+                    });
+
+                    cell.addEventListener('mouseleave', () => {
+                        tooltip.classList.remove('active');
+                    });
+                });
+            });
+        }
+
+        function addSecondaryTooltipListeners() {
+            const tooltip = document.getElementById('tooltip');
+            const tooltipTitle = document.getElementById('tooltipTitle');
+            const tooltipContent = document.getElementById('tooltipContent');
+
+            document.querySelectorAll('#secondary-leaderboard tr').forEach(row => {
+                const driverData = JSON.parse(row.getAttribute('data-driver'));
+
+                row.querySelectorAll('td').forEach(cell => {
+                    cell.addEventListener('mouseenter', (e) => {
+                        const type = cell.getAttribute('data-type');
+                        let title = '';
+                        let content = '';
+
+                        if (type === 'driver') {
+                            title = driverData.driver;
+                            content = driverData.bio;
+                        } else if (type && driverData.scores && driverData.scores[type]) {
+                            const scoreNames = {
+                                mobility: 'Mobility Efficiency',
+                                lifestyle: 'Lifestyle Footprint',
+                                mitigation: 'Mitigation Credibility',
+                                consistency: 'Values Consistency',
+                                industry: 'Industry Impact',
+                                final: 'Green Score'
+                            };
+                            title = `${driverData.driver} — ${scoreNames[type]}`;
+                            content = type === 'final' ? driverData.bio : driverData.scores[type];
+                        }
+
+                        if (title && content) {
+                            tooltipTitle.textContent = title;
+                            tooltipContent.textContent = content;
+                            
+                            const rect = cell.getBoundingClientRect();
+                            tooltip.style.left = `${rect.left + rect.width / 2}px`;
+                            tooltip.style.top = `${rect.bottom + 10}px`;
+                            tooltip.style.transform = 'translateX(-50%)';
+                            
+                            tooltip.classList.add('active');
+                        }
+                    });
+
+                    cell.addEventListener('mouseleave', () => {
+                        tooltip.classList.remove('active');
+                    });
+                });
+            });
+        }
+
+        function renderProfiles() {
+            const container = document.getElementById('driver-profiles');
+            const allDrivers = [...drivers, ...secondaryDrivers];
+            
+            container.innerHTML = allDrivers.map(driver => {
+                const scoreLabels = {
+                    mobility: 'Mobility',
+                    lifestyle: 'Lifestyle',
+                    mitigation: 'Mitigation',
+                    consistency: 'Consistency',
+                    industry: 'Industry'
+                };
+                
+                const finalScore = driver.finalScore || driver.greenScore;
+                
+                return `
+                    <div class="profile-card">
+                        <div class="profile-header">
+                            <div class="profile-driver-name">${driver.driver}</div>
+                            <div class="profile-team">${driver.team || driver.status}</div>
+                            <div class="profile-score">${finalScore}</div>
+                        </div>
+                        <div class="profile-bio">${driver.bio}</div>
+                        ${driver.scores ? `
+                            <div class="profile-scores">
+                                ${Object.keys(driver.scores).map(key => `
+                                    <div class="profile-score-item">
+                                        <div class="profile-score-label">${scoreLabels[key] || key}</div>
+                                        <div class="profile-score-desc">${driver.scores[key]}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        renderLeaderboard();
+        renderSecondaryLeaderboard();
+        renderProfiles();
+    </script>
+</body>
+</html>
