@@ -1,0 +1,2376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrandRank Analyst Companion</title>
+    <style>
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #121826;
+            --bg-card: #1a2234;
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --accent-red: #dc2626;
+            --text-primary: #e8eef7;
+            --text-secondary: #94a3b8;
+            --border-color: #2d3748;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 50px 20px 30px;
+            border-bottom: 3px solid var(--accent-blue);
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border-radius: 16px;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--accent-cyan);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .intro-text {
+            max-width: 900px;
+            margin: 30px auto 40px;
+            padding: 20px 30px;
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--accent-blue);
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .intro-text p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .intro-text strong {
+            color: var(--text-primary);
+        }
+
+        .perspective-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            margin: 40px 0;
+            padding: 4px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            border: 2px solid var(--border-color);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .perspective-btn {
+            padding: 14px 36px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.05rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .perspective-btn.active {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-cyan) 100%);
+            color: white;
+            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+        }
+
+        .perspective-btn:hover:not(.active) {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--text-primary);
+        }
+
+        .role-type-selector {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .role-type-btn {
+            padding: 12px 28px;
+            border: 2px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .role-type-btn.active {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-cyan);
+        }
+
+        .role-type-btn:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+
+        .role-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .role-card {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+            border: 2px solid var(--border-color);
+            border-radius: 14px;
+            padding: 28px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .role-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .role-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .role-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 32px rgba(59, 130, 246, 0.25);
+        }
+
+        .role-card.selected {
+            border-color: var(--accent-cyan);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, var(--bg-card) 100%);
+            box-shadow: 0 12px 32px rgba(59, 130, 246, 0.35);
+        }
+
+        .role-card.selected::before {
+            transform: scaleX(1);
+        }
+
+        .role-card.outside-in {
+            border-color: #ef4444;
+        }
+
+        .role-card.outside-in:hover {
+            border-color: #dc2626;
+            box-shadow: 0 12px 32px rgba(239, 68, 68, 0.25);
+        }
+
+        .role-card.outside-in::before {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+        }
+
+        .role-icon {
+            font-size: 3rem;
+            margin-bottom: 14px;
+            display: block;
+        }
+
+        .role-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .role-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .questions-container {
+            display: none;
+            margin-top: 40px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .questions-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 28px;
+            padding-bottom: 16px;
+            border-bottom: 3px solid var(--border-color);
+        }
+
+        .question-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .question-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-left: 4px solid var(--accent-blue);
+            border-radius: 12px;
+            padding: 20px 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .question-card:hover {
+            border-left-width: 6px;
+            border-left-color: var(--accent-cyan);
+            transform: translateX(8px);
+            box-shadow: 0 6px 24px rgba(59, 130, 246, 0.2);
+        }
+
+        .question-number {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-right: 12px;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: inline;
+        }
+
+        .question-detail {
+            display: none;
+            margin-top: 40px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .question-detail.active {
+            display: block;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(6, 182, 212, 0.2));
+            border: 2px solid var(--accent-blue);
+            color: var(--text-primary);
+            padding: 12px 28px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.4), rgba(6, 182, 212, 0.4));
+            transform: translateX(-4px);
+        }
+
+        .panels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));
+            gap: 24px;
+            margin-top: 28px;
+        }
+
+        .panel {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 14px;
+            padding: 28px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .panel-header {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .panel-icon {
+            font-size: 1.6rem;
+        }
+
+        .panel-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .metric-item {
+            background: var(--bg-secondary);
+            padding: 14px 16px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        .metric-value {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .action-list {
+            list-style: none;
+        }
+
+        .action-item {
+            background: var(--bg-secondary);
+            padding: 18px 20px;
+            border-radius: 10px;
+            margin: 14px 0;
+            border-left: 5px solid #10b981;
+        }
+
+        .action-timeline {
+            font-size: 0.85rem;
+            color: #10b981;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .action-description {
+            color: var(--text-primary);
+            margin: 10px 0;
+            font-weight: 500;
+        }
+
+        .action-owner {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
+            border: 2px solid var(--accent-blue);
+            border-radius: 10px;
+            padding: 18px;
+            margin: 18px 0;
+        }
+
+        .outside-in-label {
+            display: inline-block;
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .analyst-assist {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+            border: 2px solid #8b5cf6;
+            border-radius: 14px;
+            padding: 28px;
+            margin-top: 28px;
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.2);
+        }
+
+        .assist-header {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #a78bfa;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .assist-section {
+            margin: 18px 0;
+            padding: 18px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            border-left: 5px solid #8b5cf6;
+        }
+
+        .assist-label {
+            font-size: 0.9rem;
+            color: #a78bfa;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .assist-text {
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-style: italic;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 14px;
+            margin-top: 28px;
+            flex-wrap: wrap;
+        }
+
+        .export-btn {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            border: none;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+        }
+
+        .export-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.5);
+        }
+
+        .perspective-indicator {
+            display: none;
+            text-align: center;
+            padding: 16px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            margin: 24px 0;
+            border: 2px solid var(--border-color);
+            font-weight: 600;
+        }
+
+        .perspective-indicator.active {
+            display: block;
+        }
+
+        .perspective-indicator.outside {
+            border-color: #dc2626;
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.15) 0%, var(--bg-card) 100%);
+        }
+
+        @media (max-width: 768px) {
+            .panels-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .role-selector {
+                grid-template-columns: 1fr;
+            }
+
+            .role-type-selector {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">BrandRank Analyst Companion</div>
+            <div class="tagline">Ask the Right Questions (By Role, By Lens). Get the Right Answers.</div>
+            <div class="subtitle">Start with the question, not the chart</div>
+        </header>
+
+        <div class="intro-text">
+            <p><strong>How to use this tool:</strong> Select a stakeholder role below, then choose from their top 10 questions. Each question reveals relevant dashboard signals, role-specific implications, and ready-to-use talking points for your next call or presentation.</p>
+        </div>
+
+        <div id="roleSelection">
+            <div class="section-header">Who Are You Talking To?</div>
+            
+            <div class="role-type-selector">
+                <button class="role-type-btn active" data-type="internal">Internal Stakeholders</button>
+                <button class="role-type-btn" data-type="external">Outside-In Perspectives</button>
+            </div>
+
+            <div class="role-selector" id="roleSelector"></div>
+        </div>
+
+        <div class="questions-container" id="questionsContainer">
+            <button class="back-button" id="backToRoles">← Back to Role Selection</button>
+            <div class="section-header" id="questionsHeader"></div>
+            
+            <div style="margin-bottom: 30px; padding: 20px; background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%); border: 2px solid #8b5cf6; border-radius: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div>
+                        <strong style="color: #a78bfa; font-size: 1.1rem;">📋 Master Analysis Prompt</strong>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 5px;">Copy this comprehensive prompt to analyze all questions for this role at once</div>
+                    </div>
+                    <button id="copyMasterPromptBtn" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem;">
+                        📋 Copy Prompt
+                    </button>
+                </div>
+                <div id="masterPromptPreview" style="background: var(--bg-secondary); padding: 15px; border-radius: 8px; color: var(--text-secondary); font-family: 'Courier New', monospace; font-size: 0.85rem; max-height: 150px; overflow-y: auto; border: 1px solid var(--border-color);">
+                    <!-- Prompt will be generated here -->
+                </div>
+            </div>
+            
+            <div class="question-list" id="questionList"></div>
+        </div>
+
+        <div class="question-detail" id="questionDetail">
+            <button class="back-button" id="backToQuestions">← Back to Questions</button>
+            
+            <div class="perspective-toggle" style="margin-bottom: 30px;">
+                <button class="perspective-btn active" data-perspective="inside">Inside View</button>
+                <button class="perspective-btn" data-perspective="outside">Outside-In View</button>
+            </div>
+            
+            <div class="perspective-indicator" id="perspectiveIndicator"></div>
+            
+            <div id="detailContent"></div>
+        </div>
+    </div>
+
+    <script>
+        const roles = {
+            internal: {
+                ceo: {
+                    title: "CEO / Executive",
+                    icon: "👔",
+                    subtitle: "Steward trust, growth, and long-term advantage",
+                    questions: [
+                        "Is AI helping or hurting our brand right now?",
+                        "Where are we exposed without knowing it?",
+                        "How defensible is our brand in an AI-first world?",
+                        "Are we ahead or behind competitors structurally?",
+                        "What risks need leadership attention?",
+                        "Where should we invest to stay credible?",
+                        "Are we prepared for agentic commerce?",
+                        "What does success look like in AI discovery?",
+                        "Can we prove progress quarter-over-quarter?",
+                        "What would I regret not fixing six months from now?"
+                    ]
+                },
+                cmo: {
+                    title: "CMO / Brand",
+                    icon: "🎯",
+                    subtitle: "Grow brand demand while protecting trust",
+                    questions: [
+                        "Is my brand recommended or merely mentioned by AI?",
+                        "Where am I winning or losing share of answers vs. competitors?",
+                        "Does AI clearly articulate our brand promise, or hedge?",
+                        "Which consumer questions most directly influence purchase intent?",
+                        "Where is AI quietly undermining brand equity?",
+                        "Which investments (content, PR, innovation) actually move AI visibility?",
+                        "Are private labels gaining advantage in AI-driven discovery?",
+                        "Which categories or segments deserve incremental spend?",
+                        "How exposed is my brand heading into the next planning cycle?",
+                        "Can I confidently explain our AI brand health to the CEO or board?"
+                    ]
+                },
+                comms: {
+                    title: "Corporate Comms / PR",
+                    icon: "📢",
+                    subtitle: "Protect reputation, shape narrative, prevent crises",
+                    questions: [
+                        "What exactly is AI saying about our brand today?",
+                        "Where is AI misstating facts or amplifying risk?",
+                        "Which issues could become reputation flashpoints?",
+                        "Are past controversies resurfacing in AI answers?",
+                        "Which platforms are most prone to negative framing?",
+                        "Do AI answers align with our approved messaging?",
+                        "Where do we need proactive clarification or transparency?",
+                        "Which third-party sources most influence our AI narrative?",
+                        "Are competitors framing us indirectly through AI?",
+                        "What should I brief leadership on before it becomes news?"
+                    ]
+                },
+                digital: {
+                    title: "Digital / Web / Experience",
+                    icon: "💻",
+                    subtitle: "Ensure owned channels power discovery and conversion",
+                    questions: [
+                        "Can AI find, crawl, and extract our content?",
+                        "Which pages are holding back AI visibility?",
+                        "Where do we lack schema, FAQs, or structured data?",
+                        "Why do competitors outrank us despite similar products?",
+                        "Which fixes will improve AI performance fastest?",
+                        "Are our sites built for human UX but not machine UX?",
+                        "How does content readiness vary by AI platform?",
+                        "Are content updates actually improving AI answers?",
+                        "Where is our site a liability instead of an asset?",
+                        "What should we fix this quarter vs. monitor?"
+                    ]
+                },
+                brand: {
+                    title: "Brand / Product Marketing",
+                    icon: "🎨",
+                    subtitle: "Drive differentiation, clarify value, support growth",
+                    questions: [
+                        "Which product features does AI emphasize—or ignore?",
+                        "Are we getting credit for our true differentiation?",
+                        "Where does AI blur us with competitors?",
+                        "How does AI frame our price-to-value story?",
+                        "Which SKUs are most often recommended?",
+                        "Are innovation claims accurately reflected?",
+                        "Where does messaging confuse or oversimplify?",
+                        "Which benefits resonate most in AI answers?",
+                        "How do different segments experience our brand via AI?",
+                        "What messaging gaps are suppressing demand?"
+                    ]
+                },
+                rd: {
+                    title: "R&D / Innovation",
+                    icon: "🔬",
+                    subtitle: "Turn innovation into credible, trusted advantage",
+                    questions: [
+                        "Does AI recognize our R&D investment?",
+                        "Which innovations are invisible to AI?",
+                        "Are technical claims oversimplified or distorted?",
+                        "Where does lack of documentation weaken credibility?",
+                        "How are safety or performance risks framed?",
+                        "Do competitors appear more innovative than reality?",
+                        "Which proof points should we publish or elevate?",
+                        "Where does innovation create trust vs. skepticism?",
+                        "Are future-facing capabilities understood?",
+                        "How do we ensure innovation translates into answer leadership?"
+                    ]
+                },
+                social: {
+                    title: "Social Media / Community",
+                    icon: "📱",
+                    subtitle: "Monitor sentiment, respond early, manage narrative",
+                    questions: [
+                        "Are AI answers reflecting online sentiment trends?",
+                        "Which consumer concerns are gaining traction?",
+                        "Where is misinformation starting to surface?",
+                        "Are social narratives bleeding into AI responses?",
+                        "Which platforms amplify negativity fastest?",
+                        "Where do we need real-time engagement?",
+                        "Are advocates or critics shaping AI answers?",
+                        "What issues require escalation vs. response?",
+                        "How can social content support AI clarity?",
+                        "What should my team watch this week?"
+                    ]
+                },
+                cx: {
+                    title: "Customer Service / CX",
+                    icon: "🤝",
+                    subtitle: "Reduce friction, resolve issues, improve trust",
+                    questions: [
+                        "What problems do consumers ask AI about most?",
+                        "Are AI answers aligned with actual support policies?",
+                        "Where does AI over-promise or mislead customers?",
+                        "Which recurring issues signal product or comms gaps?",
+                        "Are service failures amplified in AI narratives?",
+                        "Which fixes would reduce inbound volume fastest?",
+                        "Are replacement, warranty, or usage issues clear?",
+                        "Do AI answers set realistic expectations?",
+                        "Where does poor CX create brand vulnerability?",
+                        "How can service insights improve upstream content?"
+                    ]
+                },
+                legal: {
+                    title: "Legal / Risk / Compliance",
+                    icon: "⚖️",
+                    subtitle: "Prevent exposure, ensure accuracy, reduce liability",
+                    questions: [
+                        "Is AI making inaccurate or risky claims about us?",
+                        "Which statements could trigger regulatory concern?",
+                        "Are claims consistent across platforms?",
+                        "Where is AI inferring things we never said?",
+                        "Are safety, health, or sustainability claims defensible?",
+                        "Which third-party sources pose legal risk?",
+                        "How fast do inaccuracies spread across engines?",
+                        "Where do disclaimers or clarifications matter?",
+                        "What issues require immediate correction?",
+                        "How do we document mitigation actions?"
+                    ]
+                },
+                retail: {
+                    title: "Retail / Shopper Marketing",
+                    icon: "🛒",
+                    subtitle: "Win at the moment of AI-assisted purchase",
+                    questions: [
+                        "How does AI position us in shopping queries?",
+                        "Are we losing to private label in best value answers?",
+                        "How do we perform inside retailer AI tools?",
+                        "Are our PDPs optimized for AI extraction?",
+                        "Which features influence AI recommendations?",
+                        "Where does pricing perception hurt us?",
+                        "How does performance differ by retailer ecosystem?",
+                        "Are promotions reflected accurately by AI?",
+                        "Where should we partner more closely with retailers?",
+                        "What will AI recommend when price pressure rises?"
+                    ]
+                },
+                insights: {
+                    title: "Insights / Customer Knowledge",
+                    icon: "📊",
+                    subtitle: "Decode consumer behavior and emerging trends",
+                    questions: [
+                        "What questions are consumers actually asking about our category?",
+                        "Which consumer needs are growing vs. declining in AI queries?",
+                        "How do purchase-intent queries differ from research queries?",
+                        "What pain points surface most frequently in AI interactions?",
+                        "Which demographic or psychographic segments show distinct query patterns?",
+                        "Are emerging trends visible in query volume shifts?",
+                        "How does AI frame consumer decision criteria in our category?",
+                        "What unmet needs are consumers expressing through AI?",
+                        "How do our insights compare to what AI tells consumers?",
+                        "Which consumer beliefs about our brand are AI reinforcing or challenging?"
+                    ]
+                },
+                seo: {
+                    title: "SEO / AEO Leader",
+                    icon: "🔍",
+                    subtitle: "Optimize for AI-driven search and discovery",
+                    questions: [
+                        "How does our AI visibility compare to traditional search rankings?",
+                        "Which SEO investments translate to AEO performance?",
+                        "Are our target keywords showing up in AI answers?",
+                        "How do AI engines weight different ranking signals for our content?",
+                        "Which content formats perform best across AI platforms?",
+                        "Is our link authority translating to AI citation frequency?",
+                        "How quickly do content updates reflect in AI responses?",
+                        "Which technical SEO elements matter most for AEO?",
+                        "Are we winning featured snippets but losing AI answers?",
+                        "How should we rebalance investment between SEO and AEO?"
+                    ]
+                }
+            },
+            external: {
+                competitor: {
+                    title: "Competitor",
+                    icon: "⚔️",
+                    subtitle: "Where would I attack?",
+                    questions: [
+                        "Where does this brand lose AI answer share today?",
+                        "Which high-intent consumer questions exclude them?",
+                        "Where does AI hedge, criticize, or qualify their claims?",
+                        "Which vulnerabilities could be amplified strategically?",
+                        "Where does their content infrastructure lag ours?",
+                        "Which segments (price, sustainability, accessibility) are exposed?",
+                        "How strong is their defensive moat in AI answers?",
+                        "Which platforms misrepresent them most?",
+                        "How fast do their fixes show up in AI results?",
+                        "Where could we displace them with better content, not better products?"
+                    ]
+                },
+                acquirer: {
+                    title: "M&A / Acquirer",
+                    icon: "💼",
+                    subtitle: "Is this brand worth a premium?",
+                    questions: [
+                        "Is this brand recommended by AI at scale?",
+                        "How durable is their category leadership?",
+                        "Are there latent reputation risks not priced into revenue?",
+                        "How well documented and defensible are their claims?",
+                        "Would AI amplify or dilute this brand post-acquisition?",
+                        "Is their digital/content foundation future-ready?",
+                        "Are there regulatory or litigation signals emerging?",
+                        "How dependent is brand equity on third-party sources?",
+                        "What would break first under increased scrutiny?",
+                        "Does this brand compound trust—or require cleanup?"
+                    ]
+                },
+                regulator: {
+                    title: "Regulator / Watchdog",
+                    icon: "🔍",
+                    subtitle: "Is this brand truthful and compliant?",
+                    questions: [
+                        "Is AI repeating inaccurate or misleading claims?",
+                        "Which claims lack substantiation?",
+                        "Are safety, health, or environmental statements precise?",
+                        "Do answers vary materially by platform?",
+                        "Is misinformation spreading unintentionally?",
+                        "Are disclaimers and limitations visible?",
+                        "Are consumers likely to be misled at scale?",
+                        "How quickly do errors propagate?",
+                        "Which third-party sources amplify risk?",
+                        "Where should oversight focus first?"
+                    ]
+                },
+                investor: {
+                    title: "Investor / Analyst",
+                    icon: "📈",
+                    subtitle: "Is this brand stronger or riskier than it looks?",
+                    questions: [
+                        "Is the brand gaining or losing relevance?",
+                        "Are competitors overtaking them in AI discovery?",
+                        "Do AI narratives support premium valuation?",
+                        "Are reputation risks quietly accumulating?",
+                        "Is innovation visible—or just marketed?",
+                        "How exposed is the brand to price pressure?",
+                        "Is management's story reflected in AI reality?",
+                        "Are ESG claims reinforced or challenged?",
+                        "Would a controversy spread faster via AI?",
+                        "Is this brand a trust compounder or decayer?"
+                    ]
+                },
+                journalist: {
+                    title: "Journalist / Reporter",
+                    icon: "📰",
+                    subtitle: "Where does the brand's story crack?",
+                    questions: [
+                        "Where do AI answers contradict brand claims?",
+                        "What topics generate the most hedging language?",
+                        "Are controversies resurfacing quietly?",
+                        "Which sources challenge the brand narrative?",
+                        "Are exec statements aligned with facts?",
+                        "Where does AI say 'some say...'?",
+                        "What claims lack independent verification?",
+                        "How does coverage vary across platforms?",
+                        "Which questions deserve public scrutiny?",
+                        "What story would surprise the market?"
+                    ]
+                },
+                activist: {
+                    title: "Activist / NGO",
+                    icon: "✊",
+                    subtitle: "Where is the brand vulnerable to ethical pressure?",
+                    questions: [
+                        "Are ESG claims consistently supported?",
+                        "Where is the brand invisible on sustainability?",
+                        "Does AI question corporate responsibility?",
+                        "Are consumer harms acknowledged?",
+                        "Which platforms surface criticism most?",
+                        "Where do third-party sources challenge claims?",
+                        "Are vulnerable groups impacted?",
+                        "Is transparency performative or real?",
+                        "Which claims would fail a fact-check?",
+                        "Where could pressure force change?"
+                    ]
+                },
+                talent: {
+                    title: "Potential Employee",
+                    icon: "👤",
+                    subtitle: "Is this a company I trust to work for?",
+                    questions: [
+                        "How does AI describe leadership and culture?",
+                        "Are employer claims consistent with reality?",
+                        "Do controversies surface in corporate narratives?",
+                        "Is the company future-ready or defensive?",
+                        "Are values reflected in actions?",
+                        "How visible are executives as thought leaders?",
+                        "Does AI portray innovation credibly?",
+                        "Are trust issues apparent?",
+                        "Is the brand respected in its category?",
+                        "Would joining feel risky?"
+                    ]
+                },
+                plaintiff: {
+                    title: "Plaintiff / Litigation",
+                    icon: "⚖️",
+                    subtitle: "Where is there a gap between claim and experience?",
+                    questions: [
+                        "Where does AI repeat absolute claims?",
+                        "Which claims contradict consumer reviews?",
+                        "Are safety or performance claims overstated?",
+                        "Where does AI flag reliability issues?",
+                        "Do disclaimers fail to travel with claims?",
+                        "Are geographic differences ignored?",
+                        "Which statements lack evidence?",
+                        "How consistently are claims phrased?",
+                        "Where is ambiguity exploitable?",
+                        "Which platforms create most exposure?"
+                    ]
+                }
+            }
+        };
+
+        let currentPerspective = "inside";
+        let currentRoleType = "internal";
+        let currentRole = null;
+        let currentQuestion = null;
+
+        function init() {
+            renderRoles();
+            setupPerspectiveToggle();
+            setupRoleTypeToggle();
+            setupBackButtons();
+        }
+
+        function setupPerspectiveToggle() {
+            document.querySelectorAll(".perspective-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    document.querySelectorAll(".perspective-btn").forEach(b => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    currentPerspective = btn.dataset.perspective;
+                    updatePerspectiveIndicator();
+                });
+            });
+        }
+
+        function setupRoleTypeToggle() {
+            document.querySelectorAll(".role-type-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    document.querySelectorAll(".role-type-btn").forEach(b => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    currentRoleType = btn.dataset.type;
+                    renderRoles();
+                });
+            });
+        }
+
+        function updatePerspectiveIndicator() {
+            const indicator = document.getElementById("perspectiveIndicator");
+            if (currentPerspective === "outside") {
+                indicator.className = "perspective-indicator active outside";
+                indicator.innerHTML = '<div class="outside-in-label">OUTSIDE-IN VIEW ACTIVE</div><div>Framing insights through external stakeholder lens: what competitors, investors, regulators, and others see in your data</div>';
+            } else {
+                indicator.className = "perspective-indicator active";
+                indicator.innerHTML = "<strong>Inside View Active</strong> – Showing internal stakeholder perspective with actionable dashboard insights";
+            }
+        }
+
+        function renderRoles() {
+            const selector = document.getElementById("roleSelector");
+            const roleSet = roles[currentRoleType];
+            
+            selector.innerHTML = Object.keys(roleSet).map(key => {
+                const role = roleSet[key];
+                const outsideClass = currentRoleType === "external" ? "outside-in" : "";
+                return `
+                    <div class="role-card ${outsideClass}" data-role="${key}">
+                        <div class="role-icon">${role.icon}</div>
+                        <div class="role-title">${role.title}</div>
+                        <div class="role-subtitle">${role.subtitle}</div>
+                    </div>
+                `;
+            }).join("");
+
+            selector.querySelectorAll(".role-card").forEach(card => {
+                card.addEventListener("click", () => {
+                    const roleKey = card.dataset.role;
+                    selectRole(roleKey);
+                });
+            });
+        }
+
+        function selectRole(roleKey) {
+            currentRole = roleKey;
+            document.querySelectorAll(".role-card").forEach(c => c.classList.remove("selected"));
+            document.querySelector(`[data-role="${roleKey}"]`).classList.add("selected");
+            renderQuestions(roleKey);
+            document.getElementById("roleSelection").style.display = "none";
+            document.getElementById("questionsContainer").classList.add("active");
+            updatePerspectiveIndicator();
+        }
+
+        function renderQuestions(roleKey) {
+            const roleSet = roles[currentRoleType];
+            const role = roleSet[roleKey];
+            const questions = role.questions;
+            
+            document.getElementById("questionsHeader").textContent = `Top 10 Questions for ${role.title}`;
+            
+            // Generate and display master prompt
+            const masterPrompt = generateMasterPrompt(currentRoleType, roleKey, role);
+            document.getElementById("masterPromptPreview").textContent = masterPrompt.substring(0, 300) + "...";
+            
+            // Setup copy button
+            const copyBtn = document.getElementById("copyMasterPromptBtn");
+            if (copyBtn) {
+                copyBtn.onclick = function(e) {
+                    copyMasterPrompt(e.target);
+                };
+            }
+            
+            const questionList = document.getElementById("questionList");
+            
+            questionList.innerHTML = questions.map((q, idx) => `
+                <div class="question-card" data-idx="${idx}">
+                    <span class="question-number">${idx + 1}</span>
+                    <span class="question-text">${q}</span>
+                </div>
+            `).join("");
+
+            questionList.querySelectorAll(".question-card").forEach(card => {
+                card.addEventListener("click", () => {
+                    const idx = parseInt(card.dataset.idx);
+                    currentQuestion = idx;
+                    renderQuestionDetail(roleKey, idx);
+                    document.getElementById("questionsContainer").classList.remove("active");
+                    document.getElementById("questionDetail").classList.add("active");
+                });
+            });
+        }
+
+        function generateMasterPrompt(roleType, roleKey, role) {
+            const isExternal = roleType === "external";
+            const roleTitle = role.title;
+            
+            // Use the comprehensive prompts from the document for internal roles
+            const comprehensivePrompts = {
+                cmo: `# BrandRank Dashboard Analysis: CMO / Brand Perspective
+
+## Role Context
+Focus: Grow brand demand while protecting trust
+
+## Automated Analysis Prompt
+
+Using the comprehensive BrandRank dashboard data provided, answer the following 10 strategic questions from a CMO/Brand perspective. Begin with a 75-100 word executive summary synthesizing the brand's overall position, then provide a ~75-word paragraph answer to each question supported by relevant data exhibits. Include 1-2 probe questions after each answer to enable deeper exploration.
+
+### Executive Summary (75-100 words)
+[Synthesize: Overall visibility position, primary competitive strengths/gaps, critical vulnerabilities, and strategic implications for demand growth and trust protection]
+
+### Question-by-Question Analysis
+
+1. Is my brand recommended or merely mentioned by AI?
+
+[75-word answer focusing on: Recommendation strength vs. passive mentions, platform consistency, category dominance vs. hedging, moat sustainability]
+
+**Key Evidence:**
+- Overall Visibility Score: X.X/10
+- Platform breakdown with spread analysis
+- Top recommendation queries (3-4 examples with scores)
+- Mention-only queries showing gaps
+
+**Probe Deeper:** Which query types generate recommendations vs. mentions? What language patterns indicate AI confidence?
+
+---
+
+2. Where am I winning or losing share of answers vs. competitors?
+
+[75-word answer focusing on: Category-by-category competitive position, authority gaps, momentum trends, asymmetric competitive dynamics]
+
+**Key Evidence:**
+| Query Category | Brand | Competitor 1 | Competitor 2 | Competitor 3 |
+|----------------|-------|--------------|--------------|--------------|
+| [Key categories with scores] | | | | |
+
+**Probe Deeper:** In trailing categories, what content/credibility gaps exist? Where are we winning but with declining momentum?
+
+---
+
+3. Does AI clearly articulate our brand promise, or hedge?
+
+[75-word answer focusing on: Promise alignment score, platform spread indicating narrative stability, endorsement vs. acknowledgment, evidence gaps]
+
+**Key Evidence:**
+- Brand Promise Alignment Score: X.X/10
+- Platform range and narrative consistency
+- Promise elements endorsed by AI
+- Promise elements questioned or hedged
+
+**Probe Deeper:** What evidence would move AI from hedging to endorsement? Which promise elements create most skepticism?
+
+---
+
+4. Which consumer questions most directly influence purchase intent?
+
+[75-word answer focusing on: Decision-moment queries, environmental veto questions, infrastructure vs. philosophy performance, conversion patterns]
+
+**Key Evidence:**
+- High-impact decision queries (8.0+) with platform coverage
+- Critical gaps (<4.0) with business impact assessment
+- Query volume and category growth indicators
+
+**Probe Deeper:** Are we losing queries to competitors or missing entirely? What's conversion difference between 9+ vs. 6-7 scores?
+
+---
+
+5. Where is AI quietly undermining brand equity?
+
+[75-word answer focusing on: Operational vulnerabilities, narrative contradictions, compounding risks, training data permanence]
+
+**Key Evidence:**
+| Vulnerability | Severity | AI Narrative Summary |
+|---------------|----------|---------------------|
+| [Issues with HIGH/MED/LOW severity ratings] | | |
+
+**Probe Deeper:** Are vulnerabilities strengthening or weakening in AI responses? Which creates most deal-breaker impact at purchase?
+
+---
+
+6. Which investments (content, PR, innovation) actually move AI visibility?
+
+[75-word answer focusing on: ROI analysis, content accessibility vs. volume, investment-to-visibility correlation, format over spend principle]
+
+**Key Evidence:**
+- Content Readiness scores (Availability, Depth, Clarity)
+- High ROI opportunities with investment and expected impact
+- Low ROI traps showing poor visibility conversion
+
+**Probe Deeper:** Which past investments show measurable visibility improvement? What's correlation between dollars and score changes?
+
+---
+
+7. Are private labels gaining advantage in AI-driven discovery?
+
+[75-word answer focusing on: Private label competitive tracking gaps, inferential evidence of disadvantage, premium justification challenges]
+
+**Key Evidence:**
+- Private label visibility scores (if tracked) or tracking gap notation
+- Category vulnerabilities where private labels likely gaining
+- Functional differentiation barriers
+
+**Probe Deeper:** On which platforms do private labels gain most visibility? What functional claims do they own in AI responses?
+
+---
+
+8. Which categories or segments deserve incremental spend?
+
+[75-word answer focusing on: Zero-visibility opportunities, platform gaps, reallocation from sustaining to growing, cost-per-visibility-point]
+
+**Key Evidence:**
+- Zero-visibility categories with growth potential
+- Platform segment opportunities with investment estimates
+- ROI comparison across investment options
+
+**Probe Deeper:** Which underperforming categories show fastest query volume growth? What's cost-per-visibility-point across investments?
+
+---
+
+9. How exposed is my brand heading into the next planning cycle?
+
+[75-word answer focusing on: Acute crisis windows, compounding exposures, trend direction, CEO/leadership inheritance of visibility debt]
+
+**Key Evidence:**
+- Critical exposures with timeline (0-3 months, 3-12 months, 12-24 months)
+- Trend indicators (visibility, vulnerability, competitive gap)
+
+**Probe Deeper:** If we change nothing, what's our position in 12 months? Which single exposure creates cascading failures?
+
+---
+
+10. Can I confidently explain our AI brand health to the CEO or board?
+
+[75-word answer focusing on: Board-ready narrative, business impact translation, investment requirements, urgency framing]
+
+**Key Evidence:**
+- Overall position and competitive ranking
+- Business translation (visibility score to consideration/revenue)
+- Investment needs with timeline and expected ROI
+
+**Probe Deeper:** What's the elevator pitch: "Strong in X, exposed in Y, need Z"? Which metric matters most to board?
+
+---
+
+### Priority Actions (Top 3)
+
+1. [Action] - Owner: [Role] | Investment: $X | Timeline: [Days] | Impact: [Metric]
+2. [Action] - Owner: [Role] | Investment: $X | Timeline: [Days] | Impact: [Metric]
+3. [Action] - Owner: [Role] | Investment: $X | Timeline: [Days] | Impact: [Metric]`,
+
+                digital: `# BrandRank Dashboard Analysis: Digital / Content Perspective
+
+## Role Context
+Focus: Maximize organic traffic, engagement, and content effectiveness
+
+## Automated Analysis Prompt
+
+Using the comprehensive BrandRank dashboard data provided, answer the following 10 strategic questions from a Digital/Content perspective. Begin with a 75-100 word executive summary synthesizing the brand's content performance, then provide a ~75-word paragraph answer to each question supported by relevant data exhibits. Include 1-2 probe questions after each answer.
+
+### Executive Summary (75-100 words)
+[Synthesize: Content Readiness position, crawlability/accessibility issues, organic visibility gaps, technical infrastructure needs for traffic optimization]
+
+### Question-by-Question Analysis
+
+1. How discoverable is our content across AI platforms?
+
+[75-word answer focusing on: Content Liquidity scores, technical barriers (JavaScript, schema), crawler access patterns, platform-specific accessibility]
+
+**Key Evidence:**
+- Content Liquidity Score: X.X/10
+- Technical barriers identified (JS rendering, schema gaps, regional fragmentation)
+- Platform accessibility breakdown
+- Search Capital score indicating authority
+
+**Probe Deeper:** Which technical fixes unlock the most content? What's the crawl budget allocation across our site architecture?
+
+---
+
+2. Where are our content gaps costing us traffic?
+
+[75-word answer focusing on: Zero-visibility queries, missing content categories, competitor content advantages, informational vs. transactional balance]
+
+**Key Evidence:**
+| Content Category | Brand Visibility | Competitor Avg | Traffic Opportunity |
+|-----------------|------------------|----------------|---------------------|
+| [Categories with scores and gaps] | | | |
+
+**Probe Deeper:** Which content gaps represent highest search volume? Are gaps due to missing content or poor optimization?
+
+---
+
+3. Is our content structure optimized for AI extraction?
+
+[75-word answer focusing on: Depth and Clarity scores, structured data implementation, content format (HTML vs. PDF), extractability]
+
+**Key Evidence:**
+- Depth Score: X.X/10 - [Primary issues]
+- Clarity Score: X.X/10 - [Primary issues]
+- Format analysis (specs in PDFs, JavaScript dependencies)
+- Schema markup implementation status
+
+**Probe Deeper:** What percentage of our content is effectively invisible to AI crawlers? Which pages get cited vs. ignored?
+
+---
+
+4. Which content types drive the highest engagement in AI responses?
+
+[75-word answer focusing on: Citation patterns, content formats that AI prefers, authoritative vs. promotional content, statistical vs. narrative]
+
+**Key Evidence:**
+- Top-cited content types and formats
+- Source attribution analysis (owned vs. third-party)
+- Content depth factors (technical, statistical, quotations)
+- Engagement indicators by format
+
+**Probe Deeper:** Do AI platforms prefer long-form vs. FAQ format? Which content generates recommendations vs. citations?
+
+---
+
+5. Are technical issues limiting our AI visibility?
+
+[75-word answer focusing on: JavaScript rendering, regional site fragmentation, mobile optimization, server-side rendering needs]
+
+**Key Evidence:**
+| Technical Issue | Impact Score | Fix Complexity | Expected Lift |
+|----------------|--------------|----------------|---------------|
+| [Issues with prioritization] | | | |
+
+**Probe Deeper:** Which platforms struggle most with our technical setup? What's the ROI on server-side rendering vs. static generation?
+
+---
+
+6. How does our content compare to category leaders?
+
+[75-word answer focusing on: Search Capital gaps, content volume vs. quality, informational authority, link equity differences]
+
+**Key Evidence:**
+- Search Capital: Brand X.X vs. Leader X.X (gap analysis)
+- Content coverage comparison (topic breadth and depth)
+- Backlink profile and domain authority
+- Content freshness and update frequency
+
+**Probe Deeper:** Do leaders win on content volume, format, or authority signals? Which competitor content strategies should we emulate?
+
+---
+
+7. What content investments deliver the best traffic ROI?
+
+[75-word answer focusing on: Content creation vs. optimization, technical fixes vs. new content, structured data ROI, format conversions]
+
+**Key Evidence:**
+- High ROI opportunities: [Investment amount → Expected visibility lift]
+- Content optimization priorities (existing vs. new)
+- Technical infrastructure ROI (SSR, schema, PDF conversion)
+
+**Probe Deeper:** Should we prioritize fixing existing content or creating new? What's the marginal return on additional content in saturated categories?
+
+---
+
+8. Which content formats are underutilized?
+
+[75-word answer focusing on: FAQ schema, how-to guides, comparison tables, expert quotations, statistical content]
+
+**Key Evidence:**
+- Format utilization analysis (current vs. optimal)
+- Competitor format advantages
+- AI preference patterns by query type
+- Implementation complexity and impact
+
+**Probe Deeper:** Which formats do competitors use that we don't? What's the citation rate difference between formats?
+
+---
+
+9. How sustainable is our current content strategy?
+
+[75-word answer focusing on: Content decay patterns, maintenance requirements, scalability, dependency on manual updates]
+
+**Key Evidence:**
+- Content freshness metrics
+- Update frequency requirements
+- Maintenance burden assessment
+- Automated vs. manual content processes
+
+**Probe Deeper:** What percentage of our content requires monthly updates? Which categories decay fastest without maintenance?
+
+---
+
+10. Can I show clear ROI from content investments to leadership?
+
+[75-word answer focusing on: Traffic attribution, visibility-to-traffic conversion, content investment efficiency, competitive benchmark progress]
+
+**Key Evidence:**
+- Content Readiness score trends over time
+- Investment amounts and corresponding visibility changes
+- Traffic impact estimates from visibility improvements
+- Competitive position evolution
+
+**Probe Deeper:** What's our cost-per-visibility-point vs. industry benchmarks? How do we attribute traffic changes to content improvements?
+
+---
+
+### Priority Actions (Top 3)
+
+1. [Action] - Owner: [Role] | Investment: $X | Timeline: [Days] | Impact: [Traffic/Visibility Metric]
+2. [Action] - Owner: [Role] | Investment: $X | Timeline: [Days] | Impact: [Traffic/Visibility Metric]
+3. [Action] - Owner: [Role] | Investment: $X | Timeline: [Days] | Impact: [Traffic/Visibility Metric]`,
+
+                ceo: `# BrandRank Dashboard Analysis: Executive / CEO Perspective
+
+## Role Context
+Focus: Strategic positioning, competitive moat, board-level risk assessment, investment prioritization
+
+## Automated Analysis Prompt
+
+Using the comprehensive BrandRank dashboard data provided, answer the following 10 strategic questions from an Executive/CEO perspective. Begin with a 75-100 word executive summary synthesizing strategic position and critical decision points, then provide a ~75-word paragraph answer to each question supported by relevant data exhibits. Include 1-2 probe questions after each answer.
+
+### Executive Summary (75-100 words)
+[Synthesize: Competitive position in Answer Economy, strategic moat strength, critical vulnerabilities requiring CEO intervention, board-level investment decisions, 12-24 month trajectory]
+
+### Question-by-Question Analysis
+
+1. Are we building or losing competitive advantage in AI discovery?
+
+[75-word answer focusing on: Relative positioning vs. competitors, moat sustainability, category leadership, momentum trends]
+
+**Key Evidence:**
+- Competitive ranking: [Position] of [Total] in category
+- Share of voice vs. top competitors
+- Momentum indicators (trend direction)
+- Search Capital and authority gap analysis
+
+**Probe Deeper:** Which competitors are gaining momentum? Is our advantage defensible or vulnerable?
+
+---
+
+2. What's the business case for investing in AI visibility?
+
+[75-word answer focusing on: Revenue exposure, consideration capture rate, competitive displacement risk, investment ROI framework]
+
+**Key Evidence:**
+- Visibility score to business impact translation
+- Consideration opportunity vs. current capture
+- Competitive displacement scenarios
+- Investment requirements and expected returns
+
+**Probe Deeper:** What's the revenue risk of doing nothing? How quickly do visibility improvements flow to revenue?
+
+---
+
+3. Which vulnerabilities require CEO-level intervention?
+
+[75-word answer focusing on: Operational vs. reputational risks, cascade failure potential, timeline urgency, cross-functional dependencies]
+
+**Key Evidence:**
+| Vulnerability | Severity | Business Impact | Requires CEO Action |
+|---------------|----------|-----------------|---------------------|
+| [Strategic-level risks] | | | |
+
+**Probe Deeper:** Which vulnerability creates cascading failures? What requires CEO authority to resolve?
+
+---
+
+4. How does AI visibility correlate to brand equity and pricing power?
+
+[75-word answer focusing on: Premium positioning support, trust signals, recommendation strength impact on pricing, equity erosion patterns]
+
+**Key Evidence:**
+- Brand Promise Alignment and premium justification
+- Trust signals in AI responses (certifications, validation)
+- Vulnerability impact on pricing power
+- Competitive premium positioning comparison
+
+**Probe Deeper:** Are operational issues undermining premium pricing? Which equity erosions are permanent vs. recoverable?
+
+---
+
+5. What strategic investments move AI positioning most?
+
+[75-word answer focusing on: Infrastructure vs. content vs. operational fixes, resource allocation priorities, cross-functional investments]
+
+**Key Evidence:**
+- Investment ROI analysis by category
+- High-leverage opportunities (investment → impact ratio)
+- Cross-functional dependencies
+- Quick wins vs. strategic plays
+
+**Probe Deeper:** Should we prioritize defense (fix vulnerabilities) or offense (capture new categories)? What's the portfolio allocation?
+
+---
+
+6. Are we prepared for increased AI-driven discovery in our category?
+
+[75-word answer focusing on: Category AI adoption rate, competitive readiness, infrastructure gaps, first-mover vs. fast-follower positioning]
+
+**Key Evidence:**
+- Category AI discovery penetration trends
+- Content Readiness vs. competitors
+- Infrastructure preparedness assessment
+- Competitive AI strategy maturity
+
+**Probe Deeper:** What's the timeline for AI-driven discovery dominance in our category? Are we ahead or behind the curve?
+
+---
+
+7. How exposed are we to negative AI narratives?
+
+[75-word answer focusing on: Permanent training data risks, reputation tax on growth, operational issue visibility, crisis escalation potential]
+
+**Key Evidence:**
+- Vulnerability severity distribution (HIGH/MED/LOW)
+- Narrative hardening timeline (when becomes permanent)
+- Operational issue visibility and business impact
+- Crisis scenarios and probability assessment
+
+**Probe Deeper:** Which narratives are reversible vs. permanent? What's the cost of inaction over next 12 months?
+
+---
+
+8. Should AI visibility be a KPI in our corporate scorecard?
+
+[75-word answer focusing on: Measurement framework, business outcome correlation, competitive benchmark tracking, accountability structure]
+
+**Key Evidence:**
+- Proposed KPI structure (metrics and targets)
+- Correlation to business outcomes (consideration, revenue, equity)
+- Competitive benchmark availability
+- Tracking cadence and ownership
+
+**Probe Deeper:** What's the right metric: absolute visibility, competitive gap, or category share? Who owns the KPI?
+
+---
+
+9. What should I tell the board about our AI brand health?
+
+[75-word answer focusing on: Strategic positioning summary, competitive context, risk/opportunity balance, investment recommendation]
+
+**Key Evidence:**
+- Board-ready scorecard (visibility, competitive rank, vulnerability)
+- Strategic narrative: "Strong in X, exposed in Y, need Z"
+- Investment requirement and timeline
+- Business impact projections
+
+**Probe Deeper:** Should the board focus on opportunity or risk? What decision authority do we need from them?
+
+---
+
+10. How do I integrate AI visibility into strategic planning?
+
+[75-word answer focusing on: Planning cycle integration, cross-functional coordination, budget allocation, success metrics]
+
+**Key Evidence:**
+- Recommended planning integration approach
+- Budget reallocation priorities
+- Cross-functional initiatives requiring coordination
+- Success metrics and tracking
+
+**Probe Deeper:** Should this be standalone initiative or integrated into existing functions? What governance structure is needed?
+
+---
+
+### Priority Actions (Top 3)
+
+1. [Action] - Owner: [Role] | Investment: $X | Timeline: [Days] | Impact: [Strategic Outcome]
+2. [Action] - Owner: [Role] | Investment: $X | Timeline: [Days] | Impact: [Strategic Outcome]
+3. [Action] - Owner: [Role] | Investment: $X | Timeline: [Days] | Impact: [Strategic Outcome]`
+            };
+            
+            // Return comprehensive prompt if available, otherwise generate generic one
+            if (comprehensivePrompts[roleKey]) {
+                return comprehensivePrompts[roleKey];
+            }
+            
+            // Generic prompt for roles not in the comprehensive set
+            const perspective = isExternal ? "external stakeholder" : "internal stakeholder";
+            
+            let prompt = `# BrandRank Dashboard Analysis: ${roleTitle} Perspective
+
+## Role Context
+You are analyzing BrandRank.AI dashboard data from the perspective of a ${roleTitle} (${perspective}). This role focuses on: ${role.subtitle}
+
+## Analysis Framework
+Using the comprehensive BrandRank dashboard data provided, please answer the following ${role.questions.length} strategic questions. For each question, reference specific metrics, scores, and trends from the dashboard data.
+
+## Questions to Answer
+
+`;
+
+            role.questions.forEach((question, idx) => {
+                prompt += `${idx + 1}. ${question}\n`;
+            });
+            
+            prompt += `\n## Required Analysis Structure
+
+For each question above, provide:
+
+1. **Dashboard Evidence**: Cite specific metrics, scores, and data points from the BrandRank platform
+   - Overall scores (Visibility, Vulnerability, Content Readiness)
+   - Platform-specific performance (ChatGPT, Perplexity, Gemini, etc.)
+   - Competitive benchmarking data
+   - Time-series trends and momentum indicators
+   - Query-level performance data
+   - Source attribution insights
+
+2. **${roleTitle} Interpretation**: Explain what this data means specifically for the ${roleTitle} role
+   - Strategic implications
+   - Risk assessment
+   - Opportunity identification
+   - Priority areas for action
+
+3. **Recommended Actions**: Provide 2-3 concrete next steps with owners and success metrics
+
+`;
+
+            if (isExternal) {
+                prompt += `\n## External Perspective Guidance
+
+As an external ${roleTitle}, your analysis should:
+- Identify exploitable weaknesses or opportunities
+- Assess risks and exposure points
+- Evaluate competitive positioning objectively
+- Consider how this brand compares to category standards
+- Flag areas requiring scrutiny or validation
+
+`;
+            } else {
+                prompt += `\n## Internal Stakeholder Guidance
+
+As an internal ${roleTitle}, your analysis should:
+- Prioritize actionable insights over observations
+- Connect findings to business outcomes
+- Identify quick wins vs. strategic investments
+- Highlight cross-functional dependencies
+- Provide executive-ready talking points
+
+`;
+            }
+
+            prompt += `## Output Format
+
+Please structure your response as:
+
+### Executive Summary
+[2-3 paragraph overview of key findings across all questions]
+
+### Detailed Analysis
+[Question-by-question breakdown with dashboard evidence, interpretation, and actions]
+
+### Priority Matrix
+[Categorize findings by urgency and impact]
+
+### Key Takeaways
+[3-5 critical insights for ${roleTitle} to act on immediately]
+
+---
+
+**Dashboard Data Instructions**: Please analyze the attached/provided BrandRank dashboard data using this framework. If specific data points are not available, note the gaps and explain what you would need to see to answer definitively.`;
+
+            return prompt;
+        }
+
+        function copyMasterPrompt(button) {
+            const roleSet = roles[currentRoleType];
+            const role = roleSet[currentRole];
+            const masterPrompt = generateMasterPrompt(currentRoleType, currentRole, role);
+            
+            navigator.clipboard.writeText(masterPrompt).then(() => {
+                // Visual feedback
+                const originalText = button.innerHTML;
+                button.innerHTML = '✅ Copied!';
+                button.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.style.background = 'linear-gradient(135deg, #8b5cf6, #7c3aed)';
+                }, 2000);
+            }).catch(err => {
+                alert('Failed to copy. Please try again.');
+                console.error('Copy failed:', err);
+            });
+        }
+
+
+        function renderQuestionDetail(roleKey, questionIdx) {
+            const roleSet = roles[currentRoleType];
+            const role = roleSet[roleKey];
+            const question = role.questions[questionIdx];
+            const detailContent = document.getElementById("detailContent");
+
+            const dashboardExample = generateDashboardExample(currentRoleType, roleKey, question);
+            const whyMatters = generateWhyMatters(currentRoleType, roleKey, question);
+            const actions = generateActions(currentRoleType, roleKey, question);
+            
+            let outsideInContent = "";
+            if (currentPerspective === "outside") {
+                outsideInContent = generateOutsideInView(currentRoleType, roleKey, question);
+            }
+
+            detailContent.innerHTML = `
+                <div class="section-header">${question}</div>
+                
+                <div class="panels-grid">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <span class="panel-icon">📊</span>
+                            What the Dashboard Shows
+                        </div>
+                        <div class="panel-content">
+                            ${dashboardExample}
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <span class="panel-icon">💡</span>
+                            Why This Matters to ${role.title}
+                        </div>
+                        <div class="panel-content">
+                            <p style="line-height: 1.8;">${whyMatters}</p>
+                        </div>
+                    </div>
+                </div>
+
+                ${outsideInContent}
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <span class="panel-icon">✅</span>
+                        What To Do Next
+                    </div>
+                    <div class="panel-content">
+                        <ul class="action-list">
+                            ${actions}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="analyst-assist">
+                    <div class="assist-header">🎯 Analyst Assist: How to Frame This</div>
+                    ${generateAnalystAssist(currentRoleType, roleKey, question)}
+                </div>
+
+                <div class="export-buttons">
+                    <button class="export-btn" onclick="alert('Exporting 1-slide executive summary...')">📄 Export 1-Slide Summary</button>
+                    <button class="export-btn" onclick="alert('Exporting action brief...')">📋 Export Action Brief</button>
+                    <button class="export-btn" onclick="alert('Exporting risk memo...')">⚠️ Export Risk Memo</button>
+                </div>
+            `;
+        }
+
+        function generateDashboardExample(roleType, roleKey, question) {
+    const q = question.toLowerCase();
+    
+    // CEO QUESTIONS - Strategic, high-level metrics
+    if (q.includes('helping or hurting')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Overall Visibility Score: 6.2/10 (down from 6.8 last quarter)</div></div>
+            <div class="metric-item"><div class="metric-value">Recommendation Rate: AI recommends you in 34% of purchase-intent queries</div></div>
+            <div class="metric-item"><div class="metric-value">Brand Promise Alignment: 7.1/10 average across platforms</div></div>
+            <div class="metric-item"><div class="metric-value">Vulnerability Score: 8.1/10 (lower = more risk)</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            You're present but not preferred. Visibility is declining while competitors gain ground in high-value queries where AI actively recommends brands.</div>`;
+    }
+    if (q.includes('exposed') || q.includes('without knowing')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Statement Accuracy: 76% correct, 16% partial, 8% factually wrong</div></div>
+            <div class="metric-item"><div class="metric-value">Legacy Issues Resurfacing: 2019 recall mentioned in 11% of safety queries</div></div>
+            <div class="metric-item"><div class="metric-value">Uncontrolled Sources: 67% of AI information comes from third parties</div></div>
+            <div class="metric-item"><div class="metric-value">Platform Variance: Claims differ across engines (compliance gap)</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Silent vulnerabilities are accumulating. AI surfaces historical controversies and factual errors that haven't hit traditional monitoring yet.</div>`;
+    }
+    if (q.includes('defensible') || q.includes('ai-first')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Content Readiness: 5.4/10 (Competitor average: 6.9/10)</div></div>
+            <div class="metric-item"><div class="metric-value">Schema Implementation: 19% of pages (vs. 74% for top competitor)</div></div>
+            <div class="metric-item"><div class="metric-value">Citation Depth: 1.2 sources per claim (competitor: 3.8)</div></div>
+            <div class="metric-item"><div class="metric-value">Update Velocity: Quarterly vs. competitor's monthly content refresh</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Your content infrastructure lags category leaders by 18-24 months. Competitors can displace you through technical optimization, not product superiority.</div>`;
+    }
+    if (q.includes('ahead or behind')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Competitive Ranking: #3 of 7 major brands in category</div></div>
+            <div class="metric-item"><div class="metric-value">Share of AI Answers: 18% (Leader: 31%, You: 18%, #4: 14%)</div></div>
+            <div class="metric-item"><div class="metric-value">Momentum: Flat over 90 days while #2 gained 4 points</div></div>
+            <div class="metric-item"><div class="metric-value">High-Value Query Gap: -2.8 points vs. leader in purchase-intent questions</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            You're in the competitive middle—visible enough to matter, weak enough to lose ground. Competitors are investing in AI readiness faster than you.</div>`;
+    }
+    
+    // CMO QUESTIONS - Brand positioning and visibility
+    if (q.includes('recommended or merely mentioned')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Mention Rate: 82% (you appear in consideration sets)</div></div>
+            <div class="metric-item"><div class="metric-value">Recommendation Rate: 38% (AI actively suggests you)</div></div>
+            <div class="metric-item"><div class="metric-value">First Position Rate: 19% (AI leads with you as top choice)</div></div>
+            <div class="metric-item"><div class="metric-value">Competitor Advantage: Top rival recommended 57% of time (+19 points)</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            You're in the conversation but not winning it. AI includes you in comparisons but rarely positions you as the optimal choice.</div>`;
+    }
+    if (q.includes('share') && q.includes('answer')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Your Answer Share: 18% across all category queries</div></div>
+            <div class="metric-item"><div class="metric-value">Category Leader: 31% (+13 points ahead)</div></div>
+            <div class="metric-item"><div class="metric-value">Biggest Loss: Sustainability queries (-22 points vs. leader)</div></div>
+            <div class="metric-item"><div class="metric-value">Biggest Win: Innovation queries (+8 points vs. category avg)</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Competitors dominate in high-growth question categories (sustainability, value) where consumer interest is accelerating.</div>`;
+    }
+    if (q.includes('brand promise') && q.includes('hedge')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Promise Alignment: ChatGPT 8.1, Perplexity 5.2, Gemini 7.4 (avg 6.8)</div></div>
+            <div class="metric-item"><div class="metric-value">Hedging Language: AI uses qualifiers ("claims to," "may") in 43% of descriptions</div></div>
+            <div class="metric-item"><div class="metric-value">Competitor Clarity: Top rival scores 8.6 - 26% clearer positioning</div></div>
+            <div class="metric-item"><div class="metric-value">Message Fragmentation: 5 different value props across 6 platforms</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            AI understands you exist but can't confidently explain why you matter. Your brand story is told with uncertainty across platforms.</div>`;
+    }
+    if (q.includes('private label') || q.includes('store brand')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Store Brand Co-Mention: Private label appears alongside you in 73% of value queries</div></div>
+            <div class="metric-item"><div class="metric-value">Price Framing: You're labeled "premium" without value justification 68% of time</div></div>
+            <div class="metric-item"><div class="metric-value">Quality Parity: AI suggests store brands are "comparable" in 52% of comparisons</div></div>
+            <div class="metric-item"><div class="metric-value">Amazon Rufus Performance: Store brand recommended over you 61% of time</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            AI is systematically repositioning private label as the rational default while coding you as expensive without defending your premium.</div>`;
+    }
+    if (q.includes('investments') && q.includes('move')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Pre-Campaign Visibility: 4.8/10 in target category</div></div>
+            <div class="metric-item"><div class="metric-value">Post-Campaign Visibility: 6.2/10 (+1.4 point lift in 45 days)</div></div>
+            <div class="metric-item"><div class="metric-value">Content Velocity Impact: Pages with schema markup saw 2.3x visibility gain</div></div>
+            <div class="metric-item"><div class="metric-value">PR Attribution: Tier 1 media coverage correlated with +0.8 point increase</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Content infrastructure improvements show measurable ROI. Schema markup and authoritative third-party coverage drive fastest visibility gains.</div>`;
+    }
+    
+    // CORPORATE COMMS QUESTIONS - Reputation and accuracy
+    if (q.includes('exactly') && q.includes('saying')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Core Statement Tracking: 10 statements monitored across 6 platforms daily</div></div>
+            <div class="metric-item"><div class="metric-value">Accuracy Rate: 76% fully correct, 16% partially correct, 8% incorrect</div></div>
+            <div class="metric-item"><div class="metric-value">Most Distorted: Sustainability claims (42% contain hedging or errors)</div></div>
+            <div class="metric-item"><div class="metric-value">Message Drift: 31% of responses deviate from approved corporate language</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            You no longer control your narrative. AI synthesizes from unmanaged sources, creating systematic drift from your intended messaging.</div>`;
+    }
+    if (q.includes('misstating') || q.includes('amplifying risk')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Critical Errors: 14 factual misstatements detected (3 high-severity)</div></div>
+            <div class="metric-item"><div class="metric-value">Error Propagation: False claims spread to 4+ engines within 72 hours</div></div>
+            <div class="metric-item"><div class="metric-value">Source of Errors: 67% traced to outdated Wikipedia entries and low-authority blogs</div></div>
+            <div class="metric-item"><div class="metric-value">Correction Difficulty: Same errors persist despite updating owned content</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Misinformation compounds faster than traditional correction methods work. AI training creates echo chambers where errors become canonical.</div>`;
+    }
+    if (q.includes('controversies') && q.includes('resurfacing')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Legacy Issues: 2017 recall mentioned in 11% of product safety queries</div></div>
+            <div class="metric-item"><div class="metric-value">2019 Lawsuit: Referenced in 8% of corporate reputation questions</div></div>
+            <div class="metric-item"><div class="metric-value">Resolution Visibility: 94% of controversy mentions lack resolution/outcome context</div></div>
+            <div class="metric-item"><div class="metric-value">Temporal Confusion: AI rarely dates issues, making 5-year-old events feel current</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            AI has perfect memory of failures, zero memory of fixes. Old controversies stay perpetually fresh without aggressive content rehabilitation.</div>`;
+    }
+    if (q.includes('approved messaging')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Message Alignment: 68% of AI responses match approved corporate messaging</div></div>
+            <div class="metric-item"><div class="metric-value">Platform Variance: ChatGPT 81% aligned, Perplexity 52% aligned</div></div>
+            <div class="metric-item"><div class="metric-value">Key Phrase Consistency: Core tagline appears in only 23% of brand descriptions</div></div>
+            <div class="metric-item"><div class="metric-value">Unapproved Language: AI introduces qualifiers not in brand guidelines 37% of time</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Your carefully crafted messaging is being rewritten by AI synthesis. Brand guidelines don't translate to AI behavior without technical intervention.</div>`;
+    }
+    
+    // DIGITAL QUESTIONS - Technical infrastructure
+    if (q.includes('crawl') && q.includes('extract')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Content Liquidity: 6.1/10 (technical barriers on 38% of priority pages)</div></div>
+            <div class="metric-item"><div class="metric-value">Schema Coverage: 18% of pages have structured data (benchmark: 67%)</div></div>
+            <div class="metric-item"><div class="metric-value">JavaScript Blocking: 23% of content invisible due to client-side rendering</div></div>
+            <div class="metric-item"><div class="metric-value">Internal Linking: Weak architecture prevents AI from discovering key pages</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Your site is optimized for human eyes, not machine readers. Best content is architecturally invisible to the systems mediating discovery.</div>`;
+    }
+    if (q.includes('pages') && q.includes('holding back')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Page-Level Analysis: 12 specific pages create 73% of total visibility drag</div></div>
+            <div class="metric-item"><div class="metric-value">Missing Elements: Product pages lack FAQs (89%), specs (67%), proof points (91%)</div></div>
+            <div class="metric-item"><div class="metric-value">Opportunity Cost: Fixing top 10 pages could recover 2.3 points overall score</div></div>
+            <div class="metric-item"><div class="metric-value">ROI Prioritization: Ranked list of pages by fix effort vs. visibility impact</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            A small number of poorly structured pages disproportionately damage AI presence. Surgical fixes yield exponential returns.</div>`;
+    }
+    if (q.includes('competitors outrank')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Your Content Readiness: 5.4/10 vs. Competitor A: 7.8/10</div></div>
+            <div class="metric-item"><div class="metric-value">Schema Gap: You 18%, Top competitor 87% implementation</div></div>
+            <div class="metric-item"><div class="metric-value">Citation Density: You 1.2 sources/claim, Them 3.7 sources/claim</div></div>
+            <div class="metric-item"><div class="metric-value">Content Velocity: You refresh quarterly, they refresh monthly</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            You're losing to inferior products wrapped in superior infrastructure. This is technical deficit, not brand deficit—and it's fixable.</div>`;
+    }
+    if (q.includes('schema') || q.includes('structured data')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Schema Implementation: 18% of priority pages (FAQPage, Product, HowTo)</div></div>
+            <div class="metric-item"><div class="metric-value">Impact Correlation: Pages with schema show 2.8x higher AI citation rate</div></div>
+            <div class="metric-item"><div class="metric-value">Competitor Benchmark: Category leader has 87% coverage</div></div>
+            <div class="metric-item"><div class="metric-value">Quick Win Opportunity: 45 pages identified where schema would have immediate impact</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Structured data is the difference between AI finding your content and AI confidently citing it. You're visible but not quotable.</div>`;
+    }
+    
+    // R&D QUESTIONS - Innovation recognition
+    if (q.includes('recognize') && q.includes('innovation')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Innovation Recognition: 7.8/10 (AI knows you innovate)</div></div>
+            <div class="metric-item"><div class="metric-value">Technical Detail Score: 4.1/10 (AI cannot explain how you innovate)</div></div>
+            <div class="metric-item"><div class="metric-value">Patent Visibility: Only 8% of patents appear in relevant technical queries</div></div>
+            <div class="metric-item"><div class="metric-value">Mechanism Accuracy: 34% of technical explanations oversimplified to generic category terms</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            You get credit for innovating but not for what makes you innovative. R&D investment isn't compounding into trust because mechanisms are invisible.</div>`;
+    }
+    if (q.includes('oversimplified') || q.includes('distorted')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Mechanism Accuracy: Only 31% of technical explanations correctly detailed</div></div>
+            <div class="metric-item"><div class="metric-value">Efficacy Claims: 67% cited without linked clinical evidence</div></div>
+            <div class="metric-item"><div class="metric-value">Peer Review: Virtually absent—<5% of mentions include published research</div></div>
+            <div class="metric-item"><div class="metric-value">Competitive Deflation: Complex innovations described in same terms as commodity alternatives</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            AI translates PhD-level science into kindergarten language. Differentiation collapses when mechanisms become "it just works."</div>`;
+    }
+    if (q.includes('documentation') && q.includes('weaken')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">White Paper Discoverability: Only 19% accessible (mostly PDFs, not HTML)</div></div>
+            <div class="metric-item"><div class="metric-value">Expert Attribution: 86% of technical content lacks named, credentialed authors</div></div>
+            <div class="metric-item"><div class="metric-value">Methodology Transparency: 91% of innovations have no public process description</div></div>
+            <div class="metric-item"><div class="metric-value">Competitor Advantage: Rivals with worse R&D but better docs score higher authority</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Best evidence locked in formats AI can't parse or locations it can't reach. World-class R&D in file drawers doesn't build trust.</div>`;
+    }
+    
+    // BRAND/PRODUCT MARKETING
+    if (q.includes('features') && (q.includes('emphasize') || q.includes('ignore'))) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Feature Mention Analysis: Top 3 features appear in 89% of descriptions</div></div>
+            <div class="metric-item"><div class="metric-value">Strategic Differentiators: Your 2 key advantages mentioned only 23% of time</div></div>
+            <div class="metric-item"><div class="metric-value">Commodity Emphasis: AI highlights table-stakes features competitors also have</div></div>
+            <div class="metric-item"><div class="metric-value">Innovation Invisibility: Latest product advancement appears in <12% of responses</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            AI emphasizes what's easy to describe, not what makes you different. True advantages invisible; similarities amplified.</div>`;
+    }
+    if (q.includes('price') && q.includes('value')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Price Framing: Described as "premium" or "expensive" in 72% of comparisons</div></div>
+            <div class="metric-item"><div class="metric-value">Value Justification: Only 31% of price mentions include benefit context</div></div>
+            <div class="metric-item"><div class="metric-value">Cost-Per-Use: Lifetime value arguments appear in <5% of AI responses</div></div>
+            <div class="metric-item"><div class="metric-value">Competitive Positioning: AI frames cheaper alternatives as "similar quality"</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            AI talks about your price without your value story. You're positioned as expensive, not premium—fatal for margin defense.</div>`;
+    }
+    if (q.includes('blur') && q.includes('competitors')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Differentiation Clarity: 43% of AI comparisons group you with rivals as "similar"</div></div>
+            <div class="metric-item"><div class="metric-value">Unique Mentions: Core differentiator appears in only 28% of brand descriptions</div></div>
+            <div class="metric-item"><div class="metric-value">Category Generic Language: 61% of responses use identical phrasing for you and competitors</div></div>
+            <div class="metric-item"><div class="metric-value">Competitive Separation: AI creates 2.1x more distance between rivals than between you and them</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            You're being compressed into undifferentiated category player. AI sees you and competitors as interchangeable.</div>`;
+    }
+    
+    // SOCIAL MEDIA
+    if (q.includes('sentiment') && q.includes('trend')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Sentiment Trajectory: -0.3 point shift over 60 days (from +0.4 to +0.1)</div></div>
+            <div class="metric-item"><div class="metric-value">Social-to-AI Latency: Emerging narratives appear in AI 3-5 days after initial social posting</div></div>
+            <div class="metric-item"><div class="metric-value">Amplification Bias: Negative social content cited 2.1x more than positive</div></div>
+            <div class="metric-item"><div class="metric-value">Volume Correlation: Spike in #boycott mentions preceded AI sentiment drop by 4 days</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Social sentiment bleeds into AI faster than traditional monitoring catches it. You're seeing future brand reputation in real-time.</div>`;
+    }
+    
+    // CUSTOMER EXPERIENCE
+    if (q.includes('problems') && q.includes('ask ai')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Top Support Query: "How to return/replace" appears in 34% of product questions</div></div>
+            <div class="metric-item"><div class="metric-value">Durability Concerns: Product longevity questions up 41% in AI queries vs. last quarter</div></div>
+            <div class="metric-item"><div class="metric-value">Confusion Signals: "How to use" questions suggest UX gaps AI is detecting from reviews</div></div>
+            <div class="metric-item"><div class="metric-value">Competitive Context: Same questions for rivals appear 2.3x less frequently</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Consumer pain points surface in AI before hitting support queue. You're seeing demand-side friction in real-time—fix upstream.</div>`;
+    }
+    
+    // LEGAL
+    if (q.includes('inaccurate') && q.includes('risky')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Claim Overstating: 18 instances of AI exaggerating product capabilities beyond approved language</div></div>
+            <div class="metric-item"><div class="metric-value">Regulatory Keywords: "FDA," "clinically proven" used without qualification in 23% of mentions</div></div>
+            <div class="metric-item"><div class="metric-value">Disclaimer Separation: 91% of claims appear without accompanying limitations or disclosures</div></div>
+            <div class="metric-item"><div class="metric-value">Liability Exposure: Estimated 2.8M monthly impressions contain unqualified absolute statements</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            AI makes unqualified statements you'd never approve in your own marketing. Exposure is systematic and scales with AI adoption.</div>`;
+    }
+    
+    // RETAIL
+    if (q.includes('shopping') && (q.includes('queries') || q.includes('assistant'))) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Amazon Rufus: Mentioned 67%, Recommended 39% (category avg: 52% recommendation)</div></div>
+            <div class="metric-item"><div class="metric-value">Walmart Sparky: Store brand mentioned alongside you in 81% of value comparisons</div></div>
+            <div class="metric-item"><div class="metric-value">Price Anchor Effect: AI consistently positions you at high end without value justification</div></div>
+            <div class="metric-item"><div class="metric-value">PDP Optimization: Your pages lack structured product data competitors have</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Retailer AI agents systematically undermine branded premium at point of purchase. Private label gains share without product improvement.</div>`;
+    }
+    
+    // INSIGHTS / CUSTOMER KNOWLEDGE
+    if (q.includes('questions') && q.includes('consumers') && q.includes('asking')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Query Volume Analysis: 200+ consumer prompts tested daily across category</div></div>
+            <div class="metric-item"><div class="metric-value">Top Intent Clusters: Value (34%), Quality (28%), Safety (19%), Sustainability (12%)</div></div>
+            <div class="metric-item"><div class="metric-value">Emerging Patterns: "Best for sensitive skin" queries up 47% vs. last quarter</div></div>
+            <div class="metric-item"><div class="metric-value">Job-to-be-Done Mapping: Functional (62%), Emotional (23%), Social (15%)</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Consumer questions reveal unfiltered needs and decision criteria. AI query patterns show what people actually care about, not what surveys say.</div>`;
+    }
+    if (q.includes('needs') && (q.includes('growing') || q.includes('declining'))) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Growing Needs: Sustainability +41%, Ingredient transparency +38%, Refill options +52%</div></div>
+            <div class="metric-item"><div class="metric-value">Declining Needs: Generic "best" queries -12%, Price-only questions -8%</div></div>
+            <div class="metric-item"><div class="metric-value">Stable Needs: Safety/efficacy maintaining 19% of total query volume</div></div>
+            <div class="metric-item"><div class="metric-value">Seasonal Variance: Gift-related queries spike 3x in Q4, back-to-school 2.1x in Q3</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Consumer priorities are shifting faster than traditional research captures. AI queries provide real-time demand signals for innovation roadmap.</div>`;
+    }
+    if (q.includes('pain points') && q.includes('frequently')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Top Pain Points: "Doesn't last long" (23%), "Hard to clean" (18%), "Breaks easily" (14%)</div></div>
+            <div class="metric-item"><div class="metric-value">Category-Wide Issues: Durability concerns appear in 41% of all product questions</div></div>
+            <div class="metric-item"><div class="metric-value">Your Brand Specific: "Complicated instructions" mentioned 2.3x more than competitors</div></div>
+            <div class="metric-item"><div class="metric-value">Unmet Need Signals: "Wish it came in..." queries suggest packaging/format gaps</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Friction points consumers express to AI predict support volume and defection risk. Address these upstream before they become churn drivers.</div>`;
+    }
+    if (q.includes('decision criteria')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Primary Criteria: Effectiveness (38%), Safety (24%), Price (21%), Brand trust (17%)</div></div>
+            <div class="metric-item"><div class="metric-value">AI Emphasis: AI weighs effectiveness 1.8x more heavily than consumers say in surveys</div></div>
+            <div class="metric-item"><div class="metric-value">Trade-off Patterns: 67% of queries involve explicit either/or comparisons</div></div>
+            <div class="metric-item"><div class="metric-value">Threshold Mentions: "Under $X" price boundaries appear in 43% of value-oriented queries</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            How AI frames decision criteria shapes what consumers prioritize. Your category narrative is being written by algorithmic emphasis patterns.</div>`;
+    }
+    if (q.includes('unmet needs')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Gap Indicators: "Why isn't there..." queries up 34% suggesting innovation white space</div></div>
+            <div class="metric-item"><div class="metric-value">Workaround Mentions: Consumers describe DIY solutions in 12% of product queries</div></div>
+            <div class="metric-item"><div class="metric-value">Competitive Voids: 23 high-frequency questions where no brand has strong answer</div></div>
+            <div class="metric-item"><div class="metric-value">Adjacent Category Bleed: 18% of queries mention products from related categories as alternatives</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Unmet needs surface when consumers ask AI for solutions that don't exist yet. First mover in these spaces owns the AI narrative.</div>`;
+    }
+    if (q.includes('insights') && q.includes('compare')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Survey vs. AI Query Alignment: 68% overlap, but 32% of AI queries reveal unstated priorities</div></div>
+            <div class="metric-item"><div class="metric-value">Stated vs. Revealed Preference: AI shows sustainability mentioned but rarely prioritized</div></div>
+            <div class="metric-item"><div class="metric-value">Social Desirability Gap: "Eco-friendly" in surveys but price dominates actual AI queries</div></div>
+            <div class="metric-item"><div class="metric-value">Real-Time Shifts: AI captures trend changes 6-8 weeks before traditional research</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            AI queries reveal what consumers actually prioritize in the moment of decision, not what they say matters in surveys. Truth in behavior.</div>`;
+    }
+    
+    // SEO / AEO LEADER
+    if (q.includes('ai visibility') && q.includes('search rankings')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Traditional SEO: #2 ranking for 67% of target keywords</div></div>
+            <div class="metric-item"><div class="metric-value">AI Visibility: Mentioned in only 42% of equivalent AI queries</div></div>
+            <div class="metric-item"><div class="metric-value">Disconnect: Strong SERP position not translating to AI citation frequency</div></div>
+            <div class="metric-item"><div class="metric-value">Winner Takes More: In AI, #1 gets 3.2x more mentions than #2 (vs. 1.4x in SEO)</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            SEO success is necessary but not sufficient for AEO. AI requires different signals—citations, structure, authority—beyond link equity.</div>`;
+    }
+    if (q.includes('seo investments') && q.includes('aeo')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Schema Markup ROI: 2.8x higher AI citation rate for pages with structured data</div></div>
+            <div class="metric-item"><div class="metric-value">Content Depth: Pages >1500 words cited 2.1x more than thin content</div></div>
+            <div class="metric-item"><div class="metric-value">Backlink Quality: Domain authority correlates at 0.72 with AI mention frequency</div></div>
+            <div class="metric-item"><div class="metric-value">Update Frequency: Monthly refreshed content shows 1.6x better AI performance</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Traditional SEO fundamentals (authority, depth, structure) still matter but need AEO-specific implementation. Schema is force multiplier.</div>`;
+    }
+    if (q.includes('target keywords') && q.includes('ai answers')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Keyword Coverage: 73% of your SEO keywords appear in AI responses</div></div>
+            <div class="metric-item"><div class="metric-value">Semantic Drift: AI uses related terms 43% of time, not exact match keywords</div></div>
+            <div class="metric-item"><div class="metric-value">Intent Matching: Commercial intent keywords convert to AI recommendations 2.7x better</div></div>
+            <div class="metric-item"><div class="metric-value">Long-Tail Performance: Conversational queries (7+ words) show 34% lower brand visibility</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            AI doesn't optimize for keywords—it optimizes for concepts and context. Your keyword strategy needs semantic expansion for AEO.</div>`;
+    }
+    if (q.includes('ranking signals')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Citation Quality: Peer-reviewed sources 4.1x more likely to influence AI than general backlinks</div></div>
+            <div class="metric-item"><div class="metric-value">E-E-A-T Signals: Author credentials increase citation probability by 67%</div></div>
+            <div class="metric-item"><div class="metric-value">Recency Bias: Content <6 months old cited 2.2x more than older content</div></div>
+            <div class="metric-item"><div class="metric-value">Structured Data Impact: Pages with FAQ schema appear in 3.4x more AI responses</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            AI weights authority signals differently than Google. Academic citations, expert attribution, and structured data matter more than traditional links.</div>`;
+    }
+    if (q.includes('content formats')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Best Performing: FAQ pages (cited 3.8x baseline), How-to guides (2.9x), Comparison tables (2.4x)</div></div>
+            <div class="metric-item"><div class="metric-value">Underperforming: PDF whitepapers (0.3x), Video-only content (0.5x), Gated content (0.1x)</div></div>
+            <div class="metric-item"><div class="metric-value">Platform Variance: Perplexity favors data-rich content, ChatGPT favors conversational</div></div>
+            <div class="metric-item"><div class="metric-value">Hybrid Success: Pages combining text + structured data + expert quotes show best results</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            AI can't extract value from video or PDFs. HTML-first, structured, and quotable content dominates AI citations across platforms.</div>`;
+    }
+    if (q.includes('featured snippets') && q.includes('ai answers')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Featured Snippet Ownership: You own 34% of target query snippets</div></div>
+            <div class="metric-item"><div class="metric-value">AI Citation Rate: Only 18% of snippet wins translate to AI mentions</div></div>
+            <div class="metric-item"><div class="metric-value">Divergence Pattern: AI increasingly cites different sources than Google snippets</div></div>
+            <div class="metric-item"><div class="metric-value">Authority Gap: Snippet content often lacks depth/citations AI requires</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Winning snippets ≠ winning AI answers. Snippet optimization is tactical; AI requires strategic authority and depth beyond quick answers.</div>`;
+    }
+    if (q.includes('rebalance') && q.includes('seo') && q.includes('aeo')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Search Traffic: 78% of current organic traffic (declining 3% YoY)</div></div>
+            <div class="metric-item"><div class="metric-value">AI Discovery: 22% of brand discovery now via AI tools (growing 47% YoY)</div></div>
+            <div class="metric-item"><div class="metric-value">Investment Allocation: 92% budget to SEO, 8% to AEO (misaligned with growth trends)</div></div>
+            <div class="metric-item"><div class="metric-value">ROI Comparison: AEO investments showing 2.3x higher visibility gains per dollar than traditional SEO</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Traffic still flows through search, but discovery is shifting to AI. Rebalance investment to match where consumer behavior is heading, not where it's been.</div>`;
+    }
+    
+    // EXTERNAL - COMPETITOR
+    if (q.includes('lose') && q.includes('answer share')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Visibility Gaps: 47 high-value queries where target brand is completely absent</div></div>
+            <div class="metric-item"><div class="metric-value">Content Infrastructure: Their 4.8/10 vs. our 7.2/10 systematic weakness</div></div>
+            <div class="metric-item"><div class="metric-value">Response Latency: Their fixes take 4-6 weeks vs. our 10-day cycle</div></div>
+            <div class="metric-item"><div class="metric-value">Org Friction Indicators: Slow schema implementation suggests internal alignment issues</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            They have structural content debt we can exploit. Position aggressively in blind spots before they realize gap exists.</div>`;
+    }
+    
+    // EXTERNAL - ACQUIRER
+    if (q.includes('recommended') && q.includes('at scale')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Recommendation Rate: 42% (respectable but not dominant)</div></div>
+            <div class="metric-item"><div class="metric-value">Category Authority Rank: #3 by AI confidence scoring</div></div>
+            <div class="metric-item"><div class="metric-value">Content Moat: Low defensibility—advantages easily copied through content optimization</div></div>
+            <div class="metric-item"><div class="metric-value">Momentum Assessment: Growing 0.2pts/quarter but rivals growing 0.4pts/quarter</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Brand has current momentum but weak structural advantages. Requires 12-18 month post-acquisition content investment to secure position.</div>`;
+    }
+    
+    // EXTERNAL - REGULATOR
+    if (q.includes('misleading') || q.includes('unsubstantiated')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Unsubstantiated Claims: 23 instances of absolute statements without proof</div></div>
+            <div class="metric-item"><div class="metric-value">Platform Variance: Claims differ materially across engines (enforcement gap indicator)</div></div>
+            <div class="metric-item"><div class="metric-value">Consumer Exposure: Est. 2.3M monthly interactions with questionable statements</div></div>
+            <div class="metric-item"><div class="metric-value">Disclaimer Absence: 87% of health/safety claims lack required qualifications</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Brand claims propagate through AI without adequate substantiation. Scale of potential consumer deception warrants formal review.</div>`;
+    }
+    
+    // EXTERNAL - INVESTOR
+    if (q.includes('gaining') || q.includes('losing relevance')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Share of Answers: Down 8% YoY (from 26% to 18%) while category grew 23%</div></div>
+            <div class="metric-item"><div class="metric-value">Competitor Displacement: 3 rivals gained share directly at this brand's expense</div></div>
+            <div class="metric-item"><div class="metric-value">Leading Indicator: AI visibility trends precede revenue shifts by 6-9 months historically</div></div>
+            <div class="metric-item"><div class="metric-value">High-Intent Query Performance: Declining faster (-12%) than awareness queries (-3%)</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Brand relevance eroding in discovery layer where future demand forms. Current revenue masks structural weakness visible in AI.</div>`;
+    }
+    
+    // EXTERNAL - JOURNALIST
+    if (q.includes('contradict') && q.includes('claims')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Claim Conflicts: 12 instances where AI contradicts official brand messaging</div></div>
+            <div class="metric-item"><div class="metric-value">Source Dissonance: Third-party coverage doesn't support corporate narrative</div></div>
+            <div class="metric-item"><div class="metric-value">Hedging Patterns: AI uses "claims to be" vs. "is"—credibility gap signal</div></div>
+            <div class="metric-item"><div class="metric-value">Evidence Gaps: 67% of bold claims lack independent verification AI can find</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Gap between what company says and what AI reports suggests narrative vulnerability. Investigative angle on authenticity.</div>`;
+    }
+    
+    // EXTERNAL - ACTIVIST
+    if (q.includes('esg') || q.includes('sustainability')) {
+        return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+            <div class="metric-item"><div class="metric-value">Sustainability Visibility: Mentioned in only 12% of brand queries (peer avg: 34%)</div></div>
+            <div class="metric-item"><div class="metric-value">Third-Party Validation: 89% of environmental claims lack external verification</div></div>
+            <div class="metric-item"><div class="metric-value">Greenwashing Signals: AI flags vague language ("eco-friendly," "natural") in 67% of mentions</div></div>
+            <div class="metric-item"><div class="metric-value">Specificity Gap: Competitors provide 3.2x more quantified sustainability data</div></div></div>
+            <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+            Brand ESG positioning either weak or poorly communicated. Gap between stated values and AI-reported reality creates campaign leverage.</div>`;
+    }
+    
+    // Default fallback
+    return `<div style="margin-bottom: 20px;"><strong style="color: var(--accent-cyan);">Dashboard Signals:</strong>
+        <div class="metric-item"><div class="metric-value">Overall AI Performance: 6.4/10 across visibility, vulnerability, content readiness</div></div>
+        <div class="metric-item"><div class="metric-value">Competitive Position: #3 in category of 7 major brands</div></div>
+        <div class="metric-item"><div class="metric-value">90-Day Trend: Flat performance while category average improved +0.4 points</div></div>
+        <div class="metric-item"><div class="metric-value">Opportunity Score: High potential for improvement through targeted fixes</div></div></div>
+        <div class="highlight-box"><strong style="color: var(--accent-cyan);">Dashboard Interpretation:</strong><br>
+        Brand performance in AI discovery is middling. Neither crisis nor victory—which means competitors have opportunity to leapfrog through focused investment.</div>`;
+}
+
+
+        function generateWhyMatters(roleType, roleKey, question) {
+            const internal = {
+                ceo: "This metric directly impacts market share, brand valuation, and competitive positioning in the AI-first economy. Every point of gap compounds into millions in misdirected demand.",
+                cmo: "AI is becoming the primary discovery layer for consumers. Where you're invisible or misrepresented, competitors capture demand you've earned through decades of brand investment.",
+                comms: "Reputation erosion in AI happens silently and at scale. By the time it reaches traditional media, the narrative is already entrenched across millions of consumer interactions.",
+                digital: "Content infrastructure gaps directly translate to lost visibility. Your competitors with better technical foundations are winning not because of better products, but better machine readability.",
+                brand: "When AI cannot articulate your differentiation, your premium positioning collapses into commodity comparison. This is brand equity leakage at the exact moment of consumer decision.",
+                rd: "Innovation that AI cannot explain does not build trust or justify premium pricing. Your R&D investment becomes invisible exactly when it should compound competitive advantage.",
+                social: "Social sentiment patterns often surface in AI before traditional monitoring catches them. This is your early warning system for narrative drift and emerging issues.",
+                cx: "Customer experience gaps that AI amplifies create a multiplier effect on service costs. Fixing upstream content prevents downstream support volume.",
+                legal: "Inaccuracies spread across AI systems faster than traditional media, creating regulatory and liability exposure that compounds daily without intervention.",
+                retail: "AI shopping assistants are becoming the new shelf. Where you're displaced by private label or competitors in these answers, you lose at the moment of highest purchase intent.",
+                insights: "AI queries reveal unfiltered consumer priorities and decision criteria in real-time. This data shows what people actually care about, not what they tell you in surveys—truth in revealed behavior.",
+                seo: "Discovery is shifting from search engines to AI engines. Traditional SEO success doesn't guarantee AI visibility. Rebalancing investment now prevents obsolescence of your organic channel strategy."
+            };
+
+            const external = {
+                competitor: "This represents an exploitable weakness in their market position. Content-based displacement requires far less investment than product innovation or price competition.",
+                acquirer: "Brand strength in AI discovery is a leading indicator of future revenue durability. Weakness here signals hidden integration costs and reputation risk that affects valuation.",
+                regulator: "Inconsistent or inaccurate claims at scale create consumer protection concerns. This is where enforcement action typically begins before formal complaints emerge.",
+                investor: "AI visibility trends often precede traditional brand metrics by 6-12 months. Declining performance here signals market share erosion before it shows in quarterly results.",
+                journalist: "Contradictions between brand claims and AI representations make compelling investigative angles. This is where corporate narratives crack under scrutiny.",
+                activist: "Gaps between stated values and AI-surfaced reality create leverage for campaigns. Public pressure amplifies when evidence is easily discovered by concerned consumers.",
+                talent: "How AI describes a company influences recruiting pipeline quality. Top talent researches employer reputation through AI before applying or accepting offers.",
+                plaintiff: "Material gaps between marketing claims and AI-reported consumer experience form the basis for class action viability. This is where legal exposure crystallizes."
+            };
+
+            return roleType === "internal" ? (internal[roleKey] || internal.ceo) : (external[roleKey] || external.competitor);
+        }
+
+        function generateActions(roleType, roleKey, question) {
+            if (roleType === "external") {
+                // For outside-in perspectives, frame as "what they should do" or "what to watch for"
+                return `
+                    <li class="action-item">
+                        <div class="action-description">Monitor for content infrastructure changes and schema implementation that would close this gap</div>
+                    </li>
+                    <li class="action-item">
+                        <div class="action-description">Track velocity of their response - slow fixes indicate organizational friction or deprioritization</div>
+                    </li>
+                    <li class="action-item">
+                        <div class="action-description">Invest in content authority in areas where they show persistent weakness - build moat through better AI readiness</div>
+                    </li>
+                `;
+            } else {
+                // For internal stakeholders, provide actionable recommendations
+                return `
+                    <li class="action-item">
+                        <div class="action-description">Audit current state and identify top 3 high-impact fixes based on visibility/vulnerability scores</div>
+                        <div class="action-owner"><strong>Owner:</strong> ${getRoleOwner(roleKey)}</div>
+                    </li>
+                    <li class="action-item">
+                        <div class="action-description">Implement systematic content readiness improvements with measurable KPIs tied to AI visibility</div>
+                        <div class="action-owner"><strong>Owner:</strong> ${getRoleOwner(roleKey)} + Digital</div>
+                    </li>
+                    <li class="action-item">
+                        <div class="action-description">Establish ongoing monitoring and optimization program with quarterly executive reviews</div>
+                        <div class="action-owner"><strong>Owner:</strong> ${getRoleOwner(roleKey)} + Analytics</div>
+                    </li>
+                `;
+            }
+        }
+
+        function getRoleOwner(roleKey) {
+            const owners = {
+                ceo: "CMO + Strategy",
+                cmo: "Brand + Marketing",
+                comms: "Corporate Comms",
+                digital: "Digital + IT",
+                brand: "Brand Strategy",
+                rd: "R&D + Content",
+                social: "Social + Community",
+                cx: "Customer Experience",
+                legal: "Legal + Compliance",
+                retail: "Retail Marketing",
+                insights: "Insights + Analytics",
+                seo: "SEO/AEO + Digital"
+            };
+            return owners[roleKey] || "Cross-functional team";
+        }
+
+        function generateOutsideInView(roleType, roleKey, question) {
+            if (roleType === "external") {
+                // External roles ARE the outside-in view, so show how the brand should respond
+                return `
+                    <div class="panel">
+                        <div class="panel-header">
+                            <span class="panel-icon">🛡️</span>
+                            How the Brand Should Respond
+                        </div>
+                        <div class="panel-content">
+                            <div class="highlight-box">
+                                <div class="outside-in-label">DEFENSIVE STRATEGY</div>
+                                <div>Address this vulnerability through content infrastructure improvements and third-party validation to reduce exploitability.</div>
+                            </div>
+                            <div class="highlight-box">
+                                <div class="outside-in-label">SPEED IMPERATIVE</div>
+                                <div>The longer this persists, the more entrenched it becomes in AI training and the harder it is to correct at scale.</div>
+                            </div>
+                            <div class="highlight-box">
+                                <div class="outside-in-label">STAKEHOLDER IMPACT</div>
+                                <div>This weakness is visible to multiple external audiences simultaneously - competitors, investors, regulators, and journalists can all see the same signals.</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Internal roles get outside-in perspective on their issue
+                const perspectives = {
+                    competitor: "Sees an exploitable weakness that can be amplified through better content without product investment",
+                    investor: "Views this as a leading indicator of market share erosion before it appears in quarterly results",
+                    regulator: "Flags potential consumer protection concerns that could trigger enforcement action",
+                    journalist: "Identifies this as a gap between corporate narrative and AI-reported reality worth investigating"
+                };
+
+                return `
+                    <div class="panel">
+                        <div class="panel-header">
+                            <span class="panel-icon">👁️</span>
+                            Outside-In Pressure View
+                        </div>
+                        <div class="panel-content">
+                            ${Object.keys(perspectives).map(stakeholder => `
+                                <div class="highlight-box">
+                                    <div class="outside-in-label">${stakeholder.toUpperCase()} SEES:</div>
+                                    <div>${perspectives[stakeholder]}</div>
+                                </div>
+                            `).join("")}
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function generateAnalystAssist(roleType, roleKey, question) {
+            if (roleType === "external") {
+                return `
+                    <div class="assist-section">
+                        <div class="assist-label">How to Frame This Externally</div>
+                        <div class="assist-text">"The dashboard reveals structural gaps in how AI systems represent this brand. These gaps create opportunities for strategic advantage through content-based positioning."</div>
+                    </div>
+                    <div class="assist-section">
+                        <div class="assist-label">Key Evidence Points</div>
+                        <div class="assist-text">"We track this across 6 AI platforms daily with 200+ representative queries. The patterns are systematic, not anecdotal, and they correlate with measurable business outcomes."</div>
+                    </div>
+                    <div class="assist-section">
+                        <div class="assist-label">Action Implication</div>
+                        <div class="assist-text">"Brands that move first to address AI readiness build defensible advantages that take competitors years to match. The window for easy wins is closing."</div>
+                    </div>
+                `;
+            } else {
+                return `
+                    <div class="assist-section">
+                        <div class="assist-label">30-Second Executive Explanation</div>
+                        <div class="assist-text">"Right now, AI answers about our brand are inconsistent and sometimes inaccurate. This affects how millions of consumers discover and evaluate us at the moment of highest intent. We have specific fixes that can improve this measurably within 90 days."</div>
+                    </div>
+                    <div class="assist-section">
+                        <div class="assist-label">If Challenged / Defensive Answer</div>
+                        <div class="assist-text">"We measure this daily across six major AI platforms using real consumer query patterns. The gaps are documented, not speculative. We can show you specific examples and the competitive impact."</div>
+                    </div>
+                    <div class="assist-section">
+                        <div class="assist-label">Provocative Reframing (If Urgency Needed)</div>
+                        <div class="assist-text">"We spent decades building brand equity with humans. AI doesn't remember any of that. We're competing from zero in the fastest-growing discovery channel - and our competitors know it."</div>
+                    </div>
+                `;
+            }
+        }
+
+        function setupBackButtons() {
+            document.getElementById("backToRoles").addEventListener("click", () => {
+                document.getElementById("questionsContainer").classList.remove("active");
+                document.getElementById("roleSelection").style.display = "block";
+                currentRole = null;
+                document.getElementById("perspectiveIndicator").classList.remove("active");
+            });
+
+            document.getElementById("backToQuestions").addEventListener("click", () => {
+                document.getElementById("questionDetail").classList.remove("active");
+                document.getElementById("questionsContainer").classList.add("active");
+                currentQuestion = null;
+            });
+        }
+
+        init();
+    </script>
+</body>
+</html>
