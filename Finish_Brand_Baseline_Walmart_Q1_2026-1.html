@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrandRank Brand Baseline Report - Finish at Walmart</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica', Arial, sans-serif;
+            color: #374151;
+            background: white;
+            line-height: 1.5;
+            font-size: 10pt;
+        }
+
+        .page {
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.75in;
+            background: white;
+            min-height: 11in;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #1a3a5c;
+            margin-bottom: 24px;
+        }
+
+        .header-logo {
+            font-weight: bold;
+            color: #1a3a5c;
+            font-size: 11pt;
+        }
+
+        .brand-logo {
+            color: #6b7280;
+            font-style: italic;
+            font-size: 9pt;
+        }
+
+        .report-title {
+            font-size: 22pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+        }
+
+        .report-subtitle {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            margin-bottom: 20px;
+        }
+
+        .headline {
+            font-size: 13pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        .callout-box {
+            background: #f8f9fa;
+            border-left: 4px solid #1a3a5c;
+            padding: 16px 20px;
+            margin-bottom: 18px;
+        }
+
+        .callout-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #1a3a5c;
+        }
+
+        .callout-text {
+            font-size: 10pt;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin-bottom: 16px;
+        }
+
+        .section-header {
+            font-size: 12pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            border-bottom: 2px solid transparent;
+            background: linear-gradient(to right, #1a3a5c 0%, #2d5a82 100%) bottom / 100% 2px no-repeat;
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+        }
+
+        .subsection-header {
+            font-weight: bold;
+            color: #374151;
+            margin-top: 10px;
+            margin-bottom: 6px;
+        }
+
+        .score-display {
+            display: inline;
+            font-weight: bold;
+            color: #1a3a5c;
+            font-size: 11pt;
+        }
+
+        .engine-breakdown {
+            background: linear-gradient(135deg, #f1f5f9 0%, #f8f9fa 100%);
+            padding: 20px;
+            margin: 12px 0;
+            text-align: center;
+            border-radius: 4px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .engine-row {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 8px;
+            font-size: 9pt;
+            color: #6b7280;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .engine-scores {
+            display: flex;
+            justify-content: space-around;
+            font-weight: bold;
+            font-size: 16pt;
+            color: #1a3a5c;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent 0%, #d1d5db 20%, #d1d5db 80%, transparent 100%);
+            margin: 24px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 9.5pt;
+        }
+
+        th {
+            background: linear-gradient(135deg, #1a3a5c 0%, #2d5a82 100%);
+            color: white;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: bold;
+            font-size: 9.5pt;
+            letter-spacing: 0.3px;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        tr:hover {
+            background: #f1f5f9;
+        }
+
+        .swot-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            background: #d1d5db;
+            margin: 12px 0;
+        }
+
+        .swot-cell {
+            background: white;
+            padding: 14px;
+            border-left: 4px solid;
+        }
+
+        .swot-cell.strength {
+            border-left-color: #0d9488;
+        }
+
+        .swot-cell.weakness {
+            border-left-color: #dc2626;
+        }
+
+        .swot-cell.opportunity {
+            border-left-color: #2563eb;
+        }
+
+        .swot-cell.threat {
+            border-left-color: #d97706;
+        }
+
+        .swot-cell-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 10pt;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .swot-cell.strength .swot-cell-title {
+            color: #0d9488;
+        }
+
+        .swot-cell.weakness .swot-cell-title {
+            color: #dc2626;
+        }
+
+        .swot-cell.opportunity .swot-cell-title {
+            color: #2563eb;
+        }
+
+        .swot-cell.threat .swot-cell-title {
+            color: #d97706;
+        }
+
+        .button-container {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .dashboard-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #1a3a5c 0%, #2d5a82 100%);
+            color: white;
+            padding: 14px 32px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 10pt;
+            letter-spacing: 0.3px;
+            transition: transform 0.2s;
+            box-shadow: 0 2px 6px rgba(91, 33, 182, 0.3);
+        }
+
+        .dashboard-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(91, 33, 182, 0.4);
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 16px;
+            border-top: 1px solid #e5e7eb;
+            text-align: center;
+            font-size: 8.5pt;
+            color: #6b7280;
+        }
+
+        .page-break {
+            page-break-before: always;
+        }
+
+        .addendum-title {
+            font-size: 18pt;
+            font-weight: bold;
+            color: #1a3a5c;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 24px;
+            border-bottom: 3px solid #1a3a5c;
+            padding-bottom: 8px;
+        }
+
+        .term {
+            margin-bottom: 12px;
+            padding-left: 16px;
+            border-left: 3px solid #e5e7eb;
+        }
+
+        .term-title {
+            font-weight: bold;
+            color: #1a3a5c;
+        }
+
+        p {
+            margin-bottom: 8px;
+        }
+
+        .green { color: #0d9488; }
+        .amber { color: #d97706; }
+        .red { color: #dc2626; }
+        
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 8px;
+        }
+        
+        li {
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-logo">BrandRank.AI</div>
+            <div class="brand-logo">FINISH AT WALMART</div>
+        </div>
+
+        <!-- Title -->
+        <div class="report-title">2026 BRAND BASELINE REPORT</div>
+        <div class="report-subtitle">Finish: Walmart Focus | Q1 2026</div>
+
+        <!-- Headline -->
+        <div class="headline">Premium Pod Leader Dominates Effectiveness But Loses Walmart Positioning: Finish Outperforms Cascade in Cleaning Power While Amazon, Costco, and Subscribe & Save Undercut Walmart's "Best Place" Claim</div>
+
+        <!-- At a Glance -->
+        <div class="callout-box">
+            <div class="callout-title">At a Glance</div>
+            <div class="callout-text">
+                Finish achieves strong overall AI visibility for dishwasher pods, earning recommendations across effectiveness, storage, and comparison queries—particularly excelling when consumers ask about heavily soiled loads, water softeners, and professional recommendations. The brand consistently scores alongside or ahead of Cascade across most cleaning performance queries. However, the core brand promise "Walmart is the best place to buy Finish products" faces significant alignment challenges. While Walmart stocks the full Finish range (Power, Quantum, Ultimate) with good availability and Rollback pricing, AI consistently identifies Amazon Subscribe & Save, Costco bulk pricing, and Target's convenience as equal or superior purchase channels depending on consumer priorities. Eco-conscious queries represent near-total invisibility—zero visibility when consumers ask about plant-based, EWG-verified, or plastic-free options. The opportunity: maintain cleaning performance leadership while rebuilding Walmart exclusivity narrative through exclusive SKUs, Walmart-only promotions, or acceptance that omnichannel strength may be more valuable than retail partner favoritism.
+                <br><br>
+                <em>All data is sourced from the BrandRank reporting dashboard and reviewed by an analyst.</em>
+            </div>
+        </div>
+
+        <!-- Section 1: Overall Score -->
+        <div class="section">
+            <div class="section-header">1. Overall Score: <span class="score-display">6.0/10 →</span></div>
+            <p>Finish demonstrates solid visibility performance—appearing in 6 out of 10 AI-mediated dishwasher pod queries with particular strength in effectiveness and technical performance categories. The brand maintains competitive parity with Cascade on cleaning performance while facing visibility gaps in eco-friendly positioning and the strategic challenge of Walmart exclusivity claims undermined by competitor retail strength.</p>
+        </div>
+
+        <!-- Section 2: AI Visibility -->
+        <div class="section">
+            <div class="section-header">2. AI Visibility: <span class="score-display">6.0/10 →</span></div>
+            <p>Finish appears in approximately 6 out of 10 AI dishwasher pod recommendations—strong positioning in technical performance offset by eco-friendly category invisibility and retailer neutrality.</p>
+            
+            <!-- Engine Breakdown -->
+            <div class="engine-breakdown">
+                <div class="engine-row">
+                    <span>ChatGPT</span>
+                    <span>Gemini</span>
+                    <span>Claude</span>
+                    <span>Perplexity</span>
+                    <span>Meta AI</span>
+                    <span>Grok</span>
+                </div>
+                <div class="engine-scores">
+                    <span>6.3</span>
+                    <span>5.2</span>
+                    <span>5.2</span>
+                    <span>4.4</span>
+                    <span>7.3</span>
+                    <span>7.3</span>
+                </div>
+            </div>
+
+            <div class="subsection-header">Engine Performance:</div>
+            <p>Finish scores highest visibility on Meta AI (7.3) and Grok (7.3), with moderate performance on ChatGPT (6.3). Gemini (5.2) and Claude (5.2) show weaker recommendations, while Perplexity (4.4) represents lowest visibility—potentially emphasizing eco-friendly alternatives where Finish is invisible.</p>
+
+            <div class="subsection-header">Where the Brand Wins:</div>
+            <p><span class="green">🟢 Usage Guidance: Should pods be unwrapped? (9.7)</span> • <span class="green">🟢 Finish vs Cascade Comparison (9.5)</span> • <span class="green">🟢 Professional Recommendations (9.2)</span> • <span class="green">🟢 Film/Residue Troubleshooting (9.2)</span> • <span class="green">🟢 Water Softener Performance (9.2)</span></p>
+
+            <div class="subsection-header">Critical Gaps:</div>
+            <p><span class="red">🔴 Eco & Environment Category (0.7)</span>—near-zero presence in plant-based, EWG-verified, plastic-free queries • <span class="red">🔴 Where to Buy: Walmart Positioning (4.8)</span>—fails to establish Walmart as preferred retailer • <span class="red">🔴 Safety Category (3.7)</span>—weak visibility in sensitive skin, non-toxic, fragrance-free queries</p>
+
+            <table>
+                <tr>
+                    <th>Query Category</th>
+                    <th>Avg Score</th>
+                    <th>Trend</th>
+                    <th>Competitive Context</th>
+                </tr>
+                <tr>
+                    <td><span class="green">Effectiveness</span></td>
+                    <td><span class="green">🟢 8.3</span></td>
+                    <td>Increasing</td>
+                    <td>Leads or matches Cascade (7.8-10.0) across cleaning performance, heavily soiled loads, grease removal</td>
+                </tr>
+                <tr>
+                    <td><span class="green">Storage</span></td>
+                    <td><span class="green">🟢 8.0</span></td>
+                    <td>Increasing</td>
+                    <td>Strong technical guidance on moisture protection, shelf life, pod adhesion prevention</td>
+                </tr>
+                <tr>
+                    <td><span class="amber">Comparison</span></td>
+                    <td><span class="amber">🟡 7.6</span></td>
+                    <td>Increasing</td>
+                    <td>Competitive with Cascade (7.9-10.0); slightly behind on store-brand comparisons</td>
+                </tr>
+                <tr>
+                    <td><span class="amber">Usage</span></td>
+                    <td><span class="amber">🟡 7.2</span></td>
+                    <td>Increasing</td>
+                    <td>Excellent on unwrapping (9.7), dispenser placement; moderate on quantity per load</td>
+                </tr>
+                <tr>
+                    <td><span class="amber">Troubleshooting</span></td>
+                    <td><span class="amber">🟡 7.1</span></td>
+                    <td>Increasing</td>
+                    <td>Leads film/residue solutions (9.2); weaker on dispenser clogging (4.5)</td>
+                </tr>
+                <tr>
+                    <td><span class="red">Where to Buy</span></td>
+                    <td><span class="red">🔴 4.8</span></td>
+                    <td>Increasing</td>
+                    <td>Generic retail mentions (Amazon 9.0, Walmart 0-5 range); no Walmart preference established</td>
+                </tr>
+                <tr>
+                    <td><span class="red">Alternatives</span></td>
+                    <td><span class="red">🔴 4.3</span></td>
+                    <td>Increasing</td>
+                    <td>Finish not positioned as alternative solution; category focuses on generic substitutes</td>
+                </tr>
+                <tr>
+                    <td><span class="red">Safety</span></td>
+                    <td><span class="red">🔴 3.7</span></td>
+                    <td>Increasing</td>
+                    <td>Weak on plumbing concerns (7.5 plumber recommendations but 3.5 overall); invisible in sensitive skin queries</td>
+                </tr>
+                <tr>
+                    <td><span class="red">Eco & Environment</span></td>
+                    <td><span class="red">🔴 0.7</span></td>
+                    <td>Increasing</td>
+                    <td>Complete category loss—zero visibility on plant-based, EWG-verified, plastic-free; Seventh Generation owns segment</td>
+                </tr>
+            </table>
+
+            <p style="margin-top: 12px;"><strong>Critical Insight:</strong> Finish's visibility strength lies in technical performance and professional recommendations—categories where cleaning effectiveness matters most. However, zero visibility in Eco & Environment (0.7), weak Safety positioning (3.7), and failure to establish Walmart preference (Where to Buy 4.8) create strategic gaps. Cascade matches or slightly exceeds Finish across most categories, while Seventh Generation captures eco-conscious consumers completely. The Walmart positioning challenge is acute: when consumers ask "Where to buy?" AI recommends Amazon (9.0 visibility) and generic retail options far more than Walmart-specific purchase paths.</p>
+
+            <div class="button-container">
+                <a href="https://studio.brandrank.ai/reckitt/finish" class="dashboard-button">More on the Dashboard →</a>
+            </div>
+        </div>
+
+        <!-- Section 3: Brand Vulnerability -->
+        <div class="section">
+            <div class="section-header">3. Brand Vulnerability: <span class="score-display">6.6/10 →</span></div>
+            <p>AI discussions show moderate vulnerability—Walmart "best place" claim faces credible counter-evidence from Amazon, Costco, and Target while Finish maintains strong product trust through effectiveness validation.</p>
+
+            <div class="subsection-header">Brand Promise Alignment: 4.2/10</div>
+            <p><em>"Walmart is the best place to buy Finish products."</em></p>
+
+            <table>
+                <tr>
+                    <th>Engine</th>
+                    <th>Score</th>
+                    <th>Assessment</th>
+                </tr>
+                <tr>
+                    <td>Gemini</td>
+                    <td>6.0</td>
+                    <td>Partial truth functioning as retail partnership goal, not market reality. Walmart stocks full Finish range (Power, Quantum, Ultimate) with Rollback pricing and Walmart Cash integration. However, Costco undercuts on bulk pricing, Amazon Subscribe & Save offers lower net price with better delivery, and Finish's own website directs to multiple retailers (Target, Amazon, Kroger)—not exclusively Walmart. Promise aligned with availability but misaligned with exclusivity and lowest absolute unit price.</td>
+                </tr>
+                <tr>
+                    <td>OpenAI</td>
+                    <td>4.5</td>
+                    <td>Walmart is "one of the best" places, but not provably "the best." Walmart shows high review volume (Jet-Dry 9,967 reviews, 4.8 rating), fast fulfillment (pickup/delivery), velocity cues (500-1,000+ bought recently) supporting availability. However, Amazon Subscribe & Save undercuts by 5-15% with auto-delivery convenience. Costco's bulk pricing beats Walmart per-pod cost. Walmart.com experience is strong but not demonstrably superior to competitors. Promise overstates exclusivity.</td>
+                </tr>
+                <tr>
+                    <td>Claude</td>
+                    <td>4.0</td>
+                    <td>Walmart offers good Finish availability and competitive pricing but isn't consistently "the best" across all purchase criteria. Amazon Subscribe & Save provides lower recurring costs (15-20% discount vs Walmart standard pricing). Costco/Sam's Club beat Walmart on bulk value. Target often matches Walmart pricing with better in-store experience and Circle rewards. Walmart excels in immediate availability and Rollback promotions but "best place" requires superiority across price, convenience, selection—Walmart achieves parity, not dominance.</td>
+                </tr>
+                <tr>
+                    <td>Perplexity</td>
+                    <td>3.0</td>
+                    <td>Limited evidence supports Walmart as "best place." While Walmart stocks Finish products widely, comparative pricing data shows Amazon frequently matches or undercuts Walmart, especially with Subscribe & Save. Warehouse clubs (Costco, Sam's Club) offer superior bulk value. Finish brand website doesn't prioritize Walmart in "where to buy" tools. Consumer shopping behavior indicates omnichannel preference—no single retailer dominates Finish purchases. Promise lacks supporting evidence for "best" claim.</td>
+                </tr>
+                <tr>
+                    <td>Meta AI</td>
+                    <td>5.0</td>
+                    <td>Walmart is a major Finish retailer with good availability and competitive pricing, but Amazon, Target, and warehouse clubs offer comparable or better value depending on consumer needs. "Best place" is subjective—Walmart works well for immediate purchases and Rollback deals, but not universally superior.</td>
+                </tr>
+                <tr>
+                    <td>Grok</td>
+                    <td>4.5</td>
+                    <td>Walmart provides solid Finish availability and occasional promotions, but "best place" isn't objectively provable. Amazon's Subscribe & Save, Costco's bulk pricing, and Target's convenience create viable alternatives. Walmart is "a good place" to buy Finish, not definitively "the best place."</td>
+                </tr>
+            </table>
+
+            <div class="swot-grid">
+                <div class="swot-cell strength">
+                    <div class="swot-cell-title">STRENGTH</div>
+                    <p>Premium cleaning performance parity with Cascade across heavily soiled loads (8.7), grease removal (8.5), film prevention (8.7). Professional recommendations leadership (9.2) validates technical credibility. Strong troubleshooting authority—film/residue solutions (9.2), pod dissolution guidance (9.3). Storage expertise (8.0) demonstrates product science knowledge. Usage guidance leadership (9.7 on unwrapping, 9.2 on switching from powder). Consistent 8.5-9.5 scores on Finish vs Cascade comparisons show competitive equality. Reckitt parent company resources enable innovation investment (Quantum, Ultimate tiers with water softeners, rinse aid integration).</p>
+                </div>
+                <div class="swot-cell weakness">
+                    <div class="swot-cell-title">WEAKNESS</div>
+                    <p>Walmart "best place" promise scores only 4.2/10—credible counter-evidence from Amazon Subscribe & Save (5-20% lower recurring cost), Costco bulk value (superior per-pod pricing), Target convenience and Circle rewards. Finish's own website directs to multiple retailers, not exclusively Walmart. Complete Eco & Environment invisibility (0.7)—zero presence in plant-based, EWG-verified, plastic-free queries where Seventh Generation dominates. Safety category weakness (3.7) limits sensitive skin positioning. Where to Buy category underperformance (4.8) means generic Amazon (9.0) beats Walmart-specific recommendations. Perplexity visibility (4.4) suggests research-oriented consumers find alternatives.</p>
+                </div>
+                <div class="swot-cell opportunity">
+                    <div class="swot-cell-title">OPPORTUNITY</div>
+                    <p>Develop Walmart-exclusive SKUs or tiers to justify "best place" claim (Finish Quantum Walmart Edition with unique formulation). Create aggressive Walmart-only promotions that genuinely undercut Amazon/Costco. Launch eco-friendly line under Finish brand to capture 0.7 visibility gap—"Finish Pure" with plant-based ingredients, EWG certification, plastic-free packaging. Strengthen safety messaging with dermatologist endorsements for sensitive skin use cases. Amplify professional recommendations (9.2) with named appliance brand partnerships. Expand storage/usage authority (8.0, 7.2) into video content and FAQ schema. Consider repositioning: accept omnichannel reality and change promise to "Finish available wherever you shop best" rather than Walmart exclusivity.</p>
+                </div>
+                <div class="swot-cell threat">
+                    <div class="swot-cell-title">THREAT</div>
+                    <p>Amazon Subscribe & Save systematically undercuts Walmart pricing with 5-20% discounts plus delivery convenience. Costco/Sam's Club bulk value beats Walmart per-pod cost, capturing high-usage households. Seventh Generation owns eco-conscious category (plant-based, EWG-verified) where Finish is completely invisible. Target Circle rewards and better in-store experience create parity with Walmart. Store-brand pods (Walmart Great Value, Amazon Basics, Kirkland) positioned as "as effective as name brands" (8.7 score) at lower price points. Cascade maintains competitive parity or slight edge across most queries. Persistent Walmart "best place" claim risks credibility erosion as consumers discover better deals elsewhere.</p>
+                </div>
+            </div>
+
+            <div class="subsection-header">Statements of Fact: 40% Accurate</div>
+            <p>Of 5 monitored statements, <strong>2 are accurate</strong>, 0 are partially accurate, and 3 are inaccurate. The two accurate statements relate to product effectiveness claims. Three inaccurate statements involve the Walmart "best place" positioning—AI consistently finds evidence that Amazon, Costco, and Target offer equal or superior value depending on consumer priorities.</p>
+
+            <div class="button-container">
+                <a href="https://studio.brandrank.ai/reckitt/finish" class="dashboard-button">More on the Dashboard →</a>
+            </div>
+        </div>
+
+        <!-- Section 4: Content Readiness -->
+        <div class="section">
+            <div class="section-header">4. Content Readiness: <span class="score-display">5.0/10 →</span></div>
+            <p>Finish shows moderate clarity but significant gaps in structured data and retail-specific depth limit Walmart positioning optimization.</p>
+
+            <div class="subsection-header">Availability: 5.2/10</div>
+            <p>Finish.com lacks comprehensive structured markup for retail optimization—no Organization schema highlighting Walmart partnership, missing Store schema for Walmart locations, incomplete Product schema without retailer-specific pricing. Walmart product pages exist but aren't linked via structured data. Implementation priority: Organization schema with Walmart partnership details, Store locator schema pointing to Walmart locations, Product schema with Walmart-exclusive SKU identifiers, FAQ schema addressing "where to buy" directly.</p>
+
+            <div class="subsection-header">Depth: 3.7/10</div>
+            <p>Critical weakness. Content lacks comparative retail value propositions AI can extract. No quantitative proof that Walmart offers "best" pricing vs Amazon/Costco. Missing: retailer-specific pricing comparisons, Walmart exclusive benefits documentation, Subscribe & Save vs Rollback cost analysis, bulk value calculations. Cleaning performance content exists but retail channel depth absent. This explains why AI can't validate Walmart "best place" claim—no supporting evidence to cite.</p>
+
+            <div class="subsection-header">Clarity: 6.1/10</div>
+            <p>Moderate strength. Product tier naming (Power, Quantum, Ultimate) communicates escalating performance clearly. Technical benefits (water softener, grease-cutting enzymes, rinse aid) translated accessibly. However, retail messaging lacks precision—generic "available at major retailers" doesn't establish Walmart preference. Walmart partnership communications need direct, unambiguous language AI can extract.</p>
+
+            <div class="subsection-header">Platform-Specific Readiness:</div>
+            <p><strong>ChatGPT (6.3/10):</strong> Moderate visibility but no Walmart preference established. Priority: Create "Why Walmart" content hub with exclusive benefits, implement retail schema, publish comparative pricing showing Walmart advantages.</p>
+
+            <p><strong>Perplexity (4.4/10):</strong> Lowest visibility suggests research-oriented users find better evidence for alternatives. Priority: Commission independent price tracking study showing Walmart competitiveness, publish detailed retail comparison with methodology, create data-driven content Perplexity can cite.</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Section 5: Surprising Strengths -->
+        <div class="section">
+            <div class="section-header">5. Surprising Strengths</div>
+            
+            <p><strong>Usage guidance authority (9.7 on unwrapping):</strong> Finish achieves near-universal AI recommendation when consumers ask basic usage questions like "Should dishwasher pods be unwrapped?" Demonstrates clear, authoritative content on fundamentals that many brands overlook.</p>
+
+            <p><strong>Professional recommendations leadership (9.2):</strong> Strong visibility when consumers ask which pods professionals recommend—validates technical credibility and positions Finish as expert-trusted choice.</p>
+
+            <p><strong>Troubleshooting expertise (9.2 film/residue solutions):</strong> Exceptional visibility solving common dishwasher problems—film on glassware, residue issues, pod dissolution failures. Shows Finish owns problem-resolution authority in AI responses.</p>
+
+            <p><strong>Competitive parity with Cascade:</strong> Consistent 9.5 score on "Finish vs Cascade" comparison queries demonstrates AI sees brands as equivalent performers, not Finish as inferior alternative. Maintains premium positioning despite store-brand pressure.</p>
+        </div>
+
+        <!-- Section 6: Opportunities -->
+        <div class="section">
+            <div class="section-header">6. Opportunities Going Into 2026</div>
+
+            <div class="subsection-header">1. URGENT WALMART POSITIONING DECISIONS:</div>
+            <p>Either substantiate "best place" claim with exclusive benefits or abandon it. Option A: Create genuine Walmart exclusives—Finish Quantum Walmart Edition with unique formulation, Walmart-only mega packs at industry-lowest per-pod cost, aggressive Rollback pricing that beats Subscribe & Save. Option B: Reposition to reality—"Finish available wherever you shop" acknowledging omnichannel strength. Current claim (4.2/10 alignment) damages credibility as consumers discover better deals elsewhere. Decision required: double down with proof or pivot to honesty.</p>
+
+            <div class="subsection-header">2. CAPTURE ECO-CONSCIOUS SEGMENT:</div>
+            <p>Launch "Finish Pure" or eco-tier with plant-based surfactants, EWG certification, plastic-free packaging to address complete 0.7 visibility gap. Seventh Generation owns this segment—Finish has zero presence when consumers ask about eco-friendly pods. Opportunity: leverage Reckitt resources to develop credible green line without abandoning core performance positioning. Position as "cleaning power meets sustainability" bridging technical effectiveness (8.3) and environmental responsibility (currently 0.7).</p>
+
+            <div class="subsection-header">3. STRENGTHEN WALMART CONTENT INFRASTRUCTURE:</div>
+            <p>Implement comprehensive retailer-focused content strategy: Walmart-specific landing pages on Finish.com showing exclusive benefits, Store locator schema directing to Walmart locations, Product schema with Walmart SKU identifiers and pricing, FAQ schema directly answering "Is Walmart the best place to buy Finish?" with supporting evidence, comparison calculator showing Walmart Rollback vs Amazon Subscribe & Save net cost, video content featuring Walmart partnership advantages.</p>
+
+            <div class="subsection-header">4. ADDRESS SAFETY CATEGORY WEAKNESS:</div>
+            <p>Safety scores 3.7/10 limiting growth in sensitive skin, fragrance-free, non-toxic queries. Develop dermatologist endorsements for skin safety, create "Finish Sensitive" fragrance-free line or clearly label existing options, publish ingredient safety data and toxicology testing, address microplastics concerns (currently 3.2 visibility) with transparency about pod coatings.</p>
+
+            <div class="subsection-header">5. AMPLIFY PROFESSIONAL RECOMMENDATIONS:</div>
+            <p>Leverage 9.2 professional recommendation score with named partnerships: Appliance brand endorsements (Bosch, Whirlpool, LG recommending Finish specifically), plumber testimonials on plumbing safety (7.5 current score), Consumer Reports testing results and methodology, independent lab validation of cleaning performance claims. Transform generic "recommended by professionals" into named, credible third-party validation AI can cite.</p>
+
+            <div class="button-container">
+                <a href="https://studio.brandrank.ai/reckitt/finish" class="dashboard-button">More on the Dashboard →</a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Page 1 of 2 | January 2026 | Confidential
+        </div>
+    </div>
+
+    <!-- PAGE 2 - ADDENDUM -->
+    <div class="page page-break">
+        <div class="header">
+            <div class="header-logo">BrandRank.AI</div>
+            <div class="brand-logo">FINISH AT WALMART</div>
+        </div>
+
+        <div class="addendum-title">ADDENDUM</div>
+
+        <div class="section">
+            <div class="section-header">Essential Terms</div>
+
+            <div class="term">
+                <div class="term-title">AI Visibility</div>
+                <p>"Do I show up?" Measures how often your brand appears when consumers ask AI category-relevant questions. 7+ = AI recommends you; &lt;4 = invisible.</p>
+            </div>
+
+            <div class="term">
+                <div class="term-title">Brand Vulnerability</div>
+                <p>"What does AI say about me?" Measures whether AI protects or undermines your reputation.</p>
+            </div>
+
+            <div class="term">
+                <div class="term-title">Brand Promise Alignment</div>
+                <p>"Does AI believe my story?" Score below 7 means AI hedges rather than endorses.</p>
+            </div>
+
+            <div class="term">
+                <div class="term-title">Content Readiness</div>
+                <p>"Is my site ready for AI?" Can AI find (Availability), trust (Depth), and extract (Clarity) your content?</p>
+            </div>
+
+            <div class="term">
+                <div class="term-title">Source Influence</div>
+                <p>"Who shapes my AI narrative?" High owned-source % = greater control over your story.</p>
+            </div>
+
+            <div class="term">
+                <div class="term-title">Statements of Fact</div>
+                <p>"Is AI telling the truth?" Monitors accuracy of specific brand claims across engines.</p>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="section">
+            <div class="section-header">Why Check Your Dashboard Regularly</div>
+            <ul>
+                <li>AI models update frequently. Scores can shift overnight with platform updates.</li>
+                <li>Competitors are moving. See their gains in scores before you see them in market share.</li>
+                <li>Prepare for key moments. Check before earnings calls, board meetings, campaign launches.</li>
+                <li>Track your investments. See if content and PR translate to AI visibility.</li>
+                <li>Catch misinformation early. Before it spreads across platforms.</li>
+                <li>Spot emerging opportunities. New questions consumers are asking.</li>
+            </ul>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="section">
+            <div class="section-header">About BrandRank.AI</div>
+            <p>BrandRank works with over 60 global brands to strengthen trust and purchase intent by uncovering vulnerabilities, purchase-driving insights, and growth opportunities across AI answer engines. As a SaaS platform, we track all major answer engines to improve visibility, ensure content is AI-ready, and rigorously measure brand claims and instructional accuracy.</p>
+            <br>
+            <p>To explore your complete data, access your dashboard at <a href="https://studio.brandrank.ai/reckitt/finish" style="color: #1a3a5c; font-weight: bold;">https://studio.brandrank.ai/reckitt/finish</a>.</p>
+        </div>
+
+        <div class="footer">
+            Page 2 of 2 | January 2026 | Confidential
+        </div>
+    </div>
+</body>
+</html>
