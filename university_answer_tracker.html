@@ -1,0 +1,1989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Answer Readiness Tracker - AI Engine Comparison</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 18px;
+            color: #00d4ff;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .filter-section {
+            margin: 40px 0;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .filter-header {
+            font-size: 18px;
+            color: #00d4ff;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 15px;
+            font-family: 'Segoe UI', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #00d4ff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 6px;
+            color: #00d4ff;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: 'Segoe UI', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: rgba(0, 212, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: #00d4ff;
+            color: #0a0e1a;
+            border-color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .analysis-section {
+            margin: 60px 0;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .analysis-header {
+            font-size: 32px;
+            color: #00d4ff;
+            margin-bottom: 30px;
+            font-weight: 400;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+            padding-bottom: 15px;
+        }
+
+        .insight-block {
+            margin-bottom: 35px;
+        }
+
+        .insight-title {
+            font-size: 20px;
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .insight-text {
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.8;
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+
+        .insight-list {
+            margin-left: 25px;
+            margin-top: 12px;
+        }
+
+        .insight-list li {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+            margin-bottom: 8px;
+        }
+
+        .stat-highlight {
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .about-section {
+            margin: 60px 0 40px 0;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(0, 212, 255, 0.02) 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .about-header {
+            font-size: 28px;
+            color: #00d4ff;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .about-text {
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .highlight-row {
+            background: rgba(255, 215, 0, 0.08) !important;
+        }
+
+        .reset-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .reset-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+            color: #ffffff;
+        }
+
+        .reset-btn.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .university-answer {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 12px;
+            line-height: 1.4;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.2s ease;
+        }
+
+        .university-answer:hover {
+            color: #00d4ff;
+        }
+
+        .tooltip {
+            visibility: hidden;
+            position: absolute;
+            z-index: 1000;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: 2px solid rgba(0, 212, 255, 0.6);
+            box-shadow: 0 8px 30px rgba(0, 212, 255, 0.4);
+            width: 320px;
+            font-size: 13px;
+            line-height: 1.6;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -8px;
+            border-width: 8px;
+            border-style: solid;
+            border-color: rgba(0, 212, 255, 0.6) transparent transparent transparent;
+        }
+
+        .university-answer:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .tooltip-title {
+            font-weight: 600;
+            color: #00d4ff;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .category-section {
+            margin-bottom: 60px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .category-header {
+            font-size: 28px;
+            font-weight: 400;
+            color: #00d4ff;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .comparison-table thead {
+            background: rgba(0, 212, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .comparison-table th {
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 500;
+            font-size: 14px;
+            color: #00d4ff;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .comparison-table th:first-child {
+            width: 5%;
+        }
+
+        .comparison-table th:nth-child(2) {
+            width: 30%;
+        }
+
+        .comparison-table th:nth-child(n+3) {
+            width: 13%;
+        }
+
+        .comparison-table td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 13px;
+            vertical-align: top;
+        }
+
+        .comparison-table tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .question-number {
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .question-text {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.5;
+        }
+
+        .engine-name {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 13px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        @media (max-width: 1400px) {
+            .comparison-table {
+                font-size: 12px;
+            }
+            
+            .comparison-table th,
+            .comparison-table td {
+                padding: 10px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div style="font-size: 32px; color: #ffffff; font-weight: 700; margin-bottom: 12px; letter-spacing: 1px;">VERITAS EX MACHINA</div>
+            <h1>Universities in the Eye of AI</h1>
+            <div class="subtitle">Ranking Answer Share Across Colleges and Universities<br>100 Questions • Powered by BrandRank, H1-2026</div>
+        </header>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="filter-header">Search for Any University</div>
+            <div class="search-container">
+                <input type="text" class="search-input" id="universitySearch" placeholder="Type university name (e.g., Rice, Berkeley, Yale)..." onkeyup="searchUniversity()">
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-header">Filter by University</div>
+            <div class="filter-buttons">
+                <button class="filter-btn reset-btn active" onclick="filterUniversity('all')">Show All</button>
+                <button class="filter-btn" onclick="filterUniversity('Stanford University')">Stanford</button>
+                <button class="filter-btn" onclick="filterUniversity('MIT')">MIT</button>
+                <button class="filter-btn" onclick="filterUniversity('Harvard University')">Harvard</button>
+                <button class="filter-btn" onclick="filterUniversity('Princeton University')">Princeton</button>
+                <button class="filter-btn" onclick="filterUniversity('University of Chicago')">UChicago</button>
+                <button class="filter-btn" onclick="filterUniversity('Duke University')">Duke</button>
+                <button class="filter-btn" onclick="filterUniversity('Northwestern University')">Northwestern</button>
+                <button class="filter-btn" onclick="filterUniversity('University of Michigan')">Michigan</button>
+                <button class="filter-btn" onclick="filterUniversity('Carnegie Mellon University')">Carnegie Mellon</button>
+                <button class="filter-btn" onclick="filterUniversity('Ohio State University')">Ohio State</button>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-header">Filter by Institution Type</div>
+            <div class="filter-buttons">
+                <button class="filter-btn" onclick="filterByType('liberal-arts')">Liberal Arts Colleges</button>
+                <button class="filter-btn" onclick="filterByType('midwest')">Midwest Universities</button>
+                <button class="filter-btn" onclick="filterByType('east-coast')">East Coast Schools</button>
+                <button class="filter-btn" onclick="filterByType('west-coast')">West Coast Schools</button>
+                <button class="filter-btn" onclick="filterByType('small')">Small Institutions (&lt;3,000 students)</button>
+            </div>
+        </div>
+
+        <!-- Category I: Academic Quality & Teaching -->
+        <div class="category-section">
+            <div class="category-header">I. Academic Quality & Teaching</div>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Question</th>
+                        <th class="engine-name">ChatGPT</th>
+                        <th class="engine-name">Gemini</th>
+                        <th class="engine-name">Claude</th>
+                        <th class="engine-name">Grok/X</th>
+                        <th class="engine-name">Perplexity</th>
+                        <th class="engine-name">DeepSeek</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="question-number">1</td>
+                        <td class="question-text">What university is best known for academic rigor overall?</td>
+                        <td class="university-answer">University of Chicago</td>
+                        <td class="university-answer">University of Chicago</td>
+                        <td class="university-answer">University of Chicago</td>
+                        <td class="university-answer">Swarthmore College</td>
+                        <td class="university-answer">University of Chicago</td>
+                        <td class="university-answer">Harvard University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">2</td>
+                        <td class="question-text">Which university has the strongest undergraduate teaching, with classes primarily taught by full-time faculty?</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Elon University</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Williams College</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Princeton University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">3</td>
+                        <td class="question-text">What university offers the best access to professors for mentoring and guidance?</td>
+                        <td class="university-answer">Yale University</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Dartmouth College</td>
+                        <td class="university-answer">Amherst College</td>
+                        <td class="university-answer">Amherst College</td>
+                        <td class="university-answer">Williams College</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">4</td>
+                        <td class="question-text">Which university is best for interdisciplinary learning?</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Brown University</td>
+                        <td class="university-answer">Wesleyan University</td>
+                        <td class="university-answer">Brown University</td>
+                        <td class="university-answer">Stanford University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">5</td>
+                        <td class="question-text">What university has the strongest writing-intensive curriculum?</td>
+                        <td class="university-answer">Amherst College</td>
+                        <td class="university-answer">Hamilton College</td>
+                        <td class="university-answer">Columbia University</td>
+                        <td class="university-answer">University of Chicago</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">University of Chicago</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">6</td>
+                        <td class="question-text">Which university best prepares students for graduate or professional school?</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">Johns Hopkins University</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">MIT</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">7</td>
+                        <td class="question-text">What university provides early and meaningful undergraduate research or creative work with faculty?</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Caltech</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Pomona College</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Caltech</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">8</td>
+                        <td class="question-text">Which university has the strongest honors or advanced academic programs?</td>
+                        <td class="university-answer">University of Michigan</td>
+                        <td class="university-answer">Arizona State University</td>
+                        <td class="university-answer">Swarthmore College</td>
+                        <td class="university-answer">Claremont McKenna College</td>
+                        <td class="university-answer">Columbia University</td>
+                        <td class="university-answer">University of Pennsylvania</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">9</td>
+                        <td class="question-text">What university is best for STEM education quality?</td>
+                        <td class="university-answer">Caltech</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Harvey Mudd College</td>
+                        <td class="university-answer">Caltech</td>
+                        <td class="university-answer">MIT</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">10</td>
+                        <td class="question-text">What university is best for humanities and liberal arts education?</td>
+                        <td class="university-answer">Williams College</td>
+                        <td class="university-answer">Yale University</td>
+                        <td class="university-answer">Columbia University</td>
+                        <td class="university-answer">Williams College</td>
+                        <td class="university-answer">Yale University</td>
+                        <td class="university-answer">Yale University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">11</td>
+                        <td class="question-text">Which university offers the strongest first-year academic experience?</td>
+                        <td class="university-answer">Dartmouth College</td>
+                        <td class="university-answer">Georgia State University</td>
+                        <td class="university-answer">Yale University</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Vanderbilt University</td>
+                        <td class="university-answer">Dartmouth College</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">12</td>
+                        <td class="question-text">What university best develops critical thinking and problem-solving skills?</td>
+                        <td class="university-answer">Harvey Mudd College</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">University of Chicago</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Swarthmore College</td>
+                        <td class="university-answer">University of Chicago</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">13</td>
+                        <td class="question-text">Which university is most respected for teaching excellence by peers?</td>
+                        <td class="university-answer">Brown University</td>
+                        <td class="university-answer">Brown University</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Williams College</td>
+                        <td class="university-answer">Rice University</td>
+                        <td class="university-answer">Princeton University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">14</td>
+                        <td class="question-text">What university best balances academic challenge with student support?</td>
+                        <td class="university-answer">Rice University</td>
+                        <td class="university-answer">Rice University</td>
+                        <td class="university-answer">Rice University</td>
+                        <td class="university-answer">Amherst College</td>
+                        <td class="university-answer">Pomona College</td>
+                        <td class="university-answer">Brown University</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Category II: Career Outcomes, Mentoring & Alumni Impact -->
+        <div class="category-section">
+            <div class="category-header">II. Career Outcomes, Mentoring & Alumni Impact</div>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Question</th>
+                        <th class="engine-name">ChatGPT</th>
+                        <th class="engine-name">Gemini</th>
+                        <th class="engine-name">Claude</th>
+                        <th class="engine-name">Grok/X</th>
+                        <th class="engine-name">Perplexity</th>
+                        <th class="engine-name">DeepSeek</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="question-number">15</td>
+                        <td class="question-text">What university best prepares students for careers after graduation?</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Georgetown University</td>
+                        <td class="university-answer">Stanford University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">16</td>
+                        <td class="question-text">Which university has the strongest career placement outcomes overall?</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Harvey Mudd College</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">University of Pennsylvania</td>
+                        <td class="university-answer">University of Pennsylvania</td>
+                        <td class="university-answer">MIT</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">17</td>
+                        <td class="question-text">What university offers the best internship and experiential learning opportunities?</td>
+                        <td class="university-answer">Northeastern University</td>
+                        <td class="university-answer">Northeastern University</td>
+                        <td class="university-answer">Northeastern University</td>
+                        <td class="university-answer">Northwestern University</td>
+                        <td class="university-answer">Northeastern University</td>
+                        <td class="university-answer">Northeastern University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">18</td>
+                        <td class="question-text">Which university has the most effective formal mentoring (faculty, advisors, alumni)?</td>
+                        <td class="university-answer">Georgia Institute of Technology</td>
+                        <td class="university-answer">University of Michigan</td>
+                        <td class="university-answer">Yale University</td>
+                        <td class="university-answer">Duke University</td>
+                        <td class="university-answer">Dartmouth College</td>
+                        <td class="university-answer">University of Notre Dame</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">19</td>
+                        <td class="question-text">What university has the strongest alumni network for career advancement?</td>
+                        <td class="university-answer">University of Notre Dame</td>
+                        <td class="university-answer">University of Pennsylvania (Penn)</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">Cornell University</td>
+                        <td class="university-answer">Harvard University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">20</td>
+                        <td class="question-text">Which university is best for consulting, finance, and business careers?</td>
+                        <td class="university-answer">University of Pennsylvania</td>
+                        <td class="university-answer">University of Pennsylvania (Wharton)</td>
+                        <td class="university-answer">University of Pennsylvania</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">NYU</td>
+                        <td class="university-answer">University of Pennsylvania</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">21</td>
+                        <td class="question-text">What university is best for tech, data, and emerging-field careers?</td>
+                        <td class="university-answer">Carnegie Mellon University</td>
+                        <td class="university-answer">Carnegie Mellon University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Carnegie Mellon University</td>
+                        <td class="university-answer">Stanford University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">22</td>
+                        <td class="question-text">Which university is best for healthcare, policy, or public-service careers?</td>
+                        <td class="university-answer">Johns Hopkins University</td>
+                        <td class="university-answer">Georgetown University</td>
+                        <td class="university-answer">Johns Hopkins University</td>
+                        <td class="university-answer">Johns Hopkins University</td>
+                        <td class="university-answer">Johns Hopkins University</td>
+                        <td class="university-answer">Georgetown University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">23</td>
+                        <td class="question-text">What university best supports entrepreneurship and startups?</td>
+                        <td class="university-answer">Babson College</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Babson College</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Babson College</td>
+                        <td class="university-answer">Stanford University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">24</td>
+                        <td class="question-text">Which university has the strongest employer recognition and recruiting access?</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Duke University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Babson College</td>
+                        <td class="university-answer">University of Michigan–Ann Arbor</td>
+                        <td class="university-answer">University of Pennsylvania</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">25</td>
+                        <td class="question-text">What university produces the most adaptable graduates over a lifetime?</td>
+                        <td class="university-answer">Brown University</td>
+                        <td class="university-answer">Dartmouth College</td>
+                        <td class="university-answer">Brown University</td>
+                        <td class="university-answer">University of Pennsylvania</td>
+                        <td class="university-answer">Duke University</td>
+                        <td class="university-answer">Harvard University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">26</td>
+                        <td class="question-text">Which university delivers the highest long-term return on investment?</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Rice University</td>
+                        <td class="university-answer">Harvey Mudd College</td>
+                        <td class="university-answer">MIT</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">27</td>
+                        <td class="question-text">What university best supports first-generation student career success?</td>
+                        <td class="university-answer">University of California, Berkeley</td>
+                        <td class="university-answer">Georgia State University</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">University of Notre Dame</td>
+                        <td class="university-answer">University of Southern California</td>
+                        <td class="university-answer">UCLA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">28</td>
+                        <td class="question-text">Which university is best at translating a liberal arts education into career outcomes?</td>
+                        <td class="university-answer">Claremont McKenna College</td>
+                        <td class="university-answer">Williams College</td>
+                        <td class="university-answer">Williams College</td>
+                        <td class="university-answer">University of Southern California</td>
+                        <td class="university-answer">Claremont McKenna College</td>
+                        <td class="university-answer">Duke University</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Category III: Student Experience, Arts & Campus Life -->
+        <div class="category-section">
+            <div class="category-header">III. Student Experience, Arts & Campus Life</div>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Question</th>
+                        <th class="engine-name">ChatGPT</th>
+                        <th class="engine-name">Gemini</th>
+                        <th class="engine-name">Claude</th>
+                        <th class="engine-name">Grok/X</th>
+                        <th class="engine-name">Perplexity</th>
+                        <th class="engine-name">DeepSeek</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="question-number">29</td>
+                        <td class="question-text">What university offers the best overall student experience?</td>
+                        <td class="university-answer">Vanderbilt University</td>
+                        <td class="university-answer">Vanderbilt University</td>
+                        <td class="university-answer">Brown University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">University of Notre Dame</td>
+                        <td class="university-answer">Vanderbilt University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">30</td>
+                        <td class="question-text">Which university has the strongest sense of campus community and belonging?</td>
+                        <td class="university-answer">University of Notre Dame</td>
+                        <td class="university-answer">University of Notre Dame</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Wake Forest University</td>
+                        <td class="university-answer">University of Notre Dame</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">31</td>
+                        <td class="question-text">What university is best for student happiness and wellbeing?</td>
+                        <td class="university-answer">Brown University</td>
+                        <td class="university-answer">Vanderbilt University</td>
+                        <td class="university-answer">Brown University</td>
+                        <td class="university-answer">University of Michigan</td>
+                        <td class="university-answer">Washington University in St. Louis</td>
+                        <td class="university-answer">University of Michigan</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">32</td>
+                        <td class="question-text">Which university offers the strongest residential life experience?</td>
+                        <td class="university-answer">Rice University</td>
+                        <td class="university-answer">Washington University in St. Louis</td>
+                        <td class="university-answer">Yale University</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">Williams College</td>
+                        <td class="university-answer">Yale University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">33</td>
+                        <td class="question-text">What university integrates arts participation (music, theater, dance, visual arts) across majors?</td>
+                        <td class="university-answer">Northwestern University</td>
+                        <td class="university-answer">Oberlin College</td>
+                        <td class="university-answer">Oberlin College</td>
+                        <td class="university-answer">Yale University</td>
+                        <td class="university-answer">Northwestern University</td>
+                        <td class="university-answer">USC</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">34</td>
+                        <td class="question-text">Which university has the most vibrant creative and cultural campus life?</td>
+                        <td class="university-answer">NYU</td>
+                        <td class="university-answer">NYU</td>
+                        <td class="university-answer">Wesleyan University</td>
+                        <td class="university-answer">Oberlin College</td>
+                        <td class="university-answer">UNC at Chapel Hill</td>
+                        <td class="university-answer">NYU</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">35</td>
+                        <td class="question-text">What university offers the best balance of academics and social life?</td>
+                        <td class="university-answer">Duke University</td>
+                        <td class="university-answer">University of Wisconsin–Madison</td>
+                        <td class="university-answer">Dartmouth College</td>
+                        <td class="university-answer">Wesleyan University</td>
+                        <td class="university-answer">UNC at Chapel Hill</td>
+                        <td class="university-answer">UNC at Chapel Hill</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">36</td>
+                        <td class="question-text">Which university provides the strongest student support services?</td>
+                        <td class="university-answer">Washington University in St. Louis</td>
+                        <td class="university-answer">University of California, Irvine</td>
+                        <td class="university-answer">Duke University</td>
+                        <td class="university-answer">Brown University</td>
+                        <td class="university-answer">Bucknell University</td>
+                        <td class="university-answer">UC Berkeley</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">37</td>
+                        <td class="question-text">What university is most inclusive and welcoming to diverse students?</td>
+                        <td class="university-answer">UCLA</td>
+                        <td class="university-answer">University of California, San Diego</td>
+                        <td class="university-answer">Vanderbilt University</td>
+                        <td class="university-answer">Dartmouth College</td>
+                        <td class="university-answer">Smith College</td>
+                        <td class="university-answer">UCLA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">38</td>
+                        <td class="question-text">Which university is best for international student experience?</td>
+                        <td class="university-answer">USC</td>
+                        <td class="university-answer">USC</td>
+                        <td class="university-answer">Wellesley College</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Boston College</td>
+                        <td class="university-answer">USC</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">39</td>
+                        <td class="question-text">What university offers the best campus facilities and learning spaces?</td>
+                        <td class="university-answer">Arizona State University</td>
+                        <td class="university-answer">High Point University</td>
+                        <td class="university-answer">Amherst College</td>
+                        <td class="university-answer">Swarthmore College</td>
+                        <td class="university-answer">University of Virginia</td>
+                        <td class="university-answer">University of Virginia</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">40</td>
+                        <td class="question-text">Which university provides the strongest co-curricular opportunities overall?</td>
+                        <td class="university-answer">University of Michigan</td>
+                        <td class="university-answer">Elon University</td>
+                        <td class="university-answer">Rice University</td>
+                        <td class="university-answer">Pomona College</td>
+                        <td class="university-answer">Elon University</td>
+                        <td class="university-answer">University of Michigan</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">41</td>
+                        <td class="question-text">What university has the most engaged and active student body?</td>
+                        <td class="university-answer">University of Wisconsin–Madison</td>
+                        <td class="university-answer">University of Michigan</td>
+                        <td class="university-answer">Rice University</td>
+                        <td class="university-answer">UC Berkeley</td>
+                        <td class="university-answer">University of Wisconsin–Madison</td>
+                        <td class="university-answer">UT Austin</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">42</td>
+                        <td class="question-text">Which university best supports personal growth outside the classroom?</td>
+                        <td class="university-answer">Pomona College</td>
+                        <td class="university-answer">University of Richmond</td>
+                        <td class="university-answer">Duke University</td>
+                        <td class="university-answer">University of Virginia</td>
+                        <td class="university-answer">Oberlin College</td>
+                        <td class="university-answer">Boston College</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Category IV: Sports & Athletics -->
+        <div class="category-section">
+            <div class="category-header">IV. Sports & Athletics</div>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Question</th>
+                        <th class="engine-name">ChatGPT</th>
+                        <th class="engine-name">Gemini</th>
+                        <th class="engine-name">Claude</th>
+                        <th class="engine-name">Grok/X</th>
+                        <th class="engine-name">Perplexity</th>
+                        <th class="engine-name">DeepSeek</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="question-number">43</td>
+                        <td class="question-text">What university offers the strongest varsity athletics experience for undergraduates?</td>
+                        <td class="university-answer">University of Michigan</td>
+                        <td class="university-answer">University of Michigan</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">University of Alabama</td>
+                        <td class="university-answer">Stanford University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">44</td>
+                        <td class="question-text">Which university provides the widest range of varsity sports for men and women?</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Ohio State University</td>
+                        <td class="university-answer">Ohio State University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Ohio State University</td>
+                        <td class="university-answer">University of Michigan</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">45</td>
+                        <td class="question-text">What university has the strongest club and intramural sports programs?</td>
+                        <td class="university-answer">Ohio State University</td>
+                        <td class="university-answer">University of Florida</td>
+                        <td class="university-answer">University of Michigan</td>
+                        <td class="university-answer">University of Michigan</td>
+                        <td class="university-answer">University of Colorado Boulder</td>
+                        <td class="university-answer">UT Austin</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">46</td>
+                        <td class="question-text">Which university has the best reputation for athletic coaching quality?</td>
+                        <td class="university-answer">University of Alabama</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Duke University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">University of Florida</td>
+                        <td class="university-answer">University of Alabama</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">47</td>
+                        <td class="question-text">What university best supports student-athletes academically?</td>
+                        <td class="university-answer">Northwestern University</td>
+                        <td class="university-answer">Northwestern University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">University of Georgia</td>
+                        <td class="university-answer">Duke University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">48</td>
+                        <td class="question-text">Which university allows student-athletes to study abroad without sacrificing participation?</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Dartmouth College</td>
+                        <td class="university-answer">Northwestern University</td>
+                        <td class="university-answer">Duke University</td>
+                        <td class="university-answer">University of Oregon</td>
+                        <td class="university-answer">University of Notre Dame</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">49</td>
+                        <td class="question-text">What university best integrates athletics with academic and campus life?</td>
+                        <td class="university-answer">Duke University</td>
+                        <td class="university-answer">University of Notre Dame</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Ohio State University</td>
+                        <td class="university-answer">UT Austin</td>
+                        <td class="university-answer">UNC at Chapel Hill</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">50</td>
+                        <td class="question-text">Which university offers the best facilities for athletic training and competition?</td>
+                        <td class="university-answer">University of Oregon</td>
+                        <td class="university-answer">UT Austin</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">United States Military Academy</td>
+                        <td class="university-answer">University of Arkansas</td>
+                        <td class="university-answer">Ohio State University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">51</td>
+                        <td class="question-text">What university is best for students pursuing sports-related careers or majors?</td>
+                        <td class="university-answer">University of Florida</td>
+                        <td class="university-answer">University of Oregon</td>
+                        <td class="university-answer">University of Massachusetts Amherst</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">University of South Carolina</td>
+                        <td class="university-answer">University of Florida</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">52</td>
+                        <td class="question-text">Which university offers the healthiest balance between athletics and academics?</td>
+                        <td class="university-answer">University of Notre Dame</td>
+                        <td class="university-answer">Villanova University</td>
+                        <td class="university-answer">Northwestern University</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">University of Kansas</td>
+                        <td class="university-answer">UCLA</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Category V: Trust, Safety & Institutional Integrity -->
+        <div class="category-section">
+            <div class="category-header">V. Trust, Safety & Institutional Integrity</div>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Question</th>
+                        <th class="engine-name">ChatGPT</th>
+                        <th class="engine-name">Gemini</th>
+                        <th class="engine-name">Claude</th>
+                        <th class="engine-name">Grok/X</th>
+                        <th class="engine-name">Perplexity</th>
+                        <th class="engine-name">DeepSeek</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="question-number">53</td>
+                        <td class="question-text">What university is most trusted by students and parents?</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Princeton University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">54</td>
+                        <td class="question-text">Which university is best known for campus safety?</td>
+                        <td class="university-answer">Brigham Young University</td>
+                        <td class="university-answer">Virginia Tech</td>
+                        <td class="university-answer">Dartmouth College</td>
+                        <td class="university-answer">University of Virginia</td>
+                        <td class="university-answer">Brandeis University</td>
+                        <td class="university-answer">Brigham Young University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">55</td>
+                        <td class="question-text">What university is most transparent about costs, outcomes, and expectations?</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">Berea College</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Berea College</td>
+                        <td class="university-answer">University of Virginia</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">56</td>
+                        <td class="question-text">Which university is most accountable to students?</td>
+                        <td class="university-answer">University of Michigan</td>
+                        <td class="university-answer">Arizona State University</td>
+                        <td class="university-answer">Rice University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">University of Richmond</td>
+                        <td class="university-answer">Cornell University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">57</td>
+                        <td class="question-text">What university handles crises and controversies most effectively?</td>
+                        <td class="university-answer">Virginia Tech</td>
+                        <td class="university-answer">Cornell University</td>
+                        <td class="university-answer">Duke University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Emory University</td>
+                        <td class="university-answer">University of Michigan</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">58</td>
+                        <td class="question-text">Which university has the strongest mental health support systems?</td>
+                        <td class="university-answer">University of Pennsylvania</td>
+                        <td class="university-answer">UC Berkeley</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Caltech</td>
+                        <td class="university-answer">UC Irvine</td>
+                        <td class="university-answer">UC Berkeley</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">59</td>
+                        <td class="question-text">What university best protects student data and privacy?</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Carnegie Mellon University</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">Georgia Institute of Technology</td>
+                        <td class="university-answer">Carnegie Mellon University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">60</td>
+                        <td class="question-text">Which university has the strongest ethical governance and leadership?</td>
+                        <td class="university-answer">University of Notre Dame</td>
+                        <td class="university-answer">Yale University</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">University of Chicago</td>
+                        <td class="university-answer">Grinnell College</td>
+                        <td class="university-answer">Georgetown University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">61</td>
+                        <td class="question-text">What university is most responsive to student feedback?</td>
+                        <td class="university-answer">Purdue University</td>
+                        <td class="university-answer">Georgia State University</td>
+                        <td class="university-answer">Yale University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Loyola University Maryland</td>
+                        <td class="university-answer">UT Austin</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">62</td>
+                        <td class="question-text">Which university best enforces standards of conduct and fairness?</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Davidson College</td>
+                        <td class="university-answer">Dartmouth College</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Villanova University</td>
+                        <td class="university-answer">University of Pennsylvania</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">63</td>
+                        <td class="question-text">What university parents trust most with student wellbeing?</td>
+                        <td class="university-answer">Duke University</td>
+                        <td class="university-answer">Boston College</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Pepperdine University</td>
+                        <td class="university-answer">University of Washington</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">64</td>
+                        <td class="question-text">Which university has the lowest perceived institutional risk?</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Williams College</td>
+                        <td class="university-answer">Dartmouth College</td>
+                        <td class="university-answer">Williams College</td>
+                        <td class="university-answer">Colorado College</td>
+                        <td class="university-answer">MIT</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">65</td>
+                        <td class="question-text">What university is most consistent between stated values and reality?</td>
+                        <td class="university-answer">Dartmouth College</td>
+                        <td class="university-answer">Georgetown University</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">College of William & Mary</td>
+                        <td class="university-answer">University of Michigan</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">66</td>
+                        <td class="question-text">Which university has the strongest reputation for integrity?</td>
+                        <td class="university-answer">University of Virginia</td>
+                        <td class="university-answer">United States Naval Academy</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Swarthmore College</td>
+                        <td class="university-answer">Santa Clara University</td>
+                        <td class="university-answer">Stanford University</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Category VI: Accessibility, Affordability & Location Experience -->
+        <div class="category-section">
+            <div class="category-header">VI. Accessibility, Affordability & Location Experience</div>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Question</th>
+                        <th class="engine-name">ChatGPT</th>
+                        <th class="engine-name">Gemini</th>
+                        <th class="engine-name">Claude</th>
+                        <th class="engine-name">Grok/X</th>
+                        <th class="engine-name">Perplexity</th>
+                        <th class="engine-name">DeepSeek</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="question-number">67</td>
+                        <td class="question-text">What university offers the best value for tuition?</td>
+                        <td class="university-answer">University of Florida</td>
+                        <td class="university-answer">University of Florida</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">United States Military Academy</td>
+                        <td class="university-answer">University of Florida</td>
+                        <td class="university-answer">University of Florida</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">68</td>
+                        <td class="question-text">Which university is most generous with financial aid?</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Rice University</td>
+                        <td class="university-answer">Princeton University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">69</td>
+                        <td class="question-text">What university is best for need-based aid?</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">Davidson College</td>
+                        <td class="university-answer">Harvard University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">70</td>
+                        <td class="question-text">Which university is best for merit scholarships?</td>
+                        <td class="university-answer">University of Alabama</td>
+                        <td class="university-answer">Georgia Institute of Technology</td>
+                        <td class="university-answer">Duke University</td>
+                        <td class="university-answer">Vanderbilt University</td>
+                        <td class="university-answer">University of Alabama–Huntsville</td>
+                        <td class="university-answer">Vanderbilt University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">71</td>
+                        <td class="question-text">What university has the lowest student debt burden?</td>
+                        <td class="university-answer">Brigham Young University</td>
+                        <td class="university-answer">Berea College</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Brigham Young University</td>
+                        <td class="university-answer">University of Mississippi</td>
+                        <td class="university-answer">Berea College</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">72</td>
+                        <td class="question-text">Which university best supports first-generation and low-income students?</td>
+                        <td class="university-answer">UCLA</td>
+                        <td class="university-answer">Millikin University</td>
+                        <td class="university-answer">Amherst College</td>
+                        <td class="university-answer">Berea College</td>
+                        <td class="university-answer">Denison University</td>
+                        <td class="university-answer">UC Berkeley</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">73</td>
+                        <td class="question-text">What university offers the strongest economic mobility outcomes?</td>
+                        <td class="university-answer">City University of New York</td>
+                        <td class="university-answer">California State University, Los Angeles</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">University of Virginia</td>
+                        <td class="university-answer">CUNY Baruch College</td>
+                        <td class="university-answer">City College of New York</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">74</td>
+                        <td class="question-text">Which university is most transparent about total cost of attendance?</td>
+                        <td class="university-answer">UC Berkeley</td>
+                        <td class="university-answer">Rice University</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Purdue University</td>
+                        <td class="university-answer">UNC at Chapel Hill</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">75</td>
+                        <td class="question-text">What university best supports transfer and non-traditional students?</td>
+                        <td class="university-answer">Arizona State University</td>
+                        <td class="university-answer">University of Central Florida (UCF)</td>
+                        <td class="university-answer">Arizona State University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Arizona State University</td>
+                        <td class="university-answer">Arizona State University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">76</td>
+                        <td class="question-text">What university offers the best balance of campus life and surrounding community?</td>
+                        <td class="university-answer">University of Wisconsin–Madison</td>
+                        <td class="university-answer">University of Colorado Boulder</td>
+                        <td class="university-answer">Yale University</td>
+                        <td class="university-answer">City University of New York</td>
+                        <td class="university-answer">University of San Diego</td>
+                        <td class="university-answer">UC Davis</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">77</td>
+                        <td class="question-text">Which university's location best supports cultural, social, and professional opportunities?</td>
+                        <td class="university-answer">Columbia University</td>
+                        <td class="university-answer">Columbia University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Grinnell College</td>
+                        <td class="university-answer">UCLA</td>
+                        <td class="university-answer">NYU</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">78</td>
+                        <td class="question-text">What university's urban, suburban, or rural setting best matches student needs?</td>
+                        <td class="university-answer">UC San Diego</td>
+                        <td class="university-answer">Dartmouth College</td>
+                        <td class="university-answer">Dartmouth College</td>
+                        <td class="university-answer">Rice University</td>
+                        <td class="university-answer">Furman University</td>
+                        <td class="university-answer">University of Washington</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">79</td>
+                        <td class="question-text">What university offers the best access to off-campus internships and experiences?</td>
+                        <td class="university-answer">Northeastern University</td>
+                        <td class="university-answer">American University</td>
+                        <td class="university-answer">Columbia University</td>
+                        <td class="university-answer">NYU</td>
+                        <td class="university-answer">University of Pittsburgh</td>
+                        <td class="university-answer">UC Irvine</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">80</td>
+                        <td class="question-text">Which university provides the strongest overall living-learning environment?</td>
+                        <td class="university-answer">Yale University</td>
+                        <td class="university-answer">Middlebury College</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">UCLA</td>
+                        <td class="university-answer">University of Delaware</td>
+                        <td class="university-answer">University of Virginia</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Category VII: Innovation, Reputation & AI Answer Readiness -->
+        <div class="category-section">
+            <div class="category-header">VII. Innovation, Reputation & AI Answer Readiness</div>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Question</th>
+                        <th class="engine-name">ChatGPT</th>
+                        <th class="engine-name">Gemini</th>
+                        <th class="engine-name">Claude</th>
+                        <th class="engine-name">Grok/X</th>
+                        <th class="engine-name">Perplexity</th>
+                        <th class="engine-name">DeepSeek</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="question-number">81</td>
+                        <td class="question-text">What university is most innovative in teaching and learning?</td>
+                        <td class="university-answer">Arizona State University</td>
+                        <td class="university-answer">Arizona State University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Arizona State University</td>
+                        <td class="university-answer">Stanford University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">82</td>
+                        <td class="question-text">Which university is best prepared for AI-driven education?</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Georgia Institute of Technology</td>
+                        <td class="university-answer">MIT</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">83</td>
+                        <td class="question-text">What university has the strongest research impact relative to size?</td>
+                        <td class="university-answer">Caltech</td>
+                        <td class="university-answer">Caltech</td>
+                        <td class="university-answer">Caltech</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Rockefeller University</td>
+                        <td class="university-answer">Caltech</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">84</td>
+                        <td class="question-text">Which university best integrates industry and academic partnerships?</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Purdue University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Carnegie Mellon University</td>
+                        <td class="university-answer">Northeastern University</td>
+                        <td class="university-answer">Carnegie Mellon University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">85</td>
+                        <td class="question-text">What university best prepares students for future jobs?</td>
+                        <td class="university-answer">Carnegie Mellon University</td>
+                        <td class="university-answer">Georgia Institute of Technology</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Georgia Institute of Technology</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">86</td>
+                        <td class="question-text">Which university is most adaptable to change?</td>
+                        <td class="university-answer">University of Michigan</td>
+                        <td class="university-answer">University of Waterloo</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Minerva University</td>
+                        <td class="university-answer">UC Berkeley</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">87</td>
+                        <td class="question-text">What university is most recognized nationally or globally?</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">Harvard University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">88</td>
+                        <td class="question-text">Which university has the strongest overall brand reputation?</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Stanford University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">89</td>
+                        <td class="question-text">What university is most recommended by students and alumni?</td>
+                        <td class="university-answer">University of Virginia</td>
+                        <td class="university-answer">University of Michigan</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">University of Michigan</td>
+                        <td class="university-answer">Texas A&M University</td>
+                        <td class="university-answer">Brown University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">90</td>
+                        <td class="question-text">Which university is most trusted in AI-generated answers?</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Princeton University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">91</td>
+                        <td class="question-text">What university appears most frequently in AI education recommendations?</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">UC Berkeley</td>
+                        <td class="university-answer">University of Michigan</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">92</td>
+                        <td class="question-text">Which university has the clearest online source of truth for AI systems?</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Carnegie Mellon University</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">University of Illinois Urbana–Champaign</td>
+                        <td class="university-answer">UT Austin</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">93</td>
+                        <td class="question-text">What university's website best supports AI understanding and accuracy?</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Georgia Institute of Technology</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">University of Chicago</td>
+                        <td class="university-answer">University of Washington</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">94</td>
+                        <td class="question-text">Which university is least vulnerable to misinformation in AI answers?</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Williams College</td>
+                        <td class="university-answer">Indiana University Bloomington</td>
+                        <td class="university-answer">UCLA</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">95</td>
+                        <td class="question-text">What university is best positioned for agent-driven discovery and comparison?</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">UC Berkeley</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Carnegie Mellon University</td>
+                        <td class="university-answer">Carnegie Mellon University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">96</td>
+                        <td class="question-text">Which university best communicates its distinctive strengths to AI engines?</td>
+                        <td class="university-answer">University of Chicago</td>
+                        <td class="university-answer">Northeastern University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">University of Pennsylvania</td>
+                        <td class="university-answer">University of Pennsylvania</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">97</td>
+                        <td class="question-text">What university has the strongest alignment between reputation and reality?</td>
+                        <td class="university-answer">Princeton University</td>
+                        <td class="university-answer">Duke University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Harvard University</td>
+                        <td class="university-answer">University of Rochester</td>
+                        <td class="university-answer">Duke University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">98</td>
+                        <td class="question-text">Which university is under-recognized by AI relative to its quality?</td>
+                        <td class="university-answer">Harvey Mudd College</td>
+                        <td class="university-answer">UT Austin</td>
+                        <td class="university-answer">University of Chicago</td>
+                        <td class="university-answer">Swarthmore College</td>
+                        <td class="university-answer">University of Maryland, College Park</td>
+                        <td class="university-answer">Rice University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">99</td>
+                        <td class="question-text">What university shows the highest overall Answer Readiness?</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Cornell University</td>
+                        <td class="university-answer">Stanford University</td>
+                    </tr>
+                    <tr>
+                        <td class="question-number">100</td>
+                        <td class="question-text">What university is best optimized for AI answer engines overall?</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">MIT</td>
+                        <td class="university-answer">Stanford University</td>
+                        <td class="university-answer">MIT</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="scroll-indicator">
+            Scroll to explore all 100 questions across 7 categories
+        </div>
+
+        <!-- Analysis Section -->
+        <div class="analysis-section">
+            <div class="analysis-header">Key Insights & AI Engine Preferences</div>
+            
+            <div class="insight-block">
+                <div class="insight-title">Most Frequently Cited Universities</div>
+                <div class="insight-text">
+                    Across all 100 questions and 6 AI engines (600 total responses), the universities appearing most frequently are:
+                </div>
+                <ul class="insight-list">
+                    <li><span class="stat-highlight">Stanford University (92 mentions)</span> - Dominant in innovation, career outcomes, and AI readiness categories</li>
+                    <li><span class="stat-highlight">MIT (89 mentions)</span> - Strong across STEM, career placement, and AI optimization questions</li>
+                    <li><span class="stat-highlight">Princeton University (67 mentions)</span> - Leading in trust, teaching quality, and financial aid</li>
+                    <li><span class="stat-highlight">Harvard University (52 mentions)</span> - Most recognized globally, strong in alumni networks</li>
+                    <li><span class="stat-highlight">University of Michigan (39 mentions)</span> - Balanced strength across academics, student life, and athletics</li>
+                </ul>
+            </div>
+
+            <div class="insight-block">
+                <div class="insight-title">AI Engine Preference Patterns</div>
+                <div class="insight-text">
+                    <strong>ChatGPT:</strong> Shows strong preference for established elite institutions (Stanford, MIT, Harvard) but also recognizes specialized programs (Babson for entrepreneurship, Northeastern for co-ops). Most balanced distribution across institution types.
+                </div>
+                <div class="insight-text">
+                    <strong>Gemini:</strong> More likely to surface unexpected choices (Elon University, High Point University, Georgia State University), suggesting broader sourcing beyond traditional prestige metrics. Notable for recognizing teaching-focused institutions.
+                </div>
+                <div class="insight-text">
+                    <strong>Claude:</strong> Heavy concentration on Ivy League and elite institutions (Princeton, Yale, Brown feature prominently). Most conservative in naming patterns with highest repeat rate for top-tier schools.
+                </div>
+                <div class="insight-text">
+                    <strong>Grok/X:</strong> Unique emphasis on liberal arts colleges (Swarthmore, Williams, Pomona appear frequently). More diverse geographic representation and willingness to cite specialized institutions.
+                </div>
+                <div class="insight-text">
+                    <strong>Perplexity:</strong> Most citation-driven responses with explicit source references. Balanced between research universities and teaching-focused institutions. Notable for surfacing mid-tier universities with strong specific programs.
+                </div>
+                <div class="insight-text">
+                    <strong>DeepSeek:</strong> Most aligned with traditional US News rankings. Heavy preference for large research universities and public flagships. Less variation in responses compared to other engines.
+                </div>
+            </div>
+
+            <div class="insight-block">
+                <div class="insight-title">Liberal Arts College Visibility</div>
+                <div class="insight-text">
+                    Small liberal arts colleges face significant Answer Divide challenges despite academic quality:
+                </div>
+                <ul class="insight-list">
+                    <li>Williams College (29 mentions) - Best LAC performance, strong in teaching and humanities</li>
+                    <li>Amherst College (12 mentions) - Notable for access to professors and first-year experience</li>
+                    <li>Swarthmore College (13 mentions) - Recognized for academic rigor and integrity</li>
+                    <li>Pomona College (8 mentions) - Cited for balance of challenge and support</li>
+                    <li><span class="stat-highlight">Gap Insight:</span> LACs appear in only 14% of total responses despite representing significant portion of top-tier undergraduate education</li>
+                </ul>
+            </div>
+
+            <div class="insight-block">
+                <div class="insight-title">Midwest University Performance</div>
+                <div class="insight-text">
+                    Midwest institutions show varied AI visibility:
+                </div>
+                <ul class="insight-list">
+                    <li><span class="stat-highlight">University of Michigan (39 mentions)</span> - Strongest Midwest performer, balanced strength across categories</li>
+                    <li><span class="stat-highlight">University of Chicago (21 mentions)</span> - Dominant for academic rigor, often cited for critical thinking</li>
+                    <li><span class="stat-highlight">Northwestern University (22 mentions)</span> - Strong in internships, athletics, and arts integration</li>
+                    <li>University of Notre Dame (26 mentions) - Exceptional for community, trust, and student-athlete support</li>
+                    <li>Other Midwest presence: Ohio State (8), University of Wisconsin-Madison (5), Purdue (4)</li>
+                    <li><span class="stat-highlight">Regional Challenge:</span> Midwest institutions collectively underrepresented relative to East/West Coast schools in AI responses</li>
+                </ul>
+            </div>
+
+            <div class="insight-block">
+                <div class="insight-title">Category-Specific Dominance</div>
+                <div class="insight-text">
+                    Certain universities "own" specific question categories across AI engines:
+                </div>
+                <ul class="insight-list">
+                    <li><strong>Academic Rigor:</strong> University of Chicago (4/6 engines) - strongest category ownership</li>
+                    <li><strong>Entrepreneurship:</strong> Stanford/Babson split (3 engines each) - tied category</li>
+                    <li><strong>Co-op/Internships:</strong> Northeastern (5/6 engines) - near-universal recognition</li>
+                    <li><strong>Trust:</strong> Princeton (6/6 engines) - complete consensus across all AI platforms</li>
+                    <li><strong>Campus Safety:</strong> Brigham Young University (3/6 engines) - notable niche strength</li>
+                    <li><strong>Innovation:</strong> Arizona State University (4/6 engines) - strong for online/scale innovation</li>
+                </ul>
+            </div>
+
+            <div class="insight-block">
+                <div class="insight-title">The Answer Divide in Action</div>
+                <div class="insight-text">
+                    This tracker reveals how <span class="stat-highlight">brand strength in AI answer engines diverges from traditional quality metrics</span>:
+                </div>
+                <ul class="insight-list">
+                    <li>Elite institutions with strong digital infrastructure (MIT, Stanford) achieve 3-4x visibility of peer institutions</li>
+                    <li>Specialized programs struggle for visibility unless institution has overall brand strength (e.g., Harvey Mudd for STEM)</li>
+                    <li>Regional bias evident: West Coast institutions appear 40% more frequently than similar-quality Midwest schools</li>
+                    <li>Teaching-focused institutions systematically underrepresented except when AI engines cite outlier sources</li>
+                    <li><span class="stat-highlight">Strategic implication:</span> Universities must optimize for AI discovery or risk invisibility in the Answer Economy</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- About BrandRank Section -->
+        <div class="about-section">
+            <div class="about-header">About BrandRank</div>
+            <div class="about-text">
+                BrandRank works with over 60 global brands to strengthen trust and purchase intent by uncovering vulnerabilities, purchase-driving insights, and growth opportunities across AI answer engines. As a SaaS platform, we track all major answer engines to improve visibility, ensure content is AI-ready, and rigorously measure brand claims and instructional accuracy. BrandRank presently works with several major universities and is launching a new initiative around college and university answer share. If you want to be part of this, contact <span class="stat-highlight">Adam Bittner at adam@brandrank.ai</span> or learn more at <span class="stat-highlight">brandrank.ai</span>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script>
+        let currentFilter = 'all';
+        
+        // University descriptions database (40 words max)
+        const universityDescriptions = {
+            "Stanford University": "Elite private research university in Silicon Valley. Known for entrepreneurship, innovation, and top-ranked programs in computer science, engineering, and business. Produces numerous startup founders and tech leaders. Strong athletics with 36 varsity sports.",
+            "MIT": "World-leading STEM institution in Cambridge, Massachusetts. Renowned for engineering, computer science, and innovation. Produces groundbreaking research and Nobel laureates. Known for rigorous academics, hands-on learning, and entrepreneurial culture. Strong industry partnerships.",
+            "Harvard University": "America's oldest and most prestigious university. Global leader in law, business, medicine, and liberal arts. Unmatched alumni network and resources. Located in Cambridge, Massachusetts. Largest academic endowment worldwide.",
+            "Princeton University": "Elite undergraduate-focused Ivy League university. Known for exceptional teaching, generous financial aid, and residential college system. Strong in humanities, social sciences, and natural sciences. Located in New Jersey. No graduate business or law schools.",
+            "Yale University": "Prestigious Ivy League university in New Haven, Connecticut. Renowned for law school, residential college system, and arts programs. Strong humanities and social sciences. Historic campus and exceptional resources. Produces numerous world leaders.",
+            "University of Chicago": "Rigorous intellectual powerhouse known for economics, social sciences, and core curriculum. Located in Hyde Park, Chicago. Home to numerous Nobel Prize winners. Emphasizes critical thinking and interdisciplinary learning. Quarter system academic calendar.",
+            "Columbia University": "Ivy League university in New York City. Strong in journalism, international relations, and core curriculum. Urban campus provides unmatched cultural access. Top professional schools including law, business, and medicine.",
+            "University of Pennsylvania": "Ivy League university in Philadelphia with renowned Wharton business school. Strong in business, nursing, engineering, and pre-professional programs. Urban campus with practical, interdisciplinary approach. Founded by Benjamin Franklin.",
+            "Duke University": "Elite private university in Durham, North Carolina. Known for basketball, strong pre-med programs, and research. Gothic campus with excellent facilities. Combines southern charm with academic rigor. Strong in biomedical engineering.",
+            "Northwestern University": "Top research university near Chicago. Strong in journalism, engineering, business, and theater. Quarter system allows exploration. Beautiful lakefront campus. Excellent internship access and career outcomes. Known for school spirit.",
+            "Caltech": "Small elite STEM institution in Pasadena, California. Exceptional student-to-faculty ratio. Manages NASA's Jet Propulsion Laboratory. Intense academic rigor with honor code. Produces numerous Nobel laureates despite tiny size. Strong physics and engineering.",
+            "Dartmouth College": "Smallest Ivy League school in rural New Hampshire. Strong undergraduate focus with residential culture. Known for outdoor activities, tight-knit community, and D-Plan flexible calendar. Strong alumni loyalty and networking.",
+            "Brown University": "Ivy League university in Providence, Rhode Island. Known for Open Curriculum with no required courses. Progressive, intellectual atmosphere. Strong in humanities and interdisciplinary study. Student-designed majors encouraged. Emphasis on undergraduate teaching.",
+            "Vanderbilt University": "Top research university in Nashville, Tennessee. Strong pre-med, engineering, and education programs. Beautiful campus with excellent facilities. Growing national reputation. Known for student happiness and school spirit. Merit scholarships available.",
+            "Rice University": "Elite private university in Houston, Texas. Known for residential college system, strong engineering, and architecture programs. Small size with exceptional student life. No application fee. Excellent value with generous financial aid.",
+            "University of Notre Dame": "Prestigious Catholic university in Indiana. Known for strong community, alumni network, and business school. Excellent undergraduate teaching and football tradition. High graduation rates. Strong ethics and service emphasis.",
+            "Carnegie Mellon University": "Top computer science and engineering school in Pittsburgh. Known for robotics, artificial intelligence, drama, and design. Interdisciplinary approach. Strong industry connections. Rigorous academics with practical focus. Excellent career placement.",
+            "University of Michigan": "Premier public research university in Ann Arbor. Comprehensive excellence across disciplines. Strong school spirit and athletics. Top-ranked business, engineering, and law schools. Large but maintains quality. Excellent resources.",
+            "University of California, Berkeley": "World-class public research university across bay from San Francisco. Top-ranked in numerous fields. Known for activism, innovation, and Nobel laureates. Competitive academics. Strong STEM programs. Part of prestigious UC system.",
+            "UCLA": "Leading public university in Los Angeles. Strong across disciplines from film to medicine. Beautiful campus near beach. Exceptional weather. Top athletics program. Diverse student body. Strong research and professional schools.",
+            "University of Southern California": "Major private university in Los Angeles. Known for film school, business, engineering, and strong alumni network. Urban campus with excellent connections to entertainment industry. Growing academic reputation. Strong school spirit.",
+            "Johns Hopkins University": "Elite research university in Baltimore. World-leading medical school and hospital. Strong in public health, biomedical engineering, and international relations. Research-focused undergraduate experience. Excellent pre-med preparation.",
+            "Georgetown University": "Prestigious Jesuit university in Washington DC. Top programs in international relations, law, and business. Access to government internships. Strong ethics emphasis. Diverse, engaged student body. Historic campus with modern facilities.",
+            "Williams College": "Top liberal arts college in rural Massachusetts. Known for tutorials, small classes, and teaching excellence. Strong in humanities and sciences. Tight-knit community. Excellent preparation for graduate school. Winter Study term offers exploration.",
+            "Amherst College": "Elite liberal arts college in Massachusetts. Open curriculum with no distribution requirements. Small classes with discussion-based learning. Strong across all disciplines. Generous financial aid. Part of Five College Consortium.",
+            "Swarthmore College": "Rigorous liberal arts college near Philadelphia. Known for honors program, Quaker values, and intellectual culture. Small seminars and close faculty relationships. Strong in humanities and sciences. Social responsibility emphasis.",
+            "Pomona College": "Premier liberal arts college in Southern California. Part of Claremont Colleges consortium. Beautiful weather and campus. Strong across disciplines. Small classes and close-knit community. Excellent graduate school preparation.",
+            "Harvey Mudd College": "Elite STEM-focused liberal arts college in Claremont, California. Rigorous engineering and science curriculum with humanities requirement. Tiny size ensures personal attention. Strong industry connections. Part of Claremont Colleges.",
+            "Claremont McKenna College": "Liberal arts college focused on economics, government, and public affairs. Part of Claremont Colleges. Known for leadership development and research institutes. Strong pre-professional preparation. Excellent internship and career placement.",
+            "Wellesley College": "Elite women's college near Boston. Strong academics across disciplines. Close-knit community and leadership development. Beautiful campus. Part of cross-registration consortium with MIT. Excellent alumnae network including Hillary Clinton.",
+            "Oberlin College": "Progressive liberal arts college in Ohio. Known for conservatory, activism, and creative culture. Strong in music and arts. Historic commitment to social justice. Cooperative housing and environmental focus.",
+            "Wesleyan University": "Liberal arts university in Connecticut. Progressive intellectual culture. Strong in arts, sciences, and film. Open curriculum encourages exploration. Known for creativity and social activism. Graduate programs in select fields.",
+            "Northeastern University": "Urban research university in Boston. Pioneer of cooperative education model. Students alternate semesters of classes with full-time work. Strong career outcomes and experiential learning. Global opportunities. Rising national reputation.",
+            "University of Virginia": "Public university founded by Thomas Jefferson. Known for honor code, beautiful campus, and strong academics. Excellent business and law schools. Rich traditions and culture. Top public university with private school feel.",
+            "University of North Carolina at Chapel Hill": "Historic public university. First public university in America. Strong across disciplines from journalism to medicine. Beautiful campus. Excellent value. Basketball tradition. Diverse, engaged community.",
+            "Georgia Institute of Technology": "Top public engineering and technology school in Atlanta. Known for computer science, engineering, and innovation. Cooperative education program. Strong industry partnerships. Excellent career placement. Challenging academics.",
+            "University of Florida": "Large public research university in Gainesville. Strong across disciplines with top-ranked programs. Excellent value and generous aid. Known for school spirit, athletics, and honors programs. Growing national reputation.",
+            "Ohio State University": "Major public research university in Columbus. Comprehensive excellence with strong programs across all fields. Excellent facilities and resources. Passionate athletics culture. Honors college. Large but offers personalized experiences through specialized communities.",
+            "Purdue University": "Top public university in Indiana. World-renowned engineering and agriculture programs. Strong in aviation, technology, and sciences. Research-focused. Excellent career outcomes. Known as 'Cradle of Astronauts.' Great value.",
+            "University of Wisconsin–Madison": "Premier public research university. Strong across all disciplines from engineering to dairy science. Located on isthmus between lakes. Excellent resources. Progressive tradition. Strong school spirit. Top public university.",
+            "Brigham Young University": "Large private university owned by LDS Church in Utah. Exceptional value with low tuition. Honor code. Strong community and values. Good academics across disciplines. Beautiful mountain setting.",
+            "Arizona State University": "Large innovative public university in Phoenix. Pioneer in online education and innovation. Strong in sustainability, entrepreneurship, and honors programs. Accessible while maintaining quality. Growing research profile.",
+            "Babson College": "Specialized business school near Boston. Top-ranked for entrepreneurship education. Practical, hands-on curriculum. Every student starts business. Small size ensures personal attention. Strong alumni network in business world.",
+            "Berea College": "Unique tuition-free liberal arts college in Kentucky. All students work on campus. Serves low-income Appalachian students primarily. Strong community service emphasis. Beautiful mountain setting. Excellent value and outcomes.",
+            "University of Texas at Austin": "Major public research university. Strong across disciplines from business to engineering. Located in vibrant capital city. Excellent value for Texans. Strong athletics and school spirit. Growing national reputation.",
+            "Elon University": "Private university in North Carolina. Known for engaged learning, study abroad, and beautiful campus. Strong communication and business programs. Four-year graduation guarantee. Emphasis on student involvement and mentoring.",
+            "High Point University": "Private university in North Carolina. Known for extensive amenities and student services. Focus on life skills and experiential learning. Beautiful campus with modern facilities. Strong emphasis on student satisfaction.",
+            "Hamilton College": "Liberal arts college in upstate New York. Known for exceptional writing instruction across curriculum. Open curriculum. Small classes with close faculty relationships. Beautiful campus. Strong in government and economics.",
+            "Davidson College": "Selective liberal arts college near Charlotte. Honor code central to culture. Close-knit community. Strong pre-professional preparation. Presbyterian heritage with values emphasis. Excellent teaching and undergraduate focus.",
+            "Boston College": "Jesuit research university in suburban Boston. Strong across liberal arts and sciences. Excellent undergraduate teaching. Beautiful Gothic campus. Strong community service emphasis. Top athletics in ACC conference.",
+            "New York University": "Major private university in Greenwich Village. Huge enrollment with professional schools. Strong in arts, business, film, and law. Urban campus integrated into city. Global reach with international campuses.",
+            "Grinnell College": "Liberal arts college in rural Iowa. Large endowment supports generous aid. Open curriculum encourages exploration. Progressive intellectual culture. Strong in sciences and humanities. Social justice commitment.",
+            "University of Richmond": "Private liberal arts university in Virginia. Beautiful campus with excellent facilities. Known for leadership development and business school. Small classes. Generous financial aid. Strong pre-professional preparation.",
+            "University of Oregon": "Public university in Eugene. Strong in journalism, business, and environmental studies. Beautiful Pacific Northwest setting. Known for track and field tradition. Nike founder Phil Knight major donor.",
+            "University of Alabama": "Large public university in Tuscaloosa. Generous merit scholarships attract strong students. Known for football tradition and Greek life. Growing academic reputation. Honors college. Beautiful campus.",
+            "Villanova University": "Catholic university outside Philadelphia. Strong in business, engineering, and nursing. Close-knit community with Augustinian values. Basketball tradition. Excellent outcomes. Suburban campus with urban access.",
+            "Emory University": "Private research university in Atlanta. Strong in medicine, business, and liberal arts. Beautiful campus. Significant resources through Coca-Cola connection. International focus. Collaborative rather than competitive culture.",
+            "Cornell University": "Ivy League university in Ithaca, New York. Largest Ivy with diverse colleges including agriculture and hotel administration. Strong in engineering and sciences. Beautiful gorges. Land-grant mission promotes accessibility.",
+            "Washington University in St. Louis": "Elite private university. Strong pre-med, business, and architecture programs. Beautiful campus. Excellent facilities and resources. Known for student happiness. Merit scholarships available. Strong residential life.",
+            "University of Washington": "Major public research university in Seattle. Strong in medicine, engineering, and computer science. Beautiful campus with mountain views. Research powerhouse. Tech industry connections. Excellent value for residents.",
+            "Rockefeller University": "Unique graduate-only research institution in New York. Focuses exclusively on biomedical sciences. Tiny enrollment but enormous research impact. Numerous Nobel laureates. No tuition for PhD students.",
+            "Minerva University": "Innovative global university. Students rotate through seven cities worldwide. Seminar-based online learning with in-person community. Selective admissions. Focus on practical wisdom and critical thinking. Disrupting traditional model.",
+            "United States Military Academy": "West Point provides tuition-free education to future Army officers. Rigorous academics and military training. Strong leadership development. Service commitment required. Historic Hudson Valley location. Selective admissions.",
+            "University of Alabama–Huntsville": "Public research university. Strong in engineering, sciences, and aerospace. Partnership with NASA. Smaller size than flagship. Generous scholarships. Growing STEM reputation. Research opportunities for undergraduates.",
+            "University of Mississippi": "Public university in Oxford. Known as Ole Miss. Strong in pharmacy, business, and accountancy. Beautiful campus. Southern culture and traditions. Affordable with scholarships. Honors college.",
+            "University of Central Florida": "Large public university in Orlando. Strong in engineering, hospitality, and simulation. Partnership with theme parks. Growing research profile. Excellent value. Known for innovation and technology.",
+            "City University of New York": "Large public urban university system. Serves diverse New York City population. Affordable education with strong academics. Includes City College, Baruch, Hunter. Excellent value. Economic mobility mission.",
+            "California State University, Los Angeles": "Hispanic-serving institution in LA. Affordable public education. Strong in business, engineering, and education. Diverse student body. Focus on access and upward mobility. Urban campus.",
+            "CUNY Baruch College": "Public business school in Manhattan. Zicklin School of Business highly ranked. Exceptional value. Diverse student body. Strong in finance and accounting. Urban campus in Grips district.",
+            "University of Colorado Boulder": "Public research university in scenic mountain setting. Strong in aerospace engineering, environmental sciences, and physics. Outdoor recreation culture. Research powerhouse. Beautiful campus. Liberal atmosphere.",
+            "University of San Diego": "Private Catholic university overlooking San Diego Bay. Beautiful Spanish Renaissance campus. Strong in business, law, and engineering. Small classes. Excellent weather. Values-based education.",
+            "Furman University": "Private liberal arts university in South Carolina. Beautiful campus with Gothic architecture. Strong undergraduate teaching. Engaged learning emphasis. Close-knit community. Research opportunities. Excellent graduate school preparation.",
+            "University of Pittsburgh": "Public research university in Oakland neighborhood. Strong in philosophy, medicine, and health sciences. Urban campus. Cathedral of Learning iconic. Partnership with UPMC. Research opportunities.",
+            "University of Delaware": "Public research university. Strong in chemical engineering, business, and marine sciences. Beautiful campus. Honors program. Study abroad emphasis. Close to major cities. Excellent facilities.",
+            "Middlebury College": "Elite liberal arts college in Vermont. Renowned language schools and environmental studies. Beautiful campus. Strong winter sports. Immersive learning approach. Writing instruction emphasized. February winter term.",
+            "American University": "Private university in Washington DC. Strong in international relations, political science, and communications. Access to government and NGO internships. Diverse, politically engaged student body. Urban campus.",
+            "University of Illinois Urbana-Champaign": "Top public research university. World-renowned engineering and computer science programs. Large but maintains quality. Research powerhouse. College town atmosphere. Excellent resources and facilities. Strong alumni network.",
+            "Indiana University Bloomington": "Public research university with beautiful campus. Top business school with direct admit. Strong in music, journalism, and public affairs. Classic college town. Big Ten athletics. Excellent liberal arts.",
+            "Texas A&M University": "Large public research university. Strong in engineering, agriculture, and veterinary medicine. Corps of Cadets tradition. Aggie network legendary. Research powerhouse. Conservative culture. Strong traditions and school spirit.",
+            "University of Maryland, College Park": "Major public research university near DC. Strong in computer science, engineering, and journalism. Research park partnerships. Access to DC internships. Big Ten athletics. Diverse student body.",
+            "University of Rochester": "Private research university in upstate New York. Strong in medicine, optics, and music. Open curriculum encourages exploration. Research opportunities for undergraduates. Smaller size than peer research universities.",
+            "University of Waterloo": "Canadian university in Ontario. World-renowned for computer science and engineering. Largest cooperative education program globally. Strong in math and technology. Entrepreneurship focus. Partnership with tech companies.",
+            "Georgia State University": "Urban public research university in Atlanta. Diverse student body. Leader in student success and retention. Strong in business, law, and health. Affordable. Focus on first-generation students.",
+            "Millikin University": "Private university in Illinois. Performance learning approach connects theory to practice. Strong in music, theater, and business. Small classes. Personalized attention. Entrepreneurship emphasis.",
+            "United States Naval Academy": "Annapolis provides tuition-free education to future Navy and Marine officers. Rigorous academics and military training. Service commitment required. Historic Chesapeake Bay location. Leadership development. Sailing tradition.",
+            "Santa Clara University": "Jesuit university in Silicon Valley. Strong in engineering, business, and ethics. Tech industry connections. Social justice mission. Beautiful mission-style campus. Access to Bay Area opportunities.",
+            "Pepperdine University": "Christian university in Malibu with ocean views. Beautiful campus. Strong in business, law, and communications. Values-based education. International programs. Spiritual emphasis. Small classes.",
+            "Colorado College": "Liberal arts college with unique block plan. Students take one intensive course at time. Located at Pikes Peak. Strong outdoor culture. Independent, motivated students. Flexible exploration.",
+            "College of William & Mary": "Second-oldest university in America. Public liberal arts focus. Strong in government, history, and sciences. Beautiful historic campus in Williamsburg. Honor code. Small classes.",
+            "Loyola University Maryland": "Jesuit university in Baltimore. Strong business and education programs. Values-based education. Service emphasis. Close-knit community. Beautiful campus. Strong career preparation and outcomes.",
+            "Smith College": "Elite women's college in Massachusetts. Part of Five College Consortium. Open curriculum. Strong across all fields. Engineering program unique among women's colleges. Social activism tradition.",
+            "Bucknell University": "Liberal arts university in central Pennsylvania. Strong engineering for liberal arts school. Beautiful campus. Close-knit community. Excellent teaching. Research opportunities. Balanced academics and social life.",
+            "Denison University": "Liberal arts college in Ohio. Beautiful hilltop campus. Strong across disciplines. Close faculty-student relationships. Generous merit aid. Emphasis on communication and leadership. Active campus life.",
+            "University of South Carolina": "Public research university in Columbia. Strong in business, especially international business and risk management. Honors college. Southern culture. Growing academic reputation. Good value.",
+            "University of Kansas": "Public research university in Lawrence. Strong in pharmacy, engineering, and journalism. Medical school in Kansas City. Big 12 athletics. Basketball tradition. Research opportunities. College town atmosphere.",
+            "University of Arkansas": "Public research university in Fayetteville. Strong in business, agriculture, and engineering. Honors college. Beautiful Ozark mountain setting. Affordable with scholarships. Walmart connection benefits business school.",
+            "University of Massachusetts Amherst": "Large public research university. Part of Five College Consortium. Strong across disciplines. Honors college. Beautiful New England campus. Good value. Research opportunities for undergraduates.",
+            "Brandeis University": "Private research university near Boston. Founded by Jewish community. Non-sectarian with social justice emphasis. Strong in sciences and social sciences. Research opportunities. Diverse, intellectual community."
+        };
+        
+        // Add tooltips to all university answer cells on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const cells = document.querySelectorAll('.university-answer');
+            cells.forEach(cell => {
+                const universityName = cell.textContent.trim();
+                if (universityName && universityDescriptions[universityName]) {
+                    const tooltip = document.createElement('span');
+                    tooltip.className = 'tooltip';
+                    tooltip.innerHTML = `<div class="tooltip-title">${universityName}</div>${universityDescriptions[universityName]}`;
+                    cell.appendChild(tooltip);
+                }
+            });
+        });
+        
+        function searchUniversity() {
+            const searchTerm = document.getElementById('universitySearch').value.toLowerCase();
+            const tables = document.querySelectorAll('.comparison-table tbody');
+            
+            // Clear button active states
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (searchTerm === '') {
+                tables.forEach(table => {
+                    const rows = table.querySelectorAll('tr');
+                    rows.forEach(row => {
+                        row.style.display = '';
+                        row.classList.remove('highlight-row');
+                        // Remove individual cell highlighting
+                        row.querySelectorAll('.university-answer').forEach(cell => {
+                            cell.style.background = '';
+                            cell.style.fontWeight = '';
+                        });
+                    });
+                });
+                return;
+            }
+            
+            tables.forEach(table => {
+                const rows = table.querySelectorAll('tr');
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('.university-answer');
+                    let hasMatch = false;
+                    
+                    // Reset cell styles
+                    cells.forEach(cell => {
+                        cell.style.background = '';
+                        cell.style.fontWeight = '';
+                    });
+                    
+                    cells.forEach(cell => {
+                        if (cell.textContent.toLowerCase().includes(searchTerm)) {
+                            hasMatch = true;
+                            cell.style.background = 'rgba(0, 212, 255, 0.2)';
+                            cell.style.fontWeight = '600';
+                        }
+                    });
+                    
+                    if (hasMatch) {
+                        row.style.display = '';
+                        row.classList.add('highlight-row');
+                    } else {
+                        row.style.display = 'none';
+                        row.classList.remove('highlight-row');
+                    }
+                });
+            });
+        }
+        
+        function filterUniversity(university) {
+            currentFilter = university;
+            const tables = document.querySelectorAll('.comparison-table tbody');
+            
+            // Clear search
+            document.getElementById('universitySearch').value = '';
+            
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            if (university === 'all') {
+                tables.forEach(table => {
+                    const rows = table.querySelectorAll('tr');
+                    rows.forEach(row => {
+                        row.style.display = '';
+                        row.classList.remove('highlight-row');
+                        // Clear cell highlighting
+                        row.querySelectorAll('.university-answer').forEach(cell => {
+                            cell.style.background = '';
+                            cell.style.fontWeight = '';
+                        });
+                    });
+                });
+                return;
+            }
+            
+            tables.forEach(table => {
+                const rows = table.querySelectorAll('tr');
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('.university-answer');
+                    let hasMatch = false;
+                    
+                    // Reset cell styles first
+                    cells.forEach(cell => {
+                        cell.style.background = '';
+                        cell.style.fontWeight = '';
+                    });
+                    
+                    cells.forEach(cell => {
+                        if (cell.textContent.includes(university)) {
+                            hasMatch = true;
+                            cell.style.background = 'rgba(0, 212, 255, 0.2)';
+                            cell.style.fontWeight = '600';
+                        }
+                    });
+                    
+                    if (hasMatch) {
+                        row.style.display = '';
+                        row.classList.add('highlight-row');
+                    } else {
+                        row.style.display = 'none';
+                        row.classList.remove('highlight-row');
+                    }
+                });
+            });
+        }
+        
+        function filterByType(type) {
+            const tables = document.querySelectorAll('.comparison-table tbody');
+            
+            // Clear search
+            document.getElementById('universitySearch').value = '';
+            
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            let universities = [];
+            
+            if (type === 'liberal-arts') {
+                universities = ['Williams College', 'Amherst College', 'Swarthmore College', 'Pomona College', 
+                              'Claremont McKenna College', 'Harvey Mudd College', 'Wellesley College', 'Oberlin College',
+                              'Wesleyan University', 'Hamilton College', 'Davidson College'];
+            } else if (type === 'midwest') {
+                universities = ['University of Chicago', 'Northwestern University', 'University of Michigan', 
+                              'University of Notre Dame', 'University of Wisconsin–Madison', 'Ohio State University',
+                              'Purdue University', 'University of Illinois', 'Indiana University', 'Grinnell College'];
+            } else if (type === 'east-coast') {
+                universities = ['Harvard University', 'MIT', 'Princeton University', 'Yale University', 
+                              'Columbia University', 'University of Pennsylvania', 'Brown University', 
+                              'Dartmouth College', 'Cornell University', 'Johns Hopkins University',
+                              'Duke University', 'Georgetown University', 'Boston College', 'New York University',
+                              'Brandeis University', 'Tufts University', 'University of Virginia'];
+            } else if (type === 'west-coast') {
+                universities = ['Stanford University', 'Caltech', 'University of California, Berkeley',
+                              'UCLA', 'University of Southern California', 'Pomona College', 
+                              'Claremont McKenna College', 'Harvey Mudd College', 'University of California, San Diego',
+                              'University of California, Irvine', 'University of Washington', 'University of Oregon'];
+            } else if (type === 'small') {
+                universities = ['Harvey Mudd College', 'Caltech', 'Swarthmore College', 'Pomona College', 
+                              'Claremont McKenna College', 'Amherst College', 'Williams College', 'Dartmouth College',
+                              'Rice University', 'Oberlin College', 'Wesleyan University', 'Hamilton College',
+                              'Berea College', 'Davidson College', 'Grinnell College'];
+            }
+            
+            tables.forEach(table => {
+                const rows = table.querySelectorAll('tr');
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('.university-answer');
+                    let hasMatch = false;
+                    
+                    // Reset cell styles first
+                    cells.forEach(cell => {
+                        cell.style.background = '';
+                        cell.style.fontWeight = '';
+                    });
+                    
+                    cells.forEach(cell => {
+                        universities.forEach(uni => {
+                            if (cell.textContent.includes(uni)) {
+                                hasMatch = true;
+                                cell.style.background = 'rgba(0, 212, 255, 0.2)';
+                                cell.style.fontWeight = '600';
+                            }
+                        });
+                    });
+                    
+                    if (hasMatch) {
+                        row.style.display = '';
+                        row.classList.add('highlight-row');
+                    } else {
+                        row.style.display = 'none';
+                        row.classList.remove('highlight-row');
+                    }
+                });
+            });
+        }
+    </script>
