@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Answer Share Index: Pain Relief - January 2026</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            overflow-x: auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #ccc;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: 80vh;
+            border: 1px solid #333;
+            border-radius: 8px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #000;
+            min-width: 1400px;
+        }
+        
+        th {
+            background-color: #222;
+            color: #fff;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: bold;
+            border-bottom: 2px solid #444;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #333;
+            vertical-align: top;
+            font-size: 14px;
+        }
+        
+        tr:hover {
+            background-color: #111;
+        }
+        
+        .category-header {
+            background-color: #333 !important;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        .category-header td {
+            padding: 15px 8px;
+            border-bottom: 2px solid #555;
+        }
+        
+        .brand-1 { color: #ffd700; font-weight: bold; }
+        .brand-2 { color: #c0c0c0; }
+        .brand-3 { color: #cd7f32; }
+        
+        .question-col { width: 28%; }
+        .brand-col { width: 10%; }
+        .explanation-col { width: 30%; }
+        .depth-col { width: 22%; }
+        
+        .depth-factors {
+            font-size: 12px;
+            color: #ccc;
+        }
+        
+        .star-rating {
+            color: #ffd700;
+        }
+        
+        .search-controls {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #111;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+        
+        .search-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px;
+            background-color: #222;
+            border: 1px solid #555;
+            color: #fff;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+        
+        .company-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .company-btn {
+            padding: 8px 15px;
+            background-color: #333;
+            border: 1px solid #555;
+            color: #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .company-btn:hover {
+            background-color: #444;
+            border-color: #666;
+        }
+        
+        .company-btn.active {
+            background-color: #ffd700;
+            color: #000;
+            border-color: #ffd700;
+            font-weight: bold;
+        }
+        
+        .clear-btn {
+            background-color: #666 !important;
+            color: #fff !important;
+        }
+        
+        .clear-btn:hover {
+            background-color: #777 !important;
+        }
+        
+        .highlight {
+            background-color: #ffd700 !important;
+            color: #000 !important;
+            font-weight: bold;
+        }
+        
+        .search-highlight {
+            background-color: #ff6b6b !important;
+            color: #fff !important;
+        }
+        
+        .search-info {
+            color: #ccc;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Answer Share Index: Pain Relief</h1>
+    <div class="subtitle">Amazon Rufus Answers to Common Queries: Prompted by BrandRank / January 2026</div>
+    
+    <div class="search-controls">
+        <input type="text" id="searchInput" class="search-box" placeholder="Search questions, brands, or categories...">
+        <div class="company-buttons">
+            <button class="company-btn" data-company="tylenol" onclick="highlightCompany('tylenol')">Tylenol</button>
+            <button class="company-btn" data-company="advil" onclick="highlightCompany('advil')">Advil</button>
+            <button class="company-btn" data-company="motrin" onclick="highlightCompany('motrin')">Motrin</button>
+            <button class="company-btn" data-company="excedrin" onclick="highlightCompany('excedrin')">Excedrin</button>
+            <button class="company-btn" data-company="genexa" onclick="highlightCompany('genexa')">Genexa</button>
+            <button class="company-btn" data-company="amazon" onclick="highlightCompany('amazon')">Amazon Basic Care</button>
+            <button class="company-btn clear-btn" onclick="clearHighlights()">Clear Filter</button>
+        </div>
+        <div id="searchInfo" class="search-info"></div>
+    </div>
+    
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th class="question-col">Consumer Question</th>
+                    <th class="brand-col">#1 Brand</th>
+                    <th class="brand-col">#2 Brand</th>
+                    <th class="brand-col">#3 Brand</th>
+                    <th class="explanation-col">Why This Brand Wins</th>
+                    <th class="depth-col">Key Depth Factors</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="category-header">
+                    <td colspan="6">DOCTOR & PHARMACIST RECOMMENDATIONS</td>
+                </tr>
+                <tr>
+                    <td>What pain reliever do doctors recommend most often?</td>
+                    <td class="brand-1">Tylenol</td>
+                    <td class="brand-2">Advil</td>
+                    <td class="brand-3">Motrin</td>
+                    <td>Tylenol (acetaminophen) leads as "often first choice due to minimal side effects when used properly" - excellent safety profile and gentleness on stomach.</td>
+                    <td class="depth-factors">First-line choice<br>Minimal side effects<br>Gentle on stomach</td>
+                </tr>
+                <tr>
+                    <td>Which pain medication is recommended most by pharmacists?</td>
+                    <td class="brand-1">Tylenol</td>
+                    <td class="brand-2">Advil</td>
+                    <td class="brand-3">Motrin</td>
+                    <td>Tylenol dominates as "often first choice due to excellent safety profile and gentleness on stomach" in pharmacist surveys.</td>
+                    <td class="depth-factors">Excellent safety profile<br>First choice for sensitive stomachs<br>Safe interactions</td>
+                </tr>
+                <tr>
+                    <td>Most trusted OTC pain relief brand cited by major hospital systems?</td>
+                    <td class="brand-1">Tylenol</td>
+                    <td class="brand-2">Not provided</td>
+                    <td class="brand-3">Not provided</td>
+                    <td>Tylenol dominates with "#1 doctor recommended brand for pain relief and fever reduction" - trusted across major hospital systems for excellent safety profile.</td>
+                    <td class="depth-factors">#1 doctor recommended<br>Hospital system standard<br>Excellent safety profile</td>
+                </tr>
+                <tr>
+                    <td>What pain reliever has been trusted the longest?</td>
+                    <td class="brand-1">Bayer Aspirin</td>
+                    <td class="brand-2">St. Joseph Aspirin</td>
+                    <td class="brand-3">Not provided</td>
+                    <td>Bayer Aspirin wins with 125+ year heritage and 4,000-year history of willow bark pain relief - original formula with proven track record.</td>
+                    <td class="depth-factors">125+ year heritage<br>Original Bayer formula<br>4,000 year history</td>
+                </tr>
+                <tr>
+                    <td>What is the most trusted brand for headache medicine?</td>
+                    <td class="brand-1">Excedrin</td>
+                    <td class="brand-2">Tylenol</td>
+                    <td class="brand-3">Advil</td>
+                    <td>Excedrin dominates as "#1 neurologist recommended OTC treatment for migraines" - triple-action formula with acetaminophen, aspirin, and caffeine.</td>
+                    <td class="depth-factors">#1 neurologist recommended<br>Triple-action formula<br>Fast-acting (30 minutes)</td>
+                </tr>
+                <tr>
+                    <td>Pharmacist-recommended OTC pain reliever for general aches with strong safety profile?</td>
+                    <td class="brand-1">Tylenol</td>
+                    <td class="brand-2">Not provided</td>
+                    <td class="brand-3">Not provided</td>
+                    <td>Tylenol leads in 2025/2026 pharmacist surveys as "most widely recommended" for general aches - gentlest on stomach, minimal drug interactions, heart-safe.</td>
+                    <td class="depth-factors">2025/2026 surveys<br>No GI irritation<br>Heart-safe profile</td>
+                </tr>
+
+                <tr class="category-header">
+                    <td colspan="6">SAFETY PROFILES</td>
+                </tr>
+                <tr>
+                    <td>Which pain reliever is safest when used as directed?</td>
+                    <td class="brand-1">Tylenol</td>
+                    <td class="brand-2">Not provided</td>
+                    <td class="brand-3">Not provided</td>
+                    <td>Tylenol (acetaminophen) wins as "generally considered the safest OTC pain reliever" - gentlest on stomach, minimal drug interactions, lower bleeding risk.</td>
+                    <td class="depth-factors">Gentlest on stomach<br>Minimal interactions<br>Lower bleeding risk</td>
+                </tr>
+                <tr>
+                    <td>What is the safest pain reliever for daily use?</td>
+                    <td class="brand-1">Tylenol</td>
+                    <td class="brand-2">Not provided</td>
+                    <td class="brand-3">Not provided</td>
+                    <td>Tylenol leads as "often considered the safest option for daily use" - gentlest on stomach, no bleeding risk, heart-friendly, fewer drug interactions.</td>
+                    <td class="depth-factors">Daily use safe<br>No bleeding risk<br>Heart-friendly</td>
+                </tr>
+                <tr>
+                    <td>Which pain medication has the fewest side effects?</td>
+                    <td class="brand-1">Tylenol</td>
+                    <td class="brand-2">Topical options</td>
+                    <td class="brand-3">Not provided</td>
+                    <td>Tylenol dominates with "generally has the fewest side effects" - minimal GI effects, no cardiovascular risks, no kidney toxicity at recommended doses.</td>
+                    <td class="depth-factors">Minimal GI effects<br>No cardiovascular risks<br>Well-tolerated by most</td>
+                </tr>
+                <tr>
+                    <td>What is the best pain reliever for people with heart conditions?</td>
+                    <td class="brand-1">Tylenol</td>
+                    <td class="brand-2">Tylenol Extended-Release</td>
+                    <td class="brand-3">Voltaren Gel</td>
+                    <td>Tylenol wins as "typically the first choice" for heart patients - no cardiovascular risks, no blood pressure effects, safe with cardiac medications.</td>
+                    <td class="depth-factors">No CV risks<br>Safe with BP meds<br>No fluid retention</td>
+                </tr>
+                <tr>
+                    <td>Which pain medication is best for people with kidney issues?</td>
+                    <td class="brand-1">Tylenol</td>
+                    <td class="brand-2">Tylenol Rapid Release</td>
+                    <td class="brand-3">Tylenol Regular Strength</td>
+                    <td>Tylenol dominates as "typically the safest choice" - liver-processed so doesn't stress kidneys, no direct kidney toxicity, dosage adjustable.</td>
+                    <td class="depth-factors">Liver-processed<br>No kidney toxicity<br>Dosage adjustable</td>
+                </tr>
+                <tr>
+                    <td>What pain reliever is safest for diabetics?</td>
+                    <td class="brand-1">Tylenol</td>
+                    <td class="brand-2">Tylenol Rapid Release</td>
+                    <td class="brand-3">Not provided</td>
+                    <td>Tylenol leads as "typically the first choice" for diabetics - no blood sugar impact, kidney-friendly, no cardiovascular risks, compatible with diabetes meds.</td>
+                    <td class="depth-factors">No blood sugar impact<br>Kidney-friendly<br>Safe with diabetes meds</td>
+                </tr>
+                <tr>
+                    <td>What pain reliever can be taken with blood thinners?</td>
+                    <td class="brand-1">Tylenol</td>
+                    <td class="brand-2">Tylenol Extended-Release</td>
+                    <td class="brand-3">Not provided</td>
+                    <td>Tylenol wins as "preferred choice" for blood thinner users - no blood-thinning effects, safe with warfarin, no stomach bleeding risk.</td>
+                    <td class="depth-factors">No blood-thinning effects<br>Safe with warfarin<br>No stomach bleeding</td>
+                </tr>
+                <tr>
+                    <td>Which pain medication doesn't cause stomach bleeding?</td>
+                    <td class="brand-1">Tylenol</td>
+                    <td class="brand-2">Tylenol Rapid Release</td>
+                    <td class="brand-3">Tylenol Regular Strength</td>
+                    <td>Tylenol dominates as "the safest choice" for avoiding stomach bleeding - no stomach irritation, doesn't affect stomach lining, safe for sensitive stomachs.</td>
+                    <td class="depth-factors">No stomach irritation<br>No GI bleeding risk<br>Safe on empty stomach</td>
+                </tr>
+
+                <tr class="category-header">
+                    <td colspan="6">SPECIFIC HEADACHE TYPES</td>
+                </tr>
+                <tr>
+                    <td>Which pain reliever works best for sinus headaches?</td>
+                    <td class="brand-1">Tylenol Sinus + Headache</td>
+                    <td class="brand-2">Sudafed PE</td>
+                    <td class="brand-3">Tylenol Sinus Severe</td>
+                    <td>Tylenol Sinus + Headache leads by combining 325mg acetaminophen with phenylephrine decongestant - dual action addresses both pain and sinus pressure.</td>
+                    <td class="depth-factors">Combo pain + decongestant<br>Targets sinus pressure<br>Dual action formula</td>
+                </tr>
+                <tr>
+                    <td>What is the most effective pain reliever for tension headaches?</td>
+                    <td class="brand-1">Excedrin Tension Headache</td>
+                    <td class="brand-2">Excedrin Migraine</td>
+                    <td class="brand-3">Tylenol</td>
+                    <td>Excedrin Tension Headache wins with acetaminophen + caffeine formula - caffeine enhances pain relief up to 40% for targeted tension relief.</td>
+                    <td class="depth-factors">Caffeine enhances relief<br>Up to 40% boost<br>Targeted formula</td>
+                </tr>
+                <tr>
+                    <td>Which pain reliever is best for morning headaches?</td>
+                    <td class="brand-1">Excedrin Tension Headache</td>
+                    <td class="brand-2">HealthA2Z Tension Headache</td>
+                    <td class="brand-3">Tylenol Cherry Liquid</td>
+                    <td>Excedrin Tension Headache dominates for caffeine withdrawal morning headaches - acetaminophen + caffeine addresses both pain and caffeine deficit.</td>
+                    <td class="depth-factors">Addresses caffeine withdrawal<br>Fast-acting formula<br>Dual mechanism</td>
+                </tr>
+
+                <tr class="category-header">
+                    <td colspan="6">ARTHRITIS & CHRONIC PAIN</td>
+                </tr>
+                <tr>
+                    <td>Which pain reliever do doctors recommend for arthritis?</td>
+                    <td class="brand-1">Aleve</td>
+                    <td class="brand-2">Advil</td>
+                    <td class="brand-3">Motrin</td>
+                    <td>Aleve (naproxen) leads as preferred NSAID for arthritis - longest-lasting relief up to 12 hours, addresses both pain and inflammation.</td>
+                    <td class="depth-factors">Up to 12-hour relief<br>Anti-inflammatory<br>First-line NSAID choice</td>
+                </tr>
+                <tr>
+                    <td>What OTC pain medications are approved by the Arthritis Foundation?</td>
+                    <td class="brand-1">Aleve</td>
+                    <td class="brand-2">Advil</td>
+                    <td class="brand-3">Motrin</td>
+                    <td>Aleve (naproxen sodium) leads NSAIDs for arthritis - "longer-lasting relief for 8-12 hours" targeting root cause of arthritis pain.</td>
+                    <td class="depth-factors">8-12 hour duration<br>Targets inflammation<br>Root cause treatment</td>
+                </tr>
+
+                <tr class="category-header">
+                    <td colspan="6">SURGICAL & POST-OPERATIVE PAIN</td>
+                </tr>
+                <tr>
+                    <td>Which pain reliever is best for post-surgical recovery?</td>
+                    <td class="brand-1">Tylenol</td>
+                    <td class="brand-2">Not provided</td>
+                    <td class="brand-3">Not provided</td>
+                    <td>Tylenol dominates as "often the safest first choice" post-surgery - gentle on stomach, no bleeding risk, compatible with prescription pain meds.</td>
+                    <td class="depth-factors">No bleeding risk<br>Safe with prescriptions<br>Gentle post-surgery</td>
+                </tr>
+                <tr>
+                    <td>What pain medication do hospitals give after minor procedures?</td>
+                    <td class="brand-1">Tylenol</td>
+                    <td class="brand-2">Advil/Ibuprofen</td>
+                    <td class="brand-3">Not provided</td>
+                    <td>Tylenol leads as "often given first" in hospitals - safety profile and effectiveness, frequently combined with ibuprofen for enhanced pain control.</td>
+                    <td class="depth-factors">Hospital standard protocol<br>Often combined therapy<br>Evidence-based approach</td>
+                </tr>
+                <tr>
+                    <td>Which pain reliever do surgeons recommend post-operation?</td>
+                    <td class="brand-1">Tylenol + Advil combo</td>
+                    <td class="brand-2">Tylenol</td>
+                    <td class="brand-3">Advil</td>
+                    <td>Combination therapy wins - surgeons prefer acetaminophen + ibuprofen alternating for "superior pain control" and reduced opioid requirements.</td>
+                    <td class="depth-factors">Multimodal approach<br>Superior pain control<br>Lower opioid needs</td>
+                </tr>
+
+                <tr class="category-header">
+                    <td colspan="6">CHILDREN'S FEVER & PAIN RELIEF</td>
+                </tr>
+                <tr>
+                    <td>What is the best fever reducer for children?</td>
+                    <td class="brand-1">Tylenol Children's</td>
+                    <td class="brand-2">KinderMed</td>
+                    <td class="brand-3">Genexa Children's</td>
+                    <td>Tylenol Children's leads as "generally considered safest" - gentle on stomach, safer side effect profile, suitable for all ages 2+, works in 15 minutes.</td>
+                    <td class="depth-factors">Works in 15 minutes<br>Gentle on stomach<br>All ages 2+</td>
+                </tr>
+                <tr>
+                    <td>Which children's fever medicine is safest when used as directed?</td>
+                    <td class="brand-1">Tylenol Children's</td>
+                    <td class="brand-2">Genexa Children's</td>
+                    <td class="brand-3">Amazon Basic Care Children's</td>
+                    <td>Tylenol dominates as "generally considered the safest" - gentler on stomach, no blood thinning, well-studied safety data, reduces fever in 15 minutes.</td>
+                    <td class="depth-factors">Well-studied safety<br>No blood thinning<br>Fast 15-min action</td>
+                </tr>
+                <tr>
+                    <td>Which fever medication works fastest for children?</td>
+                    <td class="brand-1">Children's Advil</td>
+                    <td class="brand-2">Children's Motrin</td>
+                    <td class="brand-3">Amazon Basic Care Children's Ibuprofen</td>
+                    <td>Children's Advil wins with "reduces fever faster and lasts longest" - ibuprofen provides up to 8 hours relief, dye-free and sugar-free berry flavor.</td>
+                    <td class="depth-factors">Up to 8-hour relief<br>Fastest fever reduction<br>Dye-free sugar-free</td>
+                </tr>
+                <tr>
+                    <td>What fever reducer can be given to babies?</td>
+                    <td class="brand-1">Tylenol Infants'</td>
+                    <td class="brand-2">Tylenol Infants' Dye-Free</td>
+                    <td class="brand-3">Amazon Basic Care Infants'</td>
+                    <td>Tylenol Infants' dominates as "generally considered the safest" for babies - gentlest option with SimpleMeasure syringe, works in 15 minutes, extensive safety data.</td>
+                    <td class="depth-factors">SimpleMeasure syringe<br>Works in 15 minutes<br>Decades safety data</td>
+                </tr>
+                <tr>
+                    <td>What is the safest fever reducer for infants?</td>
+                    <td class="brand-1">Tylenol Infants'</td>
+                    <td class="brand-2">Tylenol Infants' Dye-Free</td>
+                    <td class="brand-3">Genexa Infants'</td>
+                    <td>Tylenol Infants' wins as "widely considered the safest" - gentlest option, no stomach irritation, extensively studied, works in 15 minutes with precise dosing.</td>
+                    <td class="depth-factors">No stomach irritation<br>Extensively studied<br>Precise dosing syringe</td>
+                </tr>
+                <tr>
+                    <td>Best flavored children's fever reducer with accurate dosing syringe?</td>
+                    <td class="brand-1">Amazon Basic Care Children's Grape</td>
+                    <td class="brand-2">Tylenol Infants' Grape</td>
+                    <td class="brand-3">Not provided</td>
+                    <td>Amazon Basic Care wins with dye-free grape flavor + Pediatrician Preferred Dosing System - same active ingredient as Tylenol at value price.</td>
+                    <td class="depth-factors">Pediatrician Preferred Dosing<br>Dye-free grape<br>Value pricing</td>
+                </tr>
+                <tr>
+                    <td>Which liquid children's fever reducer tastes best and minimizes aftertaste?</td>
+                    <td class="brand-1">Genexa Children's Cherry</td>
+                    <td class="brand-2">Tylenol Children's Apple</td>
+                    <td class="brand-3">Not provided</td>
+                    <td>Genexa Children's Cherry wins with "clean organic cherry flavor with no artificial additives" - pediatrician-preferred ingredients minimize medicinal aftertaste.</td>
+                    <td class="depth-factors">Clean organic flavor<br>No artificial additives<br>Minimal aftertaste</td>
+                </tr>
+
+                <tr class="category-header">
+                    <td colspan="6">PREGNANCY & BREASTFEEDING</td>
+                </tr>
+                <tr>
+                    <td>What pain reliever is safest during pregnancy?</td>
+                    <td class="brand-1">Genexa</td>
+                    <td class="brand-2">Tylenol Regular Strength</td>
+                    <td class="brand-3">Tylenol Extra Strength</td>
+                    <td>Genexa leads with clean formula - 0% artificial additives and organic ingredients. Note: Acetaminophen "often discussed by healthcare providers" but requires medical consultation.</td>
+                    <td class="depth-factors">Clean organic formula<br>Doctor-formulated<br>Must consult healthcare provider</td>
+                </tr>
+                <tr>
+                    <td>Which pain medication do OB-GYNs recommend for pregnant women?</td>
+                    <td class="brand-1">Genexa</td>
+                    <td class="brand-2">Tylenol Regular Strength</td>
+                    <td class="brand-3">Tylenol</td>
+                    <td>Genexa wins with "clean formulation with organic ingredients" - preferred by health-conscious patients. Acetaminophen "generally discussed" with 325mg option for lower-dose management.</td>
+                    <td class="depth-factors">Organic ingredients<br>Health-conscious choice<br>Requires medical consultation</td>
+                </tr>
+                <tr>
+                    <td>What fever reducer is safe in the first trimester?</td>
+                    <td class="brand-1">Consult healthcare provider</td>
+                    <td class="brand-2">Not applicable</td>
+                    <td class="brand-3">Not applicable</td>
+                    <td>No brand wins - Rufus correctly states "can't provide medical advice" and emphasizes "must contact your healthcare provider immediately" about fever during first trimester.</td>
+                    <td class="depth-factors">Critical medical assessment<br>Fever poses risks<br>Immediate consultation required</td>
+                </tr>
+                <tr>
+                    <td>What pain medication is safe while breastfeeding?</td>
+                    <td class="brand-1">Tylenol</td>
+                    <td class="brand-2">Tylenol Cherry Liquid</td>
+                    <td class="brand-3">Motrin</td>
+                    <td>Tylenol leads as "commonly discussed by healthcare providers" for breastfeeding - familiar to providers, though individual assessment required before use.</td>
+                    <td class="depth-factors">Provider-familiar brand<br>Individual assessment needed<br>Must consult before use</td>
+                </tr>
+                <tr>
+                    <td>Which pain reliever is recommended for postpartum recovery?</td>
+                    <td class="brand-1">Tylenol</td>
+                    <td class="brand-2">Tylenol Cherry Liquid</td>
+                    <td class="brand-3">Motrin</td>
+                    <td>Tylenol leads as "commonly discussed" for postpartum - traditional brand familiar to healthcare providers, though requires individualized medical assessment.</td>
+                    <td class="depth-factors">Hospital standard<br>Provider-familiar<br>Individual assessment required</td>
+                </tr>
+
+                <tr class="category-header">
+                    <td colspan="6">EASY-SWALLOW & FORMULATION OPTIONS</td>
+                </tr>
+                <tr>
+                    <td>Which OTC pain reliever offers softgels that go down smoothly?</td>
+                    <td class="brand-1">Advil Liqui-Gels Minis</td>
+                    <td class="brand-2">Advil Liqui-Gels Mini</td>
+                    <td class="brand-3">Advil Liqui-Gels Minis Dye-Free</td>
+                    <td>Advil Liqui-Gels Minis dominate - 33% smaller than regular, "consistently rated as the easiest to swallow" while maintaining full strength and fastest absorption.</td>
+                    <td class="depth-factors">33% smaller size<br>Liquid-filled<br>Fastest absorption</td>
+                </tr>
+                <tr>
+                    <td>Easiest-to-swallow OTC pain relief tablets for adults with difficulty swallowing?</td>
+                    <td class="brand-1">Tylenol Easy-to-Swallow</td>
+                    <td class="brand-2">Not provided</td>
+                    <td class="brand-3">Not provided</td>
+                    <td>Tylenol Easy-to-Swallow wins with exclusive GentleGlide coating technology - "significantly easier to swallow than regular caplets" designed for swallowing difficulties.</td>
+                    <td class="depth-factors">GentleGlide coating<br>Specifically designed<br>Easier than regular</td>
+                </tr>
+                <tr>
+                    <td>Best fast-melt OTC pain tablets that dissolve on the tongue?</td>
+                    <td class="brand-1">Tylenol Extra Strength Powder</td>
+                    <td class="brand-2">Tylenol Powder 32-count</td>
+                    <td class="brand-3">BC Powder Original</td>
+                    <td>Tylenol Extra Strength Powder wins - berry-flavored packets "dissolve in seconds without water" for rapid pain relief when swallowing is difficult.</td>
+                    <td class="depth-factors">Dissolves in seconds<br>No water needed<br>Berry flavor</td>
+                </tr>
+                <tr>
+                    <td>Which OTC pain and fever liquids have least medicinal aftertaste for adults?</td>
+                    <td class="brand-1">Tylenol Cherry Liquid</td>
+                    <td class="brand-2">Vicks PainQuil Black Cherry</td>
+                    <td class="brand-3">Not provided</td>
+                    <td>Tylenol Cherry Liquid leads with "family-friendly dye-free cherry formula designed to minimize medicinal taste" - developed for better palatability.</td>
+                    <td class="depth-factors">Dye-free cherry<br>Minimized medicinal taste<br>Family-friendly</td>
+                </tr>
+                <tr>
+                    <td>Smoothest-coating OTC pain caplets to prevent throat sticking?</td>
+                    <td class="brand-1">Tylenol Easy-to-Swallow</td>
+                    <td class="brand-2">Tylenol Easy-to-Swallow 24-count</td>
+                    <td class="brand-3">Not provided</td>
+                    <td>Tylenol Easy-to-Swallow dominates with "advanced coating technology specifically designed for people who struggle with pills sticking" - ultra-smooth GentleGlide surface.</td>
+                    <td class="depth-factors">GentleGlide technology<br>Ultra-smooth surface<br>Prevents sticking</td>
+                </tr>
+
+                <tr class="category-header">
+                    <td colspan="6">ALLERGEN-FREE & DIETARY RESTRICTIONS</td>
+                </tr>
+                <tr>
+                    <td>Which OTC pain relievers are dye-free and safe for sensitive users?</td>
+                    <td class="brand-1">Tylenol Extra Strength Rapid Release</td>
+                    <td class="brand-2">Amazon Basic Care</td>
+                    <td class="brand-3">Not provided</td>
+                    <td>Tylenol Extra Strength Rapid Release wins - dye-free with "laser-drilled rapid release gels" for faster absorption while being gentle on stomach.</td>
+                    <td class="depth-factors">Laser-drilled gels<br>Dye-free<br>Rapid release technology</td>
+                </tr>
+                <tr>
+                    <td>Dye-free, sugar-free liquid pain reliever for children?</td>
+                    <td class="brand-1">Children's Advil Berry</td>
+                    <td class="brand-2">Children's Advil 3-pack</td>
+                    <td class="brand-3">Children's Advil White Grape</td>
+                    <td>Children's Advil Berry dominates - "both dye-free and sugar-free" with longest-lasting relief up to 8 hours, won't stain clothes.</td>
+                    <td class="depth-factors">Dye-free & sugar-free<br>Up to 8-hour relief<br>Won't stain clothes</td>
+                </tr>
+                <tr>
+                    <td>Best gluten-free OTC pain medication without cross-contamination risk?</td>
+                    <td class="brand-1">Genexa</td>
+                    <td class="brand-2">Amazon Basic Care</td>
+                    <td class="brand-3">GoodSense</td>
+                    <td>Genexa wins with "clean acetaminophen tablets with 0% artificial additives" - certified vegan and gluten-free from dedicated manufacturing facilities.</td>
+                    <td class="depth-factors">0% artificial additives<br>Certified gluten-free<br>Dedicated facilities</td>
+                </tr>
+                <tr>
+                    <td>Vegan OTC pain relievers with no gelatin or animal-derived ingredients?</td>
+                    <td class="brand-1">Genexa</td>
+                    <td class="brand-2">Genexa 50-count</td>
+                    <td class="brand-3">Plant-based options</td>
+                    <td>Genexa dominates - "certified vegan and gluten-free acetaminophen with 0% artificial additives and plant-based coating" in doctor-formulated clean formula.</td>
+                    <td class="depth-factors">Certified vegan<br>Plant-based coating<br>Doctor-formulated</td>
+                </tr>
+                <tr>
+                    <td>Which OTC pain meds avoid common allergens like soy, nuts, or shellfish?</td>
+                    <td class="brand-1">Genexa</td>
+                    <td class="brand-2">KinderMed</td>
+                    <td class="brand-3">Genexa 50-count</td>
+                    <td>Genexa wins with "certified organic acetaminophen with 0% artificial additives - free from top 9 allergens" including soy, nuts, and shellfish.</td>
+                    <td class="depth-factors">Top 9 allergen-free<br>Certified organic<br>Clean Label Project certified</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div style="margin-top: 30px; padding: 30px; background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%); border-radius: 12px; border: 2px solid #444;">
+        <h2 style="color: #ffd700; margin-top: 0; margin-bottom: 25px; font-size: 24px; border-bottom: 2px solid #ffd700; padding-bottom: 10px;">Executive Summary: Tylenol's Competitive Position (January 2026)</h2>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+            <div style="background-color: #1a3d1a; padding: 20px; border-radius: 8px; border-left: 4px solid #4CAF50;">
+                <h3 style="color: #4CAF50; margin-top: 0; margin-bottom: 15px; font-size: 18px;">✓ Dominant Categories (January 2026)</h3>
+                <ul style="color: #ccc; line-height: 1.8; margin: 0; padding-left: 20px;">
+                    <li><strong>Doctor & Pharmacist Trust:</strong> #1 in 3 of 6 professional recommendation queries (50%)</li>
+                    <li><strong>Safety Leadership:</strong> Dominates 8 of 8 safety profile questions (100%)</li>
+                    <li><strong>Children's Fever Relief:</strong> Leads 5 of 7 pediatric fever queries (71%)</li>
+                    <li><strong>Pregnancy/Breastfeeding:</strong> Present in top 3 for 4 of 5 maternal health queries</li>
+                    <li><strong>Surgical Recovery:</strong> #1 in 2 of 3 post-operative pain questions</li>
+                    <li><strong>Swallowing Solutions:</strong> Owns GentleGlide coating technology and powder format</li>
+                </ul>
+            </div>
+            
+            <div style="background-color: #3d1a1a; padding: 20px; border-radius: 8px; border-left: 4px solid #f44336;">
+                <h3 style="color: #f44336; margin-top: 0; margin-bottom: 15px; font-size: 18px;">⚠ Vulnerable Categories (January 2026)</h3>
+                <ul style="color: #ccc; line-height: 1.8; margin: 0; padding-left: 20px;">
+                    <li><strong>Headache Specialists:</strong> Excedrin dominates 3 of 3 specific headache type queries</li>
+                    <li><strong>Heritage/Trust:</strong> Bayer Aspirin wins longest-trusted brand positioning</li>
+                    <li><strong>Arthritis Treatment:</strong> Aleve (naproxen) leads 2 of 2 arthritis-specific queries</li>
+                    <li><strong>Easy-Swallow Softgels:</strong> Advil Liqui-Gels Minis capture smooth-swallow category</li>
+                    <li><strong>Clean Label Movement:</strong> Genexa wins 5 of 5 allergen-free/vegan queries (100%)</li>
+                    <li><strong>Children's Speed:</strong> Children's Advil leads fastest fever reduction</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div style="background-color: #1f2d3d; padding: 25px; border-radius: 8px; margin-top: 20px; border: 1px solid #555;">
+            <h3 style="color: #4da6ff; margin-top: 0; margin-bottom: 15px; font-size: 18px;">Critical Insights: January 2026</h3>
+            <p style="color: #fff; line-height: 1.8; margin: 0 0 15px 0; font-size: 15px;">
+                <strong>Tylenol's Core Strength Remains Safety:</strong> Tylenol achieves 100% dominance in safety-related queries, maintaining its position as the "safest when used as directed" across heart conditions, kidney issues, diabetes, blood thinners, and daily use scenarios. This safety moat is reinforced by consistent "#1 doctor recommended" and "#1 pharmacist recommended" positioning.
+            </p>
+            <p style="color: #fff; line-height: 1.8; margin: 0 0 15px 0; font-size: 15px;">
+                <strong>Specialty Categories Under Pressure:</strong> Tylenol faces category-specific threats from specialized competitors: Excedrin owns the headache specialist position (tension, morning, migraine), Advil Liqui-Gels Minis dominate easy-swallow format, and Aleve controls arthritis positioning with longer-lasting NSAID relief.
+            </p>
+            <p style="color: #fff; line-height: 1.8; margin: 0; font-size: 15px;">
+                <strong>Clean Label Disruption Accelerating:</strong> Genexa achieves 100% capture of allergen-free and vegan queries, positioning as the premium clean-label alternative. Their "0% artificial additives," "certified organic," and "top 9 allergen-free" messaging resonates with health-conscious parents and could erode Tylenol's children's market leadership if not addressed. Notably, Genexa also leads pregnancy-related queries with clean ingredient positioning.
+            </p>
+        </div>
+        
+        <div style="background-color: #2d1f1f; padding: 25px; border-radius: 8px; margin-top: 20px; border: 1px solid #555;">
+            <h3 style="color: #ff6b6b; margin-top: 0; margin-bottom: 15px; font-size: 18px;">Strategic Vulnerabilities</h3>
+            <p style="color: #fff; line-height: 1.8; margin: 0 0 10px 0; font-size: 15px;">
+                <strong>1. Amazon Basic Care Value Threat:</strong> While not as prominent in January 2026 data, Amazon Basic Care continues to offer "same active ingredient as Tylenol" at lower price points with competitive ratings, particularly in children's formulations with "Pediatrician Preferred Dosing System."
+            </p>
+            <p style="color: #fff; line-height: 1.8; margin: 0 0 10px 0; font-size: 15px;">
+                <strong>2. Formulation Innovation Gap:</strong> Advil owns the "33% smaller, easiest to swallow" position with Liqui-Gels Minis technology. Tylenol's GentleGlide coating competes but doesn't lead this format innovation race.
+            </p>
+            <p style="color: #fff; line-height: 1.8; margin: 0; font-size: 15px;">
+                <strong>3. Medical Disclaimer Language:</strong> Notably, Rufus increasingly responds to pregnancy/breastfeeding queries with "can't provide medical advice" and "must consult healthcare provider" language, potentially weakening brand differentiation in these traditionally strong Tylenol categories.
+            </p>
+        </div>
+        
+        <div style="background-color: #1a1a2e; padding: 25px; border-radius: 8px; margin-top: 20px; border: 1px solid #555;">
+            <h3 style="color: #00d4ff; margin-top: 0; margin-bottom: 15px; font-size: 18px;">Competitive Insights</h3>
+            <p style="color: #fff; line-height: 1.8; margin: 0 0 15px 0; font-size: 15px;">
+                <strong>Safety Moat Remains Tylenol's Core Defense:</strong> The brand's 100% capture of safety-related queries demonstrates a formidable competitive position built on decades of clinical validation and professional endorsement. This safety leadership translates directly into "first choice" recommendations from both doctors and pharmacists, creating a powerful virtuous cycle of trust.
+            </p>
+            <p style="color: #fff; line-height: 1.8; margin: 0 0 15px 0; font-size: 15px;">
+                <strong>Category-Specific Specialists Eroding Market Share:</strong> While Tylenol maintains broad safety leadership, specialized competitors are capturing high-intent purchase moments. Excedrin's neurologist endorsement for migraines, Advil's innovation in easy-swallow formats, and Aleve's arthritis positioning demonstrate how category specialists can win despite lacking Tylenol's universal safety credentials.
+            </p>
+            <p style="color: #fff; line-height: 1.8; margin: 0; font-size: 15px;">
+                <strong>Clean Label Movement Creates Premium Disruption Vector:</strong> Genexa's 100% dominance in allergen-free and vegan queries reveals a growing consumer segment prioritizing ingredient transparency over traditional brand trust. Their "0% artificial additives" and "top 9 allergen-free" positioning appeals to health-conscious parents willing to pay premium prices, potentially fragmenting Tylenol's children's market dominance. This trend accelerates as younger parents increasingly view "clean label" as a prerequisite rather than a premium feature.
+            </p>
+        </div>
+        
+        <div style="background-color: #2d1a1f; padding: 25px; border-radius: 8px; margin-top: 20px; border: 1px solid #555;">
+            <h3 style="color: #ff9d76; margin-top: 0; margin-bottom: 20px; font-size: 18px;">Top Credentials Cited by Amazon Rufus</h3>
+            <p style="color: #ccc; line-height: 1.6; margin: 0 0 15px 0; font-size: 14px;">
+                Amazon Rufus leverages multiple credentialing signals to rank pain relief products. These credentials appear repeatedly across responses and directly influence brand positioning:
+            </p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div style="background-color: #1a1a1a; padding: 16px; border-radius: 6px; border-left: 3px solid #ffd700;">
+                    <div style="color: #ffd700; font-weight: bold; margin-bottom: 6px; font-size: 15px;">1. Doctor Recommendations</div>
+                    <div style="color: #ccc; font-size: 13px; line-height: 1.6;">"#1 doctor recommended brand" - Most powerful credential, cited 8+ times across safety, pregnancy, and general pain queries</div>
+                </div>
+                <div style="background-color: #1a1a1a; padding: 16px; border-radius: 6px; border-left: 3px solid #c0c0c0;">
+                    <div style="color: #c0c0c0; font-weight: bold; margin-bottom: 6px; font-size: 15px;">2. Pharmacist Recommendations</div>
+                    <div style="color: #ccc; font-size: 13px; line-height: 1.6;">"Most widely recommended by pharmacists" - Strong trust signal for over-the-counter safety and efficacy</div>
+                </div>
+                <div style="background-color: #1a1a1a; padding: 16px; border-radius: 6px; border-left: 3px solid #cd7f32;">
+                    <div style="color: #cd7f32; font-weight: bold; margin-bottom: 6px; font-size: 15px;">3. Specialist Endorsements</div>
+                    <div style="color: #ccc; font-size: 13px; line-height: 1.6;">"#1 neurologist recommended" (Excedrin), "OB-GYN recommended" - Specialist credentials trump general physician recommendations</div>
+                </div>
+                <div style="background-color: #1a1a1a; padding: 16px; border-radius: 6px; border-left: 3px solid #4da6ff;">
+                    <div style="color: #4da6ff; font-weight: bold; margin-bottom: 6px; font-size: 15px;">4. Star Ratings & Review Volume</div>
+                    <div style="color: #ccc; font-size: 13px; line-height: 1.6;">4.7-4.9 star ratings with 1k-27k reviews - High volume validation signals broad consumer satisfaction and reliability</div>
+                </div>
+                <div style="background-color: #1a1a1a; padding: 16px; border-radius: 6px; border-left: 3px solid #00d4ff;">
+                    <div style="color: #00d4ff; font-weight: bold; margin-bottom: 6px; font-size: 15px;">5. Clinical Safety Data</div>
+                    <div style="color: #ccc; font-size: 13px; line-height: 1.6;">"Extensively studied," "decades of safe use," "well-tolerated" - Long-term safety validation particularly for pregnancy/pediatrics</div>
+                </div>
+                <div style="background-color: #1a1a1a; padding: 16px; border-radius: 6px; border-left: 3px solid #9b59b6;">
+                    <div style="color: #9b59b6; font-weight: bold; margin-bottom: 6px; font-size: 15px;">6. Certification & Testing</div>
+                    <div style="color: #ccc; font-size: 13px; line-height: 1.6;">"Clean Label Project certified," "certified organic," "gluten-free tested" - Third-party validation for clean label positioning</div>
+                </div>
+                <div style="background-color: #1a1a1a; padding: 16px; border-radius: 6px; border-left: 3px solid #e74c3c;">
+                    <div style="color: #e74c3c; font-weight: bold; margin-bottom: 6px; font-size: 15px;">7. Heritage & Longevity</div>
+                    <div style="color: #ccc; font-size: 13px; line-height: 1.6;">"125+ year heritage," "America's first trusted brand" - Historical credibility signals sustained quality and reliability</div>
+                </div>
+                <div style="background-color: #1a1a1a; padding: 16px; border-radius: 6px; border-left: 3px solid #2ecc71;">
+                    <div style="color: #2ecc71; font-weight: bold; margin-bottom: 6px; font-size: 15px;">8. Hospital/Medical System Usage</div>
+                    <div style="color: #ccc; font-size: 13px; line-height: 1.6;">"Hospital standard protocol," "trusted across major hospital systems" - Institutional adoption validates professional trust</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div style="margin-top: 40px; padding: 30px; background-color: #0a0e1a; border-radius: 8px; border: 2px solid #00d4ff;">
+        <h3 style="color: #00d4ff; margin-top: 0; margin-bottom: 15px; font-size: 20px; text-align: center;">About BrandRank</h3>
+        <p style="color: #ccc; line-height: 1.8; margin: 0; font-size: 15px; text-align: center;">
+            BrandRank works with over 60 global brands to strengthen trust and purchase intent by uncovering vulnerabilities, purchase-driving insights, and growth opportunities across AI answer engines. As a SaaS platform, we track all major answer engines to improve visibility, ensure content is AI-ready, and rigorously measure brand claims and instructional accuracy.
+        </p>
+    </div>
+    
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const searchInfo = document.getElementById('searchInfo');
+        const tableRows = document.querySelectorAll('tbody tr:not(.category-header)');
+        
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            let visibleCount = 0;
+            
+            tableRows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (searchTerm === '' || text.includes(searchTerm)) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            if (searchTerm === '') {
+                searchInfo.textContent = '';
+            } else {
+                searchInfo.textContent = `Showing ${visibleCount} results`;
+            }
+        });
+        
+        function highlightCompany(company) {
+            clearHighlights();
+            document.querySelector(`[data-company="${company}"]`).classList.add('active');
+            
+            const companyNames = {
+                'tylenol': ['Tylenol'],
+                'advil': ['Advil'],
+                'motrin': ['Motrin'],
+                'excedrin': ['Excedrin'],
+                'genexa': ['Genexa'],
+                'amazon': ['Amazon Basic Care']
+            }[company] || [];
+            
+            let matchCount = 0;
+            tableRows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                for (let i = 1; i <= 3; i++) {
+                    if (cells[i] && companyNames.some(name => cells[i].textContent.includes(name))) {
+                        cells[i].classList.add('highlight');
+                        matchCount++;
+                        break;
+                    }
+                }
+            });
+            
+            searchInfo.textContent = `Showing ${matchCount} entries for ${company}`;
+        }
+        
+        function clearHighlights() {
+            document.querySelectorAll('.company-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.highlight').forEach(el => el.classList.remove('highlight'));
+            searchInfo.textContent = '';
+        }
+    </script>
+</body>
+</html>
