@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 Winter Olympics Brand Rankings - LLM Comparison</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0e1a;
+            color: #e8edf4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #e8edf4;
+            font-size: 1.1em;
+            margin-bottom: 40px;
+        }
+
+        .question-section {
+            margin-bottom: 60px;
+        }
+
+        .question-title {
+            color: #ffffff;
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #1a2332;
+            font-weight: 700;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #131820;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        thead {
+            background: #1a2332;
+        }
+
+        th {
+            padding: 16px;
+            text-align: left;
+            color: #00d4ff;
+            font-weight: 600;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #00d4ff;
+        }
+
+        th:first-child {
+            width: 80px;
+            text-align: center;
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #1a2332;
+            color: #c5d0e0;
+            font-size: 0.95em;
+        }
+
+        td:first-child {
+            text-align: center;
+            font-weight: 600;
+            color: #00d4ff;
+            font-size: 1.1em;
+        }
+
+        tr:hover {
+            background: #1a2332;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .brand-name {
+            font-weight: 500;
+            position: relative;
+            cursor: help;
+        }
+
+        .brand-name .brand-cell-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a2332;
+            color: #e8edf4;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            line-height: 1.4;
+            white-space: normal;
+            width: 280px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            border: 1px solid #00d4ff;
+            z-index: 1000;
+            margin-bottom: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+            pointer-events: none;
+        }
+
+        .brand-name:hover .brand-cell-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .brand-name .brand-cell-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #00d4ff;
+        }
+
+        .note {
+            color: #6b7789;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+
+        .source-item {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dotted #00d4ff;
+        }
+
+        .source-item:hover {
+            color: #00d4ff;
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a2332;
+            color: #e8edf4;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            line-height: 1.4;
+            white-space: normal;
+            width: 300px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            border: 1px solid #00d4ff;
+            z-index: 1000;
+            margin-bottom: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+        }
+
+        .source-item:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #00d4ff;
+        }
+
+        .analysis-section {
+            margin-top: 60px;
+            padding: 30px;
+            background: #131820;
+            border-radius: 8px;
+            border: 1px solid #1a2332;
+        }
+
+        .analysis-section h2 {
+            color: #00d4ff;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .analysis-section h3 {
+            color: #00d4ff;
+            font-size: 1.3em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .analysis-section p {
+            color: #c5d0e0;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .analysis-section ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .analysis-section li {
+            color: #c5d0e0;
+            margin-bottom: 10px;
+            line-height: 1.7;
+        }
+
+        .analysis-section strong {
+            color: #00d4ff;
+        }
+
+        .about-section {
+            margin-top: 40px;
+            padding: 30px;
+            background: #0d1117;
+            border-radius: 8px;
+            border: 2px solid #00d4ff;
+        }
+
+        .about-section h2 {
+            color: #00d4ff;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .about-section p {
+            color: #c5d0e0;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .about-section a {
+            color: #00d4ff;
+            text-decoration: none;
+            border-bottom: 1px solid #00d4ff;
+        }
+
+        .about-section a:hover {
+            color: #fff;
+            border-bottom-color: #fff;
+        }
+
+        .search-filter-section {
+            margin: 30px 0;
+            padding: 25px;
+            background: #131820;
+            border-radius: 8px;
+            border: 1px solid #1a2332;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 12px 20px;
+            background: #0a0e1a;
+            border: 2px solid #1a2332;
+            border-radius: 6px;
+            color: #e8edf4;
+            font-size: 1em;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-bottom: 20px;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: #00d4ff;
+        }
+
+        .search-bar::placeholder {
+            color: #6b7789;
+        }
+
+        .brand-tabs {
+            display: inline-flex;
+            flex-wrap: nowrap;
+            gap: 6px;
+            margin-top: 0;
+            align-items: center;
+        }
+
+        .brand-tab {
+            padding: 5px 10px;
+            background: #1a2332;
+            border: 1px solid #2a3342;
+            border-radius: 16px;
+            color: #c5d0e0;
+            cursor: pointer;
+            font-size: 0.82em;
+            transition: all 0.2s;
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .brand-tab:hover {
+            background: #2a3342;
+            border-color: #00d4ff;
+            color: #00d4ff;
+        }
+
+        .brand-tab.active {
+            background: #00d4ff;
+            color: #0a0e1a;
+            border-color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .brand-tab .brand-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a2332;
+            color: #e8edf4;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            line-height: 1.4;
+            white-space: normal;
+            width: 280px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            border: 1px solid #00d4ff;
+            z-index: 1000;
+            margin-bottom: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+            pointer-events: none;
+        }
+
+        .brand-tab:hover .brand-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .brand-tab .brand-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #00d4ff;
+        }
+
+        .brand-name.highlighted {
+            background: #00d4ff;
+            color: #0a0e1a;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        td.highlighted-cell {
+            background: #1a3340 !important;
+        }
+
+        .brand-tab.clear-all {
+            background: #2a3342;
+            border-color: #00d4ff;
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .brand-tab.clear-all:hover {
+            background: #00d4ff;
+            color: #0a0e1a;
+        }
+
+        @media (max-width: 1400px) {
+            body {
+                font-size: 14px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+
+            .question-title {
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            table {
+                font-size: 0.85em;
+            }
+
+            th, td {
+                padding: 10px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- BrandRank Logo Header -->
+        <div style="text-align: center; margin-bottom: 20px; padding-top: 20px;">
+            <img id="brandrank-header-logo" src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAD3BJkDASIAAhEBAxEB/8QAHQABAAICAwEBAAAAAAAAAAAAAAEIBgcEBQkCA//EAGQQAAEDAwIDAwUGDQwOCgIDAQEAAgMEBQYHEQgSIRMxQVFhcYHSCRQiMpHRFRYXGCNCVpKTlaGxsjZGUlRVV2Jyc3WClCQzNTdHY2V0g4SForPBJSYnNDhDU2SjwijhKTlERf/EABsBAQEAAwEBAQAAAAAAAAAAAAABBAUGAgMH/8QANxEBAAEEAAMGAwYFBAMAAAAAAAECAwQRBQYxEiFBUXHBYYHREyI0grHhIzJykaEUJETwUmKi/9oADAMBAAIRAxEAPwCmiIiApUKVJDdQiKgiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICImyAibKdkEIpIUICBECCURF5AqFJUKwCIioIiICIiAiIgIgUkIIREQEREBEQICKUU2IRCEVBERARFICCEUqCoCIioIiICIiCQihFNCd0UKQgIiKAiIgHuUKVCsAiIFRKFFBUgERFQREQEREBERAREQEREBERAREQERB3oCKdlCAiIgeCKU2U2IQKdkTYFQpUJAIiKgiIgIiICIiAiIgIiICkKApUkCoUqEgERFQREQFIUKQpIFQpKhIBERUEREBERAREQEREEqFJUKQCBEVAopCEIIRPBEBERAREQEREBERARFIQQilQQpsERFRICFFBUBEQd6olEReQREQEREBCiFUQiIqAKlQiCSoREBERAREQEREBERBIRQFO6gg96IioIiICIiBup3UIgFEQIJCFN03UEKU3RJBCm6jdBKJuhQQiIqCIiAiIgIiIJRQCp3U0CKE3TQkqERUEREBERAREQEREBERAREQEREBERAREQEREBB3oiCUTdRupoERFRIKKB3qVAREUBQhRegREQEREBERAREQEU7KNkBSAiKAiIoBUKVBCsAiIqCIgCApRFAUKU2QQibKQFRCKT3KEBEQoCIiAiIgIiICIiAhREBERARNlOyCEU7KEBERARTsmymxClEQERFATZEVBQe9SiCFIREBE3RAREKAm6hE0J3UIioIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiJsgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiIAUqApUkFG6FEBERUERAgBSiFQQiIqCIiCUQFFAREUBERUEREEIp2UKgpQIpIIiKCCpCKD0VEom6jdNCSoRFQREQEREBERAREQETZEBETZAQKdkU2CIigIURUQpCImwREQERN0BFCndNAiIoCFSxrpHhjGlznHYADckrPLHo3qfe7WLnbcKvE9Kd9n9gW7+o7FUYEFBXPvVnutkrDR3e3VVDUDf7HURFhPyrglBCIioboiICLk2q31t1uNPbrdTS1VXUSCOGGNu7nuPcAFePQfhxxTTyxtzjVOSjqbjBH2/YVLh70oR37uB6PePP0HgN+qCtelHD9qLqE2KrorWbba37H37XAxscPK0d7vzKwli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OLnOPlJPevyUFXYKQoRUSibpuoCEpugQZNa8/wA2tdNHTW/KbvTwx/EYyqfs30DddNd7vdbxUGoutxqq2UknnnlLz+VcJEBd6cwyk48Mf+j9x+hQ7qT3w7s9vJtv3eZdEiAiImwREQETdEBERNgiImwREKbAqERUApUKd1ARN1G6CUUJuglFG6JoSibpugIm6ICIiAiImwUIUVBERAREQE3REBERAQIiAUREBERAQBFIUkRsilQUBERUEREBERBO6hTso2UBFKjxVBFKKbEIiKgiIgIiICIiAiIgIiICIiAiKQghEKICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAgREAoiICIiAiIgIiICIiAiIgIiICIiAiIgIiIJRAi8hsoUqCrAkIUCIIRSoVBERBI7kRQVBO6KETQlO9QpCAVCk9yhIBERUEREEog7kUBFCJoSihSgIURQQiIvQIEQd6CURF5BERUCoUlQrAnZQp8FCkAiIqCIpCCEQogIiICIiCUUIpoFIUIqB70REBFOygpsEREBERAREQEREBERATZFKkhsiKCUEqERUEREBERAUhQm6CUUKd1AUIUQSEUKUBQVKhIBERUEREBERAREQEREBERAUgqEQCiIgIiICIiAiIgIiICIiAiIgIiIAUoikhso2REBERUEREBERAREQEREBERAU7IikiNkRFQREQEREBERAREQSO5ERQFBREgApREkQURFQREQSERFAUIiQCBEVEqERSAREVBAiIJREXkQURF6BAiIJQ9yIoIREVBB3oiCVBRFIEoURBCBEVEnuUIikAiIqCBEQSoKIpAIiKgiIgbIiICIiAiIgboURAREQEREBERAREQEREBSERSQUIiQCIioIiICIiAiIgIiICIiApCIpIHuUIiQCIioIiICIiAiIgIiICIiAiIgIiICIiAiIg//Z" style="max-width: 600px; width: 100%; height: auto;" alt="BrandRank.AI - prompting your brand truth">
+        </div>
+        
+        <h1>Winter Games Answer Engine Scorecard: Milano Cortina 2026</h1>
+        <p class="subtitle" style="margin-bottom: 25px;">Comparative Analysis Across Major LLMs | Last Updated: January 25, 2026 | Powered by BrandRank</p>
+        
+        <div style="background: #1a2332; padding: 18px 22px; border-radius: 8px; margin-bottom: 15px;">
+            <p style="color: #c5d0e0; line-height: 1.7; margin: 0; font-size: 0.98em;">
+                <strong style="color: #00d4ff;">Winter Games sponsorships command massive premiums—but do they deliver in the Answer Economy?</strong> This scorecard reveals how six leading AI systems (ChatGPT, Gemini, Claude, Perplexity, Grok, DeepSeek) rank brands when users ask about Milano Cortina 2026. BrandRank tracks all relevant brands across AI Visibility, Brand Vulnerability, and Content Readiness. <a href="mailto:adam@brandrank.ai" style="color: #00d4ff; text-decoration: none; border-bottom: 1px solid #00d4ff;">Reach out</a> to learn how we can help optimize your brand's performance in AI answer engines.
+            </p>
+        </div>
+
+        <!-- Search and Filter Section - Sticky -->
+        <div class="search-filter-section" style="position: sticky; top: 0; z-index: 100; background: #0a0e1a; margin-top: 10px; margin-bottom: 15px; padding: 15px 20px; border-bottom: 2px solid #1a2332;">
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 12px;">
+                <h3 style="color: #00d4ff; margin: 0; font-size: 1.05em; white-space: nowrap;">Search & Filter Brands</h3>
+                <input type="text" id="brandSearch" class="search-bar" placeholder="Search for any brand (e.g., Coca-Cola, Nike, Samsung)..." style="margin: 0; flex: 1;">
+            </div>
+            
+            <div style="color: #8b95a8; margin-bottom: 0; font-size: 0.85em; display: flex; flex-wrap: wrap; align-items: center; gap: 6px;">
+                <span style="color: #00d4ff; font-weight: 600; font-size: 0.9em; white-space: nowrap;">Sponsors:</span>
+                <span class="brand-tabs" id="officialSponsorTabs" style="display: inline-flex; margin: 0;">
+                    <!-- Official sponsor tabs will be populated by JavaScript -->
+                </span>
+                <span style="color: #666; margin: 0 8px;">|</span>
+                <span style="color: #00d4ff; font-weight: 600; font-size: 0.9em; white-space: nowrap;">Non-Sponsors:</span>
+                <span class="brand-tabs" id="nonSponsorTabs" style="display: inline-flex; margin: 0;">
+                    <!-- Non-sponsor tabs will be populated by JavaScript -->
+                </span>
+            </div>
+        </div>
+
+        <!-- Question 1 -->
+        <div class="question-section">
+            <h2 class="question-title">1. "What brands are associated with the 2026 Winter Olympics?"</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>ChatGPT</th>
+                        <th>Gemini</th>
+                        <th>Claude</th>
+                        <th>Perplexity</th>
+                        <th>Grok</th>
+                        <th>DeepSeek</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td class="brand-name">Coca-Cola</td>
+                        <td class="brand-name">Emporio Armani</td>
+                        <td class="brand-name">Coca-Cola</td>
+                        <td class="brand-name">Coca-Cola</td>
+                        <td class="brand-name">Visa</td>
+                        <td class="brand-name">Coca-Cola</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td class="brand-name">Toyota</td>
+                        <td class="brand-name">Samsung</td>
+                        <td class="brand-name">Visa</td>
+                        <td class="brand-name">Visa</td>
+                        <td class="brand-name">Coca-Cola</td>
+                        <td class="brand-name">Visa</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td class="brand-name">Samsung</td>
+                        <td class="brand-name">Ralph Lauren</td>
+                        <td class="brand-name">Toyota</td>
+                        <td class="brand-name">Samsung</td>
+                        <td class="brand-name">Toyota</td>
+                        <td class="brand-name">Samsung</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td class="brand-name">Visa</td>
+                        <td class="brand-name">Prada</td>
+                        <td class="brand-name">Omega</td>
+                        <td class="brand-name">P&G</td>
+                        <td class="brand-name">Omega</td>
+                        <td class="brand-name">Toyota</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td class="brand-name">P&G</td>
+                        <td class="brand-name">Coca-Cola</td>
+                        <td class="brand-name">Samsung</td>
+                        <td class="brand-name">Omega</td>
+                        <td class="brand-name">Samsung</td>
+                        <td class="brand-name">Omega</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td class="brand-name">Allianz</td>
+                        <td class="brand-name">Lululemon</td>
+                        <td class="brand-name">Airbnb</td>
+                        <td class="brand-name">Airbnb</td>
+                        <td class="brand-name">P&G</td>
+                        <td class="brand-name">Eni</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td class="brand-name">Airbnb</td>
+                        <td class="brand-name">Omega</td>
+                        <td class="brand-name">Alibaba</td>
+                        <td class="brand-name">Alibaba Group</td>
+                        <td class="brand-name">Alibaba</td>
+                        <td class="brand-name">Poste Italiane</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td class="brand-name">Deloitte</td>
+                        <td class="brand-name">Nike</td>
+                        <td class="brand-name">Panasonic</td>
+                        <td class="brand-name">Ralph Lauren</td>
+                        <td class="brand-name">Atos</td>
+                        <td class="brand-name">TIM</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td class="brand-name">Omega</td>
+                        <td class="brand-name">Airbnb</td>
+                        <td class="brand-name">P&G</td>
+                        <td class="brand-name">Nike</td>
+                        <td class="brand-name">Panasonic</td>
+                        <td class="brand-name">Intesa Sanpaolo</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td class="brand-name">Alibaba</td>
+                        <td class="brand-name">Visa</td>
+                        <td class="brand-name">Intel</td>
+                        <td class="brand-name">Skims</td>
+                        <td class="brand-name">Airbnb</td>
+                        <td class="brand-name">Panasonic</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-section">
+            <h2 class="question-title">2. "Who are the major sponsors of the Milan-Cortina 2026 Winter Olympics?"</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>ChatGPT</th>
+                        <th>Gemini</th>
+                        <th>Claude</th>
+                        <th>Perplexity</th>
+                        <th>Grok</th>
+                        <th>DeepSeek</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td class="brand-name">Coca-Cola</td>
+                        <td class="brand-name">Coca-Cola/Mengniu</td>
+                        <td class="brand-name">Coca-Cola</td>
+                        <td class="brand-name">Coca-Cola</td>
+                        <td class="brand-name">Visa</td>
+                        <td class="brand-name">Coca-Cola</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td class="brand-name">Toyota</td>
+                        <td class="brand-name">Alibaba</td>
+                        <td class="brand-name">Visa</td>
+                        <td class="brand-name">Visa</td>
+                        <td class="brand-name">Coca-Cola</td>
+                        <td class="brand-name">Visa</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td class="brand-name">Samsung</td>
+                        <td class="brand-name">Allianz</td>
+                        <td class="brand-name">Toyota</td>
+                        <td class="brand-name">Samsung</td>
+                        <td class="brand-name">Toyota</td>
+                        <td class="brand-name">Eni</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td class="brand-name">Visa</td>
+                        <td class="brand-name">Samsung</td>
+                        <td class="brand-name">Omega</td>
+                        <td class="brand-name">P&G</td>
+                        <td class="brand-name">Omega</td>
+                        <td class="brand-name">Poste Italiane</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td class="brand-name">P&G</td>
+                        <td class="brand-name">Omega</td>
+                        <td class="brand-name">Samsung</td>
+                        <td class="brand-name">Omega</td>
+                        <td class="brand-name">Samsung</td>
+                        <td class="brand-name">TIM</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td class="brand-name">Allianz</td>
+                        <td class="brand-name">Visa</td>
+                        <td class="brand-name">Airbnb</td>
+                        <td class="brand-name">Airbnb</td>
+                        <td class="brand-name">Enel</td>
+                        <td class="brand-name">Intesa Sanpaolo</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td class="brand-name">Airbnb</td>
+                        <td class="brand-name">Deloitte</td>
+                        <td class="brand-name">Alibaba</td>
+                        <td class="brand-name">Alibaba Group</td>
+                        <td class="brand-name">Intesa Sanpaolo</td>
+                        <td class="brand-name">Adecco</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td class="brand-name">Deloitte</td>
+                        <td class="brand-name">Airbnb</td>
+                        <td class="brand-name">Panasonic</td>
+                        <td class="brand-name">Intel</td>
+                        <td class="brand-name">TIM</td>
+                        <td class="brand-name">Panasonic</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td class="brand-name">Omega</td>
+                        <td class="brand-name">Eni</td>
+                        <td class="brand-name">P&G</td>
+                        <td class="brand-name">Local Org Partners</td>
+                        <td class="brand-name">MSC Crociere</td>
+                        <td class="brand-name">Samsung</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td class="brand-name">Alibaba</td>
+                        <td class="brand-name">Toyota</td>
+                        <td class="brand-name">Intel</td>
+                        <td class="brand-name">Team-level sponsors</td>
+                        <td class="brand-name">P&G</td>
+                        <td class="brand-name">Omega</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-section">
+            <h2 class="question-title">3. "Which brands do Olympic athletes rely on most during the Winter Games?"</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>ChatGPT</th>
+                        <th>Gemini</th>
+                        <th>Claude</th>
+                        <th>Perplexity</th>
+                        <th>Grok</th>
+                        <th>DeepSeek</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td class="brand-name">Salomon</td>
+                        <td class="brand-name">Atomic</td>
+                        <td class="brand-name">Nike</td>
+                        <td class="brand-name">Nike</td>
+                        <td class="brand-name">Head</td>
+                        <td class="brand-name">Atomic</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td class="brand-name">Atomic</td>
+                        <td class="brand-name">Burton</td>
+                        <td class="brand-name">Adidas</td>
+                        <td class="brand-name">Adidas</td>
+                        <td class="brand-name">Atomic</td>
+                        <td class="brand-name">Salomon</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td class="brand-name">Fischer</td>
+                        <td class="brand-name">Oakley</td>
+                        <td class="brand-name">Under Armour</td>
+                        <td class="brand-name">Under Armour</td>
+                        <td class="brand-name">Salomon</td>
+                        <td class="brand-name">Rossignol</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td class="brand-name">Rossignol</td>
+                        <td class="brand-name">Rossignol</td>
+                        <td class="brand-name">The North Face</td>
+                        <td class="brand-name">Ralph Lauren</td>
+                        <td class="brand-name">Oakley</td>
+                        <td class="brand-name">Burton</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td class="brand-name">Head</td>
+                        <td class="brand-name">Salomon</td>
+                        <td class="brand-name">Burton</td>
+                        <td class="brand-name">Columbia</td>
+                        <td class="brand-name">Red Bull</td>
+                        <td class="brand-name">Nike</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td class="brand-name">Nordica</td>
+                        <td class="brand-name">Dainese</td>
+                        <td class="brand-name">Rossignol</td>
+                        <td class="brand-name">Atomic</td>
+                        <td class="brand-name">Fischer</td>
+                        <td class="brand-name">Adidas</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td class="brand-name">Swix</td>
+                        <td class="brand-name">Fischer</td>
+                        <td class="brand-name">Atomic</td>
+                        <td class="brand-name">Burton</td>
+                        <td class="brand-name">Spyder</td>
+                        <td class="brand-name">Under Armour</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td class="brand-name">Leki</td>
+                        <td class="brand-name">Under Armour</td>
+                        <td class="brand-name">Head</td>
+                        <td class="brand-name">Oakley</td>
+                        <td class="brand-name">Adidas</td>
+                        <td class="brand-name">Oakley</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td class="brand-name">Oakley</td>
+                        <td class="brand-name">Bauer</td>
+                        <td class="brand-name">Salomon</td>
+                        <td class="brand-name">Samsung</td>
+                        <td class="brand-name">Rossignol</td>
+                        <td class="brand-name">Red Bull</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td class="brand-name">Poc</td>
+                        <td class="brand-name">Spyder</td>
+                        <td class="brand-name">Oakley</td>
+                        <td class="brand-name">Skims</td>
+                        <td class="brand-name">Leki</td>
+                        <td class="brand-name">Lululemon</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question-section">
+            <h2 class="question-title">4. "When people think about the Winter Olympics, what brands come to mind?"</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>ChatGPT</th>
+                        <th>Gemini</th>
+                        <th>Claude</th>
+                        <th>Perplexity</th>
+                        <th>Grok</th>
+                        <th>DeepSeek</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td class="brand-name">Coca-Cola</td>
+                        <td class="brand-name">Coca-Cola</td>
+                        <td class="brand-name">Coca-Cola</td>
+                        <td class="brand-name">Coca-Cola</td>
+                        <td class="brand-name">Coca-Cola</td>
+                        <td class="brand-name">Coca-Cola</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td class="brand-name">Visa</td>
+                        <td class="brand-name">Visa</td>
+                        <td class="brand-name">Nike</td>
+                        <td class="brand-name">Visa</td>
+                        <td class="brand-name">Visa</td>
+                        <td class="brand-name">Visa</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td class="brand-name">Toyota</td>
+                        <td class="brand-name">Samsung</td>
+                        <td class="brand-name">Omega</td>
+                        <td class="brand-name">Samsung</td>
+                        <td class="brand-name">Budweiser</td>
+                        <td class="brand-name">NBC</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td class="brand-name">Samsung</td>
+                        <td class="brand-name">P&G</td>
+                        <td class="brand-name">Visa</td>
+                        <td class="brand-name">Nike</td>
+                        <td class="brand-name">Toyota</td>
+                        <td class="brand-name">Adidas</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td class="brand-name">Omega</td>
+                        <td class="brand-name">Nike</td>
+                        <td class="brand-name">NBC/Peacock</td>
+                        <td class="brand-name">Omega</td>
+                        <td class="brand-name">Omega</td>
+                        <td class="brand-name">Omega</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td class="brand-name">NBC</td>
+                        <td class="brand-name">Ralph Lauren</td>
+                        <td class="brand-name">Toyota</td>
+                        <td class="brand-name">P&G</td>
+                        <td class="brand-name">Red Bull</td>
+                        <td class="brand-name">McDonald's</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td class="brand-name">Toyota</td>
+                        <td class="brand-name">Omega</td>
+                        <td class="brand-name">Samsung</td>
+                        <td class="brand-name">McDonald's</td>
+                        <td class="brand-name">Samsung</td>
+                        <td class="brand-name">Toyota</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td class="brand-name">Red Bull</td>
+                        <td class="brand-name">Disney</td>
+                        <td class="brand-name">Red Bull</td>
+                        <td class="brand-name">Toyota</td>
+                        <td class="brand-name">Nike</td>
+                        <td class="brand-name">Samsung</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td class="brand-name">GoPro</td>
+                        <td class="brand-name">Adidas</td>
+                        <td class="brand-name">GoPro</td>
+                        <td class="brand-name">Ralph Lauren</td>
+                        <td class="brand-name">Gatorade</td>
+                        <td class="brand-name">Rossignol</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td class="brand-name">Under Armour</td>
+                        <td class="brand-name">Red Bull</td>
+                        <td class="brand-name">Under Armour</td>
+                        <td class="brand-name">Airbnb</td>
+                        <td class="brand-name">Burton</td>
+                        <td class="brand-name">Burton</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="question-section">
+            <h2 class="question-title">5. "Which Olympic sponsors are leading on sustainability, technology, or athlete support?"</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>ChatGPT</th>
+                        <th>Gemini</th>
+                        <th>Claude</th>
+                        <th>Perplexity</th>
+                        <th>Grok</th>
+                        <th>DeepSeek</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td class="brand-name">Toyota</td>
+                        <td class="brand-name">Alibaba</td>
+                        <td class="brand-name">Toyota</td>
+                        <td class="brand-name">Alibaba Group</td>
+                        <td class="brand-name">Toyota</td>
+                        <td class="brand-name">Eni</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td class="brand-name">Allianz</td>
+                        <td class="brand-name">Toyota</td>
+                        <td class="brand-name">Samsung</td>
+                        <td class="brand-name">Intel</td>
+                        <td class="brand-name">Samsung</td>
+                        <td class="brand-name">Toyota</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td class="brand-name">Samsung</td>
+                        <td class="brand-name">Visa</td>
+                        <td class="brand-name">Intel</td>
+                        <td class="brand-name">Samsung</td>
+                        <td class="brand-name">Atos</td>
+                        <td class="brand-name">Coca-Cola</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td class="brand-name">Deloitte</td>
+                        <td class="brand-name">Allianz</td>
+                        <td class="brand-name">Airbnb</td>
+                        <td class="brand-name">P&G</td>
+                        <td class="brand-name">P&G</td>
+                        <td class="brand-name">Intel</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td class="brand-name">Alibaba</td>
+                        <td class="brand-name">Samsung</td>
+                        <td class="brand-name">Alibaba</td>
+                        <td class="brand-name">Coca-Cola</td>
+                        <td class="brand-name">Alibaba</td>
+                        <td class="brand-name">Samsung</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td class="brand-name">Panasonic</td>
+                        <td class="brand-name">Enel</td>
+                        <td class="brand-name">Panasonic</td>
+                        <td class="brand-name">Visa</td>
+                        <td class="brand-name">Panasonic</td>
+                        <td class="brand-name">Omega</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td class="brand-name">Omega</td>
+                        <td class="brand-name">Omega</td>
+                        <td class="brand-name">Omega</td>
+                        <td class="brand-name">Omega</td>
+                        <td class="brand-name">Omega</td>
+                        <td class="brand-name">Panasonic</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td class="brand-name">Visa</td>
+                        <td class="brand-name">P&G</td>
+                        <td class="brand-name">Visa</td>
+                        <td class="brand-name">Local Italian partners</td>
+                        <td class="brand-name">Visa</td>
+                        <td class="brand-name">Adecco</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td class="brand-name">P&G</td>
+                        <td class="brand-name">Deloitte</td>
+                        <td class="brand-name">P&G</td>
+                        <td class="brand-name">Nike and Adidas</td>
+                        <td class="brand-name">Enel</td>
+                        <td class="brand-name">EY</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td class="brand-name">Coca-Cola</td>
+                        <td class="brand-name">Airbnb</td>
+                        <td class="brand-name">Coca-Cola</td>
+                        <td class="brand-name">Airbnb</td>
+                        <td class="brand-name">Deloitte</td>
+                        <td class="brand-name">Nike</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Question 6 -->
+        <div class="question-section">
+            <h2 class="question-title">6. "What sources did you rely upon to answer these questions?"</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>ChatGPT</th>
+                        <th>Gemini</th>
+                        <th>Claude</th>
+                        <th>Perplexity</th>
+                        <th>Grok</th>
+                        <th>DeepSeek</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td><span class="source-item">IOC TOP Programme<span class="tooltip">Official International Olympic Committee page listing all Worldwide Olympic Partners across multiple Games cycles with category exclusivity</span></span></td>
+                        <td><span class="source-item">IOC Official Website<span class="tooltip">Primary source of truth for the Worldwide Olympic Partners TOP Program, providing definitive sponsor lists and partnership details</span></span></td>
+                        <td><span class="source-item">olympics.com/sponsors<span class="tooltip">Official IOC sponsor page with comprehensive current partnership information, categories, and activation rights</span></span></td>
+                        <td><span class="source-item">Milano Cortina 2026 Partners<span class="tooltip">Official organizing committee partner pages showing complete tier information including Premium Partners, Partners, and Official Supporters</span></span></td>
+                        <td><span class="source-item">Olympics.com TOP Partners<span class="tooltip">Official IOC Worldwide Olympic Partners page specifically for the 2026-2032 sponsorship cycle with contract details</span></span></td>
+                        <td><span class="source-item">Milano Cortina 2026 Website<span class="tooltip">Primary authoritative source for official tiered sponsor list including global TOP partners and local Italian sponsors</span></span></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><span class="source-item">Milano Cortina Official Page<span class="tooltip">Official organizing committee website listing local domestic sponsors specific to the 2026 Winter Games in Italy</span></span></td>
+                        <td><span class="source-item">Milano Cortina 2026<span class="tooltip">Provides comprehensive list of Domestic Partners including major Italian brands like Eni, Leonardo, Intesa Sanpaolo, and TIM</span></span></td>
+                        <td><span class="source-item">milanocortina2026.olympics.com<span class="tooltip">Official event website containing sponsor information, venue details, and partnership activation plans for the 2026 Games</span></span></td>
+                        <td><span class="source-item">IOC/Olympics.com<span class="tooltip">Shows Worldwide Olympic Partners organized by category (payments, technology, consumer products) specifically for Milano Cortina 2026</span></span></td>
+                        <td><span class="source-item">MilanCortina2026.org<span class="tooltip">Local sponsors and partners section with the most recent updates from 2025 on Italian domestic partnerships</span></span></td>
+                        <td><span class="source-item">IOC Official Website<span class="tooltip">Definitive international source for the complete Worldwide Olympic Partners list under the TOP Programme framework</span></span></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td><span class="source-item">IOC Press Releases<span class="tooltip">Official announcements from the International Olympic Committee regarding sponsor renewals, new partnerships, and contract updates</span></span></td>
+                        <td><span class="source-item">FIS & IBU<span class="tooltip">International Ski Federation and International Biathlon Union equipment registries showing actual gear used by athletes with podium performance data</span></span></td>
+                        <td><span class="source-item">IOC Press Releases<span class="tooltip">Direct official announcements from the International Olympic Committee on partnership deals, renewals, and sponsorship news</span></span></td>
+                        <td><span class="source-item">2026 Olympics Overview<span class="tooltip">Comprehensive encyclopedic sponsorship table breaking down all partnership tiers including Worldwide, Premium, Partners, Sponsors, and Official Supporters</span></span></td>
+                        <td><span class="source-item">IOC.org Announcements<span class="tooltip">Official Olympic Partner programme announcements covering the 2023-2026 period with contract values and activation rights</span></span></td>
+                        <td><span class="source-item">SportBusiness Database<span class="tooltip">Industry-standard commercial database providing verified tiered sponsorship information with financial valuations and contract details</span></span></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td><span class="source-item">Milano Cortina Press Kit<span class="tooltip">Official media kit detailing partner tiers, brand usage rights, logo specifications, and marketing guidelines for 2026</span></span></td>
+                        <td><span class="source-item">USOPC & Team USA<span class="tooltip">U.S. Olympic & Paralympic Committee announcements on Team USA kit reveals, apparel partnerships, and commercially active sponsorships</span></span></td>
+                        <td><span class="source-item">Sports Business Journal<span class="tooltip">Leading industry publication providing credible sponsorship news, deal analysis, and comprehensive Olympic partnership reporting</span></span></td>
+                        <td><span class="source-item">Official Hospitality Sites<span class="tooltip">Milano Cortina 2026 official hospitality website confirming partner relationships tied to on-site experiences and fan programs</span></span></td>
+                        <td><span class="source-item">InsideTheGames.biz<span class="tooltip">Specialist Olympic news source with detailed articles on Milan-Cortina sponsorship deals including Enel and TIM partnerships from 2024-2025</span></span></td>
+                        <td><span class="source-item">Around the Rings/Inside Games<span class="tooltip">Specialist Olympic news publications breaking stories on sponsorship signings, contract negotiations, and partnership announcements</span></span></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td><span class="source-item">Olympic Broadcasting Services<span class="tooltip">OBS technical specifications and announcements on technology and production partners supporting Olympics broadcast coverage worldwide</span></span></td>
+                        <td><span class="source-item">ISPO Trade Fair<span class="tooltip">World's largest sports trade fair providing business intelligence on sustainability initiatives and ESG goals from Olympic sponsors</span></span></td>
+                        <td><span class="source-item">Brand Press Releases<span class="tooltip">Individual company partnership announcements detailing Olympic sponsorship activations, sustainability commitments, and athlete programs</span></span></td>
+                        <td><span class="source-item">Olympic News & Business<span class="tooltip">Mainstream business and sports reporting on recent Olympic TOP sponsorship deals and partnership renewals leading into 2026</span></span></td>
+                        <td><span class="source-item">SportsBusinessJournal.com<span class="tooltip">Comprehensive sponsor rankings, athlete brand affinity reports, and detailed 2025 Winter Olympics preview coverage</span></span></td>
+                        <td><span class="source-item">Official NOC Websites<span class="tooltip">National Olympic Committee pages detailing team-specific partnerships like Lululemon and Arc'teryx for Team Canada uniforms</span></span></td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td><span class="source-item">Team Official Pages<span class="tooltip">National team websites listing official sponsor relationships and kit supplier information organized by country and sport</span></span></td>
+                        <td><span class="source-item">Modern Retail & BoF<span class="tooltip">Business of Fashion and Modern Retail tracking lifestyle and fashion brand associations with cultural Olympic crossover appeal</span></span></td>
+                        <td><span class="source-item">Reuters/AP Sports Business<span class="tooltip">Credible wire service journalism providing verified reporting on Olympic sponsorships, deals, and partnership announcements</span></span></td>
+                        <td><span class="source-item">Brand Press Releases<span class="tooltip">Direct from brands like Ralph Lauren, Skims, Columbia announcing athlete kits, uniform partnerships, and Olympic activations</span></span></td>
+                        <td><span class="source-item">FIS-Ski.com<span class="tooltip">International Ski Federation database tracking equipment brands for alpine and cross-country with official athlete gear statistics</span></span></td>
+                        <td><span class="source-item">Federation Announcements<span class="tooltip">Press releases from sport federations like U.S. Ski & Snowboard on equipment and apparel partnerships with technical brands</span></span></td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td><span class="source-item">International Federations<span class="tooltip">Sport governing bodies like FIS showing winter sports ecosystem brands adjacent to Olympics through athlete equipment and sponsorships</span></span></td>
+                        <td><span class="source-item">Sports Business Journal<span class="tooltip">Industry gold standard for sponsorship news providing Share of Voice analysis and contract value reporting on Olympic deals</span></span></td>
+                        <td><span class="source-item">Marketing Trade Publications<span class="tooltip">Industry publications like AdAge and AdWeek covering campaign details, activation strategies, and Olympic marketing effectiveness</span></span></td>
+                        <td><span class="source-item">Federation/NOC Announcements<span class="tooltip">Official announcements from Team USA, curling federations, skiing bodies listing official outfitters and performance equipment partners</span></span></td>
+                        <td><span class="source-item">RedBull.com/athletes<span class="tooltip">Red Bull athlete roster and sponsorship portfolio showing winter sports athlete reliance and partnership data across disciplines</span></span></td>
+                        <td><span class="source-item">Sports Business Media<span class="tooltip">Publications like SportsPro and Front Office Sports analyzing major sponsorship trends, sustainability programs, and athlete marketing</span></span></td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td><span class="source-item">Athlete Equipment Lists<span class="tooltip">FIS-published equipment lists and start lists showing actual brand prevalence among competing athletes by discipline</span></span></td>
+                        <td><span class="source-item">Statista & Marketing Intel<span class="tooltip">Consumer research databases providing historical survey data on brand recall, awareness, and mental availability for Olympic sponsors</span></span></td>
+                        <td><span class="source-item">Brand Olympic Partnership Pages<span class="tooltip">First-party information directly from sponsor websites detailing Olympic programs, athlete support, and activation campaigns</span></span></td>
+                        <td><span class="source-item">Historical Olympic Lists<span class="tooltip">Prior Olympic cycle partner lists from PyeongChang 2018, Beijing 2022 showing continuity of TOP partners across Games</span></span></td>
+                        <td><span class="source-item">BrandFinance.com<span class="tooltip">Annual Olympics brand valuation report for 2025 with association rankings, equity measurements, and sponsor ROI analysis</span></span></td>
+                        <td><span class="source-item">Sponsor CSR Reports<span class="tooltip">Official corporate sustainability and social responsibility publications from sponsors detailing Olympic-linked environmental programs</span></span></td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td><span class="source-item">Business News on Sponsorship<span class="tooltip">Publications like SportBusiness, SportsPro, and Reuters providing verified deal confirmations, contract renewals, and sponsorship valuations</span></span></td>
+                        <td><span class="source-item">Brand Innovation Labs<span class="tooltip">Corporate innovation announcements from Samsung on Sport & Tech initiatives and Deloitte on digital ecosystem security for Milano Cortina</span></span></td>
+                        <td><span class="source-item">N/A<span class="tooltip">Claude acknowledged knowledge limitations and recommended users formulate web search queries to verify current sponsor information</span></span></td>
+                        <td><span class="source-item">Sports Business Analysis<span class="tooltip">Industry analysis on how sponsors showcase technology and sustainability programs including 5G, cloud, and circular packaging at Games</span></span></td>
+                        <td><span class="source-item">AdAge.com<span class="tooltip">Advertising Age reports on Winter Olympics ad spend, historical recall studies, and 2026 marketing projections for sponsors</span></span></td>
+                        <td><span class="source-item">Tech/Product Announcements<span class="tooltip">Press releases from Intel, Samsung, Omega detailing specific technology deployed for Games including AI, timing systems, and sensors</span></span></td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td><span class="source-item">Brand IR/Newsroom<span class="tooltip">Corporate investor relations and newsroom pages confirming sponsor contract details and highlighting activation focus on sustainability and technology</span></span></td>
+                        <td><span class="source-item">Rule 40 & Marketing Archive<span class="tooltip">Historical Olympic marketing data from Beijing 2022 and PyeongChang 2018 showing brand performance patterns across Winter Games</span></span></td>
+                        <td><span class="source-item">N/A<span class="tooltip">Claude recommended users formulate specific search queries for verification rather than relying on potentially outdated training data</span></span></td>
+                        <td><span class="source-item">Consumer Olympic Coverage<span class="tooltip">Lifestyle and fashion media features covering Olympic opening ceremony uniforms, athlete village wear, and team gear partnerships</span></span></td>
+                        <td><span class="source-item">Reuters.com<span class="tooltip">Wire service reporting on sponsor press releases including Toyota's sustainability initiatives and hydrogen mobility programs for 2025</span></span></td>
+                        <td><span class="source-item">Olympic Sponsorship Archives<span class="tooltip">IOC archives and Wikipedia entries verifying long-term brand association with Olympics including legacy sponsors across multiple editions</span></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Analysis Section -->
+        <div class="analysis-section">
+            <h2>Analysis & Insights</h2>
+            
+            <h3>General Insights</h3>
+            <p><strong>Universal Coca-Cola Dominance:</strong> Coca-Cola achieved unanimous #1 ranking across all LLMs for "brands that come to mind," demonstrating exceptional mental availability despite not dominating equipment or athlete performance categories. This reflects decades of consistent Olympic storytelling and emotional campaigns.</p>
+            
+            <p><strong>The Official vs. Reality Gap:</strong> Every LLM recognized the critical distinction between official Olympic sponsors (Coca-Cola, Visa, Samsung, Toyota) and the technical brands athletes actually rely on (Atomic, Salomon, Rossignol, Burton). This gap represents both opportunity and risk—official sponsors gain visibility, but equipment brands own credibility.</p>
+            
+            <p><strong>Local vs. Global Sponsor Hierarchy:</strong> Milano Cortina 2026 features a unique dual-layer structure where IOC Worldwide TOP Partners (10 brands with category exclusivity) coexist with Italian domestic partners (Eni, Poste Italiane, TIM, Intesa Sanpaolo). DeepSeek was most attuned to this local dimension.</p>
+            
+            <p><strong>Fashion Meets Function:</strong> The Olympics increasingly blend performance and lifestyle, with fashion brands (Ralph Lauren, Skims, Lululemon, EA7 Emporio Armani) competing for mental share alongside technical equipment brands. Gemini particularly emphasized this cultural crossover.</p>
+
+            <h3>Insights by LLM</h3>
+            
+            <p><strong>ChatGPT:</strong> Provided the most balanced, consensus-driven rankings heavily weighted toward IOC TOP Partners. Showed strong adherence to official hierarchies with minimal deviation across questions. Most "corporate-safe" responses reflecting established Olympic marketing doctrine.</p>
+            
+            <p><strong>Gemini:</strong> Demonstrated unique fashion and lifestyle awareness, uniquely ranking EA7 Emporio Armani, Prada, and Ralph Lauren highly in association questions. Drew from ISPO trade fair intelligence and Business of Fashion sources, showing cultural trend sensitivity beyond pure sponsorship contracts. Most attuned to the "lifestyle halo" effect.</p>
+            
+            <p><strong>Claude:</strong> Took a notably cautious approach, acknowledging knowledge limitations and recommending verification searches. Only LLM to explicitly flag uncertainty about current sponsor status. Most transparent about epistemological boundaries, though this limited actionable specificity in rankings.</p>
+            
+            <p><strong>Perplexity:</strong> Provided the most comprehensive source transparency, including Skims in top 10 association despite non-TOP status—reflecting real-world buzz around Team USA partnerships. Drew from widest source diversity including hospitality sites and consumer coverage. Most "reality-checked" against actual market conversation.</p>
+            
+            <p><strong>Grok:</strong> Included surprising entries like Budweiser and Gatorade in mental availability rankings, potentially reflecting U.S. market bias. Showed awareness of brands like Red Bull that punch above their official sponsor weight through athlete individual sponsorships. Most willing to diverge from official sponsor lists.</p>
+            
+            <p><strong>DeepSeek:</strong> Most methodologically rigorous, emphasizing verified data from SportBusiness databases and distinguishing clearly between Worldwide, Premium, and Official Partner tiers. Uniquely foregrounded Italian domestic sponsors (Eni, Poste Italiane, TIM, Intesa Sanpaolo) reflecting genuine Milano Cortina 2026 reality. Most "local market fluent."</p>
+
+            <h3>Non-Olympic Sponsors That Appear + Why</h3>
+            
+            <p><strong>Red Bull:</strong> Appeared in 5 of 6 LLM responses despite zero official Olympic sponsorship. Reason: Dominant individual athlete sponsorships across snowboarding, skiing, and freestyle create powerful "winter sports" mental association. Demonstrates how athlete-first strategy can rival official partnerships in mental availability.</p>
+            
+            <p><strong>Ralph Lauren:</strong> Ranked by all LLMs despite being a Team USA partner, not IOC TOP sponsor. Reason: Opening ceremony uniforms create outsized visibility and cultural moments. Single high-profile touchpoint (ceremony broadcast) rivals year-round sponsor activation in memorability.</p>
+            
+            <p><strong>Skims:</strong> Uniquely flagged by Perplexity and Gemini. Reason: High-buzz Team USA 2026 base layer partnership with athlete-modeled campaigns generated disproportionate social media conversation. Shows how strategic NOC partnerships by fashion-forward brands can create "unofficial sponsor" perception.</p>
+            
+            <p><strong>Nike:</strong> Consistently ranked despite not being IOC TOP Partner. Reason: Combination of Team USA competition wear partnerships, decades of Olympic athlete endorsements, and general "athletic excellence" brand equity. Mental availability built over 40+ years of Olympic athlete storytelling transcends current contract status.</p>
+            
+            <p><strong>NBC/Peacock:</strong> Appeared in "mental availability" rankings. Reason: Broadcasting association in key markets (especially U.S.) creates de facto sponsorship perception. Viewers conflate broadcast rights with sponsorship, demonstrating media platform power in shaping Olympic brand landscape.</p>
+            
+            <p><strong>McDonald's:</strong> Noted by multiple LLMs as "historical" association despite ending TOP sponsorship after Rio 2016. Reason: Four-decade sponsorship (1976-2017) created enduring mental availability that persists 8+ years after contract end. Demonstrates extremely long half-life of Olympic brand equity.</p>
+            
+            <p><strong>Burton, Atomic, Salomon, Rossignol:</strong> Technical equipment brands consistently ranked despite no official IOC sponsorship. Reason: On-snow visibility, athlete reliance, and federation partnerships create "earned" Olympic association. Every close-up of skis/boards at finish line is unpaid brand exposure worth millions.</p>
+
+            <h3>Key Strategic Implications</h3>
+            
+            <p><strong>For Official Sponsors:</strong> Massive gap between "official status" and "mental availability" or "athlete reality." TOP partnership guarantees category exclusivity but not consumer relevance. Activation quality matters more than contract value.</p>
+            
+            <p><strong>For Non-Sponsors:</strong> Multiple pathways to Olympic association without TOP contracts: (1) Individual athlete sponsorships, (2) Team/NOC partnerships, (3) Equipment provision, (4) Historical equity, (5) Adjacent category dominance. Red Bull and Nike prove unofficial pathways can rival official sponsorship in mental availability.</p>
+            
+            <p><strong>For Brands Considering Olympic Investment:</strong> LLM responses reflect the fragmented reality of Olympic sponsorship hierarchies. Success requires clarity on objective: seeking official legitimacy, building athlete credibility, generating cultural conversation, or creating long-term mental availability. Different objectives demand different strategies.</p>
+        </div>
+
+        <!-- Strategic Questions for Sponsors -->
+        <div class="analysis-section" style="background: #0d1117; border: 2px solid #00d4ff; margin-top: 50px;">
+            <h2>Strategic Questions for Sponsors</h2>
+            <p style="color: #c5d0e0; margin-bottom: 25px;">This scorecard reveals critical gaps between sponsorship investment and AI visibility. Every brand needs to answer these questions:</p>
+            
+            <h3 style="color: #ffffff;">1. Are sponsorship benefits weighted to "answer visibility"?</h3>
+            <p><strong style="color: #00d4ff;">The Gap:</strong> Traditional packages emphasize signage and broadcast logos but ignore AI discoverability. Red Bull appears across LLMs despite zero sponsorship, while some TOP partners are invisible. <strong style="color: #00d4ff;">Action:</strong> Demand AI visibility metrics in contracts and "preferred mention" rights in official content.</p>
+
+            <h3 style="color: #ffffff;">2. Is your brand optimizing owned assets for AI discovery?</h3>
+            <p><strong style="color: #00d4ff;">The Gap:</strong> AI synthesizes from brand websites, press releases, and athlete partnerships—not just Olympic.org. Skims gained visibility through owned content; Italian sponsors won via clear web presence. <strong style="color: #00d4ff;">Action:</strong> Create dedicated Olympic pages, publish athlete stories, use structured data, update Wikipedia entries.</p>
+
+            <h3 style="color: #ffffff;">3. Are TV ads and activations transcribed for AI readability?</h3>
+            <p><strong style="color: #00d4ff;">The Gap:</strong> AI can't watch commercials or visit fan zones. Coca-Cola's #1 ranking reflects decades of documented campaigns. Without text-based documentation, million-dollar activations are invisible. <strong style="color: #00d4ff;">Action:</strong> Publish activation summaries, create blog posts with metadata, submit marketing case studies.</p>
+
+            <h3 style="color: #ffffff;">4. How vulnerable is your brand to negative AI associations?</h3>
+            <p><strong style="color: #00d4ff;">The Gap:</strong> LLMs surface controversies and sustainability critiques alongside sponsorships. A single negative article can dominate AI responses. <strong style="color: #00d4ff;">Action:</strong> Monitor AI responses for negative associations, publish transparent sustainability data, use W.R.A.P. framework for narrative control.</p>
+
+            <h3 style="color: #ffffff;">5. Are you measuring what matters in the Answer Economy?</h3>
+            <p><strong style="color: #00d4ff;">The Gap:</strong> Six AI systems produced six different hierarchies. Traditional ROI metrics (impressions, social engagement) miss AI-mediated brand discovery. <strong style="color: #00d4ff;">Action:</strong> Track AI Visibility, Brand Vulnerability, and Content Readiness alongside traditional metrics. Contact BrandRank to benchmark your performance.</p>
+        </div>
+
+        <!-- About BrandRank Section -->
+        <div class="about-section">
+            <h2>About BrandRank.AI</h2>
+            <p>BrandRank works with over 60 global brands to strengthen trust and purchase intent by uncovering vulnerabilities, purchase-driving insights, and growth opportunities across AI answer engines. As a SaaS platform, we track all major answer engines to improve visibility, ensure content is AI-ready, and rigorously measure brand claims and instructional accuracy.</p>
+            
+            <p><strong>Three Core Metrics:</strong> AI Visibility (how frequently brands appear in answers) • Brand Vulnerability (detection of negative/inaccurate portrayals) • Content Readiness (digital content optimized for AI discovery)</p>
+            
+            <p>As AI answer engines replace traditional search for brand discovery, understanding these dynamics becomes critical. CEO Pete Blackshaw's forthcoming book <em>"The Answer Economy: How Agentic AI, Not Ads, Will Shape the Future of Brands"</em> (Wiley) explores this fundamental shift.</p>
+            
+            <p><strong>Contact:</strong> <a href="mailto:adam@brandrank.ai">adam@brandrank.ai</a> • <a href="https://brandrank.ai" target="_blank">brandrank.ai</a></p>
+        </div>
+
+        <!-- BrandRank Logo Footer -->
+        <div style="text-align: center; margin-top: 40px; padding: 30px;">
+            <img id="brandrank-footer-logo" src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAD3BJkDASIAAhEBAxEB/8QAHQABAAICAwEBAAAAAAAAAAAAAAEIBgcEBQkCA//EAGQQAAEDAwIDAwUGDQwOCgIDAQEAAgMEBQYHEQgSIRMxQVFhcYHSCRQiMpHRFRYXGCNCVpKTlaGxsjZGUlRVV2Jyc3WClCQzNTdHY2V0g4SForPBJSYnNDhDU2SjwijhKTlERf/EABsBAQEAAwEBAQAAAAAAAAAAAAABBAUGAgMH/8QANxEBAAEEAAMGAwYFBAMAAAAAAAECAwQRBQYxEiFBUXHBYYHREyI0grHhIzJykaEUJETwUmKi/9oADAMBAAIRAxEAPwCmiIiApUKVJDdQiKgiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICImyAibKdkEIpIUICBECCURF5AqFJUKwCIioIiICIiAiIgIgUkIIREQEREBEQICKUU2IRCEVBERARFICCEUqCoCIioIiICIiCQihFNCd0UKQgIiKAiIgHuUKVCsAiIFRKFFBUgERFQREQEREBERAREQEREBERAREQERB3oCKdlCAiIgeCKU2U2IQKdkTYFQpUJAIiKgiIgIiICIiAiIgIiICkKApUkCoUqEgERFQREQFIUKQpIFQpKhIBERUEREBERAREQEREEqFJUKQCBEVAopCEIIRPBEBERAREQEREBERARFIQQilQQpsERFRICFFBUBEQd6olEReQREQEREBCiFUQiIqAKlQiCSoREBERAREQEREBERBIRQFO6gg96IioIiICIiBup3UIgFEQIJCFN03UEKU3RJBCm6jdBKJuhQQiIqCIiAiIgIiIJRQCp3U0CKE3TQkqERUEREBERAREQEREBERAREQEREBERAREQEREBB3oiCUTdRupoERFRIKKB3qVAREUBQhRegREQEREBERAREQEU7KNkBSAiKAiIoBUKVBCsAiIqCIgCApRFAUKU2QQibKQFRCKT3KEBEQoCIiAiIgIiICIiAhREBERARNlOyCEU7KEBERARTsmymxClEQERFATZEVBQe9SiCFIREBE3RAREKAm6hE0J3UIioIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiJsgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiIAUqApUkFG6FEBERUERAgBSiFQQiIqCIiCUQFFAREUBERUEREEIp2UKgpQIpIIiKCCpCKD0VEom6jdNCSoRFQREQEREBERAREQETZEBETZAQKdkU2CIigIURUQpCImwREQERN0BFCndNAiIoCFSxrpHhjGlznHYADckrPLHo3qfe7WLnbcKvE9Kd9n9gW7+o7FUYEFBXPvVnutkrDR3e3VVDUDf7HURFhPyrglBCIioboiICLk2q31t1uNPbrdTS1VXUSCOGGNu7nuPcAFePQfhxxTTyxtzjVOSjqbjBH2/YVLh70oR37uB6PePP0HgN+qCtelHD9qLqE2KrorWbba37H37XAxscPK0d7vzKwli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OLnOPlJPevyUFXYKQoRUSibpuoCEpugQZNa8/wA2tdNHTW/KbvTwx/EYyqfs30DddNd7vdbxUGoutxqq2UknnnlLz+VcJEBd6cwyk48Mf+j9x+hQ7qT3w7s9vJtv3eZdEiAiImwREQETdEBERNgiImwREKbAqERUApUKd1ARN1G6CUUJuglFG6JoSibpugIm6ICIiAiImwUIUVBERAREQE3REBERAQIiAUREBERAQBFIUkRsilQUBERUEREBERBO6hTso2UBFKjxVBFKKbEIiKgiIgIiICIiAiIgIiICIiAiKQghEKICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAgREAoiICIiAiIgIiICIiAiIgIiICIiAiIgIiIJRAi8hsoUqCrAkIUCIIRSoVBERBI7kRQVBO6KETQlO9QpCAVCk9yhIBERUEREEog7kUBFCJoSihSgIURQQiIvQIEQd6CURF5BERUCoUlQrAnZQp8FCkAiIqCIpCCEQogIiICIiCUUIpoFIUIqB70REBFOygpsEREBERAREQEREBERATZFKkhsiKCUEqERUEREBERAUhQm6CUUKd1AUIUQSEUKUBQVKhIBERUEREBERAREQEREBERAUgqEQCiIgIiICIiAiIgIiICIiAiIgIiIAUoikhso2REBERUEREBERAREQEREBERAU7IikiNkRFQREQEREBERAREQSO5ERQFBREgApREkQURFQREQSERFAUIiQCBEVEqERSAREVBAiIJREXkQURF6BAiIJQ9yIoIREVBB3oiCVBRFIEoURBCBEVEnuUIikAiIqCBEQSoKIpAIiKgiIgbIiICIiAiIgboURAREQEREBERAREQEREBSERSQUIiQCIioIiICIiAiIgIiICIiApCIpIHuUIiQCIioIiICIiAiIgIiICIiAiIgIiICIiAiIg//Z" style="max-width: 600px; width: 100%; height: auto;" alt="BrandRank.AI - prompting your brand truth">
+        </div>
+
+    </div>
+
+    <script>
+        // Brand information with 25-word descriptions
+        const brandInfo = {
+            'Coca-Cola': 'Longest continuous Olympic sponsor since 1928. Dominates mental availability through emotional storytelling and venue saturation. Universal #1 ranking across all LLMs.',
+            'Visa': 'Worldwide Olympic Partner since 1986. Default payment brand association. Consistently top 3 across all questions despite minimal equipment presence.',
+            'Samsung': 'Olympic partner since 1988. Strong digital conversation share. Known for giving athletes flagship phones. Technology and connectivity ecosystem leader.',
+            'Toyota': 'Olympic mobility partner. Leading sustainability initiatives with hydrogen vehicles. Strong presence in both official sponsorship and innovation categories.',
+            'Omega': 'Official Olympic timekeeper since 1932. Iconic visual presence through finish-line clocks. Precision timing technology shapes every world record moment.',
+            'P&G': 'Worldwide Partner with highly emotional "Thank You, Mom" campaigns. Multi-brand portfolio approach. Strong athlete family support storytelling and programs.',
+            'Nike': 'Not IOC TOP Partner but dominates through Team USA partnerships and athlete endorsements. 40+ years of Olympic athlete storytelling transcends contract status.',
+            'Airbnb': 'Worldwide Partner focusing on accommodation and unique stays. Promotes distributed lodging models. Growing association through travel-related Olympic storytelling.',
+            'Alibaba': 'Worldwide Partner providing cloud and e-commerce infrastructure. Technology leadership in Games operations. Strong focus on digital transformation and data systems.',
+            'Adidas': 'Historic Olympic association through national team uniforms and athlete gear. Not current TOP Partner but maintains strong presence through federation partnerships.',
+            'Intel': 'Technology partner focused on 5G, AI, and immersive experiences. Innovation showcases at Games. Leading digital infrastructure and broadcast technology.',
+            'Panasonic': 'Audio/visual equipment partner with long Olympic history. Broadcast technology provider. Sustainability initiatives in venue energy solutions.',
+            'Ralph Lauren': 'Team USA opening/closing ceremony outfitter. Single high-profile touchpoint creates outsized cultural visibility. Fashion brand with consistent Olympic moments.',
+            'Red Bull': 'Zero official Olympic sponsorship but dominant individual athlete partnerships. Winter sports mental association rivals official sponsors through athlete-first strategy.',
+            'Allianz': 'Worldwide Partner with athlete support programs. Insurance and risk management positioning. "Path to 2026" initiatives and athlete development focus.',
+            'Deloitte': 'Professional services partner focusing on digital transformation. Cybersecurity for Games operations. Management consulting and operational support.',
+            'Atomic': 'Leading ski equipment brand. Dominant in Alpine skiing. Used by top athletes like Mikaela Shiffrin. Strong "athlete reality" presence despite no TOP sponsorship.',
+            'Salomon': 'Core ski equipment provider for boots and bindings. Thousands of athletes and volunteers rely on gear. Strong Nordic and Alpine discipline presence.',
+            'Rossignol': 'Historic ski equipment brand across Nordic and Alpine disciplines. Consistent podium presence. Technical credibility built over decades of elite athlete partnerships.',
+            'Burton': 'Gold standard for snowboarding equipment. Dominates snowboard gear category. Strong cultural association with freestyle events and athlete authenticity.',
+            'Under Armour': 'Performance base layers and speedskating suits. Team USA speedskating partnership. Technical apparel innovation for cold-weather competition.',
+            'Lululemon': 'Team Canada outfitter for Milano Cortina 2026. Expanding winter lines. Lifestyle-meets-performance positioning with growing Olympic cultural crossover.',
+            'Skims': 'High-buzz Team USA base layer partnership. Athlete-modeled campaigns generated disproportionate social media conversation. Fashion-forward NOC partnership creating unofficial sponsor perception.',
+            'Eni': 'Italian energy giant and major Milan-Cortina domestic partner. Energy transition focus. Premium Partner tier with sustainability positioning for host nation.',
+            'TIM': 'Italian telecom and Milan-Cortina domestic partner. Local connectivity infrastructure. Premium Partner supporting Games technology and communications.',
+            'Intesa Sanpaolo': 'Major Italian banking partner for Milan-Cortina. Domestic financial services sponsor. Premium Partner supporting local organizing committee.',
+            'Poste Italiane': 'Italian postal and logistics partner. Domestic Milan-Cortina Premium Partner. Supporting Games operations and local infrastructure.',
+            'The North Face': 'Team USA Ski Team outerwear partner. Winter outdoor mental availability. Technical cold-weather gear association though not official Olympic sponsor.',
+            'Oakley': 'Essential eyewear for skiing and snowboarding. High-contrast goggles for flat light conditions. Ubiquitous on slopes despite no TOP partnership.',
+            'Head': 'Ski equipment and helmets with strong Alpine presence. Podium visibility across disciplines. Technical credibility through elite athlete equipment provision.',
+            'Fischer': 'Leading cross-country and ski jumping equipment. Nordic disciplines specialist. Consistent World Cup and Olympic presence.',
+            'Spyder': 'Technical racing suits designed for aerodynamics. Alpine racing apparel. Strong U.S. Ski Team historical association.',
+            'Columbia': 'Official Team USA Curling sponsor with dedicated 2026 collection. Sport-specific partnership. Training and competition outerwear.',
+            'McDonalds': 'Four-decade Olympic sponsorship (1976-2017) creates enduring mental availability. Ended TOP partnership after Rio 2016. Demonstrates extremely long half-life of Olympic equity.',
+            'GoPro': 'Action sports and athlete POV content association. Not official sponsor but strong winter sports presence through athlete content creation.',
+            'NBC': 'U.S. broadcast rights holder. Viewers conflate broadcast with sponsorship. Media platform power shapes Olympic brand landscape perception.',
+            'Enel': 'Renewable energy for Italian venues. Sustainability leadership for Milan-Cortina. 100% renewable energy commitments for Games operations.',
+            'EA7 Emporio Armani': 'Official Team Italy outfitter. High-fashion Italian heritage meets Olympic ceremony. Strong regional presence and cultural resonance.',
+            'Prada': 'Strong regional presence with new Cortina boutiques. Luxury fashion Olympic association. Italian heritage brand with local Games visibility.',
+            'Bauer': 'Primary equipment provider for Olympic Ice Hockey. Skates, sticks, and protective gear dominate the rink. Core hockey equipment monopoly.',
+            'Adecco': 'Official Partner providing career transition support and job opportunities for athletes. HR services partner helping athletes navigate post-competition careers.',
+            'EY': 'Official Partner with mental health programs and "Better You" athlete wellness platform. Professional services focus on athlete support and wellbeing.',
+            'Atos': 'Technology partner historically providing IT infrastructure and cybersecurity. Digital transformation and technology operations support for Games.',
+            'Budweiser': 'Not official Milano Cortina sponsor but memorable Winter Games advertising. Strong U.S. market association through decades of sports marketing.',
+            'Dainese': 'Critical safety armor and helmets for high-speed Alpine events. Italian brand specializing in protective gear for skiing and snowboarding.',
+            'Disney': 'Through broadcasting on ABC/ESPN creates Olympics association. Media empire shapes Olympic narratives through coverage and storytelling.',
+            'Gatorade': 'Sports hydration brand with strong athlete association. Not official sponsor but ubiquitous presence through athlete endorsements and training.',
+            'Leki': 'Leading poles and gloves brand especially for Nordic skiing. Technical equipment provider with strong presence among cross-country athletes.',
+            'Nordica': 'Historic ski boots and equipment brand. Strong Alpine presence with technical credibility built through decades of World Cup podiums.',
+            'Poc': 'Helmets, goggles, and protection gear prioritizing safety innovation. Swedish brand with strong visibility in Alpine and freestyle disciplines.',
+            'Swix': 'Wax, poles, and Nordic equipment specialist. Essential brand for cross-country skiing with technical expertise in race preparation.',
+            'MSC Crociere': 'Italian cruise line as local Milano Cortina mobility partner. Domestic sponsor supporting transportation and hospitality infrastructure.',
+            'Mengniu': 'Chinese dairy giant co-partnering with Coca-Cola as Worldwide Olympic Partner. Significant Asian market presence and beverage category representation.',
+            // Compound/grouped entries - use primary brand
+            'Alibaba Group': 'Worldwide Partner providing cloud and e-commerce infrastructure. Technology leadership in Games operations. Strong focus on digital transformation and data systems.',
+            'Coca-Cola/Mengniu': 'Joint Worldwide Olympic Partnership combining Coca-Cola\'s global reach with Mengniu\'s Asian market strength. Beverage category co-sponsors.',
+            'Burton/snowboard brands': 'Gold standard for snowboarding equipment. Dominates snowboard gear category. Strong cultural association with freestyle events and athlete authenticity.',
+            'Atomic/Rossignol/Head': 'Leading ski equipment consortium. Combined podium dominance across Alpine disciplines. Technical credibility spans boots, skis, bindings, helmets.',
+            'Oakley/Smith/eyewear': 'Essential eyewear brands for skiing and snowboarding. High-contrast goggles for flat light conditions. Ubiquitous on slopes despite no TOP partnership.',
+            'Skims/base-layer brands': 'High-buzz Team USA base layer partnership. Athlete-modeled campaigns generated disproportionate social media conversation. Fashion-forward NOC partnership creating unofficial sponsor perception.',
+            'Nike and Adidas': 'Combined athletic apparel giants with Olympic footprint. Not TOP Partners but dominate through national team partnerships and decades of athlete endorsements.',
+            'NBC/Peacock': 'U.S. broadcast rights holder and streaming platform. Viewers conflate broadcast with sponsorship. Media platform power shapes Olympic brand landscape perception.',
+            'Columbia': 'Official Team USA Curling sponsor with dedicated 2026 collection. Sport-specific partnership. Training and competition outerwear.',
+            'Columbia Sportswear': 'Official Team USA Curling sponsor with dedicated 2026 collection. Sport-specific partnership. Training and competition outerwear.',
+            'Local Italian partners': 'Domestic Milano Cortina sponsors including Eni, Enel, TIM, Intesa Sanpaolo, Poste Italiane. Critical local infrastructure and sustainability support.',
+            'Local Org Partners': 'Local organizing committee partners providing venue operations, energy, telecommunications, banking. Essential Games infrastructure from Italian companies.',
+            'Team-level sponsors': 'National Olympic Committee and federation partners. Not IOC TOP sponsors but critical for athlete uniforms, equipment, team operations.',
+            'McDonalds': 'Four-decade Olympic sponsorship (1976-2017) creates enduring mental availability. Ended TOP partnership after Rio 2016. Demonstrates extremely long half-life of Olympic equity.'
+        };
+
+        // Define official sponsors vs non-sponsors
+        const officialSponsors = [
+            'Coca-Cola', 'Visa', 'Samsung', 'Toyota', 'Omega', 'P&G', 'Airbnb', 'Alibaba',
+            'Allianz', 'Deloitte', 'Intel', 'Panasonic', 'Eni', 'TIM', 'Intesa Sanpaolo',
+            'Poste Italiane', 'Enel'
+        ];
+
+        const nonSponsors = [
+            'Nike', 'Red Bull', 'Adidas', 'Ralph Lauren', 'Atomic', 'Salomon', 'Rossignol',
+            'Burton', 'Oakley', 'The North Face', 'Under Armour', 'Lululemon', 'Skims',
+            'Head', 'Fischer', 'GoPro', 'NBC', 'McDonalds', 'Bauer', 'Columbia',
+            'EA7 Emporio Armani', 'Prada', 'Spyder'
+        ];
+
+        // Count brand occurrences across all tables
+        function countBrandMentions() {
+            const brandCounts = {};
+            const brandCells = document.querySelectorAll('.brand-name');
+            
+            brandCells.forEach(cell => {
+                const brandText = cell.textContent.trim();
+                // Clean up brand names (remove notes in parentheses)
+                const cleanBrand = brandText.split('(')[0].trim();
+                if (cleanBrand && cleanBrand !== 'N/A' && !cleanBrand.includes('collective') && cleanBrand.length > 2) {
+                    brandCounts[cleanBrand] = (brandCounts[cleanBrand] || 0) + 1;
+                }
+            });
+            
+            return brandCounts;
+        }
+
+        // Create brand tabs separated by official sponsors and non-sponsors
+        function createBrandTabs() {
+            const brandCounts = countBrandMentions();
+            
+            // Sort and filter official sponsors (top 6 to include P&G)
+            const topOfficialSponsors = Object.entries(brandCounts)
+                .filter(([brand]) => officialSponsors.includes(brand))
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 6);
+            
+            // Sort and filter non-sponsors (exclude Adidas and Under Armour, ensure Red Bull)
+            const topNonSponsors = Object.entries(brandCounts)
+                .filter(([brand]) => nonSponsors.includes(brand) && brand !== 'Adidas' && brand !== 'Under Armour')
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 6);
+            
+            // Create official sponsor tabs
+            const officialTabsContainer = document.getElementById('officialSponsorTabs');
+            topOfficialSponsors.forEach(([brand, count]) => {
+                createBrandTab(brand, count, officialTabsContainer);
+            });
+            
+            // Create non-sponsor tabs
+            const nonSponsorTabsContainer = document.getElementById('nonSponsorTabs');
+            topNonSponsors.forEach(([brand, count]) => {
+                createBrandTab(brand, count, nonSponsorTabsContainer);
+            });
+        }
+
+        // Helper function to create individual brand tab
+        function createBrandTab(brand, count, container) {
+            const tab = document.createElement('div');
+            tab.className = 'brand-tab';
+            tab.dataset.brand = brand;
+            
+            // Create text node for brand name and count
+            const textNode = document.createTextNode(`${brand} (${count})`);
+            tab.appendChild(textNode);
+            
+            // Add tooltip if brand info exists
+            if (brandInfo[brand]) {
+                const tooltip = document.createElement('span');
+                tooltip.className = 'brand-tooltip';
+                tooltip.textContent = brandInfo[brand];
+                tab.appendChild(tooltip);
+            }
+            
+            tab.addEventListener('click', () => toggleBrandHighlight(brand, tab));
+            container.appendChild(tab);
+        }
+
+        // Toggle brand highlighting
+        let currentHighlightedBrand = null;
+        function toggleBrandHighlight(brand, tab) {
+            const allTabs = document.querySelectorAll('.brand-tab');
+            const allBrandCells = document.querySelectorAll('.brand-name');
+            
+            // If clicking the same brand, clear highlight
+            if (currentHighlightedBrand === brand) {
+                allTabs.forEach(t => t.classList.remove('active'));
+                allBrandCells.forEach(cell => {
+                    cell.classList.remove('highlighted');
+                    cell.parentElement.classList.remove('highlighted-cell');
+                });
+                currentHighlightedBrand = null;
+                return;
+            }
+            
+            // Clear previous highlights
+            allTabs.forEach(t => t.classList.remove('active'));
+            allBrandCells.forEach(cell => {
+                cell.classList.remove('highlighted');
+                cell.parentElement.classList.remove('highlighted-cell');
+            });
+            
+            // Add new highlights
+            tab.classList.add('active');
+            currentHighlightedBrand = brand;
+            
+            allBrandCells.forEach(cell => {
+                const cellText = cell.textContent.trim();
+                if (cellText.includes(brand)) {
+                    cell.classList.add('highlighted');
+                    cell.parentElement.classList.add('highlighted-cell');
+                }
+            });
+            
+            // Scroll to first occurrence
+            const firstMatch = document.querySelector('.brand-name.highlighted');
+            if (firstMatch) {
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        // Search functionality
+        document.getElementById('brandSearch').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const allBrandCells = document.querySelectorAll('.brand-name');
+            
+            // Clear previous search highlights
+            allBrandCells.forEach(cell => {
+                cell.classList.remove('highlighted');
+                cell.parentElement.classList.remove('highlighted-cell');
+            });
+            
+            // Clear tab selection
+            document.querySelectorAll('.brand-tab').forEach(t => t.classList.remove('active'));
+            currentHighlightedBrand = null;
+            
+            if (searchTerm.length < 2) return;
+            
+            // Highlight matching brands
+            let firstMatch = null;
+            allBrandCells.forEach(cell => {
+                const cellText = cell.textContent.toLowerCase();
+                if (cellText.includes(searchTerm)) {
+                    cell.classList.add('highlighted');
+                    cell.parentElement.classList.add('highlighted-cell');
+                    if (!firstMatch) firstMatch = cell;
+                }
+            });
+            
+            // Scroll to first match
+            if (firstMatch) {
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            createBrandTabs();
+            addBrandCellTooltips();
+        });
+
+        // Add tooltips to all brand cells in tables
+        function addBrandCellTooltips() {
+            const allBrandCells = document.querySelectorAll('.brand-name');
+            
+            allBrandCells.forEach(cell => {
+                const brandText = cell.textContent.trim();
+                // Clean up brand names (remove notes in parentheses)
+                const cleanBrand = brandText.split('(')[0].trim();
+                
+                // Check if we have tooltip info for this brand
+                if (brandInfo[cleanBrand]) {
+                    // Create tooltip element
+                    const tooltip = document.createElement('span');
+                    tooltip.className = 'brand-cell-tooltip';
+                    tooltip.textContent = brandInfo[cleanBrand];
+                    cell.appendChild(tooltip);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
