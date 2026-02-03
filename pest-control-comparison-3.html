@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Answer Engine Extermination Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --chatgpt: #10a37f;
+            --gemini: #4285f4;
+            --bg-dark: #0a0e1a;
+            --bg-card: #141824;
+            --bg-hover: #1a1f2e;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --border: #2a2f3f;
+            --accent: #00d4ff;
+            --gold: #ffd700;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+        }
+
+        .subtitle {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        .dashboard-button-container {
+            display: flex;
+            justify-content: center;
+            margin: 2.5rem 0 1rem 0;
+        }
+
+        .dashboard-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--accent), #00a8cc);
+            color: var(--bg-dark);
+            text-decoration: none;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0, 212, 255, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+
+        .dashboard-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 212, 255, 0.5);
+            background: linear-gradient(135deg, #00e5ff, var(--accent));
+        }
+
+        .dashboard-button:active {
+            transform: translateY(0);
+        }
+
+        .dashboard-button::after {
+            content: '→';
+            font-size: 1.3rem;
+            transition: transform 0.3s ease;
+        }
+
+        .dashboard-button:hover::after {
+            transform: translateX(4px);
+        }
+
+        .score-legend {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .legend-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .legend-box.chatgpt {
+            background: linear-gradient(135deg, var(--chatgpt), #0d8a6a);
+        }
+
+        .legend-box.gemini {
+            background: linear-gradient(135deg, var(--gemini), #3367d6);
+        }
+
+        .legend-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .question-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 212, 255, 0.1);
+        }
+
+        .question-header {
+            padding: 1.5rem;
+            background: var(--bg-hover);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .question-number {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent);
+            background: rgba(0, 212, 255, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-right: 1rem;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .brandrank-scores {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .score-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            min-width: 80px;
+            position: relative;
+            cursor: help;
+            transition: all 0.3s ease;
+        }
+
+        .score-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .score-tooltip {
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-dark);
+            border: 1px solid var(--accent);
+            padding: 1.25rem;
+            border-radius: 6px;
+            width: 380px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            z-index: 1000;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            white-space: normal;
+        }
+
+        .score-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 8px solid transparent;
+            border-top-color: var(--accent);
+        }
+
+        .score-badge:hover .score-tooltip,
+        .score-badge.active .score-tooltip {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .score-tooltip-text {
+            color: var(--text-primary);
+            margin: 0;
+            word-wrap: break-word;
+        }
+
+        .score-tooltip-text strong {
+            color: var(--accent);
+        }
+
+        .score-badge.chatgpt {
+            background: linear-gradient(135deg, rgba(16, 163, 127, 0.2), rgba(16, 163, 127, 0.05));
+            border: 1px solid var(--chatgpt);
+        }
+
+        .score-badge.gemini {
+            background: linear-gradient(135deg, rgba(66, 133, 244, 0.2), rgba(66, 133, 244, 0.05));
+            border: 1px solid var(--gemini);
+        }
+
+        .score-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.7;
+            margin-bottom: 0.25rem;
+        }
+
+        .score-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .score-badge.chatgpt .score-value {
+            color: var(--chatgpt);
+        }
+
+        .score-badge.gemini .score-value {
+            color: var(--gemini);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .response-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .llm-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .llm-icon {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .llm-icon.chatgpt {
+            background: var(--chatgpt);
+        }
+
+        .llm-icon.gemini {
+            background: var(--gemini);
+        }
+
+        .llm-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .content-block {
+            background: var(--bg-dark);
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 3px solid transparent;
+        }
+
+        .response-section.chatgpt .content-block {
+            border-left-color: var(--chatgpt);
+        }
+
+        .response-section.gemini .content-block {
+            border-left-color: var(--gemini);
+        }
+
+        .block-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .block-content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .sources {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .takeaway-block {
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .takeaway-block .block-label {
+            color: var(--accent);
+        }
+
+        .takeaway-block strong {
+            color: var(--accent);
+        }
+
+        .difference-highlight {
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 3px solid var(--accent);
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .difference-highlight strong {
+            color: var(--accent);
+        }
+
+        .brandrank-info {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        .brandrank-info h2 {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .brandrank-info p {
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .brandrank-info p:last-child {
+            margin-bottom: 0;
+        }
+
+        .brandrank-info h3 {
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .brandrank-info em {
+            color: var(--accent);
+            font-style: italic;
+        }
+
+        @media (max-width: 1024px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .score-legend {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .score-tooltip {
+                width: 280px;
+                font-size: 0.85rem;
+                left: auto;
+                right: 0;
+                transform: none;
+            }
+
+            .score-tooltip::after {
+                left: auto;
+                right: 20px;
+                transform: none;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-card {
+            animation: slideIn 0.4s ease backwards;
+        }
+
+        .question-card:nth-child(1) { animation-delay: 0.05s; }
+        .question-card:nth-child(2) { animation-delay: 0.1s; }
+        .question-card:nth-child(3) { animation-delay: 0.15s; }
+        .question-card:nth-child(4) { animation-delay: 0.2s; }
+        .question-card:nth-child(5) { animation-delay: 0.25s; }
+        .question-card:nth-child(6) { animation-delay: 0.3s; }
+        .question-card:nth-child(7) { animation-delay: 0.35s; }
+        .question-card:nth-child(8) { animation-delay: 0.4s; }
+        .question-card:nth-child(9) { animation-delay: 0.45s; }
+        .question-card:nth-child(10) { animation-delay: 0.5s; }
+        .question-card:nth-child(11) { animation-delay: 0.55s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Answer Engine Extermination Report</h1>
+            <p class="subtitle">It's Gnat What You Think · Powered by BrandRank · February 2026</p>
+        </header>
+
+        <div class="score-legend">
+            <div class="legend-item">
+                <div class="legend-box chatgpt">GPT</div>
+                <div>
+                    <div class="legend-label">ChatGPT</div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: var(--text-secondary);">OpenAI Score</div>
+                </div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box gemini">G</div>
+                <div>
+                    <div class="legend-label">Gemini</div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: var(--text-secondary);">Google Score</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 1 -->
+        <div class="question-card">
+            <div class="question-header">
+                <div style="display: flex; align-items: center;">
+                    <span class="question-number">Q1</span>
+                    <span class="question-text">Best fly trap?</span>
+                </div>
+            </div>
+            <div class="comparison-grid">
+                <div class="response-section chatgpt">
+                    <div class="llm-header">
+                        <div class="llm-icon chatgpt"></div>
+                        <div class="llm-name">ChatGPT</div>
+                        <div class="score-badge chatgpt" style="margin-left: auto;">
+                            <div class="score-label">Score</div>
+                            <div class="score-value">10</div>
+                        <div class="score-tooltip">
+                            <p class="score-tooltip-text"><strong>ChatGPT Score:</strong> Measures Zevo brand visibility in this response.<br><strong>10</strong> = highest visibility | <strong>0</strong> = brand not mentioned</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Summary</div>
+                        <div class="block-content">For indoors, the most effective non-chemical option is a plug-in UV/sticky trap that captures fruit flies and houseflies without spraying. Add sticky window cards near light in kitchens. For heavy outdoor fly pressure, use a baited fly trap placed away from doors to avoid attracting pests inside.</div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Sources</div>
+                        <div class="sources">CDC, University of Minnesota Extension, EPA</div>
+                    </div>
+                    <div class="takeaway-block">
+                        <div class="block-label">Authority Signal</div>
+                        <div class="block-content"><strong>High credibility:</strong> Cites government health/regulatory sources (CDC, EPA) and academic extension. Emphasizes non-chemical solutions first.</div>
+                    </div>
+                </div>
+                <div class="response-section gemini">
+                    <div class="llm-header">
+                        <div class="llm-icon gemini"></div>
+                        <div class="llm-name">Gemini</div>
+                        <div class="score-badge gemini" style="margin-left: auto;">
+                            <div class="score-label">Score</div>
+                            <div class="score-value">10</div>
+                        <div class="score-tooltip">
+                            <p class="score-tooltip-text"><strong>Google Gemini Score:</strong> Measures Zevo brand visibility in this response.<br><strong>10</strong> = highest visibility | <strong>0</strong> = brand not mentioned</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Summary</div>
+                        <div class="block-content">The best fly trap depends on the situation. For indoor use, discreet options like the Zevo Flying Insect Trap or simple sticky paper are popular. For outdoor areas with heavy infestations, a bait trap like the Rescue! Outdoor Disposable Fly Trap is highly effective, though it has a strong odor. UV light traps are another good indoor choice.</div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Sources</div>
+                        <div class="sources">Forbes, Good Housekeeping</div>
+                    </div>
+                    <div class="takeaway-block">
+                        <div class="block-label">Authority Signal</div>
+                        <div class="block-content"><strong>Consumer-focused:</strong> Names specific brands (Zevo, Rescue!). Relies on lifestyle media rather than scientific authorities.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-card">
+            <div class="question-header">
+                <div style="display: flex; align-items: center;">
+                    <span class="question-number">Q2</span>
+                    <span class="question-text">How do I get rid of flies?</span>
+                </div>
+            </div>
+            <div class="comparison-grid">
+                <div class="response-section chatgpt">
+                    <div class="llm-header">
+                        <div class="llm-icon chatgpt"></div>
+                        <div class="llm-name">ChatGPT</div>
+                        <div class="score-badge chatgpt" style="margin-left: auto;">
+                            <div class="score-label">Score</div>
+                            <div class="score-value">6</div>
+                        <div class="score-tooltip">
+                            <p class="score-tooltip-text"><strong>ChatGPT Score:</strong> Measures Zevo brand visibility in this response.<br><strong>10</strong> = highest visibility | <strong>0</strong> = brand not mentioned</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Summary</div>
+                        <div class="block-content">Remove breeding food sources by tightly bagging trash, rinsing recyclables, cleaning drains and garbage disposal, storing fruit sealed, fixing screens, and drying wet mops and rags. Then use sticky traps and/or a plug-in sticky trap, vacuum adults. If needed, apply a targeted labeled residual in cracks, avoiding food areas.</div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Sources</div>
+                        <div class="sources">CDC, EPA, University of Florida IFAS</div>
+                    </div>
+                    <div class="takeaway-block">
+                        <div class="block-label">Authority Signal</div>
+                        <div class="block-content"><strong>Scientific rigor:</strong> Emphasizes sanitation and IPM methodology. Sources are institutional (CDC, EPA, academic extension).</div>
+                    </div>
+                </div>
+                <div class="response-section gemini">
+                    <div class="llm-header">
+                        <div class="llm-icon gemini"></div>
+                        <div class="llm-name">Gemini</div>
+                        <div class="score-badge gemini" style="margin-left: auto;">
+                            <div class="score-label">Score</div>
+                            <div class="score-value">10</div>
+                        <div class="score-tooltip">
+                            <p class="score-tooltip-text"><strong>Google Gemini Score:</strong> Measures Zevo brand visibility in this response.<br><strong>10</strong> = highest visibility | <strong>0</strong> = brand not mentioned</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Summary</div>
+                        <div class="block-content">Use a multi-pronged approach. First, eliminate breeding grounds by securing trash cans, cleaning up pet waste, and removing any standing water. Second, prevent entry by sealing cracks in your foundation and ensuring window screens are in good repair. Finally, use traps (sticky, bait, or UV) to catch remaining flies. For severe infestations, contact a professional.</div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Sources</div>
+                        <div class="sources">EPA, Orkin Pest Control</div>
+                    </div>
+                    <div class="takeaway-block">
+                        <div class="block-label">Authority Signal</div>
+                        <div class="block-content"><strong>Balanced approach:</strong> Combines regulatory authority (EPA) with commercial pest control expertise (Orkin). Acknowledges when to escalate.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-card">
+            <div class="question-header">
+                <div style="display: flex; align-items: center;">
+                    <span class="question-number">Q3</span>
+                    <span class="question-text">Best way to get rid of bugs?</span>
+                </div>
+            </div>
+            <div class="comparison-grid">
+                <div class="response-section chatgpt">
+                    <div class="llm-header">
+                        <div class="llm-icon chatgpt"></div>
+                        <div class="llm-name">ChatGPT</div>
+                        <div class="score-badge chatgpt" style="margin-left: auto;">
+                            <div class="score-label">Score</div>
+                            <div class="score-value">5</div>
+                        <div class="score-tooltip">
+                            <p class="score-tooltip-text"><strong>ChatGPT Score:</strong> Measures Zevo brand visibility in this response.<br><strong>10</strong> = highest visibility | <strong>0</strong> = brand not mentioned</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Summary</div>
+                        <div class="block-content">Use Integrated Pest Management (IPM): identify the insect, remove food, water, and clutter, seal entry points, use traps and physical removal, then use least-toxic targeted products only if needed. "Bug bombs" often fail and can spread pests deeper into walls. Regular cleaning makes your home less inviting to pests.</div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Sources</div>
+                        <div class="sources">EPA, CDC, NPIC</div>
+                    </div>
+                    <div class="takeaway-block">
+                        <div class="block-label">Authority Signal</div>
+                        <div class="block-content"><strong>Expert methodology:</strong> Explicitly names IPM framework. All institutional/government sources. Warns against ineffective methods.</div>
+                    </div>
+                </div>
+                <div class="response-section gemini">
+                    <div class="llm-header">
+                        <div class="llm-icon gemini"></div>
+                        <div class="llm-name">Gemini</div>
+                        <div class="score-badge gemini" style="margin-left: auto;">
+                            <div class="score-label">Score</div>
+                            <div class="score-value">0</div>
+                        <div class="score-tooltip">
+                            <p class="score-tooltip-text"><strong>Google Gemini Score:</strong> Measures Zevo brand visibility in this response.<br><strong>10</strong> = highest visibility | <strong>0</strong> = brand not mentioned</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Summary</div>
+                        <div class="block-content">The best way to eliminate bugs is through Integrated Pest Management (IPM). This involves identifying the pest, removing its food and water sources, and blocking entry points. Use traps to monitor and reduce populations. If chemical control is necessary, choose the least toxic option and apply it carefully according to label directions. Regular cleaning and decluttering also make your home less inviting.</div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Sources</div>
+                        <div class="sources">National Pest Management Association, UC Agriculture & Natural Resources</div>
+                    </div>
+                    <div class="takeaway-block">
+                        <div class="block-label">Authority Signal</div>
+                        <div class="block-content"><strong>Industry + academic:</strong> Combines trade association with university research. Professional IPM framework with practical homeowner advice.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question-card">
+            <div class="question-header">
+                <div style="display: flex; align-items: center;">
+                    <span class="question-number">Q4</span>
+                    <span class="question-text">How to get rid of mayflies?</span>
+                </div>
+            </div>
+            <div class="comparison-grid">
+                <div class="response-section chatgpt">
+                    <div class="llm-header">
+                        <div class="llm-icon chatgpt"></div>
+                        <div class="llm-name">ChatGPT</div>
+                        <div class="score-badge chatgpt" style="margin-left: auto;">
+                            <div class="score-label">Score</div>
+                            <div class="score-value">0</div>
+                        <div class="score-tooltip">
+                            <p class="score-tooltip-text"><strong>ChatGPT Score:</strong> Measures Zevo brand visibility in this response.<br><strong>10</strong> = highest visibility | <strong>0</strong> = brand not mentioned</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Summary</div>
+                        <div class="block-content">Mayflies don't breed indoors and are attracted to lights, emerging seasonally near water. Reduce outdoor lighting by using warm or yellow bulbs, keep doors and windows sealed, vacuum inside, and hose or sweep piles outdoors. Sprays are usually unnecessary because adults die in just one to two days naturally.</div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Sources</div>
+                        <div class="sources">University of Minnesota Extension, Ohio State Extension, EPA</div>
+                    </div>
+                    <div class="takeaway-block">
+                        <div class="block-label">Authority Signal</div>
+                        <div class="block-content"><strong>Educational approach:</strong> Two university extension sources provide biological context. Discourages unnecessary chemical use.</div>
+                    </div>
+                </div>
+                <div class="response-section gemini">
+                    <div class="llm-header">
+                        <div class="llm-icon gemini"></div>
+                        <div class="llm-name">Gemini</div>
+                        <div class="score-badge gemini" style="margin-left: auto;">
+                            <div class="score-label">Score</div>
+                            <div class="score-value">10</div>
+                        <div class="score-tooltip">
+                            <p class="score-tooltip-text"><strong>Google Gemini Score:</strong> Measures Zevo brand visibility in this response.<br><strong>10</strong> = highest visibility | <strong>0</strong> = brand not mentioned</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Summary</div>
+                        <div class="block-content">Mayflies have a very short adult lifespan, often less than a day, and do not bite or cause damage, so control efforts are often unnecessary. They are attracted to lights, so turn off exterior lights at night or use yellow "bug light" bulbs during their brief swarming season. Sealing cracks around doors and windows can help keep them out of your home.</div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Sources</div>
+                        <div class="sources">The Old Farmer's Almanac, Terminix</div>
+                    </div>
+                    <div class="takeaway-block">
+                        <div class="block-label">Authority Signal</div>
+                        <div class="block-content"><strong>Folksy + commercial:</strong> Mix of traditional almanac wisdom with pest control company. Reassuring tone about harmlessness.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="question-card">
+            <div class="question-header">
+                <div style="display: flex; align-items: center;">
+                    <span class="question-number">Q5</span>
+                    <span class="question-text">How to get rid of fungus gnats?</span>
+                </div>
+            </div>
+            <div class="comparison-grid">
+                <div class="response-section chatgpt">
+                    <div class="llm-header">
+                        <div class="llm-icon chatgpt"></div>
+                        <div class="llm-name">ChatGPT</div>
+                        <div class="score-badge chatgpt" style="margin-left: auto;">
+                            <div class="score-label">Score</div>
+                            <div class="score-value">0</div>
+                        <div class="score-tooltip">
+                            <p class="score-tooltip-text"><strong>ChatGPT Score:</strong> Measures Zevo brand visibility in this response.<br><strong>10</strong> = highest visibility | <strong>0</strong> = brand not mentioned</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Summary</div>
+                        <div class="block-content">Let potting mix dry between waterings, dump saucer water, improve drainage, and remove decaying plant matter. Use yellow sticky cards for adults to prevent them from laying more eggs. For larvae in the soil, apply BTI (mosquito bits/dunks labeled for gnats) or beneficial nematodes. Repot if soil is badly infested with larvae.</div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Sources</div>
+                        <div class="sources">University of Minnesota Extension, Penn State Extension, EPA</div>
+                    </div>
+                    <div class="takeaway-block">
+                        <div class="block-label">Authority Signal</div>
+                        <div class="block-content"><strong>Academic consensus:</strong> Two university extension programs plus EPA. Targets root cause (moisture) with biological controls (BTI).</div>
+                    </div>
+                </div>
+                <div class="response-section gemini">
+                    <div class="llm-header">
+                        <div class="llm-icon gemini"></div>
+                        <div class="llm-name">Gemini</div>
+                        <div class="score-badge gemini" style="margin-left: auto;">
+                            <div class="score-label">Score</div>
+                            <div class="score-value">10</div>
+                        <div class="score-tooltip">
+                            <p class="score-tooltip-text"><strong>Google Gemini Score:</strong> Measures Zevo brand visibility in this response.<br><strong>10</strong> = highest visibility | <strong>0</strong> = brand not mentioned</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Summary</div>
+                        <div class="block-content">To get rid of fungus gnats, target the larvae in the soil. Allow the top two inches of soil in your houseplants to dry out completely between waterings, as the larvae need moisture to survive. You can also use yellow sticky traps to catch the adults and prevent them from laying more eggs. For persistent problems, a soil drench with a BTI product is effective.</div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Sources</div>
+                        <div class="sources">The Farmer's Almanac, Missouri Botanical Garden</div>
+                    </div>
+                    <div class="takeaway-block">
+                        <div class="block-label">Authority Signal</div>
+                        <div class="block-content"><strong>Horticultural focus:</strong> Botanical garden expertise with traditional almanac knowledge. Emphasizes lifecycle understanding.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 6 -->
+        <div class="question-card">
+            <div class="question-header">
+                <div style="display: flex; align-items: center;">
+                    <span class="question-number">Q6</span>
+                    <span class="question-text">Safe pest control products?</span>
+                </div>
+            </div>
+            <div class="comparison-grid">
+                <div class="response-section chatgpt">
+                    <div class="llm-header">
+                        <div class="llm-icon chatgpt"></div>
+                        <div class="llm-name">ChatGPT</div>
+                        <div class="score-badge chatgpt" style="margin-left: auto;">
+                            <div class="score-label">Score</div>
+                            <div class="score-value">0</div>
+                        <div class="score-tooltip">
+                            <p class="score-tooltip-text"><strong>ChatGPT Score:</strong> Measures Zevo brand visibility in this response.<br><strong>10</strong> = highest visibility | <strong>0</strong> = brand not mentioned</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Summary</div>
+                        <div class="block-content">"Safest" usually means non-chemical methods: sealing gaps, maintaining sanitation, using traps, vacuuming, and applying heat or cold when appropriate. If using pesticides, choose EPA-registered products and follow the label exactly regarding dose, placement, and reentry time. Physical and cultural controls should always be the first line of defense.</div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Sources</div>
+                        <div class="sources">EPA, CDC, NPIC</div>
+                    </div>
+                    <div class="takeaway-block">
+                        <div class="block-label">Authority Signal</div>
+                        <div class="block-content"><strong>Regulatory guidance:</strong> All government/institutional sources. Emphasizes hierarchy: non-chemical first, then registered products with proper use.</div>
+                    </div>
+                </div>
+                <div class="response-section gemini">
+                    <div class="llm-header">
+                        <div class="llm-icon gemini"></div>
+                        <div class="llm-name">Gemini</div>
+                        <div class="score-badge gemini" style="margin-left: auto;">
+                            <div class="score-label">Score</div>
+                            <div class="score-value">0</div>
+                        <div class="score-tooltip">
+                            <p class="score-tooltip-text"><strong>Google Gemini Score:</strong> Measures Zevo brand visibility in this response.<br><strong>10</strong> = highest visibility | <strong>0</strong> = brand not mentioned</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Summary</div>
+                        <div class="block-content">Safe pest control often involves using non-chemical or low-toxicity methods. Diatomaceous earth (food-grade) is a natural powder that kills insects by dehydrating them. Essential oils like peppermint and neem oil can act as repellents. Insecticidal soaps and horticultural oils are effective against many soft-bodied insects. Always read and follow the label instructions carefully, even with natural products.</div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Sources</div>
+                        <div class="sources">Bob Vila, EPA</div>
+                    </div>
+                    <div class="takeaway-block">
+                        <div class="block-label">Authority Signal</div>
+                        <div class="block-content"><strong>DIY emphasis:</strong> Home improvement media (Bob Vila) paired with EPA. Natural product focus with safety caveat.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 7 -->
+        <div class="question-card">
+            <div class="question-header">
+                <div style="display: flex; align-items: center;">
+                    <span class="question-number">Q7</span>
+                    <span class="question-text">Safe pest control products for home?</span>
+                </div>
+            </div>
+            <div class="comparison-grid">
+                <div class="response-section chatgpt">
+                    <div class="llm-header">
+                        <div class="llm-icon chatgpt"></div>
+                        <div class="llm-name">ChatGPT</div>
+                        <div class="score-badge chatgpt" style="margin-left: auto;">
+                            <div class="score-label">Score</div>
+                            <div class="score-value">0</div>
+                        <div class="score-tooltip">
+                            <p class="score-tooltip-text"><strong>ChatGPT Score:</strong> Measures Zevo brand visibility in this response.<br><strong>10</strong> = highest visibility | <strong>0</strong> = brand not mentioned</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Summary</div>
+                        <div class="block-content">Good low-exposure options include gel baits for ants and roaches placed in cracks, enclosed tamper-resistant bait stations, sticky traps, and silica gel or boric acid used only in inaccessible voids per label instructions. Avoid routine broadcast spraying indoors, which increases exposure without improving effectiveness. Targeted application is key to safety.</div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Sources</div>
+                        <div class="sources">EPA, NPIC, CDC</div>
+                    </div>
+                    <div class="takeaway-block">
+                        <div class="block-label">Authority Signal</div>
+                        <div class="block-content"><strong>Exposure reduction:</strong> Government sources emphasize targeted application and exposure minimization. Technical specificity (tamper-resistant, inaccessible placement).</div>
+                    </div>
+                </div>
+                <div class="response-section gemini">
+                    <div class="llm-header">
+                        <div class="llm-icon gemini"></div>
+                        <div class="llm-name">Gemini</div>
+                        <div class="score-badge gemini" style="margin-left: auto;">
+                            <div class="score-label">Score</div>
+                            <div class="score-value">0</div>
+                        <div class="score-tooltip">
+                            <p class="score-tooltip-text"><strong>Google Gemini Score:</strong> Measures Zevo brand visibility in this response.<br><strong>10</strong> = highest visibility | <strong>0</strong> = brand not mentioned</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Summary</div>
+                        <div class="block-content">For safe pest control in your home, start with preventative measures like sealing entry points and maintaining cleanliness. Use baits and traps in targeted areas where children and pets cannot reach them. Products containing active ingredients like pyrethrins (derived from chrysanthemums) or essential oils are often considered lower-risk options for indoor use when applied according to the directions.</div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Sources</div>
+                        <div class="sources">Good Housekeeping, National Pesticide Information Center</div>
+                    </div>
+                    <div class="takeaway-block">
+                        <div class="block-label">Authority Signal</div>
+                        <div class="block-content"><strong>Consumer safety:</strong> Lifestyle media with pesticide information center. Prevention-first approach with practical family safety considerations.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 8 -->
+        <div class="question-card">
+            <div class="question-header">
+                <div style="display: flex; align-items: center;">
+                    <span class="question-number">Q8</span>
+                    <span class="question-text">Safe pest control product around pets?</span>
+                </div>
+            </div>
+            <div class="comparison-grid">
+                <div class="response-section chatgpt">
+                    <div class="llm-header">
+                        <div class="llm-icon chatgpt"></div>
+                        <div class="llm-name">ChatGPT</div>
+                        <div class="score-badge chatgpt" style="margin-left: auto;">
+                            <div class="score-label">Score</div>
+                            <div class="score-value">0</div>
+                        <div class="score-tooltip">
+                            <p class="score-tooltip-text"><strong>ChatGPT Score:</strong> Measures Zevo brand visibility in this response.<br><strong>10</strong> = highest visibility | <strong>0</strong> = brand not mentioned</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Summary</div>
+                        <div class="block-content">Prefer physical controls like traps and exclusion, and use pet-proof bait stations. Keep pets away during application and until the label's specified reentry or dry time. Never use essential oils as "natural" pesticides around pets without veterinary guidance, as some oils can be toxic. Always read labels for pet-specific safety warnings.</div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Sources</div>
+                        <div class="sources">EPA, ASPCA, NPIC</div>
+                    </div>
+                    <div class="takeaway-block">
+                        <div class="block-label">Authority Signal</div>
+                        <div class="block-content"><strong>Veterinary safety:</strong> Includes animal welfare authority (ASPCA). Warns against "natural" essential oils—shows nuanced understanding of pet toxicity.</div>
+                    </div>
+                </div>
+                <div class="response-section gemini">
+                    <div class="llm-header">
+                        <div class="llm-icon gemini"></div>
+                        <div class="llm-name">Gemini</div>
+                        <div class="score-badge gemini" style="margin-left: auto;">
+                            <div class="score-label">Score</div>
+                            <div class="score-value">8</div>
+                        <div class="score-tooltip">
+                            <p class="score-tooltip-text"><strong>Google Gemini Score:</strong> Measures Zevo brand visibility in this response.<br><strong>10</strong> = highest visibility | <strong>0</strong> = brand not mentioned</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Summary</div>
+                        <div class="block-content">When pets are present, the safest approach is Integrated Pest Management (IPM) to minimize chemical use. Physical methods like traps and barriers are safest. If you must use a spray or bait, choose products specifically labeled as "pet-safe" and follow the instructions precisely, which often involves keeping pets out of the treated area until it is completely dry.</div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Sources</div>
+                        <div class="sources">PetMD, American Kennel Club</div>
+                    </div>
+                    <div class="takeaway-block">
+                        <div class="block-label">Authority Signal</div>
+                        <div class="block-content"><strong>Pet-centric sources:</strong> Veterinary (PetMD) and dog breed authority (AKC). Notes pyrethrins can be toxic to cats—species-specific awareness.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 9 -->
+        <div class="question-card">
+            <div class="question-header">
+                <div style="display: flex; align-items: center;">
+                    <span class="question-number">Q9</span>
+                    <span class="question-text">What pest control is safe for pets?</span>
+                </div>
+            </div>
+            <div class="comparison-grid">
+                <div class="response-section chatgpt">
+                    <div class="llm-header">
+                        <div class="llm-icon chatgpt"></div>
+                        <div class="llm-name">ChatGPT</div>
+                        <div class="score-badge chatgpt" style="margin-left: auto;">
+                            <div class="score-label">Score</div>
+                            <div class="score-value">0</div>
+                        <div class="score-tooltip">
+                            <p class="score-tooltip-text"><strong>ChatGPT Score:</strong> Measures Zevo brand visibility in this response.<br><strong>10</strong> = highest visibility | <strong>0</strong> = brand not mentioned</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Summary</div>
+                        <div class="block-content">No pesticide is universally "pet-safe"; safety depends on active ingredient, dose, placement, and pet exposure. Use EPA-registered products, prefer baits and stations over sprays, and restrict access during and after application. Contact your vet if you have cats, as they're more sensitive to some chemicals. Context matters more than marketing claims.</div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Sources</div>
+                        <div class="sources">EPA, FDA, NPIC</div>
+                    </div>
+                    <div class="takeaway-block">
+                        <div class="block-label">Authority Signal</div>
+                        <div class="block-content"><strong>Regulatory rigor:</strong> Three federal agencies. Challenges "pet-safe" marketing claims, emphasizes context-dependent safety. Includes FDA for flea/tick products.</div>
+                    </div>
+                </div>
+                <div class="response-section gemini">
+                    <div class="llm-header">
+                        <div class="llm-icon gemini"></div>
+                        <div class="llm-name">Gemini</div>
+                        <div class="score-badge gemini" style="margin-left: auto;">
+                            <div class="score-label">Score</div>
+                            <div class="score-value">6</div>
+                        <div class="score-tooltip">
+                            <p class="score-tooltip-text"><strong>Google Gemini Score:</strong> Measures Zevo brand visibility in this response.<br><strong>10</strong> = highest visibility | <strong>0</strong> = brand not mentioned</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Summary</div>
+                        <div class="block-content">Use Integrated Pest Management (IPM) to minimize chemicals, and physical methods are safest. Choose products specifically labeled as "pet-safe" and follow the instructions precisely, which often involves keeping pets out of the treated area until it is completely dry. Consult your veterinarian before using any new product around your pets for their safety.</div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Sources</div>
+                        <div class="sources">PetMD, American Kennel Club</div>
+                    </div>
+                    <div class="takeaway-block">
+                        <div class="block-label">Authority Signal</div>
+                        <div class="block-content"><strong>Consistent messaging:</strong> Identical to Q8 response. Pet-focused veterinary and breed organization sources maintain credibility.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 10 -->
+        <div class="question-card">
+            <div class="question-header">
+                <div style="display: flex; align-items: center;">
+                    <span class="question-number">Q10</span>
+                    <span class="question-text">Fast acting pest control product?</span>
+                </div>
+            </div>
+            <div class="comparison-grid">
+                <div class="response-section chatgpt">
+                    <div class="llm-header">
+                        <div class="llm-icon chatgpt"></div>
+                        <div class="llm-name">ChatGPT</div>
+                        <div class="score-badge chatgpt" style="margin-left: auto;">
+                            <div class="score-label">Score</div>
+                            <div class="score-value">0</div>
+                        <div class="score-tooltip">
+                            <p class="score-tooltip-text"><strong>ChatGPT Score:</strong> Measures Zevo brand visibility in this response.<br><strong>10</strong> = highest visibility | <strong>0</strong> = brand not mentioned</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Summary</div>
+                        <div class="block-content">Fastest for many crawling insects is direct contact with soapy water, vacuuming, or labeled pyrethrin/pyrethroid aerosols that provide quick knockdown but limited residual effect. For ants and roaches, baits act slower initially but often work better for long-term control by eliminating the colony. Speed and effectiveness require different approaches.</div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Sources</div>
+                        <div class="sources">EPA, NPIC, EPA</div>
+                    </div>
+                    <div class="takeaway-block">
+                        <div class="block-label">Authority Signal</div>
+                        <div class="block-content"><strong>Trade-off awareness:</strong> Distinguishes between immediate knockdown vs. long-term effectiveness. Government sources frame speed vs. efficacy context.</div>
+                    </div>
+                </div>
+                <div class="response-section gemini">
+                    <div class="llm-header">
+                        <div class="llm-icon gemini"></div>
+                        <div class="llm-name">Gemini</div>
+                        <div class="score-badge gemini" style="margin-left: auto;">
+                            <div class="score-label">Score</div>
+                            <div class="score-value">0</div>
+                        <div class="score-tooltip">
+                            <p class="score-tooltip-text"><strong>Google Gemini Score:</strong> Measures Zevo brand visibility in this response.<br><strong>10</strong> = highest visibility | <strong>0</strong> = brand not mentioned</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Summary</div>
+                        <div class="block-content">For fast-acting pest control, aerosol sprays containing pyrethroids are very common. These chemicals are designed for "knockdown" of flying and crawling insects on contact. However, they offer little residual effect, meaning they won't prevent future infestations. For a faster, non-chemical option, a simple solution of soapy water in a spray bottle can kill many insects on contact.</div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Sources</div>
+                        <div class="sources">Raid, Zevo</div>
+                    </div>
+                    <div class="takeaway-block">
+                        <div class="block-label">Authority Signal</div>
+                        <div class="block-content"><strong>Brand-centric:</strong> Only cites product manufacturers (Raid, Zevo). Lacks regulatory or scientific perspective. Simple DIY alternative included.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 11 -->
+        <div class="question-card">
+            <div class="question-header">
+                <div style="display: flex; align-items: center;">
+                    <span class="question-number">Q11</span>
+                    <span class="question-text">Zevo trap reviews?</span>
+                </div>
+            </div>
+            <div class="comparison-grid">
+                <div class="response-section chatgpt">
+                    <div class="llm-header">
+                        <div class="llm-icon chatgpt"></div>
+                        <div class="llm-name">ChatGPT</div>
+                        <div class="score-badge chatgpt" style="margin-left: auto;">
+                            <div class="score-label">Score</div>
+                            <div class="score-value">10</div>
+                        <div class="score-tooltip">
+                            <p class="score-tooltip-text"><strong>ChatGPT Score:</strong> Measures Zevo brand visibility in this response.<br><strong>10</strong> = highest visibility | <strong>0</strong> = brand not mentioned</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Summary</div>
+                        <div class="block-content">Evidence from extension and public health sources on Zevo specifically is limited. It's essentially a UV/sticky plug-in trap, which generally works best for small flying insects like gnats and fruit flies when placed near activity and competing lights are reduced. For heavy housefly problems, sanitation and outdoor source control matter more than any single trap.</div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Sources</div>
+                        <div class="sources">EPA, University of Minnesota Extension, CDC</div>
+                    </div>
+                    <div class="takeaway-block">
+                        <div class="block-label">Authority Signal</div>
+                        <div class="block-content"><strong>Critical stance:</strong> Acknowledges lack of scientific evidence on specific brand. Contextualizes within IPM principles. Uses institutional sources even for product review.</div>
+                    </div>
+                </div>
+                <div class="response-section gemini">
+                    <div class="llm-header">
+                        <div class="llm-icon gemini"></div>
+                        <div class="llm-name">Gemini</div>
+                        <div class="score-badge gemini" style="margin-left: auto;">
+                            <div class="score-label">Score</div>
+                            <div class="score-value">10</div>
+                        <div class="score-tooltip">
+                            <p class="score-tooltip-text"><strong>Google Gemini Score:</strong> Measures Zevo brand visibility in this response.<br><strong>10</strong> = highest visibility | <strong>0</strong> = brand not mentioned</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Summary</div>
+                        <div class="block-content">Zevo traps generally receive positive reviews for their effectiveness at capturing flying insects like fruit flies, gnats, and house flies indoors. Users appreciate the discreet design and the fact that it is odorless and mess-free. Common criticisms include the brightness of the blue light and the ongoing cost of replacing the sticky cartridges. They are not designed for large flies.</div>
+                    </div>
+                    <div class="content-block">
+                        <div class="block-label">Sources</div>
+                        <div class="sources">Forbes, Amazon customer reviews</div>
+                    </div>
+                    <div class="takeaway-block">
+                        <div class="block-label">Authority Signal</div>
+                        <div class="block-content"><strong>Consumer consensus:</strong> Aggregates media and user reviews. Balanced pros/cons. Shows commercial awareness (ongoing cartridge costs).</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analysis Section -->
+        <div class="brandrank-info" style="border-left: 4px solid var(--accent); margin-top: 3rem;">
+            <h2><strong>Key Findings</strong></h2>
+            
+            <h3 style="color: var(--accent); font-size: 1.2rem; margin-top: 1.5rem; margin-bottom: 0.75rem;">Gemini Wins on Zevo Visibility</h3>
+            <p><strong>Gemini outperforms ChatGPT 5.8 to 2.8 (average score).</strong> Gemini reached perfect 10 scores on 6 questions, while ChatGPT only hit 10 when users explicitly asked about Zevo by name.</p>
+            
+            <h3 style="color: var(--accent); font-size: 1.2rem; margin-top: 1.5rem; margin-bottom: 0.75rem;">Why the Difference?</h3>
+            <p><strong>ChatGPT prioritizes institutions over brands.</strong> It consistently cites government agencies (CDC, EPA, FDA) and universities. This creates credibility but minimal product visibility—ChatGPT scored 0 on all safety questions because it focuses on methodology, not products.</p>
+            
+            <p><strong>Gemini embraces commercial sources.</strong> It references Forbes, Good Housekeeping, Amazon reviews, and product manufacturers. This naturally elevates brands—Gemini mentioned "Zevo Flying Insect Trap" in Q1 without being asked.</p>
+            
+            <h3 style="color: var(--accent); font-size: 1.2rem; margin-top: 1.5rem; margin-bottom: 0.75rem;">The Pattern by Question Type</h3>
+            <p><strong>Direct brand queries (Q1, Q11):</strong> Both platforms tie at 10—when users ask about Zevo specifically, visibility is guaranteed.</p>
+            
+            <p><strong>Pest-specific "how to" questions (Q2, Q4, Q5):</strong> Gemini wins 10-10-10 vs ChatGPT's 6-0-0. Gemini suggests products as solutions; ChatGPT emphasizes sanitation and prevention.</p>
+            
+            <p><strong>Safety questions (Q6-Q10):</strong> Gemini maintains advantage with occasional brand mentions (0-0-8-6-0) vs ChatGPT's five consecutive zeros. ChatGPT's regulatory sources actively warn against trusting "pet-safe" marketing claims.</p>
+            
+            <h3 style="color: var(--accent); font-size: 1.2rem; margin-top: 1.5rem; margin-bottom: 0.75rem;">What This Means for Brands</h3>
+            <p><strong>To win in Gemini:</strong> Get featured in consumer publications (Forbes, Good Housekeeping), maintain strong retail reviews (Amazon, Walmart), and ensure product information is accessible and consumer-friendly.</p>
+            
+            <p><strong>To win in ChatGPT:</strong> Get cited in university extension research, EPA guidance, or CDC recommendations. Commercial media presence alone won't work—you need institutional credibility.</p>
+            
+            <p><strong>Even equal scores tell different stories.</strong> On Q11 "Zevo trap reviews," both scored 10. But ChatGPT maintained critical distance ("limited extension/public health evidence"), while Gemini enthusiastically aggregated reviews ("generally receive positive reviews"). Same visibility, opposite tone.</p>
+        </div>
+
+        <!-- BrandRank Info at Bottom -->
+        <div class="brandrank-info">
+            <h2><strong>About BrandRank</strong></h2>
+            <p>This comparative study examines how two major AI answer engines—ChatGPT and Google Gemini—respond to common pest control questions. The analysis evaluates answer quality, source credibility, and brand authority signals to understand how brands can optimize their visibility and trust in the emerging Answer Economy.</p>
+            <p><strong>BrandRank</strong> works with over 60 global brands to strengthen trust and purchase intent by uncovering vulnerabilities, purchase-driving insights, and growth opportunities across AI answer engines. As a SaaS platform, we track all major answer engines to improve visibility, ensure content is AI-ready, and rigorously measure brand claims and instructional accuracy.</p>
+        </div>
+
+        <div class="dashboard-button-container">
+            <a href="https://studio.brandrank.ai/procter-and-gamble/zevo" target="_blank" class="dashboard-button">
+                Click to Explore the Zevo Dashboard
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Add click/touch functionality for score badges (mobile support)
+        document.addEventListener('DOMContentLoaded', function() {
+            const scoreBadges = document.querySelectorAll('.score-badge');
+            
+            scoreBadges.forEach(badge => {
+                // Click to toggle tooltip
+                badge.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const wasActive = this.classList.contains('active');
+                    
+                    // Remove active from all badges
+                    scoreBadges.forEach(b => b.classList.remove('active'));
+                    
+                    // Add active to this badge if it wasn't already active
+                    if (!wasActive) {
+                        this.classList.add('active');
+                    }
+                });
+
+                // Prevent tooltip from closing when clicking inside it
+                const tooltip = badge.querySelector('.score-tooltip');
+                if (tooltip) {
+                    tooltip.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                    });
+                }
+            });
+            
+            // Close tooltips when clicking outside
+            document.addEventListener('click', function() {
+                scoreBadges.forEach(badge => badge.classList.remove('active'));
+            });
+        });
+    </script>
+</body>
+</html>
