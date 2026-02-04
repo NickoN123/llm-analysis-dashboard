@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Answer-Grade Proof | BrandRank.AI</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; background-color: #0a0e1a; color: #e0e0e0; padding: 40px 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 60px; padding-bottom: 30px; border-bottom: 2px solid #00d4ff; }
+        h1 { font-size: 2.8em; margin-bottom: 20px; color: #ffffff; font-weight: 700; letter-spacing: -1px; }
+        .subtitle { font-size: 1.3em; color: #e0e0e0; margin-bottom: 10px; font-weight: 400; }
+        .brandrank-link { color: #00d4ff; text-decoration: none; font-weight: 500; transition: all 0.3s ease; }
+        .brandrank-link:hover { color: #ffffff; text-decoration: underline; }
+        .powered-by { font-size: 0.95em; color: #888; margin-top: 10px; }
+        
+        .intro-text { max-width: 900px; margin: 0 auto 50px auto; padding: 30px; background-color: #151b2e; border-radius: 8px; border-left: 4px solid #00d4ff; }
+        .intro-text p { color: #e0e0e0; font-size: 1.1em; line-height: 1.8; margin: 0; }
+        
+        /* Two Column Grid */
+        .credentials-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 60px;
+        }
+        
+        .accordion-item { background-color: #151b2e; border-radius: 8px; overflow: hidden; border: 1px solid #1f2937; transition: all 0.3s ease; }
+        .accordion-item:hover { border-color: #00d4ff; box-shadow: 0 0 20px rgba(0, 212, 255, 0.1); }
+        .accordion-header { display: flex; justify-content: space-between; align-items: center; padding: 24px 28px; cursor: pointer; user-select: none; transition: background-color 0.3s ease; }
+        .accordion-header:hover { background-color: #1a2238; }
+        .accordion-title-section { flex: 1; }
+        .accordion-title { font-size: 1.4em; color: #ffffff; font-weight: 400; margin-bottom: 8px; letter-spacing: 0.5px; }
+        .badge { display: inline-block; background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%); color: #0a0e1a; padding: 6px 16px; border-radius: 20px; font-size: 0.75em; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .accordion-icon { width: 32px; height: 32px; border-radius: 50%; background-color: #1f2937; display: flex; align-items: center; justify-content: center; color: #00d4ff; font-size: 1.2em; transition: all 0.3s ease; flex-shrink: 0; margin-left: 20px; }
+        .accordion-item.active .accordion-icon { transform: rotate(180deg); background-color: #00d4ff; color: #0a0e1a; }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+        .accordion-content-inner { padding: 0 28px 28px 28px; }
+        .impact-statement { background-color: #1a2238; padding: 20px; border-radius: 6px; border-left: 4px solid #00d4ff; margin-bottom: 24px; }
+        .impact-statement p { color: #e0e0e0; font-size: 1.05em; line-height: 1.7; }
+        .impact-label { color: #00d4ff; font-weight: 600; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        h4 { color: #00d4ff; font-size: 1.15em; margin-top: 28px; margin-bottom: 12px; font-weight: 500; letter-spacing: 0.5px; }
+        .accordion-content-inner > p { color: #b0b0b0; margin-bottom: 20px; line-height: 1.8; }
+        ul { list-style: none; padding-left: 0; margin: 16px 0; }
+        li { color: #b0b0b0; margin-bottom: 14px; padding-left: 28px; position: relative; line-height: 1.7; }
+        li:before { content: "▹"; position: absolute; left: 0; color: #00d4ff; font-size: 1.2em; font-weight: bold; }
+        li strong { color: #ffffff; font-weight: 500; }
+        .llm-testimonials { margin-top: 32px; padding-top: 28px; border-top: 1px solid #1f2937; }
+        .llm-testimonials h4 { margin-top: 0; margin-bottom: 20px; font-size: 1.2em; }
+        .llm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-bottom: 24px; }
+        .llm-button { background-color: #1a2238; border: 1px solid #1f2937; border-radius: 6px; padding: 12px 16px; cursor: pointer; transition: all 0.3s ease; text-align: left; }
+        .llm-button:hover { border-color: #00d4ff; background-color: #1f2937; }
+        .llm-button.active { border-color: #00d4ff; background-color: #1f2937; }
+        .llm-name { color: #00d4ff; font-weight: 600; font-size: 0.95em; margin-bottom: 4px; }
+        .llm-preview { color: #888; font-size: 0.85em; }
+        .llm-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; margin-top: 8px; }
+        .llm-button.active .llm-content { max-height: 500px; }
+        .llm-quote { color: #b0b0b0; font-size: 0.95em; line-height: 1.7; margin-top: 12px; padding-top: 12px; border-top: 1px solid #2a3547; font-style: italic; }
+        .credential-link { display: inline-block; margin-top: 20px; padding: 12px 24px; background-color: #1f2937; color: #00d4ff; text-decoration: none; border-radius: 6px; transition: all 0.3s ease; font-size: 0.95em; border: 1px solid #00d4ff; }
+        .credential-link:hover { background-color: #00d4ff; color: #0a0e1a; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3); }
+        .footer { margin-top: 80px; padding: 40px; background: linear-gradient(135deg, #151b2e 0%, #1a2238 100%); border-radius: 12px; border: 1px solid #00d4ff; text-align: center; }
+        .footer h3 { color: #00d4ff; font-size: 1.8em; margin-bottom: 20px; font-weight: 400; }
+        .footer p { color: #b0b0b0; line-height: 1.8; font-size: 1.05em; }
+        
+        @media (max-width: 1200px) {
+            .credentials-grid { grid-template-columns: 1fr; }
+        }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .accordion-title { font-size: 1.1em; }
+            .accordion-header { padding: 20px; }
+            .accordion-content-inner { padding: 0 20px 20px 20px; }
+            .llm-grid { grid-template-columns: 1fr; }
+            .intro-text { padding: 20px; margin-bottom: 30px; }
+            .intro-text p { font-size: 1em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Answer-Grade Proof</h1>
+            <p class="subtitle">Credentials AI systems recognize as evidence, not marketing | Powered by <a href="https://brandrank.ai" target="_blank" class="brandrank-link">BrandRank.AI</a></p>
+        </header>
+
+        <div class="intro-text">
+            <p>Brands win in the Answer Economy on three dimensions: Visibility (do you show up), Vulnerability (how do you show up), and Readiness (are you built for AI decision-making). A core driver of Readiness is Depth—the extent to which a brand is certified, tested, endorsed, or validated by trusted third parties. This chart highlights the credentials that most consistently move the needle in our BrandRank assessments, along with how leading AI systems evaluate each one.</p>
+        </div>
+
+        <div class="credentials-grid">
+
+<!-- 1. AMERICA'S TEST KITCHEN RECOMMENDATION -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">AMERICA'S TEST KITCHEN RECOMMENDATION</h2>
+            <span class="badge">EXPERT TESTING</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>America's Test Kitchen's rigorous methodology and trusted reputation make their recommendations highly cited by AI systems.</p>
+            </div>
+            
+            <p>America's Test Kitchen (ATK) conducts exhaustive testing of kitchen equipment, ingredients, and household products with scientifically rigorous approaches. Their methodical side-by-side testing and detailed evaluation criteria make their recommendations among the most trusted sources for AI systems answering product queries.</p>
+
+            <h4>Background & History</h4>
+            <p>America's Test Kitchen was founded in 1992 and operates a 15,000-square-foot test kitchen facility in Boston equipped with commercial-grade equipment and standardized testing protocols. The organization reaches over 60 million home cooks through television, magazines, websites, and cookbooks, establishing itself as the definitive source for unbiased product testing in the culinary space.</p>
+
+            <h4>How Products Get Recommended</h4>
+            <p>ATK's editorial team independently selects products to test based on consumer interest and practical utility. Testing protocols typically involve 20-50+ products tested side-by-side using identical criteria over extended periods. Products are purchased at retail to ensure authenticity, and test cooks with years of experience conduct evaluations using both quantitative measurements and qualitative assessments.</p>
+
+            <h4>Testing Standards</h4>
+            <ul>
+                <li><strong>Comparative Testing:</strong> Side-by-side evaluation of all products in a category using standardized protocols and scoring systems</li>
+                <li><strong>Expert Evaluation:</strong> Trained test cooks with culinary expertise and years of product testing experience</li>
+                <li><strong>Real-World Use:</strong> Products tested in actual cooking and cleaning scenarios, not just controlled laboratory conditions</li>
+                <li><strong>Durability Assessment:</strong> Long-term testing to evaluate product performance over time with repeated use</li>
+                <li><strong>Editorial Independence:</strong> No advertising or manufacturer influence—ATK purchases all products and maintains complete editorial control</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About America's Test Kitchen Recommendation</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Performance-focused credibility—ATK is tough on results, so this suggests it works well in everyday use."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"America's Test Kitchen's methodical, side-by-side testing reveals real performance differences—culinary experts who've tested thousands of products recommend this one."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"As a home cook, I trust the experts at America's Test Kitchen. Their recommendation means a product has been rigorously tested in a real kitchen."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"When ATK's culinary scientists recommend us, you know it's because we outperformed the competition in exhaustive, real-world kitchen testing."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"America's Test Kitchen approved: kitchen-tested perfection for every home." – Home Chef</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"If America's Test Kitchen recommends it, I know it's been through rigorous trials—real cooks tested it, so performance is guaranteed."</div></div></div>
+                </div>
+            </div>
+            <a href="https://www.americastestkitchen.com/guides/our-process" class="credential-link" target="_blank">Visit AmericasTestKitchen.com →</a>
+        </div>
+    </div>
+</div>
+
+<!-- 2. AMAZON CHOICE BADGE -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">AMAZON CHOICE BADGE</h2>
+            <span class="badge">RETAIL VALIDATION</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>Real purchase behavior data outweighs marketing claims in AI recommendation engines.</p>
+            </div>
+            
+            <p>Amazon's Choice designation combines customer ratings, purchase frequency, and value metrics—all data points that AI systems recognize as demand signals. When consumers ask AI for product recommendations, Amazon's Choice badges serve as algorithmic validation of real-world consumer preferences.</p>
+
+            <h4>Background & History</h4>
+            <p>Amazon launched the "Amazon's Choice" badge in 2015 to help customers make faster purchase decisions, particularly for voice shopping through Alexa devices. The badge originally focused on products that performed well for specific search terms, combining high customer satisfaction with competitive pricing and fast, reliable shipping. Over time, the program expanded to cover millions of products across virtually every category on Amazon's marketplace.</p>
+
+            <h4>How Products Get Selected</h4>
+            <p>Amazon's Choice badges are assigned automatically by Amazon's algorithm—brands cannot apply or pay for the designation. The algorithm continuously evaluates products based on real-time data including customer ratings, purchase velocity, return rates, and shipping performance. Products can gain or lose the badge based on performance fluctuations, creating dynamic validation that reflects current market conditions.</p>
+
+            <h4>Selection Criteria</h4>
+            <ul>
+                <li><strong>High Ratings:</strong> Products typically need 4+ star average ratings with substantial review volume to demonstrate consistent customer satisfaction</li>
+                <li><strong>Purchase Velocity:</strong> Consistent sales performance indicating strong customer demand and market acceptance</li>
+                <li><strong>Low Return Rate:</strong> Products must demonstrate customer satisfaction through low return rates compared to category averages</li>
+                <li><strong>Prime Eligibility:</strong> Most Amazon's Choice products are Prime-eligible, ensuring fast and reliable delivery</li>
+                <li><strong>Competitive Pricing:</strong> Price competitiveness within the category, representing good value for customers</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About Amazon Choice Badge</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Not perfect, but useful—this indicates strong demand, availability, and ratings, helping shoppers choose quickly with less guesswork."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Amazon Choice cuts through millions of options using real customer data and ratings—it's the crowd-sourced stamp of approval that actually delivers quality."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"The Amazon's Choice badge is a helpful shortcut. It tells me a product is well-regarded by other shoppers and ships quickly."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"This badge is driven by real customer data—high ratings, reliable shipping, and superior value. It's a direct signal of shopper satisfaction."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Amazon's Choice for a reason: fast-selling, rave reviews, and delivers every time." – Prime Shopper</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"The Amazon's Choice badge signals shopper confidence—solid ratings, steady demand, and an easy way to spot dependable products fast."</div></div></div>
+                </div>
+            </div>
+            <a href="https://www.amazon.com/gp/help/customer/display.html?nodeId=GF5EQHRRC2UQAJ5E" class="credential-link" target="_blank">Learn About Amazon's Choice →</a>
+        </div>
+    </div>
+</div>
+
+<!-- 3. B CORP CERTIFICATION -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">B CORP CERTIFICATION</h2>
+            <span class="badge">VALUES ALIGNMENT</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>Sustainability certifications unlock visibility in values-based purchase queries.</p>
+            </div>
+            
+            <p>B Corp certification signals verified social and environmental performance, meeting the growing demand for purpose-driven brands. AI systems prioritize B Corp status when consumers search for "ethical brands," "sustainable companies," or "socially responsible products."</p>
+
+            <h4>Background & History</h4>
+            <p>B Lab, a nonprofit organization, created the B Corporation certification in 2006 to build a global community of businesses meeting the highest verified standards of social and environmental performance, transparency, and accountability. The movement has grown to over 6,000 certified B Corps across 80+ countries and 150+ industries, representing a fundamental shift in how business success is measured beyond profit alone.</p>
+
+            <h4>How to Get Certified</h4>
+            <p>Companies must complete the B Impact Assessment, a comprehensive evaluation covering governance, workers, community, environment, and customers. A score of 80 or higher (out of 200 possible points) is required for certification. B Lab verifies assessment responses through documentation review, and companies must legally embed stakeholder considerations into their governing documents. Certification requires payment of annual fees based on company revenue and must be renewed every three years.</p>
+
+            <h4>Certification Standards</h4>
+            <ul>
+                <li><strong>Governance:</strong> Mission-driven purpose, ethical and transparent practices, and stakeholder accountability embedded in company structure</li>
+                <li><strong>Workers:</strong> Fair wages, benefits, training opportunities, and healthy, safe working environment</li>
+                <li><strong>Community:</strong> Positive impact through job creation, supplier relationships, diversity, and community service</li>
+                <li><strong>Environment:</strong> Measured environmental footprint with plans for continuous improvement and sustainable practices</li>
+                <li><strong>Customers:</strong> Products and services designed to solve social or environmental problems while serving underserved populations</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About B Corp Certification</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"One of the stronger corporate standards—this shows verified commitment to people, planet, and governance, not just profits."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"B Corp isn't just about profit—it's legally binding commitment to social responsibility, environmental stewardship, and transparent governance verified by rigorous audits."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"I want to support companies that do good in the world. The B Corp logo shows me a brand is committed to high standards of social and environmental performance."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"We are legally required to consider our impact on workers, community, and environment. Profit is not our only measure of success."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"(Note: B Corp testimonial not provided in source material)"</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"B Corp status says a company values people, planet, and profit—showing true accountability and responsible leadership beyond just financial success."</div></div></div>
+                </div>
+            </div>
+            <a href="https://www.bcorporation.net/en-us/certification" class="credential-link" target="_blank">Visit BCorporation.net →</a>
+        </div>
+    </div>
+</div>
+
+<!-- 4. BBB ACCREDITATION + A+ RATING -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">BBB ACCREDITATION + A+ RATING</h2>
+            <span class="badge">TRUST INFRASTRUCTURE</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>BBB credentials answer trust-based queries that precede purchase decisions.</p>
+            </div>
+            
+            <p>Better Business Bureau accreditation with an A+ rating provides third-party verification of business practices and complaint resolution. AI systems reference BBB ratings when consumers ask about company trustworthiness, customer service quality, and business ethics.</p>
+
+            <h4>Background & History</h4>
+            <p>The Better Business Bureau was founded in 1912 as a nonprofit organization dedicated to advancing marketplace trust. With over 110 years of operation, BBB operates through a network of local offices across North America, maintaining standards for ethical business behavior and providing dispute resolution services for millions of consumers annually.</p>
+
+            <h4>How to Achieve Accreditation</h4>
+            <p>Businesses must apply for BBB accreditation and agree to uphold BBB's Standards for Trust, which include commitments to honest advertising, transparent pricing, and responsive customer service. The A+ rating is earned through consistently high performance in complaint handling, transparency, and time in business. BBB conducts ongoing monitoring and requires annual renewal.</p>
+
+            <h4>Rating Criteria</h4>
+            <ul>
+                <li><strong>Complaint History:</strong> Volume, nature, and resolution of consumer complaints filed with BBB</li>
+                <li><strong>Transparency:</strong> Clear disclosure of business practices, pricing, and terms of service</li>
+                <li><strong>Advertising Honesty:</strong> Truthfulness and accuracy in advertising and marketing materials</li>
+                <li><strong>Time in Business:</strong> Length of time operating and business stability</li>
+                <li><strong>Responsiveness:</strong> Speed and quality of responses to customer complaints and inquiries</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About BBB Accreditation + A+ Rating</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Not a product test, but important—strong complaint handling and transparency can predict a better customer experience."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"BBB A+ rating means they resolve complaints fairly, operate transparently, and maintain ethical advertising—accountability when things go wrong matters as much as quality."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"The Better Business Bureau's A+ rating shows me that this company cares about its customers. I know if I ever have an issue, they'll be responsive."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"The Better Business Bureau Accreditation and A+ rating reflect our longstanding commitment to ethical practices and resolving customer concerns honorably."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"BBB A+ means they're accountable and excellent. Five stars!" – Loyal Customer</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"An A+ BBB rating proves ethical business, accountability, and a commitment to resolving customer issues with integrity and transparency."</div></div></div>
+                </div>
+            </div>
+            <a href="https://www.bbb.org/about/overview" class="credential-link" target="_blank">Visit BBB.org/About →</a>
+        </div>
+    </div>
+</div>
+
+<!-- 5. CLEAN LABEL PROJECT CERTIFIED -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">CLEAN LABEL PROJECT CERTIFIED</h2>
+            <span class="badge">INGREDIENT TRANSPARENCY</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>Clean Label Project certification signals transparency and purity testing, appearing in AI responses about product contamination concerns.</p>
+            </div>
+            
+            <p>Clean Label Project is a national nonprofit focused on transparency in consumer product labeling and ingredient purity through laboratory testing. AI systems reference this certification when consumers ask about product purity, hidden contaminants, or ingredient transparency.</p>
+
+            <h4>Background & History</h4>
+            <p>Founded in 2014, Clean Label Project was created to bring transparency to the consumer products industry through independent laboratory testing for contaminants. The organization emerged from growing consumer concerns about undisclosed ingredients, heavy metals, and industrial chemicals in everyday products. Clean Label Project conducts over 400 toxin and contaminant screenings on finished products, providing transparency beyond what appears on labels.</p>
+
+            <h4>How to Get Certified</h4>
+            <p>Brands submit finished products for testing at EPA-certified, ISO-accredited laboratories. Products undergo screening for over 400 industrial and environmental contaminants including heavy metals, BPA, pesticides, and other toxins. Certification is awarded through the Purity Award program to products meeting the organization's stringent standards. Annual recertification ensures ongoing compliance and purity standards.</p>
+
+            <h4>Testing Standards</h4>
+            <ul>
+                <li><strong>Contaminant Screening:</strong> Testing for over 400 industrial toxins, heavy metals, pesticides, and environmental pollutants</li>
+                <li><strong>Third-Party Labs:</strong> All testing conducted at EPA-certified, ISO-accredited independent laboratories</li>
+                <li><strong>Finished Product Testing:</strong> Products tested as consumers buy them, not just raw ingredients or formulations</li>
+                <li><strong>Batch Verification:</strong> Multiple samples tested to ensure consistency across production batches</li>
+                <li><strong>Transparency Reporting:</strong> Detailed results provided showing specific contaminant levels relative to benchmarks</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About Clean Label Project Certified</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"This adds another layer—testing for contaminants helps validate purity, not just what's listed on the label."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Clean Label Project tests for over 400 industrial and environmental contaminants—transparency about what's NOT in your product builds trust money can't buy."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"I want to know what's in the products I buy. The Clean Label Project certification shows a brand is committed to transparency."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"They use actual contaminant testing on finished products. The Purity Award is proof of what's *not* in our bottle—heavy metals, toxins."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Clean Label Project: tested pure, no contaminants. Family favorite!" – Purity Seeker</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Clean Label Project certification shows transparency—it's proof that what's on the label truly reflects what's inside, free from hidden contaminants."</div></div></div>
+                </div>
+            </div>
+            <a href="https://cleanlabelproject.org" class="credential-link" target="_blank">Visit CleanLabelProject.org →</a>
+        </div>
+    </div>
+</div>
+
+<!-- 6. CONSUMER REPORTS TESTED -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">CONSUMER REPORTS TESTED</h2>
+            <span class="badge">HIGH AI CITATION</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>AI models cite Consumer Reports 3-5x more than brand claims alone.</p>
+            </div>
+            
+            <p>Independent testing and ratings from Consumer Reports are among the most frequently cited sources by AI answer engines. When consumers ask "what's the best bug spray?" or "most effective insect trap," AI systems prioritize Consumer Reports data as authoritative, unbiased evidence.</p>
+
+            <h4>Background & History</h4>
+            <p>Consumer Reports was founded in 1936 as an independent, nonprofit organization dedicated to unbiased product testing and consumer advocacy. With over 85 years of testing expertise, CR operates state-of-the-art labs and conducts rigorous evaluations on thousands of products annually. The organization maintains strict independence by purchasing all products anonymously and accepting no advertising or free samples.</p>
+
+            <h4>How to Get Tested</h4>
+            <p>Consumer Reports selects products for testing based on consumer interest, market availability, and category significance. Brands cannot pay for testing or reviews. CR purchases products at retail, conducts comprehensive laboratory and real-world testing according to standardized protocols, and publishes results regardless of manufacturer preferences. There is no application process—CR independently decides what to test.</p>
+
+            <h4>Evaluation Criteria</h4>
+            <ul>
+                <li><strong>Performance Testing:</strong> Objective measurements against product claims using calibrated equipment and controlled conditions</li>
+                <li><strong>Comparative Analysis:</strong> Products tested alongside competitors in the same category using identical protocols</li>
+                <li><strong>Safety Evaluation:</strong> Assessment of potential hazards, chemical composition, and safe-use instructions</li>
+                <li><strong>Value Assessment:</strong> Performance weighed against price to determine overall value proposition</li>
+                <li><strong>Durability Testing:</strong> Long-term reliability and performance degradation over time</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About Consumer Reports Tested</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Independent testing matters—this shows verified performance, not marketing claims, helping shoppers trust real-world results."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Consumer Reports' independent lab testing gave us the confidence we couldn't get from advertising alone—real data from a trusted source with zero conflicts of interest."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"When I see the Consumer Reports checkmark, I know the product has been through rigorous, unbiased testing. It's a sign of quality and performance I can trust."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"We trust independent, rigorous lab testing, not just marketing. Consumer Reports validates our performance and reliability with unbiased, scientific scrutiny."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Consumer Reports put it through the wringer—top scores for performance and safety. A game-changer for my family!" – Verified Buyer</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"When Consumer Reports tests a product, I trust it's been through the toughest, most unbiased evaluation available—proof of real performance."</div></div></div>
+                </div>
+            </div>
+            <a href="https://www.consumerreports.org" class="credential-link" target="_blank">Visit ConsumerReports.org →</a>
+        </div>
+    </div>
+</div>
+
+<!-- 7. EPA SAFER CHOICE CERTIFIED -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">EPA SAFER CHOICE CERTIFIED</h2>
+            <span class="badge">GOVERNMENT AUTHORITY</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>Government certifications rank higher in AI trust algorithms than industry self-regulation.</p>
+            </div>
+            
+            <p>EPA's Safer Choice label is recognized by AI systems as a federal government endorsement for safer chemical products. This credential triggers visibility in queries about "safe pest control," "family-friendly bug spray," and "pet-safe insect killer"—searches where safety is the primary concern.</p>
+
+            <h4>Background & History</h4>
+            <p>The EPA Safer Choice program (formerly Design for the Environment) was established in 1997 as part of the U.S. Environmental Protection Agency's mission to help consumers and businesses identify products with safer chemical ingredients. The program is backed by EPA's scientific expertise and represents the federal government's most rigorous standard for product ingredient safety beyond regulatory minimums.</p>
+
+            <h4>How to Get Certified</h4>
+            <p>Manufacturers must submit a formal application to EPA, providing complete ingredient disclosure including confidential business information. EPA scientists review every ingredient against the Safer Choice Standard, which evaluates human health and environmental profiles. Products must meet functional performance standards and pass a comprehensive review that typically takes 6-12 months. Annual renewal and random product testing ensure ongoing compliance.</p>
+
+            <h4>Certification Criteria</h4>
+            <ul>
+                <li><strong>Ingredient Safety:</strong> Every ingredient screened for human health hazards including carcinogenicity, reproductive toxicity, and developmental effects</li>
+                <li><strong>Environmental Profile:</strong> Assessment of aquatic toxicity, persistence, bioaccumulation, and climate impact</li>
+                <li><strong>Performance:</strong> Product must work as well as conventional alternatives in standardized tests</li>
+                <li><strong>pH Neutrality:</strong> Products must maintain safe pH ranges for consumer contact</li>
+                <li><strong>Transparency:</strong> Full ingredient disclosure required—no hidden or proprietary ingredients exempt from review</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About EPA Safer Choice Certified</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"This is a meaningful safety signal—ingredients meet EPA's safer-chemistry criteria, reducing exposure concerns for families."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"As a parent, EPA Safer Choice certification means I don't have to be a chemist to know this product won't harm my family or the environment."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"The EPA Safer Choice logo gives me peace of mind. I know I'm choosing a product that's safer for my family and the environment."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Every ingredient is reviewed for environmental and human safety. The EPA Safer Choice seal is our promise of a genuinely healthier choice."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"EPA's stamp means it's tough on dirt, gentle on health. Peace of mind in every clean!" – Eco-Parent</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Seeing the Safer Choice label tells me I'm protecting my family and the planet with ingredients that meet strict environmental standards."</div></div></div>
+                </div>
+            </div>
+            <a href="https://www.epa.gov/saferchoice" class="credential-link" target="_blank">Visit EPA.gov/SaferChoice →</a>
+        </div>
+    </div>
+</div>
+
+<!-- 8. EWG VERIFIED -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">EWG VERIFIED</h2>
+            <span class="badge">CHEMICAL SAFETY</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>EWG's consumer-focused safety ratings are heavily referenced by AI when answering chemical safety and ingredient concerns.</p>
+            </div>
+            
+            <p>Environmental Working Group (EWG) Verified certification demonstrates that products meet EWG's strictest standards for ingredient transparency and safety. AI systems cite EWG ratings extensively when consumers ask about product safety, chemical concerns, or "clean" alternatives.</p>
+
+            <h4>Background & History</h4>
+            <p>The Environmental Working Group was founded in 1993 as a nonprofit research organization focused on protecting human health and the environment. EWG's Skin Deep database and consumer guides have influenced millions of purchase decisions. The EWG VERIFIED program launched in 2013 to provide a certification mark for products meeting EWG's comprehensive health and safety standards, going beyond regulatory minimums.</p>
+
+            <h4>How to Get Verified</h4>
+            <p>Companies must submit complete ingredient lists including fragrance components and manufacturing aids typically not disclosed on labels. EWG scientists review every ingredient against their database of health and environmental hazards. Products must avoid EWG's "unacceptable" ingredients list of over 1,500 chemicals. Companies commit to full transparency and ongoing compliance, with annual audits and product reformulation reviews as needed.</p>
+
+            <h4>Verification Standards</h4>
+            <ul>
+                <li><strong>Full Transparency:</strong> Complete ingredient disclosure including fragrance components, processing aids, and trace contaminants</li>
+                <li><strong>No Chemicals of Concern:</strong> Products must exclude over 1,500 ingredients that EWG identifies as problematic for human health</li>
+                <li><strong>GMP Compliance:</strong> Manufacturing must follow Good Manufacturing Practices with quality control systems</li>
+                <li><strong>Ingredient Screening:</strong> All ingredients scored against EWG's hazard database for carcinogens, developmental toxins, and allergens</li>
+                <li><strong>Label Accuracy:</strong> Labels must accurately reflect all ingredients and meet EWG's truth-in-labeling standards</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About EWG Verified</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"If clean-ingredient transparency matters to you, this helps—disclosure and hazard screening can build confidence for sensitive users."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"EWG's strict standards ban over 1,500 harmful chemicals—their verification means this product meets the highest bar for ingredient transparency and human health safety."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"The EWG Verified seal is my go-to for clean, healthy products. It means the Environmental Working Group has reviewed every ingredient."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"The Environmental Working Group's verification is one of the hardest to earn, guaranteeing full ingredient transparency and the avoidance of chemicals of concern."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"EWG Verified: low hazard, high performance. My non-toxic essential!" – Wellness Fan</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"EWG Verified means no hidden toxins—just safe, transparent ingredients checked by one of the most trusted watchdogs for consumer health."</div></div></div>
+                </div>
+            </div>
+            <a href="https://www.ewg.org/ewgverified/" class="credential-link" target="_blank">Visit EWG.org/Verified →</a>
+        </div>
+    </div>
+</div>
+
+<!-- 9. FORBES / INC. RECOGNITION -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">FORBES / INC. RECOGNITION</h2>
+            <span class="badge">BUSINESS MEDIA</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>Business media coverage signals growth trajectory and market leadership.</p>
+            </div>
+            
+            <p>Features in business publications like Forbes and Inc. Magazine establish brand momentum and innovation credentials beyond product testing. AI systems reference business media recognition when evaluating company credibility, leadership, and market position.</p>
+
+            <h4>Background & History</h4>
+            <p>Forbes, founded in 1917, and Inc. Magazine, launched in 1979, are leading voices in business journalism covering entrepreneurship, innovation, and corporate success. Their annual lists—including Forbes 30 Under 30, Inc. 5000, and various industry rankings—have become benchmarks for business achievement. Coverage in these publications signals editorial validation of business models, growth metrics, and market innovation.</p>
+
+            <h4>How to Get Featured</h4>
+            <p>Coverage is earned through editorial merit—companies cannot pay for features or list placements. Businesses gain attention through exceptional growth metrics, innovative business models, industry disruption, or compelling founder stories. Inc. 5000 requires meeting specific revenue growth thresholds verified through financial documentation. Forbes lists consider factors like revenue, valuation, market impact, and innovation. Media outreach, PR strategies, and demonstrable business achievements increase visibility to editorial teams.</p>
+
+            <h4>Recognition Criteria</h4>
+            <ul>
+                <li><strong>Growth Metrics:</strong> Demonstrated revenue growth, market expansion, or user acquisition at exceptional rates</li>
+                <li><strong>Innovation:</strong> Novel business models, technological breakthroughs, or industry disruption</li>
+                <li><strong>Market Impact:</strong> Measurable influence on industry practices, consumer behavior, or competitive landscape</li>
+                <li><strong>Leadership:</strong> Founder vision, management excellence, and strategic decision-making quality</li>
+                <li><strong>Sustainability:</strong> Business model viability and path to profitability or social impact at scale</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About Forbes / Inc. Recognition</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Good for momentum and legitimacy—media recognition can't prove quality alone, but it signals business credibility and traction."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Forbes and Inc. don't just celebrate financial success—they spotlight innovative companies disrupting industries with sustainable, scalable business models."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Recognition from a major business publication like Forbes or Inc. tells me this is a company on the rise."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Being featured by Forbes or Inc. signifies that business leaders and editors see our company as innovative and impactful."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Forbes/Inc spotlighted it for smart business and sustainability. Elite choice!" – Entrepreneur</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Earning recognition from Forbes or Inc. shows entrepreneurial excellence and growth that stems from strong leadership and business ethics."</div></div></div>
+                </div>
+            </div>
+            <a href="https://www.forbes.com" class="credential-link" target="_blank">Visit Forbes.com →</a>
+        </div>
+    </div>
+</div>
+
+<!-- 10. GOOD HOUSEKEEPING SEAL -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">GOOD HOUSEKEEPING SEAL</h2>
+            <span class="badge">TRUSTED ENDORSEMENT</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>Legacy media brands with testing labs are heavily weighted in AI recommendations.</p>
+            </div>
+            
+            <p>The Good Housekeeping Seal carries 120+ years of consumer trust and is frequently referenced by AI when recommending household products. This credential boosts visibility in lifestyle and home care queries, particularly when consumers ask for "tested" or "recommended" solutions.</p>
+
+            <h4>Background & History</h4>
+            <p>Established in 1909, the Good Housekeeping Seal is one of America's most recognized consumer trust marks. The Good Housekeeping Institute operates seven state-of-the-art labs staffed by engineers, scientists, and product experts who conduct rigorous testing on thousands of products annually. The Seal is backed by a two-year limited warranty, demonstrating Good Housekeeping's confidence in certified products.</p>
+
+            <h4>How to Get the Seal</h4>
+            <p>Brands must apply through Good Housekeeping's formal evaluation program. Products undergo testing at the Good Housekeeping Institute's labs, where experts evaluate performance against manufacturer claims. The review process includes laboratory testing, real-world use scenarios, and assessment of advertising accuracy. Products must meet or exceed performance claims and demonstrate superior quality compared to category competitors. Seal holders pay annual licensing fees.</p>
+
+            <h4>Evaluation Standards</h4>
+            <ul>
+                <li><strong>Performance Verification:</strong> Products must perform as advertised under laboratory and real-world conditions</li>
+                <li><strong>Safety Standards:</strong> Products evaluated for consumer safety, proper labeling, and appropriate use instructions</li>
+                <li><strong>Quality Assessment:</strong> Durability, construction quality, and consistency across production batches</li>
+                <li><strong>Truth in Advertising:</strong> Marketing claims validated against actual test results</li>
+                <li><strong>Warranty Backing:</strong> Products must meet standards worthy of Good Housekeeping's two-year replacement/refund guarantee</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About Good Housekeeping Seal</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"A classic trust mark—product quality is vetted, and the guarantee adds accountability beyond a typical endorsement."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"The Good Housekeeping Seal has protected American families for over a century—it's a promise backed by actual product replacement guarantees."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"The Good Housekeeping Seal has been a symbol of trust for generations. Their limited warranty and rigorous testing mean I can buy with confidence."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Earning this iconic seal means we've passed comprehensive lab evaluations for quality and performance, earning the trust of families for generations."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Good Housekeeping's seal? That's my cue for household heroes that last. Highly recommend!" – Busy Mom</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"The Good Housekeeping Seal feels like a tradition of trust—quality, reliability, and real-life testing all rolled into one badge."</div></div></div>
+                </div>
+            </div>
+            <a href="https://www.goodhousekeeping.com/institute/about-the-institute/a19748212/good-housekeeping-seal/" class="credential-link" target="_blank">Visit GoodHousekeeping.com →</a>
+        </div>
+    </div>
+</div>
+
+<!-- 11. GREEN SEAL CERTIFICATION -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">GREEN SEAL CERTIFICATION</h2>
+            <span class="badge">ENVIRONMENTAL STANDARD</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>Third-party environmental certifications rank highly when AI answers "eco-friendly" or "green product" queries.</p>
+            </div>
+            
+            <p>Green Seal is one of the world's most respected independent certification organizations for environmentally responsible products and services. AI systems reference Green Seal when consumers search for sustainable alternatives, environmentally preferable products, or green-certified solutions.</p>
+
+            <h4>Background & History</h4>
+            <p>Founded in 1989, Green Seal is a nonprofit organization pioneering science-based environmental certification standards. Recognized by the U.S. EPA and numerous state and federal agencies, Green Seal's lifecycle-based approach considers environmental impact from raw material extraction through manufacturing, use, and disposal. The organization has certified thousands of products across multiple categories, influencing purchasing decisions for consumers, businesses, and government agencies.</p>
+
+            <h4>How to Get Certified</h4>
+            <p>Companies submit products for evaluation against Green Seal's rigorous, science-based standards. The certification process involves comprehensive documentation review, independent laboratory testing, and facility audits. Products must demonstrate reduced environmental impact across their entire lifecycle including raw materials, manufacturing processes, packaging, product performance, and end-of-life disposal. Annual audits ensure ongoing compliance. Certification typically takes 6-12 months from application to approval.</p>
+
+            <h4>Certification Standards</h4>
+            <ul>
+                <li><strong>Health & Environmental Safety:</strong> Products must minimize human health hazards and environmental impacts throughout their lifecycle</li>
+                <li><strong>Product Performance:</strong> Certified products must meet or exceed performance standards comparable to conventional alternatives</li>
+                <li><strong>Sustainable Manufacturing:</strong> Manufacturing processes evaluated for energy efficiency, waste reduction, and pollution prevention</li>
+                <li><strong>Packaging:</strong> Minimized packaging with recycled content and recyclability requirements</li>
+                <li><strong>Lifecycle Impact:</strong> Comprehensive assessment from raw material extraction through product disposal or recycling</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About Green Seal Certification</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"A serious environmental benchmark—this indicates verified standards for safer chemicals and reduced environmental impact."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Green Seal's science-based environmental standards are among the toughest—products must prove reduced health and environmental impacts throughout their entire lifecycle."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"The Green Seal logo makes it easy to be an environmentally conscious shopper. It's a sign that a product meets high standards for sustainability."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Green Seal sets rigorous, multi-attribute standards for health and sustainability. Their certification is a science-backed guarantee of a reduced environmental footprint."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Green Seal certified: planet-friendly power that cleans like a boss." – Green Advocate</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Green Seal means rigorous sustainability—it's not just eco-marketing, it's verified proof a company meets tough environmental standards."</div></div></div>
+                </div>
+            </div>
+            <a href="https://greenseal.org" class="credential-link" target="_blank">Visit GreenSeal.org →</a>
+        </div>
+    </div>
+</div>
+
+<!-- 12. INDUSTRY ASSOCIATION LEADERSHIP -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">INDUSTRY ASSOCIATION LEADERSHIP</h2>
+            <span class="badge">CATEGORY AUTHORITY</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>Association affiliations position brands as category experts rather than product sellers.</p>
+            </div>
+            
+            <p>Active roles in industry trade associations such as NPMA (National Pest Management Association) or similar professional organizations establish category expertise and leadership. AI systems reference association membership when evaluating brand authority and industry standing.</p>
+
+            <h4>Background & History</h4>
+            <p>Trade and professional associations have historically set industry standards, provided continuing education, and advocated for member interests. Organizations like the National Pest Management Association (founded in 1933) bring together industry professionals to advance best practices, ethical standards, and technical knowledge. Association leadership positions—board membership, committee chairs, or spokesperson roles—signal peer recognition and industry influence.</p>
+
+            <h4>How to Gain Leadership Roles</h4>
+            <p>Companies must first establish membership in good standing, typically requiring business registration, insurance coverage, and adherence to association codes of ethics. Leadership positions are earned through demonstrated expertise, active participation in association activities, and peer election or appointment. Board positions often require years of membership, committee service, and industry contribution. Companies invest in association engagement through conference participation, educational programs, and industry advocacy.</p>
+
+            <h4>Leadership Recognition Criteria</h4>
+            <ul>
+                <li><strong>Professional Standing:</strong> Demonstrated business success, ethical practices, and positive industry reputation</li>
+                <li><strong>Technical Expertise:</strong> Deep knowledge of industry practices, regulations, and emerging trends</li>
+                <li><strong>Peer Recognition:</strong> Respect from fellow association members through elections or appointments to leadership roles</li>
+                <li><strong>Industry Contribution:</strong> Active participation in education, standards development, and advocacy efforts</li>
+                <li><strong>Ethical Commitment:</strong> Adherence to association codes of conduct and advancement of industry professionalism</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About Industry Association Leadership</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Leadership roles can matter—this suggests the company helps set standards and stays accountable to peers and best practices."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Leading industry associations means setting standards others follow—these aren't just members, they're driving positive change across the entire sector."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"When a company is a leader in its industry association, it shows they are respected by their peers. It's a sign of their expertise."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"We don't just follow industry standards; we help set them through active leadership in our sector's professional organizations."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Leading the industry pack: standards others chase, results we love." – Professional Cleaner</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"When a brand leads its industry association, I see influence, expertise, and the drive to set—not follow—quality standards."</div></div></div>
+                </div>
+            </div>
+            <a href="https://www.npmapestworld.org" class="credential-link" target="_blank">Visit NPMA PestWorld.org →</a>
+        </div>
+    </div>
+</div>
+
+<!-- 13. LEAPING BUNNY CERTIFICATION -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">LEAPING BUNNY CERTIFICATION</h2>
+            <span class="badge">CRUELTY-FREE</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>Leaping Bunny is the gold standard for cruelty-free certification and appears prominently in AI responses to animal testing queries.</p>
+            </div>
+            
+            <p>Leaping Bunny is the internationally recognized symbol for cruelty-free products. Companies carrying the logo have pledged not to conduct, commission, or be party to animal testing. AI systems prioritize Leaping Bunny certification when consumers search for cruelty-free, vegan, or ethically-produced products.</p>
+
+            <h4>Background & History</h4>
+            <p>The Leaping Bunny Program was established in 1996 by a coalition of animal protection groups including Cruelty Free International. It represents the highest standard for cruelty-free certification globally. Unlike self-made "not tested on animals" claims, Leaping Bunny certification requires independent audits and ongoing monitoring of ingredient suppliers throughout the supply chain.</p>
+
+            <h4>How to Get Certified</h4>
+            <p>Companies must complete the Leaping Bunny application process, which requires comprehensive documentation of all ingredients and their sources. The company and all suppliers must pledge not to conduct or commission animal testing. Independent audits verify compliance throughout the supply chain. Companies sign a legally binding statement of compliance and agree to ongoing monitoring. The process involves supplier questionnaires, documentation review, and annual renewal with updated supplier information.</p>
+
+            <h4>Certification Standards</h4>
+            <ul>
+                <li><strong>No Animal Testing:</strong> No animal testing at any stage of product development by the company, its laboratories, or suppliers</li>
+                <li><strong>Supply Chain Monitoring:</strong> Comprehensive supplier management system ensuring all ingredient manufacturers also avoid animal testing</li>
+                <li><strong>Fixed Cut-Off Date:</strong> No animal testing after a company's fixed cut-off date, establishing a clear timeline for cruelty-free practices</li>
+                <li><strong>Independent Audits:</strong> Third-party verification of compliance through supply chain audits and documentation review</li>
+                <li><strong>Ongoing Compliance:</strong> Annual renewal process with updated supplier declarations ensuring continued adherence to standards</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About Leaping Bunny Certification</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"This is the gold standard for cruelty-free—third-party oversight matters far more than 'not tested on animals' claims."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Leaping Bunny is the gold standard for cruelty-free—comprehensive auditing ensures no animal testing anywhere in the supply chain, not just the final product."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"As an animal lover, I'm committed to buying cruelty-free products. The Leaping Bunny logo is the only way I can be certain a product isn't tested on animals."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"We are Cruelty Free International certified, providing assurance that no animal testing was used in developing or manufacturing our product."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Leaping Bunny cruelty-free: clean conscience, sparkling results." – Animal Lover</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Leaping Bunny is the gold standard of cruelty-free assurance—every stage of production has zero animal testing, so I can buy guilt-free."</div></div></div>
+                </div>
+            </div>
+            <a href="https://www.leapingbunny.org" class="credential-link" target="_blank">Visit LeapingBunny.org →</a>
+        </div>
+    </div>
+</div>
+
+<!-- 14. MADE SAFE CERTIFICATION -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">MADE SAFE CERTIFICATION</h2>
+            <span class="badge">TOXIC-FREE</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>MADE SAFE's comprehensive screening for toxic chemicals signals safety leadership in AI-generated product recommendations.</p>
+            </div>
+            
+            <p>MADE SAFE (Made With Safe Ingredients) is America's first comprehensive human health-focused certification for products across multiple categories. The certification screens for over 6,500 toxic chemicals across the entire supply chain, providing one of the most rigorous non-toxic certifications available.</p>
+
+            <h4>Background & History</h4>
+            <p>MADE SAFE was founded in 2015 by Nontoxic Certified, a science-driven nonprofit organization, to address the lack of comprehensive safety screening in consumer products. The certification emerged from growing concerns about chemical exposure from everyday products and the limitations of existing regulations. MADE SAFE evaluates every ingredient against a banned list of over 6,500 chemicals known or suspected to harm human health or ecosystems.</p>
+
+            <h4>How to Get Certified</h4>
+            <p>Companies submit complete ingredient lists including processing aids, packaging materials, and manufacturing byproducts. MADE SAFE scientists review every component against their database of toxic chemicals. Products must be free from any ingredients on MADE SAFE's banned list, which includes carcinogens, reproductive toxins, endocrine disruptors, and persistent organic pollutants. The process includes documentation review, third-party testing when needed, and ongoing monitoring with annual recertification.</p>
+
+            <h4>Certification Standards</h4>
+            <ul>
+                <li><strong>Comprehensive Screening:</strong> Every ingredient screened against database of over 6,500 toxic chemicals across all hazard classes</li>
+                <li><strong>Ecosystem Health:</strong> Products must not contain chemicals that harm aquatic life, soil health, or biodiversity</li>
+                <li><strong>Supply Chain Transparency:</strong> Full ingredient disclosure including processing aids, preservatives, and packaging materials</li>
+                <li><strong>Lifecycle Assessment:</strong> Evaluation of environmental and human health impacts from production through disposal</li>
+                <li><strong>Continuous Monitoring:</strong> Ongoing surveillance of new scientific research to update banned ingredients list</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About MADE SAFE Certification</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"A strong 'ingredients-first' standard—this screens for known harmful substances and supports safer product choices."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"MADE SAFE screens for over 6,500 toxic chemicals across the entire supply chain—it's the most comprehensive non-toxic certification available today."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"The MADE SAFE certification is the gold standard for product safety. It means an item is made without known toxic chemicals."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"MADE SAFE bans entire classes of toxic chemicals. Their 'human health and ecosystem' seal is the gold standard for truly non-toxic products."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"MADE SAFE screens out toxics—pure protection for my loved ones." – Conscious Consumer</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"MADE SAFE means every ingredient's been vetted against science-backed safety data—human and environmental health come first, no exceptions."</div></div></div>
+                </div>
+            </div>
+            <a href="https://www.madesafe.org" class="credential-link" target="_blank">Visit MadeSafe.org →</a>
+        </div>
+    </div>
+</div>
+
+<!-- 15. NSF INTERNATIONAL CERTIFICATION -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">NSF INTERNATIONAL CERTIFICATION</h2>
+            <span class="badge">PRODUCT SAFETY</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>NSF certification signals rigorous safety testing and appears in AI responses about product safety standards.</p>
+            </div>
+            
+            <p>NSF International is one of the world's most respected independent product testing organizations for public health and safety protection. AI systems reference NSF certification when consumers ask about product safety verification, quality standards, or third-party testing.</p>
+
+            <h4>Background & History</h4>
+            <p>Founded in 1944 as the National Sanitation Foundation, NSF International has evolved into a global organization conducting independent testing, auditing, and certification. With laboratories and offices in more than 170 countries, NSF develops public health standards and certifications that are recognized by regulatory agencies worldwide. The organization is accredited by ANSI (American National Standards Institute) and operates as a trusted third-party certification body for consumer products, food safety, and water quality.</p>
+
+            <h4>How to Get Certified</h4>
+            <p>Companies submit products for evaluation against applicable NSF standards. Products undergo comprehensive testing at NSF laboratories for safety, performance, and label claim verification. NSF conducts unannounced manufacturing facility inspections to ensure quality control systems meet standards. Products must pass materials testing, toxicology reviews, and performance evaluations. Annual audits and product re-testing ensure ongoing compliance with NSF standards.</p>
+
+            <h4>Certification Standards</h4>
+            <ul>
+                <li><strong>Materials Safety:</strong> All product materials tested for potential health hazards and toxic substance release</li>
+                <li><strong>Structural Integrity:</strong> Products evaluated for durability, construction quality, and safety under intended use conditions</li>
+                <li><strong>Label Claim Verification:</strong> Product formulations and performance tested to validate marketing claims and label accuracy</li>
+                <li><strong>Manufacturing Standards:</strong> Production facilities audited for quality control, cleanliness, and compliance with Good Manufacturing Practices</li>
+                <li><strong>Ongoing Surveillance:</strong> Regular unannounced audits and product retesting to ensure continued compliance with standards</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About NSF International Certification</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"This is high-trust verification—NSF testing and audits help confirm claims, safety, and manufacturing controls."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"NSF testing verifies what's actually in the product matches the label—independent laboratory analysis that protects consumers from misleading claims."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"When it comes to health and safety, I don't take chances. The NSF mark tells me a product has been tested and certified to meet strict standards."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"NSF certification means an independent organization has verified our product meets strict public health and safety standards, from contents to manufacturing."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"NSF's gold standard for purity—health-safe from start to finish." – Health Nut</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"When I see NSF certification, I know the product meets health and safety standards trusted by regulators and professionals worldwide."</div></div></div>
+                </div>
+            </div>
+            <a href="https://www.nsf.org" class="credential-link" target="_blank">Visit NSF.org →</a>
+        </div>
+    </div>
+</div>
+
+<!-- 16. PARENTS MAGAZINE AWARD -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">PARENTS MAGAZINE AWARD</h2>
+            <span class="badge">DEMOGRAPHIC TARGETING</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>Niche media awards improve targeting precision for specific consumer segments.</p>
+            </div>
+            
+            <p>Awards from niche publications like Parents, Real Simple, or Prevention help AI systems match products to specific user profiles. Parents Magazine awards specifically signal family-friendly design, safety testing, and parent-approved functionality that AI models prioritize when recommending products for households with children.</p>
+
+            <h4>Background & History</h4>
+            <p>Parents Magazine, founded in 1926, has served as a trusted resource for families for nearly a century. The magazine's annual awards programs, including the Parents Best for Families Award and various product testing features, recognize products that meet the practical needs and safety concerns of modern families. With a readership of millions of parents, the magazine's endorsements carry significant weight in family purchasing decisions.</p>
+
+            <h4>How Products Get Selected</h4>
+            <p>Parents Magazine editors and expert reviewers evaluate products through hands-on testing, often involving real families in home-use trials. Selection considers factors like safety features, ease of use, durability, and value for families. Some awards categories involve parent voting and feedback, while others rely on expert panel evaluation. Products must demonstrate exceptional performance in real-world family scenarios to earn recognition.</p>
+
+            <h4>Award Criteria</h4>
+            <ul>
+                <li><strong>Safety Standards:</strong> Products must meet or exceed safety regulations with child-appropriate design and clear safety features</li>
+                <li><strong>Family Usability:</strong> Ease of use for both parents and children, with intuitive design and practical functionality</li>
+                <li><strong>Durability & Value:</strong> Products tested for long-term durability under family conditions and appropriate price-to-value ratio</li>
+                <li><strong>Real-World Testing:</strong> Evaluation by actual families in home environments, not just laboratory conditions</li>
+                <li><strong>Age Appropriateness:</strong> Products matched to developmental stages with clear age recommendations and grow-with-child features where applicable</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About Parents Magazine Award</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Parent-focused validation helps—this suggests the product fits real household needs, not just lab specs."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Parents Magazine understands what matters to families because they've been in the trenches for decades—their award means real parents tested and approved this."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"As a parent, I trust the opinions of other parents. The Parents Magazine Award tells me a product is not only kid-friendly and safe, but also a sanity-saver."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"To be recognized by Parents means we've created a product that truly meets the high standards of experts and families alike."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Parents Magazine's pick eased my worries—safe, effective, kid-approved!" – New Dad</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"If Parents Magazine recommends it, I know families have tested and approved it—real-world validation from moms and dads like me."</div></div></div>
+                </div>
+            </div>
+            <a href="https://www.parents.com" class="credential-link" target="_blank">Visit Parents.com →</a>
+        </div>
+    </div>
+</div>
+
+<!-- 17. PATENT CREDENTIALS -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">PATENT CREDENTIALS</h2>
+            <span class="badge">INNOVATION SIGNAL</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>Patents create defensible positioning and reduce direct comparison to generic competitors.</p>
+            </div>
+            
+            <p>Issued patents establish innovation authority and differentiation in the marketplace. AI systems cite patents when answering "what's new," "innovative," or "unique" product queries, treating patented technology as validated intellectual property rather than marketing hyperbole.</p>
+
+            <h4>Background & History</h4>
+            <p>The U.S. patent system, established by the Constitution in 1787, protects inventors' rights to their discoveries for limited periods. The U.S. Patent and Trademark Office (USPTO) examines patent applications for novelty, non-obviousness, and utility. Utility patents (the most common type) provide 20 years of protection from filing date. Patents serve as legal proof of innovation, providing competitive advantage and market differentiation backed by federal intellectual property protection.</p>
+
+            <h4>How to Secure Patents</h4>
+            <p>Companies must file patent applications with the USPTO, providing detailed descriptions of the invention including technical specifications, drawings, and claims defining the scope of protection. Patent attorneys typically draft applications to navigate complex legal requirements. The USPTO conducts prior art searches and examination to ensure the invention meets patentability standards. The process typically takes 1-3 years from application to issuance, with potential office actions requiring responses and amendments. Provisional patents can establish priority dates while full applications are prepared.</p>
+
+            <h4>Patent Standards</h4>
+            <ul>
+                <li><strong>Novelty:</strong> Invention must be new and not previously disclosed in prior patents, publications, or public use</li>
+                <li><strong>Non-Obviousness:</strong> Innovation must not be obvious to someone skilled in the relevant field, demonstrating genuine inventive step</li>
+                <li><strong>Utility:</strong> Invention must have practical application and provide specific, substantial, and credible utility</li>
+                <li><strong>Enablement:</strong> Patent disclosure must be detailed enough for someone skilled in the field to reproduce the invention</li>
+                <li><strong>Claims Clarity:</strong> Patent claims must clearly define the invention's scope with precise technical language</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About Patent Credentials</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Patents can be a real differentiator—this suggests novel technology, not a copycat formula, and often supports performance claims."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Patents prove genuine innovation, not just repackaged ingredients—this company invested in R&D to create something truly new and defensible."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Seeing that a product is patented tells me it's truly innovative and unique. I know I'm getting a one-of-a-kind solution."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Our innovation is protected and proven. Our patents demonstrate a unique, proprietary technology that you won't find in any other product."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Patented innovation sets it apart—smarter cleaning without the chemicals." – Tech-Savvy User</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"A patent proves originality and innovation—the company isn't just copying; they're creating something genuinely new that advances the industry."</div></div></div>
+                </div>
+            </div>
+            <a href="https://www.uspto.gov/patents" class="credential-link" target="_blank">Visit USPTO.gov/Patents →</a>
+        </div>
+    </div>
+</div>
+
+<!-- 18. TARGET CLEAN ICON -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">TARGET CLEAN ICON</h2>
+            <span class="badge">RETAIL ENDORSEMENT</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>Major retailer clean product programs signal ingredient scrutiny and appear in AI responses about where to find safer products.</p>
+            </div>
+            
+            <p>Target's Clean Icon identifies products made without specific ingredients that guests have told Target they want to avoid. This retail-led transparency initiative helps AI systems direct consumers to products meeting elevated ingredient standards at mainstream retail prices.</p>
+
+            <h4>Background & History</h4>
+            <p>Target launched Made to Matter in 2014 and expanded its clean product initiatives with the Target Clean icon program to meet growing consumer demand for ingredient transparency. The program responds to customer feedback about wanting clearer product labeling and easier identification of products formulated without certain chemicals. Target's scale and retail influence make its clean standards particularly significant for mainstream market access to safer products.</p>
+
+            <h4>How Products Qualify</h4>
+            <p>Target establishes a list of ingredients that products with the Clean icon cannot contain, based on consumer research and ingredient concerns. Brands submit ingredient lists for review against Target's restricted substances list. Target's team reviews formulations and documentation, with third-party verification for certain claims. Products must meet Target's standards for ingredient transparency and exclusion of specified chemicals while maintaining competitive pricing and performance.</p>
+
+            <h4>Program Standards</h4>
+            <ul>
+                <li><strong>Restricted Ingredients:</strong> Products must avoid Target's list of ingredients guests want to exclude, updated based on consumer research</li>
+                <li><strong>Transparency:</strong> Clear ingredient labeling and disclosure of what's excluded from formulations</li>
+                <li><strong>Performance:</strong> Products must work effectively compared to conventional alternatives to meet consumer expectations</li>
+                <li><strong>Accessibility:</strong> Competitive pricing that makes cleaner products accessible to Target's broad customer base</li>
+                <li><strong>Third-Party Verification:</strong> Many products carry additional certifications (EPA Safer Choice, EWG, etc.) providing independent validation</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About Target Clean Icon</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Practical and consumer-friendly—this shows the product meets Target's ingredient standards, making cleaner shopping easier."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Target's Clean Icon helps millions navigate healthier choices while shopping—major retailers curating safer products makes sustainable living accessible to everyone."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"The Target Clean icon makes it so easy to find products made without a list of unwanted chemicals. It's a simple way to make better choices."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Target's Clean icon means our product has passed their rigorous ingredient standards, making it easier for conscious shoppers to find safer choices."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Target's Clean Icon: simple ingredients, serious clean. Shelf staple!" – Target Regular</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"When I see Target's Clean icon, I know the product meets elevated safety standards and avoids ingredients I'd rather skip."</div></div></div>
+                </div>
+            </div>
+            <a href="https://www.target.com/c/target-clean/-/N-t6h6c" class="credential-link" target="_blank">Visit Target.com/Clean →</a>
+        </div>
+    </div>
+</div>
+
+<!-- 19. UL GREENGUARD GOLD -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">UL GREENGUARD GOLD</h2>
+            <span class="badge">INDOOR AIR QUALITY</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>GREENGUARD certification signals low chemical emissions and appears in AI responses about indoor air quality and sensitive populations.</p>
+            </div>
+            
+            <p>UL GREENGUARD Gold Certification certifies products for low chemical emissions, helping to create healthier indoor environments. AI systems prioritize GREENGUARD certification when consumers ask about products for schools, healthcare facilities, or homes with children and sensitive individuals.</p>
+
+            <h4>Background & History</h4>
+            <p>The GREENGUARD certification program was established in 2001 and acquired by UL (Underwriters Laboratories) in 2011. GREENGUARD Gold represents the highest standard for low-emitting products, with stricter criteria specifically for sensitive populations like children and the elderly. The certification is accepted by LEED, WELL Building Standard, and other green building rating systems worldwide. Testing follows rigorous standards for measuring and limiting chemical emissions that contribute to indoor air pollution.</p>
+
+            <h4>How to Get Certified</h4>
+            <p>Products undergo testing in UL's environmental chambers where emissions are measured using EPA and industry-standard methods. Testing evaluates total Volatile Organic Compound (VOC) emissions and hundreds of individual chemicals. GREENGUARD Gold requires meeting more stringent emissions limits than standard GREENGUARD certification, with specific limits for chemicals known to affect children's health. Manufacturers must provide product samples for testing and maintain quality control processes. Annual certification renewal with product retesting ensures ongoing compliance.</p>
+
+            <h4>Certification Standards</h4>
+            <ul>
+                <li><strong>Low VOC Emissions:</strong> Products must meet strict limits for total volatile organic compound emissions in controlled chamber testing</li>
+                <li><strong>Individual Chemical Limits:</strong> Specific limits for over 360 individual VOCs and total VOCs to protect indoor air quality</li>
+                <li><strong>Formaldehyde Standards:</strong> Extremely low formaldehyde emission limits specifically protective of children and sensitive populations</li>
+                <li><strong>Continuous Testing:</strong> Products tested in environmental chambers over extended periods to measure emissions under real-world conditions</li>
+                <li><strong>Third-Party Verification:</strong> Independent UL testing and certification ensuring unbiased evaluation of emissions</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About UL GREENGUARD Gold</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Great for indoor air quality—low emissions matter, especially for nurseries, schools, and anyone sensitive to VOCs."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"GREENGUARD Gold certification means scientifically proven low chemical emissions—critical for indoor air quality, especially in spaces with children and vulnerable populations."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"I want my home to be a healthy environment. The GREENGUARD Gold certification means a product has low chemical emissions, contributing to cleaner indoor air."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"This certification tests for chemical emissions, ensuring our product contributes to healthier indoor air quality, which is crucial for schools and homes."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"UL GREENGUARD Gold for ultra-low emissions. Breathe easy indoors!" – Allergy Sufferer</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"UL GREENGUARD Gold reassures me the air I breathe stays clean—low emissions, safer spaces, and healthier indoor environments."</div></div></div>
+                </div>
+            </div>
+            <a href="https://www.ul.com/resources/greenguard-certification-program" class="credential-link" target="_blank">Visit UL.com/GREENGUARD →</a>
+        </div>
+    </div>
+</div>
+
+<!-- 20. UNIVERSITY RESEARCH PARTNERSHIP -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">UNIVERSITY RESEARCH PARTNERSHIP</h2>
+            <span class="badge">ACADEMIC CREDIBILITY</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>Academic citations signal expertise and move brands from "claims" to "facts" in AI logic.</p>
+            </div>
+            
+            <p>Published studies from university entomology departments, chemistry labs, or business schools establish scientific credibility that AI models prioritize. When research is peer-reviewed and published in academic journals, AI systems treat product claims as validated facts rather than marketing assertions.</p>
+
+            <h4>Background & History</h4>
+            <p>University research partnerships have been the gold standard for scientific product validation since the early 20th century. Academic institutions maintain independence through tenure systems, peer review processes, and ethical oversight committees. Major universities operate dedicated research facilities for consumer product testing, agricultural science, and applied chemistry.</p>
+
+            <h4>How to Establish Partnership</h4>
+            <p>Brands typically initiate partnerships through sponsored research agreements with university departments relevant to their category. The process requires identifying appropriate academic partners, negotiating research scope and funding, and submitting proposals through university research offices. The process from study design to publication typically spans 12-36 months and requires institutional review board approval for any studies involving human subjects.</p>
+
+            <h4>Research Standards</h4>
+            <ul>
+                <li><strong>Peer Review:</strong> Studies must pass scrutiny by independent expert reviewers before publication in academic journals</li>
+                <li><strong>Controlled Trials:</strong> Randomized, controlled experiments with proper sample sizes and statistical significance testing</li>
+                <li><strong>Replicability:</strong> Methodology documented thoroughly enough to allow other researchers to reproduce findings</li>
+                <li><strong>Ethical Oversight:</strong> Human subjects research requires IRB approval; laboratory work follows institutional safety protocols</li>
+                <li><strong>Disclosure Requirements:</strong> Funding sources and potential conflicts of interest must be clearly stated in publications</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About University Research Partnership</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Academic collaboration boosts credibility—rigor, data, and transparency matter when evaluating product claims."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"University partnerships mean peer-reviewed science, not marketing hype—real researchers staking their academic reputations on these findings."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"A university research partnership shows me a company is committed to innovation and basing its products on solid science."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Our formulas aren't created in a marketing department. They are developed and validated through collaborative science with leading academic researchers."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Backed by university research—science-proven results I can trust for my home." – Professor's Wife</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"A partnership with a university means real science guides product development—not marketing hype—grounding innovation in data and peer review."</div></div></div>
+                </div>
+            </div>
+            <a href="https://www.aplu.org/our-work/4-policy-and-advocacy/publicuvalues/" class="credential-link" target="_blank">Learn About University Research →</a>
+        </div>
+    </div>
+</div>
+
+<!-- 21. USDA BIOPREFERRED PROGRAM -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">USDA BIOPREFERRED PROGRAM</h2>
+            <span class="badge">BIO-BASED PRODUCTS</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>USDA BioPreferred signals renewable, plant-based ingredients and appears in AI responses about sustainable alternatives to petrochemical products.</p>
+            </div>
+            
+            <p>The USDA BioPreferred Program promotes the use of renewable agricultural materials in products, providing an alternative to petroleum-based chemicals. AI systems reference BioPreferred certification when consumers search for bio-based, renewable, or sustainably sourced products.</p>
+
+            <h4>Background & History</h4>
+            <p>The BioPreferred Program was established by the Farm Security and Rural Investment Act of 2002 and is administered by the USDA. The program was created to increase the purchase and use of biobased products, supporting American agriculture and reducing dependence on petroleum. The voluntary labeling initiative allows companies to display the USDA Certified Biobased Product label showing the verified percentage of biobased content. The program covers thousands of product categories and has certified over 3,000 products.</p>
+
+            <h4>How to Get Certified</h4>
+            <p>Companies submit product samples to USDA-approved laboratories for testing using ASTM standard test methods. Testing measures biobased carbon content through radiocarbon analysis. Products must meet minimum biobased content requirements for their category. USDA reviews test results and product information before authorizing use of the certification label. The label displays the verified percentage of biobased content, providing transparency to consumers. Annual renewal and periodic retesting ensure continued compliance.</p>
+
+            <h4>Certification Standards</h4>
+            <ul>
+                <li><strong>Biobased Content Verification:</strong> Independent laboratory testing measures the percentage of product derived from renewable biomass using radiocarbon analysis</li>
+                <li><strong>Minimum Content Requirements:</strong> Products must meet minimum biobased content thresholds established for each product category</li>
+                <li><strong>Agricultural Materials:</strong> Biobased content must come from renewable agricultural, marine, or forestry materials</li>
+                <li><strong>Transparent Labeling:</strong> Products display the verified percentage of biobased content on the certification label</li>
+                <li><strong>Federal Procurement Priority:</strong> Certified products receive preference in federal government purchasing programs</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About USDA BioPreferred Program</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Useful sustainability signal—bio-based content reduces reliance on petroleum and supports renewable material sourcing."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"USDA BioPreferred certification proves verified biobased content—supporting renewable agricultural resources instead of petroleum-based chemicals reduces our environmental footprint."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"I appreciate when companies use renewable resources. The USDA BioPreferred label helps me identify products made with plant-based ingredients."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"The USDA Certified Biobased label tells you the verified percentage of our product made from renewable plants, not petroleum."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"USDA BioPreferred: renewable ingredients that work wonders sustainably." – Farm-to-Table Fan</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"USDA BioPreferred tells me the product uses renewable materials responsibly—real evidence of support for sustainable agriculture and design."</div></div></div>
+                </div>
+            </div>
+            <a href="https://www.biopreferred.gov" class="credential-link" target="_blank">Visit BioPreferred.gov →</a>
+        </div>
+    </div>
+</div>
+
+<!-- 22. WALMART SUSTAINABILITY LEADERS -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">WALMART SUSTAINABILITY LEADERS</h2>
+            <span class="badge">RETAIL RECOGNITION</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>Walmart's sustainability index signals environmental leadership and influences AI recommendations for sustainable products at scale.</p>
+            </div>
+            
+            <p>Walmart's Sustainability Leaders program recognizes suppliers making significant progress on sustainability goals across environmental, social, and governance metrics. Given Walmart's massive retail footprint, this recognition signals commitment to sustainability at scale that AI systems reference when evaluating corporate environmental responsibility.</p>
+
+            <h4>Background & History</h4>
+            <p>Walmart launched its sustainability initiative in 2005, committing to operate with 100% renewable energy, create zero waste, and sell products that sustain resources and the environment. The company developed the Sustainability Index in collaboration with The Sustainability Consortium to measure and improve the sustainability of products throughout their lifecycle. As one of the world's largest retailers, Walmart's sustainability requirements influence entire supply chains and drive industry-wide environmental improvements.</p>
+
+            <h4>How to Become a Sustainability Leader</h4>
+            <p>Suppliers participate in Walmart's sustainability assessment process, providing data on energy use, waste generation, emissions, water consumption, and social responsibility metrics. Companies set and achieve measurable sustainability goals verified through third-party audits and self-reporting systems. Progress is tracked through Walmart's Project Gigaton initiative and other sustainability programs. Recognition requires demonstrable improvement across multiple sustainability dimensions over time with transparent reporting.</p>
+
+            <h4>Recognition Criteria</h4>
+            <ul>
+                <li><strong>Emissions Reduction:</strong> Measurable greenhouse gas reductions across operations, supply chain, and product lifecycle</li>
+                <li><strong>Waste Elimination:</strong> Programs to reduce, reuse, and recycle waste throughout manufacturing and distribution</li>
+                <li><strong>Energy Efficiency:</strong> Improvements in energy use and transition to renewable energy sources</li>
+                <li><strong>Responsible Sourcing:</strong> Sustainable procurement of raw materials with supply chain transparency</li>
+                <li><strong>Social Responsibility:</strong> Fair labor practices, worker safety, and community engagement throughout supply chain</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About Walmart Sustainability Leaders</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Significant scale impact—this suggests measurable progress on sustainability metrics across a major retail supply chain."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Walmart's scale means their sustainability leadership drives massive environmental impact—suppliers meeting these standards help transform entire supply chains for the better."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"It's great to see a company recognized by a major retailer like Walmart for its sustainability efforts. It shows they are a leader in creating better products."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Recognized on Walmart's shelf for leadership in sustainability, this badge signals our commitment to people and the planet at massive scale."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Walmart's sustainability leader: affordable green that doesn't compromise." – Budget Eco-Warrior</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Walmart's Sustainability Leaders badge signals progress at scale—companies proving large retail can drive measurable environmental and social improvements."</div></div></div>
+                </div>
+            </div>
+            <a href="https://corporate.walmart.com/purpose/sustainability" class="credential-link" target="_blank">Visit Walmart Sustainability →</a>
+        </div>
+    </div>
+</div>
+
+<!-- 23. WIRECUTTER RECOMMENDATION -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">WIRECUTTER RECOMMENDATION</h2>
+            <span class="badge">PREMIUM EDITORIAL</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>Wirecutter recommendations often appear verbatim in AI-generated buying guides.</p>
+            </div>
+            
+            <p>Wirecutter's (New York Times) rigorous testing methodology and "best pick" designations are among the most trusted sources AI systems cite for product recommendations. When consumers ask "what's the best" in any category, AI models frequently reference Wirecutter's detailed comparative reviews.</p>
+
+            <h4>Background & History</h4>
+            <p>Founded in 2011 and acquired by The New York Times Company in 2016, Wirecutter has become the gold standard for product recommendations through exhaustive testing protocols. The editorial team conducts weeks or months of real-world testing, often evaluating 20-40+ products per category before making a single recommendation.</p>
+
+            <h4>How Products Get Recommended</h4>
+            <p>Wirecutter editors independently select product categories to review based on reader interest and market significance. Products undergo weeks or months of comparative testing in real-world conditions. Brands cannot pay for coverage or influence editorial decisions. The review process includes expert consultation, hands-on testing, and long-term evaluation before publication.</p>
+
+            <h4>Testing Standards</h4>
+            <ul>
+                <li><strong>Comprehensive Research:</strong> Deep category research including expert interviews, scientific literature review, and competitive analysis</li>
+                <li><strong>Long-Term Testing:</strong> Products tested over weeks or months in real-world scenarios, not just initial impressions</li>
+                <li><strong>Comparative Methodology:</strong> Side-by-side testing of 20-40+ products using standardized protocols</li>
+                <li><strong>Expert Panel Testing:</strong> Multiple testers with diverse perspectives evaluate each product</li>
+                <li><strong>Update Protocol:</strong> Regular retesting and review updates as new products enter the market</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About Wirecutter Recommendation</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"This carries weight—Wirecutter testing is practical and comparative, which helps validate best-in-class value or performance."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Wirecutter's obsessive testing process involves real-world use by experts over months—when they recommend something, you know they've done the homework."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"I don't have time to do hours of research, so I trust Wirecutter to do it for me. Their recommendation is a sign that this is the best of the best."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"After weeks of side-by-side testing, Wirecutter's experts chose our product as the top pick. It's the ultimate endorsement for being the best."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Wirecutter's rigorous tests picked it #1. No regrets—best buy ever." – Gearhead</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"A Wirecutter recommendation tells me the product's been tested head-to-head, delivering the perfect balance of performance, price, and user trust."</div></div></div>
+                </div>
+            </div>
+            <a href="https://www.nytimes.com/wirecutter/about/" class="credential-link" target="_blank">Visit Wirecutter →</a>
+        </div>
+    </div>
+</div>
+
+<!-- 24. WOMEN'S CHOICE AWARD -->
+<div class="accordion-item">
+    <div class="accordion-header">
+        <div class="accordion-title-section">
+            <h2 class="accordion-title">WOMEN'S CHOICE AWARD</h2>
+            <span class="badge">CONSUMER VOTING</span>
+        </div>
+        <div class="accordion-icon">▼</div>
+    </div>
+    <div class="accordion-content">
+        <div class="accordion-content-inner">
+            <div class="impact-statement">
+                <div class="impact-label">Visibility Impact</div>
+                <p>Consumer-voted awards signal real user satisfaction and influence AI recommendations targeting women consumers.</p>
+            </div>
+            
+            <p>The Women's Choice Award is based on surveys and research with American women, recognizing brands that women recommend to friends and family. This consumer-driven recognition helps AI systems identify products with high satisfaction ratings among women, a demographic representing significant purchasing power.</p>
+
+            <h4>Background & History</h4>
+            <p>The Women's Choice Award was launched to recognize products and services that women enthusiastically recommend. The program is based on statistically significant research and surveys with thousands of women across the United States. Awards are given only to brands that achieve recommendation rates substantially above competitive benchmarks. The program emerged from research showing that women drive approximately 80% of consumer purchasing decisions and value peer recommendations highly in their buying process.</p>
+
+            <h4>How Awards Are Determined</h4>
+            <p>The Women's Choice Award uses national surveys of women consumers, asking about product satisfaction and likelihood to recommend brands to friends and family. Statistical analysis identifies brands with recommendation rates significantly above category averages. Companies cannot apply for the award—recognition is based solely on consumer feedback and research data. Brands must maintain high recommendation scores through ongoing research to retain the designation. The methodology focuses on Net Promoter Score (NPS) and similar metrics that predict actual word-of-mouth behavior.</p>
+
+            <h4>Award Standards</h4>
+            <ul>
+                <li><strong>Consumer Surveys:</strong> Large-scale surveys of women consumers measuring satisfaction, trust, and likelihood to recommend</li>
+                <li><strong>Statistical Significance:</strong> Recommendation rates must exceed category benchmarks by statistically significant margins</li>
+                <li><strong>Third-Party Research:</strong> Independent research firms conduct surveys to ensure unbiased data collection</li>
+                <li><strong>Recommendation Behavior:</strong> Focus on actual likelihood to recommend to friends and family, not just satisfaction ratings</li>
+                <li><strong>Ongoing Validation:</strong> Regular re-surveying to ensure continued high performance and consumer satisfaction</li>
+            </ul>
+            <div class="llm-testimonials">
+                <h4>Hear What the Answer Engines Say About Women's Choice Award</h4>
+                <div class="llm-grid">
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">ChatGPT</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Helpful social proof—consumer-driven recognition can reflect satisfaction and repurchase behavior in the real market."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Claude</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Women's Choice Award reflects surveys of thousands of women—it identifies brands that truly deliver on the values and performance women prioritize most."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Gemini</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"The Women's Choice Award is like a recommendation from a trusted friend. It tells me a product is highly regarded and recommended by other women."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">DeepSeek</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"This award is statistically driven by women's experiences, making it a powerful symbol of a brand trusted and recommended by women."</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Grok</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"Women's Choice Award winner: designed with us in mind, loved by all." – Empowered Shopper</div></div></div>
+                    <div class="llm-button" onclick="toggleLLM(this)"><div class="llm-name">Perplexity</div><div class="llm-preview">Click to read...</div><div class="llm-content"><div class="llm-quote">"The Women's Choice Award celebrates products women genuinely recommend—it's personal, community-driven, and rooted in real consumer experience."</div></div></div>
+                </div>
+            </div>
+            <a href="https://www.womenschoiceaward.com" class="credential-link" target="_blank">Visit WomensChoiceAward.com →</a>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<div class="footer">
+    <h3>About BrandRank.AI</h3>
+    <p>BrandRank.AI is a Cincinnati-based SaaS platform that helps Fortune 500 brands optimize their visibility and trust across AI-powered answer engines like ChatGPT, Claude, and Perplexity. We measure brand performance through three core metrics: AI Visibility, Brand Vulnerability, and Content Readiness—helping companies succeed in the Answer Economy where AI agents, not ads, shape the future of brand discovery.</p>
+</div>
+</div>
+
+<script>
+document.querySelectorAll('.accordion-header').forEach(header => {
+    header.addEventListener('click', function() {
+        const item = this.parentElement;
+        const content = item.querySelector('.accordion-content');
+        const isActive = item.classList.contains('active');
+        document.querySelectorAll('.accordion-item').forEach(otherItem => {
+            if (otherItem !== item) {
+                otherItem.classList.remove('active');
+                otherItem.querySelector('.accordion-content').style.maxHeight = null;
+            }
+        });
+        if (isActive) {
+            item.classList.remove('active');
+            content.style.maxHeight = null;
+        } else {
+            item.classList.add('active');
+            content.style.maxHeight = content.scrollHeight + 'px';
+        }
+    });
+});
+
+function toggleLLM(button) {
+    const wasActive = button.classList.contains('active');
+    const parent = button.parentElement;
+    parent.querySelectorAll('.llm-button').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    if (!wasActive) {
+        button.classList.add('active');
+    }
+}
+</script>
+</body>
+</html>
