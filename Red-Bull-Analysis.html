@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Energy Drink Brand Analysis</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #0a0e1a;
+  color: #e0e0e0;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  text-align: center;
+  padding: 40px 20px;
+  border-bottom: 2px solid #00d4ff;
+  margin-bottom: 30px;
+}
+
+.main-title {
+  font-size: 2.5rem;
+  color: #00d4ff;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.main-subtitle {
+  font-size: 1.1rem;
+  color: #b0b0b0;
+  margin-bottom: 5px;
+}
+
+.powered-by {
+  font-size: 0.9rem;
+  color: #00d4ff;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+.search-container {
+  background: #141824;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 250px;
+  padding: 12px 16px;
+  background: #0a0e1a;
+  border: 2px solid #00d4ff;
+  border-radius: 6px;
+  color: #e0e0e0;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #00f7ff;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+}
+
+.clear-search {
+  padding: 12px 24px;
+  background: #00d4ff;
+  color: #0a0e1a;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.clear-search:hover {
+  background: #00f7ff;
+  transform: translateY(-2px);
+}
+
+.search-results-info {
+  color: #b0b0b0;
+  font-size: 0.9rem;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.brand-bar {
+  background: #141824;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.brand-bar h3 {
+  color: #00d4ff;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+}
+
+.brand-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.brand-btn {
+  padding: 10px 18px;
+  background: #1a2030;
+  color: #e0e0e0;
+  border: 2px solid #2a3545;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.brand-btn:hover {
+  border-color: #00d4ff;
+  background: #2a3545;
+}
+
+.brand-btn-active {
+  background: #00d4ff;
+  color: #0a0e1a;
+  border-color: #00d4ff;
+  font-weight: 600;
+}
+
+.brand-clear {
+  padding: 10px 18px;
+  background: #d43f00;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.brand-clear:hover {
+  background: #ff5722;
+  transform: translateY(-2px);
+}
+
+.category-section {
+  background: #141824;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  overflow: hidden;
+}
+
+.category-header {
+  background: linear-gradient(135deg, #1a2540 0%, #0f1625 100%);
+  padding: 20px 25px;
+  border-left: 4px solid #00d4ff;
+}
+
+.category-header h2 {
+  color: #00d4ff;
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.category-stats {
+  color: #b0b0b0;
+  font-size: 0.9rem;
+}
+
+.table-container {
+  overflow-x: auto;
+  padding: 20px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+.data-table th {
+  background: #1a2540;
+  color: #00d4ff;
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid #00d4ff;
+  position: sticky;
+  top: 0;
+}
+
+.data-table td {
+  padding: 15px;
+  border-bottom: 1px solid #2a3545;
+}
+
+.data-table tr:nth-child(even) {
+  background: #0f1420;
+}
+
+.data-table tr:hover {
+  background: #1a2030;
+  transition: background 0.2s;
+}
+
+.prompt-cell {
+  background: #1a2540 !important;
+  font-weight: 600;
+  border-left: 4px solid #00d4ff;
+  color: #fff;
+  max-width: 400px;
+}
+
+.llm-response {
+  color: #d0d0d0;
+}
+
+.highlight {
+  background: #ffd700;
+  color: #0a0e1a;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.analysis-section {
+  background: #141824;
+  border-radius: 8px;
+  padding: 30px;
+  margin-bottom: 30px;
+}
+
+.analysis-title {
+  color: #00d4ff;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #00d4ff;
+  padding-bottom: 10px;
+}
+
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.insight-card {
+  background: #1a2540;
+  padding: 20px;
+  border-radius: 6px;
+  border-left: 4px solid #00d4ff;
+}
+
+.insight-card h3 {
+  color: #00d4ff;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.insight-card p {
+  color: #d0d0d0;
+  line-height: 1.7;
+}
+
+.about-section {
+  background: #141824;
+  border-radius: 8px;
+  padding: 30px;
+  margin-bottom: 30px;
+}
+
+.about-title {
+  color: #00d4ff;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #00d4ff;
+  padding-bottom: 10px;
+}
+
+.about-section p {
+  color: #d0d0d0;
+  line-height: 1.8;
+  margin-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+  .main-title {
+    font-size: 1.8rem;
+  }
+  
+  .search-container {
+    flex-direction: column;
+  }
+  
+  .search-input {
+    width: 100%;
+  }
+  
+  .insights-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1 class="main-title">U.S. Energy Drink Brand Performance Analysis</h1>
+    <p class="main-subtitle">AI-Powered Evaluation of Leading Energy Drink Retailers & Brands</p>
+    <p class="powered-by">Powered by BrandRank.AI</p>
+  </div>
+
+  <div class="search-container">
+    <input type="text" class="search-input" placeholder="Search by keyword...">
+    <button class="clear-search">Clear Search</button>
+    <div class="search-results-info"></div>
+  </div>
+
+  <div class="brand-bar">
+    <h3>Top Brands by Mentions</h3>
+    <div class="brand-buttons"></div>
+  </div>
+
+  <div id="content"></div>
+
+  <div class="analysis-section">
+    <h2 class="analysis-title">Key Insights & Analysis</h2>
+    <div class="insights-grid">
+      <div class="insight-card">
+        <h3>Consensus Levels</h3>
+        <p><strong>High Agreement:</strong> Red Bull dominates brand recognition queries with near-universal consensus across AI models. Amazon and Walmart show strong agreement for online delivery and value pricing. <strong>Medium Agreement:</strong> 7-Eleven and Target split convenience and variety categories.</p>
+      </div>
+      <div class="insight-card">
+        <h3>Key Trends</h3>
+        <p>Red Bull emerges as the definitive brand leader across taste, quality, and availability metrics. Amazon leads online delivery and subscription services. Warehouse clubs (Costco, Sam's Club) dominate bulk value. Gas stations (7-Eleven, Wawa) excel in convenience and cold-can availability.</p>
+      </div>
+      <div class="insight-card">
+        <h3>Risk Profiles</h3>
+        <p><strong>Low Risk:</strong> Red Bull maintains consistent positive positioning. Amazon and Walmart show reliable stock levels. <strong>Medium Risk:</strong> Monster faces mixed reception on taste profiles. Regional chains show geographic availability limitations. Gas station pricing varies significantly by location.</p>
+      </div>
+      <div class="insight-card">
+        <h3>Model Divergences</h3>
+        <p>Brand queries show remarkable consensus favoring Red Bull. Retailer queries show more divergence: some models favor online giants (Amazon), others prioritize in-store experience (Target, 7-Eleven). Price-focused queries unite around warehouse clubs, while convenience queries split between gas stations and national chains.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-section">
+    <h2 class="about-title">About BrandRank</h2>
+    <p>BrandRank is the intelligence layer for the AI search era.</p>
+    <p>We help brands measure, protect, and grow trust by monitoring how they appear across major AI Answer Engines.</p>
+    <p>By combining advanced AI with expert insight, BrandRank identifies vulnerabilities and opportunities, pinpoints the factors driving consumer choice, and reveals pathways to strengthen brand equity and loyalty.</p>
+    <p>Our mission is to ensure that when consumers ask questions in AI-powered platforms, your brand is represented clearly, accurately, and with authority.</p>
+  </div>
+</div>
+
+<script>
+window.WINDOW_DATA = {
+  title: "U.S. Energy Drink Brand Performance Analysis",
+  subtitle: "AI-Powered Evaluation of Leading Energy Drink Retailers & Brands",
+  brandGroups: {
+    "Red Bull": ["Red Bull", "Redbull"],
+    "Monster": ["Monster", "Monster Energy"],
+    "Amazon": ["Amazon", "Amazon Prime"],
+    "Walmart": ["Walmart", "Sam's Club"],
+    "Target": ["Target"],
+    "Costco": ["Costco"],
+    "7-Eleven": ["7-Eleven", "7 Eleven", "Seven Eleven"],
+    "Kroger": ["Kroger"],
+    "CVS": ["CVS"],
+    "Wawa": ["Wawa"]
+  },
+  categories: [
+    {
+      name: "Pricing & Value",
+      prompts: [
+        {
+          question: "Best place to buy 12-pack 8.4oz energy drinks under $22 delivered?",
+          responses: { "ChatGPT": "Amazon", "Claude": "Walmart", "Gemini": "Amazon", "Llama": "Costco", "Perplexity": "Amazon", "Grok": "Walmart" }
+        },
+        {
+          question: "Cheapest everyday price for 20oz energy drink singles near me?",
+          responses: { "ChatGPT": "Walmart", "Claude": "7-Eleven", "Gemini": "Walmart", "Llama": "Target", "Perplexity": "Walmart", "Grok": "Costco" }
+        },
+        {
+          question: "Costco or Walmart better value for 24-pack 8.4oz energy drinks?",
+          responses: { "ChatGPT": "Costco", "Claude": "Costco", "Gemini": "Costco", "Llama": "Walmart", "Perplexity": "Costco", "Grok": "Costco" }
+        },
+        {
+          question: "Which store honors manufacturer coupons for energy drinks most consistently?",
+          responses: { "ChatGPT": "Target", "Claude": "Kroger", "Gemini": "CVS", "Llama": "Walmart", "Perplexity": "Target", "Grok": "Kroger" }
+        },
+        {
+          question: "Best retailer for auto-delivery discounts on energy drink cases?",
+          responses: { "ChatGPT": "Amazon", "Claude": "Amazon", "Gemini": "Amazon", "Llama": "Target", "Perplexity": "Amazon", "Grok": "Amazon" }
+        },
+        {
+          question: "Best buy: 4-pack 12oz energy drinks under $9 before tax?",
+          responses: { "ChatGPT": "Walmart", "Claude": "Target", "Gemini": "Walmart", "Llama": "7-Eleven", "Perplexity": "Costco", "Grok": "Walmart" }
+        },
+        {
+          question: "Retailer offering price match on energy drink cases and multipacks?",
+          responses: { "ChatGPT": "Target", "Claude": "Walmart", "Gemini": "Target", "Llama": "Target", "Perplexity": "Target", "Grok": "Walmart" }
+        },
+        {
+          question: "Best warehouse club value per ounce on energy drink cases?",
+          responses: { "ChatGPT": "Costco", "Claude": "Sam's Club", "Gemini": "Costco", "Llama": "Costco", "Perplexity": "Costco", "Grok": "Sam's Club" }
+        },
+        {
+          question: "Where to find 8.4oz 12-pack subscribe-and-save with predictable pricing?",
+          responses: { "ChatGPT": "Amazon", "Claude": "Amazon", "Gemini": "Amazon", "Llama": "Target", "Perplexity": "Amazon", "Grok": "Amazon" }
+        }
+      ]
+    },
+    {
+      name: "Availability & Selection",
+      prompts: [
+        {
+          question: "Which retailer reliably stocks sugar-free 12oz energy drinks cold in-store?",
+          responses: { "ChatGPT": "7-Eleven", "Claude": "Target", "Gemini": "Walmart", "Llama": "7-Eleven", "Perplexity": "Target", "Grok": "7-Eleven" }
+        },
+        {
+          question: "Retailer with fastest same-day delivery for energy drink variety packs?",
+          responses: { "ChatGPT": "Amazon", "Claude": "Target", "Gemini": "Amazon", "Llama": "Walmart", "Perplexity": "Amazon", "Grok": "Target" }
+        },
+        {
+          question: "Where to find limited-edition peach energy drinks before they sell out?",
+          responses: { "ChatGPT": "Target", "Claude": "7-Eleven", "Gemini": "Amazon", "Llama": "Target", "Perplexity": "Target", "Grok": "Walmart" }
+        },
+        {
+          question: "Store with cold-can fridges and frequent two-for deals on energy drinks?",
+          responses: { "ChatGPT": "7-Eleven", "Claude": "Wawa", "Gemini": "Target", "Llama": "CVS", "Perplexity": "7-Eleven", "Grok": "Kroger" }
+        },
+        {
+          question: "Retailer with widest flavor selection including Iced and Amber Editions?",
+          responses: { "ChatGPT": "Target", "Claude": "Amazon", "Gemini": "Target", "Llama": "7-Eleven", "Perplexity": "Amazon", "Grok": "Target" }
+        },
+        {
+          question: "Which gas station chain keeps 12oz cans chilled with multi-buy pricing?",
+          responses: { "ChatGPT": "7-Eleven", "Claude": "Wawa", "Gemini": "7-Eleven", "Llama": "Circle K", "Perplexity": "7-Eleven", "Grok": "Wawa" }
+        },
+        {
+          question: "Which supermarket restocks morning deliveries for cold energy drinks reliably?",
+          responses: { "ChatGPT": "Target", "Claude": "Kroger", "Gemini": "Walmart", "Llama": "Target", "Perplexity": "Kroger", "Grok": "Target" }
+        },
+        {
+          question: "Which retailer lets me mix-and-match Editions in a single variety pack?",
+          responses: { "ChatGPT": "Target", "Claude": "Amazon", "Gemini": "Target", "Llama": "Walmart", "Perplexity": "Target", "Grok": "Amazon" }
+        }
+      ]
+    },
+    {
+      name: "Quality & Reliability",
+      prompts: [
+        {
+          question: "Trusted online seller avoiding dented cans and near-expiry energy drinks?",
+          responses: { "ChatGPT": "Amazon", "Claude": "Target", "Gemini": "Amazon", "Llama": "Walmart", "Perplexity": "Amazon", "Grok": "Amazon" }
+        },
+        {
+          question: "Where to buy energy drink multipacks eligible for SNAP EBT online?",
+          responses: { "ChatGPT": "Walmart", "Claude": "Amazon", "Gemini": "Walmart", "Llama": "Target", "Perplexity": "Walmart", "Grok": "Amazon" }
+        },
+        {
+          question: "Where to buy zero-sugar energy drinks with hassle-free damaged-can refunds?",
+          responses: { "ChatGPT": "Amazon", "Claude": "Target", "Gemini": "Costco", "Llama": "Amazon", "Perplexity": "Target", "Grok": "Amazon" }
+        },
+        {
+          question: "Best retailer for in-store coolers and frequent energy drink BOGOs?",
+          responses: { "ChatGPT": "CVS", "Claude": "Kroger", "Gemini": "Target", "Llama": "7-Eleven", "Perplexity": "CVS", "Grok": "Walmart" }
+        },
+        {
+          question: "Reliable online delivery of 24-pack 12oz zero-sugar cans without dents?",
+          responses: { "ChatGPT": "Amazon", "Claude": "Amazon", "Gemini": "Target", "Llama": "Walmart", "Perplexity": "Amazon", "Grok": "Amazon" }
+        }
+      ]
+    },
+    {
+      name: "Brand Winners - Quality & Taste",
+      prompts: [
+        {
+          question: "Name the best brand for consistent 80mg caffeine 8.4oz cans nationwide.",
+          responses: { "ChatGPT": "Red Bull", "Claude": "Red Bull", "Gemini": "Red Bull", "Llama": "Red Bull", "Perplexity": "Red Bull", "Grok": "Red Bull" }
+        },
+        {
+          question: "Name the best brand for sugar-free options that still taste like original.",
+          responses: { "ChatGPT": "Red Bull", "Claude": "Red Bull", "Gemini": "Monster", "Llama": "Red Bull", "Perplexity": "Red Bull", "Grok": "Red Bull" }
+        },
+        {
+          question: "Name the best brand for widest U.S. flavor lineup including seasonal editions.",
+          responses: { "ChatGPT": "Monster", "Claude": "Red Bull", "Gemini": "Monster", "Llama": "Monster", "Perplexity": "Red Bull", "Grok": "Monster" }
+        },
+        {
+          question: "Name the best brand for reliable nationwide availability at convenience stores.",
+          responses: { "ChatGPT": "Red Bull", "Claude": "Red Bull", "Gemini": "Red Bull", "Llama": "Monster", "Perplexity": "Red Bull", "Grok": "Red Bull" }
+        },
+        {
+          question: "Name the best brand for dependable multipack quality with minimal dented cans.",
+          responses: { "ChatGPT": "Red Bull", "Claude": "Red Bull", "Gemini": "Red Bull", "Llama": "Red Bull", "Perplexity": "Monster", "Grok": "Red Bull" }
+        },
+        {
+          question: "Name the best brand for zero-sugar energy that doesn't taste artificial.",
+          responses: { "ChatGPT": "Red Bull", "Claude": "Red Bull", "Gemini": "Red Bull", "Llama": "Monster", "Perplexity": "Red Bull", "Grok": "Red Bull" }
+        },
+        {
+          question: "Name the best brand for frequent promotions at grocery and gas stations.",
+          responses: { "ChatGPT": "Monster", "Claude": "Red Bull", "Gemini": "Monster", "Llama": "Red Bull", "Perplexity": "Monster", "Grok": "Monster" }
+        },
+        {
+          question: "Name the best brand for consistent carbonation and freshness across retailers.",
+          responses: { "ChatGPT": "Red Bull", "Claude": "Red Bull", "Gemini": "Red Bull", "Llama": "Red Bull", "Perplexity": "Red Bull", "Grok": "Red Bull" }
+        }
+      ]
+    }
+  ]
+};
+
+let activeBrands = new Set();
+let searchTerm = '';
+
+function escapeForRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function canonicalizeBrand(name) {
+  const groups = window.WINDOW_DATA.brandGroups;
+  for (const [parent, children] of Object.entries(groups)) {
+    if (parent.toLowerCase() === name.toLowerCase()) return parent;
+    if (children.some(c => c.toLowerCase() === name.toLowerCase())) return parent;
+  }
+  return name;
+}
+
+function computeBrandCounts() {
+  const counts = {};
+  const cells = document.querySelectorAll('.prompt-cell, .llm-response');
+  
+  cells.forEach(cell => {
+    const text = cell.getAttribute('data-original-text') || cell.textContent;
+    const groups = window.WINDOW_DATA.brandGroups;
+    
+    for (const [parent, children] of Object.entries(groups)) {
+      const allNames = [parent, ...children];
+      allNames.forEach(name => {
+        const regex = new RegExp('\\b' + escapeForRegex(name) + '\\b', 'gi');
+        const matches = text.match(regex);
+        if (matches) {
+          counts[parent] = (counts[parent] || 0) + matches.length;
+        }
+      });
+    }
+  });
+  
+  const sorted = Object.entries(counts)
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, 10);
+  
+  return sorted;
+}
+
+function restoreOriginalCells() {
+  const cells = document.querySelectorAll('.prompt-cell, .llm-response');
+  cells.forEach(cell => {
+    const original = cell.getAttribute('data-original-text');
+    if (original) {
+      cell.innerHTML = original;
+    }
+  });
+}
+
+function highlightMatches(brands, scrollToFirst = false) {
+  restoreOriginalCells();
+  
+  const cells = document.querySelectorAll('.prompt-cell, .llm-response');
+  let totalMatches = 0;
+  let firstMatch = null;
+  
+  const allTerms = [...brands];
+  if (searchTerm) {
+    allTerms.push(searchTerm);
+  }
+  
+  if (allTerms.length === 0) {
+    document.querySelector('.search-results-info').textContent = '';
+    return;
+  }
+  
+  cells.forEach(cell => {
+    let text = cell.getAttribute('data-original-text') || cell.textContent;
+    let newHTML = text;
+    
+    allTerms.forEach(term => {
+      let names = [term];
+      if (brands.includes(term)) {
+        const children = window.WINDOW_DATA.brandGroups[term] || [];
+        names = [term, ...children];
+      }
+      
+      names.forEach(name => {
+        const regex = new RegExp('\\b(' + escapeForRegex(name) + ')\\b', 'gi');
+        const matches = newHTML.match(regex);
+        if (matches) {
+          totalMatches += matches.length;
+        }
+        newHTML = newHTML.replace(regex, '<span class="highlight">$1</span>');
+      });
+    });
+    
+    if (newHTML !== text) {
+      cell.innerHTML = newHTML;
+      if (!firstMatch) {
+        firstMatch = cell;
+      }
+    }
+  });
+  
+  const info = document.querySelector('.search-results-info');
+  if (totalMatches > 0) {
+    info.textContent = `Found ${totalMatches} match${totalMatches !== 1 ? 'es' : ''}`;
+    if (scrollToFirst && firstMatch) {
+      firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  } else {
+    info.textContent = 'No matches found';
+  }
+}
+
+function buildBrandBar() {
+  const brandCounts = computeBrandCounts();
+  const container = document.querySelector('.brand-buttons');
+  
+  container.innerHTML = '';
+  
+  brandCounts.forEach(([brand, count]) => {
+    const btn = document.createElement('button');
+    btn.className = 'brand-btn';
+    btn.textContent = `${brand} (${count})`;
+    btn.dataset.brand = brand;
+    
+    btn.addEventListener('click', () => {
+      if (activeBrands.has(brand)) {
+        activeBrands.delete(brand);
+        btn.classList.remove('brand-btn-active');
+      } else {
+        activeBrands.add(brand);
+        btn.classList.add('brand-btn-active');
+      }
+      highlightMatches(Array.from(activeBrands));
+    });
+    
+    container.appendChild(btn);
+  });
+  
+  const clearBtn = document.createElement('button');
+  clearBtn.className = 'brand-clear';
+  clearBtn.textContent = 'Clear All';
+  clearBtn.addEventListener('click', () => {
+    activeBrands.clear();
+    document.querySelectorAll('.brand-btn').forEach(b => b.classList.remove('brand-btn-active'));
+    highlightMatches([]);
+  });
+  
+  container.appendChild(clearBtn);
+}
+
+function renderContent() {
+  const content = document.getElementById('content');
+  const data = window.WINDOW_DATA;
+  
+  data.categories.forEach(category => {
+    const section = document.createElement('div');
+    section.className = 'category-section';
+    
+    const header = document.createElement('div');
+    header.className = 'category-header';
+    header.innerHTML = `
+      <h2>${category.name}</h2>
+      <div class="category-stats">${category.prompts.length} prompts analyzed</div>
+    `;
+    
+    const tableContainer = document.createElement('div');
+    tableContainer.className = 'table-container';
+    
+    const llmNames = Object.keys(category.prompts[0].responses);
+    
+    let tableHTML = '<table class="data-table"><thead><tr><th>Prompt Question</th>';
+    llmNames.forEach(llm => {
+      tableHTML += `<th>${llm}</th>`;
+    });
+    tableHTML += '</tr></thead><tbody>';
+    
+    category.prompts.forEach(prompt => {
+      tableHTML += '<tr>';
+      tableHTML += `<td class="prompt-cell">${prompt.question}</td>`;
+      llmNames.forEach(llm => {
+        tableHTML += `<td class="llm-response">${prompt.responses[llm]}</td>`;
+      });
+      tableHTML += '</tr>';
+    });
+    
+    tableHTML += '</tbody></table>';
+    tableContainer.innerHTML = tableHTML;
+    
+    section.appendChild(header);
+    section.appendChild(tableContainer);
+    content.appendChild(section);
+  });
+  
+  const cells = document.querySelectorAll('.prompt-cell, .llm-response');
+  cells.forEach(cell => {
+    cell.setAttribute('data-original-text', cell.textContent);
+  });
+}
+
+function init() {
+  renderContent();
+  buildBrandBar();
+  
+  const searchInput = document.querySelector('.search-input');
+  const clearBtn = document.querySelector('.clear-search');
+  
+  searchInput.addEventListener('input', (e) => {
+    searchTerm = e.target.value.trim();
+    highlightMatches(Array.from(activeBrands));
+  });
+  
+  clearBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    searchTerm = '';
+    highlightMatches(Array.from(activeBrands));
+  });
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
