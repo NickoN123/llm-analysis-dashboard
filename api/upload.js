@@ -23,8 +23,8 @@ export default async function handler(req, res) {
     }
 
     // === CONFIG: edit these for your repo ===
-    const owner  = 'NickoN123';
-    const repo   = 'llm-analysis-dashboard';
+    const owner = 'NickoN123';
+    const repo = 'llm-analysis-dashboard';
     const branch = 'main'; // or 'master' if that is your default
 
     // GitHub PAT stored as env var in Vercel
@@ -40,11 +40,12 @@ export default async function handler(req, res) {
       .replace(/-+/g, '-')
       .replace(/^-+|-+$/g, '') || 'uploaded';
 
-    const uniqueSuffix = Date.now().toString(36);
-   const safeFileName = `${baseName}.html`;  // Removes the suffix
+    // You currently force it to overwrite the same file name each time
+    // (kept as-is). If you want unique files, reintroduce the suffix.
+    const safeFileName = `${baseName}.html`;
 
-    const path = `${safeFileName}`;  // This saves it directly to the root folder
-
+    // Save directly to repo root
+    const path = `${safeFileName}`;
 
     // GitHub Contents API URL
     const githubUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(path)}`;
@@ -52,13 +53,44 @@ export default async function handler(req, res) {
     // Base64 encode HTML for GitHub API
     const contentBase64 = Buffer.from(html, 'utf8').toString('base64');
 
+    // 1) Look up existing file to get its SHA (required for updates)
+    let existingSha = null;
+    const lookupUrl = `${githubUrl}?ref=${encodeURIComponent(branch)}`;
+
+    const lookupRes = await fetch(lookupUrl, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github+json'
+      }
+    });
+
+    if (lookupRes.status === 200) {
+      const existing = await lookupRes.json();
+      existingSha = existing && existing.sha ? existing.sha : null;
+    } else if (lookupRes.status === 404) {
+      // File does not exist yet, that is fine (create without sha)
+    } else {
+      const text = await lookupRes.text().catch(() => '');
+      return res.status(lookupRes.status).json({
+        error: 'GitHub lookup failed',
+        details: text
+      });
+    }
+
+    // 2) Create or update (include sha only if updating)
     const body = {
       message: `Add uploaded page ${safeFileName} via Index Hub`,
       content: contentBase64,
       branch
     };
 
-    const ghRes = await fetch(githubUrl, {
+    if (existingSha) {
+      body.sha = existingSha;
+    }
+
+    // 3) PUT to GitHub
+    let ghRes = await fetch(githubUrl, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -68,6 +100,37 @@ export default async function handler(req, res) {
       body: JSON.stringify(body)
     });
 
+    // Optional: handle rare race condition (SHA changed between lookup and PUT)
+    // If that happens, re-fetch sha once and retry.
+    if (ghRes.status === 409 || ghRes.status === 422) {
+      const retryLookupRes = await fetch(lookupUrl, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/vnd.github+json'
+        }
+      });
+
+      if (retryLookupRes.status === 200) {
+        const existing = await retryLookupRes.json();
+        const retrySha = existing && existing.sha ? existing.sha : null;
+
+        if (retrySha) {
+          body.sha = retrySha;
+
+          ghRes = await fetch(githubUrl, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Accept': 'application/vnd.github+json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+          });
+        }
+      }
+    }
+
     if (!ghRes.ok) {
       const text = await ghRes.text().catch(() => '');
       return res.status(ghRes.status).json({
@@ -76,10 +139,8 @@ export default async function handler(req, res) {
       });
     }
 
-    // This is the URL GitHub Pages will serve it from:
-    // If the file is in the root folder:
-const publicUrl = `https://brandrankai-dashboard-index.com/${safeFileName}`;
-
+    // This is the URL your custom domain will serve it from
+    const publicUrl = `https://brandrankai-dashboard-index.com/${safeFileName}`;
 
     return res.status(200).json({ url: publicUrl });
   } catch (err) {
