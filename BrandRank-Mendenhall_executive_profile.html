@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrandRank Executive Profile | Josh Mendenhall</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-primary: #0d1117;
+  --bg-card: #161b27;
+  --bg-card-inner: #1e2535;
+  --bg-card-deep: #252d40;
+  --cyan: #00c8e8;
+  --cyan-border: rgba(0,200,232,0.3);
+  --white: #f0f4f8;
+  --gray-light: #c8d3df;
+  --gray-mid: #7a8899;
+  --gray-dark: #3a4558;
+  --section-gap: 48px;
+}
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--white);
+  line-height: 1.65;
+  font-size: 15px;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 60px 28px 80px;
+}
+
+.eyebrow {
+  text-align: center;
+  letter-spacing: 0.18em;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--gray-mid);
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+
+.hero-name {
+  text-align: center;
+  font-size: clamp(2.8rem, 6vw, 4.2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  line-height: 1.1;
+  margin-bottom: 14px;
+}
+
+.hero-title {
+  text-align: center;
+  font-size: 1.15rem;
+  color: var(--cyan);
+  font-weight: 500;
+  margin-bottom: 48px;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--gray-dark);
+  margin: 0 0 var(--section-gap);
+}
+
+.section { margin-bottom: var(--section-gap); }
+
+.section-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--white);
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--gray-dark);
+  margin-bottom: 28px;
+}
+
+.card {
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 28px 30px;
+  margin-bottom: 16px;
+  border: 1px solid var(--gray-dark);
+}
+
+.card p { color: var(--gray-light); line-height: 1.75; }
+
+/* SCORE GRID */
+.score-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: var(--section-gap);
+}
+
+.score-box {
+  background: var(--bg-card);
+  border: 1px solid var(--gray-dark);
+  border-radius: 12px;
+  padding: 24px 16px;
+  text-align: center;
+}
+
+.score-box .label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--gray-mid);
+  font-weight: 600;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.score-box .value {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--cyan);
+  display: block;
+  line-height: 1;
+}
+
+.score-box .value.text-val {
+  font-size: 1.3rem;
+  margin-top: 4px;
+}
+
+.score-box .emoji {
+  font-size: 2.4rem;
+  display: block;
+  margin-top: 4px;
+}
+
+/* INSET CARDS */
+.inset-card {
+  background: var(--bg-card-inner);
+  border-left: 3px solid var(--cyan);
+  border-radius: 0 10px 10px 0;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+}
+
+.inset-card .inset-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--cyan);
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.inset-card p { color: var(--gray-light); font-size: 1rem; line-height: 1.65; }
+
+/* CORE VALUES - bullet list style for Mendenhall */
+.values-list {
+  background: var(--bg-card);
+  border: 1px solid var(--gray-dark);
+  border-radius: 12px;
+  padding: 28px 30px;
+}
+
+.value-entry {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--gray-dark);
+}
+
+.value-entry:last-child { border-bottom: none; }
+
+.value-entry h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+
+.value-entry p { color: var(--gray-light); font-size: 0.9rem; line-height: 1.65; }
+
+/* VULN */
+.vuln-list {
+  background: var(--bg-card);
+  border: 1px solid var(--gray-dark);
+  border-radius: 12px;
+  padding: 24px 28px;
+  list-style: none;
+}
+
+.vuln-list li {
+  color: var(--gray-light);
+  padding: 12px 0;
+  border-bottom: 1px solid var(--gray-dark);
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  line-height: 1.65;
+}
+
+.vuln-list li:last-child { border-bottom: none; }
+
+.vuln-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cyan);
+  margin-top: 7px;
+  flex-shrink: 0;
+}
+
+/* PERSONA TABLE */
+.persona-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-card);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--gray-dark);
+}
+
+.persona-table th {
+  background: var(--bg-card-inner);
+  color: var(--cyan);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 2px solid var(--cyan-border);
+}
+
+.persona-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--gray-dark);
+  color: var(--gray-light);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.persona-table tr:last-child td { border-bottom: none; }
+.persona-table tr:hover td { background: var(--bg-card-inner); }
+
+.persona-table td:last-child {
+  color: var(--cyan);
+  font-weight: 700;
+  font-size: 1rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* COMPARISON TABLE */
+.comp-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-card);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--gray-dark);
+}
+
+.comp-table th {
+  background: var(--bg-card-inner);
+  color: var(--cyan);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 14px 18px;
+  text-align: center;
+  border-bottom: 2px solid var(--cyan-border);
+}
+
+.comp-table th:first-child { text-align: left; }
+
+.comp-table td {
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--gray-dark);
+  color: var(--gray-light);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.comp-table td:first-child { text-align: left; font-weight: 600; color: var(--white); }
+.comp-table tr:last-child td { border-bottom: none; }
+.comp-table tr:hover td { background: var(--bg-card-inner); }
+
+.comp-table td.highlight { color: var(--cyan); font-weight: 700; }
+
+/* BRAND ASSOCIATIONS */
+.associations-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.assoc-box {
+  background: var(--bg-card);
+  border: 1px solid var(--gray-dark);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.assoc-box h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 18px;
+}
+
+.tag-group { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.tag {
+  background: var(--bg-card-deep);
+  border: 1px solid var(--gray-dark);
+  border-radius: 50px;
+  padding: 6px 16px;
+  font-size: 0.85rem;
+  color: var(--gray-light);
+}
+
+/* ARCHETYPE MOSAIC */
+.archetype-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.archetype-tile {
+  background: var(--bg-card-inner);
+  border: 1px solid var(--gray-dark);
+  border-radius: 10px;
+  padding: 20px 16px;
+  text-align: center;
+}
+
+.archetype-tile .a-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--cyan);
+  font-weight: 700;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.archetype-tile .a-value {
+  font-size: 0.95rem;
+  color: var(--white);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.archetype-tile .a-note {
+  font-size: 0.78rem;
+  color: var(--gray-mid);
+  margin-top: 6px;
+  line-height: 1.4;
+  display: block;
+}
+
+/* EQUIV EXECS */
+.exec-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.exec-card {
+  background: var(--bg-card);
+  border: 1px solid var(--gray-dark);
+  border-radius: 12px;
+  padding: 22px 24px;
+}
+
+.exec-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+
+.exec-card p { color: var(--gray-light); font-size: 0.88rem; line-height: 1.6; }
+
+/* ALIGNMENT MONITOR */
+.monitor-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.monitor-box {
+  background: var(--bg-card);
+  border: 1px solid var(--gray-dark);
+  border-radius: 12px;
+  padding: 24px 20px;
+  text-align: center;
+}
+
+.monitor-box .m-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--gray-mid);
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.monitor-box .m-score {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--cyan);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.monitor-box .m-desc {
+  font-size: 0.82rem;
+  color: var(--gray-mid);
+  line-height: 1.5;
+}
+
+/* FINAL WORD */
+.final-word {
+  background: var(--bg-card);
+  border: 1px solid var(--gray-dark);
+  border-radius: 12px;
+  padding: 32px 34px;
+}
+
+.final-word p {
+  color: var(--gray-light);
+  line-height: 1.85;
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* METRICS */
+.metrics-box {
+  background: var(--bg-card);
+  border: 1px solid var(--gray-dark);
+  border-radius: 12px;
+  padding: 30px 34px;
+}
+
+.metric-item { margin-bottom: 28px; }
+.metric-item:last-child { margin-bottom: 0; }
+.metric-item h3 { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+.metric-item p { color: var(--gray-light); line-height: 1.7; }
+
+/* ABOUT */
+.about-box {
+  background: var(--bg-card);
+  border: 1px solid var(--gray-dark);
+  border-radius: 12px;
+  padding: 30px 34px;
+  text-align: center;
+}
+
+.about-box p { color: var(--gray-light); line-height: 1.8; }
+
+/* PERSONA SUMMARY BADGE */
+.persona-summary {
+  background: var(--bg-card-inner);
+  border: 1px solid var(--cyan-border);
+  border-radius: 10px;
+  padding: 16px 22px;
+  margin-bottom: 24px;
+}
+
+.persona-summary p { color: var(--gray-light); font-size: 0.93rem; }
+
+@media (max-width: 700px) {
+  .score-grid { grid-template-columns: repeat(2, 1fr); }
+  .archetype-grid { grid-template-columns: repeat(2, 1fr); }
+  .associations-grid { grid-template-columns: 1fr; }
+  .exec-cards { grid-template-columns: 1fr; }
+  .monitor-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <p class="eyebrow">BrandRank Executive Profile &nbsp;|&nbsp; Q1-2026</p>
+  <h1 class="hero-name">Josh Mendenhall</h1>
+  <p class="hero-title">Chief Executive Officer, Spylt RTD</p>
+  <hr class="divider">
+
+  <!-- BRANDRANK SCORE -->
+  <div class="section">
+    <h2 class="section-title">BrandRank Executive Score</h2>
+    <div class="score-grid">
+      <div class="score-box">
+        <span class="label">Overall Score</span>
+        <span class="value">7.6</span>
+      </div>
+      <div class="score-box">
+        <span class="label">Brand Alignment</span>
+        <span class="value">8.1<span style="font-size:1.2rem;color:var(--gray-mid)">/10</span></span>
+      </div>
+      <div class="score-box">
+        <span class="label">Leadership Presence</span>
+        <span class="value text-val">Digital Native</span>
+      </div>
+      <div class="score-box">
+        <span class="label">Animal Archetype</span>
+        <span class="emoji">🐆</span>
+      </div>
+    </div>
+
+    <div class="inset-card">
+      <span class="inset-label">Tagline</span>
+      <p>"Turning Indulgence into a High-Growth Lifestyle Beverage Platform."</p>
+    </div>
+
+    <div class="inset-card">
+      <span class="inset-label">Archetype: The Cheetah</span>
+      <p>Fast growth, aggressive retail expansion, speed-to-market as core competitive advantage.</p>
+    </div>
+  </div>
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="section">
+    <h2 class="section-title">Executive Snapshot</h2>
+    <div class="card">
+      <p>Josh Mendenhall is leading Spylt RTD through a rapid-growth phase in the highly competitive ready-to-drink (RTD) beverage category, capitalizing on nostalgic flavors and functional positioning to carve out a differentiated brand identity. The most notable recent highlight is Spylt's aggressive retail expansion strategy, pushing distribution into broader national channels and leveraging influencer-driven brand storytelling to accelerate awareness.</p>
+      <p style="margin-top:14px;">Mendenhall's leadership reflects bold, consumer-first marketing instincts and strong brand-building capabilities. However, as a fast-scaling emerging beverage company, operational scale, long-term defensibility, and sustainability credibility remain developing areas.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div class="inset-card" style="margin-bottom:0;">
+        <span class="inset-label">✨ Surprising Strength</span>
+        <p>Deep brand storytelling and cultural positioning in a commoditized beverage category.</p>
+      </div>
+      <div class="inset-card" style="margin-bottom:0;border-left-color:#ef4444;">
+        <span class="inset-label" style="color:#ef4444;">⚠️ Surprising Weakness</span>
+        <p>Limited visible emphasis on sustainability or ESG narrative compared to modern beverage peers.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BRAND ESSENCE & CHARACTER -->
+  <div class="section">
+    <h2 class="section-title">Brand Essence &amp; Character</h2>
+    <div class="card">
+      <p>Josh Mendenhall embodies a <strong style="color:var(--white)">consumer-centric, brand-forward growth leader</strong> focused primarily on disruptive positioning within indulgent RTD beverages. His approach blends nostalgia (flavored milk revival) with modern branding, tapping into social media virality and cultural relevance.</p>
+      <p style="margin-top:14px;">While not overtly sustainability-led, his vision reflects market reinvention within overlooked beverage subcategories, speed-to-market retail expansion, and brand personality over commodity pricing.</p>
+      <p style="margin-top:14px;">His leadership suggests a <strong style="color:var(--white)">growth-stage builder archetype</strong> — prioritizing distribution velocity, shelf presence, and emotional brand resonance.</p>
+    </div>
+  </div>
+
+  <!-- BRAND PROMISE ALIGNMENT -->
+  <div class="section">
+    <h2 class="section-title">Brand Promise Alignment</h2>
+    <div class="card">
+      <p style="font-weight:600;color:var(--white);margin-bottom:18px;">Overall Alignment Score: <span style="color:var(--cyan)">8.1/10</span></p>
+      <p style="margin-bottom:4px;">Spylt positions itself as fun, indulgent, nostalgic, and culture-forward. Mendenhall's public messaging and business moves align closely with that brand ethos.</p>
+
+      <div style="margin-top:20px;">
+        <p style="font-weight:600;color:var(--white);margin-bottom:6px;">Sustainability Promise</p>
+        <p style="margin-bottom:18px;">Emerging commitment; not yet core strategic narrative.</p>
+        <p style="font-weight:600;color:var(--white);margin-bottom:6px;">Innovation Promise</p>
+        <p>Reinventing flavored milk through branding and retail velocity.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CORE VALUES -->
+  <div class="section">
+    <h2 class="section-title">Core Values Representation</h2>
+    <div class="values-list">
+      <div class="value-entry">
+        <h3>1. Consumer Relevance</h3>
+        <p>Builds emotional nostalgia while modernizing category perception through packaging, influencer strategy, and youth-targeted messaging.</p>
+      </div>
+      <div class="value-entry">
+        <h3>2. Growth Ambition</h3>
+        <p>Aggressively pursues retail expansion, shelf space dominance, and rapid brand scaling within competitive beverage ecosystems.</p>
+      </div>
+      <div class="value-entry">
+        <h3>3. Brand Differentiation</h3>
+        <p>Leverages bold design and playful storytelling to stand apart in a functional, often commoditized beverage aisle.</p>
+      </div>
+      <div class="value-entry">
+        <h3>4. Entrepreneurial Agility</h3>
+        <p>Operates with startup velocity, adapting marketing strategies quickly to capitalize on trends and social momentum.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BRAND VULNERABILITIES -->
+  <div class="section">
+    <h2 class="section-title">Brand Vulnerabilities</h2>
+    <ul class="vuln-list">
+      <li><span class="vuln-dot"></span><div><strong style="color:var(--white)">Category Perception Risk:</strong> Flavored milk may struggle with health-conscious consumer trends favoring low-sugar or functional beverages.</div></li>
+      <li><span class="vuln-dot"></span><div><strong style="color:var(--white)">Sustainability Gap:</strong> Limited visible ESG narrative compared to competitors emphasizing recyclable packaging or carbon reduction.</div></li>
+      <li><span class="vuln-dot"></span><div><strong style="color:var(--white)">Scale Execution Risk:</strong> Rapid retail expansion may strain supply chain, margin control, and operational consistency.</div></li>
+      <li><span class="vuln-dot"></span><div><strong style="color:var(--white)">Health Positioning Ambiguity:</strong> Balancing indulgence with modern wellness expectations may require clearer nutritional messaging.</div></li>
+    </ul>
+  </div>
+
+  <!-- PERSONA MAPPING -->
+  <div class="section">
+    <h2 class="section-title">Persona Mapping</h2>
+    <div class="persona-summary">
+      <p><strong style="color:var(--white)">Leadership Presence Category:</strong> The Digital Native Executive — leaning into modern brand storytelling, social-first marketing, and startup transparency.</p>
+    </div>
+    <table class="persona-table">
+      <thead>
+        <tr>
+          <th>Persona Attribute</th>
+          <th>Description</th>
+          <th style="text-align:right;">CEO Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>The Sustainable Strategist</td><td>Drives eco-friendly practices while growing market share</td><td>5.5/10</td></tr>
+        <tr><td>The Innovation Catalyst</td><td>Challenges beverage norms through branding</td><td>8.5/10</td></tr>
+        <tr><td>The Global Bridge Builder</td><td>Expands distribution into new markets</td><td>6.5/10</td></tr>
+        <tr><td>The Culture Cultivator</td><td>Builds energetic startup culture</td><td>8/10</td></tr>
+        <tr><td>The Digital Pioneer</td><td>Leverages influencer and social platforms</td><td>8.5/10</td></tr>
+        <tr><td>The Insight Explorer</td><td>Uses market trends for growth</td><td>7.5/10</td></tr>
+        <tr><td>The Partnership Weaver</td><td>Builds retail &amp; distribution alliances</td><td>8/10</td></tr>
+        <tr><td>The Brand Architect</td><td>Creates memorable, disruptive brand identity</td><td>9/10</td></tr>
+        <tr><td>The Efficiency Optimizer</td><td>Maintains margin discipline during scale</td><td>6.5/10</td></tr>
+        <tr><td>The Ethical Entrepreneur</td><td>Aligns growth with responsible practices</td><td>6/10</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ARCHETYPE MAPPING -->
+  <div class="section">
+    <h2 class="section-title">Archetype Mapping</h2>
+
+    <h3 style="font-size:1rem;font-weight:600;color:var(--white);margin-bottom:16px;">Equivalent Executives</h3>
+    <div class="exec-cards" style="margin-bottom:32px;">
+      <div class="exec-card">
+        <h3>Dave Burwick — Boston Beer Company</h3>
+        <p>Brand reinvention leader within competitive beverage categories.</p>
+      </div>
+      <div class="exec-card">
+        <h3>Ben Weiss — Bai (Founder)</h3>
+        <p>Built modern beverage brand through differentiation and positioning.</p>
+      </div>
+    </div>
+
+    <h3 style="font-size:1rem;font-weight:600;color:var(--white);margin-bottom:16px;">Brand Archetype Representations</h3>
+    <div class="archetype-grid">
+      <div class="archetype-tile"><span class="a-label">Animal</span><span class="a-value">Cheetah</span><span class="a-note">Fast growth, aggressive retail expansion</span></div>
+      <div class="archetype-tile"><span class="a-label">Technology</span><span class="a-value">Shopify</span><span class="a-note">Scalable, direct-to-consumer brand engine</span></div>
+      <div class="archetype-tile"><span class="a-label">Movie</span><span class="a-value">The Founder</span><span class="a-note">Building beverage empire from niche</span></div>
+      <div class="archetype-tile"><span class="a-label">Tree</span><span class="a-value">Palm Tree</span><span class="a-note">Youthful, bold, lifestyle-oriented</span></div>
+      <div class="archetype-tile"><span class="a-label">App</span><span class="a-value">Instagram</span><span class="a-note">Visual, brand-driven, culture-focused</span></div>
+      <div class="archetype-tile"><span class="a-label">Mythical Creature</span><span class="a-value">Griffin</span><span class="a-note">Bold hybrid of nostalgia and innovation</span></div>
+      <div class="archetype-tile"><span class="a-label">Vehicle</span><span class="a-value">Tesla</span><span class="a-note">Disrupting traditional beverage expectations</span></div>
+      <div class="archetype-tile"><span class="a-label">Historical Figure</span><span class="a-value">P.T. Barnum</span><span class="a-note">Master of hype and attraction</span></div>
+      <div class="archetype-tile"><span class="a-label">Art</span><span class="a-value">Pop Art</span><span class="a-note">Bright, bold, culturally resonant</span></div>
+      <div class="archetype-tile"><span class="a-label">Musical Instrument</span><span class="a-value">Drum Kit</span><span class="a-note">Energetic, rhythmic, attention-grabbing</span></div>
+      <div class="archetype-tile"><span class="a-label">Sport</span><span class="a-value">Skateboarding</span><span class="a-note">Youthful, rebellious, culture-driven</span></div>
+      <div class="archetype-tile"><span class="a-label">Cuisine</span><span class="a-value">Dessert Bar</span><span class="a-note">Indulgent, nostalgic, playful</span></div>
+      <div class="archetype-tile"><span class="a-label">Game</span><span class="a-value">Mario Kart</span><span class="a-note">Fast, competitive, fun</span></div>
+      <div class="archetype-tile"><span class="a-label">#Hashtag</span><span class="a-value">#DrinkDifferent</span><span class="a-note">Reinventing flavored beverage norms</span></div>
+    </div>
+  </div>
+
+  <!-- EXECUTIVE COMPARISON -->
+  <div class="section">
+    <h2 class="section-title">Executive Comparison Table</h2>
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th>Attribute</th>
+          <th>Josh Mendenhall</th>
+          <th>Dave Burwick</th>
+          <th>Ben Weiss</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Innovation Catalyst</td><td class="highlight">8.5</td><td>8</td><td>9</td></tr>
+        <tr><td>Brand Architect</td><td class="highlight">9</td><td>8</td><td>9</td></tr>
+        <tr><td>Sustainable Strategist</td><td class="highlight">5.5</td><td>7</td><td>6</td></tr>
+        <tr><td>Digital Pioneer</td><td class="highlight">8.5</td><td>6</td><td>8</td></tr>
+        <tr><td>Efficiency Optimizer</td><td class="highlight">6.5</td><td>8</td><td>7</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- BRAND ASSOCIATIONS -->
+  <div class="section">
+    <h2 class="section-title">Spylt Brand Associations</h2>
+    <div class="associations-grid">
+      <div class="assoc-box">
+        <h3>Most Aligned Brands</h3>
+        <div class="tag-group">
+          <span class="tag">Spylt Chocolate</span>
+          <span class="tag">Spylt Strawberry</span>
+          <span class="tag">Limited Edition Drops</span>
+        </div>
+      </div>
+      <div class="assoc-box">
+        <h3>Least Aligned</h3>
+        <div class="tag-group">
+          <span class="tag">Health-First Extensions</span>
+          <span class="tag">Unsweetened/Functional</span>
+          <span class="tag">Premium Organic</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXECUTIVE LEADERSHIP BRAND ALIGNMENT MONITOR -->
+  <div class="section">
+    <h2 class="section-title">Executive Leadership Brand Alignment Monitor</h2>
+    <div class="monitor-grid">
+      <div class="monitor-box">
+        <span class="m-label">Overall Brand Promise</span>
+        <span class="m-score">8.5<span style="font-size:1.1rem;color:var(--gray-mid)">/10</span></span>
+        <span class="m-desc">Strong alignment between messaging and aggressive retail expansion.</span>
+      </div>
+      <div class="monitor-box">
+        <span class="m-label">Green Promise</span>
+        <span class="m-score">5.5<span style="font-size:1.1rem;color:var(--gray-mid)">/10</span></span>
+        <span class="m-desc">Sustainability is not yet central to leadership narrative.</span>
+      </div>
+      <div class="monitor-box">
+        <span class="m-label">Innovation Promise</span>
+        <span class="m-score">8.5<span style="font-size:1.1rem;color:var(--gray-mid)">/10</span></span>
+        <span class="m-desc">Brand repositioning and digital-first marketing clearly evident.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BRANDRANK'S FINAL WORD -->
+  <div class="section">
+    <h2 class="section-title">BrandRank's Final Word</h2>
+    <div class="final-word">
+      <p>Josh Mendenhall demonstrates strong brand-building leadership within an emerging RTD challenger brand. His primary strength lies in cultural storytelling, retail expansion, and digital-native marketing execution. However, long-term defensibility may require deeper sustainability integration and clearer health-positioning strategy as consumer preferences evolve. He aligns strongly with growth, innovation, and consumer engagement — but sustainability maturity is an opportunity area.</p>
+      <p style="margin-top:20px;font-weight:600;color:var(--cyan);">Overall BrandRank Executive Score: 7.6 / 10</p>
+    </div>
+  </div>
+
+  <!-- METRIC DEFINITIONS -->
+  <div class="section">
+    <h2 class="section-title">Metric Definitions</h2>
+    <div class="metrics-box">
+      <div class="metric-item">
+        <h3>BrandRank Executive Score (Scale: 1–10)</h3>
+        <p>Composite measure of an executive's leadership brand strength, combining technical credibility, accessibility, values alignment, innovation impact, and external influence. Scores above 8.0 indicate exceptional executive brand equity.</p>
+      </div>
+      <div class="metric-item">
+        <h3>Brand Promise Alignment (Scale: 1–10)</h3>
+        <p>Measures coherence between stated leadership philosophy and demonstrated outcomes across innovation, sustainability, and organizational impact. Higher scores indicate authentic, consistent leadership narratives.</p>
+      </div>
+      <div class="metric-item">
+        <h3>Leadership Presence Category</h3>
+        <p>Qualitative assessment of executive visibility and authenticity across professional, community, and personal contexts. Categories reflect distinct leadership brand archetypes that influence trust and adoption.</p>
+      </div>
+      <div class="metric-item">
+        <h3>Core Values Representation (Scale: 1–10)</h3>
+        <p>Individual scoring across key leadership attributes including consumer relevance, growth ambition, brand differentiation, entrepreneurial agility, and sustainability commitment.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="section">
+    <h2 class="section-title">About BrandRank</h2>
+    <div class="about-box">
+      <p>BrandRank works with over 60 global brands to strengthen trust and purchase intent by uncovering vulnerabilities, purchase-driving insights, and growth opportunities across AI answer engines. As a SaaS platform, we track all major answer engines to improve visibility, ensure content is AI-ready, and rigorously measure brand claims and instructional accuracy.</p>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
