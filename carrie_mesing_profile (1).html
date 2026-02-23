@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrie Mesing - BrandRank Executive Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 80px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-bottom: 40px;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .header .subtitle {
+            font-size: 20px;
+            color: #00d4ff;
+            font-weight: 400;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.2);
+        }
+
+        h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 35px 0 20px 0;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: help;
+        }
+
+        .metric-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #00d4ff;
+            transform: translateY(-5px);
+        }
+
+        .metric-card:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(10, 14, 26, 0.98);
+            border: 1px solid #00d4ff;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            width: 280px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            font-size: 14px;
+            line-height: 1.6;
+            text-align: left;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 8px solid transparent;
+            border-top-color: #00d4ff;
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+        }
+
+        .metric-value {
+            font-size: 42px;
+            font-weight: 700;
+            color: #00d4ff;
+            line-height: 1;
+        }
+
+        .tagline-section {
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 4px solid #00d4ff;
+            padding: 30px 40px;
+            margin: 40px 0;
+            border-radius: 4px;
+        }
+
+        .tagline-section p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #ffffff;
+        }
+
+        .tagline-section .label {
+            font-size: 14px;
+            color: #00d4ff;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 30px 0;
+        }
+
+        .content-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 30px;
+        }
+
+        .content-box h3 {
+            margin-top: 0;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .content-box p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            padding: 12px 0 12px 25px;
+            position: relative;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        ul li:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 20px;
+            width: 8px;
+            height: 8px;
+            background: #00d4ff;
+            border-radius: 50%;
+        }
+
+        .attributes-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .attribute-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 25px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: help;
+        }
+
+        .attribute-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #00d4ff;
+        }
+
+        .attribute-item:hover .attribute-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .attribute-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(10, 14, 26, 0.98);
+            border: 1px solid #00d4ff;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            width: 300px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            font-size: 13px;
+            line-height: 1.6;
+            text-align: left;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .attribute-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 8px solid transparent;
+            border-top-color: #00d4ff;
+        }
+
+        .attribute-name {
+            font-size: 16px;
+            color: #ffffff;
+        }
+
+        .attribute-score {
+            font-size: 28px;
+            font-weight: 700;
+            color: #00d4ff;
+        }
+
+        .brand-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .brand-tag {
+            background: rgba(0, 212, 255, 0.15);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            padding: 12px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .brand-tag:hover {
+            background: rgba(0, 212, 255, 0.25);
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+        }
+
+        .final-word {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 8px;
+            margin: 40px 0;
+        }
+
+        .final-word p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="data:image/png;base64,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" alt="BrandRank.AI - Prompting Your Brand Truth" style="max-width: 500px; margin: 0 auto 40px auto; display: block;" />
+            <div style="font-size: 14px; color: rgba(255, 255, 255, 0.6); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px;">BrandRank Executive Profile  |  Q1-2026</div>
+            <h1>Carrie Mesing</h1>
+            <div class="subtitle">Global Brand Leader, Danone</div>
+            <div style="font-size: 14px; color: rgba(255, 255, 255, 0.5); margin-top: 20px;">Last Updated: February 2026</div>
+        </div>
+
+        <h2>Executive Summary</h2>
+        <div class="content-box">
+            <p>Carrie Mesing is a global brand equity architect who has elevated Danone's YoPRO into a culturally resonant, athlete-backed performance platform. She combines digital commerce expertise, disciplined brand building, and cross-market orchestration to scale protein-led growth worldwide. Her leadership style is collaborative and highly visible, consistently spotlighting teams and partners while reinforcing a clear "progress" narrative. The next frontier is broadening performance positioning into more expansive everyday wellness territory.</p>
+        </div>
+
+        <h2>Leadership Highlight</h2>
+        <div class="tagline-section">
+            <p>Mesing spearheaded the global activation of Carlos Alcaraz as YoPRO's ambassador and "Chief Progress Officer," executing one of Danone's most coordinated cross-market brand equity launches and strengthening the brand's elite performance credentials.</p>
+        </div>
+
+        <h2>BrandRank Leadership Score</h2>
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">Overall Score</div>
+                <div class="metric-value">8.7</div>
+                <div class="tooltip">Composite measure of leadership brand strength, combining global brand building capability, digital expertise, collaborative leadership, and market orchestration excellence.</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Brand Alignment</div>
+                <div class="metric-value">8.8/10</div>
+                <div class="tooltip">Coherence between stated brand philosophy and demonstrated outcomes across sustainability, innovation, and performance-driven growth platforms.</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Leadership Presence</div>
+                <div class="metric-value">Approachable</div>
+                <div class="tooltip">Energized executive presence with 2100+ followers. Frequently celebrates teams and partners by name, balancing authority with authentic enthusiasm and accessibility.</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Animal Archetype</div>
+                <div class="metric-value">🦅</div>
+                <div class="tooltip">The Falcon: Focused, agile, and performance-driven. Embodies precision in execution and sharp vision for global brand opportunities.</div>
+            </div>
+        </div>
+
+        <div class="tagline-section">
+            <div class="label">Tagline</div>
+            <p>"Building Global Performance Brands That Feed Human Progress."</p>
+        </div>
+
+        <div class="tagline-section">
+            <div class="label">Animal Archetype: Falcon</div>
+            <p>Focused, agile, and performance-driven.</p>
+        </div>
+
+        <h2>Brand Essence and Character</h2>
+        <div class="content-box">
+            <p style="margin-bottom: 20px;"><strong>Carrie Mesing embodies performance-led, purpose-driven global brand leadership.</strong></p>
+            <p>Her executive identity centers on:</p>
+            <ul style="margin-top: 15px;">
+                <li>Scaling global equity platforms (YoPRO/HiPRO/Oikos PRO)</li>
+                <li>Aligning elite athletic credibility with Danone's health mission</li>
+                <li>Integrating digital shelf, eCommerce, and brand storytelling</li>
+                <li>Building cross-functional global marketing capabilities</li>
+                <li>Celebrating collaborative execution across markets</li>
+            </ul>
+            <p style="margin-top: 20px;">She represents a disciplined yet energized leader who connects cultural relevance with commercial rigor.</p>
+        </div>
+
+        <h2>Brand Promise Alignment</h2>
+        <div class="content-box">
+            <h3>Overall Alignment Score: 8.8/10</h3>
+            
+            <h3 style="margin-top: 30px;">Sustainability Promise</h3>
+            <p style="margin-bottom: 20px;">Scaling health-forward brands with responsible sourcing principles.</p>
+            
+            <h3>Innovation Promise</h3>
+            <p>Global performance branding powered by digital precision.</p>
+        </div>
+
+        <h2>Core Values Representation</h2>
+        <div class="attributes-grid">
+            <div class="attribute-item">
+                <span class="attribute-name">Performance with Purpose</span>
+                <span class="attribute-score">9</span>
+                <div class="attribute-tooltip">Connects elite athletic achievement with Danone's broader mission of sustainable nutrition and health impact.</div>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Collaborative Leadership</span>
+                <span class="attribute-score">9</span>
+                <div class="attribute-tooltip">Publicly recognizes cross-functional teams, agencies, and local markets to reinforce inclusive execution culture.</div>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Consumer-Centric Innovation</span>
+                <span class="attribute-score">9</span>
+                <div class="attribute-tooltip">Builds protein platforms aligned with evolving wellness, strength, and fitness behaviors globally.</div>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Global Integration</span>
+                <span class="attribute-score">9</span>
+                <div class="attribute-tooltip">Unifies diverse markets under cohesive equity platforms while enabling localized activation excellence.</div>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Talent Acceleration</span>
+                <span class="attribute-score">8</span>
+                <div class="attribute-tooltip">Actively recruits and develops brand talent to scale long-term global capability.</div>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Digital Commerce Expertise</span>
+                <span class="attribute-score">9</span>
+                <div class="attribute-tooltip">Integrates digital shelf transformation and eCommerce strategy with brand equity building.</div>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Partnership Development</span>
+                <span class="attribute-score">10</span>
+                <div class="attribute-tooltip">Exceptional orchestration of athlete partnerships and brand ambassadors at global scale.</div>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Sustainability Visibility</span>
+                <span class="attribute-score">7</span>
+                <div class="attribute-tooltip">Aligned with Danone's platform but public narrative emphasizes performance over environmental leadership.</div>
+            </div>
+        </div>
+
+        <h2>Strengths & Vulnerabilities</h2>
+        <div class="two-column">
+            <div class="content-box">
+                <h3>Surprising Strength</h3>
+                <p>Global orchestration of athlete partnerships and cross-market brand equity at scale.</p>
+            </div>
+            <div class="content-box">
+                <h3>Surprising Weakness</h3>
+                <p>Performance-heavy narrative may constrain broader lifestyle expansion.</p>
+            </div>
+        </div>
+
+        <h2>Brand Vulnerabilities</h2>
+        <div class="content-box">
+            <ul>
+                <li><strong>Athletic Narrowing Risk</strong> – Heavy emphasis on elite sports positioning may limit broader lifestyle appeal.</li>
+                <li><strong>Protein Category Crowding</strong> – Intense competition in dairy and plant-based protein segments pressures differentiation.</li>
+                <li><strong>Global Execution Complexity</strong> – Coordinating multi-market campaigns increases operational and reputational risk.</li>
+                <li><strong>Sustainability Visibility Gap</strong> – Public narrative leans more toward performance than environmental leadership.</li>
+            </ul>
+        </div>
+
+        <h2>Visual Accessibility & Authenticity</h2>
+        <div class="tagline-section">
+            <div class="label">Leadership Presence Category: The Approachable Leader</div>
+            <p>With over 2100 followers, Mesing demonstrates energized executive presence through frequent LinkedIn updates celebrating team members, agency collaborators, and local market leaders by name. Her tone combines authority with enthusiasm ("VAMOS, Carlos!"), signaling authentic emotional investment in brand milestones. She actively recruits talent and highlights cross-functional wins, reinforcing accessibility without sacrificing executive polish.</p>
+            <p style="margin-top: 20px;">She balances professionalism with visible appreciation — projecting leadership that is both credible and human.</p>
+        </div>
+
+        <h2>Archetype Mapping</h2>
+        
+        <h3>Equivalent Executives</h3>
+        <div class="brand-list">
+            <div class="brand-tag">Heidi O'Neill (Nike) — Global performance branding and athlete-led cultural integration</div>
+            <div class="brand-tag">Cristina Diezhandino (Diageo) — Global equity scaling with local activation strength</div>
+        </div>
+
+        <h3>Brands Most Aligned with Carrie Mesing</h3>
+        <div class="brand-list">
+            <div class="brand-tag">Nike</div>
+            <div class="brand-tag">Gatorade</div>
+            <div class="brand-tag">Oatly</div>
+            <div class="brand-tag">Chobani</div>
+            <div class="brand-tag">Red Bull</div>
+        </div>
+
+        <h3>Brands Least Aligned</h3>
+        <div class="brand-list">
+            <div class="brand-tag">Luxury Fashion Houses</div>
+            <div class="brand-tag">Traditional CPG Legacy Brands</div>
+            <div class="brand-tag">Budget-Tier Mass Market</div>
+        </div>
+
+        <h2>Leadership Brand Alignment Monitor</h2>
+        <div class="attributes-grid">
+            <div class="attribute-item">
+                <span class="attribute-name">Overall Brand Promise</span>
+                <span class="attribute-score">8.9</span>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Green Promise</span>
+                <span class="attribute-score">8.4</span>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Innovation Promise</span>
+                <span class="attribute-score">9.0</span>
+            </div>
+        </div>
+
+        <h2>BrandRank's Final Word</h2>
+        <div class="final-word">
+            <p>Carrie Mesing is a high-performance global brand builder who has unified Danone's protein portfolio under a culturally resonant progress narrative. She excels at partnership development, digital integration, and collaborative team leadership. Her strongest differentiator is disciplined global equity scaling.</p>
+            <p style="margin-top: 20px;">Expanding beyond elite athletic positioning into broader wellness storytelling could elevate her BrandRank closer to elite-tier CPG leadership. Her combination of digital commerce expertise and athlete partnership orchestration positions her as a next-generation brand leader in the performance nutrition space.</p>
+        </div>
+
+        <h2>Metric Definitions</h2>
+        <div class="content-box">
+            <h3 style="margin-top: 0;">BrandRank Leadership Score (Scale: 1-10)</h3>
+            <p style="margin-bottom: 25px;">Composite measure of executive leadership brand strength, combining global brand building capability, digital expertise, collaborative leadership style, partnership orchestration, and cross-market execution excellence.</p>
+            
+            <h3>Brand Promise Alignment (Scale: 1-10)</h3>
+            <p style="margin-bottom: 25px;">Measures coherence between stated brand philosophy and demonstrated outcomes across sustainability, innovation, and performance-driven growth platforms. Higher scores indicate authentic, consistent brand narratives.</p>
+            
+            <h3>Leadership Presence Category</h3>
+            <p style="margin-bottom: 25px;">Qualitative assessment of executive visibility, team recognition patterns, and authentic engagement. "Approachable Leader" reflects energized, collaborative presence that celebrates teams while maintaining executive credibility.</p>
+            
+            <h3>Core Values Representation (Scale: 1-10)</h3>
+            <p>Individual scoring across key leadership attributes including performance with purpose, collaborative leadership, consumer-centric innovation, global integration, talent acceleration, digital commerce expertise, partnership development, and sustainability visibility.</p>
+        </div>
+
+        <h2>About BrandRank</h2>
+        <div class="final-word" style="text-align: center;">
+            <p>Cincinnati-based BrandRank works with over 70 global brands.</p>
+            <p style="margin-top: 30px;">Visit <a href="https://brandrank.ai" style="color: #00d4ff; text-decoration: none; font-weight: 600;">BrandRank.AI</a> and <a href="https://theanswereconomy.com" style="color: #00d4ff; text-decoration: none; font-weight: 600;">TheAnswerEconomy.com</a> to learn more.</p>
+        </div>
+    </div>
+</body>
+</html>
