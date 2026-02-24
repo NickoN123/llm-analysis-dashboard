@@ -1,0 +1,59 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Test HTML File</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; line-height: 1.4; }
+    .card { border: 1px solid #ddd; border-radius: 12px; padding: 16px; max-width: 720px; }
+    button { padding: 10px 14px; border-radius: 10px; border: 1px solid #ccc; cursor: pointer; }
+    input { padding: 10px; border-radius: 10px; border: 1px solid #ccc; width: 260px; }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .small { color: #555; font-size: 14px; }
+    pre { background: #f7f7f7; padding: 12px; border-radius: 10px; overflow: auto; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Download Test HTML Page</h1>
+    <p class="small">This is a sample file for testing downloads and uploads.</p>
+
+    <div class="row">
+      <input id="nameInput" placeholder="Type something..." />
+      <button id="helloBtn">Click me</button>
+    </div>
+
+    <p id="output" class="small">Output will show here.</p>
+
+    <h2>Simple Fetch Test</h2>
+    <button id="fetchBtn">Run fetch</button>
+    <pre id="fetchOut">{}</pre>
+  </div>
+
+  <script>
+    const nameInput = document.getElementById("nameInput");
+    const output = document.getElementById("output");
+    const helloBtn = document.getElementById("helloBtn");
+    const fetchBtn = document.getElementById("fetchBtn");
+    const fetchOut = document.getElementById("fetchOut");
+
+    helloBtn.addEventListener("click", () => {
+      const text = nameInput.value.trim() || "nothing";
+      output.textContent = `You typed: "${text}"`;
+    });
+
+    fetchBtn.addEventListener("click", async () => {
+      fetchOut.textContent = "Loading...";
+      try {
+        const res = await fetch("https://jsonplaceholder.typicode.com/todos/1");
+        const data = await res.json();
+        fetchOut.textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        fetchOut.textContent = "Fetch failed.";
+      }
+    });
+  </script>
+</body>
+</html>
