@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrandRank Agent Pipeline</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;
+    --bg2: #0f1218;
+    --bg3: #161b24;
+    --border: #1e2733;
+    --border-bright: #2a3542;
+    --text: #c8d4e0;
+    --text-dim: #5a6a7a;
+    --text-bright: #e8f0f8;
+    --accent: #00d4ff;
+    --accent2: #00ff9d;
+    --accent3: #ff6b35;
+    --accent4: #b06cff;
+    --warn: #ffb830;
+    --danger: #ff4466;
+    --green: #00c87a;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-sans: 'IBM Plex Sans', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Subtle grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .shell {
+    position: relative;
+    z-index: 1;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ── Header ── */
+  .header {
+    padding: 40px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .brand-lockup { display: flex; flex-direction: column; gap: 6px; }
+
+  .brand-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  .brand-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-bright);
+    letter-spacing: -0.02em;
+  }
+
+  .brand-title span { color: var(--accent); }
+
+  .header-meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    text-align: right;
+    line-height: 1.8;
+  }
+
+  /* ── Pipeline overview bar ── */
+  .pipeline-bar {
+    display: flex;
+    gap: 0;
+    margin-bottom: 48px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--bg2);
+  }
+
+  .pipe-step {
+    flex: 1;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+    border-right: 1px solid var(--border);
+    transition: background 0.2s;
+    position: relative;
+    min-width: 0;
+  }
+  .pipe-step:last-child { border-right: none; }
+  .pipe-step:hover { background: var(--bg3); }
+  .pipe-step.active { background: var(--bg3); }
+  .pipe-step.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+  }
+  .pipe-step.done::after {
+    background: var(--green);
+  }
+  .pipe-step.warn-step::after {
+    background: var(--warn);
+  }
+  .pipe-step.fail-step::after {
+    background: var(--danger);
+  }
+
+  .pipe-num {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+  }
+
+  .pipe-name {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .pipe-status {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+  .pipe-status.ok { color: var(--green); }
+  .pipe-status.running { color: var(--accent); }
+  .pipe-status.warn { color: var(--warn); }
+  .pipe-status.fail { color: var(--danger); }
+
+  /* ── Main layout ── */
+  .main-grid {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .main-grid { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+  }
+
+  /* ── Sidebar ── */
+  .sidebar { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 24px; }
+
+  .data-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .data-card-header {
+    padding: 10px 14px;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .data-card-header .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent2);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .data-card-body { padding: 14px; }
+
+  .score-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .score-row:last-child { border-bottom: none; }
+
+  .score-label {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+  }
+
+  .score-val {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .score-num {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-bright);
+  }
+
+  .score-bar-wrap {
+    width: 60px;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .score-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--accent);
+    transition: width 1s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .comp-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .comp-row:last-child { border-bottom: none; }
+
+  .comp-brand { font-size: 11px; color: var(--text); min-width: 80px; }
+  .comp-brand.self { color: var(--accent); font-weight: 600; }
+
+  .comp-bar-wrap { flex: 1; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .comp-bar-fill { height: 100%; border-radius: 2px; background: var(--border-bright); transition: width 1s ease; }
+  .comp-bar-fill.self { background: var(--accent); }
+
+  .comp-pct { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); min-width: 30px; text-align: right; }
+
+  /* ── Run button ── */
+  .run-panel {
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .btn-run {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 28px;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-run::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    transform: translateX(-100%);
+    transition: transform 0.2s;
+    opacity: 0.08;
+  }
+
+  .btn-run:hover::before { transform: translateX(0); }
+  .btn-run:hover { box-shadow: 0 0 20px rgba(0,212,255,0.2); }
+  .btn-run:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .btn-run .run-icon {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: none;
+  }
+  .btn-run.running .run-icon {
+    animation: runpulse 0.8s infinite;
+  }
+
+  @keyframes runpulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.5; }
+  }
+
+  .pipeline-progress {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .progress-track {
+    flex: 1;
+    height: 2px;
+    background: var(--border);
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 1px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  .progress-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    min-width: 60px;
+  }
+
+  /* ── Agent output panels ── */
+  .agents-stack { display: flex; flex-direction: column; gap: 16px; }
+
+  .agent-panel {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    opacity: 0.4;
+    transition: opacity 0.3s, border-color 0.3s;
+  }
+
+  .agent-panel.active { opacity: 1; border-color: var(--accent); }
+  .agent-panel.done { opacity: 1; border-color: var(--border-bright); }
+  .agent-panel.done.pass-panel { border-left: 3px solid var(--green); }
+  .agent-panel.done.warn-panel { border-left: 3px solid var(--warn); }
+  .agent-panel.done.fail-panel { border-left: 3px solid var(--danger); }
+
+  .agent-header {
+    padding: 14px 18px;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .agent-num {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    min-width: 24px;
+  }
+
+  .agent-title-block { flex: 1; }
+
+  .agent-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-bright);
+    letter-spacing: -0.01em;
+  }
+
+  .agent-desc {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  .agent-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+  }
+
+  .badge-idle { background: rgba(90,106,122,0.2); color: var(--text-dim); }
+  .badge-running { background: rgba(0,212,255,0.1); color: var(--accent); animation: blink 1s infinite; }
+  .badge-pass { background: rgba(0,200,122,0.1); color: var(--green); }
+  .badge-warn { background: rgba(255,184,48,0.1); color: var(--warn); }
+  .badge-fail { background: rgba(255,68,102,0.1); color: var(--danger); }
+  .badge-red { background: rgba(255,68,102,0.1); color: var(--danger); }
+  .badge-yellow { background: rgba(255,184,48,0.1); color: var(--warn); }
+  .badge-green { background: rgba(0,200,122,0.1); color: var(--green); }
+
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  .agent-chevron {
+    font-size: 12px;
+    color: var(--text-dim);
+    transition: transform 0.2s;
+  }
+  .agent-chevron.open { transform: rotate(180deg); }
+
+  .agent-body {
+    display: none;
+    padding: 0;
+  }
+  .agent-body.open { display: block; }
+
+  /* Log terminal */
+  .log-stream {
+    background: #060810;
+    padding: 14px 18px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.8;
+    border-bottom: 1px solid var(--border);
+    min-height: 60px;
+    max-height: 180px;
+    overflow-y: auto;
+  }
+
+  .log-line { display: flex; gap: 10px; }
+  .log-ts { color: var(--text-dim); opacity: 0.5; min-width: 88px; }
+  .log-lvl-INFO { color: var(--accent); }
+  .log-lvl-WARNING { color: var(--warn); }
+  .log-lvl-ERROR { color: var(--danger); }
+  .log-msg { color: var(--text); }
+
+  .log-cursor {
+    display: inline-block;
+    width: 6px;
+    height: 12px;
+    background: var(--accent);
+    vertical-align: middle;
+    margin-left: 4px;
+    animation: cursorblink 1s infinite;
+  }
+
+  @keyframes cursorblink { 0%,100%{opacity:1}50%{opacity:0} }
+
+  /* Output cards */
+  .output-grid {
+    padding: 16px 18px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .out-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 12px 14px;
+  }
+
+  .out-card-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .out-card-value {
+    font-size: 22px;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--text-bright);
+    line-height: 1;
+  }
+
+  .out-card-value.green { color: var(--green); }
+  .out-card-value.warn { color: var(--warn); }
+  .out-card-value.danger { color: var(--danger); }
+  .out-card-value.accent { color: var(--accent); }
+  .out-card-value.purple { color: var(--accent4); }
+
+  .out-card-sub {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  /* Findings list */
+  .findings-section {
+    padding: 0 18px 16px;
+  }
+
+  .findings-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    padding-top: 4px;
+  }
+
+  .finding-item {
+    display: flex;
+    gap: 10px;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    font-size: 11px;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.3s, transform 0.3s;
+    align-items: flex-start;
+  }
+
+  .finding-item.visible { opacity: 1; transform: translateY(0); }
+
+  .finding-icon { font-size: 12px; flex-shrink: 0; margin-top: 1px; }
+
+  .finding-text { color: var(--text); flex: 1; line-height: 1.5; }
+  .finding-text strong { color: var(--text-bright); font-weight: 600; }
+  .finding-text .mono { font-family: var(--font-mono); color: var(--accent); }
+
+  .finding-delta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .finding-delta.up { color: var(--green); }
+  .finding-delta.down { color: var(--danger); }
+
+  /* Signal cards */
+  .signal-card {
+    margin: 0 18px 12px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.4s, transform 0.4s;
+  }
+  .signal-card.visible { opacity: 1; transform: translateY(0); }
+
+  .signal-header {
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .signal-type {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 2px;
+  }
+
+  .signal-type.vulnerability_spike { background: rgba(255,68,102,0.1); color: var(--danger); }
+  .signal-type.competitor_decline { background: rgba(0,255,157,0.1); color: var(--accent2); }
+  .signal-type.readiness_improvement { background: rgba(0,212,255,0.1); color: var(--accent); }
+  .signal-type.discovery_gap { background: rgba(176,108,255,0.1); color: var(--accent4); }
+
+  .signal-conf {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-left: auto;
+  }
+
+  .signal-body { padding: 10px 14px; font-size: 11px; color: var(--text); line-height: 1.6; }
+
+  .signal-draft {
+    margin: 8px 14px 12px;
+    padding: 10px 12px;
+    background: rgba(0,212,255,0.03);
+    border: 1px solid rgba(0,212,255,0.15);
+    border-radius: 2px;
+    font-size: 10px;
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    line-height: 1.7;
+  }
+
+  .signal-draft-tag {
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  /* Q&A */
+  .qa-item {
+    display: flex;
+    gap: 10px;
+    padding: 8px 12px;
+    margin: 0 0 6px;
+    background: rgba(176,108,255,0.04);
+    border: 1px solid rgba(176,108,255,0.15);
+    border-radius: 3px;
+    font-size: 11px;
+    color: var(--text);
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .qa-item.visible { opacity: 1; transform: translateY(0); }
+  .qa-q { color: var(--accent4); font-weight: 600; flex-shrink: 0; }
+
+  /* Readiness summary */
+  .readiness-banner {
+    margin: 16px 18px;
+    padding: 16px 20px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+  .readiness-banner.visible { opacity: 1; }
+  .readiness-banner.green { background: rgba(0,200,122,0.08); border: 1px solid rgba(0,200,122,0.25); }
+  .readiness-banner.yellow { background: rgba(255,184,48,0.08); border: 1px solid rgba(255,184,48,0.25); }
+  .readiness-banner.red { background: rgba(255,68,102,0.08); border: 1px solid rgba(255,68,102,0.25); }
+
+  .readiness-indicator {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .readiness-banner.green .readiness-indicator { background: var(--green); box-shadow: 0 0 10px rgba(0,200,122,0.5); animation: pulse 1.5s infinite; }
+  .readiness-banner.yellow .readiness-indicator { background: var(--warn); }
+  .readiness-banner.red .readiness-indicator { background: var(--danger); }
+
+  .readiness-text { flex: 1; }
+  .readiness-status-text { font-size: 13px; font-weight: 600; }
+  .readiness-banner.green .readiness-status-text { color: var(--green); }
+  .readiness-banner.yellow .readiness-status-text { color: var(--warn); }
+  .readiness-banner.red .readiness-status-text { color: var(--danger); }
+  .readiness-detail { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+
+  /* Final summary */
+  .final-summary {
+    margin-top: 24px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .final-summary.visible { opacity: 1; transform: translateY(0); }
+
+  .final-header {
+    padding: 14px 18px;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .final-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-bright);
+    flex: 1;
+  }
+
+  .action-list { padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; }
+
+  .action-item {
+    display: flex;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 3px;
+    font-size: 11px;
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .action-item.visible { opacity: 1; transform: translateX(0); }
+  .action-item.workflow { background: rgba(255,184,48,0.05); border: 1px solid rgba(255,184,48,0.15); }
+  .action-item.risk { background: rgba(255,68,102,0.05); border: 1px solid rgba(255,68,102,0.15); }
+  .action-item.narrative { background: rgba(176,108,255,0.05); border: 1px solid rgba(176,108,255,0.15); }
+  .action-item.opportunity { background: rgba(0,255,157,0.05); border: 1px solid rgba(0,255,157,0.15); }
+
+  .action-tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    flex-shrink: 0;
+    padding-top: 1px;
+  }
+  .action-item.workflow .action-tag { color: var(--warn); }
+  .action-item.risk .action-tag { color: var(--danger); }
+  .action-item.narrative .action-tag { color: var(--accent4); }
+  .action-item.opportunity .action-tag { color: var(--accent2); }
+
+  .action-text { color: var(--text); line-height: 1.5; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 2px; }
+
+  /* Utility */
+  .hidden { display: none; }
+  .mt8 { margin-top: 8px; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 0 18px; }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="brand-lockup">
+      <div class="brand-tag">// Enterprise Intelligence Platform</div>
+      <div class="brand-title"><span>BrandRank</span> Agent Pipeline</div>
+    </div>
+    <div class="header-meta">
+      Brand: Olay &nbsp;·&nbsp; Period: 2025-Q1 vs 2024-Q4<br>
+      Environment: Simulation &nbsp;·&nbsp; Mode: Sequential<br>
+      v2.4.1 &nbsp;·&nbsp; Python 3.12
+    </div>
+  </div>
+
+  <!-- Pipeline bar -->
+  <div class="pipeline-bar">
+    <div class="pipe-step" id="ps1" onclick="scrollToAgent(0)">
+      <div class="pipe-num">01</div>
+      <div class="pipe-name">Data Integrity</div>
+      <div class="pipe-status" id="ps1-status">idle</div>
+    </div>
+    <div class="pipe-step" id="ps2" onclick="scrollToAgent(1)">
+      <div class="pipe-num">02</div>
+      <div class="pipe-name">Insight</div>
+      <div class="pipe-status" id="ps2-status">idle</div>
+    </div>
+    <div class="pipe-step" id="ps3" onclick="scrollToAgent(2)">
+      <div class="pipe-num">03</div>
+      <div class="pipe-name">Assurance</div>
+      <div class="pipe-status" id="ps3-status">idle</div>
+    </div>
+    <div class="pipe-step" id="ps4" onclick="scrollToAgent(3)">
+      <div class="pipe-num">04</div>
+      <div class="pipe-name">Orchestration</div>
+      <div class="pipe-status" id="ps4-status">idle</div>
+    </div>
+    <div class="pipe-step" id="ps5" onclick="scrollToAgent(4)">
+      <div class="pipe-num">05</div>
+      <div class="pipe-name">Opportunity</div>
+      <div class="pipe-status" id="ps5-status">idle</div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="data-card">
+        <div class="data-card-header"><div class="dot"></div>Dashboard Input — 2025-Q1</div>
+        <div class="data-card-body">
+          <div class="score-row">
+            <div class="score-label">visibility</div>
+            <div class="score-val">
+              <div class="score-bar-wrap"><div class="score-bar-fill" style="width:68%;background:var(--accent)"></div></div>
+              <div class="score-num">6.8</div>
+            </div>
+          </div>
+          <div class="score-row">
+            <div class="score-label">vulnerability</div>
+            <div class="score-val">
+              <div class="score-bar-wrap"><div class="score-bar-fill" style="width:42%;background:var(--warn)"></div></div>
+              <div class="score-num">4.2</div>
+            </div>
+          </div>
+          <div class="score-row">
+            <div class="score-label">clarity</div>
+            <div class="score-val">
+              <div class="score-bar-wrap"><div class="score-bar-fill" style="width:71%;background:var(--accent2)"></div></div>
+              <div class="score-num">7.1</div>
+            </div>
+          </div>
+          <div class="score-row">
+            <div class="score-label">depth</div>
+            <div class="score-val">
+              <div class="score-bar-wrap"><div class="score-bar-fill" style="width:59%;background:var(--accent2)"></div></div>
+              <div class="score-num">5.9</div>
+            </div>
+          </div>
+          <div class="score-row">
+            <div class="score-label">availability</div>
+            <div class="score-val">
+              <div class="score-bar-wrap"><div class="score-bar-fill" style="width:64%;background:var(--accent2)"></div></div>
+              <div class="score-num">6.4</div>
+            </div>
+          </div>
+          <div class="score-row">
+            <div class="score-label">technical</div>
+            <div class="score-val">
+              <div class="score-bar-wrap"><div class="score-bar-fill" style="width:60%;background:var(--accent2)"></div></div>
+              <div class="score-num">6.0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="data-card">
+        <div class="data-card-header">Share of Answer</div>
+        <div class="data-card-body">
+          <div class="comp-row">
+            <div class="comp-brand self">Olay</div>
+            <div class="comp-bar-wrap"><div class="comp-bar-fill self" style="width:62%"></div></div>
+            <div class="comp-pct">31%</div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-brand">Neutrogena</div>
+            <div class="comp-bar-wrap"><div class="comp-bar-fill" style="width:56%"></div></div>
+            <div class="comp-pct">28%</div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-brand">CeraVe</div>
+            <div class="comp-bar-wrap"><div class="comp-bar-fill" style="width:50%"></div></div>
+            <div class="comp-pct">25%</div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-brand">L'Oreal</div>
+            <div class="comp-bar-wrap"><div class="comp-bar-fill" style="width:32%"></div></div>
+            <div class="comp-pct">16%</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="data-card">
+        <div class="data-card-header">Prompt Clusters</div>
+        <div class="data-card-body">
+          <div class="score-row">
+            <div class="score-label">branded</div>
+            <div class="score-val">
+              <div class="score-bar-wrap"><div class="score-bar-fill" style="width:72%;background:var(--accent)"></div></div>
+              <div class="score-num">72%</div>
+            </div>
+          </div>
+          <div class="score-row">
+            <div class="score-label">unbranded</div>
+            <div class="score-val">
+              <div class="score-bar-wrap"><div class="score-bar-fill" style="width:31%;background:var(--danger)"></div></div>
+              <div class="score-num">31%</div>
+            </div>
+          </div>
+          <div class="score-row">
+            <div class="score-label">functional</div>
+            <div class="score-val">
+              <div class="score-bar-wrap"><div class="score-bar-fill" style="width:55%;background:var(--accent2)"></div></div>
+              <div class="score-num">55%</div>
+            </div>
+          </div>
+          <div class="score-row">
+            <div class="score-label">safety</div>
+            <div class="score-val">
+              <div class="score-bar-wrap"><div class="score-bar-fill" style="width:48%;background:var(--accent2)"></div></div>
+              <div class="score-num">48%</div>
+            </div>
+          </div>
+          <div class="score-row">
+            <div class="score-label">ingredient</div>
+            <div class="score-val">
+              <div class="score-bar-wrap"><div class="score-bar-fill" style="width:61%;background:var(--accent2)"></div></div>
+              <div class="score-num">61%</div>
+            </div>
+          </div>
+          <div class="score-row">
+            <div class="score-label">value</div>
+            <div class="score-val">
+              <div class="score-bar-wrap"><div class="score-bar-fill" style="width:40%;background:var(--accent2)"></div></div>
+              <div class="score-num">40%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <div>
+      <!-- Run panel -->
+      <div class="run-panel">
+        <button class="btn-run" id="runBtn" onclick="runPipeline()">
+          <div class="run-icon"></div>
+          Run Pipeline
+        </button>
+        <div class="pipeline-progress">
+          <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="progress-label" id="progressLabel">0 / 5</div>
+        </div>
+      </div>
+
+      <!-- Agent panels -->
+      <div class="agents-stack" id="agentsStack">
+
+        <!-- Agent 1 -->
+        <div class="agent-panel" id="agent1">
+          <div class="agent-header" onclick="toggleAgent(1)">
+            <div class="agent-num">01</div>
+            <div class="agent-title-block">
+              <div class="agent-name">Data Integrity Agent</div>
+              <div class="agent-desc">Validates structural & numerical integrity of dashboard JSON</div>
+            </div>
+            <div class="agent-badge badge-idle" id="badge1">IDLE</div>
+            <div class="agent-chevron" id="chev1">▼</div>
+          </div>
+          <div class="agent-body" id="body1">
+            <div class="log-stream" id="log1"></div>
+            <div class="output-grid" id="out1" style="display:none"></div>
+            <div class="findings-section" id="findings1" style="display:none"></div>
+          </div>
+        </div>
+
+        <!-- Agent 2 -->
+        <div class="agent-panel" id="agent2">
+          <div class="agent-header" onclick="toggleAgent(2)">
+            <div class="agent-num">02</div>
+            <div class="agent-title-block">
+              <div class="agent-name">Insight Agent</div>
+              <div class="agent-desc">Surfaces meaningful metric shifts between reporting periods</div>
+            </div>
+            <div class="agent-badge badge-idle" id="badge2">IDLE</div>
+            <div class="agent-chevron" id="chev2">▼</div>
+          </div>
+          <div class="agent-body" id="body2">
+            <div class="log-stream" id="log2"></div>
+            <div class="output-grid" id="out2" style="display:none"></div>
+            <div class="findings-section" id="findings2" style="display:none"></div>
+          </div>
+        </div>
+
+        <!-- Agent 3 -->
+        <div class="agent-panel" id="agent3">
+          <div class="agent-header" onclick="toggleAgent(3)">
+            <div class="agent-num">03</div>
+            <div class="agent-title-block">
+              <div class="agent-name">Assurance Agent</div>
+              <div class="agent-desc">Stress-tests narrative drafts against validated data</div>
+            </div>
+            <div class="agent-badge badge-idle" id="badge3">IDLE</div>
+            <div class="agent-chevron" id="chev3">▼</div>
+          </div>
+          <div class="agent-body" id="body3">
+            <div class="log-stream" id="log3"></div>
+            <div class="output-grid" id="out3" style="display:none"></div>
+            <div class="findings-section" id="findings3" style="display:none"></div>
+          </div>
+        </div>
+
+        <!-- Agent 4 -->
+        <div class="agent-panel" id="agent4">
+          <div class="agent-header" onclick="toggleAgent(4)">
+            <div class="agent-num">04</div>
+            <div class="agent-title-block">
+              <div class="agent-name">Orchestration Agent</div>
+              <div class="agent-desc">Enforces workflow discipline and reporting hygiene</div>
+            </div>
+            <div class="agent-badge badge-idle" id="badge4">IDLE</div>
+            <div class="agent-chevron" id="chev4">▼</div>
+          </div>
+          <div class="agent-body" id="body4">
+            <div class="log-stream" id="log4"></div>
+            <div class="output-grid" id="out4" style="display:none"></div>
+            <div class="findings-section" id="findings4" style="display:none"></div>
+          </div>
+        </div>
+
+        <!-- Agent 5 -->
+        <div class="agent-panel" id="agent5">
+          <div class="agent-header" onclick="toggleAgent(5)">
+            <div class="agent-num">05</div>
+            <div class="agent-title-block">
+              <div class="agent-name">Opportunity & Engagement Agent</div>
+              <div class="agent-desc">Scans for proactive client engagement signals</div>
+            </div>
+            <div class="agent-badge badge-idle" id="badge5">IDLE</div>
+            <div class="agent-chevron" id="chev5">▼</div>
+          </div>
+          <div class="agent-body" id="body5">
+            <div class="log-stream" id="log5"></div>
+            <div class="findings-section" id="findings5" style="display:none"></div>
+          </div>
+        </div>
+
+      </div><!-- /agents-stack -->
+
+      <!-- Final summary -->
+      <div class="final-summary" id="finalSummary">
+        <div class="final-header">
+          <div class="final-title">⬡ Enterprise Readiness Summary</div>
+          <div class="agent-badge badge-idle" id="finalBadge">pending</div>
+        </div>
+        <div class="output-grid" id="finalMetrics"></div>
+        <div class="action-list" id="actionList"></div>
+      </div>
+
+    </div><!-- /main content -->
+  </div><!-- /main-grid -->
+</div><!-- /shell -->
+
+<script>
+// ── Data ──────────────────────────────────────────────────────────────────
+const now = new Date();
+const ts = () => {
+  const d = new Date();
+  return `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}:${d.getSeconds().toString().padStart(2,'0')}`;
+};
+
+// ── State ─────────────────────────────────────────────────────────────────
+let running = false;
+let openPanels = new Set();
+
+// ── Toggle panel ──────────────────────────────────────────────────────────
+function toggleAgent(n) {
+  const body = document.getElementById(`body${n}`);
+  const chev = document.getElementById(`chev${n}`);
+  if (body.classList.contains('open')) {
+    body.classList.remove('open');
+    chev.classList.remove('open');
+    openPanels.delete(n);
+  } else {
+    body.classList.add('open');
+    chev.classList.add('open');
+    openPanels.add(n);
+  }
+}
+
+function openAgent(n) {
+  const body = document.getElementById(`body${n}`);
+  const chev = document.getElementById(`chev${n}`);
+  body.classList.add('open');
+  chev.classList.add('open');
+  openPanels.add(n);
+}
+
+function scrollToAgent(idx) {
+  const panels = document.querySelectorAll('.agent-panel');
+  if (panels[idx]) panels[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── Log helpers ───────────────────────────────────────────────────────────
+function appendLog(logId, level, agent, message) {
+  const el = document.getElementById(logId);
+  const line = document.createElement('div');
+  line.className = 'log-line';
+  line.innerHTML = `<span class="log-ts">[${ts()}]</span><span class="log-lvl-${level}">${level}</span>&nbsp;<span style="color:var(--text-dim)">[${agent}]</span>&nbsp;<span class="log-msg">${message}</span>`;
+  el.appendChild(line);
+  el.scrollTop = el.scrollHeight;
+}
+
+function addCursor(logId) {
+  const el = document.getElementById(logId);
+  const cursor = document.createElement('span');
+  cursor.className = 'log-cursor';
+  cursor.id = logId + '-cursor';
+  el.appendChild(cursor);
+}
+
+function removeCursor(logId) {
+  const c = document.getElementById(logId + '-cursor');
+  if (c) c.remove();
+}
+
+// ── Pipeline step status ───────────────────────────────────────────────────
+function setPipeStatus(n, status, text) {
+  const el = document.getElementById(`ps${n}-status`);
+  const ps = document.getElementById(`ps${n}`);
+  el.textContent = text;
+  el.className = `pipe-status ${status}`;
+  ps.classList.remove('active','done','warn-step','fail-step');
+  if (status === 'running') ps.classList.add('active');
+  else if (status === 'ok') ps.classList.add('done');
+  else if (status === 'warn') ps.classList.add('warn-step');
+  else if (status === 'fail') ps.classList.add('fail-step');
+}
+
+function setProgress(done) {
+  document.getElementById('progressFill').style.width = `${(done/5)*100}%`;
+  document.getElementById('progressLabel').textContent = `${done} / 5`;
+}
+
+function setBadge(n, cls, text) {
+  const el = document.getElementById(`badge${n}`);
+  el.className = `agent-badge badge-${cls}`;
+  el.textContent = text;
+}
+
+function setAgentState(n, state, panelClass) {
+  const panel = document.getElementById(`agent${n}`);
+  panel.classList.remove('active','done','pass-panel','warn-panel','fail-panel');
+  panel.classList.add(state);
+  if (panelClass) panel.classList.add(panelClass);
+}
+
+// ── Delay utility ─────────────────────────────────────────────────────────
+const delay = (ms) => new Promise(r => setTimeout(r, ms));
+
+// ── Animate findings ──────────────────────────────────────────────────────
+async function animateItems(containerSelector, items, delayMs = 120) {
+  await delay(200);
+  for (const item of items) {
+    item.classList.add('visible');
+    await delay(delayMs);
+  }
+}
+
+// ── AGENT 1: Data Integrity ────────────────────────────────────────────────
+async function runAgent1() {
+  const n = 1;
+  setPipeStatus(n, 'running', '⟳ running');
+  setBadge(n, 'running', 'RUNNING');
+  setAgentState(n, 'active');
+  openAgent(n);
+  addCursor('log1');
+
+  await delay(300);
+  appendLog('log1','INFO','DataIntegrityAgent','Starting data integrity validation for brand: Olay');
+  await delay(400);
+  appendLog('log1','INFO','DataIntegrityAgent','Checking required top-level keys...');
+  await delay(350);
+  appendLog('log1','INFO','DataIntegrityAgent','Score range validation: visibility_score=6.8 ✓, vulnerability_score=4.2 ✓');
+  await delay(300);
+  appendLog('log1','INFO','DataIntegrityAgent','Readiness sub-scores: clarity=7.1 ✓, depth=5.9 ✓, availability=6.4 ✓, technical=6.0 ✓');
+  await delay(350);
+  appendLog('log1','INFO','DataIntegrityAgent','Prompt cluster completeness: 6/6 clusters present ✓');
+  await delay(300);
+  appendLog('log1','INFO','DataIntegrityAgent','Domain format validation: 5 domains checked ✓');
+  await delay(350);
+  appendLog('log1','INFO','DataIntegrityAgent','Competitive share sum: 1.00 (tolerance ±0.05) ✓');
+  await delay(300);
+  appendLog('log1','INFO','DataIntegrityAgent','Markets list: [US, UK, CA] ✓');
+  await delay(400);
+  appendLog('log1','INFO','DataIntegrityAgent','Validation PASS. 0 error(s), 0 warning(s).');
+  removeCursor('log1');
+
+  // Output metrics
+  const out = document.getElementById('out1');
+  out.style.display = '';
+  out.innerHTML = `
+    <div class="out-card">
+      <div class="out-card-label">Status</div>
+      <div class="out-card-value green">PASS</div>
+      <div class="out-card-sub">All checks cleared</div>
+    </div>
+    <div class="out-card">
+      <div class="out-card-label">Errors</div>
+      <div class="out-card-value green">0</div>
+      <div class="out-card-sub">Blocking issues</div>
+    </div>
+    <div class="out-card">
+      <div class="out-card-label">Warnings</div>
+      <div class="out-card-value accent">0</div>
+      <div class="out-card-sub">Non-blocking flags</div>
+    </div>
+    <div class="out-card">
+      <div class="out-card-label">Fields Checked</div>
+      <div class="out-card-value">24</div>
+      <div class="out-card-sub">Keys & values validated</div>
+    </div>
+  `;
+
+  // Findings
+  const findings = document.getElementById('findings1');
+  findings.style.display = '';
+  findings.innerHTML = `<div class="findings-label">Validation Checks</div>`;
+  const checks = [
+    { icon:'✓', text:'<strong>Required keys</strong> — all 9 top-level fields present', cls:'', delta:null },
+    { icon:'✓', text:'<strong>Score ranges</strong> — all values within [0–10]', cls:'', delta:null },
+    { icon:'✓', text:'<strong>Readiness sub-scores</strong> — clarity, depth, availability, technical all valid', cls:'', delta:null },
+    { icon:'✓', text:'<strong>Prompt clusters</strong> — 6/6 expected clusters present', cls:'', delta:null },
+    { icon:'✓', text:'<strong>Domain format</strong> — 5 source domains validated', cls:'', delta:null },
+    { icon:'✓', text:'<strong>Competitive share sum</strong> — 1.00 (within ±0.05 tolerance)', cls:'', delta:null },
+    { icon:'✓', text:'<strong>Time window</strong> — reporting_window: 2025-Q1 confirmed', cls:'', delta:null },
+    { icon:'✓', text:'<strong>Markets</strong> — [US, UK, CA] — 3 active markets', cls:'', delta:null },
+  ];
+  const items = [];
+  for (const c of checks) {
+    const div = document.createElement('div');
+    div.className = 'finding-item';
+    div.innerHTML = `<div class="finding-icon" style="color:var(--green)">${c.icon}</div><div class="finding-text">${c.text}</div>`;
+    findings.appendChild(div);
+    items.push(div);
+  }
+  await animateItems(null, items);
+
+  setAgentState(n, 'done', 'pass-panel');
+  setBadge(n, 'pass', 'PASS');
+  setPipeStatus(n, 'ok', '✓ pass');
+  setProgress(1);
+}
+
+// ── AGENT 2: Insight ───────────────────────────────────────────────────────
+async function runAgent2() {
+  const n = 2;
+  setPipeStatus(n, 'running', '⟳ running');
+  setBadge(n, 'running', 'RUNNING');
+  setAgentState(n, 'active');
+  openAgent(n);
+  addCursor('log2');
+
+  await delay(300);
+  appendLog('log2','INFO','InsightAgent','Running insight analysis: 2025-Q1 vs 2024-Q4');
+  await delay(400);
+  appendLog('log2','INFO','InsightAgent','Computing score deltas: visibility Δ+0.7, vulnerability Δ+0.5');
+  await delay(350);
+  appendLog('log2','INFO','InsightAgent','Readiness delta scan: clarity Δ+0.6 — exceeds threshold 0.5 ✓');
+  await delay(300);
+  appendLog('log2','INFO','InsightAgent','Competitive share analysis: Olay +3pp, Neutrogena -3pp');
+  await delay(350);
+  appendLog('log2','INFO','InsightAgent','Vulnerability driver scan: "Ingredient misinformation" Δ+1.4 — escalating ⚠');
+  await delay(300);
+  appendLog('log2','WARNING','InsightAgent','Unbranded discoverability gap detected: 31% share (threshold: 35%)');
+  await delay(400);
+  appendLog('log2','INFO','InsightAgent','3 material change(s) detected. 2 competitive shift(s). 3 risk flag(s). 2 opportunity flag(s).');
+  removeCursor('log2');
+
+  const out = document.getElementById('out2');
+  out.style.display = '';
+  out.innerHTML = `
+    <div class="out-card">
+      <div class="out-card-label">Material Changes</div>
+      <div class="out-card-value accent">3</div>
+      <div class="out-card-sub">Exceed Δ0.5 threshold</div>
+    </div>
+    <div class="out-card">
+      <div class="out-card-label">Competitive Shifts</div>
+      <div class="out-card-value">2</div>
+      <div class="out-card-sub">Brands moved ≥3pp</div>
+    </div>
+    <div class="out-card">
+      <div class="out-card-label">Risk Flags</div>
+      <div class="out-card-value warn">3</div>
+      <div class="out-card-sub">Requires attention</div>
+    </div>
+    <div class="out-card">
+      <div class="out-card-label">Opportunities</div>
+      <div class="out-card-value green">2</div>
+      <div class="out-card-sub">Positive movements</div>
+    </div>
+  `;
+
+  const findings = document.getElementById('findings2');
+  findings.style.display = '';
+  findings.innerHTML = `<div class="findings-label">Material Changes — sorted by |Δ|</div>`;
+
+  const changes = [
+    { icon:'↑', text:'<strong>visibility_score</strong>', detail:'6.1 → 6.8', delta:'+0.7', up:true },
+    { icon:'↑', text:'<strong>readiness.clarity</strong>', detail:'6.5 → 7.1', delta:'+0.6', up:true },
+    { icon:'↑', text:'<strong>vulnerability_score</strong>', detail:'3.7 → 4.2 <span style="color:var(--warn)">(increasing)</span>', delta:'+0.5', up:false },
+  ];
+  const items1 = [];
+  for (const c of changes) {
+    const div = document.createElement('div');
+    div.className = 'finding-item';
+    div.innerHTML = `<div class="finding-icon" style="color:${c.up?'var(--green)':'var(--warn)'}">${c.icon}</div><div class="finding-text">${c.text} — ${c.detail}</div><div class="finding-delta ${c.up?'up':'down'}">${c.delta}</div>`;
+    findings.appendChild(div);
+    items1.push(div);
+  }
+
+  findings.innerHTML += `<div class="findings-label mt8">Competitive Shifts</div>`;
+  const shifts = [
+    { icon:'↑', text:'<strong>Olay</strong> gained share of answer', detail:'28% → 31%', delta:'+3pp', up:true },
+    { icon:'↓', text:'<strong>Neutrogena</strong> lost share of answer', detail:'31% → 28%', delta:'-3pp', up:false },
+  ];
+  const items2 = [];
+  for (const s of shifts) {
+    const div = document.createElement('div');
+    div.className = 'finding-item';
+    div.innerHTML = `<div class="finding-icon" style="color:${s.up?'var(--green)':'var(--danger)'}">${s.icon}</div><div class="finding-text">${s.text} — ${s.detail}</div><div class="finding-delta ${s.up?'up':'down'}">${s.delta}</div>`;
+    findings.appendChild(div);
+    items2.push(div);
+  }
+
+  findings.innerHTML += `<div class="findings-label mt8">Risk Flags</div>`;
+  const risks = [
+    { icon:'⚠', text:'<strong>Vulnerability increasing</strong> — score moved up by 0.5 points', color:'var(--warn)' },
+    { icon:'⚠', text:'<strong>Vulnerability driver escalating</strong> — "Ingredient misinformation" +1.4 severity (5.8 → 7.2)', color:'var(--danger)' },
+    { icon:'⚠', text:'<strong>Unbranded discoverability gap</strong> — 31% share of unbranded AI queries (below 35% threshold)', color:'var(--accent4)' },
+  ];
+  const items3 = [];
+  for (const r of risks) {
+    const div = document.createElement('div');
+    div.className = 'finding-item';
+    div.innerHTML = `<div class="finding-icon" style="color:${r.color}">${r.icon}</div><div class="finding-text">${r.text}</div>`;
+    findings.appendChild(div);
+    items3.push(div);
+  }
+
+  await animateItems(null, [...items1, ...items2, ...items3], 100);
+
+  setAgentState(n, 'done', 'pass-panel');
+  setBadge(n, 'pass', 'COMPLETE');
+  setPipeStatus(n, 'ok', '✓ complete');
+  setProgress(2);
+}
+
+// ── AGENT 3: Assurance ────────────────────────────────────────────────────
+async function runAgent3() {
+  const n = 3;
+  setPipeStatus(n, 'running', '⟳ running');
+  setBadge(n, 'running', 'RUNNING');
+  setAgentState(n, 'active');
+  openAgent(n);
+  addCursor('log3');
+
+  await delay(300);
+  appendLog('log3','INFO','AssuranceAgent','Running assurance check on narrative (470 chars)');
+  await delay(400);
+  appendLog('log3','INFO','AssuranceAgent','Extracting claims from narrative text [LLM stub]...');
+  await delay(500);
+  appendLog('log3','INFO','AssuranceAgent','Extracted 9 claims from narrative');
+  await delay(350);
+  appendLog('log3','INFO','AssuranceAgent','Flattening dashboard data for cross-reference...');
+  await delay(300);
+  appendLog('log3','INFO','AssuranceAgent','Running numeric claim check — tolerance ±0.15');
+  await delay(400);
+  appendLog('log3','WARNING','AssuranceAgent','Contradiction: narrative claims "Technical Readiness 6.5" — data shows 6.0');
+  await delay(300);
+  appendLog('log3','WARNING','AssuranceAgent','Absolute language detected: "no material safety concerns" — verify backing');
+  await delay(350);
+  appendLog('log3','INFO','AssuranceAgent','Simulating 5 skeptical stakeholder questions [LLM stub]...');
+  await delay(400);
+  appendLog('log3','INFO','AssuranceAgent','Alignment score: 72/100. 1 contradiction. 1 unsupported claim. 9 claims evaluated.');
+  removeCursor('log3');
+
+  const out = document.getElementById('out3');
+  out.style.display = '';
+  out.innerHTML = `
+    <div class="out-card">
+      <div class="out-card-label">Alignment Score</div>
+      <div class="out-card-value warn">72</div>
+      <div class="out-card-sub">/ 100 — needs review</div>
+    </div>
+    <div class="out-card">
+      <div class="out-card-label">Claims Evaluated</div>
+      <div class="out-card-value">9</div>
+      <div class="out-card-sub">Extracted from narrative</div>
+    </div>
+    <div class="out-card">
+      <div class="out-card-label">Contradictions</div>
+      <div class="out-card-value danger">1</div>
+      <div class="out-card-sub">Numeric mismatch</div>
+    </div>
+    <div class="out-card">
+      <div class="out-card-label">Unsupported</div>
+      <div class="out-card-value warn">1</div>
+      <div class="out-card-sub">Absolute language</div>
+    </div>
+  `;
+
+  const findings = document.getElementById('findings3');
+  findings.style.display = '';
+  findings.innerHTML = `<div class="findings-label">Contradictions Found</div>`;
+  const items = [];
+
+  const contDiv = document.createElement('div');
+  contDiv.className = 'finding-item';
+  contDiv.innerHTML = `<div class="finding-icon" style="color:var(--danger)">✗</div><div class="finding-text"><strong>Technical Readiness</strong> — narrative states <span class="mono">6.5</span>, dashboard data shows <span class="mono">6.0</span> (Δ=0.5, exceeds tolerance ±0.15)</div>`;
+  findings.appendChild(contDiv);
+  items.push(contDiv);
+
+  findings.innerHTML += `<div class="findings-label mt8">Unsupported Claims</div>`;
+  const unsDiv = document.createElement('div');
+  unsDiv.className = 'finding-item';
+  unsDiv.innerHTML = `<div class="finding-icon" style="color:var(--warn)">⚑</div><div class="finding-text"><strong>Absolute language:</strong> "no material safety concerns" — safety vulnerability driver severity is 6.1/10. Recommend qualifying language.</div>`;
+  findings.appendChild(unsDiv);
+  items.push(unsDiv);
+
+  findings.innerHTML += `<div class="findings-label mt8">Simulated Stakeholder Q&A</div>`;
+  const qs = [
+    'What drove the Visibility score change this period?',
+    'How do these results compare to category benchmarks?',
+    'Which Vulnerability drivers pose the greatest near-term risk?',
+    'Is the Readiness improvement sustainable or one-time?',
+    'What is the confidence interval on the competitive share data?',
+  ];
+  const qItems = [];
+  for (const q of qs) {
+    const div = document.createElement('div');
+    div.className = 'qa-item';
+    div.innerHTML = `<span class="qa-q">Q:</span> ${q}`;
+    findings.appendChild(div);
+    qItems.push(div);
+    items.push(div);
+  }
+
+  await animateItems(null, items, 120);
+
+  setAgentState(n, 'done', 'warn-panel');
+  setBadge(n, 'warn', 'WARN 72/100');
+  setPipeStatus(n, 'warn', '⚠ warn');
+  setProgress(3);
+}
+
+// ── AGENT 4: Orchestration ────────────────────────────────────────────────
+async function runAgent4() {
+  const n = 4;
+  setPipeStatus(n, 'running', '⟳ running');
+  setBadge(n, 'running', 'RUNNING');
+  setAgentState(n, 'active');
+  openAgent(n);
+  addCursor('log4');
+
+  await delay(300);
+  appendLog('log4','INFO','OrchestrationAgent','Running orchestration check for window: 2025-Q1');
+  await delay(400);
+  appendLog('log4','INFO','OrchestrationAgent','Checking required step completion...');
+  await delay(300);
+  appendLog('log4','INFO','OrchestrationAgent','Completed: data_integrity_check ✓, insight_generation ✓, assurance_check ✓');
+  await delay(350);
+  appendLog('log4','INFO','OrchestrationAgent','Reporting window alignment: metadata 2025-Q1 = dashboard 2025-Q1 ✓');
+  await delay(300);
+  appendLog('log4','INFO','OrchestrationAgent','Draft-to-presentation gap: 76.0 hours (buffer requirement: 48h) ✓');
+  await delay(350);
+  appendLog('log4','WARNING','OrchestrationAgent','Reviewer confirmation not recorded in project metadata');
+  await delay(400);
+  appendLog('log4','INFO','OrchestrationAgent','Orchestration status: YELLOW. 0 missing step(s). 1 risk factor(s).');
+  removeCursor('log4');
+
+  const out = document.getElementById('out4');
+  out.style.display = '';
+  out.innerHTML = `
+    <div class="out-card">
+      <div class="out-card-label">Readiness Status</div>
+      <div class="out-card-value warn">YELLOW</div>
+      <div class="out-card-sub">Non-blocking warnings</div>
+    </div>
+    <div class="out-card">
+      <div class="out-card-label">Missing Steps</div>
+      <div class="out-card-value green">0</div>
+      <div class="out-card-sub">All required steps done</div>
+    </div>
+    <div class="out-card">
+      <div class="out-card-label">Risk Factors</div>
+      <div class="out-card-value warn">1</div>
+      <div class="out-card-sub">Non-blocking</div>
+    </div>
+    <div class="out-card">
+      <div class="out-card-label">Draft Buffer</div>
+      <div class="out-card-value green">76h</div>
+      <div class="out-card-sub">≥48h required ✓</div>
+    </div>
+  `;
+
+  const findings = document.getElementById('findings4');
+  findings.style.display = '';
+
+  const banner = document.createElement('div');
+  banner.className = 'readiness-banner yellow';
+  banner.innerHTML = `<div class="readiness-indicator"></div><div class="readiness-text"><div class="readiness-status-text">YELLOW — Proceed with caution</div><div class="readiness-detail">All required pipeline steps completed. Reviewer confirmation pending.</div></div>`;
+  findings.appendChild(banner);
+  setTimeout(() => banner.classList.add('visible'), 100);
+
+  findings.innerHTML += `<div class="findings-label mt8">Risk Factors</div>`;
+  const items = [];
+  const rDiv = document.createElement('div');
+  rDiv.className = 'finding-item';
+  rDiv.innerHTML = `<div class="finding-icon" style="color:var(--warn)">⚠</div><div class="finding-text"><strong>Reviewer confirmation</strong> not recorded in project metadata — obtain sign-off before client delivery</div>`;
+  findings.appendChild(rDiv);
+  items.push(rDiv);
+
+  findings.innerHTML += `<div class="findings-label mt8">Completed Steps</div>`;
+  const steps = ['data_integrity_check', 'insight_generation', 'assurance_check'];
+  for (const s of steps) {
+    const div = document.createElement('div');
+    div.className = 'finding-item';
+    div.innerHTML = `<div class="finding-icon" style="color:var(--green)">✓</div><div class="finding-text"><span class="mono">${s}</span></div>`;
+    findings.appendChild(div);
+    items.push(div);
+  }
+
+  await animateItems(null, items, 120);
+
+  setAgentState(n, 'done', 'warn-panel');
+  setBadge(n, 'yellow', 'YELLOW');
+  setPipeStatus(n, 'warn', '⚠ yellow');
+  setProgress(4);
+}
+
+// ── AGENT 5: Opportunity ──────────────────────────────────────────────────
+async function runAgent5() {
+  const n = 5;
+  setPipeStatus(n, 'running', '⟳ running');
+  setBadge(n, 'running', 'RUNNING');
+  setAgentState(n, 'active');
+  openAgent(n);
+  addCursor('log5');
+
+  await delay(300);
+  appendLog('log5','INFO','OpportunityEngagementAgent','Scanning for engagement signals: 2025-Q1');
+  await delay(400);
+  appendLog('log5','INFO','OpportunityEngagementAgent','Running competitor decline scan...');
+  await delay(350);
+  appendLog('log5','INFO','OpportunityEngagementAgent','Neutrogena share drop: 31% → 28% (Δ-3pp, threshold: -4pp) — below trigger');
+  await delay(300);
+  appendLog('log5','INFO','OpportunityEngagementAgent','Running vulnerability spike scan...');
+  await delay(350);
+  appendLog('log5','INFO','OpportunityEngagementAgent','SIGNAL: "Ingredient misinformation" severity +1.4 (threshold: 1.0) — TRIGGERED');
+  await delay(300);
+  appendLog('log5','INFO','OpportunityEngagementAgent','Running discovery gap scan...');
+  await delay(350);
+  appendLog('log5','INFO','OpportunityEngagementAgent','SIGNAL: Unbranded share 31% below threshold 35% — TRIGGERED');
+  await delay(400);
+  appendLog('log5','INFO','OpportunityEngagementAgent','Found 2 engagement signal(s)');
+  removeCursor('log5');
+
+  const findings = document.getElementById('findings5');
+  findings.style.display = '';
+
+  const signals = [
+    {
+      type: 'vulnerability_spike',
+      label: 'vulnerability spike',
+      conf: '0.85 confidence',
+      desc: "Vulnerability driver 'Ingredient misinformation' severity increased by 1.4 points (5.8 → 7.2). Immediate review recommended.",
+      draft: "Our monitoring has flagged a spike in the 'Ingredient misinformation' vulnerability category for Olay. This represents a meaningful increase in AI-engine exposure in this area. We'd like to schedule a brief review to walk through the signal and discuss mitigation options before it affects the overall Vulnerability score."
+    },
+    {
+      type: 'discovery_gap',
+      label: 'discovery gap',
+      conf: '0.65 confidence',
+      desc: 'Olay appears in only 31% of unbranded AI queries (60 prompts tested). Significant discoverability gap identified.',
+      draft: "We've identified a meaningful discovery gap for Olay in unbranded AI queries. The brand currently surfaces in only 31% of category-level prompts — meaning AI engines are not consistently recommending Olay when consumers ask open-ended questions. This is a high-priority opportunity for Answer Engine Optimization."
+    }
+  ];
+
+  findings.innerHTML = `<div class="findings-label">Engagement Signals (2 detected)</div>`;
+  const cards = [];
+  for (const s of signals) {
+    const card = document.createElement('div');
+    card.className = 'signal-card';
+    card.innerHTML = `
+      <div class="signal-header">
+        <div class="signal-type ${s.type}">${s.label}</div>
+        <div class="signal-conf">${s.conf}</div>
+      </div>
+      <div class="signal-body">${s.desc}</div>
+      <div class="signal-draft">
+        <span class="signal-draft-tag">// [DRAFT — AI GENERATED, REQUIRES HUMAN REVIEW]</span>
+        ${s.draft}
+      </div>
+    `;
+    findings.appendChild(card);
+    cards.push(card);
+  }
+
+  await delay(200);
+  for (const c of cards) {
+    c.classList.add('visible');
+    await delay(300);
+  }
+
+  setAgentState(n, 'done', 'pass-panel');
+  setBadge(n, 'pass', '2 SIGNALS');
+  setPipeStatus(n, 'ok', '✓ 2 signals');
+  setProgress(5);
+}
+
+// ── Final summary ─────────────────────────────────────────────────────────
+async function showFinalSummary() {
+  await delay(400);
+  const summary = document.getElementById('finalSummary');
+  summary.classList.add('visible');
+
+  document.getElementById('finalBadge').className = 'agent-badge badge-yellow';
+  document.getElementById('finalBadge').textContent = 'NEEDS REVIEW';
+
+  document.getElementById('finalMetrics').innerHTML = `
+    <div class="out-card">
+      <div class="out-card-label">Overall Readiness</div>
+      <div class="out-card-value warn">NEEDS REVIEW</div>
+      <div class="out-card-sub">Reviewer sign-off pending</div>
+    </div>
+    <div class="out-card">
+      <div class="out-card-label">Visibility Score</div>
+      <div class="out-card-value accent">6.8</div>
+      <div class="out-card-sub">↑ +0.7 vs prior</div>
+    </div>
+    <div class="out-card">
+      <div class="out-card-label">Material Changes</div>
+      <div class="out-card-value">3</div>
+      <div class="out-card-sub">Detected this period</div>
+    </div>
+    <div class="out-card">
+      <div class="out-card-label">Risk Flags</div>
+      <div class="out-card-value warn">3</div>
+      <div class="out-card-sub">Requires attention</div>
+    </div>
+    <div class="out-card">
+      <div class="out-card-label">Opportunity Signals</div>
+      <div class="out-card-value green">2</div>
+      <div class="out-card-sub">Client engagement ready</div>
+    </div>
+  `;
+
+  const actions = [
+    { cls:'workflow', tag:'[WORKFLOW]', text:'Obtain reviewer confirmation before client delivery' },
+    { cls:'narrative', tag:'[NARRATIVE]', text:'Fix contradiction: "Technical Readiness 6.5" should read 6.0' },
+    { cls:'narrative', tag:'[NARRATIVE]', text:'Qualify absolute language: "no material safety concerns" — safety severity is 6.1/10' },
+    { cls:'risk', tag:'[RISK]', text:'Vulnerability driver escalating: "Ingredient misinformation" +1.4 severity — schedule mitigation review' },
+    { cls:'risk', tag:'[RISK]', text:'Vulnerability score trending up 0.5 points — monitor next period closely' },
+    { cls:'risk', tag:'[RISK]', text:'Unbranded discoverability gap at 31% — below 35% threshold; AEO action needed' },
+    { cls:'opportunity', tag:'[OPPORTUNITY]', text:'Visibility improved +0.7 — include in executive narrative as lead metric' },
+    { cls:'opportunity', tag:'[OPPORTUNITY]', text:'Olay gained 3pp share-of-answer from Neutrogena — amplify in client briefing' },
+  ];
+
+  const actionList = document.getElementById('actionList');
+  const items = [];
+  for (const a of actions) {
+    const div = document.createElement('div');
+    div.className = `action-item ${a.cls}`;
+    div.innerHTML = `<div class="action-tag">${a.tag}</div><div class="action-text">${a.text}</div>`;
+    actionList.appendChild(div);
+    items.push(div);
+  }
+
+  await delay(200);
+  for (let i = 0; i < items.length; i++) {
+    setTimeout(() => items[i].classList.add('visible'), i * 80);
+  }
+}
+
+// ── Main run ──────────────────────────────────────────────────────────────
+async function runPipeline() {
+  if (running) return;
+  running = true;
+
+  const btn = document.getElementById('runBtn');
+  btn.disabled = true;
+  btn.classList.add('running');
+  btn.innerHTML = `<div class="run-icon"></div> Running...`;
+
+  // Reset all panels
+  for (let i = 1; i <= 5; i++) {
+    setBadge(i, 'idle', 'IDLE');
+    document.getElementById(`agent${i}`).className = 'agent-panel';
+    document.getElementById(`log${i}`).innerHTML = '';
+    const out = document.getElementById(`out${i}`);
+    if (out) { out.style.display = 'none'; out.innerHTML = ''; }
+    const f = document.getElementById(`findings${i}`);
+    if (f) { f.style.display = 'none'; f.innerHTML = ''; }
+    const body = document.getElementById(`body${i}`);
+    body.classList.remove('open');
+    document.getElementById(`chev${i}`).classList.remove('open');
+    setPipeStatus(i, '', 'idle');
+  }
+  document.getElementById('finalSummary').className = 'final-summary';
+  document.getElementById('finalMetrics').innerHTML = '';
+  document.getElementById('actionList').innerHTML = '';
+  document.getElementById('progressFill').style.width = '0%';
+  document.getElementById('progressLabel').textContent = '0 / 5';
+
+  await delay(200);
+  await runAgent1();
+  await delay(600);
+  await runAgent2();
+  await delay(600);
+  await runAgent3();
+  await delay(600);
+  await runAgent4();
+  await delay(600);
+  await runAgent5();
+  await showFinalSummary();
+
+  btn.disabled = false;
+  btn.classList.remove('running');
+  btn.innerHTML = `<div class="run-icon"></div> Run Again`;
+  running = false;
+}
+</script>
+</body>
+</html>
