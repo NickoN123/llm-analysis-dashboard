@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrandRank.AI — Preliminary Brand Signal Report: Nestlé USA</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0e1a;
+    --bg2: #1a1f35;
+    --white: #ffffff;
+    --cyan: #00d4ff;
+    --card: rgba(255,255,255,0.05);
+    --border: rgba(255,255,255,0.1);
+    --green: #4ecdc4;
+    --yellow: #ffd93d;
+    --red: #ff6b6b;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--white);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  .report-header {
+    background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 80px 50px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .brandrank-badge {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--cyan);
+    text-transform: uppercase;
+    border: 1px solid var(--cyan);
+    padding: 4px 12px;
+    border-radius: 2px;
+  }
+  .report-date {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1px;
+  }
+  .report-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+  }
+  .report-title span { color: var(--cyan); }
+  .report-subtitle {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 6px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── NAV PILLS ── */
+  .section-nav {
+    display: flex;
+    gap: 8px;
+    padding: 24px 80px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    position: sticky;
+    top: 140px;
+    z-index: 90;
+  }
+  .nav-pill {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    padding: 6px 18px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    background: transparent;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+  }
+  .nav-pill:hover, .nav-pill.active {
+    background: var(--cyan);
+    color: var(--bg);
+    border-color: var(--cyan);
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    padding: 80px 80px 60px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section:last-child { border-bottom: none; }
+
+  .section-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  .section-desc {
+    font-size: 15px;
+    color: rgba(255,255,255,0.6);
+    max-width: 700px;
+    margin-bottom: 48px;
+  }
+
+  /* ── SCORE HERO ── */
+  .score-hero {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-bottom: 48px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .score-card {
+    background: var(--card);
+    padding: 40px 32px;
+    text-align: center;
+    position: relative;
+    transition: background 0.2s;
+  }
+  .score-card:hover { background: rgba(255,255,255,0.08); }
+  .score-card.winner {
+    background: rgba(0, 212, 255, 0.08);
+    border: 1px solid rgba(0,212,255,0.3);
+  }
+  .score-card.winner::before {
+    content: 'WINNER';
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--cyan);
+  }
+  .score-brand {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .score-number {
+    font-size: 72px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--white);
+  }
+  .score-number.cyan { color: var(--cyan); }
+  .score-number.dim { color: rgba(255,255,255,0.4); }
+  .score-out-of {
+    font-size: 14px;
+    color: rgba(255,255,255,0.3);
+    margin-top: 4px;
+  }
+  .score-rank {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 12px;
+  }
+
+  /* ── TABLES ── */
+  .table-wrap {
+    overflow-x: auto;
+    margin-bottom: 40px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  thead tr {
+    border-bottom: 1px solid var(--cyan);
+  }
+  thead th {
+    padding: 14px 20px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    white-space: nowrap;
+  }
+  thead th:first-child { color: rgba(255,255,255,0.5); }
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  tbody tr:hover { background: var(--card); }
+  tbody td {
+    padding: 14px 20px;
+    color: rgba(255,255,255,0.85);
+  }
+  tbody td:first-child {
+    font-weight: 600;
+    color: var(--white);
+  }
+  .score-cell {
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  /* ── BAR CHART ── */
+  .bar-chart { margin-bottom: 48px; }
+  .bar-row {
+    display: grid;
+    grid-template-columns: 200px 1fr 60px;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  .bar-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .bar-track {
+    height: 8px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.8s ease;
+  }
+  .bar-value {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  /* ── CATEGORY BLOCKS ── */
+  .category-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-top: 40px;
+  }
+  .category-number {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--cyan);
+  }
+  .category-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .category-avg {
+    margin-left: auto;
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+  }
+  .category-avg span { color: var(--cyan); font-weight: 700; font-size: 18px; }
+
+  /* ── INSIGHT CALLOUT ── */
+  .insight {
+    background: rgba(0,212,255,0.06);
+    border-left: 3px solid var(--cyan);
+    padding: 16px 24px;
+    margin: 24px 0;
+    font-size: 14px;
+    color: rgba(255,255,255,0.75);
+    font-style: italic;
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* ── VERDICT BLOCK ── */
+  .verdict-block {
+    background: linear-gradient(135deg, rgba(0,212,255,0.08), rgba(26,31,53,0.8));
+    border: 1px solid rgba(0,212,255,0.25);
+    border-radius: 4px;
+    padding: 48px;
+    margin: 48px 0;
+  }
+  .verdict-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 16px;
+  }
+  .verdict-text {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.4;
+    margin-bottom: 24px;
+  }
+  .verdict-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 32px;
+  }
+  .verdict-col h4 {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .verdict-col.good h4 { color: var(--green); }
+  .verdict-col.neutral h4 { color: var(--yellow); }
+  .verdict-col.bad h4 { color: var(--red); }
+  .verdict-col li {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 6px;
+    list-style: none;
+    padding-left: 12px;
+    position: relative;
+  }
+  .verdict-col li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: rgba(255,255,255,0.3);
+  }
+
+  /* ── OVERALL SCORE BAND ── */
+  .overall-score {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 4px;
+  }
+  .score-display {
+    font-size: 96px;
+    font-weight: 700;
+    color: var(--cyan);
+    line-height: 1;
+    letter-spacing: -2px;
+  }
+  .score-display small {
+    font-size: 32px;
+    color: rgba(255,255,255,0.3);
+  }
+
+  /* ── RECOMMENDATION CARDS ── */
+  .rec-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .rec-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .rec-card:hover {
+    border-color: rgba(0,212,255,0.3);
+    background: rgba(0,212,255,0.04);
+  }
+  .rec-priority {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .rec-priority.high { color: var(--red); }
+  .rec-priority.med { color: var(--yellow); }
+  .rec-priority.low { color: var(--green); }
+  .rec-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .rec-body {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.6;
+  }
+
+  /* ── GROUPED READINESS ── */
+  .readiness-groups {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-bottom: 48px;
+  }
+  .readiness-group {
+    background: var(--card);
+    padding: 28px;
+  }
+  .rg-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 4px;
+  }
+  .rg-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .rg-score {
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--cyan);
+    line-height: 1;
+  }
+  .rg-desc {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 12px;
+    line-height: 1.5;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    margin: 0 80px;
+    opacity: 0.3;
+  }
+
+  /* ── FOOTER ── */
+  .report-footer {
+    padding: 40px 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--border);
+  }
+  .footer-brand {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--cyan);
+  }
+  .footer-note {
+    font-size: 11px;
+    color: rgba(255,255,255,0.25);
+  }
+
+  /* ── SCORE COLOR HELPERS ── */
+  .c-green { color: var(--green); }
+  .c-yellow { color: var(--yellow); }
+  .c-red { color: var(--red); }
+  .c-cyan { color: var(--cyan); }
+
+  /* ── SCROLL ANIMATIONS ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ── TOOLTIP ── */
+  [data-tip] { cursor: default; }
+  [data-tip]:hover { background: rgba(0,212,255,0.04); border-radius: 3px; }
+  tbody tr[data-tip]:hover td { background: transparent; }
+
+  #global-tooltip {
+    display: none;
+    position: fixed;
+    background: #1a1f35;
+    border: 1px solid rgba(0,212,255,0.4);
+    border-radius: 4px;
+    padding: 12px 16px;
+    font-size: 12px;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.65;
+    width: 300px;
+    z-index: 9999;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+    pointer-events: none;
+  }
+  #global-tooltip .tip-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 6px;
+  }
+
+  /* ── BRANDRANK NOTE ── */
+  .brandrank-note {
+    background: linear-gradient(135deg, rgba(0,212,255,0.07), rgba(26,31,53,0.9));
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 4px;
+    padding: 40px 48px;
+    margin-top: 48px;
+  }
+  .bn-eyebrow {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 16px;
+  }
+  .bn-body {
+    font-size: 14px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.8;
+    margin-bottom: 0;
+  }
+  .bn-body strong { color: var(--white); font-weight: 700; }
+  .bn-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 28px 0;
+  }
+  .bn-about-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 10px;
+  }
+  .bn-about-body {
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.8;
+    max-width: 760px;
+  }
+</style>
+</head>
+<body>
+<div id="global-tooltip"><div class="tip-label"></div><div class="tip-body"></div></div>
+
+<!-- ════════════════════════════════════════
+     HEADER
+════════════════════════════════════════ -->
+<header class="report-header">
+  <div class="header-top">
+    <span class="brandrank-badge">BrandRank.AI</span>
+    <span class="report-date">Intelligence Report — March 2026</span>
+  </div>
+  <div class="report-title">Nestlé USA — <span>Preliminary Brand Signal Report</span></div>
+  <div class="report-subtitle">Brand Face-Off Analysis &amp; AI Content Readiness Audit / Confidential</div>
+</header>
+
+<!-- ════════════════════════════════════════
+     STICKY NAV
+════════════════════════════════════════ -->
+<nav class="section-nav">
+  <button class="nav-pill" onclick="scrollTo('faceoff')">Brand Face-Off</button>
+  <button class="nav-pill" onclick="scrollTo('readiness')">Content Readiness Audit</button>
+  <button class="nav-pill" onclick="scrollTo('competitive')">Competitive Benchmark</button>
+  <button class="nav-pill" onclick="scrollTo('recommendations')">Recommendations</button>
+  <button class="nav-pill" onclick="scrollTo('about')">About BrandRank</button>
+</nav>
+
+<!-- ════════════════════════════════════════
+     PART 1 — BRAND FACE-OFF
+════════════════════════════════════════ -->
+<section class="section fade-in" id="faceoff">
+  <div class="section-eyebrow">Part One</div>
+  <div class="section-title">Brand Face-Off</div>
+  <div class="section-desc">
+    Three-way competitive analysis scoring Nestlé USA, Nestlé Global, and Patagonia across five equally-weighted brand performance dimensions. Scores on a 1–10 scale; Vulnerability scored 10 = least vulnerable.
+  </div>
+
+  <!-- FINAL SCORES -->
+  <div class="score-hero">
+    <div class="score-card">
+      <div class="score-brand">Nestlé USA</div>
+      <div class="score-number dim">6.5</div>
+      <div class="score-out-of">/ 10</div>
+      <div class="score-rank">3rd Place</div>
+    </div>
+    <div class="score-card winner">
+      <div class="score-brand">Patagonia</div>
+      <div class="score-number cyan">8.8</div>
+      <div class="score-out-of">/ 10</div>
+      <div class="score-rank">Champion</div>
+    </div>
+    <div class="score-card">
+      <div class="score-brand">Nestlé Global</div>
+      <div class="score-number">8.3</div>
+      <div class="score-out-of">/ 10</div>
+      <div class="score-rank">2nd Place</div>
+    </div>
+  </div>
+
+  <!-- FINAL SCORES TABLE -->
+  <div class="table-wrap fade-in">
+    <table>
+      <thead>
+        <tr>
+          <th>Brand</th>
+          <th data-tip="AI Content Readiness||How effectively a brand's digital content is structured, discoverable, and extractable by AI answer engines. Covers structured data, search authority, ESG depth, and narrative consistency.">AI Content</th>
+          <th data-tip="Product Performance||Measures portfolio breadth, innovation pipeline strength, category leadership, quality perception, and global market reach across the brand's product ecosystem.">Product Perf.</th>
+          <th data-tip="Brand Promise||Scores how clearly and credibly a brand communicates its mission — encompassing clarity of purpose, trust, sustainability alignment, and cultural relevance.">Brand Promise</th>
+          <th data-tip="Brand Vulnerability||Scored inversely: 10 = least vulnerable. Assesses exposure across reputation, consumer sentiment, legal risk, environmental scrutiny, competitor threats, supply chain, and crisis management.">Vulnerability</th>
+          <th data-tip="Brand Archetypes||Evaluates how coherently a brand embodies a recognized psychological archetype (e.g. Hero, Caregiver, Ruler) — a strong archetype drives consistent AI portrayal and consumer trust.">Archetypes</th>
+          <th data-tip="Final Average||Equal-weighted composite of all five dimensions: AI Content Readiness, Product Performance, Brand Promise, Vulnerability, and Brand Archetype coherence.">Final Avg</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Nestlé USA</td>
+          <td class="score-cell c-yellow">7.0</td>
+          <td class="score-cell c-yellow">7.0</td>
+          <td class="score-cell c-yellow">6.5</td>
+          <td class="score-cell c-red">5.1</td>
+          <td class="score-cell c-yellow">7.0</td>
+          <td class="score-cell c-yellow">6.5</td>
+        </tr>
+        <tr>
+          <td>Nestlé Global</td>
+          <td class="score-cell c-green">9.2</td>
+          <td class="score-cell c-green">9.0</td>
+          <td class="score-cell c-green">8.5</td>
+          <td class="score-cell c-yellow">6.0</td>
+          <td class="score-cell c-green">8.7</td>
+          <td class="score-cell c-green">8.3</td>
+        </tr>
+        <tr>
+          <td>Patagonia</td>
+          <td class="score-cell c-green">8.8</td>
+          <td class="score-cell c-yellow">7.8</td>
+          <td class="score-cell c-cyan">9.8</td>
+          <td class="score-cell c-cyan">8.1</td>
+          <td class="score-cell c-cyan">9.5</td>
+          <td class="score-cell c-cyan">8.8</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="category-header fade-in">
+    <div class="category-number">01</div>
+    <div class="category-title" data-tip="AI Content Readiness||How effectively a brand's digital content is structured, discoverable, and extractable by AI answer engines — spanning structured data architecture, ESG depth, search authority, and narrative coherence.">AI Content Readiness</div>
+    <div class="category-avg">Category Averages: <span>USA 7.0 / Global 9.2 / Patagonia 8.8</span></div>
+  </div>
+  <div class="table-wrap fade-in">
+    <table>
+      <thead>
+        <tr>
+          <th>Criteria</th>
+          <th>Nestlé USA</th>
+          <th>Nestlé Global</th>
+          <th>Patagonia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-tip="Structured Data & Product Architecture||Measures the presence and quality of machine-readable markup — Product schema, JSON-LD, and navigation architecture that allows AI engines to understand and extract brand content reliably."><td>Structured Data &amp; Product Architecture</td><td class="score-cell c-yellow">7</td><td class="score-cell c-green">9</td><td class="score-cell c-green">8</td></tr>
+        <tr data-tip="ESG Reporting Depth||Assesses how thoroughly environmental, social, and governance commitments are documented in crawlable, AI-accessible formats — not just buried in downloadable PDF reports."><td>ESG Reporting Depth</td><td class="score-cell c-yellow">7</td><td class="score-cell c-green">9</td><td class="score-cell c-green">9</td></tr>
+        <tr data-tip="Corporate Transparency||Evaluates how openly and completely a brand discloses its policies, practices, supply chain, and performance — a key trust signal for AI systems when forming brand characterizations."><td>Corporate Transparency</td><td class="score-cell c-yellow">7</td><td class="score-cell c-green">9</td><td class="score-cell c-green">9</td></tr>
+        <tr data-tip="Search Authority||Reflects the brand's domain credibility and the volume of high-quality inbound signals that tell AI engines this source deserves to be cited and surfaced in answers."><td>Search Authority</td><td class="score-cell c-yellow">7</td><td class="score-cell c-cyan">10</td><td class="score-cell c-green">8</td></tr>
+        <tr data-tip="Narrative Consistency||Measures how uniformly a brand's core story, values, and positioning appear across all digital touchpoints — inconsistent messaging creates ambiguity in AI-generated brand descriptions."><td>Narrative Consistency</td><td class="score-cell c-yellow">7</td><td class="score-cell c-green">9</td><td class="score-cell c-cyan">10</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="insight fade-in">Patagonia's content is philosophically coherent and mission-driven. Nestlé Global wins on scale and data depth. Nestlé USA scores uniformly across criteria at 7 — solid but undifferentiated.</div>
+
+  <!-- CATEGORY 2 — PRODUCT PERFORMANCE -->
+  <div class="category-header fade-in">
+    <div class="category-number">02</div>
+    <div class="category-title" data-tip="Product Performance||A composite measure of commercial strength — how broad the portfolio is, how strong the innovation pipeline looks to AI engines, and how consumers perceive quality vs. peers.">Product Performance</div>
+    <div class="category-avg">Category Averages: <span>USA 7.0 / Global 9.0 / Patagonia 7.8</span></div>
+  </div>
+  <div class="table-wrap fade-in">
+    <table>
+      <thead>
+        <tr>
+          <th>Criteria</th>
+          <th>Nestlé USA</th>
+          <th>Nestlé Global</th>
+          <th>Patagonia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-tip="Portfolio Breadth||The diversity and scale of a brand's product range — a wide portfolio increases the volume of AI-accessible product content but can dilute quality perception signals."><td>Portfolio Breadth</td><td class="score-cell c-green">8</td><td class="score-cell c-cyan">10</td><td class="score-cell c-yellow">6</td></tr>
+        <tr data-tip="Innovation Pipeline||How actively a brand signals ongoing R&D and new product development in its public-facing content — AI engines weight brands that show forward momentum more favorably in category queries."><td>Innovation Pipeline</td><td class="score-cell c-yellow">7</td><td class="score-cell c-green">9</td><td class="score-cell c-green">8</td></tr>
+        <tr data-tip="Category Leadership||The degree to which a brand is recognized as a defining authority in its product categories — reflected in how frequently AI engines position it as the primary reference for category-level questions."><td>Category Leadership</td><td class="score-cell c-green">8</td><td class="score-cell c-green">9</td><td class="score-cell c-green">8</td></tr>
+        <tr data-tip="Quality Perception||How favorably consumers and third-party sources characterize product quality in AI-indexed content — reviews, editorial, and expert commentary all factor into this signal."><td>Quality Perception</td><td class="score-cell c-yellow">6</td><td class="score-cell c-yellow">7</td><td class="score-cell c-cyan">10</td></tr>
+        <tr data-tip="Global Reach||The breadth of geographic content coverage and international brand presence — AI engines with global training data reward brands whose content is accessible and consistent across markets."><td>Global Reach</td><td class="score-cell c-yellow">6</td><td class="score-cell c-cyan">10</td><td class="score-cell c-yellow">7</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="insight fade-in">Nestlé wins on sheer portfolio scale and global reach. Patagonia wins quality perception by a landslide — a perfect 10 against Nestlé USA's 6.</div>
+
+  <!-- CATEGORY 3 — BRAND PROMISE -->
+  <div class="category-header fade-in">
+    <div class="category-number">03</div>
+    <div class="category-title" data-tip="Brand Promise||The degree to which a brand's stated commitments are credible, consistent, and fulfilled — AI engines reflect the gap between what brands claim and what third-party sources confirm.">Brand Promise</div>
+    <div class="category-avg">Category Averages: <span>USA 6.5 / Global 8.5 / Patagonia 9.8</span></div>
+  </div>
+  <div class="table-wrap fade-in">
+    <table>
+      <thead>
+        <tr>
+          <th>Criteria</th>
+          <th>Nestlé USA</th>
+          <th>Nestlé Global</th>
+          <th>Patagonia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-tip="Clarity of Mission||How unambiguously a brand communicates its reason for existing — a clear mission enables AI engines to give consistent, accurate brand descriptions across query types."><td>Clarity of Mission</td><td class="score-cell c-yellow">7</td><td class="score-cell c-green">9</td><td class="score-cell c-cyan">10</td></tr>
+        <tr data-tip="Trust & Authenticity||The degree to which AI-indexed sources — news, reviews, advocacy groups — validate a brand's claims rather than contradict them. Low scores reflect a credibility gap between brand messaging and external perception."><td>Trust &amp; Authenticity</td><td class="score-cell c-yellow">6</td><td class="score-cell c-green">8</td><td class="score-cell c-cyan">10</td></tr>
+        <tr data-tip="Sustainability Alignment||Measures how well a brand's sustainability commitments are substantiated by verifiable, AI-crawlable evidence — versus aspirational language unsupported by third-party confirmation."><td>Sustainability Alignment</td><td class="score-cell c-yellow">7</td><td class="score-cell c-green">9</td><td class="score-cell c-cyan">10</td></tr>
+        <tr data-tip="Cultural Relevance||How meaningfully a brand connects with the values, conversations, and concerns of its target culture — brands with high cultural relevance are more likely to appear in AI answers to lifestyle and values-based queries."><td>Cultural Relevance</td><td class="score-cell c-yellow">7</td><td class="score-cell c-green">8</td><td class="score-cell c-green">9</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="insight fade-in">Patagonia is one of the strongest brand promises in modern corporate history — the company transferred ownership to a climate trust, generating unmatched symbolic credibility. Nestlé USA trails on Trust &amp; Authenticity at just 6.</div>
+
+  <!-- CATEGORY 4 — BRAND VULNERABILITIES -->
+  <div class="category-header fade-in">
+    <div class="category-number">04</div>
+    <div class="category-title" data-tip="Brand Vulnerabilities||Scored inversely — 10 means a brand faces minimal vulnerability in that area. Covers seven risk dimensions that AI engines absorb from news, advocacy, legal, and ESG sources, shaping how they characterize brand trustworthiness.">Brand Vulnerabilities</div>
+    <div class="category-avg">Higher = Less Vulnerable. Averages: <span>USA 5.1 / Global 6.0 / Patagonia 8.1</span></div>
+  </div>
+  <div class="table-wrap fade-in">
+    <table>
+      <thead>
+        <tr>
+          <th>Risk Area</th>
+          <th>Nestlé USA</th>
+          <th>Nestlé Global</th>
+          <th>Patagonia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-tip="Reputation & Trust||Exposure to public trust erosion from historical controversies, negative media coverage, or advocacy campaigns — AI engines absorb this content and weight it when forming brand characterizations."><td>Reputation &amp; Trust</td><td class="score-cell c-red">4</td><td class="score-cell c-red">5</td><td class="score-cell c-green">9</td></tr>
+        <tr data-tip="Consumer Sentiment||The aggregate tone of consumer-generated content — reviews, social media, forums — that AI engines index when forming opinions about how a brand is perceived by the people it serves."><td>Consumer Sentiment</td><td class="score-cell c-yellow">5</td><td class="score-cell c-yellow">6</td><td class="score-cell c-green">9</td></tr>
+        <tr data-tip="Legal & Regulatory||Active or historical litigation, regulatory investigations, or compliance failures that appear in AI-indexed sources — these create lasting negative signals that are difficult to displace."><td>Legal &amp; Regulatory</td><td class="score-cell c-yellow">5</td><td class="score-cell c-yellow">5</td><td class="score-cell c-green">8</td></tr>
+        <tr data-tip="Environmental Scrutiny||The degree to which a brand faces credible criticism over its environmental practices from NGOs, journalists, or regulators — high scrutiny leads AI engines to hedge positive sustainability claims."><td>Environmental Scrutiny</td><td class="score-cell c-red">4</td><td class="score-cell c-yellow">6</td><td class="score-cell c-green">9</td></tr>
+        <tr data-tip="Competitor Threats||The competitive pressure from rivals whose AI content positioning, product claims, or sustainability narratives actively displace or undermine a brand's standing in AI-generated category answers."><td>Competitor Threats</td><td class="score-cell c-yellow">5</td><td class="score-cell c-yellow">6</td><td class="score-cell c-yellow">7</td></tr>
+        <tr data-tip="Supply Chain Risk||Vulnerability to exposure of labor, sourcing, or environmental problems within the brand's supply chain — an increasingly prominent signal in AI-indexed investigative and ESG reporting."><td>Supply Chain Risk</td><td class="score-cell c-yellow">6</td><td class="score-cell c-yellow">6</td><td class="score-cell c-yellow">7</td></tr>
+        <tr data-tip="Crisis Management||How effectively a brand has demonstrated the ability to respond to, communicate about, and recover from public crises — strong crisis management leaves a positive content trail that moderates vulnerability scores."><td>Crisis Management</td><td class="score-cell c-yellow">7</td><td class="score-cell c-green">8</td><td class="score-cell c-green">8</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="insight fade-in">Nestlé carries decades of water rights criticism, infant formula controversies, processed food scrutiny, and ESG skepticism. Nestlé USA's Reputation and Environmental Scrutiny scores of 4 represent the most acute risk areas requiring immediate attention.</div>
+
+  <!-- CATEGORY 5 — BRAND ARCHETYPES -->
+  <div class="category-header fade-in">
+    <div class="category-number">05</div>
+    <div class="category-title" data-tip="Brand Archetypes||Evaluates how coherently a brand embodies a recognized psychological archetype. A strong, consistent archetype helps AI engines form reliable, sympathetic brand narratives — a diffuse or contradictory archetype produces inconsistent AI portrayals.">Brand Archetypes</div>
+    <div class="category-avg">Category Averages: <span>USA 7.0 / Global 8.7 / Patagonia 9.5</span></div>
+  </div>
+  <div class="table-wrap fade-in">
+    <table>
+      <thead>
+        <tr>
+          <th>Brand</th>
+          <th data-tip="Primary Archetype||The dominant psychological persona a brand projects — e.g. Hero (driven by purpose and courage), Caregiver (motivated by nurturing and protection), Ruler (projecting control and authority).">Primary Archetype</th>
+          <th data-tip="Secondary Archetype||A supporting persona that adds dimension to the primary archetype — e.g. Caregiver softens a Hero brand's edge; Everyman makes a Caregiver brand more accessible.">Secondary</th>
+          <th data-tip="Archetype Score||Reflects the clarity and consistency of archetype expression across all AI-indexed content — high scores indicate the brand's personality is unambiguous and coherent to AI systems.">Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-tip="Caregiver / Everyman||Nestlé USA projects a nurturing, family-first identity layered with accessibility — but the Everyman secondary can dilute distinctiveness, making it harder for AI to form a sharp brand narrative."><td>Nestlé USA</td><td>Caregiver</td><td>Everyman</td><td class="score-cell c-yellow">7.0</td></tr>
+        <tr data-tip="Caregiver / Ruler||Nestlé Global pairs nurturing with institutional authority — a stronger combination that projects both trustworthiness and scale, producing more confident AI brand characterizations."><td>Nestlé Global</td><td>Caregiver</td><td>Ruler</td><td class="score-cell c-green">8.7</td></tr>
+        <tr data-tip="Hero / Caregiver||Patagonia's Hero archetype — defined by moral courage and purposeful action — is the most potent AI trust signal. The Caregiver layer adds warmth without sacrificing conviction."><td>Patagonia</td><td>Hero</td><td>Caregiver</td><td class="score-cell c-cyan">9.5</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="insight fade-in">Patagonia operates as a Hero brand with moral authority — not just a product company. Nestlé is a system operator. Patagonia is a movement leader. The archetype gap explains the 2.5-point final score differential.</div>
+
+  <!-- VERDICT -->
+  <div class="verdict-block fade-in">
+    <div class="verdict-label">Competitive Verdict</div>
+    <div class="verdict-text">Patagonia edges ahead — not through superior scale, but through a distinctly mission-driven identity. The margin versus Nestlé Global is a modest 0.5 points, reflecting how closely matched the two are across most dimensions. Patagonia's advantage lies in the strength of its purpose narrative rather than operational breadth.</div>
+    <div class="verdict-grid">
+      <div class="verdict-col good">
+        <h4>Nestlé Global Leads In</h4>
+        <ul>
+          <li>Scale &amp; portfolio breadth</li>
+          <li>Data sophistication</li>
+          <li>Global reach &amp; search authority</li>
+        </ul>
+      </div>
+      <div class="verdict-col neutral">
+        <h4>Patagonia Differentiates In</h4>
+        <ul>
+          <li>Trust &amp; authenticity</li>
+          <li>Cultural alignment</li>
+          <li>ESG credibility</li>
+          <li>Vulnerability resilience</li>
+        </ul>
+      </div>
+      <div class="verdict-col bad">
+        <h4>Nestlé USA Growth Opportunities</h4>
+        <ul>
+          <li>Reducing concentrated legal exposure</li>
+          <li>Evolving processed food narrative</li>
+          <li>Strengthening corporate coherence</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════
+     PART 2 — CONTENT READINESS AUDIT
+════════════════════════════════════════ -->
+<section class="section fade-in" id="readiness">
+  <div class="section-eyebrow">Part Two</div>
+  <div class="section-title">AI Content Readiness Audit</div>
+  <div class="section-desc">
+    Ten-factor framework scoring Nestlé USA's content infrastructure for AI answer engine optimization. Factors equally weighted; scored 1–10.
+  </div>
+
+  <!-- OVERALL SCORE -->
+  <div style="margin-bottom: 48px;" class="fade-in">
+    <div class="overall-score">Overall AI Content Readiness Score</div>
+    <div class="score-display">8.4 <small>/ 10</small></div>
+    <div style="font-size:14px; color:rgba(255,255,255,0.5); max-width:680px; margin-top:12px; line-height:1.7;">
+      Nestlé USA demonstrates strong AI content readiness, driven by high search authority, structured corporate content, and strong technical depth — but meaningful opportunities exist in citation density, expert quotation, and structured data deployment.
+    </div>
+  </div>
+
+  <!-- GROUPED SCORES -->
+  <div class="readiness-groups fade-in">
+    <div class="readiness-group" data-tip="Availability||A composite of Content Liquidity, Search Capital, and Algorithmic Anchors — measuring how discoverable, accessible, and structured Nestlé USA's content is for AI engine ingestion.">
+      <div class="rg-label">Group 01</div>
+      <div class="rg-name">Availability</div>
+      <div class="rg-score">8.5</div>
+      <div class="rg-desc">Liquidity, Search Capital, Algorithmic Anchors — Highly discoverable and authoritative; structured data and AI-focused schema can be expanded.</div>
+    </div>
+    <div class="readiness-group" data-tip="Depth||A composite of Authoritative Content, Technical Content, Statistics with Citations, Quotation Addition, and Relevant Updates — measuring the substance and credibility density AI engines can extract from brand content.">
+      <div class="rg-label">Group 02</div>
+      <div class="rg-name">Depth</div>
+      <div class="rg-score">8.1</div>
+      <div class="rg-desc">Authoritative, Technical, Statistics, Quotes, Updates — Strong institutional credibility; citation surfacing and expert quotations are under-leveraged for AI extraction.</div>
+    </div>
+    <div class="readiness-group" data-tip="Clarity||A composite of Easy-to-Understand Content and Fluency Optimization — measuring how naturally and accessibly brand content is written for both human readers and conversational AI query matching.">
+      <div class="rg-label">Group 03</div>
+      <div class="rg-name">Clarity</div>
+      <div class="rg-score">8.4</div>
+      <div class="rg-desc">Ease + Fluency — Content is clear and structured; more conversational phrasing would enhance AI answer engine alignment.</div>
+    </div>
+  </div>
+
+  <!-- DETAILED FACTOR TABLE -->
+  <div class="table-wrap fade-in">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Factor</th>
+          <th>Score</th>
+          <th>Assessment</th>
+          <th>Recommended Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="color:var(--cyan); font-weight:700;">01</td>
+          <td>Content Liquidity</td>
+          <td class="score-cell c-green">8.5</td>
+          <td style="font-size:13px; color:rgba(255,255,255,0.65);">HTML-based content, strong navigation, accessibility compliance, and structured corporate pages. Some PDFs and investor documents limit AI crawl adaptability.</td>
+          <td style="font-size:13px; color:rgba(255,255,255,0.65);">Convert more PDF reports into HTML summaries with schema markup and metadata optimized for AI parsing.</td>
+        </tr>
+        <tr>
+          <td style="color:var(--cyan); font-weight:700;">02</td>
+          <td>Search Capital</td>
+          <td class="score-cell c-cyan">9.2</td>
+          <td style="font-size:13px; color:rgba(255,255,255,0.65);">Extremely high brand authority, dominates branded queries, strong domain trust, broad digital footprint across categories.</td>
+          <td style="font-size:13px; color:rgba(255,255,255,0.65);">Expand non-branded informational content to capture long-tail consumer and health-related queries.</td>
+        </tr>
+        <tr>
+          <td style="color:var(--cyan); font-weight:700;">03</td>
+          <td>Algorithmic Anchors</td>
+          <td class="score-cell c-yellow">7.8</td>
+          <td style="font-size:13px; color:rgba(255,255,255,0.65);">Uses structured navigation and some FAQ-style content, but limited visible schema markup for FAQs and product-level structured data.</td>
+          <td style="font-size:13px; color:rgba(255,255,255,0.65);">Expand FAQ schema, Product schema, and structured sustainability data across all key pages.</td>
+        </tr>
+        <tr>
+          <td style="color:var(--cyan); font-weight:700;">04</td>
+          <td>Easy-to-Understand Content</td>
+          <td class="score-cell c-green">8.3</td>
+          <td style="font-size:13px; color:rgba(255,255,255,0.65);">Clear corporate tone; accessible language for consumers. However, some ESG and investor content is dense and formal.</td>
+          <td style="font-size:13px; color:rgba(255,255,255,0.65);">Simplify ESG and nutrition science sections with conversational summaries and question-based headings.</td>
+        </tr>
+        <tr>
+          <td style="color:var(--cyan); font-weight:700;">05</td>
+          <td>Authoritative Content</td>
+          <td class="score-cell c-green">9.0</td>
+          <td style="font-size:13px; color:rgba(255,255,255,0.65);">Strong institutional credibility, backed by global research, regulatory alignment, and corporate transparency reporting.</td>
+          <td style="font-size:13px; color:rgba(255,255,255,0.65);">Add more third-party citations and expert partnerships directly within content pages for AI citation pickup.</td>
+        </tr>
+        <tr>
+          <td style="color:var(--cyan); font-weight:700;">06</td>
+          <td>Technical Content</td>
+          <td class="score-cell c-green">8.8</td>
+          <td style="font-size:13px; color:rgba(255,255,255,0.65);">Deep expertise in nutrition science, food safety, sustainability, and supply chain transparency.</td>
+          <td style="font-size:13px; color:rgba(255,255,255,0.65);">Publish more technical explainers in structured, AI-friendly Q&amp;A formats.</td>
+        </tr>
+        <tr>
+          <td style="color:var(--cyan); font-weight:700;">07</td>
+          <td>Statistics with Citations</td>
+          <td class="score-cell c-yellow">7.5</td>
+          <td style="font-size:13px; color:rgba(255,255,255,0.65);">Sustainability and ESG reports include data, but citations are often embedded in PDFs rather than crawlable HTML.</td>
+          <td style="font-size:13px; color:rgba(255,255,255,0.65);">Surface key statistics in HTML with proper citations to FAO, WHO, FDA, and other authoritative bodies.</td>
+        </tr>
+        <tr>
+          <td style="color:var(--cyan); font-weight:700;">08</td>
+          <td>Fluency Optimization</td>
+          <td class="score-cell c-green">8.4</td>
+          <td style="font-size:13px; color:rgba(255,255,255,0.65);">Professional and well-written; optimized for clarity but less conversational compared to AI-native brands.</td>
+          <td style="font-size:13px; color:rgba(255,255,255,0.65);">Integrate more natural language phrasing aligned with consumer search queries.</td>
+        </tr>
+        <tr>
+          <td style="color:var(--cyan); font-weight:700;">09</td>
+          <td>Quotation Addition</td>
+          <td class="score-cell c-red">6.9</td>
+          <td style="font-size:13px; color:rgba(255,255,255,0.65);">Limited visible executive or expert quotes embedded in informational content outside press releases.</td>
+          <td style="font-size:13px; color:rgba(255,255,255,0.65);">Incorporate executive, scientist, and partner quotes within evergreen pages to enhance authority signals.</td>
+        </tr>
+        <tr>
+          <td style="color:var(--cyan); font-weight:700;">10</td>
+          <td>Relevant Content Updates</td>
+          <td class="score-cell c-green">8.1</td>
+          <td style="font-size:13px; color:rgba(255,255,255,0.65);">Regular newsroom updates and annual sustainability reporting; some evergreen pages appear static.</td>
+          <td style="font-size:13px; color:rgba(255,255,255,0.65);">Implement visible "last updated" signals and quarterly refresh cycles for key informational content.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- BAR CHART — FACTOR SCORES -->
+  <div style="margin: 48px 0 24px;" class="fade-in">
+    <div style="font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--cyan); margin-bottom:6px;">Factor Score Visualization</div>
+    <div style="font-size:12px; color:rgba(255,255,255,0.35); margin-bottom:24px;">Hover any row for factor definition</div>
+    <div class="bar-chart">
+      <div class="bar-row has-tooltip" data-tip="Search Capital measures a brand's overall domain authority, branded query dominance, and digital footprint strength — the foundation AI engines use to determine source credibility."><div class="bar-label">Search Capital</div><div class="bar-track"><div class="bar-fill" style="width:92%; background:var(--cyan);"></div></div><div class="bar-value c-cyan">9.2</div></div>
+      <div class="bar-row has-tooltip" data-tip="Authoritative Content reflects how well a brand's content is backed by institutional credibility, regulatory alignment, third-party validation, and transparent sourcing."><div class="bar-label">Authoritative Content</div><div class="bar-track"><div class="bar-fill" style="width:90%; background:var(--green);"></div></div><div class="bar-value c-green">9.0</div></div>
+      <div class="bar-row has-tooltip" data-tip="Technical Content measures the depth and accuracy of subject-matter expertise — including nutrition science, food safety, supply chain transparency, and sustainability methodology."><div class="bar-label">Technical Content</div><div class="bar-track"><div class="bar-fill" style="width:88%; background:var(--green);"></div></div><div class="bar-value c-green">8.8</div></div>
+      <div class="bar-row has-tooltip" data-tip="Content Liquidity assesses how freely and completely a brand's content can be discovered, parsed, and extracted by AI engines — penalizing PDF lock-in and inaccessible formats."><div class="bar-label">Content Liquidity</div><div class="bar-track"><div class="bar-fill" style="width:85%; background:var(--green);"></div></div><div class="bar-value c-green">8.5</div></div>
+      <div class="bar-row has-tooltip" data-tip="Fluency Optimization scores how naturally content aligns with conversational AI query patterns — rewarding question-based phrasing, natural language structures, and consumer-style headings."><div class="bar-label">Fluency Optimization</div><div class="bar-track"><div class="bar-fill" style="width:84%; background:var(--green);"></div></div><div class="bar-value c-green">8.4</div></div>
+      <div class="bar-row has-tooltip" data-tip="Easy-to-Understand Content evaluates reading level accessibility, clarity of corporate messaging, and the presence of layered summaries that serve both consumers and AI extraction engines."><div class="bar-label">Easy-to-Understand</div><div class="bar-track"><div class="bar-fill" style="width:83%; background:var(--green);"></div></div><div class="bar-value c-green">8.3</div></div>
+      <div class="bar-row has-tooltip" data-tip="Relevant Content Updates tracks freshness signals — visible timestamps, update cadences, and recency indicators that tell AI engines the content reflects current brand reality."><div class="bar-label">Relevant Updates</div><div class="bar-track"><div class="bar-fill" style="width:81%; background:var(--green);"></div></div><div class="bar-value c-green">8.1</div></div>
+      <div class="bar-row has-tooltip" data-tip="Algorithmic Anchors measures the presence of structured data markup — FAQ schema, Product schema, HowTo schema — that gives AI engines explicit extraction hooks rather than requiring inference."><div class="bar-label">Algorithmic Anchors</div><div class="bar-track"><div class="bar-fill" style="width:78%; background:var(--yellow);"></div></div><div class="bar-value c-yellow">7.8</div></div>
+      <div class="bar-row has-tooltip" data-tip="Statistics with Citations scores how effectively quantitative claims are surfaced in crawlable HTML with inline references to authoritative bodies — making data extractable and trustworthy for AI answers."><div class="bar-label">Statistics w/ Citations</div><div class="bar-track"><div class="bar-fill" style="width:75%; background:var(--yellow);"></div></div><div class="bar-value c-yellow">7.5</div></div>
+      <div class="bar-row has-tooltip" data-tip="Quotation Addition evaluates the density of attributed expert, executive, and partner quotes embedded in evergreen content — a key signal AI engines use to assign human authority and credibility."><div class="bar-label">Quotation Addition</div><div class="bar-track"><div class="bar-fill" style="width:69%; background:var(--red);"></div></div><div class="bar-value c-red">6.9</div></div>
+    </div>
+  </div>
+
+  <!-- BRANDRANK PLATFORM NOTE -->
+  <div class="brandrank-note fade-in">
+    <div class="bn-header">
+      <div class="bn-eyebrow">BrandRank.AI Platform — Beyond This Report</div>
+    </div>
+    <div class="bn-body">
+      The scores presented here represent a structured point-in-time snapshot. The <strong>BrandRank.AI reporting platform</strong> goes significantly deeper — tracking each of these factors on a <strong>daily basis</strong>, measured individually across every major AI answer engine including ChatGPT, Claude, Perplexity, Gemini, and Copilot. Brands receive live dashboards showing how AI Content Readiness, Visibility, and Vulnerability scores shift across engines and over time — enabling continuous optimization rather than periodic audits.
+    </div>
+    <div class="bn-divider"></div>
+    <div class="bn-about-label">About BrandRank.AI</div>
+    <div class="bn-about-body">
+      BrandRank works with leading global brands to strengthen trust and purchase intent by uncovering vulnerabilities, purchase-driving insights, and growth opportunities across AI answer engines. As a SaaS platform, we track all major answer engines to improve visibility, ensure content is AI-ready, and rigorously measure brand claims and instructional accuracy.
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════
+     PART 3 — COMPETITIVE BENCHMARK
+════════════════════════════════════════ -->
+<section class="section fade-in" id="competitive">
+  <div class="section-eyebrow">Part Three</div>
+  <div class="section-title">Competitive AI Content Benchmark</div>
+  <div class="section-desc">
+    Nestlé USA versus PepsiCo, Kraft Heinz, and General Mills across all 10 content readiness factors. Nestlé leads in authority and technical depth but slightly trails PepsiCo in structured data and statistical surfacing.
+  </div>
+  <div class="table-wrap fade-in">
+    <table>
+      <thead>
+        <tr>
+          <th data-tip="Content Readiness Factor||Each row represents one of the 10 BrandRank content readiness dimensions. Hover individual factor rows for full definitions.">Factor</th>
+          <th data-tip="Nestlé USA||The primary brand under review. Scores reflect a structured audit of nestleusa.com and associated digital properties as of March 2026.">Nestlé USA</th>
+          <th data-tip="PepsiCo||Scored against the same 10-factor framework using pepsico.com as the primary source. PepsiCo is the closest peer competitor in AI content sophistication.">PepsiCo</th>
+          <th data-tip="Kraft Heinz||Scored using kraftheinzcompany.com. Trails the peer set on structured data and statistical citation surfacing — the area where BrandRank sees the most upside.">Kraft Heinz</th>
+          <th data-tip="General Mills||Scored using generalmills.com. Competitive with Nestlé USA across most factors; slightly behind on Search Capital and Authoritative Content depth.">General Mills</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-tip="Content Liquidity||How freely and completely brand content can be discovered, parsed, and extracted by AI engines — penalizing PDF lock-in and inaccessible asset formats."><td>Content Liquidity</td><td class="score-cell c-green">8.5</td><td class="score-cell c-green">8.7</td><td class="score-cell c-yellow">7.8</td><td class="score-cell c-green">8.4</td></tr>
+        <tr data-tip="Search Capital||Overall domain authority, branded query dominance, and digital footprint strength — the foundation AI engines use to determine which sources deserve to be cited in answers."><td>Search Capital</td><td class="score-cell c-cyan">9.2</td><td class="score-cell c-green">9.0</td><td class="score-cell c-green">8.2</td><td class="score-cell c-green">8.6</td></tr>
+        <tr data-tip="Algorithmic Anchors||Presence of structured data markup — FAQ schema, Product schema, HowTo schema — that gives AI engines explicit extraction hooks rather than requiring inference from unstructured text."><td>Algorithmic Anchors</td><td class="score-cell c-yellow">7.8</td><td class="score-cell c-green">8.2</td><td class="score-cell c-yellow">7.2</td><td class="score-cell c-yellow">7.9</td></tr>
+        <tr data-tip="Easy-to-Understand||Reading level accessibility and clarity of messaging — content that is clear and layered serves both consumer audiences and AI engines that favor direct, unambiguous language."><td>Easy-to-Understand</td><td class="score-cell c-green">8.3</td><td class="score-cell c-green">8.5</td><td class="score-cell c-yellow">7.9</td><td class="score-cell c-green">8.4</td></tr>
+        <tr data-tip="Authoritative Content||Institutional credibility backed by global research, regulatory alignment, and transparent sourcing — the bedrock signal AI engines use to decide whether to cite or hedge a brand's claims."><td>Authoritative Content</td><td class="score-cell c-green">9.0</td><td class="score-cell c-green">8.8</td><td class="score-cell c-green">8.0</td><td class="score-cell c-green">8.7</td></tr>
+        <tr data-tip="Technical Content||Depth and accuracy of subject-matter expertise — including nutrition science, food safety, supply chain transparency, and sustainability methodology published in AI-accessible formats."><td>Technical Content</td><td class="score-cell c-green">8.8</td><td class="score-cell c-green">8.5</td><td class="score-cell c-yellow">7.9</td><td class="score-cell c-green">8.6</td></tr>
+        <tr data-tip="Statistics & Citations||How effectively quantitative claims are surfaced in crawlable HTML with inline references to authoritative bodies — making data extractable, attributable, and trustworthy for AI answers."><td>Statistics &amp; Citations</td><td class="score-cell c-yellow">7.5</td><td class="score-cell c-green">8.0</td><td class="score-cell c-yellow">7.1</td><td class="score-cell c-yellow">7.8</td></tr>
+        <tr data-tip="Fluency Optimization||How naturally content aligns with conversational AI query patterns — rewarding question-based phrasing, natural language headings, and consumer-style sentence structures."><td>Fluency Optimization</td><td class="score-cell c-green">8.4</td><td class="score-cell c-green">8.6</td><td class="score-cell c-yellow">7.9</td><td class="score-cell c-green">8.5</td></tr>
+        <tr data-tip="Quotation Addition||Density of attributed expert, executive, and partner quotes embedded in evergreen content — a key signal AI engines use to assign human authority, expertise, and credibility to brand pages."><td>Quotation Addition</td><td class="score-cell c-red">6.9</td><td class="score-cell c-yellow">7.5</td><td class="score-cell c-red">6.8</td><td class="score-cell c-yellow">7.4</td></tr>
+        <tr data-tip="Relevant Updates||Freshness signals — visible timestamps, update cadences, and recency indicators — that tell AI engines the content reflects current brand reality rather than outdated positions."><td>Relevant Updates</td><td class="score-cell c-green">8.1</td><td class="score-cell c-green">8.4</td><td class="score-cell c-yellow">7.6</td><td class="score-cell c-green">8.2</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="insight fade-in">Nestlé USA leads the competitive set in Search Capital (9.2) and Authoritative Content (9.0), but PepsiCo outperforms across Algorithmic Anchors, Fluency, and Statistics with Citations — the three factors most critical to AI answer engine visibility. Quotation Addition (6.9) is the category-wide weak point.</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════
+     PART 4 — RECOMMENDATIONS
+════════════════════════════════════════ -->
+<section class="section fade-in" id="recommendations">
+  <div class="section-eyebrow">Part Four</div>
+  <div class="section-title">Strategic Recommendations</div>
+  <div class="section-desc">
+    Ranked by projected impact on AI answer engine visibility and brand trust scoring. Immediate-priority actions address the sharpest gaps in the readiness audit.
+  </div>
+
+  <div class="rec-grid fade-in">
+    <div class="rec-card">
+      <div class="rec-priority high">Highest Impact</div>
+      <div class="rec-title">1. Algorithmic Anchors — FAQ &amp; Product Schema</div>
+      <div class="rec-body">Implement comprehensive FAQ schema across product, nutrition, and sustainability pages. Structured data allows answer engines to extract precise answers more confidently. Expand Product schema across all SKU pages.</div>
+    </div>
+    <div class="rec-card">
+      <div class="rec-priority high">Highest Impact</div>
+      <div class="rec-title">2. Statistics with Citations — Surface Data in HTML</div>
+      <div class="rec-body">Move key sustainability, nutrition, and supply chain statistics from PDFs into crawlable HTML. Proper citation formatting improves AI trust scoring. Reference authoritative bodies (WHO, FAO, FDA) inline.</div>
+    </div>
+    <div class="rec-card">
+      <div class="rec-priority high">Highest Impact</div>
+      <div class="rec-title">3. Quotation Addition — Embed Expert Voices</div>
+      <div class="rec-body">Integrate expert quotes from Nestlé scientists, sustainability leaders, and third-party partners directly into evergreen content. AI systems favor attributed expertise. Quotes increase authority scoring significantly.</div>
+    </div>
+    <div class="rec-card">
+      <div class="rec-priority med">Medium Impact</div>
+      <div class="rec-title">4. Content Liquidity — Reduce PDF Dependency</div>
+      <div class="rec-body">Reduce reliance on downloadable reports by summarizing them in structured HTML. Add transcript support for multimedia assets. Increase machine-readable formatting for AI crawl adaptability.</div>
+    </div>
+    <div class="rec-card">
+      <div class="rec-priority med">Medium Impact</div>
+      <div class="rec-title">5. Content Freshness — Visible Update Signals</div>
+      <div class="rec-body">Add visible "Last Updated" timestamps and adopt quarterly refresh cycles across evergreen pages. AI systems favor freshness signals, especially in nutrition and sustainability categories.</div>
+    </div>
+    <div class="rec-card">
+      <div class="rec-priority med">Medium Impact</div>
+      <div class="rec-title">6. Fluency Optimization — Conversational Query Alignment</div>
+      <div class="rec-body">Incorporate consumer-style questions such as "Is Nestlé chocolate sustainably sourced?" and "How does Nestlé ensure food safety?" This improves alignment with conversational AI answer engine queries.</div>
+    </div>
+    <div class="rec-card">
+      <div class="rec-priority low">Lower Priority</div>
+      <div class="rec-title">7. ESG Layered Summaries</div>
+      <div class="rec-body">Simplify ESG-heavy sections with layered summaries offering Beginner and Advanced views, making sustainability content accessible to both AI extraction and consumer audiences.</div>
+    </div>
+    <div class="rec-card">
+      <div class="rec-priority low">Lower Priority</div>
+      <div class="rec-title">8. Technical Content Expansion</div>
+      <div class="rec-body">Expand structured explainers on regenerative agriculture, nutritional reformulation, and the net-zero roadmap. Publish in AI-friendly Q&amp;A formats for maximum extractability.</div>
+    </div>
+    <div class="rec-card">
+      <div class="rec-priority low">Lower Priority</div>
+      <div class="rec-title">9. Partnership Prominence</div>
+      <div class="rec-body">Highlight collaborations with universities, NGOs, and regulatory bodies more prominently. Third-party association increases AI authority scoring and trust signal weight.</div>
+    </div>
+    <div class="rec-card">
+      <div class="rec-priority low">Lower Priority</div>
+      <div class="rec-title">10. Thought Leadership &amp; Search Capital</div>
+      <div class="rec-body">Already dominant in branded search. Expand thought-leadership content to dominate category-level educational queries and capture long-tail consumer health and sustainability intent.</div>
+    </div>
+  </div>
+
+  <!-- SOURCES -->
+  <div style="margin-top: 40px; padding: 32px; background: var(--card); border: 1px solid var(--border); border-radius: 4px;" class="fade-in">
+    <div style="font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--cyan); margin-bottom:16px;">Sources Reviewed</div>
+    <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:6px;">
+      <div style="font-size:12px; color:rgba(255,255,255,0.45);">nestleusa.com — Primary Brand Site</div>
+      <div style="font-size:12px; color:rgba(255,255,255,0.45);">nestle.com — Global Corporate</div>
+      <div style="font-size:12px; color:rgba(255,255,255,0.45);">nestleusa.com/sustainability</div>
+      <div style="font-size:12px; color:rgba(255,255,255,0.45);">nestle.com/media — Newsroom</div>
+      <div style="font-size:12px; color:rgba(255,255,255,0.45);">pepsico.com — Competitor Reference</div>
+      <div style="font-size:12px; color:rgba(255,255,255,0.45);">generalmills.com — Competitor Reference</div>
+      <div style="font-size:12px; color:rgba(255,255,255,0.45);">kraftheinzcompany.com — Competitor Reference</div>
+      <div style="font-size:12px; color:rgba(255,255,255,0.45);">Nestlé ESG &amp; Sustainability Reports (HTML + PDF)</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     ABOUT BRANDRANK
+════════════════════════════════════════ -->
+<section class="section fade-in" id="about">
+  <div class="section-eyebrow">About</div>
+  <div class="section-title">BrandRank.AI</div>
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 32px;">
+    <div>
+      <div style="font-size:15px; color:rgba(255,255,255,0.75); line-height:1.9;">
+        BrandRank works with leading global brands to strengthen trust and purchase intent by uncovering vulnerabilities, purchase-driving insights, and growth opportunities across AI answer engines. As a SaaS platform, we track all major answer engines to improve visibility, ensure content is AI-ready, and rigorously measure brand claims and instructional accuracy.
+      </div>
+      <div style="margin-top:28px; font-size:15px; color:rgba(255,255,255,0.75); line-height:1.9;">
+        Our platform delivers daily measurement across ChatGPT, Claude, Perplexity, Gemini, and Copilot — giving brand teams a real-time view of how AI systems see, describe, and recommend their products.
+      </div>
+    </div>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 2px; align-content: start;">
+      <div style="background:var(--card); border:1px solid var(--border); padding:28px;">
+        <div style="font-size:32px; font-weight:700; color:var(--cyan);">5</div>
+        <div style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:6px; line-height:1.5;">Major AI answer engines tracked daily across all client brands</div>
+      </div>
+      <div style="background:var(--card); border:1px solid var(--border); padding:28px;">
+        <div style="font-size:32px; font-weight:700; color:var(--cyan);">3</div>
+        <div style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:6px; line-height:1.5;">Core metrics: AI Visibility, Brand Vulnerability, Content Readiness</div>
+      </div>
+      <div style="background:var(--card); border:1px solid var(--border); padding:28px; grid-column: span 2;">
+        <div style="font-size:32px; font-weight:700; color:var(--cyan);">Daily</div>
+        <div style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:6px; line-height:1.5;">Measurement cadence — not quarterly snapshots, but continuous intelligence across every major answer engine</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer class="report-footer">
+  <div class="footer-brand">BrandRank.AI</div>
+  <div class="footer-note">Confidential — Preliminary Brand Signal Report: Nestlé USA — March 2026 — AI Visibility / Brand Vulnerability / Content Readiness</div>
+</footer>
+
+<script>
+  // Custom scroll function to avoid overriding window.scrollTo
+  function scrollTo(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const navHeight = document.querySelector('.section-nav').offsetHeight +
+                      document.querySelector('.report-header').offsetHeight;
+    const top = el.getBoundingClientRect().top + window.scrollY - navHeight - 12;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+
+  // Scroll-triggered fade animations
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Active nav pill on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const pills = document.querySelectorAll('.nav-pill');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 220) current = s.id; });
+    pills.forEach(p => {
+      p.classList.toggle('active', p.getAttribute('onclick') === `scrollTo('${current}')`);
+    });
+  }, { passive: true });
+
+  // Global floating tooltip
+  const tooltip = document.getElementById('global-tooltip');
+  const tipLabel = tooltip.querySelector('.tip-label');
+  const tipBody  = tooltip.querySelector('.tip-body');
+
+  document.addEventListener('mouseover', e => {
+    const el = e.target.closest('[data-tip]');
+    if (!el) return;
+    const raw = el.getAttribute('data-tip');
+    const parts = raw.split('||');
+    tipLabel.textContent = parts.length > 1 ? parts[0] : '';
+    tipBody.textContent  = parts.length > 1 ? parts[1] : parts[0];
+    tooltip.style.display = 'block';
+  });
+
+  document.addEventListener('mouseout', e => {
+    if (!e.target.closest('[data-tip]')) return;
+    tooltip.style.display = 'none';
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (tooltip.style.display === 'none') return;
+    const pad = 16, tw = 300, th = tooltip.offsetHeight;
+    let x = e.clientX + pad;
+    let y = e.clientY + pad;
+    if (x + tw > window.innerWidth  - pad) x = e.clientX - tw - pad;
+    if (y + th > window.innerHeight - pad) y = e.clientY - th - pad;
+    tooltip.style.left = x + 'px';
+    tooltip.style.top  = y + 'px';
+  });
+</script>
+
+</body>
+</html>
