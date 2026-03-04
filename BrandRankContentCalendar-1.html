@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrandRank Content Calendar</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0a0e1a;--bg2:#1a1f35;--text:#ffffff;--accent:#00d4ff;
+  --card:rgba(255,255,255,0.05);--border:rgba(255,255,255,0.1);
+  --green:#4ecdc4;--yellow:#ffd93d;--red:#ff6b6b;
+  --muted:rgba(255,255,255,0.35);
+}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:linear-gradient(135deg,var(--bg) 0%,var(--bg2) 100%);color:var(--text);min-height:100vh;font-size:14px;}
+
+/* ── HEADER ── */
+.site-header{
+  background:rgba(10,14,26,0.98);border-bottom:1px solid var(--border);
+  padding:22px 48px 0;
+}
+.header-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;}
+.site-title{
+  font-size:36px;font-weight:700;color:var(--text);letter-spacing:-.5px;
+  line-height:1.15;
+}
+.site-title span{color:var(--accent);}
+.site-subtitle{font-size:12px;color:rgba(255,255,255,0.35);letter-spacing:.5px;margin-top:4px;text-transform:uppercase;}
+.header-meta{font-size:11px;color:rgba(255,255,255,0.25);text-align:right;line-height:1.6;}
+
+/* ── PRIMARY TABS ── */
+.primary-tabs{display:flex;gap:2px;border-top:1px solid var(--border);}
+.primary-tab{
+  font-family:inherit;font-size:12px;font-weight:600;letter-spacing:.8px;
+  text-transform:uppercase;background:none;border:none;cursor:pointer;
+  color:rgba(255,255,255,0.38);padding:13px 24px;
+  border-bottom:2px solid transparent;
+  transition:all .18s;white-space:nowrap;
+}
+.primary-tab:hover{color:var(--text);}
+.primary-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+
+/* ── STATS BAR ── */
+.stats-bar{display:flex;border-bottom:1px solid var(--border);background:rgba(255,255,255,0.02);overflow-x:auto;}
+.stat{padding:13px 26px;border-right:1px solid var(--border);flex-shrink:0;}
+.stat-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.32);margin-bottom:4px;}
+.stat-val{font-size:20px;font-weight:700;color:var(--text);}
+.stat-val small{font-size:11px;font-weight:400;color:rgba(255,255,255,0.32);margin-left:3px;}
+.stat-accent .stat-val{color:var(--accent);}
+
+/* ── PANELS ── */
+.panel{display:none;animation:fadeIn .2s ease;}
+.panel.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* ── SUB-TABS ── */
+.sub-tabs-bar{
+  display:flex;gap:6px;padding:14px 48px;
+  border-bottom:1px solid var(--border);
+  background:rgba(255,255,255,0.02);
+  overflow-x:auto;flex-wrap:wrap;
+}
+.sub-tab{
+  font-family:inherit;font-size:10px;font-weight:700;letter-spacing:1.2px;
+  text-transform:uppercase;padding:6px 16px;border-radius:3px;cursor:pointer;
+  border:1px solid var(--border);background:none;
+  color:rgba(255,255,255,0.35);transition:all .15s;white-space:nowrap;
+}
+.sub-tab:hover{color:var(--text);border-color:rgba(255,255,255,0.3);}
+.sub-tab.active{color:var(--accent);background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.25);}
+
+/* ── CONTROLS ── */
+.controls{display:flex;align-items:center;gap:12px;padding:13px 48px;border-bottom:1px solid var(--border);background:rgba(255,255,255,0.015);flex-wrap:wrap;}
+.search-wrap{position:relative;min-width:200px;max-width:280px;flex:1;}
+.search-wrap input{width:100%;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:inherit;font-size:12px;padding:7px 12px 7px 30px;outline:none;transition:border-color .2s;}
+.search-wrap input::placeholder{color:rgba(255,255,255,0.2);}
+.search-wrap input:focus{border-color:var(--accent);}
+.s-ico{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:11px;color:rgba(255,255,255,0.25);pointer-events:none;}
+.filter-group{display:flex;gap:5px;flex-wrap:wrap;}
+.fbtn{font-family:inherit;font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:5px 12px;border-radius:3px;cursor:pointer;border:1px solid var(--border);background:none;color:rgba(255,255,255,0.35);transition:all .15s;}
+.fbtn:hover{color:var(--text);}
+.fbtn.faq.on{background:rgba(0,212,255,0.1);border-color:rgba(0,212,255,0.3);color:var(--accent);}
+.fbtn.num.on{background:rgba(255,217,61,0.08);border-color:rgba(255,217,61,0.28);color:var(--yellow);}
+.fbtn.deep.on{background:rgba(78,205,196,0.08);border-color:rgba(78,205,196,0.28);color:var(--green);}
+.cnt{margin-left:auto;font-size:11px;color:rgba(255,255,255,0.28);padding:5px 12px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:3px;}
+
+/* ── CONTENT GRID ── */
+.grid-inner{padding:22px 48px;}
+.cluster-hdr{display:flex;align-items:center;gap:14px;margin:26px 0 10px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.cluster-hdr:first-child{margin-top:0;}
+.ch-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.ch-line{flex:1;height:1px;background:var(--border);}
+
+/* ── DATA TABLE ── */
+.data-table{width:100%;border-collapse:collapse;}
+.data-table th{font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,0.28);padding:8px 14px;text-align:left;border-bottom:1px solid var(--border);}
+.data-table td{padding:0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.data-table tr.plain-row td{padding:10px 14px;vertical-align:middle;}
+.data-table tr.plain-row:hover td{background:rgba(255,255,255,0.03);}
+.num-cell{font-size:11px;font-weight:600;color:rgba(255,255,255,0.25);width:40px;}
+.title-cell{font-size:13px;color:var(--text);line-height:1.4;}
+.title-cell mark{background:rgba(0,212,255,0.13);color:var(--accent);border-radius:2px;padding:1px 2px;}
+.badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;padding:3px 8px;border-radius:2px;white-space:nowrap;}
+.b-faq{background:rgba(0,212,255,0.09);color:var(--accent);border:1px solid rgba(0,212,255,0.2);}
+.b-num{background:rgba(255,217,61,0.09);color:var(--yellow);border:1px solid rgba(255,217,61,0.2);}
+.b-deep{background:rgba(78,205,196,0.09);color:var(--green);border:1px solid rgba(78,205,196,0.2);}
+.status-sel{font-family:inherit;font-size:10px;padding:3px 7px;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:rgba(255,255,255,0.35);border-radius:3px;cursor:pointer;outline:none;}
+.status-sel option{background:#1a1f35;}
+
+/* ── EXPANDABLE ROW ── */
+.q-row{cursor:pointer;}
+.q-row:hover .q-cell{background:rgba(0,212,255,0.035);}
+.q-row.expanded .q-cell{background:rgba(0,212,255,0.055);}
+.q-cell{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;gap:10px;transition:background .1s;}
+.q-text{font-size:13px;color:var(--text);line-height:1.4;flex:1;}
+.q-arrow{font-size:10px;color:rgba(255,255,255,0.22);transition:transform .18s;flex-shrink:0;}
+.q-row.expanded .q-arrow{transform:rotate(90deg);color:var(--accent);}
+
+/* ── DESCRIPTION DRAWER ── */
+.desc-drawer{display:none;padding:0 14px 14px;}
+.desc-drawer.open{display:block;animation:slideDown .18s ease;}
+@keyframes slideDown{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
+.desc-inner{border:1px solid rgba(0,212,255,0.14);border-radius:4px;overflow:hidden;}
+.desc-header{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:rgba(0,212,255,0.05);border-bottom:1px solid rgba(0,212,255,0.1);}
+.desc-label{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent);}
+.desc-meta{font-size:10px;color:rgba(255,255,255,0.3);}
+.desc-textarea{width:100%;min-height:110px;padding:13px;background:rgba(255,255,255,0.03);border:none;outline:none;resize:vertical;color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:13px;line-height:1.65;border-bottom:1px solid var(--border);}
+.desc-textarea:focus{background:rgba(0,212,255,0.03);}
+.desc-footer{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;background:rgba(255,255,255,0.015);}
+.desc-hint{font-size:10px;color:rgba(255,255,255,0.22);}
+.desc-save{font-family:inherit;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:4px 12px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.25);color:var(--accent);border-radius:3px;cursor:pointer;transition:all .15s;}
+.desc-save:hover{background:rgba(0,212,255,0.18);}
+.desc-save.saved{background:rgba(78,205,196,0.1);border-color:rgba(78,205,196,0.25);color:var(--green);}
+
+/* ── WEBINAR CARDS ── */
+.w-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;padding:22px 48px;}
+.w-card{background:var(--card);border:1px solid var(--border);border-radius:6px;overflow:hidden;transition:border-color .2s,transform .15s;cursor:pointer;}
+.w-card:hover{border-color:rgba(0,212,255,0.2);transform:translateY(-2px);}
+.w-card.expanded{border-color:rgba(0,212,255,0.25);}
+.w-card-top{position:relative;padding:18px 20px 14px;}
+.w-card-top::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.ws1::before{background:var(--accent);}
+.ws2::before{background:#7b6fff;}
+.ws3::before{background:var(--red);}
+.ws4::before{background:var(--yellow);}
+.ws5::before{background:#f06fff;}
+.ws6::before{background:#5cb8ff;}
+.ws7::before{background:var(--green);}
+.w-num{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:7px;}
+.w-title{font-size:14px;font-weight:700;line-height:1.35;color:var(--text);margin-bottom:12px;}
+.w-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.w-chip{display:inline-block;font-size:10px;font-weight:600;padding:3px 9px;background:rgba(0,212,255,0.07);border:1px solid rgba(0,212,255,0.16);border-radius:2px;color:var(--accent);}
+.w-chip.theme{background:rgba(255,255,255,0.05);border-color:var(--border);color:rgba(255,255,255,0.5);}
+.w-meta-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:4px;}
+.w-lbl{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,0.25);min-width:44px;padding-top:1px;}
+.w-val{font-size:12px;color:rgba(255,255,255,0.7);}
+.w-expand-hint{font-size:10px;color:rgba(255,255,255,0.22);margin-top:8px;display:flex;align-items:center;gap:5px;}
+.w-expand-hint span{transition:transform .18s;}
+.w-card.expanded .w-expand-hint span{transform:rotate(90deg);color:var(--accent);}
+.w-desc-section{display:none;padding:0 20px 16px;border-top:1px solid var(--border);}
+.w-card.expanded .w-desc-section{display:block;animation:slideDown .18s ease;}
+.w-desc-label{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent);margin:12px 0 8px;}
+.w-desc-ta{width:100%;min-height:100px;padding:12px;background:rgba(0,212,255,0.03);border:1px solid rgba(0,212,255,0.14);border-radius:3px;outline:none;resize:vertical;color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:13px;line-height:1.65;}
+.w-desc-ta:focus{background:rgba(0,212,255,0.05);}
+.w-desc-save{margin-top:8px;font-family:inherit;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:4px 12px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.25);color:var(--accent);border-radius:3px;cursor:pointer;}
+.w-desc-save.saved{background:rgba(78,205,196,0.1);border-color:rgba(78,205,196,0.25);color:var(--green);}
+
+/* ── COMPETITIVE ── */
+.comp-legend{display:flex;align-items:center;gap:18px;padding:11px 48px;border-bottom:1px solid var(--border);background:rgba(255,255,255,0.015);}
+.leg-item{display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,0.45);}
+.comp-section{margin-bottom:16px;border:1px solid var(--border);border-radius:5px;overflow:hidden;}
+.comp-section-hdr{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;cursor:pointer;background:rgba(255,255,255,0.025);transition:background .15s;user-select:none;}
+.comp-section-hdr:hover{background:rgba(255,255,255,0.05);}
+.sh-left{display:flex;align-items:center;gap:12px;}
+.sh-num{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.28);}
+.sh-title{font-size:14px;font-weight:700;color:var(--text);}
+.sh-count{font-size:10px;color:rgba(255,255,255,0.28);background:rgba(255,255,255,0.06);padding:3px 8px;border-radius:10px;border:1px solid var(--border);}
+.sh-arrow{font-size:11px;color:rgba(255,255,255,0.25);transition:transform .18s;}
+.comp-section-hdr.open .sh-arrow{transform:rotate(180deg);}
+.comp-section-body{display:none;border-top:1px solid var(--border);}
+.comp-section-body.open{display:block;}
+.comp-table{width:100%;border-collapse:collapse;}
+.comp-table th{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.28);padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);background:rgba(255,255,255,0.015);}
+.comp-table th.ctr{text-align:center;}
+.comp-table td{padding:0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.comp-table tr:last-child td{border-bottom:none;}
+.score-row td{padding:4px 14px 10px;border-bottom:1px solid rgba(255,255,255,0.06);}
+.score-cell{text-align:center;font-size:16px;min-width:76px;}
+.src-cell{font-size:11px;color:rgba(255,255,255,0.25);font-style:italic;}
+.resp-drawer{display:none;padding:0 14px 14px;background:rgba(0,212,255,0.02);}
+.resp-drawer.open{display:block;animation:slideDown .18s ease;}
+.resp-inner{border:1px solid rgba(0,212,255,0.13);border-radius:4px;overflow:hidden;}
+.resp-hdr{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:rgba(0,212,255,0.05);border-bottom:1px solid rgba(0,212,255,0.1);}
+.resp-lbl{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent);}
+.resp-src{font-size:10px;color:rgba(255,255,255,0.3);font-style:italic;}
+.resp-ta{width:100%;min-height:110px;padding:13px;background:rgba(255,255,255,0.03);border:none;outline:none;resize:vertical;color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:13px;line-height:1.65;border-bottom:1px solid var(--border);}
+.resp-ta:focus{background:rgba(0,212,255,0.03);}
+.resp-foot{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;background:rgba(255,255,255,0.015);}
+.resp-hint{font-size:10px;color:rgba(255,255,255,0.2);}
+.resp-save{font-family:inherit;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:4px 12px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.25);color:var(--accent);border-radius:3px;cursor:pointer;transition:all .15s;}
+.resp-save:hover{background:rgba(0,212,255,0.18);}
+.resp-save.saved{background:rgba(78,205,196,0.1);border-color:rgba(78,205,196,0.25);color:var(--green);}
+.no-res{text-align:center;padding:50px;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.18);display:none;}
+.comp-wrap{padding:20px 48px;}
+
+/* CLUSTER COLORS */
+.c1{color:#4af0c4;}.c2{color:#7b6fff;}.c3{color:#ff5c5c;}.c4{color:#ffd93d;}.c5{color:#f06fff;}.c6{color:#5cb8ff;}.c7{color:#aef05c;}
+.d1{background:#4af0c4;}.d2{background:#7b6fff;}.d3{background:#ff5c5c;}.d4{background:#ffd93d;}.d5{background:#f06fff;}.d6{background:#5cb8ff;}.d7{background:#aef05c;}
+</style>
+</head>
+<body>
+
+<!-- ═══ SITE HEADER ═══ -->
+<header class="site-header">
+  <div class="header-top">
+    <div>
+      <div class="site-title">BrandRank<span>.AI</span> Content Calendar</div>
+      <div class="site-subtitle">Webinars &nbsp;·&nbsp; Blog Entries &nbsp;·&nbsp; FAQs</div>
+    </div>
+    <div class="header-meta"></div>
+  </div>
+  <nav class="primary-tabs">
+    <button class="primary-tab active" onclick="switchPrimary(this,'main')">Content Calendar</button>
+    <button class="primary-tab" onclick="switchPrimary(this,'webinars')">Webinars</button>
+    <button class="primary-tab" onclick="switchPrimary(this,'blog25')">Blog Posts</button>
+    <button class="primary-tab" onclick="switchPrimary(this,'comp')">Competitive Activity</button>
+  </nav>
+</header>
+
+
+
+<!-- ═══════════════════════════════════
+     PANEL: CONTENT CALENDAR (Main)
+═══════════════════════════════════ -->
+<div class="panel active" id="panel-main">
+  <!-- Sub-tabs for cluster navigation -->
+  <div class="sub-tabs-bar" id="cluster-subtabs">
+    <button class="sub-tab active" onclick="scrollToCluster(this,0)">All</button>
+    <button class="sub-tab" onclick="scrollToCluster(this,1)">1. AI Search Fundamentals</button>
+    <button class="sub-tab" onclick="scrollToCluster(this,2)">2. Brand Visibility</button>
+    <button class="sub-tab" onclick="scrollToCluster(this,3)">3. Brand Vulnerability</button>
+    <button class="sub-tab" onclick="scrollToCluster(this,4)">4. Content Readiness</button>
+    <button class="sub-tab" onclick="scrollToCluster(this,5)">5. Competitive Intel</button>
+    <button class="sub-tab" onclick="scrollToCluster(this,6)">6. Consumer Behavior</button>
+    <button class="sub-tab" onclick="scrollToCluster(this,7)">7. Advertising & Measurement</button>
+  </div>
+  <div class="controls">
+    <div class="search-wrap"><span class="s-ico">&#9906;</span><input type="text" id="s1" placeholder="Search entries..." oninput="renderBlog()"></div>
+    <div class="filter-group">
+      <button class="fbtn faq on" onclick="togFmt(this,'FAQ')">FAQ</button>
+      <button class="fbtn num on" onclick="togFmt(this,'By The Numbers')">By The Numbers</button>
+      <button class="fbtn deep on" onclick="togFmt(this,'Deep-Dive')">Deep-Dive</button>
+    </div>
+    <span class="cnt" id="bc">58 entries</span>
+  </div>
+  <div class="grid-inner" id="blog-grid"></div>
+  <div class="no-res" id="blog-nr">No matching entries found.</div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PANEL: WEBINARS
+═══════════════════════════════════ -->
+<div class="panel" id="panel-webinars">
+  <div class="sub-tabs-bar">
+    <button class="sub-tab active" onclick="filterWebinarMonth(this,'all')">All Sessions</button>
+    <button class="sub-tab" onclick="filterWebinarMonth(this,'Q1')">Q1 (1–3)</button>
+    <button class="sub-tab" onclick="filterWebinarMonth(this,'Q2')">Q2 (4–6)</button>
+    <button class="sub-tab" onclick="filterWebinarMonth(this,'Q3')">Q3 (7–9)</button>
+    <button class="sub-tab" onclick="filterWebinarMonth(this,'Q4')">Q4 (10)</button>
+  </div>
+  <div class="controls">
+    <div class="search-wrap"><span class="s-ico">&#9906;</span><input type="text" id="s2" placeholder="Search webinars..." oninput="renderWebinars()"></div>
+    <span class="cnt" id="wc">10 webinars</span>
+  </div>
+  <div class="w-grid" id="webinar-grid"></div>
+  <div class="no-res" id="web-nr">No results.</div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PANEL: BLOG POSTS 25
+═══════════════════════════════════ -->
+<div class="panel" id="panel-blog25">
+  <div class="sub-tabs-bar">
+    <button class="sub-tab active" onclick="filterBlogMonth(this,'all')">All Posts</button>
+    <button class="sub-tab" onclick="filterBlogMonth(this,'Q1')">Q1</button>
+    <button class="sub-tab" onclick="filterBlogMonth(this,'Q2')">Q2</button>
+    <button class="sub-tab" onclick="filterBlogMonth(this,'Q3')">Q3</button>
+    <button class="sub-tab" onclick="filterBlogMonth(this,'Q4')">Q4</button>
+  </div>
+  <div class="controls">
+    <div class="search-wrap"><span class="s-ico">&#9906;</span><input type="text" id="s3" placeholder="Search blog posts..." oninput="renderBlog25()"></div>
+    <span class="cnt" id="b25c">25 posts</span>
+  </div>
+  <div class="grid-inner" id="blog25-wrap">
+    <table class="data-table" id="blog25-table">
+      <thead><tr><th style="width:40px">#</th><th>Title</th><th style="width:200px">Theme</th><th style="width:82px">Month</th><th style="width:110px">Status</th></tr></thead>
+      <tbody id="b25body"></tbody>
+    </table>
+    <div class="no-res" id="b25-nr">No results.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PANEL: COMPETITIVE ACTIVITY
+═══════════════════════════════════ -->
+<div class="panel" id="panel-comp">
+  <div class="sub-tabs-bar">
+    <button class="sub-tab active" onclick="filterCompSection(this,'all')">All Sections</button>
+    <button class="sub-tab" onclick="filterCompSection(this,1)">1. AI Search</button>
+    <button class="sub-tab" onclick="filterCompSection(this,2)">2. Visibility</button>
+    <button class="sub-tab" onclick="filterCompSection(this,3)">3. Prompt Intel</button>
+    <button class="sub-tab" onclick="filterCompSection(this,4)">4. Citations</button>
+    <button class="sub-tab" onclick="filterCompSection(this,5)">5. Brand Narrative</button>
+    <button class="sub-tab" onclick="filterCompSection(this,6)">6. Competitive</button>
+    <button class="sub-tab" onclick="filterCompSection(this,7)">7. Content Strategy</button>
+    <button class="sub-tab" onclick="filterCompSection(this,8)">8. Business Impact</button>
+    <button class="sub-tab" onclick="filterCompSection(this,9)">9. Methodology</button>
+  </div>
+  <div class="controls">
+    <div class="search-wrap"><span class="s-ico">&#9906;</span><input type="text" id="s4" placeholder="Search questions..." oninput="filterComp()"></div>
+    <span style="font-size:11px;color:rgba(255,255,255,0.3);">Click any question to view competitor coverage and draft a response.</span>
+    <span class="cnt" id="compc">60 questions</span>
+  </div>
+  <div class="comp-legend">
+    <div class="leg-item"><span style="color:var(--green);font-size:15px">&#10003;</span> Clearly addressed</div>
+    <div class="leg-item"><span style="color:var(--yellow);font-size:13px">&#9679;</span> Partially addressed</div>
+    <div class="leg-item"><span style="color:var(--red);font-size:14px">&#10007;</span> Not addressed</div>
+    <div style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.28);">Profound &nbsp;/&nbsp; Brandlight &nbsp;/&nbsp; Evertune &nbsp;/&nbsp; BrightEdge &nbsp;/&nbsp; Ahrefs</div>
+  </div>
+  <div class="comp-wrap" id="comp-wrap"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════
+const CY='<span style="color:#4ecdc4;font-size:16px">&#10003;</span>';
+const CP='<span style="color:#ffd93d;font-size:14px">&#9679;</span>';
+const CN='<span style="color:#ff6b6b;font-size:15px">&#10007;</span>';
+
+const clusters=[
+{id:1,label:"AI Search Fundamentals",c:"c1",d:"d1",entries:[
+{n:1,t:"FAQ: What Is AI Search and How Is It Different from Google?",f:"FAQ",
+ desc:"AI search uses large language models to generate direct answers instead of returning a list of links. Unlike Google, which ranks pages, AI engines like ChatGPT and Gemini synthesize information from multiple sources and surface a single narrative response. For brands, this means visibility now depends on how you are described, not just where you rank — a fundamentally different challenge requiring new measurement and content strategies."},
+{n:2,t:'FAQ: What Is an "Answer Engine" and Why Is My Brand Showing Up in One?',f:"FAQ",
+ desc:'An answer engine is an AI system — such as Perplexity, ChatGPT, or Gemini — that responds to user questions with synthesized, conversational answers rather than search results. Your brand may appear because it is referenced in authoritative sources these engines draw from. Understanding why you appear — and how accurately — is the first step toward managing your presence in the emerging Answer Economy.'},
+{n:3,t:"FAQ: What Are the Main AI Answer Engines — and Are They All the Same?",f:"FAQ",
+ desc:"The major AI answer engines include ChatGPT, Gemini, Perplexity, Claude, Meta AI, and Grok. While they share similar technology, each draws on different training data and citation sources — which means your brand may be described differently, recommended more or less frequently, and associated with different attributes depending on which engine a consumer uses. Tracking all of them is essential for a complete picture."},
+{n:4,t:"FAQ: How Does ChatGPT Decide What to Say About a Brand?",f:"FAQ",
+ desc:"ChatGPT generates brand descriptions based on patterns in its training data — including third-party reviews, news coverage, product documentation, and structured web content. Brands with broader authoritative coverage, consistent messaging across trusted sources, and accurate structured data are more likely to be described accurately and favorably. There is no single lever to pull; brand presence in AI is built through a portfolio of content signals."},
+{n:5,t:"By The Numbers: The Same Brand, 7 Different Stories — How Each AI Engine Scores Brands Differently on the Same Day",f:"By The Numbers",
+ desc:"When the same brand is queried across seven AI engines on a single day, the responses can vary dramatically — different attributes emphasized, different competitors mentioned, even contradictory factual claims. This data study analyzes real cross-engine divergence for a sample of global brands, revealing just how inconsistent AI-generated brand narratives can be and why multi-engine measurement is non-negotiable for brand managers in 2026."},
+{n:6,t:"FAQ: What Is the Difference Between ChatGPT, Perplexity, Gemini, Grok, and Meta AI?",f:"FAQ",
+ desc:"Each AI engine has a distinct architecture, training approach, and source weighting. ChatGPT draws on broad web training; Perplexity uses real-time retrieval with visible citations; Gemini integrates Google's knowledge graph; Grok draws on X platform data; Meta AI leverages social graph signals. For brand managers, this means a single content strategy is unlikely to optimize visibility across all engines — each requires tailored intelligence."},
+{n:7,t:"FAQ: Does My Brand Need a Separate AI Search Strategy — or Is SEO Enough?",f:"FAQ",
+ desc:"Traditional SEO and AI search optimization are increasingly distinct disciplines. SEO targets ranking positions in search results; AI search optimization targets how your brand is described, cited, and recommended in AI-generated answers. A brand can rank on the first page of Google while being nearly absent from AI responses — or misrepresented when it does appear. A standalone AI strategy is no longer optional for brands that care about how consumers discover them."},
+{n:8,t:'FAQ: What Is "Generative Engine Optimization" (GEO) and Do I Need to Care About It?',f:"FAQ",
+ desc:'Generative Engine Optimization (GEO) is the emerging discipline of optimizing how generative AI systems describe and recommend your brand. It involves ensuring your content ecosystem, third-party coverage, and brand signals are structured in ways that AI engines can accurately interpret and cite. As AI-driven discovery accelerates, GEO is becoming as strategically important as SEO was in the early 2000s — and the brands that invest early will build durable competitive advantages.'},
+]},
+{id:2,label:"Brand Visibility & Answer Share",c:"c2",d:"d2",entries:[
+{n:9,t:'FAQ: What Is "Answer Share" and Why Should I Track It Like Sales?',f:"FAQ",
+ desc:'Answer Share measures how often your brand appears in AI-generated responses to relevant category prompts — expressed as a percentage of the total. Like market share measures sales, Answer Share measures AI-driven discovery presence. A brand with high Answer Share is more likely to be recommended when a consumer asks an AI assistant which product, service, or solution to choose. Tracking it over time reveals whether your AI presence is growing or eroding relative to competitors.'},
+{n:10,t:"By The Numbers: The Newcomer Effect — How Fast-Rising Brands Are Stealing Answer Share From Incumbents",f:"By The Numbers",
+ desc:"Data across dozens of categories shows a consistent pattern: challenger brands with strong digital content footprints are outperforming established incumbents in AI-generated recommendations. This study quantifies the gap, revealing that newer brands with agile content strategies are capturing disproportionate Answer Share — and that legacy brands with static web presences are the most vulnerable. The window to close the gap is narrowing."},
+{n:11,t:"FAQ: Why Is My Brand Being Recommended (or Ignored) by ChatGPT?",f:"FAQ",
+ desc:"ChatGPT recommends brands that appear consistently and positively across the sources it draws from — including product review sites, editorial coverage, structured product data, and brand-owned content. If your brand is being ignored, it typically signals gaps in third-party credibility, thin owned content, or outdated information in the sources AI engines weight most heavily. Understanding which signals are driving or suppressing your presence is the foundation of any AI visibility improvement strategy."},
+{n:12,t:"FAQ: Why Does My Competitor Show Up in AI Answers and I Don't?",f:"FAQ",
+ desc:"Competitive presence in AI answers is typically driven by three factors: the volume and quality of third-party coverage, the authority of the sources where a brand is discussed, and the consistency of brand messaging across those sources. If a competitor appears more frequently, they likely have stronger citation ecosystems — more reviews, more editorial mentions, more structured content that AI engines can confidently reference. Closing this gap requires a systematic audit of your content and earned media footprint."},
+{n:13,t:"FAQ: How Do I Know How Visible My Brand Is Across Different AI Engines?",f:"FAQ",
+ desc:"Measuring AI visibility requires running structured prompts — the kinds of questions real consumers ask — across multiple AI engines and tracking how often and how accurately your brand appears in the responses. A comprehensive visibility audit covers mention frequency, recommendation rate, narrative accuracy, and competitive share across each engine. Without this data, brand teams are essentially flying blind in one of the fastest-growing discovery channels."},
+{n:14,t:'FAQ: What Is "Category Relevance" in AI Search and How Do I Improve It?',f:"FAQ",
+ desc:'Category relevance in AI search reflects how strongly AI engines associate your brand with the product or service categories consumers ask about. A brand with high category relevance appears consistently when users ask general category questions — not just brand-specific ones. Improving it requires ensuring your owned content, third-party coverage, and structured data clearly and repeatedly connect your brand to the most important category terms and use cases in your market.'},
+{n:15,t:"By The Numbers: The Zero Club — Brands That Are Completely Invisible in Their Own Category",f:"By The Numbers",
+ desc:"In a study of AI-generated responses across 20 product categories, a surprising number of major brands — including some household names — achieved zero mentions in AI answers to their core category questions. This data report identifies the characteristics of brands in the Zero Club, the competitive dynamics they face, and the specific content and credibility gaps that explain their AI invisibility. The findings are a wake-up call for any brand that has not yet measured its AI presence."},
+{n:16,t:"Answer Share Index: A Category-by-Category Data Study on Which Brands Win in AI Search",f:"Deep-Dive",
+ desc:"This comprehensive data study analyzes AI Answer Share across 20 product and service categories, revealing which brands dominate AI-generated recommendations, which are losing ground, and which challenger brands are emerging as surprise leaders. Methodology includes 5,000+ prompts analyzed across six AI engines, with cross-engine consistency scores and competitive share breakdowns. An essential benchmark for any brand strategy team navigating the Answer Economy."},
+]},
+{id:3,label:"Brand Vulnerability & Trust",c:"c3",d:"d3",entries:[
+{n:17,t:"FAQ: What Does It Mean When AI Gets My Brand Wrong?",f:"FAQ",
+ desc:"When AI engines misrepresent a brand — citing outdated pricing, incorrect product attributes, or inaccurate claims — the impact can be significant. Consumers trust AI-generated answers, and inaccurate descriptions can suppress purchase intent, create confusion, and generate customer service issues downstream. AI brand errors typically stem from outdated training data or low-authority source coverage. Identifying and systematically correcting these errors is a growing brand management priority."},
+{n:18,t:"FAQ: Can AI Be Biased Against My Brand — and What Causes That?",f:"FAQ",
+ desc:"AI systems can exhibit what appears to be bias against a brand — consistently describing it less favorably, associating it with negative attributes, or omitting it from recommendation lists where it should logically appear. This typically reflects patterns in the source data AI engines draw from rather than intentional bias. Negative press coverage, unresolved product review issues, or weak presence in authoritative sources can all contribute to unfavorable AI narratives that require active correction."},
+{n:19,t:"FAQ: What Happens to My Brand When AI Spreads Misinformation About It?",f:"FAQ",
+ desc:"AI-generated misinformation about a brand can spread quietly across multiple engines and compound over time as AI systems reference each other's outputs. Unlike a single article that can be corrected or removed, AI misinformation is embedded in model behavior and surfaces repeatedly in response to consumer queries. Brands that monitor AI narratives continuously are best positioned to detect emerging misinformation early and take corrective action before it influences consumer perception at scale."},
+{n:20,t:"By The Numbers: The Accuracy Audit — How Often AI States Something False About a Brand",f:"By The Numbers",
+ desc:"An analysis of AI-generated responses across 50 major brands found that a significant percentage contained at least one verifiably false or materially misleading claim — including incorrect product features, outdated pricing, wrong leadership attributions, and fabricated statistics. This accuracy audit quantifies the scope of the problem, identifies which categories face the highest error rates, and examines the source patterns most commonly associated with AI inaccuracy."},
+{n:21,t:"FAQ: How Do I Find Out What AI Engines Are Actually Saying About My Brand?",f:"FAQ",
+ desc:"The most direct method is structured prompt testing — querying AI engines with the kinds of questions real consumers ask and systematically reviewing the responses for accuracy, tone, and competitive positioning. A comprehensive audit covers dozens or hundreds of prompts across multiple AI engines and documents both what is said and what is missing. This process reveals the gap between how your brand intends to be perceived and how AI systems are actually describing it to potential customers."},
+{n:22,t:'FAQ: What Is "Brand Alignment" in AI Search — and How Do I Know If I Have It?',f:"FAQ",
+ desc:'Brand alignment in AI search measures how closely the attributes, claims, and narratives that AI engines associate with your brand match your intended brand positioning. A brand with strong alignment sees its key differentiators accurately reflected in AI responses; a brand with poor alignment is described in ways that contradict or dilute its core value proposition. Measuring alignment requires comparing AI-generated descriptions against your brand standards across multiple engines and prompt types.'},
+{n:23,t:"FAQ: How Often Does AI Change What It Says About a Brand?",f:"FAQ",
+ desc:"AI-generated brand narratives can shift when underlying models are updated, new training data is incorporated, or source authority patterns change in the web. Some changes are subtle — a shift in tone or emphasis; others are material — a key differentiator disappearing from recommendations. Brands that measure AI visibility continuously can detect these shifts in near real time and respond before the changes influence consumer behavior at scale."},
+{n:24,t:"Brand Vulnerability by Sector: A Data Deep Dive Across CPG, Finance, Health & Retail",f:"Deep-Dive",
+ desc:"This sector study analyzes AI brand vulnerability across four major industries, measuring how frequently brands are misrepresented, omitted from key prompts, or negatively framed in AI-generated responses. Findings reveal that regulated industries face the highest rates of AI inaccuracy, while CPG brands face the greatest risk of competitor displacement. Includes vulnerability scores, error type breakdowns, and a framework for assessing and reducing AI brand risk by sector."},
+]},
+{id:4,label:"Content & Website Readiness",c:"c4",d:"d4",entries:[
+{n:25,t:"By The Numbers: Crisis in the Engine Room — How a Recall, Investigation, or Controversy Moves Your AI Score",f:"By The Numbers",
+ desc:"When a brand faces a recall, regulatory investigation, or public controversy, AI engines update their responses faster than many brands realize — often within days. This data study tracks AI visibility and narrative changes for five brands that experienced major crises, measuring how quickly AI scores shifted, which engines responded first, and how long negative narratives persisted after the crisis was resolved. Essential reading for brand protection and communications teams."},
+{n:26,t:"FAQ: How Do I Know If My Website Is Actually Being Read by AI?",f:"FAQ",
+ desc:"AI engines access and index web content differently than traditional search crawlers. Factors including page structure, robots.txt settings, content format, and domain authority all influence whether AI systems can and do draw from your website. Brands often discover that entire sections of their site — including detailed product pages and FAQ sections — are invisible to AI engines due to technical barriers. Auditing your site's AI accessibility is a prerequisite for any content readiness strategy."},
+{n:27,t:"FAQ: What Kind of Content Does AI Trust — and Reward?",f:"FAQ",
+ desc:"AI engines tend to draw from and cite content that is factually dense, well-structured, and backed by credible domain authority. Long-form explanatory content, FAQ pages, structured product specifications, and content with clear authorship and date signals tend to perform well. Highly promotional content, thin landing pages, and content without topical depth are rarely cited. Understanding the content characteristics AI engines reward is essential for prioritizing your editorial investments."},
+{n:28,t:'FAQ: What Is an "Algorithmic Anchor" and How Does It Help My Brand Get Cited?',f:"FAQ",
+ desc:'An algorithmic anchor is a piece of content — often an FAQ, comparison guide, or definitive category explanation — that AI engines consistently draw from when generating answers in your category. Brands that own algorithmic anchors appear in AI responses at a disproportionately high rate because their content has become a trusted reference point for the model. Building these assets requires understanding exactly which questions AI engines are trying to answer and what format of content they prefer.'},
+{n:29,t:'FAQ: What Is "Content Liquidity" and Why Does It Determine If AI Mentions Me?',f:"FAQ",
+ desc:'Content liquidity describes how easily AI engines can extract, understand, and incorporate information from your brand\'s content into a synthesized answer. Content that is well-structured, clearly written, and organized around specific questions has high liquidity — AI can use it readily. Dense, jargon-heavy, or poorly organized content has low liquidity and is unlikely to be cited even if it contains valuable information. Improving content liquidity is one of the fastest ways to improve AI visibility.'},
+{n:30,t:"By The Numbers: What a Strong FAQ Page Is Actually Worth in AI Visibility Points",f:"By The Numbers",
+ desc:"This data study quantifies the AI visibility impact of a well-optimized FAQ page versus a poorly structured one across 30 brands in three categories. Findings show that brands with comprehensive, clearly structured FAQ sections earn significantly higher AI citation rates on key category questions — and that the visibility gap between strong and weak FAQ pages widens over time as AI models update. Includes a scoring rubric for evaluating your own FAQ content against the benchmarks."},
+{n:31,t:"FAQ: Do FAQs on My Website Actually Help Me Show Up in AI Answers?",f:"FAQ",
+ desc:"Yes — FAQ content is among the most consistently cited content type in AI-generated answers, because it directly addresses the question-and-answer format that AI engines are built to replicate. However, not all FAQ content performs equally. FAQs that address specific, high-intent questions with clear, factually accurate answers outperform generic or promotional FAQ pages significantly. The quality and specificity of your FAQ content directly influences how often AI engines use it as a source."},
+{n:32,t:"FAQ: Should I Use Structured Data and Schema Markup to Help AI Find My Brand?",f:"FAQ",
+ desc:"Structured data and schema markup improve the machine-readability of your content, making it easier for AI engines to accurately identify and extract key information about your brand, products, and services. While schema markup was originally developed for traditional search, it increasingly influences AI visibility as well — particularly for product attributes, pricing, reviews, and organizational information. Implementing it correctly is one of the lower-cost, higher-impact steps in an AI content readiness program."},
+{n:33,t:"Is Your Website Bot-Friendly? A Data Benchmark on AI Content Readiness Across Industries",f:"Deep-Dive",
+ desc:"This cross-industry benchmark evaluates the AI content readiness of 100 brand websites across seven sectors, scoring each on content accessibility, structural clarity, FAQ depth, schema implementation, and citation frequency in AI responses. Findings reveal that most brand websites are not optimized for AI discovery — and that even small technical improvements can produce measurable gains in AI citation rates. Includes a self-assessment scoring guide and sector-specific recommendations."},
+]},
+{id:5,label:"Competitive Intelligence & Adversarial AI",c:"c5",d:"d5",entries:[
+{n:34,t:'FAQ: What Is "Adversarial AI" and Can Competitors Use It Against My Brand?',f:"FAQ",
+ desc:'Adversarial AI in a brand context refers to the deliberate manipulation of content ecosystems — through fake reviews, SEO-optimized competitive comparisons, or strategic third-party publishing — to influence how AI engines describe a competitor unfavorably. While this practice is not yet widespread, its potential is significant and growing. Brands that monitor their AI narratives continuously are in a much stronger position to detect adversarial activity and respond before it influences consumer perception at scale.'},
+{n:35,t:"By The Numbers: The Competitor Takeover Map — Where Brands Are Losing Category Ownership, Query by Query",f:"By The Numbers",
+ desc:"This data study maps AI Answer Share shifts across 15 product categories over six months, identifying the specific prompts where category leaders are losing ground to challengers. Findings reveal that most displacement happens incrementally — one query type at a time — and that brands often don't notice the erosion until it is significant. Includes a prompt-level breakdown showing exactly which questions are driving competitive displacement in each category."},
+{n:36,t:"FAQ: How Do I Benchmark My Brand Against Competitors in AI Search?",f:"FAQ",
+ desc:"Competitive benchmarking in AI search involves running the same structured set of category prompts across multiple AI engines for your brand and each major competitor, then comparing mention frequency, recommendation rate, and narrative quality. The resulting data reveals not just who is winning but why — which content signals, citation sources, and prompt types are driving the differences. A rigorous benchmark should be run at least quarterly and updated more frequently for high-velocity categories."},
+{n:37,t:"FAQ: What Is the Difference Between AI Brand Monitoring and Social Listening?",f:"FAQ",
+ desc:"Social listening tracks what people are saying about your brand on social platforms in real time. AI brand monitoring tracks what AI engines are saying about your brand in generated responses — a very different data source with very different implications. AI narratives are typically less volatile than social conversation but more persistent and more influential at key consumer decision moments. The two disciplines are complementary but require separate tools and separate strategic responses."},
+{n:38,t:"Adversarial AI in Action: A Data Study on Competitive Brand Undermining in AI Search",f:"Deep-Dive",
+ desc:"This research study investigates documented cases of competitive content strategies that appear designed to influence AI-generated brand narratives — including strategic review campaigns, competitive comparison content, and third-party publishing patterns that correlate with adverse AI narrative shifts. Includes methodology for detecting potential adversarial activity in your own AI monitoring data, and a framework for evaluating whether content anomalies reflect organic market dynamics or deliberate competitive action."},
+]},
+{id:6,label:"Consumer Behavior & the Prompted Moment of Truth",c:"c6",d:"d6",entries:[
+{n:39,t:'FAQ: What Is the "Prompted Moment of Truth" — Explained Simply',f:"FAQ",
+ desc:'The Prompted Moment of Truth is the instant when a consumer asks an AI assistant a question — about a product category, a brand comparison, or a purchase decision — and receives an answer that shapes what they buy. Unlike the traditional First Moment of Truth (encountering a brand on a shelf), this moment is mediated entirely by AI. The brand that appears in the answer wins the moment. The brand that doesn\'t may never get a chance to compete for that consumer\'s attention at all.'},
+{n:40,t:"By The Numbers: The Gender Blind Spot — Brands Winning With One Audience While Invisible to Another",f:"By The Numbers",
+ desc:"Analyzing AI-generated responses to the same category prompts framed for different consumer audiences reveals a striking pattern: many brands are consistently recommended to one demographic segment while being entirely absent from responses generated for another. This data study quantifies the gender visibility gap across six product categories, identifying the brands most exposed and the content patterns most likely to close the gap."},
+{n:41,t:"FAQ: How Do Consumers Actually Use ChatGPT, Perplexity, and Gemini to Shop?",f:"FAQ",
+ desc:"Consumer research shows that AI assistants are most commonly used during the research and comparison stages of the purchase journey — not typically for final transactions. Consumers ask AI systems to explain category options, identify the best products for specific needs, compare brands, and surface reviews. Brands that appear prominently and accurately during these research conversations are far more likely to make the consideration set before the consumer ever visits a brand's website or a retailer."},
+{n:42,t:"FAQ: How Is the AI-Driven Shopper Journey Different from the Traditional One?",f:"FAQ",
+ desc:"In a traditional shopper journey, consumers encounter brands through advertising, shelf presence, and search results — touch points that brands can directly invest in. In an AI-driven journey, the first meaningful brand encounter may happen inside a conversational AI response that brands have no direct control over. This shift means brand presence in AI answers is as strategically important as advertising share of voice — and requires an entirely different set of measurement and optimization capabilities."},
+{n:43,t:'FAQ: What Are "Service Personas" in AI — and What Do They Reveal About My Brand?',f:"FAQ",
+ desc:'Service personas refer to the consistent role or characterization that AI engines assign to a brand when responding to service-oriented questions — such as "best for beginners," "best for enterprise," or "the affordable option." These implicit personas emerge from patterns in how a brand is described across its content ecosystem and third-party sources. Understanding which service persona AI assigns to your brand — and whether it matches your intended positioning — is a powerful diagnostic for brand strategy.'},
+{n:44,t:'FAQ: What Is "Brand Emotion" in AI Search and Why Does It Predict Word of Mouth?',f:"FAQ",
+ desc:'Brand emotion in AI search refers to the affective tone — trust, excitement, reassurance, aspiration — that AI-generated descriptions of a brand tend to convey. Research suggests that brands associated with positive emotional signals in AI responses are more likely to generate word-of-mouth recommendations downstream, as consumers who encounter emotionally positive AI descriptions are more likely to share those recommendations with others. Monitoring and shaping brand emotion in AI is an emerging frontier of brand management.'},
+{n:45,t:"By The Numbers: What AI Thinks of Your Customer Service",f:"By The Numbers",
+ desc:"When consumers ask AI engines about brand customer service quality, the responses vary dramatically — and often diverge from a brand's own service metrics. This data study analyzes AI-generated customer service narratives for 40 major brands across five categories, comparing AI assessments against verified consumer survey data. Findings reveal which brands are well-served by AI narratives, which are unfairly penalized by outdated review coverage, and what content interventions can close the gap."},
+{n:46,t:"The Prompted Moment of Truth: A Data Deep Dive into How Consumers Decide in the AI Age",f:"Deep-Dive",
+ desc:"This comprehensive study maps the consumer decision journey through AI-mediated discovery — tracking which prompt types appear at each stage of the purchase funnel, which brands are most visible at each stage, and how AI-generated recommendations correlate with downstream consumer behavior. Drawing on analysis of 10,000+ prompts across six AI engines, this report provides the most detailed picture yet of how AI is reshaping brand discovery, consideration, and preference formation."},
+]},
+{id:7,label:"Advertising, Sustainability, Measurement & Getting Started",c:"c7",d:"d7",entries:[
+{n:47,t:"FAQ: Can I Actually Advertise Inside AI Answer Engines?",f:"FAQ",
+ desc:"Advertising inside AI answer engines is in its early stages but developing quickly. Perplexity has introduced sponsored answers; Google's AI Overviews are beginning to integrate product listings; Amazon's Rufus incorporates sponsored placements. The line between organic AI recommendations and paid placements is still being drawn — and consumer trust in AI answers may be its most significant vulnerability. Brand managers need to monitor this space closely as the advertising model for AI search takes shape."},
+{n:48,t:"FAQ: What Does AI Say About My Brand's Sustainability Claims — and Can I Control It?",f:"FAQ",
+ desc:"AI engines increasingly surface third-party assessments of brand sustainability claims — including fact-check articles, regulatory findings, and advocacy group analyses — alongside brand-owned messaging. Brands with strong, independently verified sustainability credentials tend to be described favorably; brands with contested or unsubstantiated claims face a higher risk of AI engines surfacing critical coverage. Monitoring what AI says about your ESG story is now a core responsibility for sustainability communications teams."},
+{n:49,t:"FAQ: Does AI Search Treat B2B Brands Differently Than Consumer Brands?",f:"FAQ",
+ desc:"B2B brands face a distinct set of AI visibility challenges. Consumer brands can draw on high volumes of reviews and editorial coverage; B2B brands often rely on a smaller set of authoritative sources — analyst reports, industry publications, case studies, and partner ecosystems. AI engines tend to reflect this asymmetry, representing consumer brands more richly and more accurately than B2B brands. B2B teams need a tailored AI content strategy that prioritizes the specific source types AI engines weight most heavily in their category."},
+{n:50,t:"By The Numbers: The Greenwashing Trap — What Happens to Sustainability Scores When AI Finds Third-Party Critics",f:"By The Numbers",
+ desc:"This data study tracks AI-generated sustainability narratives for 30 major brands before and after the emergence of third-party critical coverage — including NGO reports, regulatory actions, and investigative journalism. Findings show that AI engines incorporate critical coverage quickly and weigh it heavily, often reducing a brand's sustainability score substantially within weeks. Brands with robust, independently verified ESG programs are significantly more resilient to this dynamic than those relying on self-certification alone."},
+{n:51,t:"Sustainability Claims in the Answer Economy: What AI Really Says About Your ESG Story",f:"Deep-Dive",
+ desc:"A comprehensive analysis of how AI engines represent sustainability claims for 50 major brands across consumer goods, energy, finance, and retail sectors. Findings reveal significant divergence between how brands describe their ESG commitments and how AI engines characterize those same commitments based on third-party source analysis. Includes a sustainability narrative scoring framework, sector benchmarks, and recommendations for aligning brand-owned ESG content with the source ecosystems AI engines draw from most heavily."},
+{n:52,t:"FAQ: How Does AI Search Affect Brand Reputation During a Crisis or Recall?",f:"FAQ",
+ desc:"During a brand crisis or product recall, AI engines rapidly incorporate news coverage, regulatory statements, and consumer reactions — often updating their brand descriptions within days. The result is that consumers who query an AI assistant about a brand in crisis receive a response that may be more negative and more detailed than anything appearing on the brand's own channels. Crisis communication plans that don't include an AI monitoring and response component are increasingly incomplete."},
+{n:53,t:"FAQ: How Do I Explain AI Search Visibility to My Leadership Team?",f:"FAQ",
+ desc:"The most effective framing for leadership is the business impact analogy: just as a brand's absence from search results means consumers never find it, a brand's absence from AI-generated answers means consumers never consider it during the moments that most influence purchase decisions. Quantifying AI Answer Share — and showing how it benchmarks against competitors — provides the concrete metrics leadership needs to treat AI visibility as a business priority rather than a technical experiment."},
+{n:54,t:"FAQ: How Do I Measure the ROI of Improving My AI Search Visibility?",f:"FAQ",
+ desc:"Measuring ROI on AI visibility improvements involves correlating changes in Answer Share with downstream signals including branded search volume uplift, direct traffic growth, and conversion rate changes in categories where AI-driven discovery is significant. While direct attribution remains challenging, leading brands are developing measurement frameworks that track the relationship between AI presence and purchase intent metrics. The field is evolving rapidly, and early movers are building the measurement infrastructure that will define category standards."},
+{n:55,t:"By The Numbers: One Point = How Much? Putting a Revenue Value on Answer Share Improvement",f:"By The Numbers",
+ desc:"This analysis attempts to quantify the revenue value of a one-point improvement in AI Answer Share across five product categories — using a combination of AI mention frequency data, category purchase volume, and consumer research on AI recommendation influence. While the methodology is necessarily approximate given the early state of AI attribution, findings suggest that Answer Share improvements in high-consideration categories can drive measurable demand effects that justify significant investment in AI visibility programs."},
+{n:56,t:"FAQ: Where Should I Even Start When It Comes to AI Search Optimization?",f:"FAQ",
+ desc:"The most productive starting point is a baseline measurement — understanding where your brand currently stands across the AI engines your consumers actually use. This means running structured prompts, documenting what AI says about you today, and benchmarking your presence against key competitors. From there, the highest-priority actions are almost always a combination of content readiness improvements on your own website and earned media investment in the third-party sources AI engines draw from most heavily in your category."},
+{n:57,t:"CPG Brand Performance in AI Search: A Sector-Wide Benchmarking Report",f:"Deep-Dive",
+ desc:"The most comprehensive benchmarking study of AI search visibility for consumer packaged goods brands to date. Analyzes Answer Share, Vulnerability scores, and Content Readiness ratings for 60 major CPG brands across 12 product categories and six AI engines. Key findings include significant category-level variation in AI visibility dynamics, a clear correlation between third-party review volume and AI presence, and the identification of the 10 CPG brands with the strongest and weakest AI positions heading into 2026."},
+{n:58,t:"The BrandRank.AI 2026 Answer Economy Data Report: Trends, Winners & Wake-Up Calls",f:"Deep-Dive",
+ desc:"The definitive annual analysis of brand performance in the Answer Economy. This report synthesizes data from millions of AI-generated responses across six engines, 20 product categories, and more than 200 brands to identify the macro trends shaping AI-driven brand discovery in 2026. Highlights include the brands that made the biggest gains, the categories experiencing the most rapid AI-driven disruption, and the emerging practices that are separating AI visibility leaders from the field."},
+]}
+];
+
+const webinars=[
+{n:1,t:"Welcome to the Answer Economy: Why AI Search Is Replacing Google",th:"The Answer Economy",au:"CMOs, Brand Marketers",mo:"Month 1",s:"ws1",
+ desc:"This opening session introduces the Answer Economy — the emerging paradigm in which AI answer engines, not search result pages, determine which brands consumers discover and consider. Drawing on data from over 70 global brands, the session covers how AI-driven discovery differs from traditional search, why Answer Share is the new Share of Voice, and what brand teams need to measure and manage in order to compete effectively in this rapidly shifting landscape."},
+{n:2,t:"Your Brand's Prompted Moment of Truth: How Consumers Decide in AI Search",th:"Prompted Moment of Truth",au:"Brand & Insights Teams",mo:"Month 2",s:"ws6",
+ desc:"The Prompted Moment of Truth is the AI-mediated instant when a consumer query produces a brand recommendation that directly influences a purchase decision. This session maps the consumer journey through AI-driven discovery — from exploratory questions to comparison queries to purchase-intent prompts — and shows which brand presence signals most reliably determine whether your brand wins or loses each moment. Includes live demonstrations using real category prompts."},
+{n:3,t:"AI Search Visibility 101: What Answer Share Is and Why It Matters",th:"AI Search Visibility",au:"Digital Marketing Teams",mo:"Month 3",s:"ws2",
+ desc:"A practical introduction to measuring brand visibility in AI-generated responses. Covers the Answer Share metric, how it is calculated across multiple AI engines, how it benchmarks against competitors, and what it predicts about downstream consumer behavior. Attendees leave with a clear understanding of the measurement framework, the data sources that matter, and the content and credibility signals that drive AI visibility gains in their specific product categories."},
+{n:4,t:"Brand Vulnerability in the Age of AI: When AI Gets You Wrong",th:"Brand Vulnerability",au:"Brand Protection, PR",mo:"Month 4",s:"ws3",
+ desc:"AI engines make mistakes about brands — and those mistakes can spread quietly across millions of consumer interactions. This session covers the most common forms of AI brand vulnerability: factual inaccuracies, outdated descriptions, competitive displacement, and narrative misalignment. Includes a live vulnerability audit of a real brand, a framework for prioritizing remediation by business impact, and an action guide for PR and brand protection teams building AI monitoring into their standard workflows."},
+{n:5,t:"Content Readiness for AI: Is Your Website Ready to Be Cited?",th:"Content Readiness / AEO",au:"Content & SEO Teams",mo:"Month 5",s:"ws4",
+ desc:"Most brand websites are not structured in ways that AI engines can easily access, parse, and cite. This session covers the technical and editorial dimensions of AI content readiness — from page structure and schema markup to FAQ depth and content liquidity. Includes a sector benchmark showing how content readiness scores correlate with AI citation rates and a practical content audit checklist that attendees can apply to their own sites immediately following the session."},
+{n:6,t:"Advertising in AI Answers: Opportunity, Risk, and the Trust Line",th:"AI Advertising",au:"CMOs, Media Buyers",mo:"Month 6",s:"ws7",
+ desc:"AI advertising is emerging as a major new channel — but the rules, formats, and consumer trust dynamics are still being established. This session reviews the current advertising models across Perplexity, Google AI Overviews, Amazon Rufus, and emerging platforms, assessing the opportunity for brands and the risks of overcommercialization in a channel where consumers currently trust organic answers above all else. Includes a framework for evaluating AI advertising investment priorities."},
+{n:7,t:"Competitive Benchmarking in the Answer Economy: Who's Winning and Why",th:"Competitive Analysis",au:"Strategy & Insights Teams",mo:"Month 7",s:"ws5",
+ desc:"This data-intensive session reveals how competitive Answer Share dynamics unfold across six major product categories — showing which brands are gaining ground in AI-driven discovery, which are losing it, and what content, credibility, and source patterns explain the differences. Includes live competitive benchmarking demonstrations, a prompt-by-prompt breakdown of competitive displacement patterns, and a structured framework for translating competitive AI data into actionable strategy priorities."},
+{n:8,t:"Sustainability Claims in AI Search: What Answer Engines Believe About Your Brand",th:"Sustainability / Vulnerability",au:"ESG, Brand Teams",mo:"Month 8",s:"ws7",
+ desc:"AI engines increasingly assess and characterize brand sustainability claims based on third-party source analysis — and their assessments don't always match brand-owned messaging. This session covers how AI represents ESG commitments across categories, what source patterns drive favorable and unfavorable AI sustainability narratives, and how brands with strong independent verification programs can build durable AI credibility on sustainability. Includes a live audit of sustainability AI narratives for five major brands."},
+{n:9,t:"Sector Deep Dive: How AI Recommends CPG, Finance, Education & More",th:"Sector Studies",au:"Industry-specific Brand Teams",mo:"Month 9",s:"ws2",
+ desc:"AI recommendation dynamics vary significantly by sector — driven by differences in consumer query patterns, source authority structures, and regulatory content constraints. This session provides sector-specific deep dives across CPG, financial services, healthcare, and education, revealing the distinct AI visibility dynamics in each industry and the sector-specific playbooks that are proving most effective for improving brand presence in AI-generated answers."},
+{n:10,t:"The Future of Brand in the Answer Economy: A Live Roundtable",th:"Thought Leadership",au:"C-Suite, Brand Leaders",mo:"Month 10",s:"ws1",
+ desc:"A live roundtable bringing together CMOs and brand leaders from across industries to discuss the strategic implications of AI-driven discovery for brand building, marketing investment, and competitive strategy. Topics include the long-term trajectory of AI search, emerging best practices for managing brand presence in AI environments, the measurement standards the industry needs to develop, and how AI search visibility will factor into brand valuation and marketing effectiveness frameworks over the next five years."},
+];
+
+const blog25=[
+{n:1,t:"The Answer Economy, Explained: What It Means for Every Brand",th:"The Answer Economy",mo:"Month 1"},
+{n:2,t:"Google vs. AI Answer Engines: A Side-by-Side Breakdown for Marketers",th:"The Answer Economy",mo:"Month 1"},
+{n:3,t:"What Is Answer Share and Why Should CMOs Care?",th:"AI Search Visibility",mo:"Month 2"},
+{n:4,t:"How BrandRank.AI Tracks Your Brand Across 7 Answer Engines Daily",th:"AI Search Visibility",mo:"Month 2"},
+{n:5,t:"The Prompted Moment of Truth: AI's New Role in Purchase Decisions",th:"Prompted Moment of Truth",mo:"Month 3"},
+{n:6,t:"How Consumers Are Using ChatGPT, Perplexity, and Gemini to Research Brands",th:"Prompted Moment of Truth",mo:"Month 3"},
+{n:7,t:"Over 60% of AI Responses Contain Errors — Is Your Brand One of Them?",th:"Brand Vulnerability",mo:"Month 4"},
+{n:8,t:"How to Respond When AI Gets Your Brand Wrong",th:"Brand Vulnerability",mo:"Month 4"},
+{n:9,t:"Brand Credibility in AI Search: Trust Signals That Answer Engines Reward",th:"Brand Vulnerability",mo:"Month 5"},
+{n:10,t:"What Is Content Readiness for AI Search and How Do You Measure It?",th:"Content Readiness",mo:"Month 5"},
+{n:11,t:"AEO vs. SEO: What's the Difference and Why Brands Need Both",th:"Content Readiness / AEO",mo:"Month 6"},
+{n:12,t:"Is Your Website Bot-Friendly? The Content Liquidity Checklist",th:"Content Readiness",mo:"Month 6"},
+{n:13,t:"Should Your Brand Advertise in AI Answers? A Framework for Deciding",th:"AI Advertising",mo:"Month 7"},
+{n:14,t:"Ad Separation in the Answer Economy: How OpenAI, Google & Amazon Draw the Lines",th:"AI Advertising",mo:"Month 7"},
+{n:15,t:"The CMO's Pocket Guide to AI Advertising in 2026",th:"AI Advertising",mo:"Month 8"},
+{n:16,t:"Competitive Benchmarking in AI Search: What to Track and How",th:"Competitive Analysis",mo:"Month 8"},
+{n:17,t:"How to Win Category Answer Share When Your Competitors Are Also Optimizing",th:"Competitive Analysis",mo:"Month 9"},
+{n:18,t:"Sustainability Claims in AI Search: What Answer Engines Say About Your ESG Story",th:"Sustainability",mo:"Month 9"},
+{n:19,t:"Amazon Rufus and the Rise of AI Shopping Recommendations",th:"Amazon Rufus",mo:"Month 10"},
+{n:20,t:"University Answer Share Index: Lessons Brands Can Learn from Higher Ed",th:"Sector Studies",mo:"Month 10"},
+{n:21,t:"AI Search Visibility by Sector: CPG, Finance, Healthcare & More Compared",th:"Sector Studies",mo:"Month 11"},
+{n:22,t:"PromptQuest and the Case for Gamified AI Search Training for Brand Teams",th:"Education / Training",mo:"Month 11"},
+{n:23,t:"From Ranked Lists to Cited Sources: How Brand Strategy Must Evolve",th:"Big Picture",mo:"Month 12"},
+{n:24,t:"The BrandRank.AI Year in Review: Answer Economy Trends That Shaped 2026",th:"BrandRank News",mo:"Month 12"},
+{n:25,t:"What the Best-Performing Brands in AI Search Have in Common",th:"Best Practices",mo:"Month 12"},
+];
+
+// COMPETITIVE DATA — boilerplate does NOT mention BrandRank
+const compSections=[
+{id:1,title:"AI Search & Discovery",questions:[
+{q:"What is AI search?",scores:[CY,CP,CP,CP,CN],sources:"Profound, BrightEdge, Evertune",
+ boiler:"AI search refers to how large language models like ChatGPT, Gemini, and Perplexity generate direct answers to user questions rather than returning a list of links. These systems synthesize information from multiple sources and may cite websites or recommend brands. For marketers, this means visibility depends not just on rankings but on how AI models interpret and summarize information about a brand — a fundamentally different measurement and optimization challenge."},
+{q:"What is answer engine optimization (AEO)?",scores:[CY,CP,CP,CP,CN],sources:"Profound, BrightEdge",
+ boiler:"Answer Engine Optimization (AEO) is the practice of structuring content, brand signals, and third-party presence so that AI answer engines surface your brand accurately and favorably. Unlike traditional SEO — which targets search rankings — AEO targets the actual content of AI-generated responses. Effective AEO requires understanding which sources AI engines draw from, how they evaluate content authority, and what content formats they are most likely to cite."},
+{q:"What is generative engine optimization (GEO)?",scores:[CP,CP,CP,CP,CN],sources:"Profound, BrightEdge",
+ boiler:"Generative Engine Optimization (GEO) is the discipline of optimizing how generative AI systems describe and recommend your brand in their responses. It goes beyond traditional SEO to encompass content structure, citation ecosystem development, and third-party credibility signals. As AI-driven discovery accelerates, GEO is becoming as strategically important as SEO was in the early 2000s."},
+{q:"How are AI assistants changing search behavior?",scores:[CP,CP,CP,CP,CN],sources:"Profound, BrightEdge, Evertune",
+ boiler:"Consumers increasingly ask AI assistants direct questions instead of browsing search results. This shifts brand visibility from ranking positions to narrative presence in AI-generated answers. The implications for brand strategy are significant: a brand that ranks well in traditional search may be nearly invisible in AI responses, while a challenger with strong content authority may dominate AI recommendations despite lower search rankings."},
+{q:"How is AI search different from traditional search?",scores:[CP,CP,CP,CP,CP],sources:"BrightEdge, Profound",
+ boiler:"Traditional search shows ranked lists of pages. AI search generates a synthesized answer that blends information from many sources — your brand either appears in that answer or it doesn't. This shift changes the fundamental unit of brand visibility from a URL ranking to a narrative presence. Content authority, citation patterns, and brand consistency across trusted sources play a larger role in AI visibility than keyword density or backlink counts."},
+{q:"Why does AI search matter for brands?",scores:[CY,CY,CY,CY,CP],sources:"Brandlight, BrightEdge, Profound",
+ boiler:"AI search is rapidly becoming the primary discovery channel for consumers researching products and services. If a brand is absent from AI-generated answers, it loses visibility at precisely the moments that most influence purchase decisions — even if it ranks well in traditional search. Monitoring and influencing how AI assistants describe and recommend brands is becoming a core priority for digital marketing teams across every category."},
+{q:"How do large language models decide which brands to mention?",scores:[CP,CP,CP,CN,CN],sources:"Profound",
+ boiler:"Large language models generate recommendations based on patterns in their training data — including third-party reviews, editorial coverage, structured data, and brand-owned content. Brands with broader, more authoritative coverage across trusted sources are more likely to be mentioned consistently and accurately. The specific weighting of different source types varies by engine and is updated as models are retrained."},
+]},
+{id:2,title:"AI Visibility Measurement",questions:[
+{q:"How visible is my brand in AI answers?",scores:[CY,CY,CY,CP,CP],sources:"Profound, Brandlight, Evertune",
+ boiler:"AI visibility is measured by running structured prompts — the kinds of questions real consumers ask — across multiple AI engines and tracking how often and how accurately a brand appears in the responses. A comprehensive visibility measurement covers mention frequency, recommendation rate, narrative accuracy, and competitive share across each engine. Without this data, brand teams have no reliable way to manage their presence in one of the fastest-growing discovery channels."},
+{q:"What is my AI share of voice?",scores:[CY,CY,CP,CP,CP],sources:"Profound, Brandlight",
+ boiler:"AI Share of Voice measures how often a brand appears in AI-generated responses relative to competitors in the same category. It is calculated by analyzing a structured set of category-relevant prompts and measuring brand mention frequency. This metric functions as the AI-era equivalent of traditional Share of Voice — a single, comparable number that reflects competitive presence in AI-driven discovery environments."},
+{q:"Which AI platforms mention my brand?",scores:[CY,CY,CY,CP,CP],sources:"Evertune, Profound",
+ boiler:"The major AI engines — including ChatGPT, Gemini, Perplexity, Claude, Meta AI, and Grok — each have distinct training data and source weighting, which means a brand may be prominently featured in one engine while nearly invisible in another. Tracking visibility across all major engines provides a complete picture of AI presence and reveals which specific engines require prioritized optimization attention."},
+{q:"How has my AI visibility changed over time?",scores:[CP,CP,CP,CP,CN],sources:"Evertune, Profound",
+ boiler:"Tracking AI visibility over time reveals whether a brand is gaining or losing presence in AI-generated responses. By analyzing repeated prompt sets on a recurring basis, teams can identify trends in mentions, citations, and recommendations. Historical data helps evaluate the impact of content initiatives, PR activity, and competitive moves — and provides early warning when AI narratives begin to shift in ways that may affect consumer perception."},
+{q:"How visible are competitors in AI answers?",scores:[CY,CY,CP,CP,CP],sources:"Profound, Brandlight",
+ boiler:"Competitive visibility analysis reveals which brands appear most frequently in AI-generated responses to industry-relevant prompts. This helps organizations identify market leaders in AI-driven discovery and evaluate how their brand compares. Understanding competitive visibility patterns can guide content strategy and highlight opportunities to increase presence in key consumer conversations before competitors solidify their AI positions."},
+{q:"How does my AI visibility compare to competitors?",scores:[CY,CY,CP,CP,CP],sources:"Profound, Brandlight",
+ boiler:"Comparing AI visibility involves analyzing how frequently different brands appear in responses to the same set of prompts — measuring metrics such as share of voice, recommendation frequency, and citation rates across major AI engines. These comparisons help organizations benchmark their presence and track shifts in competitive positioning over time, providing the data foundation for evidence-based AI search strategy."},
+]},
+{id:3,title:"Prompt & Query Intelligence",questions:[
+{q:"What prompts are people asking about my category?",scores:[CY,CP,CY,CP,CP],sources:"Profound, Evertune, BrightEdge",
+ boiler:"AI prompt analysis identifies the questions users ask conversational AI tools about products, services, and industries. These prompts often reflect consumer research behavior — including comparisons, recommendations, and problem-solving queries. By analyzing prompt patterns across large datasets, organizations can understand demand signals and ensure their content strategy aligns with the questions consumers are actually asking AI engines about their category."},
+{q:"Which prompts lead AI to recommend brands?",scores:[CY,CP,CP,CN,CN],sources:"Profound, Evertune",
+ boiler:"Some prompts are more likely than others to trigger AI systems to recommend specific brands or products — typically comparison queries, best-of lists, and purchase-oriented questions. By analyzing patterns across large prompt sets, organizations can identify which queries influence AI recommendations and align their content strategies with the specific discovery moments that drive brand consideration in AI-generated answers."},
+{q:"Which prompts trigger shopping recommendations?",scores:[CP,CP,CP,CP,CN],sources:"Evertune, Profound",
+ boiler:"Shopping recommendation prompts — queries that ask AI assistants for suggestions about what to buy — represent the highest-value moments in the AI customer journey. These prompts, which often include phrases such as 'best tools,' 'top brands,' or 'what should I buy,' frequently cause AI systems to produce curated lists of products or services. Understanding which prompts trigger these responses helps organizations identify when consumers are in active purchase consideration mode."},
+{q:"Which prompts influence brand discovery?",scores:[CP,CP,CP,CP,CN],sources:"BrightEdge",
+ boiler:"Brand discovery increasingly happens through exploratory AI queries — questions consumers ask before they know which brand they want. Prompts such as 'what are the best tools for...' or 'which companies offer...' can introduce users to new brands they were not previously considering. Understanding these prompts helps organizations identify early discovery moments where AI responses shape brand awareness before the consumer has formed any brand preference."},
+{q:"What prompts appear before purchase decisions?",scores:[CN,CN,CN,CN,CN],sources:"UNCLAIMED TERRITORY across all competitors",
+ boiler:"This is largely unaddressed by current AI visibility platforms — a significant gap given the strategic value of the insight. Pre-purchase prompts signal high purchase intent and often trigger detailed AI responses evaluating different options. Understanding which specific queries appear immediately before purchase decisions, and which brands are consistently recommended in those responses, would represent a critical capability for any brand serious about closing the loop between AI visibility and business outcomes."},
+]},
+{id:4,title:"Citation & Source Analysis",questions:[
+{q:"Which websites influence AI answers?",scores:[CY,CY,CP,CN,CN],sources:"Profound, Brandlight",
+ boiler:"AI assistants often draw information from trusted websites, authoritative publications, and structured data sources. These sources may be cited directly or influence the narrative within AI responses. By analyzing citations and reference patterns, organizations can identify which domains shape AI-generated answers in their category and prioritize content partnerships, PR placements, and earned media investments in the most influential source ecosystems."},
+{q:"What sources does AI cite when recommending brands?",scores:[CY,CY,CP,CN,CN],sources:"Profound, Brandlight",
+ boiler:"When AI systems generate brand recommendations, they often draw from specific articles, review platforms, and authoritative websites. Understanding which sources appear most frequently can help organizations identify the content ecosystems most likely to influence AI recommendations and prioritize their presence in those sources. Credible third-party coverage in the right publications carries disproportionate weight in AI-generated brand narratives."},
+{q:"Which third-party sources influence AI answers?",scores:[CY,CP,CN,CN,CN],sources:"Profound",
+ boiler:"Third-party sources — including review platforms, industry publications, and expert blogs — often play a significant role in shaping AI-generated answers. These sources may be cited directly or influence the information AI systems summarize. Identifying which third-party domains appear most frequently in AI responses about a category can help organizations understand the influential content ecosystems they need to participate in to strengthen their AI presence."},
+{q:"How often does AI cite my website?",scores:[CP,CP,CN,CN,CN],sources:"Profound",
+ boiler:"The frequency with which a brand's owned content appears in AI citations reflects both the authority of its web presence and the quality of its content structure. Low citation rates often signal content readiness gaps — pages that are technically inaccessible to AI crawlers, content that lacks the factual density AI engines reward, or a website architecture that makes it difficult for AI systems to extract and use brand information accurately."},
+{q:"Which sources drive competitor mentions?",scores:[CP,CP,CN,CN,CN],sources:"Profound",
+ boiler:"Competitor mentions in AI answers are typically linked to specific authoritative sources that discuss those companies favorably and frequently. By identifying which sources are most commonly associated with competitor visibility in AI responses, organizations can better understand the content and earned media ecosystems that shape competitive AI narratives — and identify specific gaps in their own coverage that may be contributing to competitive disadvantage."},
+]},
+{id:5,title:"Brand Narrative & Sentiment",questions:[
+{q:"What does AI say about my brand?",scores:[CY,CY,CP,CN,CN],sources:"Brandlight, Profound",
+ boiler:"AI narrative analysis examines how language models describe a brand when answering consumer questions — including the attributes, claims, comparisons, and tone associated with the brand in AI-generated responses. Monitoring these narratives helps organizations understand how AI systems frame their reputation and whether the descriptions reflect their intended positioning or contain inaccuracies, outdated information, or competitive framings that require correction."},
+{q:"Is AI sentiment about my brand positive or negative?",scores:[CY,CY,CP,CN,CN],sources:"Brandlight",
+ boiler:"Sentiment analysis evaluates whether AI responses portray a brand in a positive, neutral, or negative context. By reviewing AI-generated answers across large prompt sets, teams can detect patterns in how brands are described and identify specific prompt types or source patterns associated with negative sentiment. These insights help organizations prioritize reputation management activities and understand which aspects of their brand narrative need the most attention in AI environments."},
+{q:"Does AI hallucinate incorrect information about my brand?",scores:[CP,CP,CN,CN,CN],sources:"Brandlight",
+ boiler:"AI systems occasionally generate responses that contain factually incorrect, outdated, or misleading information about brands — a phenomenon known as hallucination. These errors can range from minor inaccuracies to material misrepresentations that affect consumer perception. Monitoring AI outputs across multiple engines is the only reliable way to identify hallucinations early, assess their prevalence, and take corrective action before they influence consumer decision-making at scale."},
+{q:"How consistent is AI's description of my brand?",scores:[CP,CP,CP,CN,CN],sources:"Evertune",
+ boiler:"Different AI engines may generate varying descriptions of the same brand depending on their training data and referenced sources. Monitoring responses across multiple systems helps organizations assess how consistent AI narratives are — and identify which engines present the greatest divergence from intended brand positioning. Inconsistency across engines typically signals underlying gaps in the brand's content ecosystem that need to be addressed at the source."},
+]},
+{id:6,title:"Competitive Intelligence",questions:[
+{q:"Which brands dominate AI answers in my category?",scores:[CY,CY,CP,CP,CP],sources:"Profound, Brandlight",
+ boiler:"Analyzing responses to industry-related prompts reveals which brands appear most frequently in AI-generated answers. Category leaders in AI visibility typically benefit from strong content authority, consistent third-party coverage, and widespread recognition across the source ecosystems AI engines draw from most heavily. Understanding which companies dominate AI responses helps organizations evaluate their competitive position and identify the specific content and credibility gaps that explain the difference."},
+{q:"Which competitors are gaining AI visibility?",scores:[CP,CP,CP,CN,CP],sources:"Profound",
+ boiler:"Tracking competitive visibility trends over time reveals which brands are gaining ground in AI recommendations before the shift becomes visible in traditional marketing metrics. Early detection of rising challenger brands allows teams to respond with targeted content and positioning strategies before competitors solidify their AI presence. This forward-looking intelligence is increasingly valuable in categories experiencing rapid competitive disruption."},
+{q:"Which competitor content is cited by AI?",scores:[CP,CP,CN,CN,CN],sources:"Profound",
+ boiler:"Understanding which content assets drive competitor visibility in AI answers provides a direct roadmap for competitive content strategy. If competitor FAQs, comparison guides, or expert articles are being cited at high rates, that signals the specific content types that carry the most weight in AI recommendations for the category. Closing this gap requires identifying the specific content investments that have the highest probability of improving AI citation frequency."},
+{q:"Which challenger brands are emerging in AI responses?",scores:[CP,CP,CN,CN,CN],sources:"Profound",
+ boiler:"Monitoring emerging brand presence across AI engines can surface challenger brands that are gaining answer share before they become visible threats in traditional competitive tracking. This early warning capability is especially valuable for established brands in categories experiencing digital disruption — where a challenger with a strong content strategy can capture significant AI visibility before it shows up in sales data or traditional brand tracking research."},
+]},
+{id:7,title:"Content Strategy",questions:[
+{q:"What content should we create to influence AI answers?",scores:[CP,CP,CP,CP,CP],sources:"BrightEdge, Profound",
+ boiler:"Content that clearly explains products, expertise, and category knowledge can increase the likelihood that AI systems reference or cite it. Authoritative resources, detailed guides, comprehensive FAQs, and credible third-party mentions tend to influence how AI models construct answers. Developing high-quality informational content aligned with the specific questions AI engines are trying to answer is the most reliable path to improving AI citation rates."},
+{q:"Which pages drive AI citations?",scores:[CP,CP,CN,CN,CN],sources:"Profound",
+ boiler:"Not all web pages are equally likely to be cited in AI-generated answers. Pages that perform best typically share characteristics including factual depth, clear structure, specific and answerable claims, credible authorship signals, and topical authority. Understanding which page types generate the most AI citations — and which are invisible to AI engines — helps content teams prioritize optimization efforts where they are most likely to produce measurable visibility improvements."},
+{q:"What content formats appear in AI responses?",scores:[CP,CP,CP,CP,CP],sources:"BrightEdge, Profound",
+ boiler:"AI engines show consistent preferences for certain content formats — including FAQ pages, how-to guides, comparison articles, and structured product specifications. These formats align with the question-and-answer nature of AI responses and tend to be cited more frequently than promotional or narrative-heavy content. Aligning content production with the formats AI engines prefer is one of the most direct levers available for improving AI visibility."},
+]},
+{id:8,title:"Business Impact — The Unclaimed Territory",questions:[
+{q:"Does AI visibility drive brand demand?",scores:[CN,CN,CN,CN,CN],sources:"UNCLAIMED — significant gap across all platforms",
+ boiler:"This question is almost entirely unaddressed by current AI visibility platforms — representing the most significant strategic gap in the space. The connection between AI recommendation frequency and downstream brand demand is theoretically strong and practically important: if AI engines consistently recommend a brand in high-intent purchase situations, that should drive measurable demand effects. Establishing this link with rigorous methodology would be a defining capability for any platform serious about demonstrating business value."},
+{q:"Can AI visibility be tied to revenue?",scores:[CN,CN,CN,CN,CN],sources:"UNCLAIMED — significant gap across all platforms",
+ boiler:"Direct attribution from AI visibility to revenue remains largely unsolved — and it is the most consequential measurement challenge in AI search. Current approaches involve correlating AI mention frequency with branded search volume uplift, direct traffic growth, and conversion rates in categories with high AI research intensity. While the methodology is still maturing, the brands that invest now in building AI-to-revenue attribution frameworks will have a significant measurement advantage as AI-driven discovery continues to accelerate."},
+{q:"Does AI visibility drive website traffic?",scores:[CN,CN,CN,CP,CP],sources:"BrightEdge, Ahrefs",
+ boiler:"AI-generated answers can both reduce traditional search clicks and drive indirect traffic through increased brand awareness and subsequent branded searches. When users encounter brand recommendations in AI responses, they may search for the brand directly or visit its website in subsequent sessions. Measuring these indirect effects requires connecting AI visibility data with web analytics and search trend monitoring — a methodology that leading brands are beginning to build into their measurement frameworks."},
+{q:"Does AI influence purchase decisions?",scores:[CN,CN,CN,CN,CN],sources:"UNCLAIMED — significant gap across all platforms",
+ boiler:"Consumer research consistently shows that AI-generated recommendations are perceived as credible and influential — particularly for considered purchases where users are actively seeking guidance. The specific purchase influence of AI recommendations varies by category, consumer segment, and query type. Establishing clear evidence of AI's role in purchase decisions — through brand tracking surveys, panel research, or behavioral data — would provide the business case that most AI visibility investment decisions currently lack."},
+]},
+{id:9,title:"Measurement & Methodology",questions:[
+{q:"How do you measure AI visibility?",scores:[CY,CP,CY,CP,CP],sources:"Profound, Evertune",
+ boiler:"AI visibility measurement involves running structured prompt sets across major AI engines and analyzing the resulting responses for brand presence, description accuracy, recommendation frequency, and competitive positioning. The most rigorous approaches run thousands of prompts across multiple engines on a recurring basis, enabling trend tracking and cross-engine comparison. Consistent methodology — using the same prompt sets over time — is essential for generating reliable trend data that can inform strategic decisions."},
+{q:"Which AI engines are monitored?",scores:[CY,CY,CY,CP,CP],sources:"Evertune, Profound",
+ boiler:"Comprehensive AI visibility monitoring covers all major engines that consumers actually use for product and brand research — including ChatGPT, Gemini, Perplexity, Claude, Meta AI, and Grok. Because each engine weights sources and training data differently, cross-engine benchmarking is essential. A brand's visibility score may look very different depending on which engines are included in the analysis, making full-coverage monitoring a prerequisite for accurate measurement."},
+{q:"How often is data refreshed?",scores:[CP,CP,CP,CP,CY],sources:"Ahrefs, Profound",
+ boiler:"Data refresh frequency is a critical dimension of AI visibility measurement quality. Daily refresh cadences capture near real-time changes in AI narratives — important for detecting the impact of news events, content updates, or model changes. Weekly or monthly snapshots may miss significant shifts. The appropriate cadence depends on the volatility of the category and the sensitivity of the brand to AI narrative changes, but leading platforms are moving toward daily or near-daily data as the standard."},
+{q:"How is AI share of voice calculated?",scores:[CY,CY,CP,CP,CP],sources:"Profound, Brandlight",
+ boiler:"AI Share of Voice is calculated by measuring the percentage of relevant category prompts in which a brand appears in AI-generated responses, relative to all brands tracked in that category. This metric can be calculated per engine and in aggregate, and it can be segmented by prompt type to reveal which specific query categories drive the strongest or weakest brand presence. Consistent prompt set methodology is essential for generating comparable Share of Voice data over time."},
+]},
+];
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let fmts=new Set(['FAQ','By The Numbers','Deep-Dive']);
+let webinarFilter='all';
+let blogMonthFilter='all';
+let compSectionFilter='all';
+const savedDesc={};
+const savedResp={};
+
+// ═══════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════
+function hl(t,q){
+  if(!q)return t;
+  try{return t.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<mark>$1</mark>');}
+  catch(e){return t;}
+}
+function badge(f){
+  if(f==='FAQ')return'<span class="badge b-faq">FAQ</span>';
+  if(f==='By The Numbers')return'<span class="badge b-num">By The Numbers</span>';
+  return'<span class="badge b-deep">Deep-Dive</span>';
+}
+function ssel(){return'<select class="status-sel"><option>To Do</option><option>Draft</option><option>In Review</option><option>Published</option></select>';}
+function monthToQ(mo){
+  const m=parseInt(mo.replace('Month ',''));
+  if(m<=3)return'Q1';if(m<=6)return'Q2';if(m<=9)return'Q3';return'Q4';
+}
+function escH(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// ═══════════════════════════════════════════════
+// RENDER: CONTENT CALENDAR (Blog/FAQ 58)
+// ═══════════════════════════════════════════════
+function renderBlog(){
+  const q=document.getElementById('s1').value;
+  const g=document.getElementById('blog-grid');g.innerHTML='';
+  let tot=0;
+  clusters.forEach(cl=>{
+    const rows=cl.entries.filter(e=>fmts.has(e.f)&&(!q||e.t.toLowerCase().includes(q.toLowerCase())));
+    if(!rows.length)return;tot+=rows.length;
+    const h=document.createElement('div');h.className='cluster-hdr '+cl.c;
+    h.innerHTML='<div class="ch-dot '+cl.d+'"></div>'+cl.id+'. '+cl.label+'<div class="ch-line"></div>';
+    h.id='cluster-'+cl.id;
+    g.appendChild(h);
+    const tbl=document.createElement('table');tbl.className='data-table';
+    tbl.innerHTML='<thead><tr><th style="width:40px">#</th><th>Title</th><th style="width:110px">Format</th><th style="width:110px">Status</th></tr></thead>';
+    const tb=document.createElement('tbody');
+    rows.forEach((e,idx)=>{
+      const key='main-'+cl.id+'-'+idx;
+      const drawerId='mdrawer-'+cl.id+'-'+idx;
+      const curText=savedDesc[key]||e.desc||'';
+      // Question row
+      const qtr=document.createElement('tr');qtr.className='q-row';qtr.setAttribute('data-drawer',drawerId);
+      const qtd=document.createElement('td');qtd.setAttribute('colspan','4');
+      qtd.innerHTML='<div class="q-cell"><span class="q-text">'+hl(e.t,q)+'</span><span class="q-arrow">&#9654;</span></div>';
+      qtr.appendChild(qtd);
+      qtr.onclick=function(){toggleDesc(this,drawerId);};
+      tb.appendChild(qtr);
+      // Meta row
+      const mtr=document.createElement('tr');mtr.className='plain-row';
+      mtr.innerHTML='<td class="num-cell">'+e.n+'</td><td></td><td>'+badge(e.f)+'</td><td>'+ssel()+'</td>';
+      tb.appendChild(mtr);
+      // Drawer row
+      const dtr=document.createElement('tr');
+      const dtd=document.createElement('td');dtd.setAttribute('colspan','4');dtd.style.padding='0';
+      const drawer=document.createElement('div');drawer.className='desc-drawer';drawer.id=drawerId;
+      drawer.innerHTML='<div class="desc-inner"><div class="desc-header"><span class="desc-label">Sample Description (75 words)</span><span class="desc-meta">'+badge(e.f)+'</span></div><textarea class="desc-textarea" id="dta-'+key+'">'+escH(curText)+'</textarea><div class="desc-footer"><span class="desc-hint">Edit to refine for your voice and audience.</span><button class="desc-save" onclick="saveDesc(\''+key+'\',this)">Save</button></div></div>';
+      dtd.appendChild(drawer);dtr.appendChild(dtd);
+      tb.appendChild(dtr);
+    });
+    tbl.appendChild(tb);g.appendChild(tbl);
+  });
+  document.getElementById('bc').textContent=tot+' entries';
+  document.getElementById('blog-nr').style.display=tot?'none':'block';
+  g.style.display=tot?'block':'none';
+}
+
+function togFmt(btn,f){
+  if(fmts.has(f)){if(fmts.size===1)return;fmts.delete(f);btn.classList.remove('on');}
+  else{fmts.add(f);btn.classList.add('on');}
+  renderBlog();
+}
+
+function scrollToCluster(btn,id){
+  document.querySelectorAll('#cluster-subtabs .sub-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  if(id===0){window.scrollTo({top:document.getElementById('panel-main').offsetTop,behavior:'smooth'});return;}
+  const el=document.getElementById('cluster-'+id);
+  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function toggleDesc(qRow,drawerId){
+  const d=document.getElementById(drawerId);
+  const open=d.classList.contains('open');
+  d.classList.toggle('open',!open);
+  qRow.classList.toggle('expanded',!open);
+}
+function saveDesc(key,btn){
+  const ta=document.getElementById('dta-'+key);
+  if(ta){savedDesc[key]=ta.value;btn.textContent='Saved';btn.classList.add('saved');setTimeout(()=>{btn.textContent='Save';btn.classList.remove('saved');},2000);}
+}
+
+// ═══════════════════════════════════════════════
+// RENDER: WEBINARS
+// ═══════════════════════════════════════════════
+function renderWebinars(){
+  const q=document.getElementById('s2').value.toLowerCase();
+  const g=document.getElementById('webinar-grid');g.innerHTML='';let tot=0;
+  webinars.forEach((w,idx)=>{
+    const qMatch=!q||w.t.toLowerCase().includes(q)||w.th.toLowerCase().includes(q);
+    const mMatch=webinarFilter==='all'||monthToQ(w.mo)===webinarFilter;
+    if(!qMatch||!mMatch)return;
+    tot++;
+    const key='web-'+idx;
+    const curText=savedDesc[key]||w.desc||'';
+    const card=document.createElement('div');card.className='w-card '+w.s;
+    card.innerHTML=
+      '<div class="w-card-top '+w.s+'">'+
+      '<div class="w-num">Webinar '+String(w.n).padStart(2,'0')+' &nbsp;·&nbsp; '+w.mo+'</div>'+
+      '<div class="w-title">'+hl(w.t,q)+'</div>'+
+      '<div class="w-chips"><span class="w-chip theme">'+w.th+'</span><span class="w-chip">'+w.au+'</span></div>'+
+      '<div class="w-expand-hint"><span>&#9654;</span> View / edit description</div>'+
+      '</div>'+
+      '<div class="w-desc-section">'+
+      '<div class="w-desc-label">Session Description (75 words)</div>'+
+      '<textarea class="w-desc-ta" id="wta-'+key+'">'+escH(curText)+'</textarea>'+
+      '<button class="w-desc-save" onclick="saveWDesc(\''+key+'\',this)">Save</button>'+
+      '</div>';
+    card.querySelector('.w-card-top').onclick=function(){
+      card.classList.toggle('expanded');
+    };
+    g.appendChild(card);
+  });
+  document.getElementById('wc').textContent=tot+' webinars';
+  document.getElementById('web-nr').style.display=tot?'none':'block';
+  g.style.display=tot?'grid':'none';
+}
+
+function filterWebinarMonth(btn,q){
+  webinarFilter=q;
+  document.querySelectorAll('#panel-webinars .sub-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  renderWebinars();
+}
+function saveWDesc(key,btn){
+  const ta=document.getElementById('wta-'+key);
+  if(ta){savedDesc[key]=ta.value;btn.textContent='Saved';btn.classList.add('saved');setTimeout(()=>{btn.textContent='Save';btn.classList.remove('saved');},2000);}
+}
+
+// ═══════════════════════════════════════════════
+// RENDER: BLOG 25
+// ═══════════════════════════════════════════════
+function renderBlog25(){
+  const q=document.getElementById('s3').value.toLowerCase();
+  const tb=document.getElementById('b25body');tb.innerHTML='';let tot=0;
+  blog25.forEach(p=>{
+    const qMatch=!q||p.t.toLowerCase().includes(q)||p.th.toLowerCase().includes(q);
+    const mMatch=blogMonthFilter==='all'||monthToQ(p.mo)===blogMonthFilter;
+    if(!qMatch||!mMatch)return;tot++;
+    const tr=document.createElement('tr');tr.className='plain-row';
+    tr.innerHTML='<td class="num-cell">'+p.n+'</td><td class="title-cell">'+hl(p.t,q)+'</td><td style="font-size:11px;color:rgba(255,255,255,0.35)">'+p.th+'</td><td><span class="w-chip" style="font-size:10px">'+p.mo+'</span></td><td>'+ssel()+'</td>';
+    tb.appendChild(tr);
+  });
+  document.getElementById('b25c').textContent=tot+' posts';
+  document.getElementById('b25-nr').style.display=tot?'none':'block';
+}
+function filterBlogMonth(btn,q){
+  blogMonthFilter=q;
+  document.querySelectorAll('#panel-blog25 .sub-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  renderBlog25();
+}
+
+// ═══════════════════════════════════════════════
+// RENDER: COMPETITIVE
+// ═══════════════════════════════════════════════
+function renderComp(query){
+  const wrap=document.getElementById('comp-wrap');wrap.innerHTML='';
+  let total=0;
+  const q=(query||'').toLowerCase();
+  compSections.forEach(sec=>{
+    if(compSectionFilter!=='all'&&sec.id!==parseInt(compSectionFilter))return;
+    const filteredQs=sec.questions.filter(item=>!q||item.q.toLowerCase().includes(q));
+    if(!filteredQs.length)return;
+    total+=filteredQs.length;
+    const secEl=document.createElement('div');secEl.className='comp-section';
+    const secBodyId='csec-'+sec.id;
+    const hdr=document.createElement('div');hdr.className='comp-section-hdr open';
+    hdr.setAttribute('data-target',secBodyId);
+    hdr.innerHTML='<div class="sh-left"><span class="sh-num">'+String(sec.id).padStart(2,'0')+'</span><span class="sh-title">'+sec.title+'</span><span class="sh-count">'+filteredQs.length+' questions</span></div><span class="sh-arrow">&#9660;</span>';
+    hdr.onclick=function(){
+      const b=document.getElementById(this.getAttribute('data-target'));
+      const open=b.classList.contains('open');
+      b.classList.toggle('open',!open);this.classList.toggle('open',!open);
+    };
+    secEl.appendChild(hdr);
+    const body=document.createElement('div');body.className='comp-section-body open';body.id=secBodyId;
+    const tbl=document.createElement('table');tbl.className='comp-table';
+    tbl.innerHTML='<thead><tr><th>Question</th><th class="ctr" style="width:76px">Profound</th><th class="ctr" style="width:76px">Brandlight</th><th class="ctr" style="width:76px">Evertune</th><th class="ctr" style="width:86px">BrightEdge</th><th class="ctr" style="width:68px">Ahrefs</th></tr></thead>';
+    const tbody=document.createElement('tbody');
+    filteredQs.forEach((item,idx)=>{
+      const drawerId='cdrawer-'+sec.id+'-'+idx;
+      const rkey=sec.id+'-'+idx;
+      const curText=savedResp[rkey]||item.boiler;
+      // Q row
+      const qtr=document.createElement('tr');qtr.className='q-row';
+      const qtd=document.createElement('td');qtd.setAttribute('colspan','6');
+      qtd.innerHTML='<div class="q-cell"><span class="q-text">'+hl(item.q,query)+'</span><span class="q-arrow">&#9654;</span></div>';
+      qtr.appendChild(qtd);
+      qtr.onclick=function(){
+        const d=document.getElementById(drawerId);
+        const open=d.classList.contains('open');
+        d.classList.toggle('open',!open);this.classList.toggle('expanded',!open);
+      };
+      tbody.appendChild(qtr);
+      // Score row
+      const str=document.createElement('tr');str.className='score-row';
+      str.innerHTML='<td class="src-cell">Sources: '+item.sources+'</td>'+
+        item.scores.map(s=>'<td class="score-cell">'+s+'</td>').join('');
+      tbody.appendChild(str);
+      // Drawer row
+      const dtr=document.createElement('tr');
+      const dtd=document.createElement('td');dtd.setAttribute('colspan','6');dtd.style.padding='0';
+      const dr=document.createElement('div');dr.className='resp-drawer';dr.id=drawerId;
+      dr.innerHTML='<div class="resp-inner"><div class="resp-hdr"><span class="resp-lbl">Suggested Response (editable)</span><span class="resp-src">Informed by: '+item.sources+'</span></div><textarea class="resp-ta" id="rta-'+rkey+'">'+escH(curText)+'</textarea><div class="resp-foot"><span class="resp-hint">Edit freely. Changes are saved in this session.</span><button class="resp-save" onclick="saveResp(\''+rkey+'\',this)">Save Response</button></div></div>';
+      dtd.appendChild(dr);dtr.appendChild(dtd);
+      tbody.appendChild(dtr);
+    });
+    tbl.appendChild(tbody);body.appendChild(tbl);secEl.appendChild(body);wrap.appendChild(secEl);
+  });
+  document.getElementById('compc').textContent=total+' questions';
+}
+
+function filterComp(){renderComp(document.getElementById('s4').value);}
+function filterCompSection(btn,id){
+  compSectionFilter=id==='all'?'all':id;
+  document.querySelectorAll('#panel-comp .sub-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  renderComp(document.getElementById('s4').value);
+}
+function saveResp(key,btn){
+  const ta=document.getElementById('rta-'+key);
+  if(ta){savedResp[key]=ta.value;btn.textContent='Saved';btn.classList.add('saved');setTimeout(()=>{btn.textContent='Save Response';btn.classList.remove('saved');},2000);}
+}
+
+// ═══════════════════════════════════════════════
+// TAB SWITCHING
+// ═══════════════════════════════════════════════
+function switchPrimary(btn,id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.primary-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// INIT
+renderBlog();renderWebinars();renderBlog25();renderComp();
+</script>
+</body>
+</html>
