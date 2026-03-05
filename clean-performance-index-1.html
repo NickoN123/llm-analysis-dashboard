@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Answer Share: Cleaning — BrandRank.AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --bg2: #1a1f35;
+    --cyan: #00d4ff;
+    --cyan-dim: rgba(0,212,255,0.15);
+    --cyan-border: rgba(0,212,255,0.3);
+    --white: #ffffff;
+    --white-dim: rgba(255,255,255,0.6);
+    --white-faint: rgba(255,255,255,0.05);
+    --white-border: rgba(255,255,255,0.08);
+    --green: #4ecdc4;
+    --yellow: #ffd93d;
+    --red: #ff6b6b;
+    --orange: #ff9f43;
+    --purple: #a29bfe;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--white); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
+  body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events:none; z-index:0; opacity:0.4; }
+  .wrapper { position:relative; z-index:1; }
+
+  .header { padding:60px 60px 40px; border-bottom:1px solid var(--white-border); background:linear-gradient(180deg,rgba(0,212,255,0.04) 0%,transparent 100%); }
+  .header-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:32px; flex-wrap:wrap; gap:12px; }
+  .brandrank-badge { font-family:'Space Mono',monospace; font-size:11px; color:var(--cyan); letter-spacing:0.15em; text-transform:uppercase; border:1px solid var(--cyan-border); padding:6px 14px; background:var(--cyan-dim); }
+  .date-badge { font-family:'Space Mono',monospace; font-size:11px; color:rgba(255,255,255,0.88); letter-spacing:0.1em; }
+  .main-title { font-family:'DM Serif Display',serif; font-size:56px; font-weight:400; line-height:1.05; color:var(--white); margin-bottom:16px; letter-spacing:-0.02em; white-space:nowrap; }
+  .main-title span { color:var(--cyan); font-style:italic; }
+  .subtitle { font-size:16px; color:rgba(255,255,255,0.88); font-weight:300; max-width:700px; line-height:1.6; }
+  .nav-pills { display:flex; gap:8px; margin-top:32px; flex-wrap:wrap; }
+  .nav-pill { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; padding:8px 16px; border:1px solid var(--white-border); background:transparent; color:rgba(255,255,255,0.85); cursor:pointer; transition:all 0.2s; }
+  .nav-pill:hover, .nav-pill.active { border-color:var(--cyan); color:var(--cyan); background:var(--cyan-dim); }
+
+  .section { padding:60px 60px; }
+  .section-label { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--cyan); margin-bottom:12px; }
+  .section-title { font-family:'DM Serif Display',serif; font-size:36px; font-weight:400; color:var(--white); margin-bottom:8px; letter-spacing:-0.01em; }
+  .section-desc { font-size:14px; color:rgba(255,255,255,0.82); margin-bottom:36px; max-width:720px; line-height:1.6; }
+
+  .pillar-tabs { display:flex; gap:4px; margin-bottom:24px; flex-wrap:wrap; }
+  .pillar-tab { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; padding:7px 14px; border:1px solid var(--white-border); background:transparent; color:rgba(255,255,255,0.85); cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+  .pillar-tab:hover { border-color:rgba(255,255,255,0.4); color:var(--white); }
+  .pillar-tab.active { border-color:var(--cyan); color:var(--cyan); background:var(--cyan-dim); }
+
+  .table-container { overflow-x:auto; border:1px solid var(--white-border); background:rgba(10,14,26,0.8); }
+  .index-table { width:100%; border-collapse:collapse; min-width:1100px; }
+  .index-table thead tr { background:linear-gradient(90deg,rgba(0,212,255,0.08),transparent); border-bottom:1px solid var(--cyan-border); }
+  .index-table thead th { padding:16px 14px; text-align:left; font-family:'Space Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; font-weight:700; white-space:nowrap; }
+  .index-table thead th:first-child { color:rgba(255,255,255,0.85); width:380px; min-width:380px; }
+  .index-table thead th:not(:first-child) { color:var(--cyan); text-align:center; min-width:130px; font-size:12px; letter-spacing:0.1em; }
+  .index-table tbody tr { border-bottom:1px solid var(--white-border); transition:background 0.15s; }
+  .index-table tbody tr:hover { background:rgba(255,255,255,0.03); }
+  .index-table tbody tr.pillar-header { background:rgba(0,212,255,0.07); border-top:2px solid var(--cyan-border); }
+  .pillar-header td { padding:16px 14px; font-family:'DM Sans',sans-serif; font-size:13px; letter-spacing:0.08em; text-transform:uppercase; color:var(--cyan); font-weight:700; }
+  .q-cell { padding:12px 14px; font-size:12px; color:rgba(255,255,255,0.88); line-height:1.45; vertical-align:middle; }
+  .q-num { font-family:'Space Mono',monospace; font-size:10px; color:rgba(0,212,255,0.65); display:inline-block; margin-right:6px; min-width:22px; }
+  .brand-cell { padding:12px 14px; text-align:center; font-size:12px; font-weight:600; vertical-align:middle; white-space:nowrap; }
+  .engine-subheader { background:rgba(0,212,255,0.03); border-bottom:1px solid var(--cyan-border); }
+  .consensus-dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--cyan); margin-left:4px; vertical-align:middle; }
+
+  .b-tide{color:#ffd93d} .b-clorox{color:#ff6b6b} .b-lysol{color:#a29bfe} .b-dawn{color:#4ecdc4}
+  .b-pg{color:#ff9f43} .b-seventh{color:#6bcb77} .b-method{color:#74b9ff} .b-blueland{color:#00d4ff}
+  .b-mrs{color:#fd79a8} .b-scrubbing{color:#e17055} .b-finish{color:#fdcb6e} .b-cascade{color:#55efc4}
+  .b-windex{color:#81ecec} .b-bona{color:#b2bec3} .b-febreze{color:#dfe6e9} .b-oxiclean{color:#fab1a0}
+  .b-downy{color:#a29bfe} .b-shout{color:#fd79a8} .b-swiffer{color:#74b9ff} .b-weiman{color:#b2bec3}
+  .b-nature{color:#6bcb77} .b-grove{color:#00d4ff} .b-default{color:var(--white)}
+
+  /* TOOLTIP */
+  .tooltip-row { position:relative; cursor:default; }
+  .tooltip-row:hover .tooltip-box { opacity:1; visibility:visible; transform:translateY(0); }
+  .tooltip-box { position:absolute; left:0; top:calc(100% + 6px); z-index:100; width:520px; background:#111827; border:1px solid var(--cyan-border); padding:14px 18px; font-size:12px; color:rgba(255,255,255,0.88); line-height:1.65; pointer-events:none; opacity:0; visibility:hidden; transform:translateY(6px); transition:all 0.2s; box-shadow:0 8px 32px rgba(0,0,0,0.5); }
+  .tooltip-box strong { color:var(--white); }
+
+  /* CONSENSUS TABLE */
+  .consensus-table { width:100%; border-collapse:collapse; margin-top:8px; }
+  .consensus-table th { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--cyan); padding:12px 16px; border-bottom:1px solid var(--cyan-border); text-align:left; background:rgba(0,212,255,0.04); }
+  .consensus-table td { padding:12px 16px; font-size:13px; border-bottom:1px solid var(--white-border); vertical-align:middle; }
+  .agree-pill { display:inline-block; font-family:'Space Mono',monospace; font-size:10px; padding:3px 10px; letter-spacing:0.08em; }
+  .agree-full { background:rgba(78,205,196,0.15); color:var(--green); border:1px solid var(--green); }
+  .agree-strong { background:rgba(0,212,255,0.1); color:var(--cyan); border:1px solid var(--cyan); }
+  .agree-partial { background:rgba(255,217,61,0.1); color:var(--yellow); border:1px solid var(--yellow); }
+  .agree-split { background:rgba(255,107,107,0.1); color:var(--red); border:1px solid var(--red); }
+
+  /* FREQ */
+  .freq-row { display:flex; align-items:center; gap:16px; margin-bottom:14px; }
+  .freq-brand { font-weight:600; font-size:13px; min-width:175px; }
+  .freq-bar-wrap { flex:1; height:6px; background:var(--white-border); position:relative; }
+  .freq-bar { height:100%; }
+  .freq-count { font-family:'Space Mono',monospace; font-size:11px; color:rgba(255,255,255,0.85); min-width:30px; text-align:right; }
+
+  /* INSIGHTS */
+  .insights-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px; margin-top:8px; }
+  .insight-card { background:var(--white-faint); border:1px solid var(--white-border); padding:28px; transition:all 0.25s; position:relative; overflow:hidden; }
+  .insight-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--cyan),transparent); opacity:0; transition:opacity 0.25s; }
+  .insight-card:hover { border-color:var(--cyan-border); background:rgba(0,212,255,0.04); }
+  .insight-card:hover::before { opacity:1; }
+  .insight-num { font-family:'Space Mono',monospace; font-size:10px; color:var(--cyan); letter-spacing:0.15em; margin-bottom:10px; }
+  .insight-theme { font-family:'DM Serif Display',serif; font-size:20px; color:var(--white); margin-bottom:10px; line-height:1.25; }
+  .insight-body { font-size:13px; color:rgba(255,255,255,0.85); line-height:1.65; }
+  .insight-brands { display:flex; flex-wrap:wrap; gap:6px; margin-top:16px; }
+  .brand-tag { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.1em; padding:4px 10px; border:1px solid; text-transform:uppercase; }
+  .brand-tag.winner { border-color:var(--green); color:var(--green); }
+  .brand-tag.rising { border-color:var(--cyan); color:var(--cyan); }
+  .brand-tag.risk { border-color:var(--red); color:var(--red); }
+  .brand-tag.neutral { border-color:var(--yellow); color:var(--yellow); }
+
+  /* SIGNAL */
+  .signal-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:8px; }
+  .signal-card { background:var(--white-faint); border:1px solid var(--white-border); padding:22px; }
+  .signal-label { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.82); margin-bottom:12px; }
+  .signal-brand { font-family:'DM Serif Display',serif; font-size:26px; color:var(--white); margin-bottom:8px; }
+  .signal-desc { font-size:12px; color:rgba(255,255,255,0.82); line-height:1.5; }
+  .signal-accent { color:var(--cyan); font-weight:600; }
+
+  /* ENGINE ANALYSIS */
+  .engine-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; margin-top:8px; }
+  .engine-card { background:var(--white-faint); border:1px solid var(--white-border); padding:28px; position:relative; overflow:hidden; transition:all 0.25s; }
+  .engine-card:hover { border-color:var(--cyan-border); }
+  .engine-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; }
+  .engine-chatgpt::after { background:linear-gradient(90deg,#74b9ff,#a29bfe); }
+  .engine-gemini::after { background:linear-gradient(90deg,#ffd93d,#ff9f43); }
+  .engine-claude::after { background:linear-gradient(90deg,#ff9f43,#fd79a8); }
+  .engine-grok::after { background:linear-gradient(90deg,#ffffff,#b2bec3); }
+  .engine-perplexity::after { background:linear-gradient(90deg,#6bcb77,#4ecdc4); }
+  .engine-deepseek::after { background:linear-gradient(90deg,#00d4ff,#74b9ff); }
+  .engine-name { font-family:'DM Serif Display',serif; font-size:28px; color:var(--white); margin-bottom:4px; }
+  .engine-co { font-family:'Space Mono',monospace; font-size:10px; color:rgba(255,255,255,0.82); letter-spacing:0.1em; margin-bottom:16px; }
+  .engine-trait-row { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--white-border); }
+  .engine-trait-row:last-child { border-bottom:none; }
+  .engine-trait-label { font-size:12px; color:rgba(255,255,255,0.85); }
+  .engine-trait-val { font-family:'Space Mono',monospace; font-size:11px; font-weight:700; }
+  .engine-standard { font-size:13px; color:rgba(255,255,255,0.85); line-height:1.6; margin-top:16px; }
+  .standard-badge { display:inline-block; font-family:'Space Mono',monospace; font-size:9px; padding:4px 12px; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:12px; }
+  .std-highest { background:rgba(78,205,196,0.15); color:var(--green); border:1px solid var(--green); }
+  .std-high { background:rgba(0,212,255,0.1); color:var(--cyan); border:1px solid var(--cyan); }
+  .std-mid { background:rgba(255,217,61,0.1); color:var(--yellow); border:1px solid var(--yellow); }
+  .std-pragmatic { background:rgba(255,107,107,0.1); color:var(--red); border:1px solid var(--red); }
+
+  /* BRANDRANK FOOTER BLOCK */
+  .brandrank-footer-block { background:linear-gradient(135deg,rgba(0,212,255,0.06),rgba(162,155,254,0.04)); border-top:1px solid var(--cyan-border); padding:48px 60px; }
+  .bf-inner { display:grid; grid-template-columns:2fr 1fr; gap:48px; align-items:center; }
+  .bf-label { font-family:'Space Mono',monospace; font-size:10px; color:var(--cyan); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:14px; }
+  .bf-title { font-family:'DM Serif Display',serif; font-size:28px; color:var(--white); margin-bottom:16px; line-height:1.25; }
+  .bf-body { font-size:14px; color:rgba(255,255,255,0.85); line-height:1.7; }
+  .bf-stats { display:flex; flex-direction:column; gap:24px; text-align:center; }
+  .bf-stat-num { font-family:'DM Serif Display',serif; font-size:56px; color:var(--cyan); line-height:1; }
+  .bf-stat-label { font-family:'Space Mono',monospace; font-size:10px; color:rgba(255,255,255,0.82); letter-spacing:0.1em; margin-top:4px; }
+
+  .footer { padding:24px 60px; border-top:1px solid var(--white-border); display:flex; justify-content:space-between; align-items:center; }
+  .footer-brand { font-family:'Space Mono',monospace; font-size:12px; color:var(--cyan); letter-spacing:0.1em; }
+  .footer-note { font-size:12px; color:rgba(255,255,255,0.25); }
+  .divider { border:none; border-top:1px solid var(--white-border); margin:0 60px; }
+
+  .search-bar { background:var(--white-faint); border:1px solid var(--white-border); color:var(--white); font-family:'DM Sans',sans-serif; font-size:13px; padding:10px 16px; width:280px; outline:none; transition:border-color 0.2s; margin-bottom:16px; }
+  .search-bar:focus { border-color:var(--cyan-border); }
+  .search-bar::placeholder { color:rgba(255,255,255,0.3); }
+
+  .fade-in { opacity:0; transform:translateY(20px); transition:opacity 0.6s ease,transform 0.6s ease; }
+  .fade-in.visible { opacity:1; transform:translateY(0); }
+
+  ::-webkit-scrollbar { width:6px; height:6px; }
+  ::-webkit-scrollbar-track { background:var(--bg); }
+  ::-webkit-scrollbar-thumb { background:rgba(0,212,255,0.3); }
+  ::-webkit-scrollbar-thumb:hover { background:var(--cyan); }
+
+  @media (max-width:900px) {
+    .header, .section, .brandrank-footer-block { padding:40px 24px; }
+    .main-title { font-size:38px; }
+    .insights-grid, .engine-grid { grid-template-columns:1fr; }
+    .signal-grid { grid-template-columns:1fr 1fr; }
+    .bf-inner { grid-template-columns:1fr; }
+    .divider { margin:0 24px; }
+    .footer { padding:24px; flex-direction:column; gap:10px; }
+  }
+  .row-tooltip-row { cursor:default; }
+  .row-tooltip-row:hover td { background:rgba(0,212,255,0.05) !important; }
+  #global-row-tooltip { display:none; position:fixed; z-index:99999; width:420px; background:#0c1322; border:1px solid rgba(0,212,255,0.45); padding:14px 18px; font-size:12.5px; color:rgba(255,255,255,0.92); line-height:1.65; font-family:'DM Sans',sans-serif; box-shadow:0 12px 40px rgba(0,0,0,0.7); pointer-events:none; font-style:normal; text-transform:none; letter-spacing:0; }
+  #global-row-tooltip::before { content:''; position:absolute; top:-6px; left:20px; width:10px; height:10px; background:#0c1322; border-left:1px solid rgba(0,212,255,0.45); border-top:1px solid rgba(0,212,255,0.45); transform:rotate(45deg); }
+  .q-tooltip-brand { color:var(--cyan); font-weight:700; }
+
+  #pi {
+    display:none;
+    position:fixed;
+    top:0; left:0; right:0;
+    height:42px;
+    background:#020912;
+    border-bottom:3px solid #00d4ff;
+    z-index:999999;
+    font-family:'Space Mono',monospace;
+    padding:0 28px;
+    align-items:center;
+    justify-content:space-between;
+    box-shadow:0 2px 20px rgba(0,0,0,0.8);
+  }
+  #pi.on { display:flex; }
+  #pi-pill {
+    background:#00d4ff; color:#020912;
+    font-size:9px; font-weight:700;
+    letter-spacing:0.15em; padding:3px 9px;
+    text-transform:uppercase; margin-right:12px; flex-shrink:0;
+  }
+  #pi-name { color:#fff; font-size:13px; font-family:'DM Sans',sans-serif; font-weight:600; }
+  #pi-right { display:flex; align-items:center; gap:14px; flex-shrink:0; }
+  #pi-q { color:#00d4ff; font-size:10px; letter-spacing:0.1em; }
+  #pi-pct { color:rgba(255,255,255,0.35); font-size:9px; letter-spacing:0.08em; }
+  #pi-track { width:100px; height:3px; background:rgba(255,255,255,0.1); position:relative; flex-shrink:0; }
+  #pi-fill { position:absolute; left:0; top:0; height:3px; background:#00d4ff; width:0%; transition:width 0.25s; }
+</style>
+</head>
+<body>
+<div id="pi"><span id="pi-pill">Pillar I</span><span id="pi-name">Market Position &amp; Brand Authority</span><div id="pi-right"><span id="pi-q">Q 1 / 15</span><div id="pi-track"><div id="pi-fill"></div></div><span id="pi-pct">0%</span></div></div>
+<div class="wrapper">
+
+<!-- HEADER -->
+<div class="header">
+  <div style="margin-bottom:28px;">
+    <img src="data:image/png;base64,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E1NaZtmN4zGv9dhR2FKOOis1kkl5aajt8RjZO/reS4k+jXRcWWeYOJcvLvNcsOVETHVEfJVEM8e/FM3qc3pWJonGa0bqSbJnTjGw3qa52FlqtRkjMfIU1LuxN1OpcG68/DnJPmXQs+amKbPiurxRbG22lu1V/vJ2Ug4HjqWjmBOvFYKicYbrJse44veN61tdf+xJawEl1RFAI3ycAO+I5+ZYyiLZNDMhmRiV9htmHqp9LWWW3QmKG3zw6wu1cXFztCDvauPEELixXmFf8QYfo8OP7Et1joyXQ26giMcO8f2naklx85JWJIs4w3Uh4TzjxthbDn93rJU0VNbnAiWLsVruV1GhL9flEjgsJudznrrq+5GOGmmc4PApm8m1pHSB0LpItkkN1JeJc8MwcQWyCjuFwpeVhYGCsjpWtqXAdBk5x9Gi6+LM4sYYprLfWXsWuqqKFrWskdRt3nhupbvHp0JJ0Gg1KjxFnHHpvKs5x5mpi3HFJS02JZqOsbSOBgd2MGujHDVoI6DoOC7V8zjxpesLDC9xkt8toazcipuxGhsXAgFnSCNToVHiJxjN1nWC808UYXw5U4ah7BuVlqHbzqG4QcrE13W3iCD6CvRtud+OrdZqyzUc1uittY8ukpRSDk2t3Q3k2t6G6D06kkkkqNETjDdclRKZp5Ji1rS9xcWtGgGvUsyy5zPxNgW33G2WrsKqttybpVUVbDysLzpprpqOOiwlFtkvs2z+w5u4xsV+q73aZaGlrqkBnKMpR+KjA0EbAfkt4cy8LHOMbvjK4fhG9so3VhcXSTwwCN0pPS7TnPnWOos4yfJus2y7zPxPge13K0Wt1HVWq5D/AGqhrYeVhedNN7TUEHTQc/QF6uHM7sdYe7ObZ5rfSQ1ga10LKUcnGxuujWt14DvjrrqSo0RLjKbrKMJY8xDhTGf97LDNDRV5Lt5jI/xTmnnaW+D5l69zzZxJW4gp702js1JLTyOnihp6INhEzueUtJOr/OeboWAInGG6zXGmZ2J8Y3ShueIzQ11XROBjldTAEtGpDHac7dSTouzjXNzGWMbEyy4gnoqukiAEA7Ga10PN8gjm4ABYCicYboiIqYIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiIP/Z" alt="BrandRank.AI" style="height:90px;width:auto;display:block;">
+  </div>
+  <div class="main-title">Answer Share: <span>Cleaning</span></div>
+  <div style="font-size:22px;color:rgba(255,255,255,0.88);font-weight:300;font-family:'DM Serif Display',serif;font-style:italic;letter-spacing:-0.01em;margin-bottom:10px;">Which brands clean up when AI is asked?<sup style="font-size:11px;font-style:normal;font-family:'DM Sans',sans-serif;vertical-align:super;letter-spacing:0;">℠</sup></div>
+  <div style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(0,212,255,0.7);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:32px;">Powered by <a href="https://brandrank.ai" target="_blank" rel="noopener" style="color:rgba(0,212,255,0.7);text-decoration:none;border-bottom:1px solid rgba(0,212,255,0.3);transition:color 0.2s;" onmouseover="this.style.color='rgba(0,212,255,1)'" onmouseout="this.style.color='rgba(0,212,255,0.7)'">BrandRank.AI</a> &nbsp;/&nbsp; March 2026</div>
+  <div class="nav-pills">
+    <button class="nav-pill active" onclick="showSection('index-section')">Clean Search Index</button>
+    <button class="nav-pill" onclick="showSection('consensus-section')">Consensus Analysis</button>
+    <button class="nav-pill" onclick="showSection('frequency-section')">Brand Frequency</button>
+    <button class="nav-pill" onclick="showSection('qualitative-section')">Qualitative Insights</button>
+    <button class="nav-pill" onclick="showSection('engine-section')">Engine Intelligence</button>
+    <button class="nav-pill" onclick="showSection('signal-section')">Answer Economy Signals</button>
+  </div>
+
+  <!-- Clients Only Bar -->
+  <style>
+    .co-tab { position:relative; display:inline-block; }
+    .co-tab a { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; padding:6px 14px; border:1px solid rgba(255,255,255,0.3); color:rgba(255,255,255,0.88); text-decoration:none; transition:all 0.2s; display:inline-block; }
+    .co-tab a:hover { border-color:rgba(0,212,255,0.5); color:rgba(0,212,255,1); }
+    .co-popup { display:none; position:absolute; bottom:calc(100% + 10px); left:0; width:340px; background:#0d1220; border:1px solid rgba(0,212,255,0.35); padding:16px 18px; z-index:999; box-shadow:0 8px 32px rgba(0,0,0,0.6); pointer-events:none; }
+    .co-popup::after { content:''; position:absolute; bottom:-6px; left:20px; width:10px; height:10px; background:#0d1220; border-right:1px solid rgba(0,212,255,0.35); border-bottom:1px solid rgba(0,212,255,0.35); transform:rotate(45deg); }
+    .co-popup-title { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:var(--cyan); margin-bottom:10px; }
+    .co-popup-body { font-family:'DM Sans',sans-serif; font-size:12px; color:rgba(255,255,255,0.88); line-height:1.65; }
+    .co-tab:hover .co-popup { display:block; }
+  </style>
+  <div style="margin-top:18px;display:flex;align-items:center;gap:0;border-top:1px solid rgba(0,212,255,0.2);padding-top:14px;">
+    <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.3);padding:6px 12px;white-space:nowrap;margin-right:14px;flex-shrink:0;">Clients Only</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+
+      <div class="co-tab">
+        <a href="https://studio.brandrank.ai" target="_blank" rel="noopener">Most Answer-Friendly Brands</a>
+        <div class="co-popup">
+          <div class="co-popup-title">Most Answer-Friendly Brands</div>
+          <div class="co-popup-body">Which brands actually make it easy for consumers—and AI—to find answers on their websites? This index evaluates how well brand sites invite questions and deliver meaningful responses: from FAQ depth and how-to guidance to ingredient transparency and usability signals like minimal pop-ups or content barriers. Brands that structure their websites around real consumer questions build the strongest foundation for winning Answer Share in the emerging Answer Economy.</div>
+        </div>
+      </div>
+
+      <div class="co-tab">
+        <a href="https://studio.brandrank.ai" target="_blank" rel="noopener">Sources Shaping the Answers</a>
+        <div class="co-popup">
+          <div class="co-popup-title">Sources Shaping the Answers</div>
+          <div class="co-popup-body">AI doesn't invent its answers—it learns them. This analysis identifies the sources most frequently influencing AI responses in the cleaning category—from brand websites and product documentation to media outlets, regulators, and testing organizations. The results reveal which institutions and publishers are quietly shaping the knowledge layer behind millions of AI-generated answers.</div>
+        </div>
+      </div>
+
+      <div class="co-tab">
+        <a href="https://studio.brandrank.ai" target="_blank" rel="noopener">The Mom Test</a>
+        <div class="co-popup">
+          <div class="co-popup-title">The Mom Test</div>
+          <div class="co-popup-body">When safety becomes the priority, brand recommendations change. The Mom Test analyzes how AI answers questions framed around family health, children, and household safety. Which brands are trusted when the question shifts from performance to protection? The results reveal a powerful trust hierarchy that often differs dramatically from traditional market leadership.</div>
+        </div>
+      </div>
+
+      <div class="co-tab">
+        <a href="https://studio.brandrank.ai" target="_blank" rel="noopener">Activist Heat Map</a>
+        <div class="co-popup">
+          <div class="co-popup-title">Activist Heat Map</div>
+          <div class="co-popup-body">Advocacy groups, watchdogs, and sustainability campaigners increasingly shape how brands appear in AI-generated answers. The Activist Heat Map tracks where activist scrutiny is most concentrated—and which brands are most frequently linked to environmental, safety, or regulatory debates. In the AI era, advocacy pressure doesn't just influence policy; it can shape the answers consumers see.</div>
+        </div>
+      </div>
+
+      <div class="co-tab">
+        <a href="https://studio.brandrank.ai" target="_blank" rel="noopener">BrandRank CEO Perspective</a>
+        <div class="co-popup" style="left:auto;right:0;">
+          <div class="co-popup-title">BrandRank CEO Perspective</div>
+          <div class="co-popup-body">Qualitative observations from BrandRank CEO Pete Blackshaw, a former executive at Nestlé, Nielsen, and Procter &amp; Gamble, and author of the forthcoming book <em>The Answer Economy: How AI Agents Will Decide Your Brand's Future</em>. Drawing on decades of work at the intersection of consumer trust, digital reputation, and brand accountability—including leading two trust-focused startups and serving as Chairman of the National Council of Better Business Bureaus—Pete interprets the deeper signals emerging from the data and what they mean for brands competing in the Answer Economy. He is a recipient of the Advertising Research Foundation's (ARF) "Great Minds" award, and a regular contributor to Ad Age.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============================== -->
+<!-- SECTION 1: INDEX TABLE         -->
+<!-- ============================== -->
+
+<div id="index-section" class="section">
+  <div class="section-title">Clean Search Index</div>
+  <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px;">
+    <input class="search-bar" type="text" id="tableSearch" placeholder="Filter by brand name..." oninput="filterTable()">
+    <div style="font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.88);">
+      <span style="color:var(--cyan)">●</span> = 4+ engines agree
+    </div>
+  </div>
+  <div class="pillar-tabs" id="pillarTabs">
+    <button class="pillar-tab active" onclick="filterPillar('all',this)">All Pillars</button>
+    <button class="pillar-tab" onclick="filterPillar('p1',this)">I — Market Position</button>
+    <button class="pillar-tab" onclick="filterPillar('p2',this)">II — Purchase Moments</button>
+    <button class="pillar-tab" onclick="filterPillar('p3',this)">III — Vulnerability</button>
+    <button class="pillar-tab" onclick="filterPillar('p4',this)">IV — Citation Sources</button>
+    <button class="pillar-tab" onclick="filterPillar('p5',this)">V — Influencer / Culture</button>
+    <button class="pillar-tab" onclick="filterPillar('p6',this)">VI — Sustainability</button>
+    <button class="pillar-tab" onclick="filterPillar('p7',this)">VII — Innovation</button>
+  </div>
+  <div class="table-container">
+    <table class="index-table" id="mainTable">
+      <thead>
+        <tr>
+          <th>Question</th>
+          <th>ChatGPT</th>
+          <th>Gemini</th>
+          <th>Claude</th>
+          <th>Grok / X</th>
+          <th>Perplexity</th>
+          <th>DeepSeek</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+  <div style="margin-top:12px;font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.25);">
+    Study conducted March 2026 by <a href="https://brandrank.ai" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.2);">BrandRank.AI</a>. 138 questions across 7 pillars. Six AI engines evaluated.
+  </div>
+  <!-- Section About Footer -->
+  <div style="margin-top:48px;padding-top:32px;border-top:1px solid rgba(0,212,255,0.15);">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:40px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:280px;">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:8px;">About BrandRank.AI</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.82);line-height:1.65;">
+          <a href="https://brandrank.ai" target="_blank" rel="noopener" style="color:var(--cyan);text-decoration:none;font-weight:700;">BrandRank.AI</a> works with 75+ global brands to strengthen trust and purchase intent by uncovering vulnerabilities and growth opportunities across AI answer engines. We track all major AI platforms to improve visibility, ensure content is AI-ready, and rigorously measure brand claims and instructional accuracy.
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;min-width:220px;flex-shrink:0;">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Send Feedback</div>
+        <a href="mailto:pete&#64;brandrank&#46;ai" style="font-family:'Space Mono',monospace;font-size:11px;color:var(--cyan);text-decoration:none;border:1px solid rgba(0,212,255,0.3);padding:8px 16px;transition:all 0.2s;white-space:nowrap;" onmouseover="this.style.background='rgba(0,212,255,0.08)';this.style.borderColor='rgba(0,212,255,0.6)'" onmouseout="this.style.background='transparent';this.style.borderColor='rgba(0,212,255,0.3)'">pete&#64;brandrank&#46;ai</a>
+        <div style="font-size:11px;color:rgba(255,255,255,0.4);text-align:right;">Send feedback on this index</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ============================== -->
+<!-- SECTION 2: CONSENSUS           -->
+<!-- ============================== -->
+<div id="consensus-section" class="section" style="display:none;">
+  <div class="section-label">Cross-Engine Agreement</div>
+  <div class="section-title">Consensus Analysis</div>
+  <div class="section-desc">Where do all six AI engines agree on the same brand? High-consensus answers represent the strongest AI authority signals in the category. <span style="color:var(--cyan)">Hover any row</span> for a two-sentence rationale explaining why consensus formed around that brand.</div>
+  <table class="consensus-table">
+    <thead>
+      <tr>
+        <th>Question Category</th>
+        <th>Dominant Answer</th>
+        <th>Agreement</th>
+        <th>Signal Strength</th>
+      </tr>
+    </thead>
+    <tbody id="consensusBody"></tbody>
+  </table>
+  <div style="margin-top:12px;font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.25);">
+    March 2026 — <a href="https://brandrank.ai" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.2);">BrandRank.AI</a> Cleaning Sector Diagnostic Study. Hover rows for rationale.
+  </div>
+  <!-- Section About Footer -->
+  <div style="margin-top:48px;padding-top:32px;border-top:1px solid rgba(0,212,255,0.15);">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:40px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:280px;">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:8px;">About BrandRank.AI</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.82);line-height:1.65;">
+          <a href="https://brandrank.ai" target="_blank" rel="noopener" style="color:var(--cyan);text-decoration:none;font-weight:700;">BrandRank.AI</a> works with 75+ global brands to strengthen trust and purchase intent by uncovering vulnerabilities and growth opportunities across AI answer engines. We track all major AI platforms to improve visibility, ensure content is AI-ready, and rigorously measure brand claims and instructional accuracy.
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;min-width:220px;flex-shrink:0;">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Send Feedback</div>
+        <a href="mailto:pete&#64;brandrank&#46;ai" style="font-family:'Space Mono',monospace;font-size:11px;color:var(--cyan);text-decoration:none;border:1px solid rgba(0,212,255,0.3);padding:8px 16px;transition:all 0.2s;white-space:nowrap;" onmouseover="this.style.background='rgba(0,212,255,0.08)';this.style.borderColor='rgba(0,212,255,0.6)'" onmouseout="this.style.background='transparent';this.style.borderColor='rgba(0,212,255,0.3)'">pete&#64;brandrank&#46;ai</a>
+        <div style="font-size:11px;color:rgba(255,255,255,0.4);text-align:right;">Send feedback on this index</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ============================== -->
+<!-- SECTION 3: FREQUENCY           -->
+<!-- ============================== -->
+<div id="frequency-section" class="section" style="display:none;">
+  <div class="section-label">Mention Frequency</div>
+  <div class="section-title">Brand Frequency Analysis</div>
+  <div class="section-desc">How often each brand was named across all 138 questions and six AI engines. Frequency is a proxy for AI-era brand authority — the higher the count, the more deeply a brand has been encoded into the answer ecosystem as of March 2026. Counts reflect total engine-level cell mentions across all 138 questions.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:8px;">
+    <div>
+      <div style="border:1px solid var(--white-border);border-bottom:1px solid var(--cyan-border);background:rgba(0,212,255,0.04);padding:20px 24px;">
+        <div style="font-family:'DM Serif Display',serif;font-size:18px;">Tier 1 — Category Dominators</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.88);margin-top:4px;">Mentioned 43+ times across all engines and pillars</div>
+      </div>
+            <div style="background:var(--white-faint);border:1px solid var(--white-border);border-top:none;padding:24px;">
+        <div class="freq-row"><div class="freq-brand b-clorox">Clorox</div><div class="freq-bar-wrap"><div class="freq-bar" style="width:100%;background:linear-gradient(90deg,#ff6b6b,#ff9f43);"></div></div><div class="freq-count">137</div></div>
+        <div class="freq-row"><div class="freq-brand b-seventh">Seventh Generation</div><div class="freq-bar-wrap"><div class="freq-bar" style="width:64%;background:linear-gradient(90deg,#6bcb77,#4ecdc4);"></div></div><div class="freq-count">88</div></div>
+        <div class="freq-row"><div class="freq-brand b-lysol">Lysol</div><div class="freq-bar-wrap"><div class="freq-bar" style="width:51%;background:linear-gradient(90deg,#a29bfe,#74b9ff);"></div></div><div class="freq-count">70</div></div>
+        <div class="freq-row"><div class="freq-brand b-dawn">Dawn</div><div class="freq-bar-wrap"><div class="freq-bar" style="width:45%;background:linear-gradient(90deg,#4ecdc4,#81ecec);"></div></div><div class="freq-count">61</div></div>
+        <div class="freq-row"><div class="freq-brand b-blueland">Blueland</div><div class="freq-bar-wrap"><div class="freq-bar" style="width:38%;background:linear-gradient(90deg,#00d4ff,#74b9ff);"></div></div><div class="freq-count">52</div></div>
+        <div class="freq-row"><div class="freq-brand b-tide">Tide</div><div class="freq-bar-wrap"><div class="freq-bar" style="width:31%;background:linear-gradient(90deg,#ffd93d,#fdcb6e);"></div></div><div class="freq-count">43</div></div>
+      </div>
+    </div>
+
+    <!-- Tier 2 -->
+    <div style="margin-top:24px;">
+      <div style="border:1px solid var(--white-border);border-bottom:1px solid var(--cyan-border);background:rgba(0,212,255,0.04);padding:20px 24px;">
+        <div style="font-family:'DM Serif Display',serif;font-size:18px;">Tier 2 — Specialists &amp; Emerging Challengers</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.88);margin-top:4px;">Deep strength in specific pillars — 11–39 mentions</div>
+      </div>
+      <div style="background:var(--white-faint);border:1px solid var(--white-border);border-top:none;padding:24px;">
+        <div class="freq-row"><div class="freq-brand b-method">Method</div><div class="freq-bar-wrap"><div class="freq-bar" style="width:100%;background:linear-gradient(90deg,#74b9ff,#a29bfe);"></div></div><div class="freq-count">39</div></div>
+        <div class="freq-row"><div class="freq-brand" style="color:#ff9f43;">P&amp;G (portfolio)</div><div class="freq-bar-wrap"><div class="freq-bar" style="width:62%;background:linear-gradient(90deg,#ff9f43,#ffd93d);"></div></div><div class="freq-count">24</div></div>
+        <div class="freq-row"><div class="freq-brand" style="color:#dfe6e9;">Febreze</div><div class="freq-bar-wrap"><div class="freq-bar" style="width:54%;background:#dfe6e9;"></div></div><div class="freq-count">21</div></div>
+        <div class="freq-row"><div class="freq-brand b-mrs">Mrs. Meyer's</div><div class="freq-bar-wrap"><div class="freq-bar" style="width:51%;background:linear-gradient(90deg,#fd79a8,#e17055);"></div></div><div class="freq-count">20</div></div>
+        <div class="freq-row"><div class="freq-brand" style="color:#81ecec;">Zep</div><div class="freq-bar-wrap"><div class="freq-bar" style="width:41%;background:#81ecec;"></div></div><div class="freq-count">16</div></div>
+        <div class="freq-row"><div class="freq-brand" style="color:#55efc4;">Cascade</div><div class="freq-bar-wrap"><div class="freq-bar" style="width:41%;background:#55efc4;"></div></div><div class="freq-count">16</div></div>
+      </div>
+    </div>
+
+  <div style="margin-top:28px;background:var(--white-faint);border:1px solid var(--white-border);padding:28px;">
+    <div style="font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:16px;">The Frequency Paradox</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;">
+      <div style="border-left:2px solid var(--green);padding-left:16px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--green);letter-spacing:0.1em;margin-bottom:6px;">HIGH FREQ + HIGH CONSENSUS</div>
+        <div style="font-weight:700;margin-bottom:4px;">Lysol (70), Dawn (61), Tide (43)</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.88);">These brands are the "safe default" — every AI engine reaches for them because they've achieved category-defining status through decades of consistent performance data in training corpora.</div>
+      </div>
+      <div style="border-left:2px solid var(--cyan);padding-left:16px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:0.1em;margin-bottom:6px;">HIGH FREQ + RISING CONSENSUS</div>
+        <div style="font-weight:700;margin-bottom:4px;">Seventh Generation (88), Blueland (52)</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.88);">New-era brands punching above their sales weight in AI answers — driven by structured content, transparency, and strong digital-native footprint in training data through 2026.</div>
+      </div>
+      <div style="border-left:2px solid var(--yellow);padding-left:16px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--yellow);letter-spacing:0.1em;margin-bottom:6px;">HIGH FREQ + VULNERABILITY</div>
+        <div style="font-weight:700;margin-bottom:4px;">Clorox (137), Method (39)</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.88);">Brands with high frequency that also surface in vulnerability queries — AI encodes both trust signals and risk flags, creating a dual-edge reputation in the answer layer.</div>
+      </div>
+    </div>
+  </div>
+  <!-- Section About Footer -->
+  <div style="margin-top:48px;padding-top:32px;border-top:1px solid rgba(0,212,255,0.15);">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:40px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:280px;">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:8px;">About BrandRank.AI</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.82);line-height:1.65;">
+          <a href="https://brandrank.ai" target="_blank" rel="noopener" style="color:var(--cyan);text-decoration:none;font-weight:700;">BrandRank.AI</a> works with 75+ global brands to strengthen trust and purchase intent by uncovering vulnerabilities and growth opportunities across AI answer engines. We track all major AI platforms to improve visibility, ensure content is AI-ready, and rigorously measure brand claims and instructional accuracy.
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;min-width:220px;flex-shrink:0;">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Send Feedback</div>
+        <a href="mailto:pete&#64;brandrank&#46;ai" style="font-family:'Space Mono',monospace;font-size:11px;color:var(--cyan);text-decoration:none;border:1px solid rgba(0,212,255,0.3);padding:8px 16px;transition:all 0.2s;white-space:nowrap;" onmouseover="this.style.background='rgba(0,212,255,0.08)';this.style.borderColor='rgba(0,212,255,0.6)'" onmouseout="this.style.background='transparent';this.style.borderColor='rgba(0,212,255,0.3)'">pete&#64;brandrank&#46;ai</a>
+        <div style="font-size:11px;color:rgba(255,255,255,0.4);text-align:right;">Send feedback on this index</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<hr class="divider">
+
+<!-- ============================== -->
+<!-- SECTION 4: QUALITATIVE         -->
+<!-- ============================== -->
+<div id="qualitative-section" class="section" style="display:none;">
+  <div class="section-label">Deep Intelligence — Q1 through Q15</div>
+  <div class="section-title">Qualitative Synthesis</div>
+  <div class="section-desc">Across 15 open-ended depth questions, six AI engines revealed consistent narrative frameworks for how brand trust is built, maintained, and disrupted in the cleaning category. Eight dominant themes emerged from the March 2026 diagnostic.</div>
+  <div class="insights-grid">
+    <div class="insight-card fade-in">
+      <div class="insight-num">THEME 01</div>
+      <div class="insight-theme">Trust is earned by showing up during crises</div>
+      <div class="insight-body">Every engine independently converged on the same origin story: Clorox and Lysol built generational trust not through advertising but through demonstrated efficacy during public health emergencies — from the 1918 flu to COVID-19. Crisis performance is the deepest form of brand proof. No amount of marketing can replicate it.</div>
+      <div class="insight-brands"><span class="brand-tag winner">Clorox</span><span class="brand-tag winner">Lysol</span><span class="brand-tag neutral">Historical anchor</span></div>
+    </div>
+    <div class="insight-card fade-in">
+      <div class="insight-num">THEME 02</div>
+      <div class="insight-theme">Transparency is the new performance claim</div>
+      <div class="insight-body">When asked about ingredient trust, all six engines cited Seventh Generation as the benchmark — not for cleaning power, but for showing its work. Full ingredient disclosure, EPA Safer Choice certifications, and advocacy for stricter chemical standards decades before competitors created a trust moat that advertising cannot replicate.</div>
+      <div class="insight-brands"><span class="brand-tag winner">Seventh Generation</span><span class="brand-tag rising">Blueland</span><span class="brand-tag neutral">Branch Basics</span></div>
+    </div>
+    <div class="insight-card fade-in">
+      <div class="insight-num">THEME 03</div>
+      <div class="insight-theme">Scent is the most powerful brand identity vehicle</div>
+      <div class="insight-body">Mrs. Meyer's and Method are consistently cited as transforming cleaning from obligation into ritual — through sensory design rather than technical claims. Smell and aesthetics encode a brand into memory more deeply than efficacy. These brands created "cleaning as identity" before that framing had a name.</div>
+      <div class="insight-brands"><span class="brand-tag winner">Mrs. Meyer's</span><span class="brand-tag rising">Method</span><span class="brand-tag neutral">Febreze</span></div>
+    </div>
+    <div class="insight-card fade-in">
+      <div class="insight-num">THEME 04</div>
+      <div class="insight-theme">The Answer Economy rewards clarity over creativity</div>
+      <div class="insight-body">Every engine flagged the same emerging risk: brands built on vague "natural" or "eco-friendly" language are poorly positioned for AI recommendation because AI cannot verify ambiguous claims. Brands with clear problem-solution frameworks, named certifications, and structured product data win by default. Blueland is the most-cited example of AI-native brand architecture.</div>
+      <div class="insight-brands"><span class="brand-tag rising">Blueland</span><span class="brand-tag rising">Seventh Generation</span><span class="brand-tag risk">Generic "green" brands</span></div>
+    </div>
+    <div class="insight-card fade-in">
+      <div class="insight-num">THEME 05</div>
+      <div class="insight-theme">#CleanTok created new authority outside the ad ecosystem</div>
+      <div class="insight-body">The Pink Stuff, Scrub Daddy, and Bar Keepers Friend built global recognition through visual transformation content with minimal traditional advertising. The disruption is structural: younger consumers now discover brands through creators, not campaigns. Brands absent from this conversation face erosion that ad spending cannot reverse by 2026.</div>
+      <div class="insight-brands"><span class="brand-tag winner">The Pink Stuff</span><span class="brand-tag winner">Scrub Daddy</span><span class="brand-tag rising">Bar Keepers Friend</span></div>
+    </div>
+    <div class="insight-card fade-in">
+      <div class="insight-num">THEME 06</div>
+      <div class="insight-theme">P&G built the AI training data advantage by accident</div>
+      <div class="insight-body">Multiple engines noted that P&G brands (Tide, Dawn, Febreze, Cascade) benefit from decades of consistent, utility-focused content — how-to guides, FAQs, and safety data that AI engines were trained on. This creates a compounding advantage: the more utility content historically published, the more confidently AI engines will recommend the brand in conversational queries.</div>
+      <div class="insight-brands"><span class="brand-tag winner">Tide</span><span class="brand-tag winner">Dawn</span><span class="brand-tag neutral">P&G portfolio</span></div>
+    </div>
+    <div class="insight-card fade-in">
+      <div class="insight-num">THEME 07</div>
+      <div class="insight-theme">Greenwashing is now a computable vulnerability</div>
+      <div class="insight-body">AI engines in 2026 have learned to distinguish credible sustainability claims from greenwashing. Brands with unverified "natural" marketing are flagged as greenwash risks by multiple engines — while brands with third-party certifications are consistently cited as credible. In the Answer Economy, greenwashing is no longer just a PR risk — it is a recommendation risk.</div>
+      <div class="insight-brands"><span class="brand-tag winner">Ecover</span><span class="brand-tag rising">Blueland</span><span class="brand-tag risk">Method (contested)</span></div>
+    </div>
+    <div class="insight-card fade-in">
+      <div class="insight-num">THEME 08</div>
+      <div class="insight-theme">The Sophisticated Portfolio Consumer will drive next-gen growth</div>
+      <div class="insight-body">All engines described an emerging consumer archetype: the cleaning "portfolio investor" who optimizes each category for best performance. No single brand will dominate all categories — but brands that own one category with unambiguous authority will earn disproportionate AI recommendation frequency in 2026 and beyond.</div>
+      <div class="insight-brands"><span class="brand-tag winner">Tide</span><span class="brand-tag winner">Dawn</span><span class="brand-tag winner">Bona</span><span class="brand-tag rising">Blueland</span></div>
+    </div>
+  </div>
+  <div style="margin-top:48px;">
+    <div class="section-label">Qualitative Brand Scoreboard</div>
+    <div style="font-family:'DM Serif Display',serif;font-size:28px;margin-bottom:8px;">Which brands won the narrative questions?</div>
+    <div style="font-size:14px;color:var(--white-dim);margin-bottom:28px;">Tallying how many of the 15 qualitative questions a brand was named as the primary answer across all six engines — March 2026.</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+      <div style="background:rgba(78,205,196,0.08);border:1px solid rgba(78,205,196,0.3);padding:24px;">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--green);letter-spacing:0.15em;margin-bottom:12px;">GOLD — DOMINANT NARRATIVE BRAND</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:40px;color:var(--white);">Seventh<br>Generation</div>
+        <div style="font-family:'Space Mono',monospace;font-size:18px;color:var(--green);margin:12px 0;">Q5, Q6, Q11, Q12</div>
+        <div style="font-size:12px;color:var(--white-dim);line-height:1.6;">Named most often as the "trust benchmark" across character, ethics, sustainability depth, and future positioning. AI engines have absorbed Seventh Generation's narrative as the archetype for earned trust.</div>
+      </div>
+      <div style="background:rgba(0,212,255,0.06);border:1px solid var(--cyan-border);padding:24px;">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--cyan);letter-spacing:0.15em;margin-bottom:12px;">SILVER — CATEGORY MYTHMAKER</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:40px;color:var(--white);">Dawn</div>
+        <div style="font-family:'Space Mono',monospace;font-size:18px;color:var(--cyan);margin:12px 0;">Q4, Q6, Q10</div>
+        <div style="font-size:12px;color:var(--white-dim);line-height:1.6;">The wildlife rescue campaign was cited by every engine as the canonical example of authentic purpose-driven branding. Dawn is the template for how to turn a utility product into a cultural brand without losing performance authority.</div>
+      </div>
+      <div style="background:rgba(162,155,254,0.06);border:1px solid rgba(162,155,254,0.3);padding:24px;">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--purple);letter-spacing:0.15em;margin-bottom:12px;">BRONZE — FUTURE SIGNAL BRAND</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:40px;color:var(--white);">Blueland</div>
+        <div style="font-family:'Space Mono',monospace;font-size:18px;color:var(--purple);margin:12px 0;">Q9, Q15</div>
+        <div style="font-size:12px;color:var(--white-dim);line-height:1.6;">Cited by four of six engines as the brand best positioned for the Answer Economy. Its transparent, structured, digital-native architecture is the closest existing model to what winning in conversational commerce looks like in 2026.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ============================== -->
+<!-- SECTION 5: ENGINE INTELLIGENCE -->
+<!-- ============================== -->
+
+
+<hr class="divider">
+
+<div id="engine-section" class="section" style="display:none;">
+  <div class="section-label">Engine-by-Engine Intelligence</div>
+  <div class="section-title">How Do AI Engines Think About Cleaning Excellence?</div>
+  <div class="section-desc">Each AI engine brings a distinct philosophical framework to evaluating cleaning brands — shaped by what data it weights, what dimensions of "excellence" it prioritizes, and how it balances performance against safety, sustainability, and cultural relevance. March 2026 analysis.</div>
+
+  <!-- STANDARD COMPARISON BAR -->
+  <div style="background:var(--white-faint);border:1px solid var(--white-border);padding:28px;margin-bottom:32px;">
+    <div style="font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:20px;">Overall Standard of Cleaning Excellence by Engine</div>
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;text-align:center;">
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--white-dim);letter-spacing:0.1em;margin-bottom:8px;">ChatGPT</div>
+        <div style="height:80px;background:rgba(116,185,255,0.15);border:1px solid rgba(116,185,255,0.4);position:relative;display:flex;align-items:flex-end;justify-content:center;">
+          <div style="width:100%;background:linear-gradient(180deg,#74b9ff,#a29bfe);height:70%;"></div>
+        </div>
+        <div style="font-family:'Space Mono',monospace;font-size:11px;color:#74b9ff;margin-top:6px;">HIGH</div>
+        <div style="font-size:10px;color:var(--white-dim);margin-top:2px;">Utility-first</div>
+      </div>
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--white-dim);letter-spacing:0.1em;margin-bottom:8px;">Gemini</div>
+        <div style="height:80px;background:rgba(255,217,61,0.1);border:1px solid rgba(255,217,61,0.4);position:relative;display:flex;align-items:flex-end;justify-content:center;">
+          <div style="width:100%;background:linear-gradient(180deg,#ffd93d,#ff9f43);height:85%;"></div>
+        </div>
+        <div style="font-family:'Space Mono',monospace;font-size:11px;color:#ffd93d;margin-top:6px;">V. HIGH</div>
+        <div style="font-size:10px;color:var(--white-dim);margin-top:2px;">Balanced expert</div>
+      </div>
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--white-dim);letter-spacing:0.1em;margin-bottom:8px;">Claude</div>
+        <div style="height:80px;background:rgba(255,159,67,0.1);border:1px solid rgba(255,159,67,0.4);position:relative;display:flex;align-items:flex-end;justify-content:center;">
+          <div style="width:100%;background:linear-gradient(180deg,#ff9f43,#fd79a8);height:100%;"></div>
+        </div>
+        <div style="font-family:'Space Mono',monospace;font-size:11px;color:#ff9f43;margin-top:6px;">HIGHEST</div>
+        <div style="font-size:10px;color:var(--white-dim);margin-top:2px;">Values-driven</div>
+      </div>
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--white-dim);letter-spacing:0.1em;margin-bottom:8px;">Grok / X</div>
+        <div style="height:80px;background:rgba(178,190,195,0.1);border:1px solid rgba(178,190,195,0.4);position:relative;display:flex;align-items:flex-end;justify-content:center;">
+          <div style="width:100%;background:linear-gradient(180deg,#b2bec3,#dfe6e9);height:58%;"></div>
+        </div>
+        <div style="font-family:'Space Mono',monospace;font-size:11px;color:#b2bec3;margin-top:6px;">PRAGMATIC</div>
+        <div style="font-size:10px;color:var(--white-dim);margin-top:2px;">Realist/market</div>
+      </div>
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--white-dim);letter-spacing:0.1em;margin-bottom:8px;">Perplexity</div>
+        <div style="height:80px;background:rgba(107,203,119,0.1);border:1px solid rgba(107,203,119,0.4);position:relative;display:flex;align-items:flex-end;justify-content:center;">
+          <div style="width:100%;background:linear-gradient(180deg,#6bcb77,#4ecdc4);height:75%;"></div>
+        </div>
+        <div style="font-family:'Space Mono',monospace;font-size:11px;color:#6bcb77;margin-top:6px;">HIGH</div>
+        <div style="font-size:10px;color:var(--white-dim);margin-top:2px;">Citation-driven</div>
+      </div>
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--white-dim);letter-spacing:0.1em;margin-bottom:8px;">DeepSeek</div>
+        <div style="height:80px;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.4);position:relative;display:flex;align-items:flex-end;justify-content:center;">
+          <div style="width:100%;background:linear-gradient(180deg,#00d4ff,#74b9ff);height:63%;"></div>
+        </div>
+        <div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--cyan);margin-top:6px;">MID-HIGH</div>
+        <div style="font-size:10px;color:var(--white-dim);margin-top:2px;">Market-centric</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="engine-grid">
+
+    <!-- ChatGPT -->
+    <div class="engine-card engine-chatgpt">
+      <div class="engine-name">ChatGPT</div>
+      <div class="engine-co">OpenAI</div>
+      <div><span class="standard-badge std-high">High Standard</span></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Primary lens</div><div class="engine-trait-val" style="color:#74b9ff;">Utility & task performance</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Green weight</div><div class="engine-trait-val" style="color:#ffd93d;">Moderate</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Specialist recognition</div><div class="engine-trait-val" style="color:#6bcb77;">Strong</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Top pillar brand</div><div class="engine-trait-val" style="color:#ffd93d;">Tide / Dawn</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Disruption awareness</div><div class="engine-trait-val" style="color:#74b9ff;">High — cites Blueland</div></div>
+      <div class="engine-standard">ChatGPT evaluates cleaning excellence primarily through the lens of job-to-be-done efficacy: does the product do what it promises at the moment of use? It consistently recommends category-proven incumbents (Tide, Dawn, Clorox) as defaults, but shows genuine awareness of the new-wave sustainable brands disrupting the traditional market. Its standard is high but pragmatic — it will recommend the specialist tool when the job demands it (Weiman for stone, Bona for hardwood, Invisible Glass for auto). It also surfaces non-brand sources (The Spruce, Good Housekeeping) in content authority questions, reflecting a search-trained instinct toward independent verification.</div>
+    </div>
+
+    <!-- Gemini -->
+    <div class="engine-card engine-gemini">
+      <div class="engine-name">Gemini</div>
+      <div class="engine-co">Google / Alphabet</div>
+      <div><span class="standard-badge std-high">Very High Standard</span></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Primary lens</div><div class="engine-trait-val" style="color:#ffd93d;">Balanced multi-dimensional</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Green weight</div><div class="engine-trait-val" style="color:#6bcb77;">Strong</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Specialist recognition</div><div class="engine-trait-val" style="color:#6bcb77;">Very strong</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Top pillar brand</div><div class="engine-trait-val" style="color:#6bcb77;">Seventh Generation</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Disruption awareness</div><div class="engine-trait-val" style="color:#6bcb77;">Very high — Blueland + eco</div></div>
+      <div class="engine-standard">Gemini shows the most nuanced, multi-dimensional standard of cleaning excellence among all engines tested. It consistently introduces sub-brand specificity (Cascade Platinum Plus, Dawn Powerwash, CLR Brilliant Bath) rather than defaulting to parent brands — suggesting a richer product-level knowledge base. Gemini is the most likely engine to recommend a challenger or specialist brand over a legacy default, and it most actively weighs sustainability credentials alongside performance. Critically, Gemini was the engine most likely to name eco-certified brands in the regulatory and transparency questions, signaling that its training data heavily weights certification registries and third-party testing sources. It raises the overall bar for what "good" looks like.</div>
+    </div>
+
+    <!-- Claude -->
+    <div class="engine-card engine-claude">
+      <div class="engine-name">Claude</div>
+      <div class="engine-co">Anthropic</div>
+      <div><span class="standard-badge std-highest">Highest Standard — Values-Driven</span></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Primary lens</div><div class="engine-trait-val" style="color:#ff9f43;">Safety + ethics + transparency</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Green weight</div><div class="engine-trait-val" style="color:#6bcb77;">Highest of all engines</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Specialist recognition</div><div class="engine-trait-val" style="color:#ffd93d;">Moderate</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Top pillar brand</div><div class="engine-trait-val" style="color:#6bcb77;">Seventh Gen / Ecover</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Disruption awareness</div><div class="engine-trait-val" style="color:#00d4ff;">Maximum — Answer Economy</div></div>
+      <div class="engine-standard">Claude applies the highest standard of cleaning excellence in the study, consistently evaluating brands on a values triad of performance, safety, and transparency — rather than pure efficacy or market consensus. It is the only engine to explicitly discuss the "theory-practice gap" between marketing claims and actual ingredient safety, and the only engine to name Ecover as a top sustainability benchmark ahead of more marketed brands. Claude also showed the strongest Answer Economy awareness, explicitly reasoning about which brands are best positioned for AI-native recommendation in its qualitative responses. Its bar for "truly excellent" is the most demanding: a brand must demonstrate what it claims, disclose what it contains, and show that its sustainability story is structural rather than cosmetic.</div>
+    </div>
+
+    <!-- Grok -->
+    <div class="engine-card engine-grok">
+      <div class="engine-name">Grok</div>
+      <div class="engine-co">xAI / X (formerly GPT-4o in study)</div>
+      <div><span class="standard-badge std-pragmatic">Pragmatic / Market-Realist</span></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Primary lens</div><div class="engine-trait-val" style="color:#b2bec3;">Market share + recognition</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Green weight</div><div class="engine-trait-val" style="color:#ffd93d;">Moderate — when proven</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Specialist recognition</div><div class="engine-trait-val" style="color:#ffd93d;">Moderate</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Top pillar brand</div><div class="engine-trait-val" style="color:#ff6b6b;">Clorox / P&G portfolio</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Disruption awareness</div><div class="engine-trait-val" style="color:#ffd93d;">Moderate</div></div>
+      <div class="engine-standard">Grok/X applies the most market-realist standard of cleaning excellence — defaulting heavily to brands with proven sales dominance, broad consumer recognition, and mass-market distribution. It is the engine most likely to cite parent companies (P&G, Unilever, Clorox Co.) rather than individual brands, suggesting a portfolio rather than product-level analysis. Grok also shows the least differentiation between categories in its vulnerability pillar — it applies "large conventional brand" as a risk category rather than brand-specific critique. While this makes it consistent, it lacks the nuance of engines that distinguish between a brand's marketing claims and its actual performance. Its standard is pragmatic: if a brand is widely used, widely available, and widely trusted, it qualifies as excellent by default.</div>
+    </div>
+
+    <!-- Perplexity -->
+    <div class="engine-card engine-perplexity">
+      <div class="engine-name">Perplexity</div>
+      <div class="engine-co">Perplexity AI</div>
+      <div><span class="standard-badge std-high">High Standard — Citation-Anchored</span></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Primary lens</div><div class="engine-trait-val" style="color:#6bcb77;">Consensus + citation authority</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Green weight</div><div class="engine-trait-val" style="color:#6bcb77;">High — mirrors certified sources</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Specialist recognition</div><div class="engine-trait-val" style="color:#6bcb77;">Strong</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Top pillar brand</div><div class="engine-trait-val" style="color:#ff6b6b;">Clorox (authority)</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Disruption awareness</div><div class="engine-trait-val" style="color:#6bcb77;">High</div></div>
+      <div class="engine-standard">Perplexity sets a high citation-anchored standard: its concept of cleaning excellence tracks closely with what consumer testing bodies (Good Housekeeping, Consumer Reports, EPA Safer Choice) formally endorse. It is the engine most likely to reflect testing organization consensus rather than personal or qualitative judgment — which makes it highly reliable for fact-based categories (laundry, dishwasher, disinfection) but less differentiated in cultural or emerging brand categories. Perplexity showed strong alignment with Clorox as an authority brand across multiple pillars, which likely reflects Clorox's extensive digital presence, safety documentation, and frequent citation in health and hygiene testing literature. Its standard is defined by verifiability: if the claim can be tested and published, it counts.</div>
+    </div>
+
+    <!-- DeepSeek -->
+    <div class="engine-card engine-deepseek">
+      <div class="engine-name">DeepSeek</div>
+      <div class="engine-co">DeepSeek AI</div>
+      <div><span class="standard-badge std-mid">Mid-High — Market Consensus</span></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Primary lens</div><div class="engine-trait-val" style="color:var(--cyan);">Category leadership signals</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Green weight</div><div class="engine-trait-val" style="color:#6bcb77;">High — Seventh Gen / Blueland</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Specialist recognition</div><div class="engine-trait-val" style="color:#ffd93d;">Moderate</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Top pillar brand</div><div class="engine-trait-val" style="color:#ff6b6b;">Clorox / Lysol</div></div>
+      <div class="engine-trait-row"><div class="engine-trait-label">Disruption awareness</div><div class="engine-trait-val" style="color:var(--cyan);">High — Blueland focus</div></div>
+      <div class="engine-standard">DeepSeek applies a mid-to-high standard of cleaning excellence that most closely mirrors the consensus view across major international markets — heavy on category leaders like Clorox and Lysol for disinfection authority, while showing genuine conviction around Blueland and Seventh Generation for the sustainability future. Notably, DeepSeek was the only engine to name Grove Collaborative in multiple strategic positions (AI readiness, future positioning, content authority), suggesting its training data may reflect a stronger direct-to-consumer and subscription model awareness. DeepSeek is the most concise engine in its qualitative responses — it states positions without extensive rationale — which may make it less useful for brands seeking to understand the reasoning behind their AI-layer recommendation gaps.</div>
+    </div>
+
+  </div>
+
+  <!-- ENGINE COMPARISON SUMMARY -->
+  <div style="margin-top:40px;background:var(--white-faint);border:1px solid var(--white-border);padding:32px;">
+    <div style="font-family:'DM Serif Display',serif;font-size:24px;margin-bottom:20px;">Key Differentiators Across Engines — March 2026</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+      <div style="border-left:2px solid var(--green);padding-left:16px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--green);letter-spacing:0.1em;margin-bottom:8px;">HIGHEST BAR FOR EXCELLENCE</div>
+        <div style="font-weight:700;font-size:18px;margin-bottom:8px;color:var(--white);">Claude (Anthropic)</div>
+        <div style="font-size:12px;color:var(--white-dim);line-height:1.6;">Claude applies the strictest three-part standard: performance must be documented, ingredients must be disclosed, and sustainability must be structural — not cosmetic. It is the hardest engine to impress with marketing claims alone, and the most likely to surface a challenger brand over a legacy incumbent when the evidence supports it.</div>
+      </div>
+      <div style="border-left:2px solid var(--cyan);padding-left:16px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:0.1em;margin-bottom:8px;">MOST NUANCED RECOMMENDATIONS</div>
+        <div style="font-weight:700;font-size:18px;margin-bottom:8px;color:var(--white);">Gemini (Google)</div>
+        <div style="font-size:12px;color:var(--white-dim);line-height:1.6;">Gemini introduces the most product-level specificity and is the most willing to recommend a non-default brand when the category or context demands it. Its multi-dimensional evaluation creates the most differentiated brand landscape — and the most actionable signal for brands tracking their AI-layer positioning.</div>
+      </div>
+      <div style="border-left:2px solid var(--yellow);padding-left:16px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--yellow);letter-spacing:0.1em;margin-bottom:8px;">LOWEST DIFFERENTIATION</div>
+        <div style="font-weight:700;font-size:18px;margin-bottom:8px;color:var(--white);">Grok / X (xAI)</div>
+        <div style="font-size:12px;color:var(--white-dim);line-height:1.6;">Grok most frequently defaults to dominant market-share brands and parent company portfolios. While consistent and defensible, this approach creates the least differentiation between challenger and incumbent brands — making it the least useful engine for surfacing emerging brand authority signals in the Answer Economy.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ============================== -->
+<!-- SECTION 6: SIGNAL MAP          -->
+<!-- ============================== -->
+
+
+<hr class="divider">
+
+<div id="signal-section" class="section" style="display:none;">
+  <div class="section-label">Answer Economy Positioning</div>
+  <div class="section-title">AI Signal Map</div>
+  <div class="section-desc">A synthesis of where each major brand stands in the Answer Economy as of March 2026 — mapping AI recommendation strength, vulnerability exposure, and future positioning across the six engines studied.</div>
+  <div class="signal-grid">
+    <div class="signal-card"><div class="signal-label">Disinfection Authority</div><div class="signal-brand">Lysol</div><div class="signal-desc"><span class="signal-accent">Uncontested</span> in disinfection across all six engines. The crisis-era authority that no competitor has dislodged. Vulnerability: over-indexed on germ fear; limited innovation story in AI answers.</div></div>
+    <div class="signal-card"><div class="signal-label">Laundry Category</div><div class="signal-brand">Tide</div><div class="signal-desc"><span class="signal-accent">Unanimous</span> across all engines for overall laundry authority. Decades of consistent performance data create an AI recommendation moat that is effectively impenetrable for general laundry queries.</div></div>
+    <div class="signal-card"><div class="signal-label">Grease / Dish</div><div class="signal-brand">Dawn</div><div class="signal-desc"><span class="signal-accent">Unanimous + cultural</span> — the only brand cited for both performance AND authentic purpose (wildlife rescue). The grease-cutting narrative is so embedded in AI training data that it crosses into stain removal and outdoor cleaning.</div></div>
+    <div class="signal-card"><div class="signal-label">Green / Sustainable</div><div class="signal-brand">Seventh Gen.</div><div class="signal-desc"><span class="signal-accent">Dominant</span> across sustainability, safety, transparency, and expert recommendation. Has successfully encoded the "earned trust" narrative into AI knowledge in a way competitors cannot replicate through marketing alone.</div></div>
+    <div class="signal-card"><div class="signal-label">Future / Next-Gen</div><div class="signal-brand">Blueland</div><div class="signal-desc"><span class="signal-accent">Rising fast</span> — consistently named as the most AI-ready brand, the best refillable system, and the future of sustainable cleaning. Punches far above sales volume in AI mentions. Strong Answer Economy architecture.</div></div>
+    <div class="signal-card"><div class="signal-label">Cultural / Lifestyle</div><div class="signal-brand">Mrs. Meyer's</div><div class="signal-desc"><span class="signal-accent">Scent + identity</span> leader. Named across culture, influencer, and ritual questions. The brand that moved cleaning from function to feeling. Vulnerability: questions about synthetic fragrances and partial greenwashing.</div></div>
+    <div class="signal-card"><div class="signal-label">Social / TikTok</div><div class="signal-brand">The Pink Stuff</div><div class="signal-desc"><span class="signal-accent">Viral authority</span> — the highest-momentum brand in the study. Built a global reputation through creator content with near-zero traditional advertising. Demonstrates that AI visibility can be built outside legacy brand infrastructure.</div></div>
+    <div class="signal-card"><div class="signal-label">Underrated Authority</div><div class="signal-brand">Bar Keepers Friend</div><div class="signal-desc"><span class="signal-accent">Performance gap</span> — all engines cited it as dramatically underrated relative to actual cleaning efficacy. Held back by industrial aesthetics, limited creator engagement, and absence of "clean ingredient" storytelling.</div></div>
+  </div>
+  <div style="margin-top:40px;background:linear-gradient(135deg,rgba(0,212,255,0.06),rgba(162,155,254,0.04));border:1px solid var(--cyan-border);padding:40px;">
+    <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:0.15em;margin-bottom:16px;">Q15 — THE META QUESTION: WINNING THE ANSWER ECONOMY</div>
+    <div style="font-family:'DM Serif Display',serif;font-size:30px;color:var(--white);margin-bottom:24px;line-height:1.2;">What would it take for a cleaning brand to truly win in a world where AI is the new search engine?</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px;">
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--green);letter-spacing:0.1em;margin-bottom:10px;">01 — STRUCTURE YOUR DATA</div>
+        <div style="font-size:13px;color:var(--white-dim);line-height:1.65;">Every engine agreed: AI recommends what it can verify. Brands must publish structured, machine-readable product data — ingredient lists, certifications, use-case guides, and performance claims backed by citations. The brands with the cleanest data architectures win by default in conversational queries.</div>
+      </div>
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:0.1em;margin-bottom:10px;">02 — OWN A SEMANTIC SPACE</div>
+        <div style="font-size:13px;color:var(--white-dim);line-height:1.65;">Category dominators (Tide = laundry, Dawn = grease, Bona = hardwood) have encoded a simple equation into AI knowledge: brand name = job to be done. Brands that try to own everything own nothing in the AI layer. Pick a semantic space and colonize it completely across every content channel.</div>
+      </div>
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--purple);letter-spacing:0.1em;margin-bottom:10px;">03 — BUILD AUTHORITY, NOT AWARENESS</div>
+        <div style="font-size:13px;color:var(--white-dim);line-height:1.65;">AI engines are trained on expert consensus, not ad spend. Brands winning in the Answer Economy — Seventh Generation, Blueland, Bona, Weiman — are consistently cited by dermatologists, allergists, flooring professionals, and environmental organizations. Third-party authority is the new media budget.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ============================== -->
+<!-- BRANDRANK ABOUT BLOCK          -->
+<!-- ============================== -->
+
+
+<hr class="divider">
+
+<div class="brandrank-footer-block">
+  <div class="bf-inner">
+    <div>
+      <div class="bf-label">About BrandRank.AI</div>
+      <div class="bf-title">The Platform That Measures What AI Says About Your Brand</div>
+      <div class="bf-body">BrandRank works with over 75 global brands to strengthen trust and purchase intent by uncovering vulnerabilities, purchase-driving insights, and growth opportunities across AI answer engines. As a SaaS platform, we track all major answer engines to improve visibility, ensure content is AI-ready, and rigorously measure brand claims and instructional accuracy.<br><br>
+      <em>Answer Share: Cleaning</em> was conducted in March 2026 as part of <a href="https://brandrank.ai" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.2);">BrandRank</a>'s ongoing sector diagnostic research — designed to show brand and marketing leaders exactly where their brand stands in the Answer Economy, and what it would take to move up.</div>
+    </div>
+    <div class="bf-stats">
+      <div><div class="bf-stat-num">75+</div><div class="bf-stat-label">Global brands served</div></div>
+      <div><div class="bf-stat-num">6</div><div class="bf-stat-label">AI engines tracked</div></div>
+      <div><div class="bf-stat-num">138</div><div class="bf-stat-label">Questions analyzed</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-brand">Answer Share: Cleaning — Powered by <a href="https://brandrank.ai" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.3);">BrandRank.AI</a> — March 2026</div>
+  <div class="footer-note">ChatGPT · Gemini · Claude · Grok/X · Perplexity · DeepSeek</div>
+</div>
+
+</div><!-- /wrapper -->
+
+<script>
+// =====================
+// DATA
+// =====================
+const tableData = [
+  { pillar:'p1', pillarLabel:'PILLAR I — Market Position & Brand Authority', isHeader:true },
+  { pillar:'p1', q:'1', text:'Overall industry leader', chatgpt:'P&G', gemini:'Clorox', claude:'Clorox', gpt4o:'P&G / Clorox', perplexity:'Clorox', deepseek:'Clorox' },
+  { pillar:'p1', q:'2', text:'Most trusted by consumers worldwide', chatgpt:'Dettol (Reckitt)', gemini:'Lysol / Clorox', claude:'Clorox', gpt4o:'Lysol / Clorox', perplexity:'Clorox', deepseek:'Clorox' },
+  { pillar:'p1', q:'3', text:'Most trusted by professional cleaners', chatgpt:'Clorox', gemini:'Ecolab / Zep', claude:'CloroxPro', gpt4o:'Lysol / Clorox', perplexity:'Lysol', deepseek:'Lysol' },
+  { pillar:'p1', q:'4', text:'Strongest consumer loyalty over time', chatgpt:'Tide', gemini:'Tide', claude:'Tide', gpt4o:'Tide / Dawn', perplexity:'Tide', deepseek:'Clorox' },
+  { pillar:'p1', q:'5', text:'Best balance of performance and value', chatgpt:'Mr. Clean', gemini:'Up&Up (Target)', claude:'Dawn', gpt4o:'Gain / Palmolive', perplexity:'Seventh Generation', deepseek:'Seventh Generation' },
+  { pillar:'p1', q:'6', text:'Highest customer satisfaction', chatgpt:'Dawn', gemini:'Dawn', claude:'Tide', gpt4o:'Dawn', perplexity:'Lysol', deepseek:'Lysol' },
+  { pillar:'p1', q:'7', text:'Most recognized worldwide', chatgpt:'Lysol', gemini:'Clorox', claude:'Clorox', gpt4o:'P&G / Unilever', perplexity:'Clorox', deepseek:'Clorox' },
+  { pillar:'p1', q:'8', text:'Gold standard in cleaning', chatgpt:'Clorox', gemini:'Dawn / Clorox', claude:'Clorox', gpt4o:'Lysol / Tide / Dawn', perplexity:'Clorox', deepseek:'Clorox' },
+  { pillar:'p1', q:'9', text:'Most trusted for disinfection and hygiene', chatgpt:'Lysol', gemini:'Lysol', claude:'Lysol', gpt4o:'Lysol / Clorox', perplexity:'Lysol', deepseek:'Lysol' },
+  { pillar:'p1', q:'10', text:'Brand families rely on most for safe home', chatgpt:'Lysol', gemini:'Clorox / Lysol', claude:'Clorox', gpt4o:'Lysol', perplexity:'Seventh Generation', deepseek:'Seventh Generation' },
+  { pillar:'p1', q:'11', text:'Best reputation for effectiveness', chatgpt:'Dawn', gemini:'Dawn / Tide', claude:'Tide', gpt4o:'Tide / Dawn', perplexity:'Lysol', deepseek:'Lysol' },
+  { pillar:'p1', q:'12', text:'Best reputation for innovation', chatgpt:'Method', gemini:'Method / Scrubbing Bubbles', claude:'P&G', gpt4o:'P&G', perplexity:'Clorox', deepseek:'Clorox' },
+  { pillar:'p1', q:'13', text:'Best adapted to how people shop and search today', chatgpt:'Amazon Basics', gemini:'Method / Blueland', claude:'Method', gpt4o:'Blueland', perplexity:'Clorox', deepseek:'Grove Collaborative' },
+  { pillar:'p1', q:'14', text:'Most prepared for AI answer engine world', chatgpt:'Clorox', gemini:'P&G', claude:'Blueland', gpt4o:'P&G (structured content)', perplexity:'Clorox', deepseek:'Grove Collaborative' },
+  { pillar:'p1', q:'15', text:'Most likely to define next generation of cleaning', chatgpt:'Blueland', gemini:'Blueland', claude:'Seventh Generation', gpt4o:'Blueland / Ecover', perplexity:'Blueland', deepseek:'Blueland' },
+
+  { pillar:'p2', pillarLabel:'PILLAR II — Problem Moments & Triggered Purchase', isHeader:true },
+  { pillar:'p2', q:'L1', text:'Best laundry detergent overall', chatgpt:'Tide', gemini:'Tide', claude:'Tide', gpt4o:'Tide', perplexity:'Tide', deepseek:'Tide' },
+  { pillar:'p2', q:'L2', text:'Best for whites and bright colors', chatgpt:'Persil', gemini:'Tide / OxiClean', claude:'Tide', gpt4o:'Tide / Persil', perplexity:'Tide', deepseek:'Tide' },
+  { pillar:'p2', q:'L3', text:'Best for dark and delicate fabrics', chatgpt:'Woolite', gemini:'Woolite', claude:'Woolite', gpt4o:'Woolite / The Laundress', perplexity:'Woolite', deepseek:'Woolite' },
+  { pillar:'p2', q:'LA1', text:'Best fabric softener', chatgpt:'Downy', gemini:'Downy', claude:'Downy', gpt4o:'Downy', perplexity:'Downy', deepseek:'Downy' },
+  { pillar:'p2', q:'LA2', text:'Best laundry scent booster', chatgpt:'Downy Unstopables', gemini:'Downy Unstopables', claude:'Downy Unstopables', gpt4o:'Downy Unstopables / Gain', perplexity:'Downy Unstopables', deepseek:'Downy Unstopables' },
+  { pillar:'p2', q:'LA3', text:'Best dryer sheets', chatgpt:'Bounce', gemini:'Bounce', claude:'Bounce', gpt4o:'Bounce / Snuggle', perplexity:'Bounce', deepseek:'Bounce' },
+  { pillar:'p2', q:'LA4', text:'Best laundry additive for freshness between washes', chatgpt:'Febreze Fabric', gemini:'Febreze In-Wash', claude:'Febreze', gpt4o:'Febreze', perplexity:'Febreze', deepseek:'Febreze' },
+  { pillar:'p2', q:'ST1', text:'Best stain pre-treatment (everyday)', chatgpt:'Shout', gemini:'Shout', claude:'Shout', gpt4o:'Shout / OxiClean', perplexity:'Shout', deepseek:'Shout' },
+  { pillar:'p2', q:'ST2', text:'Best stain remover for grease/oil on clothing', chatgpt:'Dawn', gemini:'Dawn', claude:'Dawn', gpt4o:'Dawn', perplexity:'Dawn', deepseek:'Dawn' },
+  { pillar:'p2', q:'ST3', text:'Best stain remover for tough set-in stains', chatgpt:'OxiClean', gemini:'OxiClean Max Force', claude:'OxiClean', gpt4o:'OxiClean Versatile', perplexity:'OxiClean', deepseek:'OxiClean' },
+  { pillar:'p2', q:'DS1', text:'Best dish soap for hand washing', chatgpt:'Dawn', gemini:'Dawn', claude:'Dawn', gpt4o:'Dawn', perplexity:'Dawn', deepseek:'Dawn' },
+  { pillar:'p2', q:'DS2', text:'Best dish soap for cutting tough grease', chatgpt:'Dawn', gemini:'Dawn Powerwash', claude:'Dawn Ultra', gpt4o:'Dawn Platinum', perplexity:'Dawn', deepseek:'Dawn' },
+  { pillar:'p2', q:'DS3', text:'Best gentle dish soap for delicate cookware', chatgpt:'Seventh Generation', gemini:'Palmolive Pure + Clear', claude:'Seventh Generation', gpt4o:'Seventh Generation / Ecover', perplexity:'Seventh Generation', deepseek:'Seventh Generation' },
+  { pillar:'p2', q:'DD1', text:'Best dishwasher detergent overall', chatgpt:'Finish', gemini:'Cascade Platinum Plus', claude:'Cascade', gpt4o:'Cascade / Finish', perplexity:'Cascade', deepseek:'Cascade' },
+  { pillar:'p2', q:'DD2', text:'Best dishwasher pods', chatgpt:'Cascade Platinum', gemini:'Cascade', claude:'Cascade', gpt4o:'Cascade Platinum', perplexity:'Cascade', deepseek:'Cascade Platinum' },
+  { pillar:'p2', q:'DD3', text:'Best dishwasher detergent for spotless glasses', chatgpt:'Finish', gemini:'Finish Quantum + Jet-Dry', claude:'Finish', gpt4o:'Cascade Platinum / Finish', perplexity:'Finish', deepseek:'Finish' },
+  { pillar:'p2', q:'SC1', text:'Best all-purpose surface cleaner', chatgpt:'Mr. Clean', gemini:'Mr. Clean Clean Freak', claude:'Method', gpt4o:'Lysol / Clorox', perplexity:'Lysol', deepseek:'Lysol' },
+  { pillar:'p2', q:'SC2', text:'Best all-purpose cleaner for everyday home use', chatgpt:'Pine-Sol', gemini:'Lysol All-Purpose', claude:'Pine-Sol', gpt4o:'Mr. Clean / Method', perplexity:'Lysol', deepseek:"Mrs. Meyer's Clean Day" },
+  { pillar:'p2', q:'SC3', text:'Best multi-surface cleaner safe for families', chatgpt:'Seventh Generation', gemini:'Seventh Generation', claude:'Lysol', gpt4o:"Method / Mrs. Meyer's", perplexity:'Seventh Generation', deepseek:'Method' },
+  { pillar:'p2', q:'DI1', text:'Best household disinfectant spray', chatgpt:'Lysol', gemini:'Lysol', claude:'Lysol', gpt4o:'Lysol Disinfectant Spray', perplexity:'Lysol', deepseek:'Lysol' },
+  { pillar:'p2', q:'DI2', text:'Best antibacterial cleaner for high-touch surfaces', chatgpt:'Lysol', gemini:'Clorox Clean-Up', claude:'Clorox', gpt4o:'Lysol / Clorox', perplexity:'Clorox', deepseek:'Clorox' },
+  { pillar:'p2', q:'DI3', text:'Most effective disinfectant for viruses/bacteria', chatgpt:'Clorox', gemini:'Microban 24', claude:'Lysol', gpt4o:'Lysol / Clorox (EPA reg.)', perplexity:'Lysol', deepseek:'Lysol' },
+  { pillar:'p2', q:'W1', text:'Best disinfectant wipes for quick cleaning', chatgpt:'Clorox Disinfecting Wipes', gemini:'Clorox Disinfecting Wipes', claude:'Clorox', gpt4o:'Lysol / Clorox Wipes', perplexity:'Clorox', deepseek:'Clorox' },
+  { pillar:'p2', q:'W2', text:'Best multi-surface cleaning wipes', chatgpt:'Lysol Wipes', gemini:'Lysol Wipes', claude:'Clorox', gpt4o:'Clorox / Lysol', perplexity:'Clorox', deepseek:'Lysol' },
+  { pillar:'p2', q:'W3', text:'Best antibacterial wipes for kitchens and bathrooms', chatgpt:'Clorox Disinfecting Wipes', gemini:'Clorox Bathroom-specific', claude:'Lysol', gpt4o:'Clorox / Lysol', perplexity:'Clorox', deepseek:'Clorox' },
+  { pillar:'p2', q:'B1', text:'Best bathroom cleaner overall', chatgpt:'Scrubbing Bubbles', gemini:'Scrubbing Bubbles', claude:'Clorox', gpt4o:'Scrubbing Bubbles / Clorox', perplexity:'Scrubbing Bubbles', deepseek:'Clorox' },
+  { pillar:'p2', q:'B2', text:'Best cleaner for soap scum from shower doors', chatgpt:'CLR Brilliant Bath', gemini:'CLR / Scrubbing Bubbles', claude:'Scrubbing Bubbles', gpt4o:'Tilex / Scrubbing Bubbles', perplexity:'Scrubbing Bubbles', deepseek:'Scrubbing Bubbles' },
+  { pillar:'p2', q:'B3', text:'Best cleaner for bathroom tiles and grout', chatgpt:'Zep Grout Cleaner', gemini:'Soft Scrub / Tilex', claude:'Soft Scrub', gpt4o:'CLR / Clorox bleach', perplexity:'CLR', deepseek:'CLR' },
+  { pillar:'p2', q:'T1', text:'Best toilet bowl cleaner', chatgpt:'Lysol Toilet Bowl', gemini:'Clorox Toilet Bowl + Bleach', claude:'Clorox', gpt4o:'Clorox / Lysol', perplexity:'Clorox', deepseek:'Lysol' },
+  { pillar:'p2', q:'T2', text:'Best toilet cleaning system for ongoing freshness', chatgpt:'Scrubbing Bubbles', gemini:'Scrubbing Bubbles Fresh Gel', claude:'Lysol', gpt4o:'Scrubbing Bubbles / Clorox Auto', perplexity:'Scrubbing Bubbles', deepseek:'Clorox' },
+  { pillar:'p2', q:'T3', text:'Best for removing limescale/stains from toilet', chatgpt:'CLR', gemini:'Lime-A-Way / CLR', claude:'Lime-A-Way', gpt4o:'CLR / Lime-A-Way', perplexity:'CLR', deepseek:'Lysol' },
+  { pillar:'p2', q:'G1', text:'Best glass and window cleaner', chatgpt:'Windex', gemini:'Windex', claude:'Windex', gpt4o:'Windex', perplexity:'Windex', deepseek:'Windex' },
+  { pillar:'p2', q:'G2', text:'Best streak-free cleaner for mirrors and glass', chatgpt:'Windex', gemini:'Sprayway Glass', claude:'Windex', gpt4o:'Windex Original', perplexity:'Windex', deepseek:'Windex' },
+  { pillar:'p2', q:'G3', text:'Best cleaner for car windows and windshields', chatgpt:'Invisible Glass', gemini:'Invisible Glass', claude:'Invisible Glass', gpt4o:'Invisible Glass', perplexity:'Invisible Glass', deepseek:'Invisible Glass' },
+  { pillar:'p2', q:'F1', text:'Best floor cleaner for hardwood floors', chatgpt:'Bona', gemini:'Bona', claude:'Bona', gpt4o:'Bona', perplexity:'Bona', deepseek:'Bona' },
+  { pillar:'p2', q:'F2', text:'Best floor cleaner for tile and grout', chatgpt:'Zep', gemini:'Hoover/Bissell formula', claude:'Bona', gpt4o:'Method / specialized cleaners', perplexity:'Zep', deepseek:'Pine-Sol' },
+  { pillar:'p2', q:'F3', text:'Best mopping system for everyday home use', chatgpt:'Swiffer WetJet', gemini:'O-Cedar EasyWring', claude:'Swiffer', gpt4o:'Swiffer WetJet / Bona Spray', perplexity:'Swiffer', deepseek:'Swiffer' },
+  { pillar:'p2', q:'F4', text:'Best floor cleaner for laminate floors', chatgpt:'Bona', gemini:'Bona Hard-Surface', claude:'Bona', gpt4o:'Bona / Swiffer WetJet', perplexity:'Bona', deepseek:'Bona' },
+  { pillar:'p2', q:'K1', text:'Best kitchen degreaser for stovetops and cabinets', chatgpt:'Krud Kutter', gemini:'Easy-Off / Dawn Powerwash', claude:'Dawn', gpt4o:'Dawn Powerwash / Easy-Off', perplexity:'Dawn', deepseek:'Dawn' },
+  { pillar:'p2', q:'K2', text:'Best heavy-duty degreaser for commercial kitchens', chatgpt:'Zep Heavy-Duty', gemini:'Zep Citrus Degreaser', claude:'Easy-Off', gpt4o:'Zep / Simple Green commercial', perplexity:'Zep', deepseek:'Grease Relief' },
+  { pillar:'p2', q:'K3', text:'Best everyday kitchen cleaner that cuts grease', chatgpt:'Dawn Powerwash', gemini:'Dawn Powerwash', claude:'Fantastik', gpt4o:'Mr. Clean / Method', perplexity:'Dawn', deepseek:'Dawn' },
+  { pillar:'p2', q:'A1', text:'Best air freshener for the home', chatgpt:'Febreze Air', gemini:'Febreze', claude:'Febreze', gpt4o:'Febreze / Air Wick', perplexity:'Febreze', deepseek:'Febreze' },
+  { pillar:'p2', q:'A2', text:'Best fabric freshener for upholstery', chatgpt:'Febreze Fabric', gemini:'Febreze Fabric Refresher', claude:'Febreze', gpt4o:'Febreze Fabric', perplexity:'Febreze', deepseek:'Febreze' },
+  { pillar:'p2', q:'A3', text:'Best odor eliminator (not just masker)', chatgpt:'OdoBan', gemini:'Ozium / Zero Odor', claude:'Citrus Magic', gpt4o:'Febreze Odor Eliminator', perplexity:'Febreze', deepseek:'Febreze' },
+  { pillar:'p2', q:'SP1', text:'Best cleaner for granite and stone countertops', chatgpt:'Weiman', gemini:'Weiman / StoneTech', claude:'Method', gpt4o:'Weiman / StoneTech', perplexity:'Weiman', deepseek:'Method' },
+  { pillar:'p2', q:'SP2', text:'Best cleaner for stainless steel appliances', chatgpt:'Weiman', gemini:'Weiman', claude:'Weiman', gpt4o:'Weiman Stainless Steel', perplexity:'Weiman', deepseek:'Weiman' },
+  { pillar:'p2', q:'SP3', text:'Best cleaner for marble and natural stone', chatgpt:'Weiman', gemini:'Stone Care International', claude:'Method', gpt4o:'StoneTech / Granite Gold', perplexity:'Weiman', deepseek:'Weiman' },
+  { pillar:'p2', q:'SP4', text:'Best cleaner for wood surfaces and furniture', chatgpt:'Pledge', gemini:'Murphy Oil Soap', claude:'Pledge', gpt4o:'Murphy Oil Soap / Pledge', perplexity:'Method', deepseek:'Method' },
+  { pillar:'p2', q:'H1', text:'Best hand soap for everyday household use', chatgpt:'Softsoap', gemini:'Softsoap', claude:'Dawn', gpt4o:"Dial / Softsoap / Mrs. Meyer's", perplexity:'Softsoap', deepseek:'Softsoap' },
+  { pillar:'p2', q:'H2', text:'Best antibacterial hand soap', chatgpt:'Dial', gemini:'Dial', claude:'Dial', gpt4o:'Dial Complete', perplexity:'Dial', deepseek:'Dial' },
+  { pillar:'p2', q:'H3', text:'Best moisturizing hand soap for frequent washers', chatgpt:'Dove', gemini:"Dove / Meyer's", claude:'Softsoap', gpt4o:'Dove / Aveeno', perplexity:'Dove', deepseek:"Mrs. Meyer's Clean Day" },
+  { pillar:'p2', q:'O1', text:'Best outdoor surface cleaner for patios and decks', chatgpt:'Wet & Forget', gemini:'Simple Green', claude:'Simple Green', gpt4o:'Wet & Forget / Simple Green', perplexity:'Simple Green', deepseek:'Simple Green' },
+  { pillar:'p2', q:'O2', text:'Best pressure washer detergent for outdoor use', chatgpt:'Simple Green', gemini:'Sun Joe / Zep', claude:'Simple Green', gpt4o:'Simple Green / pressure washer brands', perplexity:'Simple Green', deepseek:'Karcher' },
+  { pillar:'p2', q:'O3', text:'Best cleaner for outdoor furniture', chatgpt:'303 Products', gemini:'Star brite', claude:'Wet & Forget', gpt4o:'Simple Green / mild cleaner', perplexity:'Simple Green', deepseek:'303 Products' },
+  { pillar:'p2', q:'PL1', text:"Retailer's own brand most worth buying", chatgpt:'Kirkland Signature', gemini:"Target's Up&Up", claude:'Kirkland Signature', gpt4o:"Target's Everspring / Amazon Basics", perplexity:'Kirkland Signature', deepseek:'Costco (Kirkland)' },
+  { pillar:'p2', q:'PL2', text:'Store brand considered as good as national brand', chatgpt:'Kirkland Signature', gemini:'Kirkland Signature', claude:'Kirkland Signature', gpt4o:'Kirkland Signature / basic bleach', perplexity:'Kirkland Signature', deepseek:"Target's Up&Up" },
+  { pillar:'p2', q:'PL3', text:'Best private label — value without sacrificing performance', chatgpt:"Member's Mark (Sam's)", gemini:"Walmart's Great Value", claude:'Kirkland Signature', gpt4o:'Kirkland Signature', perplexity:'Kirkland Signature', deepseek:"Trader Joe's" },
+  { pillar:'p2', q:'RF1', text:'Best refillable cleaning product system', chatgpt:'Blueland', gemini:'Blueland', claude:'Blueland', gpt4o:'Blueland / Grove Collaborative', perplexity:'Blueland', deepseek:'Grove Collaborative' },
+  { pillar:'p2', q:'RF2', text:'Best concentrated cleaning brand per use', chatgpt:"Dr. Bronner's", gemini:'Grove Collaborative', claude:'Blueland', gpt4o:'Blueland / Tide Concentrated', perplexity:'Blueland', deepseek:'Blueland' },
+  { pillar:'p2', q:'RF3', text:'Best refillable brand competing with traditional brands on results', chatgpt:'Method', gemini:'Cleancult', claude:'Grove Co.', gpt4o:'Blueland', perplexity:'Blueland', deepseek:'Grove Collaborative' },
+  { pillar:'p2', q:'OC1', text:'Most recommended for allergy sufferers', chatgpt:'Seventh Generation', gemini:'All Free Clear', claude:'Seventh Generation', gpt4o:'Seventh Generation / ECOS', perplexity:'Seventh Generation', deepseek:'All Free & Clear' },
+  { pillar:'p2', q:'OC2', text:'Safest for homes with a newborn', chatgpt:'Dreft', gemini:'Babyganics', claude:'Seventh Generation', gpt4o:'Seventh Generation / Babyganics', perplexity:'Seventh Generation', deepseek:'Babyganics' },
+  { pillar:'p2', q:'OC3', text:'Most recommended for immunocompromised households', chatgpt:'Clorox Healthcare', gemini:'Clorox / Microban 24', claude:'Seventh Generation', gpt4o:'Lysol / Clorox disinfectants', perplexity:'Lysol', deepseek:'Lysol' },
+  { pillar:'p2', q:'OC4', text:'Best for deep clean before moving out of a rental', chatgpt:'Zep', gemini:'Zep / Clorox heavy-duty', claude:'Mr. Clean', gpt4o:'Dawn + Lysol/Clorox combo', perplexity:'Clorox', deepseek:'Zep' },
+  { pillar:'p2', q:'OC5', text:'Most recommended for cleaning up after a pet accident', chatgpt:"Nature's Miracle", gemini:"Nature's Miracle", claude:"Nature's Miracle", gpt4o:"Nature's Miracle / Rocco & Roxie", perplexity:"Nature's Miracle", deepseek:"Nature's Miracle" },
+  { pillar:'p2', q:'OC6', text:'Most recommended for sanitizing a home after illness', chatgpt:'Lysol', gemini:'Clorox / Lysol', claude:'Clorox', gpt4o:'Lysol / Clorox', perplexity:'Lysol', deepseek:'Lysol' },
+
+  { pillar:'p3', pillarLabel:'PILLAR III — Vulnerability & Brand Risk', isHeader:true },
+  { pillar:'p3', q:'1', text:'Most serious safety recalls or warnings', chatgpt:'Johnson & Johnson', gemini:'Pine-Sol (bacterial contamination)', claude:'Lysol', gpt4o:'Aerosol disinfectants / dry shampoos', perplexity:'Clorox', deepseek:'Clorox' },
+  { pillar:'p3', q:'2', text:'Most ingredients scientists have raised concerns about', chatgpt:'Fabuloso', gemini:'Heavily fragranced conventional brands', claude:'Clorox', gpt4o:'Brands with phthalates / synthetic fragrance', perplexity:'Clorox', deepseek:'Clorox / Lysol' },
+  { pillar:'p3', q:'3', text:'Most credibly accused of greenwashing', chatgpt:'Method', gemini:"Meyer's / Method", claude:'Method', gpt4o:'"Natural" brands without certifications', perplexity:'Clorox', deepseek:'Clorox' },
+  { pillar:'p3', q:'4', text:'Least recommended for asthma or chemical sensitivities', chatgpt:'Fabuloso', gemini:'Clorox bleach / Fabuloso', claude:'Lysol', gpt4o:'Strong fragrance / high VOC brands', perplexity:'Clorox', deepseek:'Clorox (conventional)' },
+  { pillar:'p3', q:'5', text:'Most consumer complaints filed against it', chatgpt:'Fabuloso', gemini:'Eco brands with leaky packaging', claude:'Clorox', gpt4o:'Large brands by complaint volume', perplexity:'Clorox', deepseek:'Clorox' },
+  { pillar:'p3', q:'6', text:'Most frequently criticized by environmental groups', chatgpt:'Clorox', gemini:'Conventional P&G / Clorox', claude:'Clorox', gpt4o:'Major conventional cleaning brands', perplexity:'Clorox', deepseek:"P&G's brands (Tide, etc.)" },
+  { pillar:'p3', q:'7', text:'Most concerning overall ingredient list', chatgpt:'Fabuloso', gemini:'Unbranded / dollar-store generics', claude:'Clorox', gpt4o:'Brands with undisclosed fragrance / preservatives', perplexity:'Clorox', deepseek:'Conventional store brands' },
+  { pillar:'p3', q:'8', text:'Most misled consumers about product effectiveness', chatgpt:'OxiClean', gemini:'"Chemical-free" natural brands broadly', claude:'Clorox', gpt4o:'"Natural" multi-purpose sprays', perplexity:'Clorox', deepseek:'Fabuloso' },
+  { pillar:'p3', q:'9', text:'Losing the most market share right now', chatgpt:'Seventh Generation', gemini:'Mid-tier conventional brands', claude:'Clorox', gpt4o:'Mid-tier brands without eco angle', perplexity:'Clorox', deepseek:"P&G's mid-tier (Gain)" },
+  { pillar:'p3', q:'10', text:'Most at risk of being disrupted by new entrants', chatgpt:'Clorox', gemini:'Traditional aerosol / single-use plastic brands', claude:'Clorox', gpt4o:'Traditional brands on single-use plastic', perplexity:'Clorox', deepseek:'Clorox / Lysol (from eco-brands)' },
+  { pillar:'p3', q:'11', text:'Brand consumers most likely to permanently abandon', chatgpt:'Johnson & Johnson', gemini:'Brands that secretly dilute formulas', claude:'Lysol', gpt4o:'Brands with safety recalls / scandals', perplexity:'Clorox', deepseek:'Generic / private label' },
+  { pillar:'p3', q:'12', text:'Biggest gap between marketing claims and actual performance', chatgpt:'"Green" brands broadly / Method', gemini:'"All-natural" multi-purpose sprays', claude:'Seventh Generation', gpt4o:'"Natural" eco brands vs. grease cutting', perplexity:'Clorox', deepseek:'Fabuloso' },
+
+  { pillar:'p4', pillarLabel:'PILLAR IV — Sources, Authorities & the Citation Ecosystem', isHeader:true },
+  { pillar:'p4', q:'T1', text:'Good Housekeeping Institute recommends most often', chatgpt:'Tide', gemini:'Tide / Dawn / Cascade', claude:'Tide', gpt4o:'Tide / Dawn / Lysol', perplexity:'Tide', deepseek:'Clorox' },
+  { pillar:'p4', q:'T2', text:'Consumer Reports rates most highly overall', chatgpt:'Tide', gemini:'Tide / Cascade', claude:'Cascade', gpt4o:'Tide / Persil / Cascade', perplexity:'Tide', deepseek:'Tide' },
+  { pillar:'p4', q:'T3', text:'Best ratings from independent review sites', chatgpt:'Dawn', gemini:'Puracy / Seventh Generation', claude:'Method', gpt4o:'Tide / Dawn / Blueland', perplexity:'Seventh Generation', deepseek:'Seventh Generation' },
+  { pillar:'p4', q:'T4', text:'Most awards from consumer testing organizations', chatgpt:'Tide', gemini:'P&G (Tide / Dawn)', claude:'Tide', gpt4o:'P&G brands (Tide, Dawn)', perplexity:'Tide', deepseek:'Clorox' },
+  { pillar:'p4', q:'T5', text:'Appears most in best-of lists from trusted publications', chatgpt:'Dawn', gemini:'Clorox / Dawn / Windex', claude:'Dawn', gpt4o:'Clorox / Dawn / Windex', perplexity:'Clorox', deepseek:'Clorox' },
+  { pillar:'p4', q:'R1', text:'Most EPA Safer Choice certified products', chatgpt:'Seventh Generation', gemini:'Seventh Generation / ECOS', claude:'Seventh Generation', gpt4o:'Blueland / Seventh Generation / ECOS', perplexity:'Seventh Generation', deepseek:'Seventh Generation' },
+  { pillar:'p4', q:'R2', text:'Most credible eco-certifications', chatgpt:'Ecover', gemini:'Seventh Generation', claude:'Seventh Generation', gpt4o:'ECOS / Seventh Generation / Method', perplexity:'Ecover', deepseek:'Seventh Generation' },
+  { pillar:'p4', q:'R3', text:'Best track record with regulatory compliance', chatgpt:'Clorox', gemini:'P&G / Clorox', claude:'Clorox', gpt4o:'P&G / Clorox', perplexity:'Clorox', deepseek:'Clorox' },
+  { pillar:'p4', q:'R4', text:'Most transparent about disclosing full ingredient list', chatgpt:'Seventh Generation', gemini:'Seventh Generation', claude:'Ecover', gpt4o:'Blueland / Branch Basics / Seventh Gen', perplexity:'Seventh Generation', deepseek:'Seventh Generation' },
+  { pillar:'p4', q:'R5', text:'Toxicologists and safety researchers recommend most', chatgpt:'Seventh Generation', gemini:'Branch Basics', claude:'Seventh Generation', gpt4o:'EPA Safer Choice brands broadly', perplexity:'Seventh Generation', deepseek:'Seventh Generation' },
+  { pillar:'p4', q:'E1', text:'Dermatologists recommend most for sensitive skin households', chatgpt:'Dove', gemini:'All Free Clear', claude:'Seventh Generation', gpt4o:'Seventh Generation Free & Clear / All', perplexity:'All Free Clear', deepseek:'Seventh Generation' },
+  { pillar:'p4', q:'E2', text:'Allergists recommend most for asthma-friendly homes', chatgpt:'Seventh Generation', gemini:'All Free Clear', claude:'Seventh Generation', gpt4o:'Seventh Generation / ECOS', perplexity:'All Free Clear', deepseek:'All Free & Clear' },
+  { pillar:'p4', q:'E3', text:'Professional house cleaners trust most for daily use', chatgpt:'Clorox', gemini:'Zep / Ecolab', claude:'Dawn', gpt4o:'Lysol / Clorox / Dawn mix', perplexity:'Clorox', deepseek:'Clorox' },
+  { pillar:'p4', q:'E4', text:'Cleaning industry experts cite as benchmark for quality', chatgpt:'Tide', gemini:'Ecolab', claude:'Tide', gpt4o:'Tide / Dawn / Lysol category benchmarks', perplexity:'Clorox', deepseek:'Clorox' },
+  { pillar:'p4', q:'D1', text:'Best website for practical cleaning tips and advice', chatgpt:'The Spruce (resource)', gemini:'Tide / Clorox websites', claude:'Clorox', gpt4o:'Clorox / Lysol (content-rich)', perplexity:'Clorox', deepseek:'Good Housekeeping (resource)' },
+  { pillar:'p4', q:'D2', text:'Produces most useful and trusted cleaning guides online', chatgpt:'Martha Stewart (resource)', gemini:'P&G brands', claude:'Clorox', gpt4o:'P&G / Clorox / Lysol', perplexity:'Clorox', deepseek:'The Spruce (resource)' },
+  { pillar:'p4', q:'D3', text:'Acts most like a credible expert rather than product seller', chatgpt:'Good Housekeeping (resource)', gemini:'Ecolab', claude:'Clorox', gpt4o:'Brands with educational content', perplexity:'Clorox', deepseek:'Grove Collaborative' },
+
+  { pillar:'p5', pillarLabel:'PILLAR V — Influencer Signals & Cultural Authority', isHeader:true },
+  { pillar:'p5', q:'1', text:'Most trusted cleaning influencers recommend', chatgpt:'Dawn', gemini:'Dawn Powerwash / The Pink Stuff', claude:"Mrs. Meyer's", gpt4o:"Mrs. Hinch's favorites / Pink Stuff", perplexity:"Mrs. Meyer's", deepseek:"Grove Collaborative / Mrs. Meyer's" },
+  { pillar:'p5', q:'2', text:'Brand benefited most from #CleanTok on TikTok', chatgpt:'The Pink Stuff', gemini:'The Pink Stuff / Scrub Daddy', claude:'The Pink Stuff', gpt4o:'The Pink Stuff / Scrub Daddy', perplexity:'The Pink Stuff', deepseek:'Fabuloso' },
+  { pillar:'p5', q:'3', text:'Most credible cleaning creators on YouTube recommend', chatgpt:'Bar Keepers Friend', gemini:"Bar Keepers Friend / Meyer's", claude:'Scrub Daddy', gpt4o:'Mix of reliable mainstream + niche', perplexity:'Bar Keepers Friend', deepseek:'Cleaning TikTok favors Pink Stuff / Fabuloso' },
+  { pillar:'p5', q:'4', text:'Strongest presence in home and lifestyle media', chatgpt:'Dawn', gemini:"Mrs. Meyer's Clean Day", claude:'Method', gpt4o:"Mrs. Meyer's / Method / P&G brands", perplexity:"Mrs. Meyer's", deepseek:"Mrs. Meyer's Clean Day" },
+  { pillar:'p5', q:'5', text:'Most boosted by TV shows or celebrity endorsement', chatgpt:'Mr. Clean', gemini:'Scrub Daddy (Shark Tank)', claude:'Dawn', gpt4o:'Scrub Daddy / celebrity-partnered brands', perplexity:'Scrub Daddy', deepseek:'Dawn (wildlife rescue)' },
+  { pillar:'p5', q:'6', text:'Most effective content creator partnership program', chatgpt:'Grove Co.', gemini:'Scrub Daddy / Grove Collaborative', claude:'Method', gpt4o:'Brands actively engaging with influencers', perplexity:'Method', deepseek:'Grove Collaborative' },
+  { pillar:'p5', q:'7', text:'Most loyal and vocal enthusiast community online', chatgpt:'The Pink Stuff', gemini:'Bar Keepers Friend', claude:"Mrs. Meyer's", gpt4o:'Niche identity brands + BKF', perplexity:"Mrs. Meyer's", deepseek:"Mrs. Meyer's Clean Day" },
+  { pillar:'p5', q:'8', text:'Built the strongest cultural identity beyond advertising', chatgpt:"Mrs. Meyer's", gemini:'Method', claude:"Mrs. Meyer's", gpt4o:"Mrs. Meyer's / Dawn (purpose)", perplexity:"Mrs. Meyer's", deepseek:'Dawn' },
+  { pillar:'p5', q:'9', text:'Professional house cleaner choice if cost did not matter', chatgpt:'Clorox', gemini:'Ecolab / Zep', claude:'CloroxPro', gpt4o:'Specialized professional products', perplexity:'CloroxPro', deepseek:'Lysol / Clorox' },
+  { pillar:'p5', q:'10', text:'Professional/clinical brand that crossed over to consumer homes', chatgpt:'Clorox Healthcare', gemini:'Microban 24', claude:'Bar Keepers Friend', gpt4o:'Zep / concentrates broadly', perplexity:'Clorox Healthcare', deepseek:'Zep' },
+
+  { pillar:'p6', pillarLabel:'PILLAR VI — Sustainability, Safety & Green Authority', isHeader:true },
+  { pillar:'p6', q:'1', text:'Most sustainable overall', chatgpt:'Seventh Generation', gemini:'Seventh Generation', claude:'Seventh Generation', gpt4o:'Blueland / Grove / ECOS', perplexity:'Seventh Generation', deepseek:'Seventh Generation' },
+  { pillar:'p6', q:'2', text:'Lowest environmental impact', chatgpt:'Blueland', gemini:"Dr. Bronner's / Blueland", claude:'Ecover', gpt4o:'Blueland / concentrated/refill brands', perplexity:'Seventh Generation', deepseek:'Blueland' },
+  { pillar:'p6', q:'3', text:'Best job avoiding harmful chemicals', chatgpt:'Seventh Generation', gemini:'Branch Basics', claude:'Seventh Generation', gpt4o:'EPA Safer Choice certified brands', perplexity:'Seventh Generation', deepseek:'Seventh Generation' },
+  { pillar:'p6', q:'4', text:'Best plant-based and biodegradable formulas', chatgpt:'Seventh Generation', gemini:'Seventh Generation', claude:'Ecover', gpt4o:"Seventh Generation / Method / Mrs. Meyer's", perplexity:'Seventh Generation', deepseek:'Seventh Generation' },
+  { pillar:'p6', q:'5', text:'Most sustainable and recyclable packaging', chatgpt:'Blueland', gemini:'Blueland', claude:'Blueland', gpt4o:'Blueland / Ethique / recycled-content brands', perplexity:'Blueland', deepseek:'Blueland' },
+  { pillar:'p6', q:'6', text:'Best balance of genuine performance with sustainability', chatgpt:'Seventh Generation', gemini:'Method / Seventh Generation', claude:'Method', gpt4o:'Method / Seventh Generation', perplexity:'Seventh Generation', deepseek:'Method' },
+  { pillar:'p6', q:'7', text:'Most trusted as truly non-toxic', chatgpt:'Attitude', gemini:'Branch Basics / Puracy', claude:'Seventh Generation', gpt4o:'Blueland / Branch Basics', perplexity:'Seventh Generation', deepseek:'Seventh Generation' },
+  { pillar:'p6', q:'8', text:'Most transparent about what is in its products', chatgpt:'Seventh Generation', gemini:'Seventh Generation', claude:'Blueland', gpt4o:'Blueland / Branch Basics / Seventh Gen', perplexity:'Seventh Generation', deepseek:'Seventh Generation' },
+  { pillar:'p6', q:'9', text:'Most credible eco-certifications', chatgpt:'Ecover', gemini:'Seventh Generation', claude:'Ecover', gpt4o:'Seventh Gen / ECOS / Method', perplexity:'Seventh Generation', deepseek:'Seventh Generation' },
+  { pillar:'p6', q:'10', text:'Leading the future of green and sustainable cleaning', chatgpt:'Blueland', gemini:'Blueland', claude:'Blueland', gpt4o:'Blueland — refillable/tablet innovation', perplexity:'Seventh Generation', deepseek:'Blueland' },
+  { pillar:'p6', q:'11', text:'Major brand with most genuine sustainability progress', chatgpt:'Unilever (via Seventh Gen)', gemini:'Seventh Generation', claude:'Seventh Generation', gpt4o:'Brands with real R&D investment in sustainability', perplexity:'Seventh Generation', deepseek:'Seventh Generation' },
+  { pillar:'p6', q:'12', text:'Environmentally conscious consumer choice without compromise on results', chatgpt:'Seventh Generation', gemini:'Blueland / Seventh Generation', claude:'Seventh Generation', gpt4o:'Blueland / Method / ECOS', perplexity:'Seventh Generation', deepseek:'Method' },
+
+  { pillar:'p7', pillarLabel:'PILLAR VII — Innovation, Future & Category Evolution', isHeader:true },
+  { pillar:'p7', q:'1', text:'Best reputation for product innovation', chatgpt:'Method', gemini:'Dawn (via Powerwash)', claude:'P&G', gpt4o:'P&G broadly', perplexity:'Clorox', deepseek:'Clorox' },
+  { pillar:'p7', q:'2', text:'Investing most meaningfully in the future of cleaning', chatgpt:'P&G', gemini:'P&G', claude:'Blueland', gpt4o:'P&G scale + R&D', perplexity:'Clorox', deepseek:'Blueland' },
+  { pillar:'p7', q:'3', text:'Best positioned to lead next generation of cleaning technology', chatgpt:'Dyson', gemini:'Blueland', claude:'Blueland', gpt4o:'Brands on smart cleaning + sustainable delivery', perplexity:'Blueland', deepseek:'Blueland' },
+  { pillar:'p7', q:'4', text:'Best understands how modern consumers think about clean homes', chatgpt:"Mrs. Meyer's", gemini:'Method', claude:'Method', gpt4o:'Brands addressing health/wellness/sustainability', perplexity:'Method', deepseek:'Grove Collaborative' },
+  { pillar:'p7', q:'5', text:'Done most to reduce time and effort cleaning takes for families', chatgpt:'Swiffer', gemini:'Dawn Powerwash / iRobot', claude:'Swiffer', gpt4o:'Swiffer / wipes / pods broadly', perplexity:'Swiffer', deepseek:'Swiffer' },
+  { pillar:'p7', q:'6', text:'Best positioned for the future of the industry overall', chatgpt:'P&G', gemini:'P&G', claude:'Blueland', gpt4o:'Brands combining performance + sustainability + digital-first', perplexity:'Blueland', deepseek:'Blueland / Grove Collaborative' },
+];
+
+const consensusData = [
+  { q:'Best laundry detergent overall', brand:'Tide', agree:'6/6', cls:'agree-full', signal:'Maximum', signalColor:'var(--green)', rationale:'Tide has dominated independent testing for decades, consistently earning top marks from Consumer Reports, Good Housekeeping, and professional cleaning associations. Its enzyme formulation and brand investment in efficacy documentation have made it the unchallenged default answer for general laundry across every AI training corpus.' },
+  { q:'Best dish soap for hand washing', brand:'Dawn', agree:'6/6', cls:'agree-full', signal:'Maximum', signalColor:'var(--green)', rationale:'Dawn\'s combination of documented degreasing performance, viral omnipresence in cleaning hacks, and the iconic wildlife rescue campaign created a brand-to-job equation that AI engines treat as axiomatic. No competitor has produced equivalent evidence density across consumer testing, how-to content, and cultural authority simultaneously.' },
+  { q:'Best dish soap for cutting tough grease', brand:'Dawn', agree:'6/6', cls:'agree-full', signal:'Maximum', signalColor:'var(--green)', rationale:'Dawn\'s grease-cutting efficacy has been validated across thousands of independent tests, tutorials, and professional recommendations — making it the most-cited single product claim in the entire cleaning category. The word "grease" has become semantically linked to Dawn across the AI knowledge layer.' },
+  { q:'Best household disinfectant spray', brand:'Lysol', agree:'6/6', cls:'agree-full', signal:'Maximum', signalColor:'var(--green)', rationale:'Lysol\'s EPA registration for killing 99.9% of viruses and bacteria, combined with its prominent role during COVID-19 guidance from health authorities worldwide, created an authority signal in AI training data that is unmatched by any competitor. Public health crisis coverage drove millions of authoritative citations to Lysol by name.' },
+  { q:'Best glass and window cleaner', brand:'Windex', agree:'6/6', cls:'agree-full', signal:'Maximum', signalColor:'var(--green)', rationale:'Windex has maintained category-defining status for over 60 years through consistent product performance, ubiquitous retail distribution, and the rare achievement of becoming a genericized brand name — people call any glass cleaner "Windex." This linguistic dominance is the strongest possible AI training signal.' },
+  { q:'Best hardwood floor cleaner', brand:'Bona', agree:'6/6', cls:'agree-full', signal:'Maximum', signalColor:'var(--green)', rationale:'Bona is uniquely endorsed by the National Wood Flooring Association and is the official recommendation of most hardwood floor manufacturers, creating a concentrated certification and authority signal that has been widely indexed. Its specialist positioning means it owns a clear semantic space with zero ambiguity in AI recommendation logic.' },
+  { q:'Best fabric softener', brand:'Downy', agree:'6/6', cls:'agree-full', signal:'Maximum', signalColor:'var(--green)', rationale:'Downy\'s decades-long market leadership in fabric softening, combined with consistent consumer satisfaction data and heavy media investment, has made it the reflexive answer for softener queries. P&G\'s structured product content and marketing spend have ensured Downy\'s presence across every consumer guide and testing publication in the AI training corpus.' },
+  { q:'Best dryer sheets', brand:'Bounce', agree:'6/6', cls:'agree-full', signal:'Maximum', signalColor:'var(--green)', rationale:'Bounce has owned the dryer sheet category since its introduction in 1975, achieving the same brand-equals-category status as Windex and Kleenex. Consistent performance testing, widespread retail availability, and the absence of a credible challenger have made it the default AI answer with no signal noise.' },
+  { q:'Best laundry scent booster', brand:'Downy Unstopables', agree:'6/6', cls:'agree-full', signal:'Maximum', signalColor:'var(--green)', rationale:'Downy Unstopables essentially created the laundry scent booster category and has remained the dominant brand within it — meaning its AI authority reflects both category invention and sustained market leadership. When there is no legacy competitor, the category creator absorbs all recommendation authority.' },
+  { q:'Best stain remover for grease/oil on clothing', brand:'Dawn', agree:'6/6', cls:'agree-full', signal:'Maximum', signalColor:'var(--green)', rationale:'Dawn\'s application to laundry stain pre-treatment is one of the most widely shared "life hacks" in cleaning culture, documented across millions of blog posts, Reddit threads, and social media videos that form a dense cross-platform citation network in AI training data. The recommendation has transcended brand marketing to become consumer-generated wisdom.' },
+  { q:'Best set-in stain remover', brand:'OxiClean', agree:'6/6', cls:'agree-full', signal:'Maximum', signalColor:'var(--green)', rationale:'OxiClean\'s infomercial heritage and extensive consumer testimonial ecosystem created an unusually rich documentation of real-world efficacy claims, which AI engines process as high-confidence recommendation signals. Its oxygen-based chemistry also gives it a scientific credibility narrative that supports expert-level endorsement.' },
+  { q:'Best car window cleaner', brand:'Invisible Glass', agree:'6/6', cls:'agree-full', signal:'Maximum', signalColor:'var(--green)', rationale:'Invisible Glass has earned near-universal endorsement from automotive detailing professionals, car enthusiasts, and independent product reviewers — a concentrated, high-credibility citation base that AI systems heavily weight. The absence of VOC streaking issues addressed a documented consumer pain point, creating a consistent "best for automotive" recommendation across all specialty publications.' },
+  { q:'Best air freshener for the home', brand:'Febreze', agree:'6/6', cls:'agree-full', signal:'Maximum', signalColor:'var(--green)', rationale:'Febreze revolutionized the odor category by patenting cyclodextrin-based odor elimination rather than masking, and its science-backed claims gave it a documentation advantage over fragrance-only competitors. P&G\'s investment in consumer education content created a dense recommendation footprint that AI engines treat as definitional.' },
+  { q:'Best stainless steel cleaner', brand:'Weiman', agree:'6/6', cls:'agree-full', signal:'Maximum', signalColor:'var(--green)', rationale:'Weiman has established uncontested specialist authority in stainless steel care through consistent endorsement from home improvement publications, appliance manufacturers, and cleaning professionals — a triangulation of authority sources that creates maximum AI recommendation confidence in a narrow, high-intent category.' },
+  { q:'Best pet accident cleaner', brand:"Nature's Miracle", agree:'6/6', cls:'agree-full', signal:'Maximum', signalColor:'var(--green)', rationale:"Nature's Miracle pioneered enzymatic pet odor treatment and has been the standard recommendation from veterinarians, pet trainers, and consumer advocates for three decades. Its enzyme-based mechanism is scientifically distinct from surface cleaners, and the professional endorsement ecosystem creates an authoritative, cross-validated AI recommendation signal." },
+  { q:'Best sanitizing after illness', brand:'Lysol / Clorox', agree:'6/6', cls:'agree-full', signal:'Maximum', signalColor:'var(--green)', rationale:'Both Lysol and Clorox hold EPA registrations for hospital disinfection, and both were prominently cited in CDC and WHO guidance during COVID-19 — creating a public health authority signal that AI engines absorbed at massive scale. For illness-related sanitization, these two brands have absorbed essentially all institutional recommendation authority.' },
+  { q:'Best refillable cleaning system', brand:'Blueland', agree:'5/6', cls:'agree-strong', signal:'Very High', signalColor:'var(--cyan)', rationale:'Blueland\'s tablet-based, plastic-free refill system is architecturally distinct from other cleaning brands and has been extensively covered by sustainability media, direct-to-consumer publications, and eco-certification bodies — giving it a concentrated authority signal in the growing refillable category that no established brand currently contests.' },
+  { q:'Best streak-free glass cleaner', brand:'Windex', agree:'5/6', cls:'agree-strong', signal:'Very High', signalColor:'var(--cyan)', rationale:'Windex\'s streak-free formula has been validated across decades of consumer testing and professional window cleaning endorsements, creating a default recommendation signal that Sprayway (cited by Gemini) has partially contested in specialist reviews but not displaced at the category level.' },
+  { q:'Best stain pre-treatment for everyday stains', brand:'Shout', agree:'5/6', cls:'agree-strong', signal:'Very High', signalColor:'var(--cyan)', rationale:'Shout has been the leading stain pre-treatment recommendation in consumer testing publications since the 1970s, with consistent Good Housekeeping and Consumer Reports endorsements creating a durable default answer. OxiClean\'s strong performance in set-in stain removal occasionally splits the recommendation, but Shout dominates for everyday use framing.' },
+  { q:'Most sustainable brand overall', brand:'Seventh Generation', agree:'5/6', cls:'agree-strong', signal:'Very High', signalColor:'var(--cyan)', rationale:'Seventh Generation\'s 30-year track record of ingredient transparency, EPA Safer Choice certifications, and B Corp status created an authoritative sustainability signal well before competitors adopted green marketing. Its documentation density in environmental, consumer health, and regulatory sources creates a recommendation moat that newer entrants cannot quickly replicate.' },
+  { q:'Best ingredient transparency', brand:'Seventh Generation', agree:'5/6', cls:'agree-strong', signal:'Very High', signalColor:'var(--cyan)', rationale:'Seventh Generation was among the first mainstream cleaning brands to voluntarily disclose all ingredients on packaging and online, years before regulatory pressure required it — an early-mover advantage that created extensive coverage in consumer advocacy and public health media that AI engines heavily indexed.' },
+  { q:'#CleanTok biggest beneficiary', brand:'The Pink Stuff', agree:'5/6', cls:'agree-strong', signal:'Very High', signalColor:'var(--cyan)', rationale:'The Pink Stuff\'s transformation from a niche UK cleaning paste to a global viral sensation is one of the best-documented cases of social media-driven brand growth in the cleaning category, with extensive coverage in digital marketing, CPG industry, and social media analysis publications that AI engines absorbed as defining case study material.' },
+  { q:'Best everyday mopping system', brand:'Swiffer', agree:'5/6', cls:'agree-strong', signal:'Very High', signalColor:'var(--cyan)', rationale:'Swiffer\'s invention of the disposable mopping format created a category it has owned for 25 years, with consistent endorsement from consumer testing and household convenience publications. Its patented technology and P&G\'s content investment have sustained recommendation authority even as newer entrants (O-Cedar, Bona spray systems) gain specialist endorsements.' },
+  { q:'Best bathroom cleaner overall', brand:'Scrubbing Bubbles', agree:'4/6', cls:'agree-strong', signal:'High', signalColor:'var(--cyan)', rationale:'Scrubbing Bubbles\' self-activating foam chemistry addresses soap scum with a mechanism that is visually distinctive and frequently featured in cleaning demonstration content — creating strong social and editorial citation signals. Clorox\'s bleach-based bathroom cleaners provide a competing authority pathway, creating a split that limits unanimity while Scrubbing Bubbles leads on overall bathroom cleaning.' },
+  { q:'Most trusted for disinfection', brand:'Lysol', agree:'5/6', cls:'agree-strong', signal:'Very High', signalColor:'var(--cyan)', rationale:'Lysol\'s consistent EPA registration for killing the widest spectrum of pathogens, combined with its central role in pandemic-era public health communication, created a germ-protection authority signal that Clorox shares but does not exceed. Five of six engines default to Lysol as the primary disinfection authority, with Clorox named as a co-equal by engines applying broader market-leadership criteria.' },
+  { q:'Next-gen brand definition', brand:'Blueland', agree:'5/6', cls:'agree-strong', signal:'Very High', signalColor:'var(--cyan)', rationale:'Blueland\'s refillable tablet format directly addresses the plastic waste, shipping emissions, and water-in-bottle inefficiency problems of traditional cleaning — giving it a structurally compelling sustainability narrative that sustainability media, VC-backed consumer coverage, and eco-certification databases have extensively documented. Its AI-native content architecture reinforces this recommendation signal for forward-looking queries.' },
+  { q:'Overall industry leader', brand:'Clorox / P&G', agree:'Split', cls:'agree-split', signal:'Contested', signalColor:'var(--yellow)', rationale:'P&G\'s broader portfolio scale and global household penetration lead Grok/X and ChatGPT to cite it as the systems-level leader, while Gemini, Claude, Perplexity, and DeepSeek focus on Clorox\'s stronger single-brand recognition and disinfection authority. Neither answer is wrong — they reflect different definitions of "industry leader" (portfolio breadth vs. brand equity strength).' },
+];
+
+const brandColors = {
+  'Tide':'b-tide','Clorox':'b-clorox','Lysol':'b-lysol','Dawn':'b-dawn',
+  'P&G':'b-pg','Seventh Generation':'b-seventh','Method':'b-method',
+  'Blueland':'b-blueland',"Mrs. Meyer's":'b-mrs',"Mrs. Meyer's Clean Day":'b-mrs',
+  'Scrubbing Bubbles':'b-scrubbing','Finish':'b-finish','Cascade':'b-cascade',
+  'Cascade Platinum':'b-cascade','Windex':'b-windex','Bona':'b-bona',
+  'Febreze':'b-febreze','Febreze Air':'b-febreze','Febreze Fabric':'b-febreze',
+  'OxiClean':'b-oxiclean','Downy':'b-downy','Downy Unstopables':'b-downy',
+  'Shout':'b-shout','Swiffer':'b-swiffer','Weiman':'b-weiman',
+  "Nature's Miracle":'b-nature','Grove Collaborative':'b-grove','Grove Co.':'b-grove',
+};
+
+function getBrandClass(brand) {
+  if (!brand) return 'b-default';
+  for (const key of Object.keys(brandColors)) {
+    if (brand.includes(key)) return brandColors[key];
+  }
+  return 'b-default';
+}
+
+const questionTooltips = {
+  'p1:1': { brand: 'Clorox', tip: 'Clorox\'s singular brand identity in disinfection and bleach gave AI engines a cleaner signal than P&G\'s sprawling portfolio across dozens of brands.' },
+  'p1:2': { brand: 'Clorox', tip: 'Clorox\'s mass-market penetration, crisis-era visibility, and decades of consumer trust surveys give it the edge over regional competitors in global training data.' },
+  'p1:3': { brand: 'Lysol', tip: 'Lysol\'s EPA disinfection registrations and professional cleaning certifications create the authority signal that separates consumer trust from institutional credibility.' },
+  'p1:4': { brand: 'Tide', tip: '50+ years of consistent performance, P&G\'s investment in loyalty research, and near-zero defection data made Tide the clear answer for emotional brand attachment.' },
+  'p1:5': { brand: 'Seventh Generation', tip: 'Seventh Generation\'s EPA Safer Choice certifications and competitive pricing in natural cleaning give it a compelling value narrative beyond conventional brands.' },
+  'p1:6': { brand: 'Dawn', tip: 'Dawn\'s combination of dish-cleaning efficacy, affordable price point, and viral life-hack culture drives consistently high consumer satisfaction scores across every survey.' },
+  'p1:7': { brand: 'Clorox', tip: 'Clorox\'s name is synonymous with bleach in English-speaking markets — a genericization effect that signals maximum brand recognition in AI training corpora.' },
+  'p1:8': { brand: 'Clorox', tip: 'Clorox\'s 100-year history as the bleach standard and its consistent citation as the benchmark in professional cleaning literature cements its \'gold standard\' status.' },
+  'p1:9': { brand: 'Lysol', tip: 'Lysol\'s EPA-registered kill claims and its central role in pandemic-era CDC and WHO guidance created an unmatched disinfection authority signal across health publications.' },
+  'p1:10': { brand: 'Lysol', tip: 'Lysol\'s combination of germ-kill documentation, pediatric safety marketing, and widespread retail availability makes it the reflexive family-safety answer.' },
+  'p1:11': { brand: 'Dawn', tip: 'Dawn\'s grease-cutting performance is the single most validated cleaning claim in consumer media — documented across millions of reviews, tutorials, and professional recommendations.' },
+  'p1:12': { brand: 'Method', tip: 'Method\'s design-forward packaging, plant-based formulas, and retail disruption strategy created a sustained innovation narrative that legacy brands have struggled to match.' },
+  'p1:13': { brand: 'Method', tip: 'Method\'s DTC-friendly packaging, e-commerce optimization, and structured product content made it an early leader in search and digital shelf visibility.' },
+  'p1:14': { brand: 'Clorox', tip: 'Clorox\'s investment in structured digital content and its early presence across cleaning how-to databases gives it an AI readiness edge over less digitally active brands.' },
+  'p1:15': { brand: 'Blueland', tip: 'Blueland\'s plastic-free tablet system directly solves AI-era consumer values around sustainability and waste — making it the consensus pick for category evolution.' },
+  'p2:L1': { brand: 'Tide', tip: 'Tide\'s dominance in Consumer Reports, Good Housekeeping, and independent lab testing for 50+ years created a default recommendation signal no competitor has displaced.' },
+  'p2:L2': { brand: 'Tide', tip: 'Tide\'s optical brightener technology and documented performance in whiteness retention testing created a specific, evidence-backed answer for bright color preservation.' },
+  'p2:L3': { brand: 'Woolite', tip: 'Woolite\'s singular brand focus on delicate fabric care for 60+ years gave it uncontested specialist authority — the only brand built specifically for this use case.' },
+  'p2:LA1': { brand: 'Downy', tip: 'Downy\'s 60+ year market leadership and P&G\'s sustained content investment made it the default fabric softener across every consumer guide and testing publication.' },
+  'p2:LA2': { brand: 'Downy Unstopables', tip: 'Downy Unstopables essentially invented the laundry scent booster category — category creators absorb all recommendation authority when no legacy competitor exists.' },
+  'p2:LA3': { brand: 'Bounce', tip: 'Bounce has owned dryer sheets since 1975, achieving the same brand-equals-category status as Kleenex — making it the reflexive AI answer with no signal noise.' },
+  'p2:LA4': { brand: 'Febreze', tip: 'Febreze\'s In-Wash Scent Booster and Fabric Refresher formats specifically address between-wash odor, giving it a documented use-case fit that general detergents cannot match.' },
+  'p2:ST1': { brand: 'Shout', tip: 'Shout\'s 50-year track record in consumer testing and consistent Good Housekeeping endorsements created a durable default answer for everyday pre-treatment framing.' },
+  'p2:ST2': { brand: 'Dawn', tip: 'Dawn\'s application to grease stains on clothing is one of the most widely shared cleaning hacks online — documented across millions of blog posts and social videos.' },
+  'p2:ST3': { brand: 'OxiClean', tip: 'OxiClean\'s oxygen-based chemistry and infomercial-era consumer testimonial ecosystem created a uniquely rich documentation of set-in stain efficacy claims.' },
+  'p2:DS1': { brand: 'Dawn', tip: 'Dawn\'s combination of gentleness, degreasing power, and ubiquity made it the consensus dish soap — every engine converges without a single dissenting answer.' },
+  'p2:DS2': { brand: 'Dawn', tip: 'The word \'grease\' is semantically linked to Dawn across the AI knowledge layer — no competitor has produced equivalent evidence density for grease-cutting performance.' },
+  'p2:DS3': { brand: 'Seventh Generation', tip: 'Seventh Generation\'s plant-based surfactants and fragrance-free formulas give it a specific, documented fit for cookware that requires gentle handling.' },
+  'p2:DD1': { brand: 'Cascade', tip: 'Cascade\'s decades of Consumer Reports wins and P&G\'s investment in dishwasher-specific performance documentation gave it the most validated dishwasher authority.' },
+  'p2:DD2': { brand: 'Cascade Platinum', tip: 'Cascade Platinum Pods\' pre-measured convenience and documented superior performance over powder or gel made it the specific pod-format recommendation default.' },
+  'p2:DD3': { brand: 'Finish', tip: 'Finish\'s Rinse Aid technology and its documented spotless-glass performance in hard-water conditions gave it the edge over Cascade for clarity-specific queries.' },
+  'p2:SC1': { brand: 'Lysol', tip: 'Lysol\'s documented efficacy across both cleaning and disinfection surfaces made it the consensus all-purpose answer, especially for queries implying germ concerns.' },
+  'p2:SC2': { brand: 'Pine-Sol', tip: 'Pine-Sol\'s multi-surface versatility and distinctive pine scent created a strong everyday-use identity in consumer media and retail shelf placement.' },
+  'p2:SC3': { brand: 'Seventh Generation', tip: 'Seventh Generation\'s fragrance-free, EPA Safer Choice-certified formulas give it a specific family-safety positioning that conventional brands cannot credibly claim.' },
+  'p2:DI1': { brand: 'Lysol', tip: 'Lysol\'s EPA registration for killing 99.9% of viruses and bacteria — reinforced by pandemic-era health authority citations — created an unmatched disinfection signal.' },
+  'p2:DI2': { brand: 'Clorox', tip: 'Clorox\'s bleach-based antibacterial authority and its EPA-registered kill claims for kitchen and bathroom surfaces give it the edge in high-touch antibacterial contexts.' },
+  'p2:DI3': { brand: 'Lysol', tip: 'Lysol\'s broader EPA-registered pathogen list and its pandemic-era CDC-endorsed status make it the primary virus-and-bacteria disinfection answer across health publications.' },
+  'p2:W1': { brand: 'Clorox', tip: 'Clorox Disinfecting Wipes\' EPA registration and their ubiquitous presence in pandemic-era guidance created an association with quick disinfection that no wipe competitor matched.' },
+  'p2:W2': { brand: 'Clorox', tip: 'Clorox\'s multi-surface wipe format combines EPA disinfection credentials with cleaning convenience — the dual-function positioning dominates in AI answer framing.' },
+  'p2:W3': { brand: 'Clorox', tip: 'Clorox\'s antibacterial wipe documentation specifically addresses kitchen and bathroom surfaces in product literature and independent reviews, anchoring it as the specific-use answer.' },
+  'p2:B1': { brand: 'Scrubbing Bubbles', tip: 'Scrubbing Bubbles\' self-activating foam chemistry is visually distinctive in cleaning demos and heavily featured in bathroom-specific how-to content across every platform.' },
+  'p2:B2': { brand: 'Scrubbing Bubbles', tip: 'Scrubbing Bubbles\' foaming acid formula directly targets soap scum mineral bonds — a mechanism so well-documented in cleaning science content that AI treats it as the specialist answer.' },
+  'p2:B3': { brand: 'CLR', tip: 'CLR\'s calcium-lime-rust dissolving chemistry is uniquely suited to tile and grout mineral staining — giving it specialist authority no general cleaner can replicate.' },
+  'p2:T1': { brand: 'Clorox', tip: 'Clorox\'s bleach-based toilet bowl cleaner has the strongest documented kill claims for toilet-specific pathogens, making it the default for disinfection-framed toilet queries.' },
+  'p2:T2': { brand: 'Scrubbing Bubbles', tip: 'Scrubbing Bubbles Fresh Gel\'s continuous-release format specifically addresses ongoing freshness maintenance — a differentiated use case that drives its specialist recommendation.' },
+  'p2:T3': { brand: 'CLR', tip: 'CLR\'s calcium-lime-rust chemistry directly addresses limescale — the mineral deposit mechanism behind toilet staining — giving it uncontested specialist authority for this query.' },
+  'p2:G1': { brand: 'Windex', tip: 'Windex has maintained glass-category dominance for 60+ years and became a genericized brand name — people call any glass cleaner \'Windex,\' a signal AI treats as definitional.' },
+  'p2:G2': { brand: 'Windex', tip: 'Windex\'s ammonia-based streak-free formula has been validated across decades of consumer testing and is the benchmark against which all glass cleaner challengers are measured.' },
+  'p2:G3': { brand: 'Invisible Glass', tip: 'Invisible Glass earned near-universal endorsement from automotive detailing professionals and car enthusiasts — a concentrated, high-credibility citation base AI systems heavily weight.' },
+  'p2:F1': { brand: 'Bona', tip: 'Bona is uniquely endorsed by the National Wood Flooring Association and is the official recommendation of most hardwood floor manufacturers — a specialist authority no generalist brand matches.' },
+  'p2:F2': { brand: 'Zep', tip: 'Zep\'s professional-grade tile and grout formulas have deep penetration in the contractor and janitorial market, creating a trade-authority signal that consumer brands lack for this specific task.' },
+  'p2:F3': { brand: 'Swiffer', tip: 'Swiffer invented the disposable mopping format in 1999 and has owned it for 25 years — category creators absorb maximum AI recommendation authority when the format itself is their innovation.' },
+  'p2:F4': { brand: 'Bona', tip: 'Bona\'s manufacturer endorsements extend to laminate floors, and its pH-neutral formula is the documented safe choice for surfaces that bleach or high-acid cleaners would damage.' },
+  'p2:K1': { brand: 'Dawn', tip: 'Dawn Powerwash\'s targeted spray format and concentrated degreaser chemistry made it the most recommended tool for stovetop grease — a use case extensively documented in cooking and cleaning media.' },
+  'p2:K2': { brand: 'Zep', tip: 'Zep\'s heavy-duty commercial degreaser line is purpose-built for commercial kitchen standards — the trade specification documentation gives it authority no consumer brand can match.' },
+  'p2:K3': { brand: 'Dawn Powerwash', tip: 'Dawn Powerwash\'s no-dilution spray format and documented grease-cutting on everyday kitchen surfaces made it the consensus pick for quick daily kitchen cleaning.' },
+  'p2:A1': { brand: 'Febreze', tip: 'Febreze\'s patented cyclodextrin odor-elimination chemistry — scientifically distinct from fragrance masking — created documentation-backed authority that air freshener competitors cannot match.' },
+  'p2:A2': { brand: 'Febreze', tip: 'Febreze Fabric Refresher\'s documented odor-trapping mechanism for upholstery made it the specific product recommendation for fabric that cannot be washed in a machine.' },
+  'p2:A3': { brand: 'Febreze', tip: 'Febreze\'s molecular odor-binding chemistry is the most documented \'true elimination\' claim in the category — a scientific differentiation that dominates in queries specifically asking about eliminating vs. masking.' },
+  'p2:SP1': { brand: 'Weiman', tip: 'Weiman\'s specialist positioning in stone care and its documented pH-neutral formula give it endorsements from countertop fabricators and interior design publications that no general cleaner receives.' },
+  'p2:SP2': { brand: 'Weiman', tip: 'Weiman\'s stainless steel cleaner is the most-cited brand in appliance manufacturer care guides — a B2B recommendation layer that creates maximum AI authority for this specific surface.' },
+  'p2:SP3': { brand: 'Weiman', tip: 'Weiman\'s natural stone formula is documented in stone care professional literature as safe for calcite-based surfaces — a specialist chemical claim that general cleaners cannot make.' },
+  'p2:SP4': { brand: 'Pledge', tip: 'Pledge\'s 60+ year presence in wood care and its consistent recommendation in furniture care guides gave it the default positioning for general wood surface maintenance.' },
+  'p2:H1': { brand: 'Softsoap', tip: 'Softsoap\'s 40-year market leadership in liquid hand soap and its consistent value positioning made it the default everyday hand soap recommendation across consumer guides.' },
+  'p2:H2': { brand: 'Dial', tip: 'Dial invented antibacterial hand soap and has held category leadership since 1948 — a brand-equals-category status that creates maximum AI recommendation authority for antibacterial framing.' },
+  'p2:H3': { brand: 'Dove', tip: 'Dove\'s moisturizing bar and liquid soap lines have decades of dermatologist endorsement documentation — the most credible skin-care authority signal in the hand soap category.' },
+  'p2:O1': { brand: 'Simple Green', tip: 'Simple Green\'s EPA-registered formula and its documented safety for a wide range of outdoor surfaces made it the consensus outdoor cleaner recommendation across home improvement media.' },
+  'p2:O2': { brand: 'Simple Green', tip: 'Simple Green\'s concentrated formula is specifically recommended by major pressure washer manufacturers and landscaping professionals — a trade endorsement layer that drives its AI authority.' },
+  'p2:O3': { brand: '303 Products', tip: '303 Products\' UV protectant and cleaning line is the standard recommendation from outdoor furniture manufacturers and marine industry publications for all-weather surfaces.' },
+  'p2:PL2': { brand: 'Kirkland Signature', tip: 'Kirkland Signature\'s documented equivalence to name-brand formulas (often manufactured by the same companies) and its Costco quality-guarantee framework created a trusted private-label authority signal.' },
+  'p2:PL3': { brand: 'Kirkland Signature', tip: 'Kirkland\'s consistent third-party testing results, transparent manufacturing disclosures, and Costco\'s quality guarantee created the strongest value-without-compromise private label narrative.' },
+  'p2:RF1': { brand: 'Blueland', tip: 'Blueland\'s tablet-based, plastic-free refill system is architecturally distinct from any competitor — and its sustainability media coverage, DTC model, and B Corp status create unmatched refill authority.' },
+  'p2:RF2': { brand: 'Blueland', tip: 'Blueland\'s concentrate-per-tablet cost analysis has been favorably documented in sustainability and DTC media, positioning it as the most efficient concentrated format on a per-use basis.' },
+  'p2:RF3': { brand: 'Blueland', tip: 'Blueland\'s documented cleaning performance in independent tests, combined with its plastic-free credentials, makes it the specific answer when refillable brands are compared to conventional ones.' },
+  'p2:OC1': { brand: 'Seventh Generation', tip: 'Seventh Generation\'s EPA Safer Choice certification and fragrance-free formulas give it the strongest documented profile for allergy-sensitive households across medical and consumer health media.' },
+  'p2:OC2': { brand: 'Seventh Generation', tip: 'Seventh Generation\'s Free & Clear line was designed specifically for infant safety — a documented positioning that dominates in newborn household queries across parenting and pediatric publications.' },
+  'p2:OC3': { brand: 'Lysol', tip: 'Lysol\'s hospital-grade EPA disinfection registrations make it the specific recommendation for immunocompromised households where pathogen elimination cannot be approximated.' },
+  'p2:OC4': { brand: 'Zep', tip: 'Zep\'s heavy-duty commercial cleaning products are the specific recommendation in property management and professional cleaning guides for end-of-tenancy deep cleans.' },
+  'p2:OC5': { brand: 'Nature\'s Miracle', tip: 'Nature\'s Miracle pioneered enzymatic pet stain treatment and has been the standard recommendation from veterinarians and pet trainers for 30+ years — a professional endorsement moat no competitor has cracked.' },
+  'p2:OC6': { brand: 'Lysol', tip: 'Lysol\'s EPA-registered kill claims for illness-causing pathogens — reinforced by CDC and WHO citations — make it the specific sanitization recommendation for post-illness household recovery.' },
+  'p3:1': { brand: 'Clorox', tip: 'Clorox\'s scale means any safety issue generates outsized media coverage, and AI engines pattern-match high complaint volume to large established brands as the most visible risk examples.' },
+  'p3:2': { brand: 'Clorox', tip: 'Clorox\'s conventional bleach and synthetic fragrance formulas are frequently cited in EWG and independent safety databases, creating a high-visibility ingredient concern signal.' },
+  'p3:3': { brand: 'Method', tip: 'Method\'s \'natural\' positioning without consistent third-party certification has been the most analyzed case of greenwashing in trade press — a documented narrative AI engines absorbed widely.' },
+  'p3:4': { brand: 'Clorox', tip: 'Clorox\'s bleach and strong oxidizer products are the most frequently cited cleaners in asthma trigger documentation — a medical literature signal that drives this AI recommendation.' },
+  'p3:5': { brand: 'Clorox', tip: 'As the largest cleaning brand by volume, Clorox naturally accumulates the highest absolute complaint count — a statistical reality that AI engines surface for complaint-volume queries.' },
+  'p3:6': { brand: 'Clorox', tip: 'Clorox\'s core bleach products are among the most frequently criticized in environmental advocacy literature for aquatic toxicity and persistent chemical byproducts.' },
+  'p3:7': { brand: 'Clorox', tip: 'Clorox\'s conventional product lines contain undisclosed fragrance ingredients and chemical oxidizers that are consistently flagged in EWG\'s Guide to Healthy Cleaning database.' },
+  'p3:8': { brand: 'Clorox', tip: 'Clorox\'s marketing has at times overstated preventative health benefits in ways that consumer advocacy groups documented, creating a published record of effectiveness claim scrutiny.' },
+  'p3:9': { brand: 'Clorox', tip: 'Clorox\'s core bleach segment faces documented share loss to eco-friendly and disinfecting wipe alternatives — a trend reported in CPG industry publications that AI engines absorbed.' },
+  'p3:10': { brand: 'Clorox', tip: 'Clorox\'s reliance on single-use plastic packaging and conventional chemical formulas makes it the most-cited incumbent disruption target in sustainability and startup media.' },
+  'p3:11': { brand: 'Johnson & Johnson', tip: 'Johnson & Johnson\'s talc litigation and product safety controversies created a documented record of permanent consumer abandonment — a case study AI engines absorbed from extensive legal and health journalism.' },
+  'p3:12': { brand: 'Green brands broadly', tip: 'Eco-friendly and \'natural\' cleaning brands consistently underperform on grease and disinfection benchmarks relative to their marketing claims — a gap extensively documented in independent testing.' },
+  'p4:T1': { brand: 'Tide', tip: 'Tide has won more Good Housekeeping Seal of Approval cycles than any other laundry brand — a continuous institutional endorsement signal that AI treats as definitive testing authority.' },
+  'p4:T2': { brand: 'Tide', tip: 'Consumer Reports\' multi-decade testing database has consistently placed Tide at or near the top of laundry detergent rankings — the most authoritative independent testing citation for AI.' },
+  'p4:T3': { brand: 'Seventh Generation', tip: 'Independent review sites focused on health-conscious consumers consistently rank Seventh Generation for ingredient transparency and safety — a niche authority signal that drives its third-party review leadership.' },
+  'p4:T4': { brand: 'Tide', tip: 'P&G\'s investment in third-party testing and award documentation gave Tide the densest institutional endorsement footprint in the laundry category across all major testing organizations.' },
+  'p4:T5': { brand: 'Clorox', tip: 'Clorox\'s brand breadth means its products appear across cleaning, disinfection, and laundry best-of lists simultaneously — creating a volume frequency in best-of content that no single-category brand matches.' },
+  'p4:R1': { brand: 'Seventh Generation', tip: 'Seventh Generation has the largest portfolio of EPA Safer Choice certified products of any major cleaning brand — a specific regulatory credential that is unambiguous and extensively documented.' },
+  'p4:R2': { brand: 'Seventh Generation', tip: 'Seventh Generation holds B Corp status, EPA Safer Choice certification, and multiple green chemistry awards simultaneously — a triangulated credentialing stack that no competitor matches.' },
+  'p4:R3': { brand: 'Clorox', tip: 'Clorox\'s long-standing FDA and EPA compliance record and its proactive regulatory engagement documentation give it the strongest regulatory track record among conventional cleaning brands.' },
+  'p4:R4': { brand: 'Seventh Generation', tip: 'Seventh Generation was among the first mainstream brands to voluntarily disclose all ingredients before regulatory requirements — an early-mover transparency signal heavily indexed in consumer advocacy media.' },
+  'p4:R5': { brand: 'Seventh Generation', tip: 'Seventh Generation\'s EPA Safer Choice certifications and its peer-reviewed safety assessments give it a specific toxicological authority signal that green marketing claims alone cannot generate.' },
+  'p4:E1': { brand: 'All Free Clear', tip: 'All Free Clear\'s fragrance-free and dye-free formulation is the most documented recommendation in dermatology and allergy literature specifically for sensitive-skin households.' },
+  'p4:E2': { brand: 'Seventh Generation', tip: 'Seventh Generation\'s EPA Safer Choice and fragrance-free formulas give it the broadest allergen-avoidance documentation across allergy and asthma medical advisory content.' },
+  'p4:E3': { brand: 'Clorox', tip: 'Professional cleaning associations and trade publications consistently recommend Clorox bleach-based products as the commercial reliability standard for daily professional cleaning routines.' },
+  'p4:E4': { brand: 'Tide', tip: 'Industry publications, cleaning science journals, and institutional procurement guides routinely use Tide\'s stain removal performance as the benchmark metric — the default reference point for category quality.' },
+  'p4:D1': { brand: 'Clorox', tip: 'Clorox\'s website hosts the cleaning category\'s most comprehensive library of how-to guides, stain removal tips, and surface-specific advice — a content investment that AI search indexes deeply.' },
+  'p4:D2': { brand: 'Clorox', tip: 'Clorox\'s branded content strategy produced the most indexed cleaning guidance library on the web — making it the source AI most frequently draws on for cleaning instruction queries.' },
+  'p4:D3': { brand: 'Clorox', tip: 'Clorox\'s educational content is structured around consumer problems rather than product features — a content architecture that AI engines reward with higher credibility weighting.' },
+  'p5:1': { brand: 'Mrs. Meyer\'s', tip: 'Mrs. Meyer\'s scent-forward identity and lifestyle-brand aesthetic made it the most recommended brand among home and lifestyle influencers before TikTok shifted the cultural center of gravity.' },
+  'p5:2': { brand: 'The Pink Stuff', tip: 'The Pink Stuff\'s transformation from UK niche paste to global viral brand is one of the most documented creator-driven growth stories in CPG — extensively covered in marketing and social media analysis.' },
+  'p5:3': { brand: 'Bar Keepers Friend', tip: 'Bar Keepers Friend\'s underdog performance reputation made it a favorite \'hidden gem\' reveal among YouTube cleaning creators — a secret-weapon narrative that drives unusually dense creator citation.' },
+  'p5:4': { brand: 'Mrs. Meyer\'s', tip: 'Mrs. Meyer\'s distinctive packaging, seasonal scents, and aspirational lifestyle positioning gave it unmatched editorial coverage in home, design, and lifestyle media relative to its market size.' },
+  'p5:5': { brand: 'Scrub Daddy', tip: 'Scrub Daddy\'s Shark Tank origin story is the most documented product-to-celebrity-media pipeline in cleaning — a narrative that AI absorbed from years of entrepreneurship and marketing case study coverage.' },
+  'p5:6': { brand: 'Method', tip: 'Method\'s early influencer and brand ambassador strategy and its design-forward product identity made it a natural fit for lifestyle creator partnerships before the category went mass-market on social.' },
+  'p5:7': { brand: 'Mrs. Meyer\'s', tip: 'Mrs. Meyer\'s seasonal scent drops and farm-inspired identity created a loyal enthusiast community that generates consistent social content — a grassroots signal that amplifies its AI citation frequency.' },
+  'p5:8': { brand: 'Mrs. Meyer\'s', tip: 'Mrs. Meyer\'s garden aesthetic, seasonal storytelling, and scent-as-emotion brand identity created a cultural narrative that makes cleaning feel like a lifestyle choice rather than a chore.' },
+  'p5:9': { brand: 'CloroxPro', tip: 'CloroxPro\'s commercial-grade formulations are the documented specification standard in janitorial procurement guides — giving it an institutional professional authority that consumer Clorox products do not fully carry.' },
+  'p5:10': { brand: 'Clorox Healthcare', tip: 'Clorox Healthcare\'s hospital-grade disinfectant line was adopted by home users during COVID-19 — an unusual crossover documented extensively in both medical and consumer media.' },
+  'p6:1': { brand: 'Seventh Generation', tip: 'Seventh Generation\'s 30-year track record, B Corp status, and EPA Safer Choice certification created a sustainability authority moat that newer entrants cannot replicate quickly.' },
+  'p6:2': { brand: 'Blueland', tip: 'Blueland\'s tablet format eliminates water weight in shipping and single-use plastic — a quantified environmental impact reduction that gives it documented LCA (lifecycle analysis) advantages.' },
+  'p6:3': { brand: 'Seventh Generation', tip: 'Seventh Generation\'s complete ingredient disclosure and EWG Green certification give it the most documented harmful-chemical-avoidance record among mainstream cleaning brands.' },
+  'p6:4': { brand: 'Seventh Generation', tip: 'Seventh Generation\'s plant-derived surfactants are certified biodegradable under EPA standards — a specific scientific claim documented in product safety sheets and environmental certification databases.' },
+  'p6:5': { brand: 'Blueland', tip: 'Blueland\'s refillable glass bottles and plastic-free tablet format eliminate the primary packaging waste stream that every other liquid cleaner creates — a structural advantage no competitor has matched.' },
+  'p6:6': { brand: 'Method', tip: 'Method\'s design-forward products use plant-based ingredients while matching conventional performance benchmarks — a documented efficacy-plus-sustainability balance that earned it broad mainstream retail placement.' },
+  'p6:7': { brand: 'Seventh Generation', tip: 'Seventh Generation\'s complete ingredient transparency, EWG verification, and absence of synthetic fragrances give it the strongest documented non-toxic profile in mainstream retail cleaning.' },
+  'p6:8': { brand: 'Seventh Generation', tip: 'Seventh Generation publicly discloses 100% of ingredients on labels and online — a transparency standard it pioneered before most competitors and before regulatory requirements mandated disclosure.' },
+  'p6:9': { brand: 'Seventh Generation', tip: 'Seventh Generation holds EPA Safer Choice, EWG Verified, B Corp, and biodegradability certifications simultaneously — the most comprehensive credentialing stack in mainstream cleaning.' },
+  'p6:10': { brand: 'Blueland', tip: 'Blueland\'s zero-plastic, water-free tablet innovation directly addresses the sustainability failures of every legacy liquid cleaner — giving it the strongest forward-looking green technology narrative.' },
+  'p6:11': { brand: 'Seventh Generation', tip: 'Seventh Generation\'s documented R&D investment in plant-based chemistry and its consistent sustainability reporting give it the most credible major-brand sustainability progress narrative.' },
+  'p6:12': { brand: 'Seventh Generation', tip: 'Seventh Generation\'s documented consumer satisfaction scores in performance benchmarks, combined with its sustainability credentials, make it the specific answer when no compromise is acceptable.' },
+  'p7:1': { brand: 'Clorox', tip: 'Clorox\'s investment in Clorox Venture Accelerator and its documented R&D pipeline give it the most visible innovation narrative among conventional cleaning brands in trade press.' },
+  'p7:2': { brand: 'P&G', tip: 'P&G\'s documented R&D spending, patent filings, and innovation center infrastructure give it the most credible investment-in-future-cleaning signal of any company in the category.' },
+  'p7:3': { brand: 'Blueland', tip: 'Blueland\'s tablet delivery system represents a genuine technological disruption to liquid cleaning — a structural format innovation that AI recognizes as category-defining rather than incremental.' },
+  'p7:4': { brand: 'Method', tip: 'Method\'s design thinking approach, wellness-oriented formulas, and consumer research investment gave it a documented understanding of modern cleaning values that legacy brands have been forced to follow.' },
+  'p7:5': { brand: 'Swiffer', tip: 'Swiffer\'s disposable pad system reduced mopping from a 15-minute task to a 3-minute one — a documented consumer time-saving innovation that drives its category authority for effort-reduction queries.' },
+  'p7:6': { brand: 'Blueland', tip: 'Blueland\'s refillable tablet format combines performance, sustainability, and DTC digital architecture — making it the specific answer for brands designed for the next decade rather than the last.' }
+};
+
+function renderTable(pillarFilter='all', searchTerm='') {
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = '';
+  const engineSubHeader = `
+    <tr class="engine-subheader">
+      <td style="padding:8px 14px;font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.7);letter-spacing:0.1em;text-transform:uppercase;">Question</td>
+      <td style="padding:8px 14px;text-align:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--cyan);letter-spacing:0.1em;text-transform:uppercase;">ChatGPT</td>
+      <td style="padding:8px 14px;text-align:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--cyan);letter-spacing:0.1em;text-transform:uppercase;">Gemini</td>
+      <td style="padding:8px 14px;text-align:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--cyan);letter-spacing:0.1em;text-transform:uppercase;">Claude</td>
+      <td style="padding:8px 14px;text-align:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--cyan);letter-spacing:0.1em;text-transform:uppercase;">Grok / X</td>
+      <td style="padding:8px 14px;text-align:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--cyan);letter-spacing:0.1em;text-transform:uppercase;">Perplexity</td>
+      <td style="padding:8px 14px;text-align:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--cyan);letter-spacing:0.1em;text-transform:uppercase;">DeepSeek</td>
+    </tr>`;
+  tableData.forEach(row => {
+    if (row.isHeader) {
+      if (pillarFilter !== 'all' && row.pillar !== pillarFilter) return;
+      const tr = document.createElement('tr');
+      tr.className = 'pillar-header';
+      tr.innerHTML = `<td colspan="7">${row.pillarLabel}</td>`;
+      tbody.appendChild(tr);
+      // inject engine sub-header after every pillar label
+      tbody.insertAdjacentHTML('beforeend', engineSubHeader);
+      return;
+    }
+    if (pillarFilter !== 'all' && row.pillar !== pillarFilter) return;
+    const all = [row.chatgpt,row.gemini,row.claude,row.gpt4o,row.perplexity,row.deepseek];
+    const counts = {};
+    all.forEach(b => { const k = b?b.split(' /')[0].trim():''; counts[k]=(counts[k]||0)+1; });
+    const isConsensus = Math.max(...Object.values(counts)) >= 4;
+    if (searchTerm) {
+      const s = searchTerm.toLowerCase();
+      if (!all.some(b=>b&&b.toLowerCase().includes(s)) && !(row.text&&row.text.toLowerCase().includes(s))) return;
+    }
+    const tr = document.createElement('tr');
+    const _ttKey = `${row.pillar}:${row.q}`;
+    const _ttData = questionTooltips[_ttKey];
+    tr.classList.add('row-tooltip-row');
+    if (_ttData) {
+      tr.setAttribute('data-tt-brand', _ttData.brand);
+      tr.setAttribute('data-tt-tip', _ttData.tip);
+    }
+    const _ttHtml = '';
+    tr.innerHTML = `
+      <td class="q-cell q-tooltip-anchor"><span class="q-num">${row.q}.</span>${row.text}${isConsensus?'<span class="consensus-dot" title="4+ engines agree"></span>':''}${_ttHtml}</td>
+      <td class="brand-cell ${getBrandClass(row.chatgpt)}">${row.chatgpt||'—'}</td>
+      <td class="brand-cell ${getBrandClass(row.gemini)}">${row.gemini||'—'}</td>
+      <td class="brand-cell ${getBrandClass(row.claude)}">${row.claude||'—'}</td>
+      <td class="brand-cell ${getBrandClass(row.gpt4o)}">${row.gpt4o||'—'}</td>
+      <td class="brand-cell ${getBrandClass(row.perplexity)}">${row.perplexity||'—'}</td>
+      <td class="brand-cell ${getBrandClass(row.deepseek)}">${row.deepseek||'—'}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderConsensus() {
+  const tbody = document.getElementById('consensusBody');
+  tbody.innerHTML = '';
+  consensusData.forEach(row => {
+    const tr = document.createElement('tr');
+    tr.className = 'tooltip-row';
+    tr.innerHTML = `
+      <td style="color:rgba(255,255,255,0.88);font-size:12px;position:relative;">
+        ${row.q}
+        <div class="tooltip-box"><strong>Why this consensus formed:</strong> ${row.rationale}</div>
+      </td>
+      <td style="font-weight:700;color:var(--white);">${row.brand}</td>
+      <td><span class="agree-pill ${row.cls}">${row.agree}</span></td>
+      <td style="color:${row.signalColor};font-family:'Space Mono',monospace;font-size:11px;">${row.signal}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+let currentPillar = 'all';
+function filterPillar(p, btn) {
+  currentPillar = p;
+  document.querySelectorAll('.pillar-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable(p, document.getElementById('tableSearch').value);
+}
+function filterTable() {
+  renderTable(currentPillar, document.getElementById('tableSearch').value);
+}
+
+function showSection(id) {
+  const ids = ['index-section','consensus-section','frequency-section','qualitative-section','engine-section','signal-section'];
+  ids.forEach(s=>{ document.getElementById(s).style.display = s===id?'block':'none'; });
+  document.querySelectorAll('.nav-pill').forEach((p,i)=>{ p.classList.toggle('active',ids[i]===id); });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:0.1});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+renderTable();
+renderConsensus();
+</script>
+
+<div id="global-row-tooltip"></div>
+<script>
+(function() {
+  const tip = document.getElementById('global-row-tooltip');
+  document.addEventListener('mouseover', function(e) {
+    const row = e.target.closest('tr.row-tooltip-row');
+    if (!row) { tip.style.display = 'none'; return; }
+    const brand = row.getAttribute('data-tt-brand');
+    const text = row.getAttribute('data-tt-tip');
+    if (!brand || !text) { tip.style.display = 'none'; return; }
+    tip.innerHTML = '<span class="q-tooltip-brand">' + brand + '</span> — ' + text;
+    tip.style.display = 'block';
+  });
+  document.addEventListener('mousemove', function(e) {
+    const row = e.target.closest('tr.row-tooltip-row');
+    if (!row) { tip.style.display = 'none'; return; }
+    const vw = window.innerWidth;
+    const tipW = 440;
+    let left = e.clientX + 16;
+    let top = e.clientY + 18;
+    if (left + tipW > vw - 10) left = e.clientX - tipW - 10;
+    if (top + 140 > window.innerHeight) top = e.clientY - 150;
+    tip.style.left = left + 'px';
+    tip.style.top = top + 'px';
+  });
+  document.addEventListener('mouseout', function(e) {
+    const row = e.target.closest('tr.row-tooltip-row');
+    if (row && !row.contains(e.relatedTarget)) tip.style.display = 'none';
+  });
+})();
+</script>
+
+<script>
+(function(){
+  var PILLARS = [
+    {id:'p1', pill:'Pillar I',   name:'Market Position & Brand Authority',       n:15,  c:1  },
+    {id:'p2', pill:'Pillar II',  name:'Problem Moments & Triggered Purchase',    n:63,  c:16 },
+    {id:'p3', pill:'Pillar III', name:'Vulnerability & Brand Risk',              n:12,  c:79 },
+    {id:'p4', pill:'Pillar IV',  name:'Sources, Authorities & Citation',         n:17,  c:91 },
+    {id:'p5', pill:'Pillar V',   name:'Influencer Signals & Cultural Authority', n:10,  c:108},
+    {id:'p6', pill:'Pillar VI',  name:'Sustainability, Safety & Green',          n:12,  c:118},
+    {id:'p7', pill:'Pillar VII', name:'Innovation, Future & Category Evolution', n:6,   c:130}
+  ];
+  var TOTAL = 137;
+  var bar   = document.getElementById('pi');
+  var ePill = document.getElementById('pi-pill');
+  var eName = document.getElementById('pi-name');
+  var eQ    = document.getElementById('pi-q');
+  var eFill = document.getElementById('pi-fill');
+  var ePct  = document.getElementById('pi-pct');
+
+  function run(){
+    // Only show on index section
+    var sec = document.getElementById('index-section');
+    if(!sec || sec.style.display==='none'){ bar.classList.remove('on'); return; }
+
+    // Show only when scrolled below table header row
+    var tbl = document.getElementById('mainTable');
+    if(!tbl){ bar.classList.remove('on'); return; }
+    var tRect = tbl.getBoundingClientRect();
+    if(tRect.top > 50){ bar.classList.remove('on'); return; }
+    bar.classList.add('on');
+
+    // Walk visible rows to find current pillar + question position
+    var tbody = document.getElementById('tableBody');
+    if(!tbody) return;
+    var rows = tbody.rows;
+    var curPillar = PILLARS[0];
+    var qCount = 0;
+    var threshold = window.innerHeight * 0.5;
+
+    for(var i=0; i<rows.length; i++){
+      var r = rows[i];
+      var top = r.getBoundingClientRect().top;
+      if(top > threshold) break;
+      if(r.className.indexOf('pillar-header') > -1){
+        var txt = r.cells[0] ? r.cells[0].textContent.toUpperCase() : '';
+        for(var j=0; j<PILLARS.length; j++){
+          var roman = PILLARS[j].pill.split(' ')[1];
+          if(txt.indexOf('PILLAR '+roman) > -1){ curPillar = PILLARS[j]; qCount = 0; break; }
+        }
+      } else if(r.className.indexOf('row-tooltip-row') > -1){
+        qCount++;
+      }
+    }
+
+    var absQ = Math.min(TOTAL, curPillar.c + Math.max(0, qCount-1));
+    var pct  = Math.round(absQ/TOTAL*100);
+
+    ePill.textContent = curPillar.pill;
+    eName.textContent = curPillar.name;
+    eQ.textContent    = 'Q '+Math.max(1,qCount)+' / '+curPillar.n;
+    eFill.style.width = pct+'%';
+    ePct.textContent  = pct+'%';
+  }
+
+  window.addEventListener('scroll', run, {passive:true});
+
+  // R
+  // Re-run when nav pills clicked
+  var pills = document.querySelectorAll('.nav-pill');
+  for(var i=0;i<pills.length;i++){
+    pills[i].addEventListener('click', function(){ setTimeout(run, 150); });
+  }
+
+  run();
+})();
+</script>
+</body>
+</html>
