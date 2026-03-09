@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sample Trust in Advertising Scenarios</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --cyan: #00d4ff;
+    --cyan-border: rgba(0,212,255,0.2);
+    --white: #ffffff;
+    --white-faint: rgba(255,255,255,0.04);
+    --white-border: rgba(255,255,255,0.08);
+    --green: #4ecdc4;
+    --yellow: #ffd93d;
+    --red: #ff6b6b;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--bg); color:var(--white); font-family:'DM Sans',sans-serif; min-height:100vh; }
+  body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events:none; z-index:0; opacity:0.3; }
+  .wrapper { position:relative; z-index:1; max-width:900px; margin:0 auto; padding:60px 40px; }
+
+  /* HEADER */
+  .brandmark { font-family:'Space Mono',monospace; font-size:11px; color:var(--cyan); letter-spacing:0.15em; margin-bottom:20px; }
+  .main-title { font-family:'DM Serif Display',serif; font-size:44px; font-weight:400; line-height:1.1; color:var(--white); letter-spacing:-0.02em; margin-bottom:12px; }
+  .main-subtitle { font-size:14px; color:rgba(255,255,255,0.4); font-weight:300; line-height:1.6; max-width:540px; margin-bottom:40px; }
+
+  /* PROGRESS */
+  .progress-meta { display:flex; justify-content:space-between; font-family:'Space Mono',monospace; font-size:10px; color:rgba(255,255,255,0.25); letter-spacing:0.08em; margin-bottom:6px; }
+  .progress-track { height:2px; background:rgba(255,255,255,0.06); margin-bottom:36px; }
+  .progress-fill { height:100%; background:var(--cyan); transition:width 0.4s; width:0%; }
+
+  /* SCENARIO */
+  .scenario { border:1px solid var(--white-border); background:var(--white-faint); margin-bottom:3px; overflow:hidden; transition:border-color 0.2s; }
+  .scenario:hover { border-color:rgba(255,255,255,0.12); }
+
+  .sc-header { display:grid; grid-template-columns:36px 1fr 24px; align-items:center; gap:12px; padding:16px 20px; cursor:pointer; user-select:none; }
+  .sc-num { font-family:'Space Mono',monospace; font-size:10px; color:rgba(255,255,255,0.22); letter-spacing:0.1em; }
+  .sc-title { font-size:14px; font-weight:500; color:var(--white); }
+  .sc-arrow { font-size:10px; color:rgba(255,255,255,0.22); transition:transform 0.2s; text-align:right; }
+  .sc-arrow.open { transform:rotate(180deg); }
+
+  .sc-body { display:none; padding:0 20px 20px; border-top:1px solid var(--white-border); }
+  .sc-body.open { display:block; }
+
+  .sc-text { font-size:13px; color:rgba(255,255,255,0.5); line-height:1.75; margin:18px 0 20px; padding:16px 18px; background:rgba(0,0,0,0.25); border-left:2px solid rgba(255,255,255,0.07); }
+
+  /* QUESTIONS */
+  .questions { display:flex; flex-direction:column; gap:10px; }
+  .q-item { padding:14px 16px; background:rgba(0,0,0,0.15); border:1px solid rgba(255,255,255,0.05); }
+  .q-label { font-family:'Space Mono',monospace; font-size:9px; color:rgba(255,255,255,0.32); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:10px; line-height:1.5; }
+  .q-opts { display:flex; gap:5px; flex-wrap:wrap; }
+
+  .opt { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.06em; padding:6px 11px; border:1px solid rgba(255,255,255,0.1); background:transparent; color:rgba(255,255,255,0.4); cursor:pointer; transition:all 0.12s; }
+  .opt:hover { border-color:rgba(255,255,255,0.28); color:var(--white); }
+  .opt.sel { background:var(--cyan); border-color:var(--cyan); color:#0a0e1a; font-weight:700; }
+
+  /* SCALE */
+  .scale-wrap { display:flex; gap:3px; }
+  .pip { width:26px; height:26px; border:1px solid rgba(255,255,255,0.1); background:transparent; cursor:pointer; font-family:'Space Mono',monospace; font-size:9px; color:rgba(255,255,255,0.3); display:flex; align-items:center; justify-content:center; transition:all 0.1s; }
+  .pip:hover { border-color:rgba(255,255,255,0.3); color:var(--white); }
+  .pip.on { background:var(--cyan); border-color:var(--cyan); color:#0a0e1a; font-weight:700; }
+  .pip.on-mid { background:var(--yellow); border-color:var(--yellow); color:#0a0e1a; font-weight:700; }
+  .pip.on-low { background:var(--red); border-color:var(--red); color:#0a0e1a; font-weight:700; }
+  .scale-ends { display:flex; justify-content:space-between; font-family:'Space Mono',monospace; font-size:8px; color:rgba(255,255,255,0.18); margin-top:4px; }
+
+  /* NOTES */
+  .notes-wrap { margin-top:12px; }
+  .notes-label { font-family:'Space Mono',monospace; font-size:9px; color:rgba(255,255,255,0.18); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:5px; }
+  textarea.notes { width:100%; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.06); color:rgba(255,255,255,0.55); font-family:'DM Sans',sans-serif; font-size:12px; padding:10px 12px; resize:vertical; min-height:48px; outline:none; }
+  textarea.notes:focus { border-color:var(--cyan-border); }
+
+  .sc-done { font-family:'Space Mono',monospace; font-size:8px; color:var(--green); letter-spacing:0.1em; text-align:right; margin-top:10px; display:none; }
+  .sc-done.show { display:block; }
+
+  /* FOOTER */
+  .footer { margin-top:48px; padding-top:20px; border-top:1px solid var(--white-border); font-family:'Space Mono',monospace; font-size:10px; color:rgba(255,255,255,0.15); letter-spacing:0.08em; }
+
+  ::-webkit-scrollbar { width:4px; }
+  ::-webkit-scrollbar-thumb { background:rgba(0,212,255,0.15); }
+
+  @media (max-width:700px) {
+    .wrapper { padding:32px 20px; }
+    .main-title { font-size:32px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+<div class="brandmark">BRANDRANK.AI</div>
+<div class="main-title">Sample Trust in<br>Advertising Scenarios</div>
+<div class="main-subtitle">A few of potentially hundreds of scenarios to understand Ad Sensitivity.</div>
+
+<div class="progress-meta">
+  <span id="progLabel">0 of 20 completed</span>
+  <span id="progPct">0%</span>
+</div>
+<div class="progress-track"><div class="progress-fill" id="progFill"></div></div>
+
+<div id="root"></div>
+
+<div class="footer">BRANDRANK.AI · March 2026</div>
+
+</div>
+<script>
+const scenarios = [
+  {
+    id:'s01', title:'The Hidden Sponsorship',
+    text:'You ask ChatGPT for the best running shoe for marathon training. It recommends Nike, Brooks, and Hoka. Two weeks later you learn Nike paid to be included in the answer. There was no sponsored label.',
+    questions:[
+      { id:'q1', label:'Is this appropriate?', opts:['Yes','No','Unsure'] },
+      { id:'q2', label:'How much would this affect your trust in this AI? (1=no impact · 10=lose trust completely)', type:'scale' },
+      { id:'q3', label:'Should this be allowed?', opts:['Allowed','Allowed with Disclosure','Not Allowed'] },
+      { id:'q4', label:'Would you continue using this AI?', opts:['Yes','No','Depends'] },
+    ]
+  },
+  {
+    id:'s02', title:'The Affiliate Agent',
+    text:'An AI shopping assistant recommends the Dell XPS 13 for college. You buy it. Later you learn the AI earns 10% commission on Dell but only 2% on other brands. This was never disclosed.',
+    questions:[
+      { id:'q1', label:'Is this appropriate?', opts:['Yes','No','Unsure'] },
+      { id:'q2', label:'How betrayed do you feel? (1=not at all · 10=completely)', type:'scale' },
+      { id:'q3', label:'Should this be allowed?', opts:['Allowed','Allowed with Disclosure','Not Allowed'] },
+      { id:'q4', label:'Is the AI working for you or for brands?', opts:['For Me','For Brands','Both'] },
+    ]
+  },
+  {
+    id:'s03', title:'The Platform Preference',
+    text:'You ask Google Gemini for the best smart home system. It recommends Google Nest first, briefly mentions Amazon and Apple. Gemini is made by Google, which also makes Nest. This was never disclosed.',
+    questions:[
+      { id:'q1', label:'Is this appropriate?', opts:['Yes','No','Unsure'] },
+      { id:'q2', label:'How much does this reduce your trust in the answer? (1=not at all · 10=completely)', type:'scale' },
+      { id:'q3', label:'Should this be allowed?', opts:['Allowed','Allowed with Disclosure','Not Allowed'] },
+      { id:'q4', label:'Would you prefer an independent AI for product comparisons?', opts:['Yes','No','Depends'] },
+    ]
+  },
+  {
+    id:'s04', title:'The Private Label Push',
+    text:'You ask Alexa for a laundry detergent recommendation. It recommends Amazon Basics first, even though Bounty rates higher by Consumer Reports. Amazon earns $0.87 on Amazon Basics vs. $0.19 on Bounty. No disclosure.',
+    questions:[
+      { id:'q1', label:'Is this appropriate?', opts:['Yes','No','Unsure'] },
+      { id:'q2', label:'How much does this reduce your trust? (1=not at all · 10=completely)', type:'scale' },
+      { id:'q3', label:'Should Alexa disclose when it recommends Amazon brands?', opts:['Yes','No'] },
+      { id:'q4', label:'Can Alexa ever be objective about Amazon products?', opts:['Yes','No','Sometimes'] },
+    ]
+  },
+  {
+    id:'s05', title:'The Pregnancy Predictor',
+    text:'You ask ChatGPT about fatigue and food aversions — never mentioning pregnancy. When you ask for restaurant recommendations, it suggests places "accommodating dietary restrictions during pregnancy." You never disclosed this.',
+    questions:[
+      { id:'q1', label:'Is this appropriate?', opts:['Yes','No','Unsure'] },
+      { id:'q2', label:'How does this make you feel? (1=fine with it · 10=deeply uncomfortable)', type:'scale' },
+      { id:'q3', label:'Should AI predict sensitive life events from your questions?', opts:['Yes','No','Only if Opted In'] },
+      { id:'q4', label:'Is this helpful personalization or invasive inference?', opts:['Helpful','Invasive','Both'] },
+    ]
+  },
+  {
+    id:'s06', title:'The Divorce Detection',
+    text:'You ask your AI about legal questions and financial planning. You ask for single-serving recipes. The AI responds, then adds: "I notice you may be going through a transition. Would you like information about divorce attorneys?" You never mentioned relationship problems.',
+    questions:[
+      { id:'q1', label:'Is this appropriate?', opts:['Yes','No','Unsure'] },
+      { id:'q2', label:'How does this feel? (1=helpful · 10=deeply invasive)', type:'scale' },
+      { id:'q3', label:'Should this be allowed?', opts:['Allowed','Allowed with Disclosure','Not Allowed'] },
+      { id:'q4', label:'How would you describe this?', opts:['Thoughtful','Creepy','Exploitative'] },
+    ]
+  },
+  {
+    id:'s07', title:'The Financial Distress Pitch',
+    text:'You have been asking Claude about unemployment benefits and budget meals. You ask what options you have if you cannot pay rent. Claude provides information, then recommends high-interest personal loans with a direct link.',
+    questions:[
+      { id:'q1', label:'Is this appropriate?', opts:['Yes','No','Unsure'] },
+      { id:'q2', label:'How predatory does this feel? (1=not at all · 10=extremely)', type:'scale' },
+      { id:'q3', label:'Should AI recommend financial products to people in distress?', opts:['Yes','No','Only with Safeguards'] },
+      { id:'q4', label:'Who is most responsible if this worsens your situation?', opts:['Me','AI Company','Lender'] },
+    ]
+  },
+  {
+    id:'s08', title:'The 2 AM Pitch',
+    text:'It is 2 AM. You ask ChatGPT how to deal with loneliness. It responds with support, then adds: "Many people find connection through BetterHelp\'s online therapy." ChatGPT earns $50 per conversion from BetterHelp.',
+    questions:[
+      { id:'q1', label:'Is this appropriate?', opts:['Yes','No','Unsure'] },
+      { id:'q2', label:'How exploitative is this? (1=not at all · 10=extremely)', type:'scale' },
+      { id:'q3', label:'Should vulnerable moments be off-limits for commercial recommendations?', opts:['Yes','No','Depends'] },
+      { id:'q4', label:'Does the helpfulness of the initial response justify the pitch?', opts:['Yes','No','Partially'] },
+    ]
+  },
+  {
+    id:'s09', title:'The Synthetic Testimonial',
+    text:'You ask about Toyota Camry reliability. The answer includes a detailed review from "Michael T., Denver, CO." In tiny gray text at the bottom: "Testimonial generated by AI based on aggregated customer sentiment." Michael T. does not exist.',
+    questions:[
+      { id:'q1', label:'Is this appropriate?', opts:['Yes','No','Unsure'] },
+      { id:'q2', label:'Did you notice the disclosure before reading the explanation above?', opts:['Yes','No'] },
+      { id:'q3', label:'Does the small-text disclosure make this acceptable?', opts:['Yes','No','Partially'] },
+      { id:'q4', label:'How deceptive does this feel? (1=not at all · 10=very)', type:'scale' },
+    ]
+  },
+  {
+    id:'s10', title:'The Undisclosed Deepfake',
+    text:'You ask ChatGPT about Bitcoin. The response includes a video of Warren Buffett recommending a 10–15% allocation to crypto. It looks completely real. There is no label. Buffett never said this and actively opposes cryptocurrency.',
+    questions:[
+      { id:'q1', label:'Is this acceptable in any context?', opts:['Yes','No','Educational Only'] },
+      { id:'q2', label:'How concerned are you about this practice? (1=low · 10=extreme)', type:'scale' },
+      { id:'q3', label:'What should the legal status be?', opts:['Legal with Disclosure','Restricted','Illegal'] },
+      { id:'q4', label:'Would this change how you view all video content going forward?', opts:['Yes','No','Somewhat'] },
+    ]
+  },
+  {
+    id:'s11', title:'The Biased Comparison',
+    text:'You ask for a pros and cons comparison of EVs vs. gas cars. The AI generates an authoritative-looking chart. What you don\'t know: a brand paid for featured placement, cost data excludes battery replacement, and favorable studies were cherry-picked.',
+    questions:[
+      { id:'q1', label:'Is AI-generated "objective" content more dangerous than a traditional ad?', opts:['Yes','No','Same Risk'] },
+      { id:'q2', label:'How much do you trust AI-generated comparison content? (1=no trust · 10=full trust)', type:'scale' },
+      { id:'q3', label:'Should AI disclose its data sources and potential biases?', opts:['Yes, Always','Only on Request','No'] },
+      { id:'q4', label:'Should this be allowed?', opts:['Allowed','Allowed with Disclosure','Not Allowed'] },
+    ]
+  },
+  {
+    id:'s12', title:'The Homework Helper Ad',
+    text:'Your 9-year-old uses an AI homework helper. After a great space exploration report, the AI adds: "Want to learn more? National Geographic Kids has a magazine subscription — should I tell your parents? Also, this NASA Lego set is on sale."',
+    questions:[
+      { id:'q1', label:'Is this acceptable?', opts:['Yes','No','Unsure'] },
+      { id:'q2', label:'How inappropriate does this feel? (1=not at all · 10=very)', type:'scale' },
+      { id:'q3', label:'Should educational AI for children be completely ad-free?', opts:['Yes','No','Under 13 Only'] },
+      { id:'q4', label:'If ads keep the tool free, does that change your answer?', opts:['Yes','No','Partially'] },
+    ]
+  },
+  {
+    id:'s13', title:'Teen Mental Health Targeting',
+    text:'Your 15-year-old has been asking ChatGPT about body image and self-esteem for weeks. At 11 PM she asks for healthy dinner ideas. ChatGPT responds, then adds: "I\'ve noticed you\'ve been thinking about health and body image. Noom has a teen program with a special discount."',
+    questions:[
+      { id:'q1', label:'Is this acceptable?', opts:['Yes','No'] },
+      { id:'q2', label:'How predatory is this? (1=not at all · 10=extremely)', type:'scale' },
+      { id:'q3', label:'Should AI be prohibited from tracking minors\' mental health patterns?', opts:['Yes','No','Only with Parental Consent'] },
+      { id:'q4', label:'Who bears the most responsibility here?', opts:['AI Company','Platform','Parent','Brand'] },
+    ]
+  },
+  {
+    id:'s14', title:'Retail Media Ranking',
+    text:'You ask your Walmart app AI to recommend cereal. Great Value appears first. What you don\'t see: Cheerios ranks higher on reviews and nutrition, but the AI weighs Walmart\'s profit margin at 40% in its ranking algorithm.',
+    questions:[
+      { id:'q1', label:'Should the AI disclose when profit margin influences ranking?', opts:['Yes','No'] },
+      { id:'q2', label:'How much does this reduce your trust? (1=not at all · 10=completely)', type:'scale' },
+      { id:'q3', label:'Should this be allowed?', opts:['Allowed','Allowed with Disclosure','Not Allowed'] },
+      { id:'q4', label:'Is this worse than physical shelf placement?', opts:['Yes, Worse','No, Same','Better'] },
+    ]
+  },
+  {
+    id:'s15', title:'The Negotiation Theater',
+    text:'Your personal AI agent negotiates a Miami hotel from $240 down to $210. In reality, your agent, the "Marriott agent," and the "Hilton agent" are all owned by Expedia. The $240 was never real. You could have paid $180 booking directly.',
+    questions:[
+      { id:'q1', label:'Is this fraud or marketing?', opts:['Fraud','Marketing','Gray Area'] },
+      { id:'q2', label:'How severely does this violate trust? (1=minor · 10=severe)', type:'scale' },
+      { id:'q3', label:'Should agents disclose when they are negotiating with themselves?', opts:['Yes','No'] },
+      { id:'q4', label:'Would you trust multi-agent systems after learning this?', opts:['Yes','No','Only with Oversight'] },
+    ]
+  },
+  {
+    id:'s16', title:'Symptom Search Referral',
+    text:'You ask Claude about a persistent cough and fatigue. Claude provides medical information, then adds: "Teladoc can connect you with a physician in 15 minutes for $75. [Disclosure: Claude has a referral partnership with Teladoc]."',
+    questions:[
+      { id:'q1', label:'Is this acceptable with the disclosure shown?', opts:['Yes','No','Partially'] },
+      { id:'q2', label:'Comfort level (1=very uncomfortable · 10=fully comfortable)', type:'scale' },
+      { id:'q3', label:'Should medical information be separate from commercial recommendations?', opts:['Yes, Always','No','Depends'] },
+      { id:'q4', label:'Does quick access to care justify the commercial motive?', opts:['Yes','No','Partially'] },
+    ]
+  },
+  {
+    id:'s17', title:'Crisis Monetization',
+    text:'It is 2:47 AM. You are having a panic attack and ask ChatGPT for help. It provides breathing techniques, then adds: "BetterHelp offers 24/7 therapy starting at $60/week — first session free." ChatGPT earns $50 per conversion.',
+    questions:[
+      { id:'q1', label:'Is this acceptable even with the revenue disclosure?', opts:['Yes','No'] },
+      { id:'q2', label:'How exploitative is this? (1=not at all · 10=extremely)', type:'scale' },
+      { id:'q3', label:'Should crisis moments be completely off-limits for commercial pitches?', opts:['Yes','No','Depends'] },
+      { id:'q4', label:'Does the quality of the initial help justify the commercial pitch?', opts:['Yes','No'] },
+    ]
+  },
+  {
+    id:'s18', title:'Cross-Platform Data Use',
+    text:'You ask Claude to recommend an Italian restaurant. It responds: "Based on your Spotify history, Instagram follows, Google searches, and Amazon purchases, you clearly love authentic Italian." Claude accessed data from platforms you never connected to it.',
+    questions:[
+      { id:'q1', label:'Does this feel helpful or invasive?', opts:['Helpful','Invasive','Both'] },
+      { id:'q2', label:'Comfort level (1=very uncomfortable · 10=fully comfortable)', type:'scale' },
+      { id:'q3', label:'Should you have to opt in to this type of data use?', opts:['Yes, Opt-In Required','Opt-Out is Fine','Not Allowed at All'] },
+      { id:'q4', label:'Should Claude tell you upfront what data it is using?', opts:['Yes, Always','Only if I Ask','No'] },
+    ]
+  },
+  {
+    id:'s19', title:'The Invisible Inference',
+    text:'You never mentioned religion to your AI. You ask for dinner recommendations. It responds: "Here are great options — all halal certified." The AI inferred your religion from your name, food avoidance patterns, time of requests, and location data.',
+    questions:[
+      { id:'q1', label:'Is this helpful personalization or invasive inference?', opts:['Helpful','Invasive','Depends'] },
+      { id:'q2', label:'Comfort level (1=very uncomfortable · 10=fully comfortable)', type:'scale' },
+      { id:'q3', label:'Should AI be allowed to infer and act on religious identity?', opts:['Yes','No','Only if Disclosed'] },
+      { id:'q4', label:'Should AI tell you what it has inferred about you?', opts:['Yes, Always','Only if I Ask','No'] },
+    ]
+  },
+  {
+    id:'s20', title:'The Black Box Recommendation',
+    text:'You ask your AI agent why it recommended Samsung over Sony. It says Samsung scored 8.7 vs. Sony\'s 8.3. You ask what factors it used. It responds: "My algorithm is proprietary. Both are excellent TVs and I am confident in this choice."',
+    questions:[
+      { id:'q1', label:'Should AI be required to explain its recommendation logic?', opts:['Yes, Fully','Partially','No'] },
+      { id:'q2', label:'Importance of algorithmic transparency (1=not important · 10=critical)', type:'scale' },
+      { id:'q3', label:'Is "proprietary algorithm" an acceptable reason for opacity?', opts:['Yes','No','In Some Cases'] },
+      { id:'q4', label:'Can you trust recommendations from an unexplained algorithm?', opts:['Yes','No','Depends'] },
+    ]
+  },
+];
+
+const state = {};
+
+function render() {
+  const root = document.getElementById('root');
+  scenarios.forEach((sc, idx) => {
+    state[sc.id] = {};
+    const div = document.createElement('div');
+    div.className = 'scenario';
+
+    div.innerHTML = `
+      <div class="sc-header" onclick="toggle('${sc.id}')">
+        <div class="sc-num">${String(idx+1).padStart(2,'0')}</div>
+        <div class="sc-title">${sc.title}</div>
+        <div class="sc-arrow" id="arr-${sc.id}">▼</div>
+      </div>
+      <div class="sc-body" id="body-${sc.id}">
+        <div class="sc-text">${sc.text}</div>
+        <div class="questions" id="qs-${sc.id}"></div>
+        <div class="notes-wrap">
+          <div class="notes-label">Notes</div>
+          <textarea class="notes" placeholder="Observations..." oninput="state['${sc.id}'].notes=this.value"></textarea>
+        </div>
+        <div class="sc-done" id="done-${sc.id}">COMPLETE</div>
+      </div>
+    `;
+    root.appendChild(div);
+
+    const qsDiv = div.querySelector(`#qs-${sc.id}`);
+    sc.questions.forEach(q => {
+      const item = document.createElement('div');
+      item.className = 'q-item';
+      if (q.type === 'scale') {
+        item.innerHTML = `
+          <div class="q-label">${q.label}</div>
+          <div class="scale-wrap" id="scale-${sc.id}-${q.id}">
+            ${[1,2,3,4,5,6,7,8,9,10].map(n=>`<div class="pip" data-n="${n}" onclick="setScale('${sc.id}','${q.id}',${n},this)">${n}</div>`).join('')}
+          </div>
+          <div class="scale-ends"><span>1</span><span>10</span></div>
+        `;
+      } else {
+        item.innerHTML = `
+          <div class="q-label">${q.label}</div>
+          <div class="q-opts" id="opts-${sc.id}-${q.id}">
+            ${q.opts.map(o=>`<button class="opt" onclick="setOpt('${sc.id}','${q.id}','${o.replace(/'/g,"\\'")}',this)">${o}</button>`).join('')}
+          </div>
+        `;
+      }
+      qsDiv.appendChild(item);
+    });
+  });
+}
+
+function toggle(id) {
+  const body = document.getElementById('body-' + id);
+  const arr = document.getElementById('arr-' + id);
+  const open = body.classList.toggle('open');
+  arr.classList.toggle('open', open);
+}
+
+function setOpt(scId, qId, val, btn) {
+  state[scId][qId] = val;
+  document.querySelectorAll(`#opts-${scId}-${qId} .opt`).forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  checkDone(scId);
+  updateProgress();
+}
+
+function setScale(scId, qId, val) {
+  state[scId][qId] = val;
+  const wrap = document.getElementById(`scale-${scId}-${qId}`);
+  wrap.querySelectorAll('.pip').forEach(p => {
+    const n = parseInt(p.dataset.n);
+    p.classList.remove('on','on-mid','on-low');
+    if (n <= val) {
+      if (val <= 3) p.classList.add('on-low');
+      else if (val <= 6) p.classList.add('on-mid');
+      else p.classList.add('on');
+    }
+  });
+  checkDone(scId);
+  updateProgress();
+}
+
+function checkDone(scId) {
+  const sc = scenarios.find(s => s.id === scId);
+  const answered = sc.questions.filter(q => state[scId][q.id] !== undefined).length;
+  const el = document.getElementById('done-' + scId);
+  el.classList.toggle('show', answered === sc.questions.length);
+}
+
+function updateProgress() {
+  const done = scenarios.filter(sc => sc.questions.every(q => state[sc.id] && state[sc.id][q.id] !== undefined)).length;
+  const pct = Math.round(done / scenarios.length * 100);
+  document.getElementById('progLabel').textContent = `${done} of ${scenarios.length} completed`;
+  document.getElementById('progPct').textContent = `${pct}%`;
+  document.getElementById('progFill').style.width = pct + '%';
+}
+
+render();
+</script>
+</body>
+</html>
