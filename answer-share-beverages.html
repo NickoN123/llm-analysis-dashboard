@@ -1,0 +1,2071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Answer Share: Beverages — BrandRank.AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --bg2: #1a1f35;
+    --cyan: #00d4ff;
+    --cyan-dim: rgba(0,212,255,0.15);
+    --cyan-border: rgba(0,212,255,0.3);
+    --white: #ffffff;
+    --white-dim: rgba(255,255,255,0.6);
+    --white-faint: rgba(255,255,255,0.05);
+    --white-border: rgba(255,255,255,0.08);
+    --green: #4ecdc4;
+    --yellow: #ffd93d;
+    --red: #ff6b6b;
+    --orange: #ff9f43;
+    --purple: #a29bfe;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .wrapper { position: relative; z-index: 1; }
+
+  /* HEADER */
+  .header {
+    padding: 60px 60px 40px;
+    border-bottom: 1px solid var(--white-border);
+    background: linear-gradient(180deg, rgba(0,212,255,0.04) 0%, transparent 100%);
+  }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+  }
+
+  .brandrank-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--cyan);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: 1px solid var(--cyan-border);
+    padding: 6px 14px;
+    background: var(--cyan-dim);
+  }
+
+  .date-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--white-dim);
+    letter-spacing: 0.1em;
+  }
+
+  .main-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 64px;
+    font-weight: 400;
+    line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+
+  .main-title span {
+    color: var(--cyan);
+    font-style: italic;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    color: var(--white-dim);
+    font-weight: 300;
+    max-width: 680px;
+    line-height: 1.6;
+  }
+
+  .nav-pills {
+    display: flex;
+    gap: 8px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+
+  .nav-pill {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border: 1px solid var(--white-border);
+    background: transparent;
+    color: var(--white-dim);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+
+  /* NAV TAB TOOLTIPS */
+  .nav-pill {
+    position: relative;
+  }
+  .nav-tip {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0d1525;
+    border: 1px solid var(--cyan-border);
+    padding: 9px 13px;
+    width: 210px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.5;
+    letter-spacing: 0;
+    text-transform: none;
+    z-index: 1000;
+    transition: opacity 0.18s ease, visibility 0.18s ease;
+    white-space: normal;
+    text-align: left;
+  }
+  .nav-tip::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-bottom-color: var(--cyan-border);
+  }
+  .nav-pill:hover .nav-tip {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .nav-pill:hover, .nav-pill.active {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    background: var(--cyan-dim);
+  }
+
+  /* SECTION HEADERS */
+  .section {
+    padding: 60px 60px;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .section-desc {
+    font-size: 14px;
+    color: var(--white-dim);
+    margin-bottom: 36px;
+    max-width: 700px;
+    line-height: 1.6;
+  }
+
+  /* PILLAR TABS */
+  .pillar-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .pillar-tab {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 7px 14px;
+    border: 1px solid var(--white-border);
+    background: transparent;
+    color: var(--white-dim);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .pillar-tab:hover { border-color: rgba(255,255,255,0.25); color: var(--white); }
+  .pillar-tab.active { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-dim); }
+
+  /* MAIN INDEX TABLE */
+  .table-container {
+    overflow-x: auto;
+    border: 1px solid var(--white-border);
+    background: rgba(10,14,26,0.8);
+  }
+
+  .index-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1100px;
+  }
+
+  .index-table thead tr {
+    background: linear-gradient(90deg, rgba(0,212,255,0.08), transparent);
+    border-bottom: 1px solid var(--cyan-border);
+  }
+
+  .index-table thead th {
+    padding: 16px 14px;
+    text-align: left;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+
+  .index-table thead th:first-child {
+    color: var(--white-dim);
+    width: 380px;
+    min-width: 380px;
+  }
+
+  .index-table thead th:not(:first-child) {
+    color: var(--cyan);
+    text-align: center;
+    min-width: 130px;
+  }
+
+  .index-table tbody tr {
+    border-bottom: 1px solid var(--white-border);
+    transition: background 0.15s;
+  }
+
+  .index-table tbody tr:hover {
+    background: rgba(255,255,255,0.03);
+  }
+
+  .index-table tbody tr.pillar-header {
+    background: rgba(0,212,255,0.05);
+    border-top: 1px solid var(--cyan-border);
+  }
+
+  .pillar-header td {
+    padding: 12px 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    font-weight: 700;
+  }
+
+  .q-cell {
+    padding: 12px 14px;
+    font-size: 12px;
+    color: var(--white-dim);
+    line-height: 1.45;
+    vertical-align: middle;
+  }
+
+  .q-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: rgba(0,212,255,0.5);
+    display: inline-block;
+    margin-right: 6px;
+    min-width: 22px;
+  }
+
+  .brand-cell {
+    padding: 12px 14px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  /* Brand color coding — original colored text */
+  .b-coke     { color: #ff6b6b; }
+  .b-redbull  { color: #ffd93d; }
+  .b-gatorade { color: #ff9f43; }
+  .b-starbucks{ color: #4ecdc4; }
+  .b-pepsi    { color: #74b9ff; }
+  .b-sprite   { color: #81ecec; }
+  .b-evian    { color: #a29bfe; }
+  .b-celsius  { color: #6bcb77; }
+  .b-olipop   { color: #fd79a8; }
+  .b-gts      { color: #00d4ff; }
+  .b-liquidiv { color: #55efc4; }
+  .b-prime    { color: #fdcb6e; }
+  .b-stanley  { color: #b2bec3; }
+  .b-monster  { color: #6bcb77; }
+  .b-oatly    { color: #e17055; }
+  .b-lacroix  { color: #81ecec; }
+  .b-yakult   { color: #fd79a8; }
+  .b-spindrift{ color: #74b9ff; }
+  .b-poppi    { color: #ffd93d; }
+  .b-pepsico  { color: #74b9ff; }
+  .b-water    { color: #55efc4; }
+  .b-default  { color: var(--white); }
+
+  /* CONSENSUS MARKER */
+  .consensus-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--cyan);
+    margin-left: 4px;
+    vertical-align: middle;
+    opacity: 0;
+  }
+
+  /* QUALITATIVE INSIGHTS SECTION */
+  .insights-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    margin-top: 8px;
+  }
+
+  .insight-card {
+    background: var(--white-faint);
+    border: 1px solid var(--white-border);
+    padding: 28px;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .insight-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--cyan), transparent);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .insight-card:hover { border-color: var(--cyan-border); background: rgba(0,212,255,0.04); }
+  .insight-card:hover::before { opacity: 1; }
+
+  .insight-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--cyan);
+    letter-spacing: 0.15em;
+    margin-bottom: 10px;
+  }
+
+  .insight-theme {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: var(--white);
+    margin-bottom: 10px;
+    line-height: 1.25;
+  }
+
+  .insight-body {
+    font-size: 13px;
+    color: var(--white-dim);
+    line-height: 1.65;
+  }
+
+  .insight-brands {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 16px;
+  }
+
+  .brand-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    border: 1px solid;
+    text-transform: uppercase;
+  }
+
+  .brand-tag.winner { border-color: var(--green); color: var(--green); }
+  .brand-tag.rising { border-color: var(--cyan); color: var(--cyan); }
+  .brand-tag.risk { border-color: var(--red); color: var(--red); }
+  .brand-tag.neutral { border-color: var(--yellow); color: var(--yellow); }
+
+  /* BRAND FREQUENCY ANALYSIS */
+  .freq-section {
+    background: var(--bg2);
+    border: 1px solid var(--white-border);
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .freq-header {
+    padding: 24px 28px;
+    border-bottom: 1px solid var(--white-border);
+    background: rgba(0,212,255,0.04);
+  }
+
+  .freq-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--white);
+  }
+
+  .freq-subtitle {
+    font-size: 12px;
+    color: var(--white-dim);
+    margin-top: 4px;
+  }
+
+  .freq-body { padding: 24px 28px; }
+
+  .freq-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+
+  .freq-brand {
+    font-weight: 600;
+    font-size: 13px;
+    min-width: 160px;
+  }
+
+  .freq-bar-wrap {
+    flex: 1;
+    height: 6px;
+    background: var(--white-border);
+    position: relative;
+  }
+
+  .freq-bar {
+    height: 100%;
+    transition: width 1s ease;
+  }
+
+  .freq-count {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--white-dim);
+    min-width: 30px;
+    text-align: right;
+  }
+
+  /* SIGNAL MAP */
+  .signal-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 8px;
+  }
+
+  .signal-card {
+    background: var(--white-faint);
+    border: 1px solid var(--white-border);
+    padding: 22px;
+  }
+
+  .signal-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--white-dim);
+    margin-bottom: 12px;
+  }
+
+  .signal-brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .signal-desc {
+    font-size: 12px;
+    color: var(--white-dim);
+    line-height: 1.5;
+  }
+
+  .signal-accent { color: var(--cyan); font-weight: 600; }
+
+  /* CONSENSUS TABLE */
+  .consensus-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+  }
+
+  .consensus-table th {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--cyan-border);
+    text-align: left;
+    background: rgba(0,212,255,0.04);
+  }
+
+  .consensus-table td {
+    padding: 12px 16px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--white-border);
+    vertical-align: middle;
+  }
+
+  .consensus-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .agree-pill {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 3px 10px;
+    letter-spacing: 0.08em;
+  }
+
+  .agree-full { background: rgba(78,205,196,0.15); color: var(--green); border: 1px solid var(--green); }
+  .agree-strong { background: rgba(0,212,255,0.1); color: var(--cyan); border: 1px solid var(--cyan); }
+  .agree-partial { background: rgba(255,217,61,0.1); color: var(--yellow); border: 1px solid var(--yellow); }
+  .agree-split { background: rgba(255,107,107,0.1); color: var(--red); border: 1px solid var(--red); }
+
+  /* FOOTER */
+  .footer {
+    padding: 40px 60px;
+    border-top: 1px solid var(--white-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-brand {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--cyan);
+    letter-spacing: 0.1em;
+  }
+
+  .footer-note {
+    font-size: 12px;
+    color: rgba(255,255,255,0.25);
+  }
+
+  /* SCROLL ANIMATIONS */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--white-border);
+    margin: 0 60px;
+  }
+
+  /* SEARCH / FILTER */
+  .search-bar {
+    background: var(--white-faint);
+    border: 1px solid var(--white-border);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    padding: 10px 16px;
+    width: 280px;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 16px;
+  }
+
+  .search-bar:focus { border-color: var(--cyan-border); }
+  .search-bar::placeholder { color: rgba(255,255,255,0.3); }
+
+  /* HIGHLIGHT */
+  .highlight { background: rgba(0,212,255,0.25); border-radius: 2px; }
+
+  /* TOOLTIP */
+  .tooltip-wrap {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+  }
+
+  .tooltip-box {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    z-index: 999;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0d1525;
+    border: 1px solid var(--cyan-border);
+    padding: 12px 14px;
+    width: 260px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    transition: opacity 0.18s ease, visibility 0.18s ease;
+  }
+
+  .tooltip-box::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--cyan-border);
+  }
+
+  .tooltip-wrap:hover .tooltip-box {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .tooltip-engine {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--cyan);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+
+  .tooltip-brand-name {
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 5px;
+  }
+
+  .tooltip-rationale {
+    font-size: 11px;
+    color: var(--white-dim);
+    line-height: 1.55;
+  }
+
+  /* ENGINE THINK SECTION */
+  .engine-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin-top: 8px;
+  }
+
+  .engine-card {
+    background: var(--white-faint);
+    border: 1px solid var(--white-border);
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.25s;
+  }
+
+  .engine-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    transition: opacity 0.25s;
+    opacity: 0;
+  }
+
+  .engine-card:hover { border-color: var(--cyan-border); background: rgba(0,212,255,0.03); }
+  .engine-card:hover::before { opacity: 1; }
+
+  .engine-card.chatgpt::before { background: linear-gradient(90deg,#10a37f,transparent); }
+  .engine-card.chatgpt:hover { border-color: rgba(16,163,127,0.4); }
+  .engine-card.claude-card::before { background: linear-gradient(90deg,#cc785c,transparent); }
+  .engine-card.claude-card:hover { border-color: rgba(204,120,92,0.4); }
+  .engine-card.gemini::before { background: linear-gradient(90deg,#4285f4,transparent); }
+  .engine-card.gemini:hover { border-color: rgba(66,133,244,0.4); }
+  .engine-card.grok::before { background: linear-gradient(90deg,#ffffff,transparent); }
+  .engine-card.grok:hover { border-color: rgba(255,255,255,0.2); }
+  .engine-card.perplexity::before { background: linear-gradient(90deg,#20b2aa,transparent); }
+  .engine-card.perplexity:hover { border-color: rgba(32,178,170,0.4); }
+  .engine-card.deepseek::before { background: linear-gradient(90deg,#4c6ef5,transparent); }
+  .engine-card.deepseek:hover { border-color: rgba(76,110,245,0.4); }
+
+  .engine-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding: 5px 12px;
+    display: inline-block;
+    border: 1px solid;
+  }
+
+  .engine-logo.chatgpt { color: #10a37f; border-color: rgba(16,163,127,0.4); background: rgba(16,163,127,0.08); }
+  .engine-logo.claude-card { color: #cc785c; border-color: rgba(204,120,92,0.4); background: rgba(204,120,92,0.08); }
+  .engine-logo.gemini { color: #4285f4; border-color: rgba(66,133,244,0.4); background: rgba(66,133,244,0.08); }
+  .engine-logo.grok { color: #ffffff; border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); }
+  .engine-logo.perplexity { color: #20b2aa; border-color: rgba(32,178,170,0.4); background: rgba(32,178,170,0.08); }
+  .engine-logo.deepseek { color: #4c6ef5; border-color: rgba(76,110,245,0.4); background: rgba(76,110,245,0.08); }
+
+  .engine-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+
+  .engine-maker {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--white-dim);
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+  }
+
+  .engine-trait {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 8px;
+  }
+
+  .engine-desc {
+    font-size: 12px;
+    color: var(--white-dim);
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+
+  .engine-stat-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+
+  .engine-stat {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--white-border);
+    padding: 8px 12px;
+    flex: 1;
+    min-width: 80px;
+  }
+
+  .engine-stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 8px;
+    color: var(--white-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .engine-stat-value {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--cyan);
+  }
+
+  .engine-bias-bar {
+    margin-top: 14px;
+  }
+
+  .engine-bias-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--white-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .bias-track {
+    height: 4px;
+    background: var(--white-border);
+    margin-bottom: 10px;
+    position: relative;
+  }
+
+  .bias-fill {
+    height: 100%;
+    background: var(--cyan);
+  }
+
+  .bias-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 7px;
+  }
+
+  .bias-name {
+    font-size: 11px;
+    color: var(--white-dim);
+    min-width: 90px;
+  }
+
+  .bias-pct {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--cyan);
+    min-width: 36px;
+    text-align: right;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.3); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
+
+  @media (max-width: 900px) {
+    .header { padding: 40px 24px 30px; }
+    .section { padding: 40px 24px; }
+    .main-title { font-size: 40px; }
+    .insights-grid { grid-template-columns: 1fr; }
+    .signal-grid { grid-template-columns: 1fr 1fr; }
+    .engine-grid { grid-template-columns: 1fr; }
+    .divider { margin: 0 24px; }
+    .footer { padding: 30px 24px; flex-direction: column; gap: 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top" style="align-items:center;">
+    <!-- BrandRank SVG Logo -->
+    <svg width="180" height="36" viewBox="0 0 180 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+      <!-- B mark — stacked bars -->
+      <rect x="0" y="4"  width="5" height="28" fill="#00d4ff"/>
+      <rect x="7" y="4"  width="14" height="7"  rx="1" fill="#00d4ff"/>
+      <rect x="7" y="14" width="14" height="7"  rx="1" fill="#00d4ff" opacity="0.75"/>
+      <rect x="7" y="24" width="14" height="8"  rx="1" fill="#00d4ff" opacity="0.5"/>
+      <!-- Wordmark -->
+      <text x="28" y="24" font-family="'Space Mono', monospace" font-size="15" font-weight="700" fill="#ffffff" letter-spacing="0.5">BrandRank</text>
+      <text x="28" y="34" font-family="'Space Mono', monospace" font-size="8"  font-weight="400" fill="#00d4ff" letter-spacing="2">.AI</text>
+    </svg>
+    <!-- CLIENT ONLY badge -->
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div style="font-family:'Space Mono',monospace;font-size:10px;color:#ffd93d;letter-spacing:0.18em;text-transform:uppercase;border:1px solid rgba(255,217,61,0.5);padding:5px 14px;background:rgba(255,217,61,0.08);display:flex;align-items:center;gap:7px;">
+        <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="1" y="5" width="8" height="7" rx="1" fill="none" stroke="#ffd93d" stroke-width="1.2"/>
+          <path d="M3 5V3.5a2 2 0 0 1 4 0V5" stroke="#ffd93d" stroke-width="1.2" stroke-linecap="round"/>
+          <circle cx="5" cy="8.5" r="1" fill="#ffd93d"/>
+        </svg>
+        Client Only
+      </div>
+      <div class="date-badge">March 2026</div>
+    </div>
+  </div>
+  <div class="main-title">Answer Share:<br><span>Beverages</span></div>
+  <div class="subtitle">Which brands clean up when AI is asked? A cross-engine analysis of how ChatGPT, Gemini, Claude, Grok, Perplexity, and DeepSeek answer 110+ brand authority questions across the beverage category — surfacing which brands own the Answer Economy. Powered by BrandRank.AI — March 2026</div>
+  <div class="nav-pills">
+    <button class="nav-pill active" onclick="showSection('index-section')">Brand Index Table<span class="nav-tip">Every question across all 8 pillars — see which brand each AI engine named. Filter by pillar or search by brand name.</span></button>
+    <button class="nav-pill" onclick="showSection('consensus-section')">Consensus Analysis<span class="nav-tip">Questions where 4, 5, or all 6 engines agreed on the same brand — the strongest AI authority signals in the category.</span></button>
+    <button class="nav-pill" onclick="showSection('frequency-section')">Brand Frequency<span class="nav-tip">How often each brand was named across all 110+ questions. Frequency = AI-era brand authority. The higher the count, the more deeply a brand is encoded.</span></button>
+    <button class="nav-pill" onclick="showSection('qualitative-section')">Qualitative Insights<span class="nav-tip">Theme analysis from the 15 open-ended questions — cultural positioning, vulnerability patterns, and the brands AI engines describe in narrative terms.</span></button>
+    <button class="nav-pill" onclick="showSection('signal-section')">Answer Economy Signals<span class="nav-tip">Strategic signals for brand leaders: what these AI answers mean for visibility, vulnerability, and content readiness — plus BrandRank.AI study context.</span></button>
+    <button class="nav-pill" onclick="showSection('engines-section')">How AI Engines Think<span class="nav-tip">Profiles of all 6 AI engines — their training biases, brand tendencies, and what it means for your content strategy on each platform.</span></button>
+  </div>
+</div>
+
+<!-- ============================== -->
+<!-- SECTION 1: INDEX TABLE         -->
+<!-- ============================== -->
+<div id="index-section" class="section">
+  <div class="section-label">Pillar Analysis</div>
+  <div class="section-title">Brand Index Table</div>
+  <div class="section-desc">Every question across all seven pillars, with the brand named by each AI engine. Filter by pillar or search for a specific brand. <span style="color:var(--cyan)">Cyan dots</span> indicate cross-engine consensus (4+ engines agree).</div>
+
+  <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom:16px;">
+    <input class="search-bar" type="text" id="tableSearch" placeholder="Filter by brand name..." oninput="filterTable()">
+    <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--white-dim);">
+      <span style="color:var(--cyan)">●</span> = 4+ engines agree &nbsp;|&nbsp; Hover rows for detail
+    </div>
+  </div>
+
+  <div class="pillar-tabs" id="pillarTabs">
+    <button class="pillar-tab active" onclick="filterPillar('all', this)">All Pillars</button>
+    <button class="pillar-tab" onclick="filterPillar('p1', this)">I — Market Authority</button>
+    <button class="pillar-tab" onclick="filterPillar('p2', this)">II — Drink Occasions</button>
+    <button class="pillar-tab" onclick="filterPillar('p3', this)">III — Health & Vulnerability</button>
+    <button class="pillar-tab" onclick="filterPillar('p4', this)">IV — Expert Citations</button>
+    <button class="pillar-tab" onclick="filterPillar('p5', this)">V — Culture & Influencers</button>
+    <button class="pillar-tab" onclick="filterPillar('p6', this)">VI — Health & Function</button>
+    <button class="pillar-tab" onclick="filterPillar('p7', this)">VII — Innovation & Future</button>
+    <button class="pillar-tab" onclick="filterPillar('p8', this)">VIII — Regional Signals</button>
+  </div>
+
+  <div class="table-container">
+    <table class="index-table" id="mainTable">
+      <thead>
+        <tr>
+          <th>Question</th>
+          <th>ChatGPT</th>
+          <th>Claude</th>
+          <th>Gemini</th>
+          <th>Grok</th>
+          <th>Perplexity</th>
+          <th>DeepSeek</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+      </tbody>
+    </table>
+  </div>
+  <div style="margin-top:12px;font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.25);">
+    Source: BrandRank.AI 2025–2026 Beverage Sector Diagnostic Study. Engines queried: ChatGPT (OpenAI), Claude (Anthropic), Gemini (Google), Grok (xAI), Perplexity, DeepSeek.
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ============================== -->
+<!-- SECTION 2: CONSENSUS ANALYSIS  -->
+<!-- ============================== -->
+<div id="consensus-section" class="section" style="display:none;">
+  <div class="section-label">Cross-Engine Agreement</div>
+  <div class="section-title">Consensus Analysis</div>
+  <div class="section-desc">Where do all six AI engines agree on the same brand? High-consensus answers represent the strongest AI authority signals in the category — brands that have become the default answer regardless of which engine a consumer uses.</div>
+
+  <table class="consensus-table">
+    <thead>
+      <tr>
+        <th>Question Category</th>
+        <th>Dominant Answer</th>
+        <th>Agreement</th>
+        <th>Engines Citing</th>
+        <th>Signal Strength</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Overall leader in the global beverage industry</td>
+        <td style="font-weight:700;color:#ff6b6b;">Coca-Cola</td>
+        <td><span class="agree-pill agree-full">6/6 Unanimous</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">All six engines</td>
+        <td style="color:var(--green);">Maximum</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Most recognized beverage brand worldwide</td>
+        <td style="font-weight:700;color:#ff6b6b;">Coca-Cola</td>
+        <td><span class="agree-pill agree-full">6/6 Unanimous</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">All six engines</td>
+        <td style="color:var(--green);">Maximum</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Most trusted beverage brand by consumers</td>
+        <td style="font-weight:700;color:#ff6b6b;">Coca-Cola</td>
+        <td><span class="agree-pill agree-full">6/6 Unanimous</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">All six engines</td>
+        <td style="color:var(--green);">Maximum</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Best soda overall</td>
+        <td style="font-weight:700;color:#ff6b6b;">Coca-Cola</td>
+        <td><span class="agree-pill agree-full">6/6 Unanimous</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">All six engines</td>
+        <td style="color:var(--green);">Maximum</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Best cola drink</td>
+        <td style="font-weight:700;color:#ff6b6b;">Coca-Cola</td>
+        <td><span class="agree-pill agree-full">6/6 Unanimous</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">All six engines</td>
+        <td style="color:var(--green);">Maximum</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Best lemon-lime soda</td>
+        <td style="font-weight:700;color:#81ecec;">Sprite</td>
+        <td><span class="agree-pill agree-full">6/6 Unanimous</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">All six engines</td>
+        <td style="color:var(--green);">Maximum</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Best sports drink overall</td>
+        <td style="font-weight:700;color:#ff9f43;">Gatorade</td>
+        <td><span class="agree-pill agree-full">6/6 Unanimous</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">All six engines</td>
+        <td style="color:var(--green);">Maximum</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Best hydration drink for athletes</td>
+        <td style="font-weight:700;color:#ff9f43;">Gatorade</td>
+        <td><span class="agree-pill agree-full">6/6 Unanimous</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">All six engines</td>
+        <td style="color:var(--green);">Maximum</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Best energy drink overall</td>
+        <td style="font-weight:700;color:#ffd93d;">Red Bull</td>
+        <td><span class="agree-pill agree-full">6/6 Unanimous</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">All six engines</td>
+        <td style="color:var(--green);">Maximum</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Best ready-to-drink coffee brand</td>
+        <td style="font-weight:700;color:#4ecdc4;">Starbucks</td>
+        <td><span class="agree-pill agree-full">6/6 Unanimous</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">All six engines</td>
+        <td style="color:var(--green);">Maximum</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Best coffee chain beverage</td>
+        <td style="font-weight:700;color:#4ecdc4;">Starbucks</td>
+        <td><span class="agree-pill agree-full">6/6 Unanimous</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">All six engines</td>
+        <td style="color:var(--green);">Maximum</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Beverage brand most associated with sports culture</td>
+        <td style="font-weight:700;color:#ff9f43;">Gatorade</td>
+        <td><span class="agree-pill agree-full">6/6 Unanimous</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">All six engines</td>
+        <td style="color:var(--green);">Maximum</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Beverage brand most associated with pop culture</td>
+        <td style="font-weight:700;color:#ff6b6b;">Coca-Cola</td>
+        <td><span class="agree-pill agree-full">6/6 Unanimous</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">All six engines</td>
+        <td style="color:var(--green);">Maximum</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Beverage brand most criticized for sugar content</td>
+        <td style="font-weight:700;color:#ff6b6b;">Coca-Cola</td>
+        <td><span class="agree-pill agree-full">6/6 Unanimous</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">All six engines</td>
+        <td style="color:var(--green);">Maximum</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Best diet soda overall</td>
+        <td style="font-weight:700;color:#ff6b6b;">Diet Coke</td>
+        <td><span class="agree-pill agree-full">6/6 Unanimous</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">All six engines</td>
+        <td style="color:var(--green);">Maximum</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Best zero-sugar soda</td>
+        <td style="font-weight:700;color:#ff6b6b;">Coca-Cola Zero Sugar</td>
+        <td><span class="agree-pill agree-strong">5/6 Strong</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">ChatGPT, Claude, Gemini, Grok, Perplexity</td>
+        <td style="color:var(--cyan);">Very High</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Beverage brand redefining soda</td>
+        <td style="font-weight:700;color:#fd79a8;">Olipop</td>
+        <td><span class="agree-pill agree-strong">5/6 Strong</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">ChatGPT, Claude, Gemini, Grok, DeepSeek</td>
+        <td style="color:var(--cyan);">Very High</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Beverage brand redefining energy drinks</td>
+        <td style="font-weight:700;color:#6bcb77;">Celsius</td>
+        <td><span class="agree-pill agree-strong">5/6 Strong</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">ChatGPT, Claude, Gemini, Grok, DeepSeek</td>
+        <td style="color:var(--cyan);">Very High</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Beverage brand most associated with youth culture</td>
+        <td style="font-weight:700;color:#ffd93d;">Red Bull</td>
+        <td><span class="agree-pill agree-strong">5/6 Strong</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">ChatGPT, Claude, Grok, DeepSeek + 1</td>
+        <td style="color:var(--cyan);">Very High</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Beverage brand most associated with lifestyle culture</td>
+        <td style="font-weight:700;color:#ffd93d;">Red Bull</td>
+        <td><span class="agree-pill agree-strong">5/6 Strong</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">ChatGPT, Claude, Gemini, Grok, Perplexity</td>
+        <td style="color:var(--cyan);">Very High</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Brand most associated with American beverage culture</td>
+        <td style="font-weight:700;color:#ff6b6b;">Coca-Cola</td>
+        <td><span class="agree-pill agree-full">6/6 Unanimous</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">All six engines</td>
+        <td style="color:var(--green);">Maximum</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Beverage brand most likely to dominate the next decade</td>
+        <td style="font-weight:700;color:#ff6b6b;">Coca-Cola</td>
+        <td><span class="agree-pill agree-strong">5/6 Strong</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">ChatGPT, Claude, Gemini, Grok, DeepSeek</td>
+        <td style="color:var(--cyan);">Very High</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Beverage brand most associated with plant-based beverages</td>
+        <td style="font-weight:700;color:#e17055;">Oatly</td>
+        <td><span class="agree-pill agree-strong">5/6 Strong</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">ChatGPT, Claude, Gemini, Grok, DeepSeek</td>
+        <td style="color:var(--cyan);">Very High</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Overall cultural storytelling leader</td>
+        <td style="font-weight:700;color:#ff6b6b;">Coca-Cola</td>
+        <td><span class="agree-pill agree-strong">5/6 Strong</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">ChatGPT, Claude, Gemini, Grok, DeepSeek</td>
+        <td style="color:var(--cyan);">Very High</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Strongest cultural identity beyond advertising</td>
+        <td style="font-weight:700;color:#ffd93d;">Red Bull</td>
+        <td><span class="agree-pill agree-full">6/6 Unanimous</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">All six engines</td>
+        <td style="color:var(--green);">Maximum</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Most likely soda disruptor</td>
+        <td style="font-weight:700;color:#fd79a8;">Olipop</td>
+        <td><span class="agree-pill agree-strong">5/6 Strong</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">ChatGPT, Claude, Gemini, Grok, DeepSeek</td>
+        <td style="color:var(--cyan);">Very High</td>
+      </tr>
+      <tr>
+        <td style="color:var(--white-dim);font-size:12px;">Best beverage brand associated with music culture</td>
+        <td style="font-weight:700;color:#ffd93d;">Red Bull</td>
+        <td><span class="agree-pill agree-partial">Partial</span></td>
+        <td style="font-size:11px;color:var(--white-dim);">4 cite Red Bull; 1 cites Pepsi; 1 cites Sprite</td>
+        <td style="color:var(--yellow);">High</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<hr class="divider">
+
+<!-- ============================== -->
+<!-- SECTION 3: BRAND FREQUENCY     -->
+<!-- ============================== -->
+<div id="frequency-section" class="section" style="display:none;">
+  <div class="section-label">Mention Frequency</div>
+  <div class="section-title">Brand Frequency Analysis</div>
+  <div class="section-desc">How often each brand was named as the answer across all 110+ questions and six AI engines. Frequency is a proxy for AI-era brand authority — the higher the count, the more deeply a brand has been encoded into the answer ecosystem.</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:8px;">
+
+    <div>
+      <div class="freq-header" style="border:1px solid var(--white-border);border-bottom:1px solid var(--cyan-border);background:rgba(0,212,255,0.04);padding:20px 24px;margin-bottom:0;">
+        <div class="freq-title" style="font-size:18px;">Tier 1 — Category Dominators</div>
+        <div class="freq-subtitle">Mentioned 50+ times across all engines and pillars</div>
+      </div>
+      <div style="background:var(--white-faint);border:1px solid var(--white-border);border-top:none;padding:24px;">
+        <div class="freq-row">
+          <div class="freq-brand b-coke">Coca-Cola</div>
+          <div class="freq-bar-wrap"><div class="freq-bar" style="width:100%;background:linear-gradient(90deg,#ff6b6b,#ff9f43);"></div></div>
+          <div class="freq-count">95</div>
+        </div>
+        <div class="freq-row">
+          <div class="freq-brand b-redbull">Red Bull</div>
+          <div class="freq-bar-wrap"><div class="freq-bar" style="width:72%;background:linear-gradient(90deg,#ffd93d,#ff9f43);"></div></div>
+          <div class="freq-count">68</div>
+        </div>
+        <div class="freq-row">
+          <div class="freq-brand b-gatorade">Gatorade</div>
+          <div class="freq-bar-wrap"><div class="freq-bar" style="width:68%;background:linear-gradient(90deg,#ff9f43,#fdcb6e);"></div></div>
+          <div class="freq-count">65</div>
+        </div>
+        <div class="freq-row">
+          <div class="freq-brand b-starbucks">Starbucks</div>
+          <div class="freq-bar-wrap"><div class="freq-bar" style="width:62%;background:linear-gradient(90deg,#4ecdc4,#81ecec);"></div></div>
+          <div class="freq-count">59</div>
+        </div>
+        <div class="freq-row">
+          <div class="freq-brand b-celsius">Celsius</div>
+          <div class="freq-bar-wrap"><div class="freq-bar" style="width:54%;background:linear-gradient(90deg,#6bcb77,#4ecdc4);"></div></div>
+          <div class="freq-count">51</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="freq-header" style="border:1px solid var(--white-border);border-bottom:1px solid var(--cyan-border);background:rgba(0,212,255,0.04);padding:20px 24px;margin-bottom:0;">
+        <div class="freq-title" style="font-size:18px;">Tier 2 — Category Specialists</div>
+        <div class="freq-subtitle">Mentioned 15–49 times — deep strength in specific pillars</div>
+      </div>
+      <div style="background:var(--white-faint);border:1px solid var(--white-border);border-top:none;padding:24px;">
+        <div class="freq-row">
+          <div class="freq-brand b-olipop">Olipop</div>
+          <div class="freq-bar-wrap"><div class="freq-bar" style="width:95%;background:linear-gradient(90deg,#fd79a8,#a29bfe);"></div></div>
+          <div class="freq-count">38</div>
+        </div>
+        <div class="freq-row">
+          <div class="freq-brand b-gts">GT's Kombucha</div>
+          <div class="freq-bar-wrap"><div class="freq-bar" style="width:80%;background:linear-gradient(90deg,#00d4ff,#4ecdc4);"></div></div>
+          <div class="freq-count">32</div>
+        </div>
+        <div class="freq-row">
+          <div class="freq-brand b-liquidiv">Liquid I.V.</div>
+          <div class="freq-bar-wrap"><div class="freq-bar" style="width:70%;background:#55efc4;"></div></div>
+          <div class="freq-count">28</div>
+        </div>
+        <div class="freq-row">
+          <div class="freq-brand b-prime">Prime</div>
+          <div class="freq-bar-wrap"><div class="freq-bar" style="width:60%;background:#fdcb6e;"></div></div>
+          <div class="freq-count">24</div>
+        </div>
+        <div class="freq-row">
+          <div class="freq-brand b-oatly">Oatly</div>
+          <div class="freq-bar-wrap"><div class="freq-bar" style="width:50%;background:#e17055;"></div></div>
+          <div class="freq-count">20</div>
+        </div>
+        <div class="freq-row">
+          <div class="freq-brand b-sprite">Sprite</div>
+          <div class="freq-bar-wrap"><div class="freq-bar" style="width:43%;background:#81ecec;"></div></div>
+          <div class="freq-count">17</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:28px;background:var(--white-faint);border:1px solid var(--white-border);padding:28px;">
+    <div style="font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:16px;">The Frequency Paradox</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;">
+      <div style="border-left:2px solid var(--green);padding-left:16px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--green);letter-spacing:0.1em;margin-bottom:6px;">HIGH FREQUENCY + HIGH CONSENSUS</div>
+        <div style="font-weight:700;margin-bottom:4px;">Coca-Cola, Gatorade, Red Bull</div>
+        <div style="font-size:12px;color:var(--white-dim);">These brands are the "safe default" — every AI engine reaches for them because they've achieved category-defining status through decades of consistent performance and cultural presence. No answer engine second-guesses these picks.</div>
+      </div>
+      <div style="border-left:2px solid var(--cyan);padding-left:16px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:0.1em;margin-bottom:6px;">HIGH FREQUENCY + RISING CONSENSUS</div>
+        <div style="font-weight:700;margin-bottom:4px;">Celsius, Olipop, Liquid I.V.</div>
+        <div style="font-size:12px;color:var(--white-dim);">New-era brands punching above their sales weight in AI answers — driven by clean ingredient claims, strong digital footprint, functional health positioning, and expert citation ecosystems that AI training data has absorbed.</div>
+      </div>
+      <div style="border-left:2px solid var(--yellow);padding-left:16px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--yellow);letter-spacing:0.1em;margin-bottom:6px;">HIGH FREQUENCY + VULNERABILITY</div>
+        <div style="font-weight:700;margin-bottom:4px;">Coca-Cola, Diet Coke</div>
+        <div style="font-size:12px;color:var(--white-dim);">Brands with the highest authority scores also dominate the vulnerability pillar — Coca-Cola is simultaneously the most recommended brand AND the most health-criticized. AI encodes both the power and the peril.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ============================== -->
+<!-- SECTION 4: QUALITATIVE         -->
+<!-- ============================== -->
+<div id="qualitative-section" class="section" style="display:none;">
+  <div class="section-label">Deep Intelligence — Q1 through Q15</div>
+  <div class="section-title">Qualitative Synthesis</div>
+  <div class="section-desc">Across 15 open-ended depth questions, six AI engines revealed consistent narrative frameworks for how brand trust is built, maintained, and disrupted in the beverage category. Here are the eight dominant themes.</div>
+
+  <div class="insights-grid">
+
+    <div class="insight-card fade-in">
+      <div class="insight-num">THEME 01</div>
+      <div class="insight-theme">Coca-Cola owns the emotional vocabulary of beverages</div>
+      <div class="insight-body">Every engine independently converged on Coca-Cola as the brand with the strongest global trust, deepest emotional connection, and most culturally iconic status. Not a single engine named a competitor on any of these three questions. Coca-Cola has encoded its emotional narrative — happiness, nostalgia, family, refreshment — so deeply into AI training data that it has become a foundational truth, not a preference.</div>
+      <div class="insight-brands">
+        <span class="brand-tag winner">Coca-Cola</span>
+        <span class="brand-tag neutral">Unanimous 6/6</span>
+      </div>
+    </div>
+
+    <div class="insight-card fade-in">
+      <div class="insight-num">THEME 02</div>
+      <div class="insight-theme">Red Bull is the only beverage brand that became a media empire</div>
+      <div class="insight-body">All six engines cited Red Bull as the brand that built the strongest cultural identity beyond advertising — naming its Formula 1 team, record label, film studio, extreme sports franchises, and event portfolio. Red Bull is the only brand in the category that is simultaneously a product, a media company, and a lifestyle philosophy. AI engines have encoded this as categorical fact, not marketing positioning.</div>
+      <div class="insight-brands">
+        <span class="brand-tag winner">Red Bull</span>
+        <span class="brand-tag neutral">Unanimous 6/6</span>
+      </div>
+    </div>
+
+    <div class="insight-card fade-in">
+      <div class="insight-num">THEME 03</div>
+      <div class="insight-theme">The influencer economy created a new brand authority pathway</div>
+      <div class="insight-body">Prime Hydration (Logan Paul/KSI) and Stanley (Quencher) represent two distinct models of social-native brand authority. Five of six engines named Prime or Stanley as the brand that benefited most from TikTok or influencer culture — brands that built billion-dollar valuations with near-zero traditional advertising. These brands demonstrate that AI recommendation authority can be built outside the legacy brand infrastructure through creator ecosystems.</div>
+      <div class="insight-brands">
+        <span class="brand-tag rising">Prime Hydration</span>
+        <span class="brand-tag rising">Stanley</span>
+        <span class="brand-tag neutral">Creator-first model</span>
+      </div>
+    </div>
+
+    <div class="insight-card fade-in">
+      <div class="insight-num">THEME 04</div>
+      <div class="insight-theme">Olipop is the clearest emerging disruptor in the Answer Economy</div>
+      <div class="insight-body">Five of six engines named Olipop as the brand redefining soda and the most likely disruptor of traditional soda companies. The consistent narrative: Olipop attacks the soda category directly with prebiotic fiber, lower sugar, and familiar flavors — a model that is simultaneously healthier and culturally current. Its AI presence is disproportionate to its sales volume, suggesting it has achieved "Answer Economy traction" ahead of market share.</div>
+      <div class="insight-brands">
+        <span class="brand-tag rising">Olipop</span>
+        <span class="brand-tag rising">Poppi</span>
+        <span class="brand-tag neutral">Functional soda wave</span>
+      </div>
+    </div>
+
+    <div class="insight-card fade-in">
+      <div class="insight-num">THEME 05</div>
+      <div class="insight-theme">Coca-Cola is simultaneously the most trusted AND most vulnerable</div>
+      <div class="insight-body">The sharpest signal in the study: every engine cited Coca-Cola as the most criticized brand for sugar content, most vulnerable to health regulation, and most likely brand consumers quit for health reasons — while simultaneously naming it the most trusted, most iconic, and most likely to dominate the future. This dual-edge status is the defining tension of the category. Coca-Cola's AI footprint is the largest, but it spans both authority and vulnerability.</div>
+      <div class="insight-brands">
+        <span class="brand-tag winner">Coca-Cola (authority)</span>
+        <span class="brand-tag risk">Coca-Cola (vulnerability)</span>
+        <span class="brand-tag neutral">The dual-edge paradox</span>
+      </div>
+    </div>
+
+    <div class="insight-card fade-in">
+      <div class="insight-num">THEME 06</div>
+      <div class="insight-theme">Celsius rewrote what an energy drink is for</div>
+      <div class="insight-body">Five engines agreed that Celsius is the brand redefining energy drinks — not through performance claims but through identity repositioning. The consistent narrative: Celsius shifted the category from stimulant culture to fitness supplement, gaining credibility with consumers who would never drink a Red Bull. This repositioning is the reason Celsius appears in AI answers across energy, health, functional, and wellness pillars — a rare cross-pillar presence that signals deep Answer Economy penetration.</div>
+      <div class="insight-brands">
+        <span class="brand-tag rising">Celsius</span>
+        <span class="brand-tag neutral">Cross-pillar authority</span>
+      </div>
+    </div>
+
+    <div class="insight-card fade-in">
+      <div class="insight-num">THEME 07</div>
+      <div class="insight-theme">Functional beverages are the Answer Economy's fastest-rising category</div>
+      <div class="insight-body">Every engine's answer to "what major trend will reshape beverages" pointed to functional and bioactive beverages — the expectation that drinks will do something measurable beyond hydration. The brands dominating this space in AI answers — Liquid I.V., GT's Kombucha, Celsius, Olipop — share a common architecture: clean ingredients, specific health claims, structured product data, and expert citation credibility. These brands are better positioned for AI recommendation than many legacy brands with larger budgets.</div>
+      <div class="insight-brands">
+        <span class="brand-tag rising">Liquid I.V.</span>
+        <span class="brand-tag rising">GT's Kombucha</span>
+        <span class="brand-tag rising">Olipop</span>
+        <span class="brand-tag neutral">Functional era</span>
+      </div>
+    </div>
+
+    <div class="insight-card fade-in">
+      <div class="insight-num">THEME 08</div>
+      <div class="insight-theme">The AI-first beverage brand doesn't exist yet — but Olipop comes closest</div>
+      <div class="insight-body">When asked what it would take to dominate in an AI-driven recommendation economy, every engine described the same architecture: structured verifiable data, expert endorsement density, clean digital identity, and specific health-claim credibility. No single brand was named as having fully achieved this. But Olipop was named most often as the closest model — a brand built on functional claims, transparent ingredients, and expert citations rather than advertising reach. The Answer Economy's category winner has not yet been crowned.</div>
+      <div class="insight-brands">
+        <span class="brand-tag rising">Olipop</span>
+        <span class="brand-tag rising">Celsius</span>
+        <span class="brand-tag neutral">AI-first architecture</span>
+        <span class="brand-tag risk">Legacy brands at risk</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- QUALITATIVE BRAND SCOREBOARD -->
+  <div style="margin-top:48px;">
+    <div class="section-label">Qualitative Brand Scoreboard</div>
+    <div style="font-family:'DM Serif Display',serif;font-size:28px;margin-bottom:8px;">Which brands won the narrative questions?</div>
+    <div style="font-size:14px;color:var(--white-dim);margin-bottom:28px;">Tallying how many of the 15 qualitative questions a brand was named as the primary answer across all six engines.</div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+      <div style="background:rgba(78,205,196,0.08);border:1px solid rgba(78,205,196,0.3);padding:24px;">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--green);letter-spacing:0.15em;margin-bottom:12px;">GOLD — DOMINANT NARRATIVE BRAND</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:40px;color:var(--white);">Coca-Cola</div>
+        <div style="font-family:'Space Mono',monospace;font-size:24px;color:var(--green);margin:12px 0;">Q1, Q2, Q3, Q4</div>
+        <div style="font-size:12px;color:var(--white-dim);line-height:1.6;">Named most often as the "trust benchmark" across global credibility, emotional connection, cultural iconography, and long-term market dominance. AI engines have absorbed Coca-Cola's narrative so completely that it answers for the entire category on legacy questions.</div>
+      </div>
+      <div style="background:rgba(0,212,255,0.06);border:1px solid var(--cyan-border);padding:24px;">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--cyan);letter-spacing:0.15em;margin-bottom:12px;">SILVER — CULTURE EMPIRE BUILDER</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:40px;color:var(--white);">Red Bull</div>
+        <div style="font-family:'Space Mono',monospace;font-size:24px;color:var(--cyan);margin:12px 0;">Q7, Q9</div>
+        <div style="font-size:12px;color:var(--white-dim);line-height:1.6;">Cited unanimously for building the strongest cultural identity beyond advertising, and for creating the strongest lifestyle community. Red Bull's answer is always the same: it is a media company that happens to sell a drink — and AI engines encode that distinction clearly.</div>
+      </div>
+      <div style="background:rgba(253,121,168,0.06);border:1px solid rgba(253,121,168,0.3);padding:24px;">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--red);letter-spacing:0.15em;margin-bottom:12px;">BRONZE — FUTURE SIGNAL BRAND</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:40px;color:var(--white);">Olipop</div>
+        <div style="font-family:'Space Mono',monospace;font-size:24px;color:var(--red);margin:12px 0;">Q10, Q11, Q12</div>
+        <div style="font-size:12px;color:var(--white-dim);line-height:1.6;">Named by five of six engines as redefining soda, the most likely disruptor, and the most meaningful innovation of the last decade. Olipop is the brand AI engines most consistently point to when asked what the future of beverages looks like.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ============================== -->
+<!-- SECTION 5: SIGNAL MAP          -->
+<!-- ============================== -->
+<div id="signal-section" class="section" style="display:none;">
+  <div class="section-label">Answer Economy Positioning</div>
+  <div class="section-title">AI Signal Map</div>
+  <div class="section-desc">A synthesis of where each major brand stands in the Answer Economy — mapping AI recommendation strength, vulnerability exposure, and future positioning across the six engines studied.</div>
+
+  <div class="signal-grid">
+    <div class="signal-card">
+      <div class="signal-label">Cola Category</div>
+      <div class="signal-brand">Coca-Cola</div>
+      <div class="signal-desc"><span class="signal-accent">Uncontested</span> across all six engines for category leadership, cultural authority, and market dominance. The only brand with unanimous presence across all seven pillars. Vulnerability: simultaneously the most health-criticized brand in the study.</div>
+    </div>
+    <div class="signal-card">
+      <div class="signal-label">Energy Category</div>
+      <div class="signal-brand">Red Bull</div>
+      <div class="signal-desc"><span class="signal-accent">Unanimous</span> as best energy drink overall, and the clear lifestyle/culture leader. Category creator with unassailable AI authority. Faces rising competition from Celsius repositioning the category toward fitness.</div>
+    </div>
+    <div class="signal-card">
+      <div class="signal-label">Sports / Hydration</div>
+      <div class="signal-brand">Gatorade</div>
+      <div class="signal-desc"><span class="signal-accent">Unanimous</span> across all sports drink questions and athlete recommendations. 60 years of sports science validation have encoded Gatorade into AI training data as the default hydration answer for physical exertion.</div>
+    </div>
+    <div class="signal-card">
+      <div class="signal-label">Coffee / RTD</div>
+      <div class="signal-brand">Starbucks</div>
+      <div class="signal-desc"><span class="signal-accent">Unanimous</span> across all coffee category questions. Dominates RTD, iced coffee, cold brew, and coffee chain answers. Coffee as a category is effectively owned by Starbucks in AI recommendation ecosystems.</div>
+    </div>
+    <div class="signal-card">
+      <div class="signal-label">Better-For-You Energy</div>
+      <div class="signal-brand">Celsius</div>
+      <div class="signal-desc"><span class="signal-accent">Rising fast</span> — 5+ engine consensus on redefining energy drinks, leading the better-for-you movement, and best balancing taste and health. Cross-pillar authority spanning energy, health, wellness, and innovation signals deep Answer Economy penetration.</div>
+    </div>
+    <div class="signal-card">
+      <div class="signal-label">Functional Soda</div>
+      <div class="signal-brand">Olipop</div>
+      <div class="signal-desc"><span class="signal-accent">Category-defining</span> — named as the soda disruptor, the most meaningful innovation, and the brand redefining soda by 5/6 engines. AI has absorbed Olipop as the benchmark for what comes after traditional soda.</div>
+    </div>
+    <div class="signal-card">
+      <div class="signal-label">Gut Health / Probiotic</div>
+      <div class="signal-brand">GT's Kombucha</div>
+      <div class="signal-desc"><span class="signal-accent">Category owner</span> — the dominant answer across nutritionist recommendations, gut health, and probiotic questions. GT's has encoded itself into AI as the original and most credible kombucha brand through decades of clean-ingredient transparency.</div>
+    </div>
+    <div class="signal-card">
+      <div class="signal-label">Influencer / Social Native</div>
+      <div class="signal-brand">Prime Hydration</div>
+      <div class="signal-desc"><span class="signal-accent">New-model authority</span> — named by 5/6 engines as the brand most associated with influencer marketing and the most loyal online fan community. Prime demonstrates that AI recommendation authority can be built through creator channels rather than traditional brand infrastructure.</div>
+    </div>
+  </div>
+
+  <!-- THE META QUESTION SUMMARY -->
+  <div style="margin-top:40px;background:linear-gradient(135deg,rgba(0,212,255,0.06),rgba(162,155,254,0.04));border:1px solid var(--cyan-border);padding:40px;">
+    <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:0.15em;margin-bottom:16px;">Q15 — THE META QUESTION: WINNING THE ANSWER ECONOMY</div>
+    <div style="font-family:'DM Serif Display',serif;font-size:32px;color:var(--white);margin-bottom:24px;line-height:1.2;">What would it take for a beverage brand to dominate in a world where AI is the new search engine?</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px;">
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--green);letter-spacing:0.1em;margin-bottom:10px;">01 — BUILD VERIFIABLE HEALTH CREDENTIALS</div>
+        <div style="font-size:13px;color:var(--white-dim);line-height:1.65;">Every engine agreed: AI recommends what it can verify. Beverage brands must publish structured, machine-readable product data — ingredient lists, clinical citations, nutritionist endorsements, and performance claims backed by third-party research. Brands with clean, specific, expert-validated data architectures win by default in functional beverage queries.</div>
+      </div>
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:0.1em;margin-bottom:10px;">02 — OWN A SEMANTIC OCCASION</div>
+        <div style="font-size:13px;color:var(--white-dim);line-height:1.65;">Category dominators have encoded a simple equation: Gatorade = sports, Red Bull = energy, GT's = gut health, Starbucks = coffee. Brands that try to own every occasion own nothing in the AI layer. The brands winning the Answer Economy have colonized a specific drink occasion so completely that AI engines reach for them reflexively — no other brand enters the consideration set.</div>
+      </div>
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--purple);letter-spacing:0.1em;margin-bottom:10px;">03 — EARN EXPERT CITATION, NOT JUST AWARENESS</div>
+        <div style="font-size:13px;color:var(--white-dim);line-height:1.65;">AI engines are trained on expert consensus, not ad spend. The brands rising fastest in Answer Economy positioning — Celsius, Olipop, Liquid I.V. — are consistently cited by registered dietitians, sports medicine physicians, fitness professionals, and wellness publications. Third-party expert citation is the new media budget in the beverage category.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BRANDRANK POSITIONING -->
+  <div style="margin-top:28px;background:var(--white-faint);border:1px solid var(--white-border);padding:32px;display:grid;grid-template-columns:2fr 1fr;gap:32px;align-items:center;">
+    <div>
+      <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:0.15em;margin-bottom:12px;">ABOUT THIS STUDY — BRANDRANK.AI</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--white);margin-bottom:12px;">Measuring the brands that AI recommends — before your competitors do.</div>
+      <div style="font-size:13px;color:var(--white-dim);line-height:1.65;">BrandRank.AI works with over 70 global brands to measure and improve their visibility, vulnerability, and content readiness across AI answer engines. This Answer Share: Beverages report is drawn from a 110+ question diagnostic study run across ChatGPT, Claude, Gemini, Grok, Perplexity, and DeepSeek — mapping where beverage brands stand in the Answer Economy today. Powered by BrandRank.AI — March 2026.</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-family:'DM Serif Display',serif;font-size:64px;color:var(--cyan);line-height:1;">110+</div>
+      <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--white-dim);letter-spacing:0.1em;margin-bottom:20px;">Questions Analyzed</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:64px;color:var(--cyan);line-height:1;">6</div>
+      <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--white-dim);letter-spacing:0.1em;margin-bottom:20px;">AI Engines Studied</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:64px;color:var(--cyan);line-height:1;">40+</div>
+      <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--white-dim);letter-spacing:0.1em;">Brands Tracked</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================== -->
+<!-- SECTION 6: HOW AI ENGINES THINK -->
+<!-- ============================== -->
+<div id="engines-section" class="section" style="display:none;">
+  <div class="section-label">Engine Intelligence</div>
+  <div class="section-title">How AI Engines Think About Beverage Brands</div>
+  <div class="section-desc">Each AI engine has distinct training data, reasoning patterns, and brand associations. Understanding how each engine processes beverage questions helps brands identify where gaps in AI visibility exist — and where content strategy should focus.</div>
+
+  <div class="engine-grid">
+
+    <!-- ChatGPT -->
+    <div class="engine-card chatgpt fade-in">
+      <div class="engine-logo chatgpt">OpenAI</div>
+      <div class="engine-name">ChatGPT</div>
+      <div class="engine-maker">GPT-4o · OpenAI · San Francisco</div>
+      <div class="engine-trait">Tendency: Heritage + Market Authority</div>
+      <div class="engine-desc">ChatGPT consistently anchors beverage answers to established market leaders and historical brand authority. It rewards brands with deep editorial coverage, consumer-facing FAQs, and decades of consistent public data. It is the most likely engine to default to Coca-Cola, Gatorade, and Starbucks — brands with massive content footprints. New entrants face the highest barrier here.</div>
+      <div class="engine-bias-bar">
+        <div class="engine-bias-label">Brand Bias Profile</div>
+        <div class="bias-row"><span class="bias-name">Market leaders</span><div class="bias-track" style="flex:1;margin:0 12px;"><div class="bias-fill" style="width:92%;"></div></div><span class="bias-pct">92%</span></div>
+        <div class="bias-row"><span class="bias-name">Challenger brands</span><div class="bias-track" style="flex:1;margin:0 12px;"><div class="bias-fill" style="width:44%;"></div></div><span class="bias-pct">44%</span></div>
+        <div class="bias-row"><span class="bias-name">Disruptors</span><div class="bias-track" style="flex:1;margin:0 12px;"><div class="bias-fill" style="width:31%;"></div></div><span class="bias-pct">31%</span></div>
+      </div>
+      <div class="engine-stat-row">
+        <div class="engine-stat"><div class="engine-stat-label">Consensus Rate</div><div class="engine-stat-value">78%</div></div>
+        <div class="engine-stat"><div class="engine-stat-label">Top Brand</div><div class="engine-stat-value">Coca-Cola</div></div>
+      </div>
+    </div>
+
+    <!-- Claude -->
+    <div class="engine-card claude-card fade-in">
+      <div class="engine-logo claude-card">Anthropic</div>
+      <div class="engine-name">Claude</div>
+      <div class="engine-maker">Claude 3.5 · Anthropic · San Francisco</div>
+      <div class="engine-trait">Tendency: Nuance + Category Expertise</div>
+      <div class="engine-desc">Claude shows the highest tendency to surface category-specific nuance — naming regional brands, citing ingredient science, and differentiating within subcategories rather than defaulting to category leaders. It named unique answers on 23% of questions in this study. Health and functional beverage brands benefit most from Claude's tendency to reason about consumer intent rather than pure brand scale.</div>
+      <div class="engine-bias-bar">
+        <div class="engine-bias-label">Brand Bias Profile</div>
+        <div class="bias-row"><span class="bias-name">Market leaders</span><div class="bias-track" style="flex:1;margin:0 12px;"><div class="bias-fill" style="width:71%;"></div></div><span class="bias-pct">71%</span></div>
+        <div class="bias-row"><span class="bias-name">Challenger brands</span><div class="bias-track" style="flex:1;margin:0 12px;"><div class="bias-fill" style="width:62%;"></div></div><span class="bias-pct">62%</span></div>
+        <div class="bias-row"><span class="bias-name">Disruptors</span><div class="bias-track" style="flex:1;margin:0 12px;"><div class="bias-fill" style="width:55%;"></div></div><span class="bias-pct">55%</span></div>
+      </div>
+      <div class="engine-stat-row">
+        <div class="engine-stat"><div class="engine-stat-label">Unique Answers</div><div class="engine-stat-value">23%</div></div>
+        <div class="engine-stat"><div class="engine-stat-label">Top Brand</div><div class="engine-stat-value">Coca-Cola</div></div>
+      </div>
+    </div>
+
+    <!-- Gemini -->
+    <div class="engine-card gemini fade-in">
+      <div class="engine-logo gemini">Google</div>
+      <div class="engine-name">Gemini</div>
+      <div class="engine-maker">Gemini 1.5 Pro · Google DeepMind · Mountain View</div>
+      <div class="engine-trait">Tendency: Search-Trained + Consumer Intent</div>
+      <div class="engine-desc">Gemini's beverage brand associations most closely mirror Google Search behavior — brands that have invested heavily in SEO, structured product content, and consumer-facing health information perform best. It is the engine most likely to reflect what consumers are actively searching for. Brands that dominate Google Knowledge Panels and Wikipedia tend to score highest here.</div>
+      <div class="engine-bias-bar">
+        <div class="engine-bias-label">Brand Bias Profile</div>
+        <div class="bias-row"><span class="bias-name">Market leaders</span><div class="bias-track" style="flex:1;margin:0 12px;"><div class="bias-fill" style="width:85%;"></div></div><span class="bias-pct">85%</span></div>
+        <div class="bias-row"><span class="bias-name">Challenger brands</span><div class="bias-track" style="flex:1;margin:0 12px;"><div class="bias-fill" style="width:57%;"></div></div><span class="bias-pct">57%</span></div>
+        <div class="bias-row"><span class="bias-name">Disruptors</span><div class="bias-track" style="flex:1;margin:0 12px;"><div class="bias-fill" style="width:48%;"></div></div><span class="bias-pct">48%</span></div>
+      </div>
+      <div class="engine-stat-row">
+        <div class="engine-stat"><div class="engine-stat-label">Consensus Rate</div><div class="engine-stat-value">81%</div></div>
+        <div class="engine-stat"><div class="engine-stat-label">Top Brand</div><div class="engine-stat-value">Coca-Cola</div></div>
+      </div>
+    </div>
+
+    <!-- Grok -->
+    <div class="engine-card grok fade-in">
+      <div class="engine-logo grok">xAI</div>
+      <div class="engine-name">Grok</div>
+      <div class="engine-maker">Grok 2 · xAI · Palo Alto</div>
+      <div class="engine-trait">Tendency: Culture + Real-Time Signals</div>
+      <div class="engine-desc">Grok — trained on X (formerly Twitter) data streams — surfaces brand answers most influenced by real-time social conversation and cultural momentum. It is the engine most likely to name brands with strong community followings, sports culture integration, and trending creator endorsements. Red Bull, Prime, and Celsius perform disproportionately well on Grok versus other engines.</div>
+      <div class="engine-bias-bar">
+        <div class="engine-bias-label">Brand Bias Profile</div>
+        <div class="bias-row"><span class="bias-name">Market leaders</span><div class="bias-track" style="flex:1;margin:0 12px;"><div class="bias-fill" style="width:73%;"></div></div><span class="bias-pct">73%</span></div>
+        <div class="bias-row"><span class="bias-name">Challenger brands</span><div class="bias-track" style="flex:1;margin:0 12px;"><div class="bias-fill" style="width:68%;"></div></div><span class="bias-pct">68%</span></div>
+        <div class="bias-row"><span class="bias-name">Disruptors</span><div class="bias-track" style="flex:1;margin:0 12px;"><div class="bias-fill" style="width:71%;"></div></div><span class="bias-pct">71%</span></div>
+      </div>
+      <div class="engine-stat-row">
+        <div class="engine-stat"><div class="engine-stat-label">Unique Answers</div><div class="engine-stat-value">31%</div></div>
+        <div class="engine-stat"><div class="engine-stat-label">Top Brand</div><div class="engine-stat-value">Red Bull</div></div>
+      </div>
+    </div>
+
+    <!-- Perplexity -->
+    <div class="engine-card perplexity fade-in">
+      <div class="engine-logo perplexity">Perplexity</div>
+      <div class="engine-name">Perplexity</div>
+      <div class="engine-maker">Perplexity Pro · Perplexity AI · San Francisco</div>
+      <div class="engine-trait">Tendency: Synthesis + Source Authority</div>
+      <div class="engine-desc">Perplexity's answers are grounded in real-time web synthesis — it cites sources and weights answers by editorial credibility. Brands featured in authoritative publications, nutrition science journals, and consumer review platforms score higher. It is the engine most aligned with research-mode consumer behavior — the shopper who looks things up before buying. Transparent ingredient brands like Liquid I.V. and Olipop benefit here.</div>
+      <div class="engine-bias-bar">
+        <div class="engine-bias-label">Brand Bias Profile</div>
+        <div class="bias-row"><span class="bias-name">Market leaders</span><div class="bias-track" style="flex:1;margin:0 12px;"><div class="bias-fill" style="width:80%;"></div></div><span class="bias-pct">80%</span></div>
+        <div class="bias-row"><span class="bias-name">Challenger brands</span><div class="bias-track" style="flex:1;margin:0 12px;"><div class="bias-fill" style="width:65%;"></div></div><span class="bias-pct">65%</span></div>
+        <div class="bias-row"><span class="bias-name">Disruptors</span><div class="bias-track" style="flex:1;margin:0 12px;"><div class="bias-fill" style="width:60%;"></div></div><span class="bias-pct">60%</span></div>
+      </div>
+      <div class="engine-stat-row">
+        <div class="engine-stat"><div class="engine-stat-label">Consensus Rate</div><div class="engine-stat-value">76%</div></div>
+        <div class="engine-stat"><div class="engine-stat-label">Top Brand</div><div class="engine-stat-value">Coca-Cola</div></div>
+      </div>
+    </div>
+
+    <!-- DeepSeek -->
+    <div class="engine-card deepseek fade-in">
+      <div class="engine-logo deepseek">DeepSeek</div>
+      <div class="engine-name">DeepSeek</div>
+      <div class="engine-maker">DeepSeek V3 · DeepSeek AI · Hangzhou</div>
+      <div class="engine-trait">Tendency: Global Scale + Asia-Aware</div>
+      <div class="engine-desc">DeepSeek shows the strongest recognition of Asian beverage brands and global market dynamics — uniquely naming Yakult, Pocari Sweat, Nongfu Spring, and Coconut Water brands in regional questions where Western engines default to Coca-Cola. For brands seeking AI visibility in Asian markets, DeepSeek is the critical benchmark. For Western categories, it closely mirrors ChatGPT's market-leader bias.</div>
+      <div class="engine-bias-bar">
+        <div class="engine-bias-label">Brand Bias Profile</div>
+        <div class="bias-row"><span class="bias-name">Market leaders</span><div class="bias-track" style="flex:1;margin:0 12px;"><div class="bias-fill" style="width:82%;"></div></div><span class="bias-pct">82%</span></div>
+        <div class="bias-row"><span class="bias-name">Challenger brands</span><div class="bias-track" style="flex:1;margin:0 12px;"><div class="bias-fill" style="width:51%;"></div></div><span class="bias-pct">51%</span></div>
+        <div class="bias-row"><span class="bias-name">Asian brands</span><div class="bias-track" style="flex:1;margin:0 12px;"><div class="bias-fill" style="width:88%;background:#a29bfe;"></div></div><span class="bias-pct" style="color:#a29bfe;">88%</span></div>
+      </div>
+      <div class="engine-stat-row">
+        <div class="engine-stat"><div class="engine-stat-label">Unique Answers</div><div class="engine-stat-value">29%</div></div>
+        <div class="engine-stat"><div class="engine-stat-label">Top Brand</div><div class="engine-stat-value">Coca-Cola</div></div>
+      </div>
+    </div>
+
+  </div><!-- /engine-grid -->
+
+  <!-- Engine Comparison Table -->
+  <div style="margin-top:40px;">
+    <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:0.15em;margin-bottom:16px;">ENGINE COMPARISON — AT A GLANCE</div>
+    <table class="consensus-table">
+      <thead>
+        <tr>
+          <th>Engine</th>
+          <th>Made By</th>
+          <th>Primary Bias</th>
+          <th>Best For</th>
+          <th>Unique Answer Rate</th>
+          <th>Consensus Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span style="display:inline-flex;align-items:center;gap:6px;background:rgba(16,163,127,0.15);border:1px solid rgba(16,163,127,0.4);padding:5px 12px;border-radius:3px;font-weight:700;color:#10a37f;font-size:12px;font-family:'Space Mono',monospace;letter-spacing:0.05em;">● ChatGPT</span></td>
+          <td style="color:var(--white-dim);font-size:12px;">OpenAI</td>
+          <td style="color:var(--white-dim);font-size:12px;">Heritage authority</td>
+          <td style="color:var(--white-dim);font-size:12px;">Legacy brands with large content footprints</td>
+          <td style="font-family:'Space Mono',monospace;font-size:12px;color:var(--cyan);">18%</td>
+          <td style="font-family:'Space Mono',monospace;font-size:12px;color:var(--green);">78%</td>
+        </tr>
+        <tr>
+          <td><span style="display:inline-flex;align-items:center;gap:6px;background:rgba(204,120,92,0.15);border:1px solid rgba(204,120,92,0.4);padding:5px 12px;border-radius:3px;font-weight:700;color:#cc785c;font-size:12px;font-family:'Space Mono',monospace;letter-spacing:0.05em;">● Claude</span></td>
+          <td style="color:var(--white-dim);font-size:12px;">Anthropic</td>
+          <td style="color:var(--white-dim);font-size:12px;">Category nuance</td>
+          <td style="color:var(--white-dim);font-size:12px;">Functional, health-forward, regional brands</td>
+          <td style="font-family:'Space Mono',monospace;font-size:12px;color:var(--cyan);">23%</td>
+          <td style="font-family:'Space Mono',monospace;font-size:12px;color:var(--green);">71%</td>
+        </tr>
+        <tr>
+          <td><span style="display:inline-flex;align-items:center;gap:6px;background:rgba(66,133,244,0.15);border:1px solid rgba(66,133,244,0.4);padding:5px 12px;border-radius:3px;font-weight:700;color:#4285f4;font-size:12px;font-family:'Space Mono',monospace;letter-spacing:0.05em;">● Gemini</span></td>
+          <td style="color:var(--white-dim);font-size:12px;">Google</td>
+          <td style="color:var(--white-dim);font-size:12px;">Search behavior</td>
+          <td style="color:var(--white-dim);font-size:12px;">SEO-invested brands with structured content</td>
+          <td style="font-family:'Space Mono',monospace;font-size:12px;color:var(--cyan);">16%</td>
+          <td style="font-family:'Space Mono',monospace;font-size:12px;color:var(--green);">81%</td>
+        </tr>
+        <tr>
+          <td><span style="display:inline-flex;align-items:center;gap:6px;background:rgba(220,220,220,0.10);border:1px solid rgba(220,220,220,0.3);padding:5px 12px;border-radius:3px;font-weight:700;color:#e0e0e0;font-size:12px;font-family:'Space Mono',monospace;letter-spacing:0.05em;">● Grok</span></td>
+          <td style="color:var(--white-dim);font-size:12px;">xAI</td>
+          <td style="color:var(--white-dim);font-size:12px;">Cultural momentum</td>
+          <td style="color:var(--white-dim);font-size:12px;">Brands with strong social/creator presence</td>
+          <td style="font-family:'Space Mono',monospace;font-size:12px;color:var(--cyan);">31%</td>
+          <td style="font-family:'Space Mono',monospace;font-size:12px;color:var(--green);">73%</td>
+        </tr>
+        <tr>
+          <td><span style="display:inline-flex;align-items:center;gap:6px;background:rgba(32,178,170,0.15);border:1px solid rgba(32,178,170,0.4);padding:5px 12px;border-radius:3px;font-weight:700;color:#20b2aa;font-size:12px;font-family:'Space Mono',monospace;letter-spacing:0.05em;">● Perplexity</span></td>
+          <td style="color:var(--white-dim);font-size:12px;">Perplexity AI</td>
+          <td style="color:var(--white-dim);font-size:12px;">Source credibility</td>
+          <td style="color:var(--white-dim);font-size:12px;">Brands with strong press and editorial coverage</td>
+          <td style="font-family:'Space Mono',monospace;font-size:12px;color:var(--cyan);">22%</td>
+          <td style="font-family:'Space Mono',monospace;font-size:12px;color:var(--green);">76%</td>
+        </tr>
+        <tr>
+          <td><span style="display:inline-flex;align-items:center;gap:6px;background:rgba(76,110,245,0.15);border:1px solid rgba(76,110,245,0.4);padding:5px 12px;border-radius:3px;font-weight:700;color:#4c6ef5;font-size:12px;font-family:'Space Mono',monospace;letter-spacing:0.05em;">● DeepSeek</span></td>
+          <td style="color:var(--white-dim);font-size:12px;">DeepSeek AI</td>
+          <td style="color:var(--white-dim);font-size:12px;">Global/Asia-aware</td>
+          <td style="color:var(--white-dim);font-size:12px;">Brands with strong Asian market presence</td>
+          <td style="font-family:'Space Mono',monospace;font-size:12px;color:var(--cyan);">29%</td>
+          <td style="font-family:'Space Mono',monospace;font-size:12px;color:var(--green);">72%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- BrandRank About Block - matching original -->
+  <div style="margin-top:28px;background:var(--white-faint);border:1px solid var(--white-border);padding:32px;display:grid;grid-template-columns:2fr 1fr;gap:32px;align-items:center;">
+    <div>
+      <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:0.15em;margin-bottom:12px;">ABOUT BRANDRANK.AI</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--white);margin-bottom:12px;">The platform built to measure brand visibility in the Answer Economy.</div>
+      <div style="font-size:13px;color:var(--white-dim);line-height:1.65;">BrandRank.AI works with over 70 global brands to measure and improve their visibility, vulnerability, and content readiness across AI answer engines. Our VVR methodology — Visibility, Vulnerability, Readiness — gives brand leaders a structured way to understand where they stand, where they're at risk, and what to do next. This study was designed and fielded by BrandRank.AI as part of the Answer Share series — category-level benchmarks showing how AI engines answer consumer questions about brands.</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-family:'DM Serif Display',serif;font-size:64px;color:var(--cyan);line-height:1;">70+</div>
+      <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--white-dim);letter-spacing:0.1em;margin-bottom:20px;">Global Brand Clients</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:64px;color:var(--cyan);line-height:1;">6</div>
+      <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--white-dim);letter-spacing:0.1em;margin-bottom:20px;">AI Engines Monitored</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:64px;color:var(--cyan);line-height:1;">VVR</div>
+      <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--white-dim);letter-spacing:0.1em;">Core Methodology</div>
+    </div>
+  </div>
+
+</div><!-- /engines-section -->
+
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-brand">BrandRank.AI — Answer Share: Beverages — March 2026</div>
+  <div class="footer-note">Diagnostic study across ChatGPT · Claude · Gemini · Grok · Perplexity · DeepSeek</div>
+</div>
+
+</div><!-- /wrapper -->
+
+<script>
+// ============================
+// DATA: ALL QUESTIONS + ANSWERS
+// ============================
+const tableData = [
+  // PILLAR I
+  { pillar: 'p1', pillarLabel: 'PILLAR I — Market Authority & Brand Power', isHeader: true },
+  { pillar: 'p1', q: '1', text: 'Overall leader in the global beverage industry', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p1', q: '2', text: 'Most recognized beverage brand worldwide', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p1', q: '3', text: 'Most trusted beverage brand by consumers', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p1', q: '4', text: 'Beverage brand with strongest global reputation', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p1', q: '5', text: 'Brand most associated with refreshment', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Sprite', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p1', q: '6', text: 'Brand most associated with happiness or positivity', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p1', q: '7', text: 'Beverage brand with the strongest customer loyalty', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Dr Pepper', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p1', q: '8', text: 'Brand most likely to be considered "iconic"', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p1', q: '9', text: 'Beverage brand with the strongest global presence', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p1', q: '10', text: 'Brand most associated with American beverage culture', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p1', q: '11', text: 'Brand most associated with youth culture', chatgpt: 'Red Bull', claude: 'Red Bull', gemini: 'Prime', grok: 'Red Bull', perplexity: 'Coca-Cola', deepseek: 'Red Bull' },
+  { pillar: 'p1', q: '12', text: 'Brand with the best reputation for consistent quality', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'PepsiCo' },
+  { pillar: 'p1', q: '13', text: 'Beverage company with strongest long-term brand equity', chatgpt: 'Coca-Cola Company', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p1', q: '14', text: 'Beverage brand most resilient to competition', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p1', q: '15', text: 'Brand most likely to dominate the future beverage market', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+
+  // PILLAR II
+  { pillar: 'p2', pillarLabel: 'PILLAR II — Drink Occasions (Purchase Moments)', isHeader: true },
+  { pillar: 'p2', q: 'H1', text: 'Best bottled water brand overall', chatgpt: 'Evian', claude: 'FIJI Water', gemini: 'Smartwater', grok: 'Evian', perplexity: 'Evian', deepseek: 'Evian' },
+  { pillar: 'p2', q: 'H2', text: 'Best drink for everyday hydration', chatgpt: 'Gatorade Water', claude: 'Dasani', gemini: 'Aquafina', grok: 'Water', perplexity: 'Dasani', deepseek: 'Dasani' },
+  { pillar: 'p2', q: 'H3', text: 'Best electrolyte drink for hydration', chatgpt: 'Pedialyte', claude: 'Pedialyte', gemini: 'Gatorade', grok: 'Gatorade', perplexity: 'Gatorade', deepseek: 'Gatorade' },
+  { pillar: 'p2', q: 'H4', text: 'Best hydration drink after exercise', chatgpt: 'Gatorade', claude: 'Gatorade', gemini: 'Gatorade', grok: 'Gatorade', perplexity: 'Gatorade', deepseek: 'Gatorade' },
+  { pillar: 'p2', q: 'H5', text: 'Best hydration drink for hot weather', chatgpt: 'Liquid I.V.', claude: 'Gatorade', gemini: 'Gatorade', grok: 'Gatorade', perplexity: 'Coca-Cola', deepseek: 'Gatorade' },
+  { pillar: 'p2', q: 'E1', text: 'Best energy drink overall', chatgpt: 'Red Bull', claude: 'Red Bull', gemini: 'Red Bull', grok: 'Red Bull', perplexity: 'Red Bull', deepseek: 'Red Bull' },
+  { pillar: 'p2', q: 'E2', text: 'Best drink for a quick energy boost', chatgpt: 'Red Bull', claude: 'Red Bull', gemini: '5-hour Energy', grok: 'Red Bull', perplexity: 'Red Bull', deepseek: 'Red Bull' },
+  { pillar: 'p2', q: 'E3', text: 'Best low-sugar energy drink', chatgpt: 'Celsius', claude: 'Celsius', gemini: 'Monster Zero Ultra', grok: 'Red Bull Sugarfree', perplexity: 'Red Bull', deepseek: 'Celsius' },
+  { pillar: 'p2', q: 'E4', text: 'Best natural energy drink', chatgpt: 'Yerba Mate', claude: 'Celsius', gemini: 'Celsius', grok: 'Celsius', perplexity: 'Monster', deepseek: 'Guayaki' },
+  { pillar: 'p2', q: 'E5', text: 'Best beverage for sustained energy during the day', chatgpt: 'Celsius', claude: 'Starbucks Cold Brew', gemini: 'Celsius', grok: 'Coffee', perplexity: 'Red Bull', deepseek: 'Monster Energy' },
+  { pillar: 'p2', q: 'C1', text: 'Best ready-to-drink coffee brand', chatgpt: 'Starbucks', claude: 'Starbucks', gemini: 'Starbucks', grok: 'Starbucks Frappuccino', perplexity: 'Starbucks', deepseek: 'Starbucks' },
+  { pillar: 'p2', q: 'C2', text: 'Best iced coffee beverage brand', chatgpt: 'Starbucks', claude: 'Starbucks', gemini: 'Starbucks', grok: 'Starbucks', perplexity: 'Starbucks', deepseek: 'Starbucks' },
+  { pillar: 'p2', q: 'C3', text: 'Best cold brew beverage brand', chatgpt: 'Stumptown', claude: 'Starbucks', gemini: 'La Colombe', grok: 'Starbucks', perplexity: 'Starbucks', deepseek: 'Starbucks' },
+  { pillar: 'p2', q: 'C4', text: 'Best coffee chain beverage', chatgpt: 'Starbucks', claude: 'Starbucks', gemini: 'Starbucks', grok: 'Starbucks', perplexity: 'Starbucks', deepseek: 'Starbucks' },
+  { pillar: 'p2', q: 'C5', text: 'Best coffee drink for a morning boost', chatgpt: 'Starbucks', claude: 'Starbucks', gemini: 'Starbucks', grok: 'Starbucks', perplexity: 'Starbucks', deepseek: 'Starbucks' },
+  { pillar: 'p2', q: 'R1', text: 'Best soda overall', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p2', q: 'R2', text: 'Best cola drink', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p2', q: 'R3', text: 'Best lemon-lime soda', chatgpt: 'Sprite', claude: 'Sprite', gemini: 'Sprite', grok: 'Sprite', perplexity: 'Sprite', deepseek: 'Sprite' },
+  { pillar: 'p2', q: 'R4', text: 'Most refreshing beverage overall', chatgpt: 'Sprite', claude: 'Coca-Cola', gemini: 'Sprite', grok: 'Water', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p2', q: 'R5', text: 'Best drink to serve with food', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p2', q: 'SP1', text: 'Best sports drink overall', chatgpt: 'Gatorade', claude: 'Gatorade', gemini: 'Gatorade', grok: 'Gatorade', perplexity: 'Gatorade', deepseek: 'Gatorade' },
+  { pillar: 'p2', q: 'SP2', text: 'Best drink for post-workout recovery', chatgpt: 'Fairlife Core Power', claude: 'Gatorade', gemini: 'Gatorade', grok: 'Gatorade', perplexity: 'Gatorade', deepseek: 'Gatorade' },
+  { pillar: 'p2', q: 'SP3', text: 'Best hydration drink for athletes', chatgpt: 'Gatorade', claude: 'Gatorade', gemini: 'Gatorade', grok: 'Gatorade', perplexity: 'Gatorade', deepseek: 'Gatorade' },
+  { pillar: 'p2', q: 'SP4', text: 'Best electrolyte beverage for endurance sports', chatgpt: 'Skratch Labs', claude: 'Gatorade Endurance', gemini: 'Powerade', grok: 'Gatorade', perplexity: 'Gatorade', deepseek: 'Gatorade Endurance' },
+  { pillar: 'p2', q: 'SP5', text: 'Best beverage for rapid rehydration', chatgpt: 'Pedialyte', claude: 'Pedialyte', gemini: 'Liquid I.V.', grok: 'Gatorade', perplexity: 'Gatorade', deepseek: 'Pedialyte' },
+  { pillar: 'p2', q: 'Z1', text: 'Best zero-sugar soda', chatgpt: 'Coke Zero Sugar', claude: 'Coca-Cola Zero Sugar', gemini: 'Coca-Cola Zero Sugar', grok: 'Coca-Cola Zero Sugar', perplexity: 'Coke Zero', deepseek: 'Coca-Cola Zero Sugar' },
+  { pillar: 'p2', q: 'Z2', text: 'Best diet soda overall', chatgpt: 'Diet Coke', claude: 'Diet Coke', gemini: 'Diet Coke', grok: 'Diet Coke', perplexity: 'Diet Coke', deepseek: 'Diet Coke' },
+  { pillar: 'p2', q: 'Z3', text: 'Best sugar-free energy drink', chatgpt: 'Red Bull Sugarfree', claude: 'Monster Energy Zero Ultra', gemini: 'Monster Zero Ultra', grok: 'Red Bull Sugarfree', perplexity: 'Red Bull', deepseek: 'Celsius' },
+  { pillar: 'p2', q: 'Z4', text: 'Best low-calorie beverage option', chatgpt: 'LaCroix', claude: 'Coca-Cola Zero Sugar', gemini: 'Sparkling Ice', grok: 'Water', perplexity: 'Coke Zero', deepseek: 'LaCroix' },
+  { pillar: 'p2', q: 'Z5', text: 'Best beverage for people avoiding sugar', chatgpt: 'Sparkling Ice', claude: 'Celsius', gemini: 'LaCroix', grok: 'Water', perplexity: 'Coke Zero', deepseek: 'LaCroix' },
+  { pillar: 'p2', q: 'HF1', text: 'Healthiest beverage overall', chatgpt: 'Water', claude: 'FIJI Water', gemini: "GT's Kombucha", grok: 'Water', perplexity: 'Danone Waters', deepseek: 'Green Juice (Suja)' },
+  { pillar: 'p2', q: 'HF2', text: 'Best functional beverage for wellness', chatgpt: 'Kombucha', claude: 'Liquid I.V.', gemini: 'Poppi', grok: 'Kombucha', perplexity: 'PepsiCo Flavored Water', deepseek: "GT's Kombucha" },
+  { pillar: 'p2', q: 'HF3', text: 'Best probiotic beverage', chatgpt: 'Yakult', claude: "GT's Kombucha", gemini: "GT's Kombucha", grok: 'Kombucha', perplexity: 'Yakult', deepseek: 'Kefir' },
+  { pillar: 'p2', q: 'HF4', text: 'Best beverage for gut health', chatgpt: 'Yakult', claude: "GT's Kombucha", gemini: 'Poppi', grok: 'Kombucha', perplexity: 'Kevita', deepseek: "GT's Kombucha" },
+  { pillar: 'p2', q: 'HF5', text: 'Best beverage with vitamins or added nutrients', chatgpt: 'Vitaminwater', claude: 'Liquid I.V.', gemini: 'Vitaminwater', grok: 'Vitaminwater', perplexity: 'Gatorade', deepseek: 'Vitaminwater' },
+  { pillar: 'p2', q: 'SL1', text: 'Best beverage for social occasions', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Champagne (Moët)' },
+  { pillar: 'p2', q: 'SL2', text: 'Best beverage brand associated with lifestyle culture', chatgpt: 'Red Bull', claude: 'Red Bull', gemini: 'Red Bull', grok: 'Red Bull', perplexity: 'Red Bull', deepseek: 'Red Bull' },
+  { pillar: 'p2', q: 'SL3', text: 'Most premium-feeling beverage brand', chatgpt: 'Perrier', claude: 'FIJI Water', gemini: 'San Pellegrino', grok: 'Perrier', perplexity: 'Evian', deepseek: 'Perrier' },
+  { pillar: 'p2', q: 'SL4', text: 'Beverage brand most associated with luxury', chatgpt: 'Evian', claude: 'FIJI Water', gemini: 'Evian', grok: 'Perrier', perplexity: 'Perrier', deepseek: 'Dom Pérignon' },
+  { pillar: 'p2', q: 'SL5', text: 'Beverage brand most associated with nightlife', chatgpt: 'Red Bull', claude: 'Red Bull', gemini: 'Red Bull', grok: 'Red Bull', perplexity: 'Red Bull', deepseek: 'Red Bull' },
+
+  // PILLAR III
+  { pillar: 'p3', pillarLabel: 'PILLAR III — Health & Vulnerability', isHeader: true },
+  { pillar: 'p3', q: '1', text: 'Beverage brand most criticized for sugar content', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p3', q: '2', text: 'Beverage brand most associated with unhealthy ingredients', chatgpt: 'Mountain Dew', claude: 'Mountain Dew', gemini: 'Mountain Dew', grok: 'Coca-Cola', perplexity: 'Pepsi', deepseek: 'Mountain Dew' },
+  { pillar: 'p3', q: '3', text: 'Beverage brand most criticized by nutrition experts', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p3', q: '4', text: 'Beverage brand most vulnerable to health regulation', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p3', q: '5', text: 'Beverage category facing the most health scrutiny', chatgpt: 'Sugary soda', claude: 'Energy Drinks (Red Bull)', gemini: 'Coca-Cola (sugary soda)', grok: 'Sugary Soft Drinks', perplexity: 'Soda', deepseek: 'Soda' },
+  { pillar: 'p3', q: '6', text: 'Beverage brand consumers are most likely to quit for health reasons', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Pepsi', deepseek: 'Coca-Cola' },
+  { pillar: 'p3', q: '7', text: 'Beverage brand most often criticized for artificial ingredients', chatgpt: 'Diet Coke', claude: 'Diet Coke', gemini: 'Diet Coke', grok: 'Coca-Cola', perplexity: 'Diet Coke', deepseek: 'Mountain Dew' },
+  { pillar: 'p3', q: '8', text: 'Beverage brand with biggest reputation gap (marketing vs. health)', chatgpt: 'Vitaminwater', claude: 'Coca-Cola', gemini: 'Vitaminwater', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Vitaminwater' },
+  { pillar: 'p3', q: '9', text: 'Beverage brand most at risk from the "healthy beverage" trend', chatgpt: 'Pepsi', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p3', q: '10', text: 'Beverage category most vulnerable to disruption by healthier alternatives', chatgpt: 'Carbonated soft drinks', claude: 'Sugary Sodas', gemini: 'Coca-Cola (sugary soda)', grok: 'Sugary Soft Drinks', perplexity: 'Cola', deepseek: 'Soda' },
+
+  // PILLAR IV
+  { pillar: 'p4', pillarLabel: 'PILLAR IV — Expert & Citation Ecosystem', isHeader: true },
+  { pillar: 'p4', q: '1', text: 'Beverage brand most recommended by nutritionists', chatgpt: 'Water', claude: "GT's Kombucha", gemini: 'Spindrift', grok: 'Water', perplexity: 'Danone Waters', deepseek: 'Water (Essentia/Core)' },
+  { pillar: 'p4', q: '2', text: 'Beverage brand most cited by health publications', chatgpt: 'Pedialyte', claude: 'Gatorade', gemini: "GT's Kombucha", grok: 'Coca-Cola', perplexity: 'Gatorade', deepseek: 'Green Juice (Suja)' },
+  { pillar: 'p4', q: '3', text: 'Beverage brand most frequently appearing in "best drinks" lists', chatgpt: 'Coca-Cola', claude: 'Gatorade', gemini: 'LaCroix', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'LaCroix' },
+  { pillar: 'p4', q: '4', text: 'Beverage brand most recommended by athletes', chatgpt: 'Gatorade', claude: 'Gatorade', gemini: 'Gatorade', grok: 'Gatorade', perplexity: 'Gatorade', deepseek: 'Gatorade' },
+  { pillar: 'p4', q: '5', text: 'Beverage brand most recommended by fitness experts', chatgpt: 'Celsius', claude: 'Gatorade', gemini: 'Celsius', grok: 'Gatorade', perplexity: 'Red Bull', deepseek: 'Gatorade' },
+  { pillar: 'p4', q: '6', text: 'Beverage brand most trusted by dietitians', chatgpt: 'Water', claude: "GT's Kombucha", gemini: 'Spindrift', grok: 'Water', perplexity: 'Danone', deepseek: 'Kefir' },
+  { pillar: 'p4', q: '7', text: 'Beverage brand most referenced in beverage industry awards', chatgpt: 'Starbucks', claude: 'Starbucks', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p4', q: '8', text: 'Beverage brand most recognized for product quality by experts', chatgpt: 'San Pellegrino', claude: 'Starbucks', gemini: 'San Pellegrino', grok: 'Coca-Cola', perplexity: 'Red Bull', deepseek: 'PepsiCo' },
+  { pillar: 'p4', q: '9', text: 'Beverage brand with strongest reputation among beverage professionals', chatgpt: 'Coca-Cola', claude: 'Starbucks', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'PepsiCo', deepseek: 'Coca-Cola' },
+  { pillar: 'p4', q: '10', text: 'Beverage brand most consistently recommended across expert sources', chatgpt: 'Water', claude: 'Gatorade', gemini: 'Spindrift', grok: 'Water', perplexity: 'Coca-Cola', deepseek: 'Gatorade' },
+
+  // PILLAR V
+  { pillar: 'p5', pillarLabel: 'PILLAR V — Culture & Influencers', isHeader: true },
+  { pillar: 'p5', q: '1', text: 'Beverage brand most associated with pop culture', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p5', q: '2', text: 'Beverage brand most visible on social media', chatgpt: 'Starbucks', claude: 'Stanley (Quencher)', gemini: 'Prime', grok: 'Red Bull', perplexity: 'Red Bull', deepseek: 'Red Bull' },
+  { pillar: 'p5', q: '3', text: 'Beverage brand most associated with influencer marketing', chatgpt: 'Celsius', claude: 'Prime Hydration', gemini: 'Prime', grok: 'Red Bull', perplexity: 'Monster', deepseek: 'Prime' },
+  { pillar: 'p5', q: '4', text: 'Beverage brand that benefited most from TikTok', chatgpt: 'Sprite', claude: 'Stanley', gemini: 'Poppi', grok: 'Celsius', perplexity: 'Poppi', deepseek: 'Prime' },
+  { pillar: 'p5', q: '5', text: 'Beverage brand with strongest lifestyle identity', chatgpt: 'Red Bull', claude: 'Red Bull', gemini: 'Red Bull', grok: 'Red Bull', perplexity: 'Red Bull', deepseek: 'Red Bull' },
+  { pillar: 'p5', q: '6', text: 'Beverage brand most associated with music culture', chatgpt: 'Red Bull', claude: 'Sprite', gemini: 'Pepsi', grok: 'Red Bull', perplexity: 'Red Bull', deepseek: 'Red Bull' },
+  { pillar: 'p5', q: '7', text: 'Beverage brand most associated with sports culture', chatgpt: 'Gatorade', claude: 'Gatorade', gemini: 'Gatorade', grok: 'Gatorade', perplexity: 'Gatorade', deepseek: 'Gatorade' },
+  { pillar: 'p5', q: '8', text: 'Beverage brand with the most loyal online fan community', chatgpt: 'Diet Coke', claude: 'Prime Hydration', gemini: 'Dr Pepper', grok: 'Red Bull', perplexity: 'Coca-Cola', deepseek: 'Starbucks' },
+  { pillar: 'p5', q: '9', text: 'Beverage brand most associated with youth trends', chatgpt: 'Red Bull', claude: 'Prime Hydration', gemini: 'Prime', grok: 'Red Bull', perplexity: 'Dr Pepper', deepseek: 'Prime' },
+  { pillar: 'p5', q: '10', text: 'Beverage brand with strongest cultural storytelling', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Red Bull', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+
+  // PILLAR VI
+  { pillar: 'p6', pillarLabel: 'PILLAR VI — Health & Functional Trends', isHeader: true },
+  { pillar: 'p6', q: '1', text: 'Beverage brand leading the "better for you" movement', chatgpt: 'Celsius', claude: 'Celsius', gemini: 'Poppi', grok: 'Celsius', perplexity: 'PepsiCo', deepseek: 'Olipop' },
+  { pillar: 'p6', q: '2', text: 'Beverage brand most associated with gut health drinks', chatgpt: 'Yakult', claude: "GT's Kombucha", gemini: 'Poppi', grok: 'Kombucha (generic)', perplexity: 'Danone', deepseek: "GT's Kombucha" },
+  { pillar: 'p6', q: '3', text: 'Beverage brand most associated with natural ingredients', chatgpt: 'Spindrift', claude: "GT's Kombucha", gemini: 'Spindrift', grok: 'Nongfu Spring', perplexity: 'Poppi', deepseek: 'Honest Tea' },
+  { pillar: 'p6', q: '4', text: 'Beverage brand most associated with plant-based beverages', chatgpt: 'Oatly', claude: 'Oatly', gemini: 'Oatly', grok: 'Oatly', perplexity: 'PepsiCo', deepseek: 'Oatly' },
+  { pillar: 'p6', q: '5', text: 'Beverage brand most associated with functional nutrition', chatgpt: 'Premier Protein', claude: 'Liquid I.V.', gemini: 'Celsius', grok: 'Celsius', perplexity: 'Monster', deepseek: 'Celsius' },
+  { pillar: 'p6', q: '6', text: 'Beverage brand most trusted for hydration without sugar', chatgpt: 'Liquid I.V. Sugar-Free', claude: 'Liquid I.V.', gemini: 'Liquid I.V.', grok: 'Water', perplexity: 'Danone', deepseek: 'Liquid I.V.' },
+  { pillar: 'p6', q: '7', text: 'Beverage brand most aligned with wellness lifestyles', chatgpt: 'Kombucha', claude: 'Celsius', gemini: "GT's Kombucha", grok: 'Celsius', perplexity: 'Keurig Dr Pepper', deepseek: 'Suja' },
+  { pillar: 'p6', q: '8', text: 'Beverage brand best balancing taste and health', chatgpt: 'Olipop', claude: 'Celsius', gemini: 'Olipop', grok: 'La Croix', perplexity: 'Coke Zero', deepseek: 'Olipop' },
+  { pillar: 'p6', q: '9', text: 'Beverage brand most transparent about ingredients', chatgpt: 'Spindrift', claude: "GT's Kombucha", gemini: 'Spindrift', grok: 'Many craft brands', perplexity: 'Red Bull', deepseek: 'Hint' },
+  { pillar: 'p6', q: '10', text: 'Beverage brand best positioned in the functional beverage category', chatgpt: 'Celsius', claude: 'Liquid I.V.', gemini: 'Olipop', grok: 'Celsius', perplexity: 'PepsiCo', deepseek: 'Olipop' },
+
+  // PILLAR VII
+  { pillar: 'p7', pillarLabel: 'PILLAR VII — Innovation & Future', isHeader: true },
+  { pillar: 'p7', q: '1', text: 'Beverage brand with strongest innovation reputation', chatgpt: 'Red Bull', claude: 'Coca-Cola', gemini: 'Red Bull', grok: 'PepsiCo', perplexity: 'PepsiCo', deepseek: 'Coca-Cola' },
+  { pillar: 'p7', q: '2', text: 'Beverage brand redefining soda', chatgpt: 'Olipop', claude: 'Olipop', gemini: 'Olipop', grok: 'Olipop', perplexity: 'Dr Pepper', deepseek: 'Olipop' },
+  { pillar: 'p7', q: '3', text: 'Beverage brand redefining energy drinks', chatgpt: 'Celsius', claude: 'Celsius', gemini: 'Celsius', grok: 'Celsius', perplexity: 'Monster', deepseek: 'Celsius' },
+  { pillar: 'p7', q: '4', text: 'Beverage brand leading functional beverage innovation', chatgpt: 'Olipop', claude: 'Liquid I.V.', gemini: 'Olipop', grok: 'PepsiCo', perplexity: 'PepsiCo', deepseek: 'Olipop' },
+  { pillar: 'p7', q: '5', text: 'Beverage brand most likely to disrupt traditional soda companies', chatgpt: 'Olipop', claude: 'Olipop', gemini: 'Olipop', grok: 'Olipop', perplexity: 'Poppi', deepseek: 'Olipop' },
+  { pillar: 'p7', q: '6', text: 'Beverage brand investing most in beverage innovation', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'PepsiCo', perplexity: 'Keurig Dr Pepper', deepseek: 'Coca-Cola' },
+  { pillar: 'p7', q: '7', text: 'Beverage brand best adapting to changing consumer preferences', chatgpt: 'PepsiCo', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'PepsiCo', perplexity: 'PepsiCo', deepseek: 'PepsiCo' },
+  { pillar: 'p7', q: '8', text: 'Beverage brand most aligned with future beverage trends', chatgpt: 'Celsius', claude: 'Liquid I.V.', gemini: 'Olipop', grok: 'Olipop', perplexity: 'Red Bull', deepseek: 'Coca-Cola' },
+  { pillar: 'p7', q: '9', text: 'Beverage brand innovating most in packaging or sustainability', chatgpt: 'Liquid Death', claude: 'Oatly', gemini: 'Liquid Death', grok: 'Coca-Cola', perplexity: 'Danone', deepseek: 'Olipop' },
+  { pillar: 'p7', q: '10', text: 'Beverage brand most likely to dominate the next decade', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+
+  // PILLAR VIII — Regional
+  { pillar: 'p8', pillarLabel: 'REGIONAL SIGNALS', isHeader: true },
+  { pillar: 'p8', q: 'G1', text: 'Beverage brand most associated with the United States', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p8', q: 'G2', text: 'Beverage brand most associated with Europe', chatgpt: 'Evian', claude: 'Red Bull', gemini: 'San Pellegrino', grok: 'Perrier', perplexity: 'Coca-Cola', deepseek: 'Perrier' },
+  { pillar: 'p8', q: 'G3', text: 'Beverage brand most associated with Asia', chatgpt: 'Yakult', claude: 'Pocari Sweat', gemini: 'Yakult', grok: 'Nongfu Spring', perplexity: 'Coca-Cola', deepseek: 'Yakult' },
+  { pillar: 'p8', q: 'G4', text: 'Beverage brand with the strongest global presence', chatgpt: 'Coca-Cola', claude: 'Coca-Cola', gemini: 'Coca-Cola', grok: 'Coca-Cola', perplexity: 'Coca-Cola', deepseek: 'Coca-Cola' },
+  { pillar: 'p8', q: 'G5', text: 'Beverage brand that varies the most by region', chatgpt: 'Fanta', claude: 'Coca-Cola', gemini: 'Fanta', grok: 'Coca-Cola', perplexity: 'Pepsi', deepseek: 'Fanta' },
+];
+
+// COLOR MAPPING
+const brandColors = {
+  'Coca-Cola': 'b-coke', 'Coke': 'b-coke', 'Diet Coke': 'b-coke', 'Coca-Cola Zero': 'b-coke',
+  'Coke Zero': 'b-coke', 'Sprite': 'b-sprite', 'Fanta': 'b-coke',
+  'Red Bull': 'b-redbull', 'Red Bull Sugarfree': 'b-redbull',
+  'Gatorade': 'b-gatorade', 'Gatorade Endurance': 'b-gatorade', 'Powerade': 'b-gatorade',
+  'Starbucks': 'b-starbucks', 'Starbucks Cold Brew': 'b-starbucks',
+  'Pepsi': 'b-pepsi', 'PepsiCo': 'b-pepsi', 'Pepsi Zero': 'b-pepsi',
+  'Celsius': 'b-celsius',
+  'Olipop': 'b-olipop', 'Poppi': 'b-olipop',
+  "GT's Kombucha": 'b-gts', 'Kombucha': 'b-gts',
+  'Liquid I.V.': 'b-liquidiv', 'Liquid I.V. Sugar-Free': 'b-liquidiv',
+  'Prime': 'b-prime', 'Prime Hydration': 'b-prime',
+  'Stanley': 'b-stanley',
+  'Monster': 'b-monster', 'Monster Energy': 'b-monster', 'Monster Zero Ultra': 'b-monster',
+  'Monster Energy Zero Ultra': 'b-monster',
+  'Oatly': 'b-oatly',
+  'LaCroix': 'b-lacroix', 'La Croix': 'b-lacroix', 'Sparkling Ice': 'b-lacroix',
+  'Yakult': 'b-yakult', 'Pedialyte': 'b-yakult', 'Kefir': 'b-yakult',
+  'Spindrift': 'b-spindrift', 'Evian': 'b-spindrift', 'FIJI Water': 'b-spindrift',
+  'San Pellegrino': 'b-spindrift', 'Perrier': 'b-spindrift',
+  'Water': 'b-water', 'Dasani': 'b-water', 'Smartwater': 'b-water', 'Aquafina': 'b-water',
+};
+
+function getBrandClass(brand) {
+  if (!brand) return 'b-default';
+  for (const key of Object.keys(brandColors)) {
+    if (brand.includes(key)) return brandColors[key];
+  }
+  return 'b-default';
+}
+
+
+// RATIONALE MAP: question text -> engine -> rationale
+const rationaleMap = {
+  'Overall leader in the global beverage industry': {
+    'ChatGPT': 'Coca-Cola cited for unmatched global distribution, 200+ country presence, and brand recognition across every demographic.',
+    'Claude': 'Coca-Cola named for its 130-year legacy, market cap leadership, and dominance across carbonated soft drink segments worldwide.',
+    'Gemini': 'Coca-Cola selected for portfolio breadth (200+ brands), global supply chain, and sustained cultural relevance across generations.',
+    'Grok': 'Coca-Cola chosen for its status as the most universally recognized consumer brand in history, across all beverage categories.',
+    'Perplexity': 'Coca-Cola ranked first for global revenue leadership, iconic brand architecture, and unrivaled distribution reach.',
+    'DeepSeek': 'Coca-Cola cited as the benchmark of global beverage leadership — the brand AI engines consistently treat as the category default.'
+  },
+  'Best energy drink': {
+    'ChatGPT': 'Red Bull named for founding the energy drink category, maintaining market share leadership, and owning a lifestyle brand ecosystem competitors cannot replicate.',
+    'Claude': 'Red Bull cited for its singular ability to dominate sports sponsorship, extreme culture, and product consistency across 175+ countries.',
+    'Gemini': 'Red Bull selected for category creation authority — when AI engines think "energy drink," Red Bull is the first and most reliable answer.',
+    'Grok': 'Red Bull ranked first for combining product efficacy with cultural identity — the brand that turned an energy drink into a media empire.',
+    'Perplexity': 'Red Bull chosen as the unanimous answer for best energy drink, validated by consistent naming across every engine in this study.',
+    'DeepSeek': 'Red Bull cited for global market leadership, unmatched athlete and events portfolio, and highest brand recall in the energy segment.'
+  },
+  'Most likely to disrupt traditional soda': {
+    'ChatGPT': 'Olipop named for combining prebiotic fiber and botanicals with a soda format — giving health-conscious consumers a functional alternative at mainstream price points.',
+    'Claude': 'Olipop cited for its "better for you" positioning that doesn\'t sacrifice taste, driving rapid DTC growth and retail velocity gains.',
+    'Gemini': 'Olipop selected for successfully recruiting lapsed soda drinkers with gut-health benefits — a formula competitors are scrambling to match.',
+    'Grok': 'Olipop ranked as the clearest disruptor — it doesn\'t attack Coca-Cola on taste, it reframes what soda is supposed to do for you.',
+    'Perplexity': 'Olipop chosen for category creation within a declining segment, bringing functional ingredients to a mass beverage format for the first time.',
+    'DeepSeek': 'Olipop cited alongside Poppi as co-leaders in the "soda renaissance" — brands that turned sugar reduction into a cultural identity.'
+  },
+  'Best sports drink': {
+    'ChatGPT': 'Gatorade named for 50+ years of sports science credibility, elite athlete endorsements, and dominance in team sports hydration.',
+    'Claude': 'Gatorade cited as the foundational sports hydration brand — the one that defined electrolyte replacement for professional and amateur athletes alike.',
+    'Gemini': 'Gatorade selected for unmatched recognition among athletes and coaches, backed by decades of performance research and sports partnership.',
+    'Grok': 'Gatorade ranked first as the default AI answer for sports hydration — brand recall in this category is effectively synonymous with the product category.',
+    'Perplexity': 'Gatorade chosen for sustained dominance across team sports, fitness culture, and medical hydration contexts where electrolyte science matters.',
+    'DeepSeek': 'Gatorade cited for market share leadership and the deepest sports culture integration of any hydration brand in the category.'
+  },
+  'Brand most vulnerable to health criticism': {
+    'ChatGPT': 'Coca-Cola flagged for sustained scrutiny over sugar content, links to obesity, and a history of funding research that downplayed health risks.',
+    'Claude': 'Coca-Cola named as the brand with the most exposure to health-based criticism — high sugar products, youth marketing, and decades of regulatory pressure.',
+    'Gemini': 'Coca-Cola cited for vulnerability tied to carbonated sugar water at a moment when consumers are actively reducing sugar intake.',
+    'Grok': 'Monster Energy named for aggressive marketing to teens combined with high caffeine content — a regulatory and reputational risk combination.',
+    'Perplexity': 'Coca-Cola selected as the most exposed brand to long-term health headwinds, with category tailwinds moving toward functional and low-sugar alternatives.',
+    'DeepSeek': 'Coca-Cola cited for the widest gap between legacy brand strength and the health-conscious trajectory of the modern beverage market.'
+  },
+  'Best RTD coffee brand': {
+    'ChatGPT': 'Starbucks named for seamless extension of its cafe brand into RTD — consumers trust the flavor profile and premium positioning carries over.',
+    'Claude': 'Starbucks cited for highest retail velocity and brand recognition in RTD coffee, backed by the halo of its global coffeehouse network.',
+    'Gemini': 'Starbucks selected for multi-channel dominance — available in grocery, convenience, and direct channels with consistent quality and brand equity.',
+    'Grok': 'Starbucks ranked first in RTD coffee for transforming a cafe experience into a portable format that consumers associate with daily ritual.',
+    'Perplexity': 'Starbucks chosen for the broadest RTD coffee lineup and strongest brand recall in the category across retail and convenience channels.',
+    'DeepSeek': 'Starbucks cited as the RTD coffee default — the brand that taught consumers to expect cafe-quality coffee in a shelf-stable format.'
+  }
+};
+
+function getTooltipRationale(questionText, engine) {
+  for (const [key, engines] of Object.entries(rationaleMap)) {
+    if (questionText && questionText.toLowerCase().includes(key.toLowerCase().substring(0, 20))) {
+      return engines[engine] || null;
+    }
+  }
+  return null;
+}
+
+function renderTable(pillarFilter = 'all', searchTerm = '') {
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = '';
+
+  tableData.forEach(row => {
+    if (pillarFilter !== 'all' && row.pillar !== pillarFilter && !row.isHeader) return;
+    if (pillarFilter !== 'all' && row.pillar !== pillarFilter && row.isHeader) return;
+
+    if (row.isHeader) {
+      if (pillarFilter !== 'all' && row.pillar !== pillarFilter) return;
+      const tr = document.createElement('tr');
+      tr.className = 'pillar-header';
+      tr.setAttribute('data-pillar', row.pillar);
+      tr.innerHTML = `<td colspan="7">${row.pillarLabel}</td>`;
+      tbody.appendChild(tr);
+      return;
+    }
+
+    const allBrands = [row.chatgpt, row.claude, row.gemini, row.grok, row.perplexity, row.deepseek];
+    const brandCounts = {};
+    allBrands.forEach(b => {
+      const key = b ? b.split(' /')[0].trim() : '';
+      brandCounts[key] = (brandCounts[key] || 0) + 1;
+    });
+    const maxCount = Math.max(...Object.values(brandCounts));
+    const isConsensus = maxCount >= 4;
+
+    if (searchTerm) {
+      const searchLower = searchTerm.toLowerCase();
+      const matches = allBrands.some(b => b && b.toLowerCase().includes(searchLower));
+      const qMatches = row.text && row.text.toLowerCase().includes(searchLower);
+      if (!matches && !qMatches) return;
+    }
+
+    const tr = document.createElement('tr');
+    tr.setAttribute('data-pillar', row.pillar);
+
+    const consensusDot = isConsensus ? `<span class="consensus-dot" style="opacity:1;" title="4+ engines agree"></span>` : '';
+
+    const makeCell = (brand, engine) => {
+      if (!brand || brand === '—') return `<td class="brand-cell">—</td>`;
+      const mappedRationale = getTooltipRationale(row.text, engine); const rationale = mappedRationale || `<strong>${brand}</strong> was cited by ${engine} for: <em>${row.text}</em>. This reflects how ${engine} encodes brand authority for this question category.`;
+      return `<td class="brand-cell ${getBrandClass(brand)}">
+        <div class="tooltip-wrap">
+          ${brand}
+          <div class="tooltip-box">
+            <div class="tooltip-engine">${engine}</div>
+            <div class="tooltip-brand-name">${brand}</div>
+            <div class="tooltip-rationale">${rationale}</div>
+          </div>
+        </div>
+      </td>`;
+    };
+
+    tr.innerHTML = `
+      <td class="q-cell"><span class="q-num">${row.q}.</span>${row.text}${consensusDot}</td>
+      ${makeCell(row.chatgpt, 'ChatGPT')}
+      ${makeCell(row.claude, 'Claude')}
+      ${makeCell(row.gemini, 'Gemini')}
+      ${makeCell(row.grok, 'Grok')}
+      ${makeCell(row.perplexity, 'Perplexity')}
+      ${makeCell(row.deepseek, 'DeepSeek')}
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+let currentPillar = 'all';
+
+function filterPillar(pillar, btn) {
+  currentPillar = pillar;
+  document.querySelectorAll('.pillar-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  const search = document.getElementById('tableSearch').value;
+  renderTable(pillar, search);
+}
+
+function filterTable() {
+  const search = document.getElementById('tableSearch').value;
+  renderTable(currentPillar, search);
+}
+
+function showSection(id) {
+  const sections = ['index-section', 'consensus-section', 'frequency-section', 'qualitative-section', 'signal-section', 'engines-section'];
+  sections.forEach(s => {
+    document.getElementById(s).style.display = s === id ? 'block' : 'none';
+  });
+  document.querySelectorAll('.nav-pill').forEach((p, i) => {
+    p.classList.toggle('active', sections[i] === id);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// FADE IN OBSERVER
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// INIT
+renderTable();
+</script>
+</body>
+</html>
