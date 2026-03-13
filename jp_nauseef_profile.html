@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J.P. Nauseef - BrandRank Executive Profile</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 60px 80px; }
+        .logo-bar { text-align: center; padding: 30px 0 20px 0; margin-bottom: 10px; }
+        .logo-bar img { max-width: 320px; display: block; margin: 0 auto; }
+        .header {
+            text-align: center; margin-bottom: 60px; padding-bottom: 40px;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+        }
+        .header h1 { font-size: 48px; font-weight: 700; color: #ffffff; margin-bottom: 15px; letter-spacing: 1px; }
+        .header .subtitle { font-size: 20px; color: #00d4ff; font-weight: 400; }
+        h2 {
+            font-size: 32px; font-weight: 700; color: #ffffff;
+            margin: 50px 0 25px 0; padding-bottom: 12px;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.2);
+        }
+        h3 { font-size: 24px; font-weight: 700; color: #ffffff; margin: 35px 0 20px 0; }
+        .metrics-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 25px; margin: 40px 0;
+        }
+        .metrics-grid-5 {
+            display: grid; grid-template-columns: repeat(5, 1fr);
+            gap: 25px; margin: 40px 0;
+        }
+        .metric-card {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px; padding: 30px; text-align: center;
+            transition: all 0.3s ease; position: relative; cursor: help;
+        }
+        .metric-card:hover { background: rgba(255,255,255,0.08); border-color: #00d4ff; transform: translateY(-5px); }
+        .metric-card:hover .tooltip { opacity: 1; visibility: visible; }
+        .tooltip {
+            position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+            background: rgba(10,14,26,0.98); border: 1px solid #00d4ff;
+            border-radius: 8px; padding: 15px 20px; margin-bottom: 10px;
+            width: 260px; opacity: 0; visibility: hidden; transition: all 0.3s ease;
+            z-index: 1000; font-size: 14px; line-height: 1.6; text-align: left;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+        }
+        .tooltip::after {
+            content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            border: 8px solid transparent; border-top-color: #00d4ff;
+        }
+        .metric-label { font-size: 13px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; }
+        .metric-value { font-size: 38px; font-weight: 700; color: #00d4ff; line-height: 1; }
+        .tagline-section {
+            background: rgba(0,212,255,0.1); border-left: 4px solid #00d4ff;
+            padding: 30px 40px; margin: 40px 0; border-radius: 4px;
+        }
+        .tagline-section p { font-size: 18px; line-height: 1.8; color: #ffffff; }
+        .tagline-section .label {
+            font-size: 14px; color: #00d4ff; text-transform: uppercase;
+            letter-spacing: 1.5px; margin-bottom: 10px; font-weight: 600;
+        }
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin: 30px 0; }
+        .content-box {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px; padding: 30px;
+        }
+        .content-box h3 { margin-top: 0; font-size: 20px; margin-bottom: 20px; }
+        .content-box p { font-size: 16px; line-height: 1.8; color: rgba(255,255,255,0.9); }
+        ul { list-style: none; padding: 0; }
+        ul li { padding: 12px 0 12px 25px; position: relative; font-size: 16px; line-height: 1.6; }
+        ul li:before {
+            content: ""; position: absolute; left: 0; top: 20px;
+            width: 8px; height: 8px; background: #00d4ff; border-radius: 50%;
+        }
+        .attributes-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin: 30px 0; }
+        .attribute-item {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            padding: 20px 25px; border-radius: 6px; transition: all 0.3s ease;
+            position: relative; cursor: help;
+        }
+        .attribute-item:hover { background: rgba(255,255,255,0.08); border-color: #00d4ff; }
+        .attribute-item:hover .attribute-tooltip { opacity: 1; visibility: visible; }
+        .attribute-tooltip {
+            position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+            background: rgba(10,14,26,0.98); border: 1px solid #00d4ff;
+            border-radius: 8px; padding: 15px 20px; margin-bottom: 10px;
+            width: 300px; opacity: 0; visibility: hidden; transition: all 0.3s ease;
+            z-index: 1000; font-size: 13px; line-height: 1.6; text-align: left;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+        }
+        .attribute-tooltip::after {
+            content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            border: 8px solid transparent; border-top-color: #00d4ff;
+        }
+        .attribute-name { font-size: 16px; color: #ffffff; }
+        .attribute-score { font-size: 28px; font-weight: 700; color: #00d4ff; min-width: 55px; text-align: right; }
+        .brand-list { display: flex; flex-wrap: wrap; gap: 15px; margin: 25px 0; }
+        .brand-tag {
+            background: rgba(0,212,255,0.15); border: 1px solid rgba(0,212,255,0.3);
+            padding: 12px 20px; border-radius: 20px; font-size: 14px; color: #ffffff;
+            transition: all 0.3s ease;
+        }
+        .brand-tag:hover { background: rgba(0,212,255,0.25); border-color: #00d4ff; transform: translateY(-2px); }
+        .final-word {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            padding: 40px; border-radius: 8px; margin: 40px 0;
+        }
+        .final-word p { font-size: 18px; line-height: 1.8; color: rgba(255,255,255,0.9); }
+        .data-table { width: 100%; border-collapse: collapse; margin: 25px 0; }
+        .data-table th {
+            background: rgba(0,212,255,0.15); color: #00d4ff; font-size: 13px;
+            text-transform: uppercase; letter-spacing: 1.2px; padding: 14px 20px;
+            text-align: left; border-bottom: 1px solid rgba(0,212,255,0.3);
+        }
+        .data-table td {
+            padding: 14px 20px; font-size: 15px; color: rgba(255,255,255,0.9);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+        .data-table tr:hover td { background: rgba(0,212,255,0.05); }
+        .data-table .key-col { color: #00d4ff; font-weight: 600; width: 22%; }
+        .score-highlight { color: #00d4ff; font-weight: 700; font-size: 17px; }
+        .career-arc {
+            display: flex; align-items: center; gap: 0; margin: 30px 0; flex-wrap: wrap;
+        }
+        .career-step {
+            background: rgba(0,212,255,0.12); border: 1px solid rgba(0,212,255,0.3);
+            padding: 14px 22px; border-radius: 6px; font-size: 14px; font-weight: 600;
+            color: #ffffff; white-space: nowrap;
+        }
+        .career-arrow {
+            color: #00d4ff; font-size: 22px; padding: 0 10px; font-weight: 700;
+        }
+        .prototype-card {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px; padding: 30px; margin-bottom: 20px;
+        }
+        .prototype-card h3 { margin-top: 0; color: #00d4ff; font-size: 20px; margin-bottom: 15px; }
+        .prototype-card .impact-label {
+            font-size: 12px; color: #00d4ff; text-transform: uppercase; letter-spacing: 1.5px;
+            margin-top: 20px; margin-bottom: 8px; font-weight: 600;
+        }
+        .prototype-card .impact-text { font-size: 16px; color: rgba(255,255,255,0.9); font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- LOGO -->
+        <div class="logo-bar">
+            <img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAEkAt0DASIAAhEBAxEB/8QAHQABAAICAwEBAAAAAAAAAAAAAAcIAQYEBQkCA//EAGAQAAEDAgMCCAcKCgcFBQUJAAEAAgMEBQYHERIhCBMYMUFRVtIWV2GTlJXRCRQiOHF0gbGysxUyNTY3cnN1kaEXI0JSYrTBJCUzguFTZGWSwiYnQ1RjNDlVg4Sio7Xx/8QAGwEBAAIDAQEAAAAAAAAAAAAAAAUGAQIEAwf/xAA4EQEAAQMCAwUECAUFAAAAAAAAAQIDBAUREiExBkFRYXETgbHBFCIyNJGh4fAVIzNy0UJDRFKC/9oADAMBAAIRAxEAPwCmSIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiLIBPMgAEpoV2mGbBecSXWG0WO3VNwrZnaMhhYXH5fJ8qm6HKDAOXtLFW5y4wLa8tD22GzuEtR8j37w3q/1CCvoaTzDX5F2NusF9uLC+32a41bRzmCme8fyCmuXPjC2GP6jLLKfDtrDNzK66x++6k+XUnVp+R2nkXT3XhOZz1zjxeLfeUZ3cVTUULWgeQlpP80EbeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3flDZz9vrj5qLuJyhs5+31x81F3EGkeB+Ley979Al7qeB+Ley979Al7q3f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frViuB3mvhLB1pxLhDGFa620V5aXRVojL2scWFjg7TUjdoRu61olbZ8trOYLBS4zpbrPU1wqKi9so5BFSwRg7MTGn4TnvJ1J5hoAgnHh/EnLnL9oJ02ddOj/AILV+3AT/QhmH+vN/llqvCozKy2zKwHZ6LDmIKqOsse9kFRRlvvluyG6Ag7ju13rkcGnM3LHLnLC8WG/Yiq5K++l75fe1GXCmDohHskk7yN56kFU3fjFYXZYko6C33meltt0julIw/1dVHG5geCNfxTvC61AREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQfrSmAVURqmyOgDxxojcA8t136EggHTm3FWPrs/sv6zJSHKibA19/A0UDImzMusYnLmv4wSa8Vs7RdvO7TyaKtaIOTcX0bqyY0DJ2UpceKbO4OeB/iIABP0LjIiAiIgIiICIiAvpp0XyiCxmRnCAwlljl/W4VZg673P8IvfLXSyXFjA5zowwhgEfwRo0dJPOoKxZLh2e7GXDFHcqOgLP+FX1DJpGu1OujmMYNnTTnGvPvK6hEBERAREQEREEp5eZqUlmy3umXOJrG+64euMwn2qap4ioppB/baS1zXfIR9K6Cmnyypqt081Liq4wAgspXSwU+15HSAPOnyNBWlog3jNTMm74+qbdFVQwW+0WimFJarbTa8VSwgBoA1JLjo1urid+g5uZavh64ttN9oLo6mjqhSVMc5hk/Fk2XA7J8h0XXogsPnZn9h3G0UFdYsJT2q9R26W3tqHSs2IY5d0paGt1c4t1YNSAA527UgivR06CvlEBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQf/2Q==" alt="BrandRank.AI - Prompting Your Brand Truth" />
+        </div>
+
+        <!-- HEADER -->
+        <div class="header">
+            <div style="font-size: 14px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px;">BrandRank Executive Profile &nbsp;|&nbsp; Q1-2026</div>
+            <h1>J.P. Nauseef</h1>
+            <div class="subtitle">President &amp; CEO, JobsOhio</div>
+            <div style="font-size: 14px; color: rgba(255,255,255,0.5); margin-top: 20px;">Last Updated: March 2026</div>
+        </div>
+
+        <!-- EXECUTIVE SUMMARY -->
+        <h2>Executive Summary</h2>
+        <div class="content-box">
+            <p>J.P. Nauseef has positioned Ohio as one of the United States' fastest-growing hubs for <strong>advanced manufacturing, aerospace, defense technology, semiconductor supply chains, and energy infrastructure.</strong> His leadership strategy centers on aligning public policy, corporate investment, and university talent pipelines into a coordinated statewide economic development engine.</p>
+            <p style="margin-top: 20px;">His defining strength is <strong>ecosystem orchestration</strong> — aligning regional development organizations, investors, universities, and policymakers under the "Team Ohio" framework. A key vulnerability is that emerging controversies around energy-intensive data centers and infrastructure expansion could overshadow major economic development wins in other sectors.</p>
+        </div>
+
+        <!-- LEADERSHIP HIGHLIGHT -->
+        <h2>Leadership Highlight</h2>
+        <div class="tagline-section">
+            <p>Nauseef's "Team Ohio" coalition framework has become the defining model of his tenure — positioning economic development not as a government function but as a statewide alliance of investors, universities, regional organizations, and policymakers united behind a single industrial growth narrative.</p>
+        </div>
+
+        <!-- BRANDRANK SCORE -->
+        <h2>BrandRank Leadership Score</h2>
+        <div class="metrics-grid-5">
+            <div class="metric-card">
+                <div class="metric-label">Overall Score</div>
+                <div class="metric-value">8.9</div>
+                <div class="tooltip">Composite measure of executive leadership brand strength — ecosystem orchestration, industrial strategy, coalition building, and national positioning.</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Brand Promise</div>
+                <div class="metric-value">9.0</div>
+                <div class="tooltip">Coherence between stated economic development mission and demonstrated outcomes across manufacturing, talent pipelines, and industrial cluster attraction.</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Innovation</div>
+                <div class="metric-value">9.1</div>
+                <div class="tooltip">Leadership in attracting aerospace, AI infrastructure, semiconductor, and advanced manufacturing investment to Ohio.</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Network Influence</div>
+                <div class="metric-value">9.2</div>
+                <div class="tooltip">14,000+ LinkedIn followers spanning economic development leaders, investors, and policymakers. Engagement peaks on major investment announcements.</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Accessibility</div>
+                <div class="metric-value">8.1</div>
+                <div class="tooltip">Strong institutional engagement across the ecosystem. Personal digital visibility trails institutional influence — a noted growth area.</div>
+            </div>
+        </div>
+
+        <div class="tagline-section">
+            <div class="label">Tagline</div>
+            <p>"Building the industrial platform powering America's next manufacturing era."</p>
+        </div>
+
+        <div class="tagline-section">
+            <div class="label">Animal Archetype: The Bald Eagle</div>
+            <p>Surveying the landscape and aligning Ohio's regional strengths into a unified economic strategy.</p>
+        </div>
+
+        <!-- BRAND ESSENCE -->
+        <h2>Brand Essence &amp; Leadership Identity</h2>
+
+        <h3>Career Arc</h3>
+        <div class="career-arc">
+            <div class="career-step">Air Force Officer</div>
+            <div class="career-arrow">→</div>
+            <div class="career-step">Entrepreneur</div>
+            <div class="career-arrow">→</div>
+            <div class="career-step">Venture Capital Leader</div>
+            <div class="career-arrow">→</div>
+            <div class="career-step">Statewide Economic Architect</div>
+        </div>
+
+        <div class="content-box">
+            <p style="margin-bottom: 20px;">Nauseef represents the <strong>Industrial Ecosystem Builder</strong> — a leader focused on constructing the structural conditions that attract investment and talent.</p>
+            <p>His leadership strategy emphasizes:</p>
+            <ul style="margin-top: 15px;">
+                <li>Strengthening domestic manufacturing supply chains</li>
+                <li>Attracting advanced technology industries to Ohio</li>
+                <li>Aligning universities with workforce demand</li>
+                <li>Building a statewide coalition around economic growth</li>
+            </ul>
+            <p style="margin-top: 20px;">Rather than relying primarily on incentive packages, his model prioritizes <strong>long-term structural advantages — infrastructure, talent pipelines, and industry clusters.</strong></p>
+        </div>
+
+        <!-- BRAND PROMISE -->
+        <h2>Brand Promise Alignment</h2>
+        <div class="content-box">
+            <h3>Overall Alignment Score: 9.0/10</h3>
+            <table class="data-table" style="margin-top: 20px;">
+                <thead>
+                    <tr><th>Brand Promise</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td class="key-col">Innovation</td><td>Attract aerospace, AI infrastructure, semiconductor and advanced manufacturing investment</td></tr>
+                    <tr><td class="key-col">Economic Growth</td><td>Drive long-term job creation through industrial clusters</td></tr>
+                    <tr><td class="key-col">Talent Pipeline</td><td>Align universities and workforce programs with industry demand</td></tr>
+                    <tr><td class="key-col">National Security</td><td>Strengthen domestic defense manufacturing and supply chains</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- CORE VALUES -->
+        <h2>Core Values in Action</h2>
+        <div class="attributes-grid">
+            <div class="attribute-item">
+                <span class="attribute-name">Public-Private Collaboration</span>
+                <span class="attribute-score">10</span>
+                <div class="attribute-tooltip">Aligns government leadership, corporate investors, and regional development organizations into a unified economic growth strategy — his signature strength.</div>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Industrial Competitiveness</span>
+                <span class="attribute-score">9</span>
+                <div class="attribute-tooltip">Positions Ohio as a destination for advanced manufacturing and energy infrastructure investment against competing states.</div>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Talent Development</span>
+                <span class="attribute-score">9</span>
+                <div class="attribute-tooltip">Strengthens workforce pipelines through partnerships with universities and technical training programs aligned with industry demand.</div>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Regional Inclusion</span>
+                <span class="attribute-score">8</span>
+                <div class="attribute-tooltip">Promotes economic development across both metropolitan areas and smaller communities statewide under the Team Ohio framework.</div>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">National Economic Security</span>
+                <span class="attribute-score">9</span>
+                <div class="attribute-tooltip">Links economic development strategy with strengthening domestic manufacturing capacity and defense supply chains.</div>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Ecosystem Orchestration</span>
+                <span class="attribute-score">10</span>
+                <div class="attribute-tooltip">The defining differentiator — building the structural conditions for investment attraction rather than relying on incentive packages alone.</div>
+            </div>
+        </div>
+
+        <!-- STRENGTHS & VULNERABILITIES -->
+        <h2>Strengths &amp; Vulnerabilities</h2>
+        <div class="two-column">
+            <div class="content-box">
+                <h3>Surprising Strength</h3>
+                <p>Ecosystem orchestration — aligning regional development organizations, investors, universities, and policymakers under a single "Team Ohio" framework at scale.</p>
+            </div>
+            <div class="content-box">
+                <h3>Surprising Weakness</h3>
+                <p>Execution success sometimes outpaces national recognition of the strategic leadership behind it — a narrative visibility gap.</p>
+            </div>
+        </div>
+
+        <h2>Brand Vulnerabilities</h2>
+        <div class="content-box">
+            <ul>
+                <li><strong>Political Exposure</strong> — Economic development initiatives intersect with policy cycles and public funding debates.</li>
+                <li><strong>Mega-Project Dependence</strong> — Large investment announcements dominate narrative momentum, creating concentration risk.</li>
+                <li><strong>Data Center Controversies</strong> — Expansion of hyperscale data centers may generate energy, infrastructure, and environmental concerns that <strong>overshadow significant economic development wins in other industries.</strong></li>
+                <li><strong>Narrative Visibility Gap</strong> — Execution success sometimes outpaces national recognition of his strategic leadership role.</li>
+            </ul>
+        </div>
+
+        <!-- NETWORK INFLUENCE -->
+        <h2>Network Influence &amp; Accessibility</h2>
+        <div class="tagline-section">
+            <div class="label">Leadership Archetype: Ecosystem Builder</div>
+            <p>With <strong>14,000+ LinkedIn followers</strong> spanning economic development leaders, investors, and policymakers, Nauseef employs a disciplined institutional amplification strategy. Posts emphasize partners, projects, and regional organizations — with highest engagement on major investment announcements (100–500 reactions typical).</p>
+            <p style="margin-top: 20px;">Three consistent signals define his networking style: <strong>partner-first visibility</strong> (regional organizations receive primary recognition), <strong>coalition narrative</strong> (Team Ohio frames development as a statewide alliance), and <strong>momentum signaling</strong> (posts emphasize progress across investment attraction, workforce development, and regional collaboration).</p>
+            <p style="margin-top: 20px;">Network Appeal Score: <strong>9.2 / 10</strong> — This communication model builds high institutional trust across the economic development ecosystem.</p>
+        </div>
+
+        <h2>Network Influence Snapshot</h2>
+        <table class="data-table">
+            <thead>
+                <tr><th>Dimension</th><th>Signal</th><th>Evidence</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="key-col">Audience Reach</td><td>~14,000+ LinkedIn followers</td><td>Audience includes economic development leaders, investors, policymakers</td></tr>
+                <tr><td class="key-col">Content Strategy</td><td>Institutional amplification</td><td>Posts emphasize partners, projects, and regional organizations</td></tr>
+                <tr><td class="key-col">Engagement Depth</td><td>100–500 reactions typical</td><td>Highest engagement on major investment announcements</td></tr>
+                <tr><td class="key-col">Network Structure</td><td>Hub-and-spoke ecosystem</td><td>Regional development groups frequently tagged</td></tr>
+                <tr><td class="key-col">Leadership Signal</td><td>Distributed credit</td><td>Collaborators and regional partners consistently recognized</td></tr>
+            </tbody>
+        </table>
+
+        <!-- PERSONA MAPPING -->
+        <h2>Persona Mapping</h2>
+        <div class="attributes-grid">
+            <div class="attribute-item">
+                <span class="attribute-name">Partnership Weaver</span>
+                <span class="attribute-score">10</span>
+                <div class="attribute-tooltip">Dominant persona — the architect of statewide economic coalitions. Nauseef's defining superpower.</div>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Innovation Catalyst</span>
+                <span class="attribute-score">9.5</span>
+                <div class="attribute-tooltip">Drives attraction of aerospace, AI infrastructure, semiconductor, and advanced manufacturing investment.</div>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Global Bridge Builder</span>
+                <span class="attribute-score">9</span>
+                <div class="attribute-tooltip">Positions Ohio as the gateway for international industrial investment and global supply chain integration.</div>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Culture Cultivator</span>
+                <span class="attribute-score">9</span>
+                <div class="attribute-tooltip">Builds collaborative regional leadership networks around industrial identity and shared economic purpose.</div>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Ethical Entrepreneur</span>
+                <span class="attribute-score">9</span>
+                <div class="attribute-tooltip">Promotes inclusive economic development with attention to community impact and regional equity.</div>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Brand Architect</span>
+                <span class="attribute-score">9</span>
+                <div class="attribute-tooltip">Shapes Ohio's destination brand for investment attraction through consistent narrative and messaging.</div>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Sustainable Strategist</span>
+                <span class="attribute-score">8.5</span>
+                <div class="attribute-tooltip">Promotes long-term structural economic growth over short-term incentive-driven wins.</div>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Insight Explorer</span>
+                <span class="attribute-score">8.5</span>
+                <div class="attribute-tooltip">Applies economic intelligence and competitive analysis to guide investment attraction decisions.</div>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Efficiency Optimizer</span>
+                <span class="attribute-score">8.5</span>
+                <div class="attribute-tooltip">Maintains organizational momentum across large-scale statewide initiatives and investment pipelines.</div>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Digital Pioneer</span>
+                <span class="attribute-score">8</span>
+                <div class="attribute-tooltip">Uses digital platforms and storytelling for institutional amplification — personal brand visibility is a growth area.</div>
+            </div>
+        </div>
+
+        <!-- ARCHETYPE MAPPING -->
+        <h2>Expanded Archetype Architecture</h2>
+        <table class="data-table">
+            <thead>
+                <tr><th>Archetype</th><th>Representation</th><th>Meaning</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="key-col">Animal</td><td>Bald Eagle</td><td>Strategic national economic leadership</td></tr>
+                <tr><td class="key-col">Movie</td><td>Moneyball</td><td>Data-driven competition for investment deals</td></tr>
+                <tr><td class="key-col">Tree</td><td>Oak</td><td>Durable institutional roots and long-term growth</td></tr>
+                <tr><td class="key-col">Mythical Creature</td><td>Phoenix</td><td>Reinvention of legacy industrial regions</td></tr>
+                <tr><td class="key-col">Vehicle</td><td>Freight Train</td><td>Massive industrial momentum moving statewide</td></tr>
+                <tr><td class="key-col">Historical Figure</td><td>Dwight Eisenhower</td><td>Infrastructure and logistics strategist</td></tr>
+                <tr><td class="key-col">Technology</td><td>Semiconductor Fab</td><td>Core infrastructure of modern manufacturing ecosystems</td></tr>
+                <tr><td class="key-col">Art</td><td>Industrial Modernism</td><td>Celebrating production, engineering, and scale</td></tr>
+                <tr><td class="key-col">Musical Instrument</td><td>Trumpet</td><td>Amplifying Ohio's economic momentum</td></tr>
+                <tr><td class="key-col">Sport</td><td>Wrestling</td><td>Competitive state-to-state investment battles</td></tr>
+                <tr><td class="key-col">Cuisine</td><td>Farm-to-Table</td><td>Local resources powering economic identity</td></tr>
+                <tr><td class="key-col">Game</td><td>Chess</td><td>Strategic positioning against competing states</td></tr>
+                <tr><td class="key-col">Hashtag</td><td>#TeamOhio</td><td>Coalition-driven economic growth narrative</td></tr>
+            </tbody>
+        </table>
+
+        <!-- WINNING INITIATIVES -->
+        <h2>Envisioning Winning Initiatives</h2>
+        <p style="color: rgba(255,255,255,0.7); font-size: 16px; margin-bottom: 30px; margin-top: -10px;">Strategic prototypes aligned with Brand Nauseef</p>
+
+        <div class="prototype-card">
+            <h3>Prototype 1 — Ohio Industrial Cloud</h3>
+            <p>Create a statewide digital infrastructure platform linking advanced manufacturing operations, AI compute infrastructure, logistics networks, and energy grid capacity.</p>
+            <div class="impact-label">Strategic Impact</div>
+            <p class="impact-text">Position Ohio as the digital backbone for American industrial reshoring.</p>
+        </div>
+
+        <div class="prototype-card">
+            <h3>Prototype 2 — National Advanced Manufacturing Talent Pipeline</h3>
+            <p>Launch a multi-university workforce initiative connecting Ohio State University, Wright State University, regional technical colleges, and defense and aerospace contractors.</p>
+            <div class="impact-label">Strategic Impact</div>
+            <p class="impact-text">Turn Ohio into America's premier workforce hub for industrial technology.</p>
+        </div>
+
+        <div class="prototype-card">
+            <h3>Prototype 3 — Clean Energy Manufacturing Corridor</h3>
+            <p>Develop a statewide corridor focused on battery manufacturing, grid modernization, clean energy infrastructure, and power capacity for AI data centers.</p>
+            <div class="impact-label">Strategic Impact</div>
+            <p class="impact-text">Align energy infrastructure with industrial growth and AI expansion — directly addressing the data center controversy narrative.</p>
+        </div>
+
+        <!-- HOW TO GET TO 9.8 -->
+        <h2>How to Get J.P. to a 9.8</h2>
+        <p style="color: rgba(255,255,255,0.7); font-size: 16px; margin-bottom: 30px; margin-top: -10px;">Iconic economic development leaders are remembered for defining structural shifts.</p>
+        <table class="data-table">
+            <thead>
+                <tr><th>#</th><th>Strategic Move</th><th>Impact</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="color: #00d4ff; font-weight: 700; font-size: 18px;">1</td>
+                    <td>Publish a national <strong>"Industrial Ohio Doctrine"</strong></td>
+                    <td>Establish thought leadership on U.S. manufacturing reshoring and infrastructure competitiveness</td>
+                </tr>
+                <tr>
+                    <td style="color: #00d4ff; font-weight: 700; font-size: 18px;">2</td>
+                    <td>Position Ohio as <strong>America's AI infrastructure hub</strong></td>
+                    <td>Integrate data centers, energy capacity, and manufacturing ecosystems into a coherent national narrative</td>
+                </tr>
+                <tr>
+                    <td style="color: #00d4ff; font-weight: 700; font-size: 18px;">3</td>
+                    <td>Build a <strong>global investor narrative for Midwest manufacturing</strong></td>
+                    <td>Position Ohio as the gateway for international industrial investment</td>
+                </tr>
+                <tr>
+                    <td style="color: #00d4ff; font-weight: 700; font-size: 18px;">4</td>
+                    <td>Ensure <strong>Ohio owns the answer</strong> across AI engines on where to work, relocate, launch a startup, or upskill in technology</td>
+                    <td>Make Ohio the default answer across AI engines, media narratives, and talent migration decisions</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- EQUIVALENT EXECUTIVES -->
+        <h2>Peer Executive Comparison</h2>
+        <h3>Equivalent Executives</h3>
+        <div class="brand-list">
+            <div class="brand-tag">Pat Wilson — Georgia Dept. of Economic Development &nbsp;|&nbsp; Industrial cluster attraction</div>
+            <div class="brand-tag">J.B. Pritzker — State of Illinois &nbsp;|&nbsp; Large-scale economic development strategy</div>
+        </div>
+
+        <!-- LEADERSHIP BRAND MONITOR -->
+        <h2>Leadership Brand Alignment Monitor</h2>
+        <div class="attributes-grid">
+            <div class="attribute-item">
+                <span class="attribute-name">Overall Brand Promise</span>
+                <span class="attribute-score">9.0</span>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Innovation Promise</span>
+                <span class="attribute-score">9.0</span>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Green Promise</span>
+                <span class="attribute-score">7.5</span>
+            </div>
+            <div class="attribute-item">
+                <span class="attribute-name">Network Influence</span>
+                <span class="attribute-score">9.2</span>
+            </div>
+        </div>
+
+        <!-- FINAL WORD -->
+        <h2>BrandRank's Final Word</h2>
+        <div class="final-word">
+            <p>J.P. Nauseef's leadership brand is defined by <strong>ecosystem orchestration and industrial strategy.</strong> By aligning universities, investors, and regional development organizations, he has positioned Ohio as one of the most competitive states for advanced manufacturing investment.</p>
+            <p style="margin-top: 20px;">If Ohio continues building momentum across <strong>aerospace, defense technology, semiconductors, energy infrastructure, and AI data centers</strong>, his tenure could represent one of the most significant economic transformations in the state's modern history. Closing the narrative visibility gap — ensuring his strategic leadership is recognized nationally at the same level as the results he drives — is the clearest path to elite-tier leadership brand status.</p>
+            <p style="margin-top: 20px; font-size: 20px; color: #00d4ff; font-weight: 700; text-align: center;">Final BrandRank Executive Score: 8.9 / 10</p>
+        </div>
+
+        <!-- METRIC DEFINITIONS -->
+        <h2>Metric Definitions</h2>
+        <div class="content-box">
+            <h3 style="margin-top: 0;">BrandRank Leadership Score (Scale: 1–10)</h3>
+            <p style="margin-bottom: 25px;">Composite measure of executive leadership brand strength, combining ecosystem orchestration capability, industrial strategy, coalition-building, innovation attraction, and long-term structural impact.</p>
+
+            <h3>Brand Promise Alignment (Scale: 1–10)</h3>
+            <p style="margin-bottom: 25px;">Measures coherence between stated economic development mission and demonstrated outcomes across manufacturing growth, talent pipelines, and industrial cluster attraction. Higher scores indicate authentic, consistent brand narratives.</p>
+
+            <h3>Network Influence Score (Scale: 1–10)</h3>
+            <p style="margin-bottom: 25px;">Assessment of LinkedIn reach, engagement depth, content strategy effectiveness, and the breadth of cross-sector network spanning investors, policymakers, and regional development organizations.</p>
+
+            <h3>Persona Mapping (Scale: 1–10)</h3>
+            <p>Individual scoring across leadership archetypes. "Partnership Weaver" (10/10) is Nauseef's dominant persona — the architect of statewide economic coalitions that define his tenure at JobsOhio.</p>
+        </div>
+
+        <!-- ABOUT BRANDRANK -->
+        <h2>About BrandRank</h2>
+        <div class="final-word" style="text-align: center;">
+            <p>Based in the "Consumer Capital" of Cincinnati, BrandRank works with over 70 global brands to strengthen trust and purchase intent by uncovering vulnerabilities, purchase-driving insights, and growth opportunities across AI answer engines. As a SaaS platform, we track all major answer engines to improve visibility, ensure content is AI-ready, and rigorously measure brand claims and instructional accuracy.</p>
+            <p style="margin-top: 30px;">Visit <a href="https://brandrank.ai" style="color: #00d4ff; text-decoration: none; font-weight: 600;">BrandRank.AI</a> and <a href="https://theanswereconomy.com" style="color: #00d4ff; text-decoration: none; font-weight: 600;">TheAnswerEconomy.com</a> to learn more.</p>
+        </div>
+
+    </div>
+</body>
+</html>
