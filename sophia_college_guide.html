@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sophia: City & Sea — Occidental vs. UC Santa Cruz</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;500;600;700&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0e1a;
+    --bg2: #1a1f35;
+    --white: #ffffff;
+    --cyan: #00d4ff;
+    --card: rgba(255,255,255,0.05);
+    --border: rgba(255,255,255,0.1);
+    --green: #4ecdc4;
+    --yellow: #ffd93d;
+    --red: #ff6b6b;
+    --oxy: #4ecdc4;
+    --ucsc: #00d4ff;
+  }
+
+  html, body {
+    font-family: 'Segoe UI', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: linear-gradient(160deg, #0a0e1a 0%, #111827 60%, #1a1f35 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 36px 48px 28px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .guide-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 10px;
+  }
+  .guide-headline {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 12px;
+  }
+  .guide-name {
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+  .guide-colleges {
+    font-size: 26px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+  }
+  .oxy-word { color: var(--green); }
+  .vs-word { color: rgba(255,255,255,0.3); font-weight: 300; margin: 0 6px; }
+  .ucsc-word { color: var(--cyan); }
+  .guide-tagline {
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── NAV TABS ── */
+  .nav-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 16px 48px 0;
+    background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  .nav-tab {
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    background: transparent;
+    color: rgba(255,255,255,0.45);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+  }
+  .nav-tab:hover { color: rgba(255,255,255,0.8); }
+  .nav-tab.active { color: var(--cyan); border-bottom-color: var(--cyan); }
+
+  /* ── MAIN CONTENT ── */
+  .main { padding: 40px 48px; max-width: 1400px; margin: 0 auto; }
+
+  .panel { display: none; animation: fadeIn 0.25s ease; }
+  .panel.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── SECTION HEADINGS ── */
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 16px;
+    margin-top: 36px;
+  }
+  .section-label:first-child { margin-top: 0; }
+
+  /* ── GRID ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: rgba(255,255,255,0.2); }
+  .card.oxy-card { border-top: 2px solid var(--oxy); }
+  .card.ucsc-card { border-top: 2px solid var(--ucsc); }
+
+  .card-school {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .card-school.oxy { color: var(--oxy); }
+  .card-school.ucsc { color: var(--ucsc); }
+  .card-title { font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 2px; }
+  .card-sub { font-size: 12px; color: rgba(255,255,255,0.45); margin-bottom: 18px; }
+
+  /* ── STAT ROWS ── */
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-label { color: rgba(255,255,255,0.5); }
+  .stat-val { color: var(--white); font-weight: 500; text-align: right; max-width: 60%; }
+
+  /* ── INSIGHT BOX ── */
+  .insight {
+    background: rgba(0,212,255,0.07);
+    border-left: 3px solid var(--cyan);
+    border-radius: 0 6px 6px 0;
+    padding: 14px 16px;
+    margin-top: 16px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.65;
+  }
+  .insight strong { color: var(--white); font-weight: 600; }
+  .insight.green-accent { border-left-color: var(--green); background: rgba(78,205,196,0.07); }
+  .insight.yellow-accent { border-left-color: var(--yellow); background: rgba(255,217,61,0.07); }
+
+  /* ── PROFESSOR CARDS ── */
+  .prof-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .prof-card:hover { border-color: rgba(0,212,255,0.35); background: rgba(0,212,255,0.04); }
+  .prof-name { font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 3px; }
+  .prof-role { font-size: 12px; color: rgba(255,255,255,0.45); margin-bottom: 10px; line-height: 1.45; }
+  .prof-why { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.6; }
+  .prof-why strong { color: var(--cyan); font-weight: 600; }
+  .prof-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-right: 6px;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+  .tag-priority { background: rgba(0,212,255,0.15); color: var(--cyan); }
+  .tag-psych { background: rgba(78,205,196,0.15); color: var(--green); }
+
+  /* ── ECA GROUPS ── */
+  .eca-group { margin-bottom: 22px; }
+  .eca-group-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .pill-wrap { display: flex; flex-wrap: wrap; gap: 7px; }
+  .pill {
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: rgba(255,255,255,0.6);
+    background: transparent;
+    transition: all 0.15s;
+  }
+  .pill.hi {
+    border-color: rgba(0,212,255,0.4);
+    color: var(--cyan);
+    background: rgba(0,212,255,0.06);
+  }
+  .pill.green-hi {
+    border-color: rgba(78,205,196,0.4);
+    color: var(--green);
+    background: rgba(78,205,196,0.06);
+  }
+
+  /* ── COMPARE TABLE ── */
+  .compare-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+  .compare-table th {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 10px 16px;
+    background: rgba(255,255,255,0.04);
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+  }
+  .compare-table th.oxy-h { color: var(--oxy); }
+  .compare-table th.ucsc-h { color: var(--ucsc); }
+  .compare-table td {
+    font-size: 13px;
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    color: rgba(255,255,255,0.75);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .compare-table td.row-label {
+    color: rgba(255,255,255,0.45);
+    font-weight: 500;
+    font-size: 12px;
+    width: 160px;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* ── CONSIDER ITEMS ── */
+  .consider-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 22px;
+    margin-bottom: 12px;
+    transition: border-color 0.2s;
+  }
+  .consider-item:hover { border-color: rgba(255,255,255,0.2); }
+  .consider-q { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+  .consider-body { font-size: 13px; color: rgba(255,255,255,0.65); line-height: 1.65; }
+  .consider-body strong { color: var(--white); font-weight: 600; }
+
+  /* ── VISIT GUIDE ── */
+  .visit-cat {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--cyan);
+    margin-bottom: 10px;
+    margin-top: 28px;
+  }
+  .visit-cat:first-child { margin-top: 0; }
+  .q-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .q-item:last-child { border-bottom: none; }
+  .q-check {
+    width: 18px;
+    height: 18px;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .q-check:hover { border-color: var(--cyan); }
+  .q-check.checked { background: var(--cyan); border-color: var(--cyan); }
+  .q-check.checked::after {
+    content: '';
+    display: block;
+    width: 7px;
+    height: 5px;
+    border-left: 2px solid #0a0e1a;
+    border-bottom: 2px solid #0a0e1a;
+    transform: rotate(-45deg) translateY(-1px);
+  }
+  .q-text { flex: 1; }
+  .q-main { font-size: 13px; color: var(--white); line-height: 1.5; margin-bottom: 3px; }
+  .q-hint { font-size: 12px; color: rgba(255,255,255,0.4); }
+
+  /* ── SNAP HIGHLIGHT BAR ── */
+  .highlight-bar {
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 8px;
+    padding: 18px 24px;
+    margin-top: 24px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.65;
+  }
+  .highlight-bar strong { color: var(--cyan); font-weight: 600; }
+
+  /* ── SCHOOL COLUMN HEADERS ── */
+  .school-header-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .school-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .school-header-title { font-size: 15px; font-weight: 700; color: var(--white); }
+  .school-header-sub { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 1px; }
+
+  /* ── PORTER & COWELL CALLOUTS ── */
+  .porter-box {
+    background: rgba(78,205,196,0.08);
+    border: 1px solid rgba(78,205,196,0.25);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.6;
+  }
+  .porter-box strong { color: var(--green); font-weight: 600; }
+  .cowell-box {
+    background: rgba(255,217,61,0.07);
+    border: 1px solid rgba(255,217,61,0.28);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.6;
+  }
+  .cowell-box strong { color: var(--yellow); font-weight: 600; }
+  .cowell-banner {
+    background: rgba(255,217,61,0.07);
+    border: 1px solid rgba(255,217,61,0.28);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 20px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.65;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .cowell-banner .cowell-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    color: var(--yellow);
+    font-style: normal;
+  }
+  .cowell-banner strong { color: var(--yellow); font-weight: 600; }
+  .oxy-banner {
+    background: rgba(78,205,196,0.07);
+    border: 1px solid rgba(78,205,196,0.28);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.65;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .oxy-banner .oxy-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; color: var(--green); font-style: normal; }
+  .oxy-banner strong { color: var(--green); font-weight: 600; }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    margin-top: 60px;
+    padding: 24px 48px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .site-footer p { font-size: 12px; color: rgba(255,255,255,0.3); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .main { padding: 28px 20px; }
+    .site-header, .nav-tabs { padding-left: 20px; padding-right: 20px; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .site-footer { padding: 20px; flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="guide-eyebrow">A Personal College Decision Guide</div>
+  <h1 class="guide-headline">
+    <span class="guide-name">Sophia: City &amp; Sea</span>
+    <span class="guide-colleges"><span class="oxy-word">Occidental</span> <span class="vs-word">vs.</span> <span class="ucsc-word">UC Santa Cruz</span></span>
+  </h1>
+  <div class="guide-tagline">Academics &nbsp;·&nbsp; Faculty to Know &nbsp;·&nbsp; Extracurriculars &nbsp;·&nbsp; What Else to Consider &nbsp;·&nbsp; Visit Checklist</div>
+</header>
+
+<div class="nav-tabs">
+  <button class="nav-tab active" onclick="show('snap', this)">Snapshot</button>
+  <button class="nav-tab" onclick="show('academics', this)">Academics</button>
+  <button class="nav-tab" onclick="show('faculty', this)">Faculty to Know</button>
+  <button class="nav-tab" onclick="show('eca', this)">Extracurriculars</button>
+  <button class="nav-tab" onclick="show('else', this)">What Else to Consider</button>
+  <button class="nav-tab" onclick="show('visit', this)">Visit Guide</button>
+</div>
+
+<div class="main">
+
+  <!-- ════════ SNAPSHOT ════════ -->
+  <div id="snap" class="panel active">
+    <div class="grid-2">
+
+      <div class="card oxy-card">
+        <div class="card-school oxy">Occidental College</div>
+        <div class="card-title">Oxy</div>
+        <div class="card-sub">Eagle Rock, Los Angeles, CA</div>
+        <div class="stat-row"><span class="stat-label">Type</span><span class="stat-val">Private liberal arts college</span></div>
+        <div class="stat-row"><span class="stat-label">Undergraduates</span><span class="stat-val">~2,100</span></div>
+        <div class="stat-row"><span class="stat-label">Average class size</span><span class="stat-val">17 students</span></div>
+        <div class="stat-row"><span class="stat-label">Setting</span><span class="stat-val">Urban LA neighborhood</span></div>
+        <div class="stat-row"><span class="stat-label">Core curriculum</span><span class="stat-val">Yes — structured gen ed</span></div>
+        <div class="stat-row"><span class="stat-label">On-campus housing</span><span class="stat-val">Guaranteed all 4 years</span></div>
+        <div class="stat-row"><span class="stat-label">Cross-enrollment</span><span class="stat-val">Art Center College of Design</span></div>
+        <div class="insight green-accent">
+          <strong>Oxy's great strength:</strong> Every professor knows your name. Classes are small, discussion-driven, and seminar-style. Los Angeles is your extended campus — for arts, media, and creative industries, being embedded in LA for four years is a structural career advantage that's hard to replicate anywhere else.
+        </div>
+        <div class="oxy-banner">
+          <span class="oxy-icon">&#9733;</span>
+          <div><strong>Family connections:</strong> Oxy sits just a few miles from Aunt Julie's house, and Liam is nearby too — built-in support and familiar faces close at hand. And the campus holds a memory: Sophia's grandmother brought the family here to watch outdoor musicals at Oxy's beautiful Remsen Bird Hillside Theater — including <em>Carousel</em>. That stage is still there, and still hosting performances.</div>
+        </div>
+      </div>
+
+      <div class="card ucsc-card">
+        <div class="card-school ucsc">UC Santa Cruz</div>
+        <div class="card-title">UCSC</div>
+        <div class="card-sub">Santa Cruz, CA — forested hillside, Pacific coast</div>
+        <div class="stat-row"><span class="stat-label">Type</span><span class="stat-val">Public research university (UC)</span></div>
+        <div class="stat-row"><span class="stat-label">Undergraduates</span><span class="stat-val">~17,940</span></div>
+        <div class="stat-row"><span class="stat-label">Class size range</span><span class="stat-val">20–150+ (varies by level)</span></div>
+        <div class="stat-row"><span class="stat-label">Setting</span><span class="stat-val">2,000-acre redwood forest, ocean views</span></div>
+        <div class="stat-row"><span class="stat-label">Residential colleges</span><span class="stat-val">10 colleges (every undergrad affiliated)</span></div>
+        <div class="stat-row"><span class="stat-label">On-campus housing</span><span class="stat-val">Guaranteed freshman year</span></div>
+        <div class="stat-row"><span class="stat-label">Silicon Valley</span><span class="stat-val">~30 miles away</span></div>
+        <div class="insight">
+          <strong>UCSC's great strength:</strong> A research university with the soul of an experimental college. The 10-college system creates genuine intimacy within scale. The Film & Digital Media department is nationally recognized, and the campus rewards students who are self-directed, creative, and intellectually fearless. The physical setting — redwoods, ocean, trails — is extraordinary.
+        </div>
+        <div class="cowell-banner">
+          <span class="cowell-icon">&#9733;</span>
+          <div><strong>Family connection — Cowell College:</strong> Sophia's dad attended Cowell, UCSC's founding college (est. 1965). Its motto — <em>"The Pursuit of Truth in the Company of Friends"</em> — captures a commitment to deep inquiry in a humane, inclusive community. That legacy is worth exploring together on a visit.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="highlight-bar">
+      <strong>The real question isn't which school is better — it's which environment brings out the best in Sophia.</strong> Oxy rewards students who thrive in close community with the city as their classroom. UCSC rewards students who are self-directed explorers who want depth, research infrastructure, and a campus that feels like its own world. Both have produced acclaimed filmmakers, media professionals, and psychologists.
+    </div>
+  </div>
+
+  <!-- ════════ ACADEMICS ════════ -->
+  <div id="academics" class="panel">
+
+    <div class="section-label">Arts & Media Programs</div>
+    <div class="grid-2">
+      <div class="card oxy-card">
+        <div class="card-school oxy">Occidental — Media Arts & Culture (MAC)</div>
+        <div class="insight green-accent" style="margin-top:0;">
+          MAC blends critical theory, media production, documentary, animation, AR/VR, and digital design across two tracks: <strong>Critical Media</strong> (film history, video essays, digital culture) and <strong>Media Production</strong> (fiction, documentary, experimental, interactive). What makes it genuinely distinctive is its LA location — internships at studios, nonprofits, and media companies are part of the curriculum. Cross-listed with music and computer science: courses like Film Scoring and Haptic Media reflect real interdisciplinary integration. Faculty are active professional filmmakers and scholars.
+        </div>
+        <div class="stat-row" style="margin-top:14px;"><span class="stat-label">Also available</span><span class="stat-val">Studio Art, Art History, Theater, Music, Dance, IDW Writing</span></div>
+        <div class="stat-row"><span class="stat-label">Special access</span><span class="stat-val">Art Center College of Design (cross-enrollment)</span></div>
+      </div>
+
+      <div class="card ucsc-card">
+        <div class="card-school ucsc">UC Santa Cruz — Film & Digital Media (FDM)</div>
+        <div class="insight" style="margin-top:0;">
+          FDM turns 25 in 2024 — a nationally respected department whose graduates have screened at Sundance, Toronto, Cinequest, and on HBO. The brand-new <strong>Social Documentation Lab</strong> (opened Fall 2024) provides state-of-the-art editing, color grading, audio mixing, and immersive media facilities. Faculty include multiple Guggenheim Fellows. The PhD program and Social Documentation MFA attract serious scholars, raising the intellectual floor for undergrads. The combination of rigorous theory and hands-on production is the department's signature strength.
+        </div>
+        <div class="stat-row" style="margin-top:14px;"><span class="stat-label">Also available</span><span class="stat-val">Art BA/BFA, Theater Arts, Music, Digital Arts & New Media, Game Design</span></div>
+        <div class="stat-row"><span class="stat-label">UCSC ranking</span><span class="stat-val">Top 5 nationally in game/simulation development</span></div>
+      </div>
+    </div>
+
+    <div class="section-label">Psychology Programs</div>
+    <div class="grid-2">
+      <div class="card oxy-card">
+        <div class="card-school oxy">Occidental — Psychology</div>
+        <div class="insight green-accent" style="margin-top:0;">
+          A strong liberal arts psychology program built around writing, critical thinking, and research methodology. Because Oxy has no graduate psychology program, undergraduates are the department's entire focus — meaning genuine research participation, not just assistant roles. Connects naturally with Media Arts, Sociology, and Cognitive Science. LA's clinical, nonprofit, and entertainment psychology sectors provide internship pipelines. Excellent preparation for graduate school or applied careers.
+        </div>
+      </div>
+
+      <div class="card ucsc-card">
+        <div class="card-school ucsc">UCSC — Psychology</div>
+        <div class="insight" style="margin-top:0;">
+          A full research-university psychology department with active labs spanning developmental, social, cognitive, and clinical neuroscience. Students who identify research areas early can publish alongside faculty — a significant credential for PhD applications. Strong connections to UCSC's Cognitive Science program. Silicon Valley proximity creates pathways into UX research and behavioral analytics. Students who are proactive get exceptional research experience; the environment rewards initiative.
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Academic Structure Side by Side</div>
+    <div class="card">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th style="width:180px;"></th>
+            <th class="oxy-h">Occidental</th>
+            <th class="ucsc-h">UC Santa Cruz</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="row-label">Double major</td><td>Very common, actively encouraged</td><td>Possible; requires careful planning</td></tr>
+          <tr><td class="row-label">Undergrad research</td><td>High access, close faculty mentorship</td><td>Higher ceiling, more self-directed</td></tr>
+          <tr><td class="row-label">Study abroad</td><td>Strong program with dedicated advising</td><td>UC Education Abroad Program — excellent</td></tr>
+          <tr><td class="row-label">Cross-enrollment</td><td>Art Center College of Design</td><td>UC system-wide exchange options</td></tr>
+          <tr><td class="row-label">Senior capstone</td><td>Thesis or comprehensive exam required</td><td>Varies by major</td></tr>
+          <tr><td class="row-label">Graduate courses</td><td>Rare — no graduate programs at Oxy</td><td>Some undergrad access to grad seminars</td></tr>
+          <tr><td class="row-label">Psych + Media bridge</td><td>Easy — interdisciplinary by design</td><td>Strong but more self-constructed</td></tr>
+          <tr><td class="row-label">Core curriculum</td><td>Structured, required for all students</td><td>Varies by residential college affiliation</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- ════════ FACULTY ════════ -->
+  <div id="faculty" class="panel">
+
+    <div class="section-label">Occidental — MAC Faculty to Research Before the Visit</div>
+
+    <div class="prof-card">
+      <div style="margin-bottom:6px;">
+        <span class="prof-tag tag-priority">Top Priority for Sophia</span>
+        <span class="prof-tag tag-psych">Psych + Media Overlap</span>
+      </div>
+      <div class="prof-name">Prof. Vivian Wenli Lin</div>
+      <div class="prof-role">Assistant Professor — media arts, documentary film, video art, interactive installation, psychology & media</div>
+      <div class="prof-why">Rare faculty member whose background spans <strong>psychology, documentary film, and video art</strong> — a near-perfect intersection with Sophia's interests. Teaches MAC 240 (Intro to Media Practices) and Media Activism Through Participatory Video. Multiple current students name her as their top advisor and describe her classes as genuinely transformative. Her course has students partner with real community organizations to drive social change through media.</div>
+    </div>
+
+    <div class="prof-card">
+      <div class="prof-name">Prof. Broderick Fox</div>
+      <div class="prof-role">Associate Professor — documentary studies, media aesthetics, digital voice, social change media</div>
+      <div class="prof-why">One of the most student-cited faculty at Oxy. Known for supporting students through independent research and film festival presentations. His work connects media production to social advocacy. Students describe him as going out of his way to foster community and connect them to career and academic opportunities. <strong>Good first email:</strong> ask about his Media Activism course or senior thesis supervision.</div>
+    </div>
+
+    <div class="prof-card">
+      <div class="prof-name">Prof. Katarzyna Marciniak</div>
+      <div class="prof-role">Professor & Department Chair — transnational visual culture, immigration, border politics, media theory</div>
+      <div class="prof-why">Many Oxy students trace their decision to major in MAC directly to her Intro to Visual and Critical Studies course — described as combining theory, experimentation, critical thinking, and activism. Strong foundation for anyone who wants to understand not just how to make media but why it matters culturally and politically.</div>
+    </div>
+
+    <div class="prof-card">
+      <div class="prof-name">Prof. Rachel Raimist</div>
+      <div class="prof-role">Professor — television direction, feminist media, culturally specific storytelling, smart comedy</div>
+      <div class="prof-why">A trailblazing TV director whose work centers on underrepresented voices. Teaches at the intersection of craft and cultural advocacy — strong option for anyone drawn to screen writing, directing, or understanding representation in media.</div>
+    </div>
+
+    <div class="prof-card">
+      <div class="prof-name">Prof. Mo Perkins</div>
+      <div class="prof-role">Assistant Professor — feature film direction, episodic television, multi-genre writing</div>
+      <div class="prof-why">Rare combination of active industry experience (feature and episodic credits) and rigorous academic training (UCLA MFA, University of Minnesota PhD). Brings real production craft into the classroom. Good faculty to approach for the production track.</div>
+    </div>
+
+    <div class="prof-card">
+      <div class="prof-name">Garret Harkawik</div>
+      <div class="prof-role">Visiting Faculty — writer/director; Sundance, Berlin, SXSW, New Directors/New Films at MoMA; DGA Member, Sundance Fellow</div>
+      <div class="prof-why">An active working filmmaker with a real festival pedigree teaching at Oxy. The kind of faculty who brings direct industry perspective and professional network into the classroom. Priority contact for anyone serious about narrative filmmaking.</div>
+    </div>
+
+    <div class="section-label" style="margin-top:40px;">UC Santa Cruz — FDM Faculty to Research Before the Visit</div>
+
+    <div class="prof-card">
+      <div style="margin-bottom:6px;">
+        <span class="prof-tag tag-priority">Top Priority for Sophia</span>
+      </div>
+      <div class="prof-name">Prof. Sharon Daniel</div>
+      <div class="prof-role">Professor — interactive art, social justice documentary, collaborative media; Guggenheim Fellow 2024</div>
+      <div class="prof-why">One of UCSC's most celebrated faculty — currently a Guggenheim Fellow. Her course <em>Making an Exoneree</em> has students at UCSC and Georgetown University create documentary projects, websites, and social media campaigns for wrongfully convicted people. An undergraduate project from her class won a 2024 Chancellor's Award with real-world impact. <strong>If Sophia cares about media at the intersection of psychology and social justice, this is essential reading.</strong></div>
+    </div>
+
+    <div class="prof-card">
+      <div style="margin-bottom:6px;">
+        <span class="prof-tag tag-psych">Interactive Media + Psychology</span>
+      </div>
+      <div class="prof-name">Prof. Susana Ruiz</div>
+      <div class="prof-role">Associate Professor — immersive media, interactive public art, games for social change; Chancellor's Innovation Award 2023</div>
+      <div class="prof-why">Her immersive memorial project <em>The Last Chinatown</em> won the 2023 Chancellor's Innovation Award. Specializes in using games, VR, and interactive experiences as instruments of memory, justice, and collective healing — a cutting-edge field for someone combining media and psychology. Worth researching even though she's on sabbatical 2025-26.</div>
+    </div>
+
+    <div class="prof-card">
+      <div class="prof-name">Prof. Warren Sack</div>
+      <div class="prof-role">Professor — software arts, media theory, computational aesthetics, social media systems</div>
+      <div class="prof-why">A nationally recognized voice in software as artistic medium. His work sits at the intersection of computer science and cultural theory — particularly relevant for anyone interested in how algorithms and digital platforms shape culture, behavior, and human psychology. Strong option if Sophia has any tech-leaning dimensions to her interests.</div>
+    </div>
+
+    <div class="prof-card">
+      <div class="prof-name">Prof. Anna Friz</div>
+      <div class="prof-role">Associate Professor — sound art, radio theory, acoustic ecology; Guggenheim Fellow 2024</div>
+      <div class="prof-why">Two Guggenheim Fellows in one department is remarkable. Friz brings a unique audio-centered lens to media studies — compelling for anyone curious about sound design, podcasting, experimental radio, or music as art form. Her work spans acoustic environments, transmission, and what it means to listen critically.</div>
+    </div>
+
+    <div class="prof-card">
+      <div class="prof-name">Prof. Shelley Stamp</div>
+      <div class="prof-role">Professor — silent film history, feminist media studies, women in early Hollywood</div>
+      <div class="prof-why">A leading national scholar on early film history and women in cinema. Alumni who graduated 20 years ago still credit her with shaping their intellectual trajectory. Essential for anyone interested in film history, feminist media theory, or the politics of representation in moving image.</div>
+    </div>
+
+    <div class="prof-card">
+      <div class="prof-name">Prof. Peter Limbrick</div>
+      <div class="prof-role">Professor & Department Chair — postcolonial cinema, transnational film, global media histories</div>
+      <div class="prof-why">A 20-year veteran of the FDM department who is central to its identity and vision. Meeting him on a campus visit would give a real sense of where the department is headed and how it sees its undergraduate students. Worth a direct email before the visit.</div>
+    </div>
+
+  </div>
+
+  <!-- ════════ EXTRACURRICULARS ════════ -->
+  <div id="eca" class="panel">
+
+    <div class="grid-2">
+
+      <div>
+        <div class="school-header-bar">
+          <div class="school-dot" style="background:var(--oxy);"></div>
+          <div>
+            <div class="school-header-title">Occidental — 100+ Organizations</div>
+            <div class="school-header-sub">Eagle Rock, Los Angeles</div>
+          </div>
+        </div>
+
+        <div class="eca-group">
+          <div class="eca-group-label">Media & Film</div>
+          <div class="pill-wrap">
+            <span class="pill hi">KOXY Radio (student-run station)</span>
+            <span class="pill hi">The Occidental (student newspaper)</span>
+            <span class="pill hi">Oxy Arts (campus arts hub)</span>
+            <span class="pill">MAC Lab open production access</span>
+            <span class="pill">Film Production Club</span>
+            <span class="pill">Wanlass Artist in Residence program</span>
+          </div>
+        </div>
+
+        <div class="eca-group">
+          <div class="eca-group-label">Performing & Visual Arts</div>
+          <div class="pill-wrap">
+            <span class="pill hi">Dance Production</span>
+            <span class="pill">Theater Company</span>
+            <span class="pill">Improv Comedy</span>
+            <span class="pill">Chamber Singers / Glee Club</span>
+            <span class="pill">Jazz Ensemble</span>
+            <span class="pill">Orchestra</span>
+            <span class="pill">Eagle Rock neighborhood gallery scene</span>
+          </div>
+        </div>
+
+        <div class="eca-group">
+          <div class="eca-group-label">Psychology & Academic</div>
+          <div class="pill-wrap">
+            <span class="pill hi">Psychology Research Group</span>
+            <span class="pill">Cognitive Science Club</span>
+            <span class="pill">Model UN</span>
+            <span class="pill">Debate Society</span>
+            <span class="pill">Philosophy Club</span>
+            <span class="pill">Mock Trial</span>
+          </div>
+        </div>
+
+        <div class="eca-group">
+          <div class="eca-group-label">Social Impact & Advocacy</div>
+          <div class="pill-wrap">
+            <span class="pill">Diversity & Equity Board (DEB)</span>
+            <span class="pill">Amnesty International chapter</span>
+            <span class="pill">FEAST organic garden</span>
+            <span class="pill">LA Engage (city immersion program)</span>
+            <span class="pill">Community service organizations</span>
+          </div>
+        </div>
+
+        <div class="eca-group">
+          <div class="eca-group-label">Identity & Culture</div>
+          <div class="pill-wrap">
+            <span class="pill">APIDAA (Asian Pacific Islander)</span>
+            <span class="pill">Black Student Alliance</span>
+            <span class="pill">Latinx Student Union</span>
+            <span class="pill">International Students Assoc.</span>
+            <span class="pill">Queer Coalition</span>
+          </div>
+        </div>
+
+        <div class="eca-group">
+          <div class="eca-group-label">Unique to Oxy</div>
+          <div class="pill-wrap">
+            <span class="pill hi">Art Center College of Design (cross-enrollment)</span>
+            <span class="pill hi">Bengal Bus (free rides across LA)</span>
+            <span class="pill">Remsen Bird guest speaker fund</span>
+            <span class="pill">ASOC Arts Endowment Fund</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="school-header-bar">
+          <div class="school-dot" style="background:var(--ucsc);"></div>
+          <div>
+            <div class="school-header-title">UC Santa Cruz — 300+ Organizations</div>
+            <div class="school-header-sub">Santa Cruz, CA</div>
+          </div>
+        </div>
+
+        <div class="eca-group">
+          <div class="eca-group-label">Student Media — 19 Organizations (a standout ecosystem)</div>
+          <div class="pill-wrap">
+            <span class="pill hi">SCTV (4 independent TV/film production orgs)</span>
+            <span class="pill hi">Banana Slug News (broadcast journalism)</span>
+            <span class="pill hi">On The Spot (sketch comedy + TV production)</span>
+            <span class="pill hi">EyeCandy Journal (film & TV criticism)</span>
+            <span class="pill hi">KZSC Radio (public radio station)</span>
+            <span class="pill">City on a Hill Press (newspaper)</span>
+            <span class="pill">Fruitcake (alternative art magazine)</span>
+            <span class="pill">TWANAS (student-of-color media pub)</span>
+            <span class="pill">Matchbox Magazine (UC-wide literary)</span>
+            <span class="pill">Chinquapin (literary magazine)</span>
+            <span class="pill">Gaia Magazine (environmental)</span>
+          </div>
+        </div>
+
+        <div class="eca-group">
+          <div class="eca-group-label">Performing & Visual Arts</div>
+          <div class="pill-wrap">
+            <span class="pill hi">Porter College arts programming (galleries, studios)</span>
+            <span class="pill">Theater Arts productions</span>
+            <span class="pill">Cowell Gamelan Ensemble</span>
+            <span class="pill">Dance companies (multiple styles)</span>
+            <span class="pill">Improvised music collective</span>
+            <span class="pill">Experimental performance groups</span>
+            <span class="pill">Digital arts workshops</span>
+          </div>
+        </div>
+
+        <div class="eca-group">
+          <div class="eca-group-label">Psychology & Mind Sciences</div>
+          <div class="pill-wrap">
+            <span class="pill hi">Neuroscience & Psychology Club</span>
+            <span class="pill">UCSC Psych Research Network</span>
+            <span class="pill">Game Design & Art Collaboration</span>
+            <span class="pill">Mindfulness & wellness groups</span>
+          </div>
+        </div>
+
+        <div class="eca-group">
+          <div class="eca-group-label">Social Impact & Advocacy</div>
+          <div class="pill-wrap">
+            <span class="pill">GABRIELA (feminist/social justice)</span>
+            <span class="pill">UAEM (medicine access advocacy)</span>
+            <span class="pill">Environmental organizations (many)</span>
+            <span class="pill">6 campus Resource Centers</span>
+          </div>
+        </div>
+
+        <div class="eca-group">
+          <div class="eca-group-label">Recreation & Outdoor (Unique advantage)</div>
+          <div class="pill-wrap">
+            <span class="pill hi">Surfing club (ocean is on campus)</span>
+            <span class="pill hi">On-campus hiking & trail network</span>
+            <span class="pill">Rock climbing</span>
+            <span class="pill">Yoga & wellness</span>
+            <span class="pill">Intramural sports</span>
+          </div>
+        </div>
+
+        <div class="eca-group">
+          <div class="eca-group-label">Unique to UCSC</div>
+          <div class="pill-wrap">
+            <span class="pill hi">Residential college programming (10 communities)</span>
+            <span class="pill hi">Social Documentation Lab (new — open access)</span>
+            <span class="pill">UC-wide honor societies & exchanges</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="insight" style="margin-top:24px;">
+      <strong>Notable contrast on media ECAs:</strong> UCSC's Student Media ecosystem — 19 organizations including multiple independent TV and film production groups — is genuinely exceptional. A student can join a student-run TV production org from day one and accumulate real production credits while still a freshman. Oxy's KOXY Radio and The Occidental offer comparable hands-on media experience at an intimate scale where student work is highly visible in a small, engaged community.
+    </div>
+
+  </div>
+
+  <!-- ════════ WHAT ELSE ════════ -->
+  <div id="else" class="panel">
+
+    <div class="insight" style="margin-bottom:28px;">
+      Things worth researching that don't always come up in standard college comparison conversations — but matter enormously in practice.
+    </div>
+
+    <div class="grid-2">
+
+      <div class="consider-item">
+        <div class="consider-q">Which of UCSC's 10 residential colleges would Sophia be assigned to?</div>
+        <div class="consider-body">UCSC's 10 colleges each have their own culture, dining, events, advising staff, and first-year core course. <strong>This matters enormously at UCSC</strong> — your college is your primary community, especially in year one. Every undergraduate is affiliated with a college regardless of major, and students can express preferences during admissions. She should ask admissions directly which college her offer is associated with and whether she can request a specific college. Two are especially relevant for her:</div>
+        <div class="porter-box">
+          <strong>Porter College</strong> — Founded 1969. Porter's mission is explicitly dedicated to the arts, "believing that creative inquiry is an essential part of a rigorous and broad-minded education, a flourishing society, and a happy life." It has student galleries, studio spaces, and an arts-forward identity built into daily programming. For an arts/media student, Porter is the natural home.
+        </div>
+        <div class="cowell-box">
+          <strong>Cowell College</strong> — Founded 1965, the very first UCSC residential college. Its motto: <em>"The Pursuit of Truth in the Company of Friends."</em> Cowell focuses not on a specific discipline but on reasoned discussion, debate, and intellectual community. It's home to the Eloise Pickard Smith Gallery, the historic Cowell Press, and a reputation for close cross-generational bonds between students, faculty, and alumni. <strong>This is where Sophia's dad studied</strong> — which means real alumni connections, stories, and a living thread between generations. A visit to Cowell with him would be memorable.
+        </div>
+      </div>
+
+      <div class="consider-item">
+        <div class="consider-q">What happens to housing after freshman year?</div>
+        <div class="consider-body">At <strong>Oxy</strong>, on-campus housing is guaranteed for all four years — a meaningful quality-of-life and community advantage. At <strong>UCSC</strong>, it's guaranteed only for freshmen; upperclassmen enter a competitive lottery. Santa Cruz off-campus housing is limited and has become expensive. This is a real financial and logistical variable worth researching — ask UCSC admissions for current average off-campus rent and what percentage of juniors and seniors live on or off campus.</div>
+      </div>
+
+      <div class="consider-item">
+        <div class="consider-q">Does she process the world better in intimate settings or open-ended ones?</div>
+        <div class="consider-body">The deepest question, and worth a real conversation. Some students discover themselves at a place like Oxy precisely because the smallness forces depth — you can't disappear, and relationships form quickly and are lasting. Others find smallness constraining and need the freedom to experiment without social stakes. Neither preference is wrong, but the honest answer here almost predicts which campus will feel right within hours of the visit.</div>
+      </div>
+
+      <div class="consider-item">
+        <div class="consider-q">Actual elective space after major + gen ed requirements</div>
+        <div class="consider-body">Oxy has a more structured core curriculum — students sometimes find this shapes their education in unexpected and valuable ways, sometimes find it limiting. UCSC's gen ed requirements vary by residential college and are generally lighter. If Sophia has a very specific vision for double-majoring or combining arts + psychology, she should map out how many free elective slots she'd actually have at each school — the answer is sometimes surprising.</div>
+      </div>
+
+      <div class="consider-item">
+        <div class="consider-q">Study abroad timing vs. major requirements</div>
+        <div class="consider-body">Many arts and production majors have sequential coursework that makes junior year abroad complicated. She should ask both departments directly: <em>"When do students in your major typically study abroad, and are there any course sequences that conflict with a full semester away?"</em> Both schools have strong programs (UCSC's UC Education Abroad is among the best in the country; Oxy has dedicated advising), but the real constraint is departmental scheduling.</div>
+      </div>
+
+      <div class="consider-item">
+        <div class="consider-q">Mental health and wellness infrastructure</div>
+        <div class="consider-body">Worth researching at any school. At UCSC, Counseling and Psychological Services (CAPS) is available to all registered students with no out-of-pocket fee, no insurance required. At Oxy, the small community means support is accessible but more visible. A useful question for admissions at both schools: <em>"What is the average wait time for a first counseling appointment, and what happens if a student needs ongoing support?"</em></div>
+      </div>
+
+      <div class="consider-item">
+        <div class="consider-q">Career center depth in her specific fields</div>
+        <div class="consider-body">Oxy's career center has strong LA entertainment and media industry connections — alumni in those fields are highly engaged and willing to mentor. UCSC's Career Success center is stronger in tech, digital media, UX research, and Silicon Valley pathways. She should ask each school: <em>"Can you give me specific examples of what recent MAC/FDM students and Psychology students did for their first summer internship — and how they found it?"</em></div>
+      </div>
+
+      <div class="consider-item">
+        <div class="consider-q">Transportation and city access</div>
+        <div class="consider-body">At <strong>Oxy</strong>, LA is your campus — a car eventually helps, but the Bengal Bus provides free and low-cost rides to airports, museums, beaches, and the Highland Park Metro. At <strong>UCSC</strong>, the campus is beautifully self-contained and walkable; Santa Cruz proper is accessible; San Francisco and Silicon Valley require a car or bus (~1.5 hrs). The question is whether she wants a campus that is also a city, or a campus that is its own world.</div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ════════ VISIT GUIDE ════════ -->
+  <div id="visit" class="panel">
+
+    <div class="insight" style="margin-bottom:28px;">
+      <strong>How to use this guide:</strong> The goal isn't to collect answers — it's to notice how people respond. Enthusiasm, hesitation, specificity, and evasion all tell you something. Bring a phone or notebook. Trust your gut more than any ranking.
+    </div>
+
+    <div class="grid-2">
+
+      <div>
+        <div class="visit-cat">Ask Students — Not Admissions</div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">Walk me through a typical Thursday night — what actually happens?</div><div class="q-hint">Surfaces real social culture vs. the brochure version</div></div></div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">What kind of student struggles here? Who doesn't make it four years?</div><div class="q-hint">Reveals who the environment actually serves</div></div></div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">If you could change one thing about this school, what would it be?</div><div class="q-hint">Watch their face — the most honest question there is</div></div></div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">How hard is it to actually get time with professors? Give me a real example.</div><div class="q-hint">Tests mentorship claims against lived experience</div></div></div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">Do most students here know what they want to do after — or is it exploratory?</div><div class="q-hint">Assesses career culture and peer pressure dynamics</div></div></div>
+
+        <div class="visit-cat" style="margin-top:28px;">Oxy Specific — Family Connections to Explore</div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">Find the Remsen Bird Hillside Theater and sit in it for a few minutes.</div><div class="q-hint">This is where Grandma brought the family to see Carousel and other outdoor musicals — worth a quiet moment</div></div></div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">Plan time with Aunt Julie nearby — what's the neighborhood feel outside of campus?</div><div class="q-hint">Eagle Rock and Highland Park are lively; having family close is a real safety net</div></div></div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">Map out how close Liam is — could you see each other easily on a weekend?</div><div class="q-hint">Proximity to people who already love you matters more than most applicants expect</div></div></div>
+
+        <div class="visit-cat" style="margin-top:28px;">Ask the Arts/Media Department</div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">Can I see examples of current student work?</div><div class="q-hint">The actual benchmark of program quality</div></div></div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">How do students get internships while enrolled — walk me through the actual process.</div><div class="q-hint">Practical vs. aspirational orientation</div></div></div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">What production facilities are available to first-years, and how competitive is access?</div><div class="q-hint">Tests real access, not just "we have state-of-the-art facilities"</div></div></div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">What do recent graduates actually do in their first year out of school?</div><div class="q-hint">Cuts through aspirational outcomes to reality</div></div></div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">Are there courses bridging media and psychology, or would I construct that myself?</div><div class="q-hint">Critical if she wants to combine both interests formally</div></div></div>
+      </div>
+
+      <div>
+        <div class="visit-cat">UCSC Specific — Ask About the College System</div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">Which residential college am I offered, and what is its identity and culture?</div><div class="q-hint">Porter is arts-forward; Cowell is the founding college — both are relevant for Sophia</div></div></div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">Can I request Porter or Cowell specifically, and what does that process look like?</div><div class="q-hint">Know your options before the May 1st decision deadline</div></div></div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">Walk around Cowell with Dad — what has changed, what hasn't?</div><div class="q-hint">The conversation itself is worth having, regardless of which college she chooses</div></div></div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">What is the housing situation for sophomores and juniors in practice?</div><div class="q-hint">Off-campus Santa Cruz housing is expensive and competitive</div></div></div>
+
+        <div class="visit-cat" style="margin-top:28px;">Ask the Psychology Department</div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">Can undergrads genuinely contribute to faculty research — or is it mostly observational?</div><div class="q-hint">Critical distinction for graduate school competitiveness</div></div></div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">Are there courses that bridge psychology with media, technology, or social issues?</div><div class="q-hint">Relevant if she wants to formally combine the two fields</div></div></div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">What's the advising like for students who aren't certain they want graduate school?</div><div class="q-hint">Tests whether the department serves non-PhD students well</div></div></div>
+
+        <div class="visit-cat" style="margin-top:28px;">Observe — Don't Ask, Just Notice</div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">Do students make eye contact with you? Do they seem genuinely happy to be there?</div><div class="q-hint">Hard to fake — one of the most reliable signals</div></div></div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">What's posted on bulletin boards — events, art, humor, activism?</div><div class="q-hint">Tells you what students actually care about</div></div></div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">Spend 20 minutes alone in a library or dining hall. Do you want to stay?</div><div class="q-hint">Physical environment shapes four years of daily life</div></div></div>
+        <div class="q-item"><div class="q-check" onclick="tog(this)"></div><div class="q-text"><div class="q-main">Can you picture yourself walking this path at 8am on a January morning?</div><div class="q-hint">The gut check — trust it more than any ranking</div></div></div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<footer class="site-footer">
+  <p>Sophia: City &amp; Sea — Occidental vs. UC Santa Cruz</p>
+  <p>Research current as of 2025 — verify specifics directly with each school</p>
+</footer>
+
+<script>
+  function show(id, btn) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+  function tog(el) { el.classList.toggle('checked'); }
+</script>
+
+</body>
+</html>
