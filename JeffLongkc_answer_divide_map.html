@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kimberly-Clark vs. P&G Competitors — Answer Divide℠ Cluster Map</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--bg:#080F18;--bg2:#0D1825;--cyan:#00D4FF;--dim:rgba(255,255,255,.5);--bdr:rgba(0,212,255,.15)}
+  html,body{background:var(--bg);color:#fff;font-family:'Inter',sans-serif}
+  body{padding:32px 44px 36px}
+  .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;padding-bottom:22px;border-bottom:1px solid var(--bdr)}
+  .eyebrow{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--cyan);text-transform:uppercase;margin-bottom:9px}
+  .title{font-family:'DM Serif Display',serif;font-size:32px;line-height:1.1;margin-bottom:7px}
+  .subtitle{font-size:12.5px;color:var(--dim);line-height:1.6;max-width:580px}
+  .badge{font-family:'Space Mono',monospace;font-size:11px;color:var(--cyan);border:1px solid var(--bdr);padding:8px 14px;line-height:1.8;white-space:nowrap}
+  .legend-row{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-bottom:16px}
+  .leg-lbl{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.16em;color:rgba(255,255,255,.28);text-transform:uppercase;margin-right:3px}
+  .leg-i{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;padding:3px 9px;border:1px solid rgba(255,255,255,.07)}
+  .leg-d{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .leg-sq{width:8px;height:8px;flex-shrink:0}
+  .leg-sep{width:1px;height:22px;background:rgba(255,255,255,.12);margin:0 6px}
+  .chart-outer{background:var(--bg2);border:1px solid var(--bdr);overflow:hidden}
+  canvas{display:block}
+  #tip{position:fixed;background:#08131E;border:1px solid rgba(0,212,255,.35);padding:13px 15px;pointer-events:none;display:none;z-index:999;width:272px;box-shadow:0 8px 40px rgba(0,0,0,.65)}
+  #tip .tb{font-weight:700;font-size:14px;margin-bottom:2px}
+  #tip .tc{font-family:'Space Mono',monospace;font-size:8px;color:var(--cyan);letter-spacing:.14em;text-transform:uppercase;margin-bottom:3px}
+  #tip .tp{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,140,0,.8);letter-spacing:.1em;margin-bottom:7px}
+  #tip .tm{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;padding:3px 9px;display:inline-block;letter-spacing:.1em;margin-bottom:8px}
+  #tip .tg{display:grid;grid-template-columns:1fr 1fr;gap:3px 10px;margin-bottom:8px}
+  #tip .ts{font-size:10.5px;color:rgba(255,255,255,.5)}
+  #tip .ts span{font-weight:600;color:#fff}
+  #tip .ti{font-size:10.5px;color:rgba(255,255,255,.48);line-height:1.55;border-top:1px solid rgba(255,255,255,.07);padding-top:8px}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-top:18px}
+  .sc{background:var(--bg2);border:1px solid var(--bdr);padding:17px 18px}
+  .sc-n{font-family:'DM Serif Display',serif;font-size:32px;line-height:1;margin-bottom:3px}
+  .sc-l{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.15em;color:var(--cyan);text-transform:uppercase;margin-bottom:5px}
+  .sc-d{font-size:11px;color:var(--dim);line-height:1.55}
+  .foot{margin-top:18px;font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.16);letter-spacing:.09em;text-align:center}
+  .insight-box{margin-top:18px;background:var(--bg2);border:1px solid var(--bdr);padding:20px 24px}
+  .insight-box .ib-h{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;color:var(--cyan);text-transform:uppercase;margin-bottom:10px}
+  .insight-box .ib-b{font-size:12px;color:rgba(255,255,255,.62);line-height:1.7}
+  .insight-box .ib-b strong{color:#fff;font-weight:600}
+  .comp-note{margin-top:12px;background:rgba(255,140,0,0.04);border:1px solid rgba(255,140,0,0.22);padding:12px 18px}
+  .comp-note p{font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,140,0,0.78);line-height:1.7;letter-spacing:.04em}
+  .comp-note strong{color:rgba(255,140,0,1)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="eyebrow">BrandRank.AI · Competitive Analysis · March 2026</div>
+    <div class="title">The Answer Divide<sup style="font-size:.5em;vertical-align:super">&#8480;</sup><br>Kimberly-Clark vs. P&amp;G Competitor Overlay</div>
+    <div class="subtitle">14 KC brands (circles) and 4 P&amp;G competitor brands (squares &#x25A0;) scored on the same Answer Divide&#8480; methodology. Top-left is the ideal position: strong curiosity and answer depth, with balanced conversion pressure. Bubble size scales with curiosity index.</div>
+  </div>
+  <div class="badge">brandrank.ai &#x25B6;<br><span style="font-size:8px;color:rgba(0,212,255,.45);letter-spacing:.07em">prompting your brand truth&#8480;</span></div>
+</div>
+
+<div class="legend-row">
+  <span class="leg-lbl">KC</span>
+  <div class="leg-i"><div class="leg-d" style="background:#E0E0E0"></div><span style="color:#E0E0E0">Corporate</span></div>
+  <div class="leg-i"><div class="leg-d" style="background:#55EFC4"></div><span style="color:#55EFC4">Baby &amp; Child Care</span></div>
+  <div class="leg-i"><div class="leg-d" style="background:#A29BFE"></div><span style="color:#A29BFE">Family Care (Paper)</span></div>
+  <div class="leg-i"><div class="leg-d" style="background:#FD79A8"></div><span style="color:#FD79A8">Feminine Care</span></div>
+  <div class="leg-i"><div class="leg-d" style="background:#FFD93D"></div><span style="color:#FFD93D">Adult &amp; Prof. Care</span></div>
+  <div class="leg-i"><div class="leg-d" style="background:#B2BEC3"></div><span style="color:#B2BEC3">Professional / B2B</span></div>
+  <div class="leg-sep"></div>
+  <span class="leg-lbl">P&amp;G</span>
+  <div class="leg-i"><div class="leg-sq" style="background:#FF8C00"></div><span style="color:#FF8C00">P&amp;G Competitors &#x25A0;</span></div>
+</div>
+
+<div class="chart-outer" id="co"><canvas id="c"></canvas></div>
+<div id="tip">
+  <div class="tb" id="tt-b"></div>
+  <div class="tc" id="tt-c"></div>
+  <div class="tp" id="tt-p"></div>
+  <div class="tm" id="tt-m"></div>
+  <div class="tg" id="tt-g"></div>
+  <div class="ti" id="tt-i"></div>
+</div>
+
+<div class="comp-note">
+  <p><strong>&#x25A0; P&amp;G COMPETITOR OVERLAY</strong> &#8212; Four P&amp;G brands scored on the identical Answer Divide&#8480; rubric and plotted on the same coordinate system. <strong>Pampers (22/25)</strong> is the only Curiosity-Led brand across either portfolio. <strong>Always (20)</strong> and <strong>Tampax (15)</strong> both sit above KC&#8217;s Feminine Care equivalents. <strong>Bounty (10)</strong> is Reinforcement-Led &mdash; comparable to Kleenex and Cottonelle.</p>
+</div>
+
+<div class="stats">
+  <div class="sc"><div class="sc-n" style="color:#4ECDC4">0</div><div class="sc-l">KC Curiosity-Led</div><div class="sc-d">No KC brand clears 21. Huggies and KC Corporate (both 19) come closest. Pampers (22) is the only Curiosity-Led brand in the combined field.</div></div>
+  <div class="sc"><div class="sc-n" style="color:#FFD93D">7</div><div class="sc-l">KC Hybrid</div><div class="sc-d">KC Corp, Huggies, Pull-Ups, GoodNites, Kotex, Depend, Poise. P&amp;G&#8217;s Always and Tampax also sit in this band &mdash; but above KC&#8217;s Feminine Care brands.</div></div>
+  <div class="sc"><div class="sc-n" style="color:#FF9F43">5</div><div class="sc-l">KC Reinforcement-Led</div><div class="sc-d">Cottonelle, Andrex, Kleenex, U by Kotex, KC Professional. P&amp;G&#8217;s Bounty (10) sits in the same band &mdash; parity in paper products across both portfolios.</div></div>
+  <div class="sc"><div class="sc-n" style="color:#FF6B6B">2</div><div class="sc-l">KC Conversion-Led</div><div class="sc-d">Scott and Viva (both 6/25). The biggest opportunity in the KC portfolio: a small curiosity investment here would close a meaningful gap versus Bounty (10).</div></div>
+</div>
+
+<style>
+.glossary{margin-top:18px;background:var(--bg2);border:1px solid var(--bdr);padding:22px 26px}
+.gl-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--cyan);text-transform:uppercase;margin-bottom:10px}
+.gl-lede{font-size:12px;color:rgba(255,255,255,.58);line-height:1.72;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid rgba(0,212,255,.09);max-width:980px}
+.gl-lede strong{color:rgba(255,255,255,.9);font-weight:600}
+.gl-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:14px}
+.gl-card{padding:13px 14px;background:rgba(0,212,255,.025);border:1px solid rgba(0,212,255,.09)}
+.gl-code{font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:var(--cyan);margin-bottom:5px}
+.gl-cname{font-size:10px;font-weight:600;color:rgba(255,255,255,.7);margin-bottom:8px;line-height:1.4}
+.gl-cdesc{font-size:9.5px;color:rgba(255,255,255,.4);line-height:1.65}
+.gl-cdesc b{color:rgba(255,255,255,.65)}
+.gl-bands{display:flex;gap:10px;flex-wrap:wrap;padding-top:12px;border-top:1px solid rgba(255,255,255,.05)}
+.gl-band{display:flex;align-items:center;gap:8px;font-size:9.5px;color:rgba(255,255,255,.42);font-family:'Space Mono',monospace}
+.gl-band span{padding:3px 9px;font-size:8.5px;font-weight:700;letter-spacing:.05em;white-space:nowrap}
+</style>
+<div class="glossary">
+  <div class="gl-eyebrow">Answer Divide&#8480; &mdash; Scoring Glossary &amp; Framework Guide</div>
+  <div class="gl-lede">
+    The Answer Divide&#8480; measures how well a brand&#8217;s digital presence serves a curious consumer &mdash; someone who arrives with a question before a purchase intent. <strong>The goal isn&#8217;t to replace conversion; it&#8217;s to earn the trust that makes conversion happen naturally.</strong> Brands that answer questions well become the ones AI models draw from and recommend. Both KC and P&amp;G brands are scored on an identical rubric.
+  </div>
+  <div class="gl-grid">
+    <div class="gl-card"><div class="gl-code">AFO</div><div class="gl-cname">Above-the-Fold Orientation</div><div class="gl-cdesc">What does the hero communicate on arrival? <b>5</b> = consumer question or empathy signal. <b>3</b> = concern and product equally weighted. <b>1</b> = pure product or CTA hero.</div></div>
+    <div class="gl-card"><div class="gl-code">NAV</div><div class="gl-cname">Navigation Architecture</div><div class="gl-cdesc">Is the site organised around what the consumer <em>needs to know</em> or what the brand <em>sells</em>? <b>5</b> = 100% need-led. <b>3</b> = hybrid. <b>1</b> = pure product navigation.</div></div>
+    <div class="gl-card"><div class="gl-code">EDU</div><div class="gl-cname">Educational Content Depth</div><div class="gl-cdesc">How deep and expert is the content library? <b>5</b> = standalone expert content navigable without purchase intent. <b>3</b> = moderate, partly funnel-embedded. <b>1</b> = product descriptions only.</div></div>
+    <div class="gl-card"><div class="gl-code">AID</div><div class="gl-cname">Answer Independence</div><div class="gl-cdesc">Can a consumer get a complete answer without selecting a product? <b>5</b> = fully independent throughout. <b>3</b> = accessible but product always adjacent. <b>1</b> = every answer requires product selection.</div></div>
+    <div class="gl-card"><div class="gl-code">CONV</div><div class="gl-cname">Conversion Pressure <em style="font-style:normal;color:rgba(255,255,255,.35)">(inverted)</em></div><div class="gl-cdesc">Purchase pressure across the full experience. <b>5</b> = content-first, no visible purchase pressure. <b>3</b> = moderate CTAs. <b>1</b> = every interaction routes aggressively to buy.</div></div>
+  </div>
+  <div class="gl-bands">
+    <div class="gl-band"><span style="background:#4ECDC4;color:#000">21&ndash;25</span>Curiosity-Led &middot; Answer Champion &middot; LLM-Ready</div>
+    <div class="gl-band"><span style="background:#FFD93D;color:#000">14&ndash;20</span>Hybrid &middot; Closeable Answer Gap</div>
+    <div class="gl-band"><span style="background:#FF9F43;color:#fff">7&ndash;13</span>Reinforcement-Led &middot; Structurally Exposed</div>
+    <div class="gl-band"><span style="background:#FF6B6B;color:#fff">5&ndash;6</span>Conversion-Led &middot; Maximum LLM Gap</div>
+  </div>
+</div>
+
+<style>
+.analysis{margin-top:18px;background:var(--bg2);border:1px solid var(--bdr);padding:22px 26px}
+.an-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--cyan);text-transform:uppercase;margin-bottom:16px}
+.an-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.an-card{padding:15px 17px;border-left:2px solid rgba(0,212,255,.25);background:rgba(0,212,255,.02)}
+.an-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;color:rgba(0,212,255,.7);letter-spacing:.12em;text-transform:uppercase;margin-bottom:7px}
+.an-text{font-size:11.5px;color:rgba(255,255,255,.55);line-height:1.72}
+.an-text strong{color:rgba(255,255,255,.88);font-weight:600}
+.an-text em{color:rgba(255,255,255,.38);font-style:normal}
+</style>
+<div class="analysis">
+  <div class="an-eyebrow">Key Observations &middot; KC vs. P&amp;G</div>
+  <div class="an-grid">
+    <div class="an-card">
+      <div class="an-label">Sensitive categories: P&amp;G has invested deeper</div>
+      <div class="an-text">Both portfolios follow the same pattern — stronger curiosity investment in sensitive need categories (baby, feminine, adult care), lighter investment in paper products. <strong>The difference is depth.</strong> Pampers (22) leads Huggies (19) in navigation architecture and content richness. Always (20) leads Kotex (14) with life-stage education and empowerment content. The strategic orientation is the same; P&amp;G has simply gone further within it.</div>
+    </div>
+    <div class="an-card">
+      <div class="an-label">Paper products: an open opportunity for both</div>
+      <div class="an-text">Bounty (10), Scott (6), and Viva (6) all sit in the lower half of the chart. <strong>Neither P&amp;G nor KC has made a meaningful curiosity investment in paper products.</strong> This is actually the clearest opportunity in the map &mdash; the brand that builds genuine household utility content in this category first will own the answer layer for it, and the baseline is very low on both sides.</div>
+    </div>
+  </div>
+</div>
+
+<div class="foot">&copy; 2026 BrandRank.AI &middot; Answer Divide&#8480; is proprietary methodology &middot; Permission required for commercial use &middot; hello@brandrank.ai</div>
+
+<script>
+// ── KC brand data ──────────────────────────────────────────────────────────
+const DATA = [
+  {b:"KC Corporate",        cat:"Corporate",                  col:"#E0E0E0", afo:4,nav:3,edu:4,aid:4,conv:4,total:19, comp:false, ins:"Purpose-led 'Better Care for a Better World' architecture with strong sustainability science, ESG reporting, and innovation pipeline content. One of the more genuinely curiosity-oriented corporate properties in consumer goods."},
+  {b:"Huggies",             cat:"Baby & Child Care",          col:"#55EFC4", afo:4,nav:4,edu:4,aid:4,conv:3,total:19, comp:false, ins:"Among the most curiosity-led parent education platforms in any FMCG portfolio. 'Pregnancy & Birth', 'Baby Development', and 'Parenting & Family' navigation organises by life stage, not product. Monthly milestone content, newborn care guides, and expert resources stand genuinely independently of product selection."},
+  {b:"Pull-Ups",            cat:"Baby & Child Care",          col:"#55EFC4", afo:3,nav:4,edu:4,aid:3,conv:3,total:17, comp:false, ins:"Potty training education platform with stage-by-stage guidance, 'Potty Training Tips' organised by developmental phase, and parent reassurance content. Navigation organises by readiness signal and training stage."},
+  {b:"GoodNites",           cat:"Baby & Child Care",          col:"#55EFC4", afo:3,nav:3,edu:4,aid:3,conv:3,total:16, comp:false, ins:"Bedwetting handled with remarkable sensitivity and educational depth — 'Bedwetting Facts', sleep health content, 'When to See a Doctor' guides, and parent/child communication resources. One of the most empathetically curiosity-led niche category sites across any portfolio."},
+  {b:"Kleenex",             cat:"Family Care (Paper)",        col:"#A29BFE", afo:2,nav:2,edu:2,aid:2,conv:2,total:10, comp:false, ins:"Iconic tissue brand with a product-catalog web presence. 'Kleenex Cares' wellness stories and some cold/flu tips gesture toward health education but are thin and product-adjacent."},
+  {b:"Scott",               cat:"Family Care (Paper)",        col:"#A29BFE", afo:1,nav:1,edu:1,aid:1,conv:2,total:6,  comp:false, ins:"Utility paper towel brand with a minimal product-catalog web presence. No standalone educational content whatsoever; a conversion-optimised, asset-light site. Maximum LLM answer gap exposure."},
+  {b:"Cottonelle",          cat:"Family Care (Paper)",        col:"#A29BFE", afo:2,nav:2,edu:3,aid:2,conv:2,total:11, comp:false, ins:"'Down There Care' positioning and bathroom hygiene/skin sensitivity content push Cottonelle slightly beyond a pure product catalog. The intimate hygiene education has modest standalone value."},
+  {b:"Viva",                cat:"Family Care (Paper)",        col:"#A29BFE", afo:1,nav:1,edu:1,aid:1,conv:2,total:6,  comp:false, ins:"Premium paper towel brand with minimal web infrastructure. Product-catalog focus with no standalone content strategy. Conversion-optimised presence with zero educational claims."},
+  {b:"Andrex",              cat:"Family Care (Paper)",        col:"#A29BFE", afo:2,nav:2,edu:2,aid:2,conv:2,total:10, comp:false, ins:"UK toilet paper brand with some bathroom hygiene content and 'Andrex Clean' positioning. Limited standalone educational content; primarily product showcase and sustainability messaging."},
+  {b:"Kotex",               cat:"Feminine Care",              col:"#FD79A8", afo:3,nav:3,edu:3,aid:3,conv:2,total:14, comp:false, ins:"'Period Talk' content, first period resources, and menstrual health education give Kotex a genuine curiosity layer. Navigation includes educational concern sections alongside product categories."},
+  {b:"U by Kotex",          cat:"Feminine Care",              col:"#FD79A8", afo:2,nav:2,edu:3,aid:2,conv:2,total:11, comp:false, ins:"Younger-skewing period brand with lifestyle and empowerment positioning. 'Period Stuff' education section has some depth but the experience prioritises brand personality over comprehensive period health education."},
+  {b:"Depend",              cat:"Adult & Professional Care",  col:"#FFD93D", afo:3,nav:4,edu:4,aid:3,conv:3,total:17, comp:false, ins:"One of KC's strongest curiosity architectures. The Incontinence Resource Center with bladder health education, pelvic floor content, 'Talk to Your Doctor' guides, and condition-based navigation stands substantively independently."},
+  {b:"Poise",               cat:"Adult & Professional Care",  col:"#FFD93D", afo:3,nav:3,edu:4,aid:3,conv:3,total:16, comp:false, ins:"Female light bladder leakage brand with genuine educational depth — Bladder Leakage Resource Center, pelvic floor health content, LBL lifestyle management, and condition differentiation guides."},
+  {b:"KC Professional",     cat:"Professional / B2B",         col:"#B2BEC3", afo:2,nav:2,edu:2,aid:2,conv:2,total:10, comp:false, ins:"B2B professional washroom and workplace hygiene brand. Category-organised navigation targets facility managers and procurement. Sustainability and cost-efficiency content has business value, but conversion-focused."},
+];
+
+// ── P&G competitor data ────────────────────────────────────────────────────
+const COMP_DATA = [
+  {b:"Pampers",  cat:"Baby Care (P&G)",       col:"#FF8C00", afo:4,nav:5,edu:5,aid:4,conv:4,total:22, comp:true, ins:"P&G's most curiosity-led brand — and the only Curiosity-Led brand across either portfolio. Genuinely functions as a parenting education platform: monthly developmental milestones, sleep guides, feeding guides, downloadable birth plans, and HCP content. Navigation is organised by developmental stage, not product line. Direct benchmark for Huggies."},
+  {b:"Always",   cat:"Feminine Care (P&G)",   col:"#FF8C00", afo:4,nav:4,edu:5,aid:4,conv:3,total:20, comp:true, ins:"'Like a Girl' empowerment campaign underpins a comprehensive period education infrastructure — puberty guides, menstrual health articles, myth-busting content. Navigation organises by life stage and concern. Scores 6 points above KC's Kotex (14) in the same Feminine Care category."},
+  {b:"Tampax",   cat:"Feminine Care (P&G)",   col:"#FF8C00", afo:3,nav:3,edu:4,aid:3,conv:2,total:15, comp:true, ins:"Period education, 'how to use a tampon' guides, and puberty content reflect genuine educational investment. Navigation combines products and period guides. Curiosity infrastructure is real and scores above KC's U by Kotex (11) by 4 points. Low conversion pressure (CONV=2) is a differentiator."},
+  {b:"Bounty",   cat:"Family Care (P&G)",     col:"#FF8C00", afo:2,nav:2,edu:2,aid:2,conv:2,total:10, comp:true, ins:"Cleaning and cooking tips cross-category content has practical utility. But 'The Quicker Picker Upper' is a product-efficacy claim; navigation and hero are product-first throughout. Reinforcement-Led — scores above KC's Scott (6) and Viva (6), but below any brand with genuine curiosity architecture."},
+];
+
+// ── Combine all data, mark competitors ────────────────────────────────────
+const ALLDATA = [...DATA, ...COMP_DATA];
+
+function modeOf(t){
+  if(t>=21)return{label:"Curiosity-Led",bg:"#4ECDC4",fg:"#000"};
+  if(t>=14)return{label:"Hybrid",bg:"#FFD93D",fg:"#000"};
+  if(t>=7) return{label:"Reinforcement-Led",bg:"#FF9F43",fg:"#fff"};
+  return          {label:"Conversion-Led",bg:"#FF6B6B",fg:"#fff"};
+}
+
+const DPR=window.devicePixelRatio||1;
+const CW=Math.min(1480,window.innerWidth-88);
+const CH=820;
+const PAD={t:60,r:44,b:80,l:80};
+const PW=CW-PAD.l-PAD.r;
+const PH=CH-PAD.t-PAD.b;
+
+const co=document.getElementById('co');
+const cv=document.getElementById('c');
+co.style.width=CW+'px'; co.style.height=CH+'px';
+cv.style.width=CW+'px'; cv.style.height=CH+'px';
+cv.width=CW*DPR; cv.height=CH*DPR;
+const ctx=cv.getContext('2d');
+ctx.scale(DPR,DPR);
+
+const sX=cp=>PAD.l+((cp-1)/4)*PW;
+const sY=ci=>PAD.t+PH-((ci-1)/4)*PH;
+
+const R_BASE=9;
+const nodes=ALLDATA.map(d=>{
+  const cp=6-d.conv;
+  const ci=(d.afo+d.nav+d.edu+d.aid)/4;
+  const r=R_BASE+(ci-1)*3.2;
+  const seed=d.b.charCodeAt(0)*17+(d.b.charCodeAt(1)||7)*31;
+  return{d,r,ci,cp,ox:sX(cp),oy:sY(ci),x:sX(cp)+((seed%11)-5)*1.4,y:sY(ci)+((seed%7)-3)*1.4,vx:0,vy:0};
+});
+
+// Force simulation — all nodes (KC + competitors) together
+(function(){
+  const ITERS=620,MIN_GAP=28,REPULSE=14000,SPRING=0.013,DAMP=0.77,MARGIN=18;
+  const xMin=PAD.l+MARGIN,xMax=PAD.l+PW-MARGIN,yMin=PAD.t+MARGIN,yMax=PAD.t+PH-MARGIN;
+  for(let it=0;it<ITERS;it++){
+    for(let i=0;i<nodes.length;i++){
+      for(let j=i+1;j<nodes.length;j++){
+        const dx=nodes[j].x-nodes[i].x,dy=nodes[j].y-nodes[i].y;
+        const dist=Math.sqrt(dx*dx+dy*dy)||0.01;
+        const minD=nodes[i].r+nodes[j].r+MIN_GAP;
+        if(dist<minD){
+          const f=REPULSE/(dist*dist);
+          const fx=(dx/dist)*f,fy=(dy/dist)*f;
+          nodes[j].vx+=fx;nodes[j].vy+=fy;nodes[i].vx-=fx;nodes[i].vy-=fy;
+        }
+      }
+    }
+    nodes.forEach(n=>{
+      n.vx=(n.vx+SPRING*(n.ox-n.x))*DAMP;
+      n.vy=(n.vy+SPRING*(n.oy-n.y))*DAMP;
+      n.x=Math.max(xMin,Math.min(xMax,n.x+n.vx));
+      n.y=Math.max(yMin,Math.min(yMax,n.y+n.vy));
+    });
+  }
+})();
+
+// post-simulation position guard
+const TOP_CLEAR = PAD.t + 46;
+const BOT_CLEAR = PAD.t + PH - 28;
+nodes.forEach(n => {
+  if (n.y - n.r < TOP_CLEAR) n.y = TOP_CLEAR + n.r;
+  if (n.y + n.r > BOT_CLEAR) n.y = BOT_CLEAR - n.r;
+});
+
+// Label placement — 16 candidate angles (all nodes)
+const FONT_SZ=10,LBL_OFFS=16;
+ctx.font=`600 ${FONT_SZ}px Inter`;
+nodes.forEach(n=>{
+  const tw=ctx.measureText(n.d.b).width;
+  const lh=FONT_SZ+2;
+  const candidates=Array.from({length:16},(_,i)=>i/16*Math.PI*2);
+  let bestAngle=-Math.PI/2,bestScore=-Infinity;
+  candidates.forEach(a=>{
+    const lx=n.x+Math.cos(a)*(n.r+LBL_OFFS+tw/2);
+    const ly=n.y+Math.sin(a)*(n.r+LBL_OFFS+lh/2);
+    let score=Infinity;
+    nodes.forEach(m=>{if(m===n)return;const dd=Math.sqrt((lx-m.x)**2+(ly-m.y)**2);if(dd<score)score=dd;});
+    const pad=6;
+    if(lx-tw/2<PAD.l+pad||lx+tw/2>PAD.l+PW-pad)score-=200;
+    if(ly-lh/2<PAD.t+pad||ly+lh/2>PAD.t+PH-pad)score-=200;
+    if(score>bestScore){bestScore=score;bestAngle=a;}
+  });
+  n.lx=n.x+Math.cos(bestAngle)*(n.r+LBL_OFFS+tw/2);
+  n.ly=n.y+Math.sin(bestAngle)*(n.r+LBL_OFFS);
+  n.la=bestAngle;n.tw=tw;
+});
+
+const midX=sX(3.2),midY=sY(3.0);
+
+function rgba(hex,a){
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+
+function draw(){
+  ctx.clearRect(0,0,CW,CH);
+  ctx.fillStyle='#0D1825';ctx.fillRect(0,0,CW,CH);
+
+  [[PAD.l,PAD.t,midX-PAD.l,midY-PAD.t,'rgba(78,205,196,0.04)'],
+   [midX,PAD.t,PAD.l+PW-midX,midY-PAD.t,'rgba(255,217,61,0.03)'],
+   [PAD.l,midY,midX-PAD.l,PAD.t+PH-midY,'rgba(255,255,255,0.01)'],
+   [midX,midY,PAD.l+PW-midX,PAD.t+PH-midY,'rgba(255,107,107,0.035)']
+  ].forEach(([x,y,w,h,c])=>{ctx.fillStyle=c;ctx.fillRect(x,y,w,h);});
+
+  ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=1;
+  for(let i=1;i<=5;i++){
+    const gx=sX(i);ctx.beginPath();ctx.moveTo(gx,PAD.t);ctx.lineTo(gx,PAD.t+PH);ctx.stroke();
+    const gy=sY(i);ctx.beginPath();ctx.moveTo(PAD.l,gy);ctx.lineTo(PAD.l+PW,gy);ctx.stroke();
+  }
+
+  ctx.strokeStyle='rgba(255,255,255,0.18)';ctx.lineWidth=1;ctx.setLineDash([5,4]);
+  ctx.beginPath();ctx.moveTo(midX,PAD.t-5);ctx.lineTo(midX,PAD.t+PH+5);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(PAD.l-5,midY);ctx.lineTo(PAD.l+PW+5,midY);ctx.stroke();
+  ctx.setLineDash([]);
+
+  ctx.strokeStyle='rgba(255,255,255,0.11)';ctx.lineWidth=1;
+  ctx.strokeRect(PAD.l,PAD.t,PW,PH);
+
+  // Quadrant labels
+  function qlabel(x,y,title,sub,col){
+    ctx.textAlign='center';
+    ctx.fillStyle=col;ctx.font='bold 11px "Space Mono",monospace';
+    ctx.fillText(title,x,y);
+    ctx.fillStyle='rgba(255,255,255,0.28)';ctx.font='9px Inter,sans-serif';
+    ctx.fillText(sub,x,y+15);
+  }
+  qlabel(PAD.l+(midX-PAD.l)/2,     PAD.t+24,'ANSWER CHAMPIONS','High curiosity \u00b7 Low conversion pressure','#4ECDC4');
+  qlabel(midX+(PAD.l+PW-midX)/2,   PAD.t+24,'EDUCATED SELLERS','High curiosity \u00b7 High conversion pressure','#FFD93D');
+  qlabel(PAD.l+(midX-PAD.l)/2,     PAD.t+PH-12,'DISENGAGED','Low curiosity \u00b7 Low conversion pressure','rgba(255,255,255,0.32)');
+  qlabel(midX+(PAD.l+PW-midX)/2,   PAD.t+PH-12,'THE CONVERSION TRAP','Low curiosity \u00b7 High conversion pressure','#FF6B6B');
+
+  // LLM ideal zone
+  const llx=PAD.l+22,lly=PAD.t+22;
+  ctx.beginPath();ctx.arc(llx,lly,20,0,Math.PI*2);
+  ctx.fillStyle='rgba(0,212,255,0.07)';ctx.fill();
+  ctx.strokeStyle='rgba(0,212,255,0.35)';ctx.lineWidth=1;ctx.setLineDash([3,3]);
+  ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle='#00D4FF';ctx.font='bold 7.5px "Space Mono"';ctx.textAlign='center';
+  ctx.fillText('LLM',llx,lly-3);
+  ctx.fillStyle='rgba(0,212,255,0.55)';ctx.font='6.5px "Space Mono"';
+  ctx.fillText('IDEAL',llx,lly+8);
+
+  // "SENSITIVE NEED" cluster annotation
+  const snx=sX(3)+20,sny=sY(3.6)-10;
+  ctx.fillStyle='rgba(85,239,196,0.06)';
+  ctx.beginPath();ctx.ellipse(snx,sny,PW*0.18,PH*0.22,0,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='rgba(85,239,196,0.16)';ctx.lineWidth=1;ctx.setLineDash([3,4]);
+  ctx.beginPath();ctx.ellipse(snx,sny,PW*0.18,PH*0.22,0,0,Math.PI*2);ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='rgba(85,239,196,0.4)';ctx.font='bold 8px "Space Mono"';ctx.textAlign='center';
+  ctx.fillText('KC SENSITIVE NEED',snx,sny-PH*0.24);
+  ctx.fillStyle='rgba(85,239,196,0.25)';ctx.font='7px Inter';
+  ctx.fillText('Huggies \u00b7 Pull-Ups \u00b7 Depend \u00b7 Poise',snx,sny-PH*0.24+13);
+
+  // Axis labels
+  ctx.fillStyle='rgba(255,255,255,0.35)';ctx.font='10px Inter';ctx.textAlign='center';
+  [1,2,3,4,5].forEach(v=>ctx.fillText(v,sX(v),PAD.t+PH+20));
+
+  ctx.fillStyle='rgba(255,255,255,0.55)';
+  ctx.font='bold 12px "Space Mono"';ctx.textAlign='left';
+  ctx.fillText('\u25c4  CURIOSITY-LED',PAD.l,PAD.t+PH+40);
+  ctx.textAlign='right';
+  ctx.fillText('CONVERSION-LED  \u25ba',PAD.l+PW,PAD.t+PH+40);
+
+  ctx.textAlign='center';
+  ctx.fillStyle='rgba(255,255,255,0.65)';
+  ctx.font='bold 13px "Space Mono"';
+  ctx.fillText('CONVERSION  PRESSURE',PAD.l+PW/2,PAD.t+PH+60);
+
+  ctx.textAlign='right';ctx.fillStyle='rgba(255,255,255,0.35)';ctx.font='10px Inter';
+  [1,2,3,4,5].forEach(v=>ctx.fillText(v,PAD.l-10,sY(v)+4));
+
+  ctx.save();
+  ctx.translate(PAD.l-56,PAD.t+PH/2);ctx.rotate(-Math.PI/2);
+  ctx.textAlign='center';
+  ctx.fillStyle='rgba(255,255,255,0.65)';
+  ctx.font='bold 13px "Space Mono"';
+  ctx.fillText('CURIOSITY  &  ANSWER  DEPTH',0,0);
+  ctx.restore();
+
+  ctx.save();
+  ctx.translate(PAD.l-34,PAD.t+PH/2);ctx.rotate(-Math.PI/2);
+  ctx.textAlign='center';
+  ctx.fillStyle='rgba(255,255,255,0.45)';
+  ctx.font='bold 10px "Space Mono"';
+  ctx.fillText('\u25b2  HIGH  CURIOSITY',0,-PH*0.28);
+  ctx.fillText('LOW  CURIOSITY  \u25bc',0, PH*0.28);
+  ctx.restore();
+
+  // ── Draw KC nodes (circles) first ────────────────────────────────────────
+  const kcNodes = nodes.filter(n=>!n.d.comp);
+
+  // connector lines (KC only)
+  kcNodes.forEach(n=>{
+    const dist=Math.sqrt((n.x-n.ox)**2+(n.y-n.oy)**2);
+    if(dist>18){
+      ctx.beginPath();ctx.moveTo(n.ox,n.oy);ctx.lineTo(n.x,n.y);
+      ctx.strokeStyle=rgba(n.d.col,0.18);ctx.lineWidth=0.8;
+      ctx.setLineDash([2,3]);ctx.stroke();ctx.setLineDash([]);
+    }
+  });
+
+  // glow rings (KC)
+  kcNodes.forEach(n=>{
+    if(n.d.total>=18){
+      ctx.beginPath();ctx.arc(n.x,n.y,n.r+6,0,Math.PI*2);
+      ctx.strokeStyle=rgba(n.d.col,0.22);ctx.lineWidth=1.5;ctx.stroke();
+    }
+  });
+
+  // circles (KC)
+  kcNodes.forEach(n=>{
+    ctx.shadowColor=rgba(n.d.col,0.45);
+    ctx.shadowBlur=n.d.total>=18?14:5;
+    ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+    ctx.fillStyle=rgba(n.d.col,0.88);ctx.fill();
+    ctx.shadowBlur=0;
+    ctx.strokeStyle=n.d.total>=21?'rgba(255,255,255,0.65)':n.d.total>=14?'rgba(255,255,255,0.3)':'rgba(255,255,255,0.14)';
+    ctx.lineWidth=n.d.total>=21?2:1;ctx.stroke();
+  });
+
+  // leader lines (KC)
+  kcNodes.forEach(n=>{
+    const ex=n.x+Math.cos(n.la)*n.r,ey=n.y+Math.sin(n.la)*n.r;
+    ctx.beginPath();ctx.moveTo(ex,ey);ctx.lineTo(n.lx,n.ly+1);
+    ctx.strokeStyle=rgba(n.d.col,0.32);ctx.lineWidth=0.9;
+    ctx.setLineDash([2,2]);ctx.stroke();ctx.setLineDash([]);
+  });
+
+  // labels (KC)
+  kcNodes.forEach(n=>{
+    const fsz=n.d.total>=18?11:10;
+    ctx.font=`${n.d.total>=18?'700':'500'} ${fsz}px Inter,sans-serif`;
+    const tw=ctx.measureText(n.d.b).width;
+    ctx.fillStyle='rgba(8,14,24,0.82)';
+    const px=n.lx-tw/2-3,py=n.ly-fsz+1,pw=tw+6,ph=fsz+5;
+    ctx.fillRect(px,py,pw,ph);
+    ctx.fillStyle=n.d.col;
+    ctx.fillRect(px,py,2,ph);
+    ctx.fillStyle=n.d.total>=18?'#fff':'rgba(255,255,255,0.8)';
+    ctx.textAlign='center';
+    ctx.fillText(n.d.b,n.lx,n.ly);
+  });
+
+  // ── Draw P&G competitor nodes (squares) on top ───────────────────────────
+  const pgNodes = nodes.filter(n=>n.d.comp);
+  const COMP_COL = '#FF8C00';
+
+  // glow rings (competitors — bright orange halo for high scorers)
+  pgNodes.forEach(n=>{
+    const s = n.r * 1.12;
+    if(n.d.total>=18){
+      ctx.shadowColor='rgba(255,140,0,0.5)';
+      ctx.shadowBlur=18;
+      ctx.strokeStyle='rgba(255,140,0,0.35)';ctx.lineWidth=2;
+      ctx.strokeRect(n.x-s-5,n.y-s-5,(s+5)*2,(s+5)*2);
+      ctx.shadowBlur=0;
+    }
+  });
+
+  // squares (competitors)
+  pgNodes.forEach(n=>{
+    const s = n.r * 1.12;
+    ctx.shadowColor='rgba(255,140,0,0.55)';
+    ctx.shadowBlur=n.d.total>=18?16:6;
+    ctx.fillStyle='rgba(255,140,0,0.90)';
+    ctx.fillRect(n.x-s,n.y-s,s*2,s*2);
+    ctx.shadowBlur=0;
+    ctx.strokeStyle=n.d.total>=21?'rgba(255,255,255,0.85)':'rgba(255,255,255,0.45)';
+    ctx.lineWidth=n.d.total>=21?2.5:1.5;
+    ctx.strokeRect(n.x-s,n.y-s,s*2,s*2);
+  });
+
+  // leader lines (competitors)
+  pgNodes.forEach(n=>{
+    const s=n.r*1.12;
+    const angle=n.la;
+    const ex=n.x+Math.cos(angle)*s*1.2,ey=n.y+Math.sin(angle)*s*1.2;
+    ctx.beginPath();ctx.moveTo(ex,ey);ctx.lineTo(n.lx,n.ly+1);
+    ctx.strokeStyle='rgba(255,140,0,0.45)';ctx.lineWidth=1;
+    ctx.setLineDash([2,2]);ctx.stroke();ctx.setLineDash([]);
+  });
+
+  // labels (competitors — orange tint background)
+  pgNodes.forEach(n=>{
+    const fsz=n.d.total>=18?12:11;
+    ctx.font=`700 ${fsz}px Inter,sans-serif`;
+    const tw=ctx.measureText(n.d.b).width;
+    ctx.fillStyle='rgba(30,15,0,0.88)';
+    const px=n.lx-tw/2-4,py=n.ly-fsz+1,pw=tw+8,ph=fsz+6;
+    ctx.fillRect(px,py,pw,ph);
+    ctx.fillStyle=COMP_COL;
+    ctx.fillRect(px,py,3,ph);
+    // "P&G" micro-tag on right
+    ctx.fillStyle='rgba(255,140,0,0.5)';
+    ctx.fillRect(px+pw-3,py,3,ph);
+    ctx.fillStyle='#FF8C00';
+    ctx.textAlign='center';
+    ctx.fillText(n.d.b,n.lx,n.ly);
+  });
+}
+
+draw();
+
+// tooltip — handle both circles (KC) and squares (P&G)
+const tip=document.getElementById('tip');
+cv.addEventListener('mousemove',e=>{
+  const rect=cv.getBoundingClientRect();
+  const mx=e.clientX-rect.left,my=e.clientY-rect.top;
+  let hit=null;
+  // Check P&G squares first (they're on top)
+  for(let i=nodes.length-1;i>=0;i--){
+    const n=nodes[i];
+    if(n.d.comp){
+      const s=n.r*1.12;
+      if(Math.abs(mx-n.x)<=s+4&&Math.abs(my-n.y)<=s+4){hit=n;break;}
+    } else {
+      if(Math.sqrt((mx-n.x)**2+(my-n.y)**2)<=n.r+4){hit=n;break;}
+    }
+  }
+  if(hit){
+    const m=modeOf(hit.d.total);
+    document.getElementById('tt-b').textContent=hit.d.b;
+    document.getElementById('tt-c').textContent=hit.d.d?hit.d.cat:hit.d.cat;
+    const tp=document.getElementById('tt-p');
+    if(hit.d.comp){
+      tp.textContent='P\u0026G COMPETITOR \u25a0';
+      tp.style.display='block';
+    } else {
+      tp.textContent='';
+      tp.style.display='none';
+    }
+    const tm=document.getElementById('tt-m');
+    tm.textContent=m.label;tm.style.background=m.bg;tm.style.color=m.fg;
+    document.getElementById('tt-g').innerHTML=
+      `<div class="ts">AFO <span>${hit.d.afo}/5</span></div>`+
+      `<div class="ts">NAV <span>${hit.d.nav}/5</span></div>`+
+      `<div class="ts">EDU <span>${hit.d.edu}/5</span></div>`+
+      `<div class="ts">AID <span>${hit.d.aid}/5</span></div>`+
+      `<div class="ts">CONV <span>${hit.d.conv}/5</span></div>`+
+      `<div class="ts">TOTAL <span>${hit.d.total}/25</span></div>`;
+    document.getElementById('tt-i').textContent=hit.d.ins;
+    let tx=e.clientX+16,ty=e.clientY-16;
+    if(tx+272>window.innerWidth)tx=e.clientX-288;
+    if(ty+280>window.innerHeight)ty=e.clientY-280;
+    tip.style.left=tx+'px';tip.style.top=ty+'px';
+    tip.style.display='block';
+  } else {
+    tip.style.display='none';
+  }
+});
+cv.addEventListener('mouseleave',()=>{tip.style.display='none';});
+</script>
+</body>
+</html>
