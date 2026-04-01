@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkedIn Content Quadrant — Pete Blackshaw</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0e0f14;
+    --bg2: #141620;
+    --bg3: #1c1f2e;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #e8e9f0;
+    --muted: #7b7e94;
+    --dim: #4a4d62;
+
+    --amplify: #1fc98e;
+    --develop: #8b80f9;
+    --investigate: #f5a623;
+    --reconsider: #e05c4b;
+
+    --amplify-bg: rgba(31,201,142,0.08);
+    --develop-bg: rgba(139,128,249,0.08);
+    --investigate-bg: rgba(245,166,35,0.08);
+    --reconsider-bg: rgba(224,92,75,0.08);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    min-height: 100vh;
+    line-height: 1.5;
+  }
+
+  .header {
+    padding: 32px 40px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .header-left h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    font-weight: 400;
+    letter-spacing: -0.3px;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .header-left p {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 6px;
+    font-weight: 300;
+  }
+
+  .meta-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
+
+  .chip {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    background: var(--bg3);
+    letter-spacing: 0.3px;
+  }
+
+  .legend {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 4px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .legend-item:hover { background: var(--bg3); border-color: var(--border); }
+  .legend-item.active { border-color: var(--border2); }
+
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .legend-label { font-size: 12px; font-weight: 500; }
+  .legend-desc { font-size: 11px; color: var(--muted); }
+
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 0;
+    min-height: calc(100vh - 140px);
+  }
+
+  .chart-area {
+    padding: 32px 40px;
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+
+  .axis-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding: 0 48px 0 52px;
+  }
+
+  .axis-label {
+    font-size: 11px;
+    color: var(--dim);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .chart-wrap {
+    position: relative;
+    height: 460px;
+  }
+
+  .y-axis-label {
+    position: absolute;
+    left: -24px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-90deg);
+    font-size: 11px;
+    color: var(--dim);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .x-axis-label {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--dim);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    font-size: 11px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.2px;
+  }
+
+  .filter-btn:hover { background: var(--bg3); color: var(--text); }
+  .filter-btn.active-all { background: var(--bg3); color: var(--text); border-color: var(--border2); }
+  .filter-btn[data-q="amplify"].active { background: var(--amplify-bg); color: var(--amplify); border-color: var(--amplify); }
+  .filter-btn[data-q="develop"].active { background: var(--develop-bg); color: var(--develop); border-color: var(--develop); }
+  .filter-btn[data-q="investigate"].active { background: var(--investigate-bg); color: var(--investigate); border-color: var(--investigate); }
+  .filter-btn[data-q="reconsider"].active { background: var(--reconsider-bg); color: var(--reconsider); border-color: var(--reconsider); }
+
+  .detail-panel {
+    padding: 28px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .panel-placeholder {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: var(--dim);
+    text-align: center;
+  }
+
+  .panel-placeholder svg { opacity: 0.3; }
+
+  .panel-placeholder p {
+    font-size: 12px;
+    line-height: 1.6;
+    max-width: 180px;
+  }
+
+  .post-detail { display: none; }
+  .post-detail.visible { display: block; }
+
+  .pd-quadrant-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+  }
+
+  .pd-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .pd-subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .pd-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .pd-metric {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+
+  .pd-metric-label {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .pd-metric-value {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+  }
+
+  .pd-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 18px 0;
+  }
+
+  .pd-section-label {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    color: var(--dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .pd-note {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .pd-action {
+    margin-top: 16px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border-left: 3px solid;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .quadrant-labels {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .q-label {
+    position: absolute;
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    opacity: 0.35;
+    font-weight: 500;
+  }
+
+  .summary-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin: 0 0 20px;
+  }
+
+  .sum-cell {
+    background: var(--bg2);
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background 0.12s;
+  }
+
+  .sum-cell:hover { background: var(--bg3); }
+
+  .sum-label {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .sum-count {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -1px;
+  }
+
+  .sum-name {
+    font-size: 11px;
+    margin-top: 2px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>What BrandRank Content Resonates</h1>
+    <p>Reach + Engagement · Pete Blackshaw · 35 posts mapped</p>
+    <div class="meta-chips">
+      <span class="chip">Dividers: 8K impressions · 1.5% engagement</span>
+      <span class="chip">Click any point to inspect</span>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="chart-area">
+    <div class="filters">
+      <button class="filter-btn active-all" data-q="all">All posts</button>
+      <button class="filter-btn" data-q="amplify">Amplify</button>
+      <button class="filter-btn" data-q="develop">Develop</button>
+      <button class="filter-btn" data-q="investigate">Investigate reach</button>
+      <button class="filter-btn" data-q="reconsider">Reconsider</button>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="chart"></canvas>
+    </div>
+    <div class="x-axis-label">Reach — Total Impressions</div>
+  </div>
+
+  <div class="detail-panel">
+    <div class="panel-placeholder" id="placeholder">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><path d="M11 8v6M8 11h6"/>
+      </svg>
+      <p>Click any point on the chart to inspect that post</p>
+    </div>
+    <div class="post-detail" id="post-detail"></div>
+  </div>
+</div>
+
+<div style="padding:32px 40px 48px; border-top:1px solid var(--border);">
+  <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+    <div style="font-family:'DM Serif Display',serif;font-size:19px;font-weight:400;color:var(--text);letter-spacing:-0.2px;">Top posts ranked</div>
+    <div style="display:flex;gap:6px;">
+      <button class="rank-btn rank-active" data-sort="combined" style="font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--border2);background:var(--bg3);color:var(--text);cursor:pointer;">Combined score</button>
+      <button class="rank-btn" data-sort="reach" style="font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;">By reach</button>
+      <button class="rank-btn" data-sort="engagement" style="font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;">By engagement</button>
+    </div>
+  </div>
+  <div id="rankings"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const QC = {
+  amplify:    { color:'#1fc98e', bg:'rgba(31,201,142,0.08)', border:'rgba(31,201,142,0.3)', label:'Amplify',          action:'Double down. This format works. Mine more personal-observation moments as Answer Economy entry points.' },
+  develop:    { color:'#8b80f9', bg:'rgba(139,128,249,0.08)', border:'rgba(139,128,249,0.3)', label:'Develop',          action:'Content quality is there. Focus on distribution: stronger hooks, better tagging, more provocative opening lines.' },
+  investigate:{ color:'#f5a623', bg:'rgba(245,166,35,0.08)', border:'rgba(245,166,35,0.3)', label:'Investigate Reach', action:'Reach is strong but engagement is thin. The audience found it but didn\'t feel compelled to respond. Sharpen the claim.' },
+  reconsider: { color:'#e05c4b', bg:'rgba(224,92,75,0.08)', border:'rgba(224,92,75,0.3)',  label:'Reconsider',        action:'Format or framing is misaligned with your audience. Pull back the effort and redirect to Amplify or Develop formats.' }
+};
+
+const posts = [
+  { name:'AEO vs GEO (a16z)',          headline:'"Their naming misses the mark"',                 sub:'Publicly challenged a16z\'s Generative Engine Optimization framing, argued AEO is the right term',        x:30825, y:0.36, q:'investigate', note:'Named a powerful opponent and invited debate. Generated exceptional reach but comments circled the terminology fight, not BrandRank data.' },
+  { name:'Answer Awards / 50 Brands',  headline:'"Brands winning by answering better"',            sub:'Unveiled the first-ever Answer Awards, highlighting 50 brands that excel in Answer Readiness',           x:23146, y:0.18, q:'investigate', note:'List format traveled well but lacked a sharp proprietary claim. Broad enough to share, not specific enough to provoke.' },
+  { name:'10 Urgent Principles',        headline:'"10 survival rules for the AI era"',              sub:'Shared principles for brand survival as LLMs reshape discovery and trust',                                x:15955, y:0.79, q:'investigate', note:'Numbered framework earns shares and reach. Needs a harder provocative anchor to convert passive readers into commenters.' },
+  { name:'HBS 50 AI Insights',          headline:'"50 things I learned at my HBS reunion"',        sub:'AI insights from campus reconnections — ProfessorBots, career tools, and the future of business ed',    x:10551, y:1.34, q:'investigate', note:'HBS brand + numbered format drove strong distribution. But the reunion context softened the BrandRank angle.' },
+  { name:'Anthropic Labor Study',       headline:'"What will actually be available when they graduate?"', sub:'Analyzed Anthropic\'s landmark labor market study through the lens of a parent with 3 kids in college', x:9856, y:1.18, q:'investigate', note:'Parental anxiety entry point was strong. Competed with many voices covering the same study — needed a more proprietary angle.' },
+  { name:'Tide Cleaners',               headline:'"This wasn\'t advertising. It was service wearing a brand."', sub:'A neighborhood dry cleaner turned Tide Cleaners became a window into the entire Answer Economy thesis', x:13839, y:2.15, q:'amplify', note:'Your highest-resonance format: personal observation from daily life → systemic strategic insight. No BrandRank pitch, just a crystallizing moment.' },
+  { name:'Switzerland / Answer Economy',headline:'"Learn to think and act like answer engines"',   sub:'Returned from Nestlé network meetings in Switzerland with the same urgent message for every industry',   x:11825, y:1.84, q:'amplify', note:'Network warmth + strategic urgency. Reconnecting with trusted former colleagues while delivering mission-critical content unlocks both reach and depth.' },
+  { name:'Barrett Award Finalist',      headline:'"We didn\'t make the podium — but the bar was high"', sub:'BrandRank was a finalist at the John F. Barrett Entrepreneurial Vision Awards',                     x:8856, y:1.53, q:'amplify', note:'Humility + momentum. Celebrating a milestone while spotlighting others generated authentic goodwill. One of your cleanest posts.' },
+  { name:'GAI World Rap Battle',        headline:'"Search is Dead, Answers Are Here"',             sub:'Created an SEO vs AEO rap battle as a warm-up to a keynote at GAI World 2025',                         x:6503, y:0.80, q:'reconsider', note:'Creative format closes off dialogue. People watched, they didn\'t respond. The wit is real but the format doesn\'t invite reaction.' },
+  { name:'Amazon Nashville Poem',       headline:'"Amazon pulled a rabbit right out of their hat"', sub:'Amazon Unbox conference recap written as a rhyming poem with VP of Sales Adam Bittner',               x:5928, y:1.05, q:'reconsider', note:'Promotional disguised as creative. Neither format converts. Audience senses the event recap purpose under the poetry.' },
+  { name:'Walmart Meets OpenAI',        headline:'"Imagine the possibilities"',                    sub:'Short post on the Walmart–OpenAI partnership announcement with a custom editorial piece attached',      x:4662, y:1.09, q:'reconsider', note:'Witty framing without analytical depth. Your audience expects the breakdown — just cute wasn\'t enough.' },
+  { name:'Walmart vs Amazon Rufus',     headline:'"Can Walmart beat Amazon\'s Rufus in the AI race?"', sub:'Analysis of the two retail AI strategies and what\'s at stake for brand discovery',                  x:4407, y:1.04, q:'reconsider', note:'Solid analysis but needed a harder adversarial claim in the opening line. The question was too politely framed.' },
+  { name:'BrandsGiving Challenge',      headline:'"Which brands dominate across 8 AI platforms?"', sub:'Interactive Thanksgiving quiz asking followers to predict AI brand recommendations',                     x:3809, y:1.00, q:'reconsider', note:'Quiz mechanics underperform on LinkedIn. Works for lead gen, not for algorithmic reach. Format mismatch.' },
+  { name:'CES Ohio / AI + Manufacturing',headline:'"AI isn\'t adjacent to manufacturing anymore"', sub:'Ohio showing up in force at CES — AI, manufacturing, and workforce converging in real time',          x:6357, y:2.41, q:'develop', note:'Unexpected Midwest angle + concrete insight. High resonance suggests a national audience would engage — it just didn\'t find them.' },
+  { name:'Ad Separation Analysis',      headline:'"OpenAI separates ads FROM answers. Google separates ads AROUND them."', sub:'Broke down the structural difference in how each major AI platform handles advertising', x:6197, y:1.90, q:'develop', note:'Your most distinctive platform analysis post. No one else is doing this through the trust lens. Needs wider reach mechanics.' },
+  { name:'Cincy AI Week Keynote',       headline:'"Your brand is now a smoothie"',                sub:'Opening keynote at Cincy AI Week on how answer engines are transforming trust, commerce, and culture', x:5866, y:3.48, q:'develop', note:'Third-highest engagement rate in the dataset. Local standing-room context + strong metaphors. Would travel nationally with the right hook.' },
+  { name:'Mercury CXO Fireside',        headline:'"Beyond Search — Winning in the Answer Engine Era"', sub:'Main stage fireside with Aileen Allen on how brands must optimize for credibility, not keywords',   x:5402, y:2.09, q:'develop', note:'Strong B2B context but limited beyond the Mercury network. The content is right; the amplification mechanism is missing.' },
+  { name:'HBS Day 1 AI Deep Dive',      headline:'"AI isn\'t just teaching AI — it\'s training leaders to harness it"', sub:'Inside look at HBS\'s bold AI-first transformation of business education',              x:5246, y:2.33, q:'develop', note:'Specific institutional detail (ProfessorBots, Foundry, Career AI) gives it an exclusive texture. Stronger hook could 3x the reach.' },
+  { name:'10 Must-Know Terms',          headline:'"This isn\'t SEO 2.0. It\'s a new battleground."', sub:'BrandRank\'s no-fluff glossary for brand leaders navigating the Answer Economy',                    x:5077, y:1.95, q:'develop', note:'Strong resonance signals your audience values the framework. But the 101 framing limits sharing beyond your existing network.' },
+  { name:'Reddit AI Problem',           headline:'"Your brand\'s Reddit problem is now an AI problem"', sub:'Why quick Reddit fixes in AEO miss the point — and the three harder truths brands must face',      x:4695, y:1.90, q:'develop', note:'Credible third-decade perspective on consumer voice. The vulnerability framing is sharp. Needs a more provocative opening.' },
+  { name:'Cannes Lions AI Judge',       headline:'"LLMs don\'t feel creativity — they detect it"',  sub:'Asked 7 AI engines to judge the greatest ads of all time using Cannes Lions criteria',                x:4424, y:1.79, q:'develop', note:'Genuinely original research. The engine-by-engine breakdown is distinctive IP. Should have generated more reach than it did.' },
+  { name:'CES 2026 Red-Eye',            headline:'"Trust isn\'t assumed anymore. It\'s evaluated — by machines."', sub:'CES 2026 summary from the Las Vegas airport: AI crossing from assistance into operation', x:4410, y:2.56, q:'develop', note:'Strong closing line carries the post. Concise, punchy, philosophically resonant. Needed sharper framing in the first two lines.' },
+  { name:'P&G Alumni Forum',            headline:'"20% of consumers now turn to AI first"',        sub:'P&G Global Alumni Network Insights Forum — new consumer research on AI-first product discovery',       x:4268, y:2.34, q:'develop', note:'Proprietary data from ACUPOLL research is your strongest proof point. More of this format — specific numbers, specific behavior change.' },
+  { name:'ChatGPT-5 Brand Manager',     headline:'"ChatGPT-5 just became your brand manager"',     sub:'How ChatGPT-5 fuses brand claims, competitor data, reviews, and controversies into one answer',        x:3920, y:1.86, q:'develop', note:'Adversarial framing toward marketers who aren\'t paying attention. This edge is right. Could have been sharper and higher-reach.' },
+  { name:'Cincinnati CIO Pitch',        headline:'"We beat 500 global startups"',                   sub:'4-minute HumanX winning pitch video shared ahead of the Cincinnati CIO Roundtable',                   x:3771, y:3.13, q:'develop', note:'Third-highest engagement rate. Proof-of-concept format — credibility through competitive validation — works. Needs national distribution.' },
+  { name:'AEO 101 Swipe Deck',          headline:'"SEO is giving way to AEO"',                     sub:'Foundational explainer on Answer Engine Optimization — the what, why, and how-to-win',                 x:3642, y:2.22, q:'develop', note:'Good resonance but the audience has heard this framing. 101 content is a lead-gen asset, not a reach vehicle. Time to retire it.' },
+  { name:'AI Consumer Uprising',        headline:'"Your competitors now include AI agents"',        sub:'Argued that consumers have already found better allies than brands — in ChatGPT and answer engines',    x:3551, y:1.66, q:'develop', note:'The provocation is strong but the post is too long. The insight is buried. Tighten to five punchy lines.' },
+  { name:'Cincy AI Preview Slides',     headline:'"Cincinnati has a front row seat"',              sub:'Keynote preview slides for Cincy AI Week — how AI is rewiring trust, commerce, and culture locally',   x:3274, y:3.94, q:'develop', note:'Highest engagement rate in the dataset. Local pride + insider preview = authentic community resonance. A model for event content.' },
+  { name:'Claude Brand Profile',        headline:'"The one place your story can\'t hide"',         sub:'Profiling Anthropic\'s Claude as a brand grader — why it cross-examines claims rather than amplifying them', x:3170, y:1.61, q:'develop', note:'This is original IP that points to a repeatable series. Each engine profiled through the BrandRank lens compounds over time.' },
+  { name:'Athena Project Forum',        headline:'"Five tensions CMOs must now manage"',           sub:'Workshop and session at The Athena Project Founder Forum on winning in the Answer Economy era',         x:3161, y:2.97, q:'develop', note:'The five-tensions framework is crisp and original. This deserved more reach — it\'s top-tier CMO-level content.' },
+  { name:'AMA Chicago Talk',            headline:'"AI is a customer expectations revolution"',     sub:'Addressed the American Medical Association on trust, authority, and brand visibility in the answer era',x:3139, y:2.71, q:'develop', note:'Healthcare angle is underexplored in your content. AMA as a client is a strong credibility signal worth more amplification.' },
+  { name:'Website Redesign',            headline:'"We finally looked up"',                         sub:'BrandRank.AI website relaunch — streamlined enterprise experience, new thought leadership hub',         x:3104, y:3.06, q:'develop', note:'Strong resonance for what is essentially a product announcement. The reggae jingle hook worked. Still primarily an internal-audience post.' },
+  { name:'UASI University Study',       headline:'"Stanford gets 70 mentions. Notre Dame leads on trust."', sub:'Which universities win when students ask AI for college recommendations — a 600-response study', x:3031, y:1.95, q:'develop', note:'New vertical, original methodology, provocative result. The coastal bias finding should have gotten far more reach. Needs a national hook.' },
+  { name:'Toyota Brand Profile',        headline:'"In an AI-powered world, your brand is only as strong as its answers"', sub:'BrandRank\'s Meet the Brands series — profiling Toyota\'s AI visibility, vulnerability, and readiness', x:3021, y:1.92, q:'develop', note:'Repeatable series format. Each engine\'s distinct signal (Claude wants depth, Grok wants EV progress) is the differentiating angle.' },
+  { name:'ANA Austin Conference',       headline:'"Truth trumps spin"',                            sub:'Main stage ANA presentation on Visibility, Vulnerability, and Readiness — the three dimensions that matter', x:3008, y:2.73, q:'develop', note:'Conference content consistently reaches a warm but bounded audience. Strong for credibility, low ceiling for organic reach.' },
+];
+
+const REACH_DIV = 8000, ENG_DIV = 1.5;
+
+const groupedData = { amplify:[], develop:[], investigate:[], reconsider:[] };
+posts.forEach(p => groupedData[p.q].push(p));
+
+const quadPlugin = {
+  id:'quad',
+  beforeDraw(chart) {
+    const {ctx, chartArea:ca, scales} = chart;
+    if (!ca) return;
+    const xp = scales.x.getPixelForValue(REACH_DIV);
+    const yp = scales.y.getPixelForValue(ENG_DIV);
+    ctx.save();
+    [
+      [xp, ca.top, ca.right-xp, yp-ca.top, 'rgba(31,201,142,0.04)'],
+      [ca.left, ca.top, xp-ca.left, yp-ca.top, 'rgba(139,128,249,0.04)'],
+      [xp, yp, ca.right-xp, ca.bottom-yp, 'rgba(245,166,35,0.04)'],
+      [ca.left, yp, xp-ca.left, ca.bottom-yp, 'rgba(224,92,75,0.04)'],
+    ].forEach(([x,y,w,h,c]) => { ctx.fillStyle=c; ctx.fillRect(x,y,w,h); });
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.setLineDash([4,4]);
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(xp,ca.top); ctx.lineTo(xp,ca.bottom); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(ca.left,yp); ctx.lineTo(ca.right,yp); ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.font = '700 12px "DM Sans", sans-serif';
+    ctx.letterSpacing = '1px';
+    const labels = [
+      [xp+12, ca.top+18, '#ffffff', 'AMPLIFY'],
+      [ca.left+12, ca.top+18, '#ffffff', 'DEVELOP'],
+      [xp+12, yp+18, '#ffffff', 'INVESTIGATE'],
+      [ca.left+12, yp+18, '#ffffff', 'RECONSIDER'],
+    ];
+    labels.forEach(([x,y,c,t]) => { ctx.fillStyle=c; ctx.fillText(t,x,y); });
+    ctx.restore();
+  }
+};
+
+const datasets = Object.entries(QC).map(([k,cfg]) => ({
+  label: cfg.label,
+  data: groupedData[k].map(p => ({ ...p })),
+  backgroundColor: cfg.color + '99',
+  borderColor: cfg.color,
+  borderWidth: 1.5,
+  pointRadius: 7,
+  pointHoverRadius: 10,
+  pointHoverBorderWidth: 2,
+}));
+
+let chartRef = new Chart(document.getElementById('chart'), {
+  type: 'scatter',
+  data: { datasets },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: { duration: 300 },
+    layout: { padding: { top: 10, right: 10, bottom: 10, left: 30 } },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#1c1f2e',
+        borderColor: 'rgba(255,255,255,0.15)',
+        borderWidth: 1,
+        titleColor: '#e8e9f0',
+        bodyColor: '#7b7e94',
+        padding: 12,
+        callbacks: {
+          title: () => '',
+          label: (ctx) => {
+            const d = ctx.raw;
+            return [`${d.name}`, `${d.x.toLocaleString()} impressions · ${d.y.toFixed(2)}% engagement`];
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        type: 'linear', min: 0, max: 34000,
+        grid: { color: 'rgba(255,255,255,0.05)', lineWidth: 0.5 },
+        ticks: { color: '#4a4d62', font: { size: 11, family: '"DM Mono", monospace' }, callback: v => v === 0 ? '0' : `${Math.round(v/1000)}K` },
+        border: { color: 'rgba(255,255,255,0.1)' },
+        title: { display: false }
+      },
+      y: {
+        type: 'linear', min: 0, max: 4.6,
+        grid: { color: 'rgba(255,255,255,0.05)', lineWidth: 0.5 },
+        ticks: { color: '#4a4d62', font: { size: 11, family: '"DM Mono", monospace' }, callback: v => `${v}%` },
+        border: { color: 'rgba(255,255,255,0.1)' },
+        title: { display: true, text: 'Resonance (engagement rate)', color: '#4a4d62', font: { size: 11, family: '"DM Mono", monospace' } }
+      }
+    },
+    onClick: (evt, els) => {
+      if (!els.length) return;
+      const p = chartRef.data.datasets[els[0].datasetIndex].data[els[0].index];
+      showDetail(p);
+    }
+  },
+  plugins: [quadPlugin]
+});
+
+function showDetail(p) {
+  const cfg = QC[p.q];
+  document.getElementById('placeholder').style.display = 'none';
+  const el = document.getElementById('post-detail');
+  el.classList.add('visible');
+  el.innerHTML = `
+    <div class="pd-quadrant-tag" style="background:${cfg.bg};color:${cfg.color};border:1px solid ${cfg.border}">
+      <span style="width:7px;height:7px;border-radius:50%;background:${cfg.color};display:inline-block"></span>
+      ${cfg.label}
+    </div>
+    <div class="pd-title">${p.headline}</div>
+    <div class="pd-subtitle" style="font-size:11px;color:var(--dim);margin-bottom:16px;font-style:normal;font-family:'DM Mono',monospace;letter-spacing:0.3px">${p.name}</div>
+    <div class="pd-metrics">
+      <div class="pd-metric">
+        <div class="pd-metric-label">Impressions</div>
+        <div class="pd-metric-value" style="color:${cfg.color}">${p.x.toLocaleString()}</div>
+      </div>
+      <div class="pd-metric">
+        <div class="pd-metric-label">Engagement</div>
+        <div class="pd-metric-value" style="color:${cfg.color}">${p.y.toFixed(2)}%</div>
+      </div>
+    </div>
+    <div class="pd-section-label">What happened</div>
+    <div class="pd-note">${p.sub}</div>
+    <hr class="pd-divider">
+    <div class="pd-section-label">Strategic read</div>
+    <div class="pd-note">${p.note}</div>
+    <div class="pd-action" style="background:${cfg.bg};border-color:${cfg.color}">
+      <span style="font-size:10px;font-family:'DM Mono',monospace;letter-spacing:0.8px;text-transform:uppercase;color:${cfg.color};display:block;margin-bottom:5px">Action</span>
+      <span style="color:var(--muted);font-size:12px;">${cfg.action}</span>
+    </div>`;
+}
+
+let activeFilter = 'all';
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const q = btn.dataset.q;
+    activeFilter = q;
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      b.classList.remove('active', 'active-all');
+    });
+    if (q === 'all') {
+      btn.classList.add('active-all');
+    } else {
+      btn.classList.add('active');
+    }
+
+    chartRef.data.datasets.forEach((ds, i) => {
+      const key = Object.keys(QC)[i];
+      const meta = chartRef.getDatasetMeta(i);
+      meta.hidden = (q !== 'all' && key !== q);
+    });
+    chartRef.update();
+  });
+});
+
+document.querySelectorAll('.sum-cell, .legend-item').forEach(el => {
+  el.addEventListener('click', () => {
+    const q = el.dataset.q;
+    if (!q) return;
+    const btn = document.querySelector(`.filter-btn[data-q="${q}"]`);
+    if (btn) btn.click();
+  });
+});
+
+const maxReach = Math.max(...posts.map(p => p.x));
+const maxEng   = Math.max(...posts.map(p => p.y));
+
+function combinedScore(p) {
+  return (p.x / maxReach) * 0.5 + (p.y / maxEng) * 0.5;
+}
+
+function renderRankings(sortKey) {
+  const sorted = [...posts].sort((a, b) => {
+    if (sortKey === 'reach')      return b.x - a.x;
+    if (sortKey === 'engagement') return b.y - a.y;
+    return combinedScore(b) - combinedScore(a);
+  });
+
+  const container = document.getElementById('rankings');
+  container.innerHTML = sorted.map((p, i) => {
+    const cfg = QC[p.q];
+    const reachPct  = Math.round((p.x / maxReach) * 100);
+    const engPct    = Math.round((p.y / maxEng) * 100);
+    return `
+    <div onclick="showDetail(${JSON.stringify(p).replace(/"/g,'&quot;')})"
+         style="display:grid;grid-template-columns:36px 1fr 140px 140px;align-items:center;gap:12px;
+                padding:11px 14px;border-radius:8px;cursor:pointer;transition:background 0.12s;margin-bottom:2px;"
+         onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='transparent'">
+      <div style="font-size:13px;font-family:'DM Mono',monospace;color:var(--dim);text-align:right;">${i+1}</div>
+      <div style="min-width:0;">
+        <div style="font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.headline.replace(/"/g,'')}</div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:3px;">
+          <span style="width:7px;height:7px;border-radius:50%;background:${cfg.color};flex-shrink:0;display:inline-block;"></span>
+          <span style="font-size:11px;color:var(--dim);">${p.name}</span>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--dim);margin-bottom:4px;">${p.x.toLocaleString()} impr.</div>
+        <div style="height:3px;background:var(--bg3);border-radius:2px;width:100%;">
+          <div style="height:3px;background:${cfg.color};border-radius:2px;width:${reachPct}%;opacity:0.7;"></div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--dim);margin-bottom:4px;">${p.y.toFixed(2)}% eng.</div>
+        <div style="height:3px;background:var(--bg3);border-radius:2px;width:100%;">
+          <div style="height:3px;background:${cfg.color};border-radius:2px;width:${engPct}%;opacity:0.7;"></div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+renderRankings('combined');
+
+document.querySelectorAll('.rank-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.rank-btn').forEach(b => {
+      b.style.background = 'transparent';
+      b.style.color = 'var(--muted)';
+      b.style.borderColor = 'var(--border)';
+      b.classList.remove('rank-active');
+    });
+    btn.style.background = 'var(--bg3)';
+    btn.style.color = 'var(--text)';
+    btn.style.borderColor = 'var(--border2)';
+    btn.classList.add('rank-active');
+    renderRankings(btn.dataset.sort);
+  });
+});
+</script>
+</body>
+</html>
