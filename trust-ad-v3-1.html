@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trust in Advertising in the Answer Economy — BrandRank.AI x ANA</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0e1a;--bg2:#141929;--bg3:#1a1f35;
+  --cyan:#00d4ff;--cyan-d:rgba(0,212,255,0.12);--cyan-b:rgba(0,212,255,0.3);
+  --w:#fff;--wd:rgba(255,255,255,0.6);--wf:rgba(255,255,255,0.05);--wb:rgba(255,255,255,0.08);
+  --green:#4ecdc4;--yellow:#ffd93d;--red:#ff6b6b;--orange:#ff9f43;--purple:#a29bfe;--amber:#f59e0b;
+  --gpt:#10a37f;--claude-c:#d97706;--gemini:#4285f4;--grok:#1d9bf0;--deep:#6366f1;--perp:#e11d48;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--w);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;font-size:15px;}
+
+/* HEADER */
+.hdr{padding:48px 52px 36px;border-bottom:1px solid var(--wb);background:linear-gradient(180deg,rgba(0,212,255,.05) 0%,transparent 100%);}
+.hdr-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;}
+.logo{display:flex;align-items:center;gap:12px;}
+.badges{display:flex;gap:8px;flex-wrap:wrap;}
+.badge{font-family:'Space Mono',monospace;font-size:10px;padding:4px 10px;border-radius:3px;letter-spacing:.07em;text-transform:uppercase;}
+.b-cyan{background:var(--cyan-d);border:1px solid var(--cyan-b);color:var(--cyan);}
+.b-amber{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:var(--amber);}
+.b-wht{background:var(--wf);border:1px solid var(--wb);color:var(--wd);}
+.hdr-title{font-family:'DM Serif Display',serif;font-size:clamp(24px,3.5vw,44px);font-weight:400;line-height:1.1;margin-bottom:8px;}
+.hdr-title span{color:var(--cyan);}
+.hdr-sub{color:var(--wd);font-size:16px;max-width:720px;line-height:1.7;}
+.hdr-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:28px;padding-top:28px;border-top:1px solid var(--wb);}
+.stat-n{font-family:'Space Mono',monospace;font-size:26px;color:var(--cyan);}
+.stat-l{font-size:11px;color:var(--wd);margin-top:3px;text-transform:uppercase;letter-spacing:.05em;}
+
+/* NAV */
+.nav{display:flex;padding:0 52px;border-bottom:1px solid var(--wb);overflow-x:auto;scrollbar-width:none;}
+.nav::-webkit-scrollbar{display:none;}
+.np{padding:14px 18px;font-size:14px;font-weight:500;color:var(--wd);cursor:pointer;border:none;border-bottom:2px solid transparent;background:none;white-space:nowrap;transition:all .2s;}
+.np:hover{color:var(--w);}
+.np.on{color:var(--cyan);border-bottom-color:var(--cyan);}
+
+/* SECTIONS */
+.sec{display:none;padding:44px 52px;}
+.sec.on{display:block;}
+.sec-title{font-family:'DM Serif Display',serif;font-size:28px;font-weight:400;margin-bottom:8px;}
+.sec-desc{color:var(--wd);font-size:15px;margin-bottom:28px;line-height:1.7;max-width:820px;}
+
+/* INSIGHT BOX */
+.ins{background:linear-gradient(135deg,rgba(0,212,255,.05),rgba(0,212,255,.02));border:1px solid var(--cyan-b);border-radius:8px;padding:18px 22px;margin-bottom:22px;}
+.ins-label{font-family:'Space Mono',monospace;font-size:10px;color:var(--cyan);margin-bottom:5px;text-transform:uppercase;letter-spacing:.1em;}
+.ins-txt{font-size:15px;color:var(--wd);line-height:1.8;}
+.ins-txt strong{color:var(--w);}
+
+/* OVERVIEW */
+.ov-engines{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:28px;}
+.eng-card{background:var(--bg2);border-radius:8px;padding:16px;text-align:center;border:1px solid var(--wb);border-top:3px solid var(--c);}
+.eng-name{font-size:11px;font-weight:600;color:var(--wd);margin-bottom:4px;}
+.eng-score{font-family:'Space Mono',monospace;font-size:28px;color:var(--c);}
+.eng-sub{font-size:10px;color:var(--wd);margin-top:3px;}
+.topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:28px;}
+.tc{background:var(--bg2);border:1px solid var(--wb);border-radius:8px;padding:16px;}
+.tc-name{font-size:14px;font-weight:600;margin-bottom:4px;}
+.tc-expl{font-size:14px;color:var(--cyan);margin-bottom:8px;line-height:1.6;font-style:italic;}
+.tc-meta{font-size:10px;color:var(--wd);margin-bottom:10px;font-family:'Space Mono',monospace;}
+.tc-bar-row{display:flex;align-items:center;gap:7px;margin-bottom:4px;}
+.tc-eng{font-size:10px;color:var(--wd);width:54px;flex-shrink:0;}
+.tc-track{flex:1;height:4px;background:var(--wf);border-radius:2px;overflow:hidden;}
+.tc-fill{height:100%;border-radius:2px;}
+.tc-val{font-family:'Space Mono',monospace;font-size:10px;color:var(--wd);width:22px;text-align:right;}
+
+/* SCALE */
+.scale-leg{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center;}
+.sl-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--wd);}
+.sl-chip{width:22px;height:22px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;}
+
+/* ENGINE LEGEND */
+.eng-leg{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:18px;}
+.el{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;}
+.el-dot{width:8px;height:8px;border-radius:50%;}
+
+/* FILTERS */
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px;align-items:center;}
+.fb{font-size:11px;padding:5px 12px;border-radius:4px;border:1px solid var(--wb);background:var(--wf);color:var(--wd);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.fb:hover,.fb.on{background:var(--cyan-d);border-color:var(--cyan-b);color:var(--cyan);}
+
+/* HEATMAP */
+.hm-scroll{overflow-x:auto;}
+.hm{width:100%;border-collapse:separate;border-spacing:2px;min-width:680px;}
+.hm th{font-family:'Space Mono',monospace;font-size:12px;color:var(--wd);padding:5px 6px;text-align:center;white-space:nowrap;font-weight:400;}
+.hm th.rl{text-align:left;min-width:260px;}
+.hm td{padding:6px 4px;text-align:center;font-family:'Space Mono',monospace;font-size:13px;font-weight:700;border-radius:3px;cursor:pointer;transition:transform .12s,box-shadow .12s;position:relative;}
+.hm td:hover{transform:scale(1.15);z-index:10;box-shadow:0 3px 12px rgba(0,0,0,.5);}
+.hm td.sl{text-align:left;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--wd);padding:5px 8px;cursor:pointer;transform:none !important;font-weight:400;border-left:2px solid transparent;transition:border-color .15s,color .15s;}
+.hm td.sl:hover{transform:none;box-shadow:none;color:var(--cyan);border-left-color:var(--cyan);}
+.hm td.av{font-size:10px;font-weight:700;font-family:'Space Mono',monospace;}
+.topic-sep td{background:var(--bg3) !important;color:#ffffff !important;font-family:'DM Sans',sans-serif !important;font-size:13px !important;text-transform:none !important;letter-spacing:0 !important;padding:10px 10px !important;font-weight:700 !important;cursor:default !important;text-align:left !important;}
+.topic-sep td:hover{transform:none !important;box-shadow:none !important;}
+.topic-sep-desc{font-size:13px;color:rgba(0,212,255,.75) !important;font-family:'DM Sans',sans-serif !important;text-transform:none !important;letter-spacing:0 !important;display:block;margin-top:3px;font-weight:400 !important;font-style:italic;}
+
+/* Rating colors */
+.r1{background:rgba(255,107,107,.85);color:#fff;}
+.r2{background:rgba(255,159,67,.8);color:#fff;}
+.r3{background:rgba(255,217,61,.8);color:#0a0e1a;}
+.r4{background:rgba(78,205,196,.8);color:#0a0e1a;}
+.r5{background:rgba(0,212,255,.85);color:#0a0e1a;}
+
+/* RICH TOOLTIP (scenario detail) */
+.stip{position:fixed;z-index:9999;pointer-events:none;opacity:0;transition:opacity .15s;max-width:380px;}
+.stip.show{opacity:1;}
+.stip-box{background:#0e1628;border:1px solid var(--cyan-b);border-radius:10px;padding:16px 18px;box-shadow:0 12px 40px rgba(0,0,0,.7);}
+.stip-id{font-family:'Space Mono',monospace;font-size:10px;color:var(--cyan);margin-bottom:6px;}
+.stip-full{font-size:12px;color:var(--w);margin-bottom:10px;line-height:1.6;font-style:italic;border-bottom:1px solid var(--wb);padding-bottom:8px;}
+.stip-ratings{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:8px;}
+.stip-eng{display:flex;flex-direction:column;align-items:center;background:var(--wf);border-radius:3px;padding:5px 3px;}
+.stip-eng-n{color:var(--wd);font-size:9px;margin-bottom:2px;}
+.stip-eng-r{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;padding:2px 6px;border-radius:2px;}
+.stip-ctx{font-size:11px;color:var(--wd);line-height:1.5;}
+
+/* DIVERGENCE */
+.div-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+.div-card{background:var(--bg2);border:1px solid var(--wb);border-radius:8px;padding:18px;transition:border-color .2s;}
+.div-card:hover{border-color:var(--cyan-b);}
+.div-id{font-family:'Space Mono',monospace;font-size:10px;color:var(--cyan);margin-bottom:6px;}
+.div-desc{font-size:12px;color:var(--wd);margin-bottom:12px;line-height:1.5;}
+.div-br{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.div-en{font-size:10px;color:var(--wd);width:72px;flex-shrink:0;}
+.div-tr{flex:1;height:5px;background:var(--wf);border-radius:2px;overflow:hidden;}
+.div-fi{height:100%;border-radius:2px;transition:width .3s;}
+.div-rv{font-family:'Space Mono',monospace;font-size:10px;padding:1px 4px;border-radius:2px;margin-left:2px;}
+.div-meta{font-family:'Space Mono',monospace;font-size:10px;color:var(--amber);margin-top:8px;}
+
+/* CONSENSUS */
+.con-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
+.con-card{background:var(--bg2);border:1px solid var(--wb);border-radius:8px;padding:18px;}
+.con-lbl{font-family:'Space Mono',monospace;font-size:9px;color:var(--wd);margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em;}
+.con-desc{font-size:12px;color:var(--w);margin-bottom:10px;line-height:1.5;}
+.con-chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px;}
+.con-chip{font-family:'Space Mono',monospace;font-size:10px;padding:2px 6px;border-radius:2px;font-weight:700;}
+.con-avg{font-family:'Space Mono',monospace;font-size:20px;color:var(--cyan);}
+.con-int{font-size:10px;margin-top:2px;}
+
+/* QUALITATIVE - new integrated view */
+.qual-big{background:var(--bg2);border:1px solid var(--cyan-b);border-radius:10px;padding:28px;margin-bottom:24px;}
+.qual-big-title{font-family:'DM Serif Display',serif;font-size:18px;margin-bottom:14px;}
+.qual-big-txt{font-size:16px;color:var(--wd);line-height:1.9;margin-bottom:0;}
+.qual-big-txt p{margin-bottom:12px;}
+.qual-big-txt p:last-child{margin-bottom:0;}
+.takeaway-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:28px;}
+.tk-card{background:var(--bg2);border:1px solid var(--wb);border-radius:8px;padding:18px;border-left:3px solid var(--cyan);}
+.tk-num{font-family:'Space Mono',monospace;font-size:11px;color:var(--cyan);margin-bottom:6px;}
+.tk-title{font-size:15px;font-weight:700;color:var(--w);margin-bottom:6px;}
+.tk-txt{font-size:14px;color:var(--wd);line-height:1.7;}
+.must-know{background:linear-gradient(135deg,rgba(255,107,107,.08),rgba(255,107,107,.03));border:1px solid rgba(255,107,107,.3);border-radius:8px;padding:22px;margin-bottom:22px;}
+.must-know .ins-label{color:var(--red);}
+
+/* AGENTIC */
+.ag-def{background:var(--bg2);border:1px solid var(--cyan-b);border-radius:10px;padding:24px;margin-bottom:24px;}
+.ag-def-title{font-family:'DM Serif Display',serif;font-size:18px;margin-bottom:10px;}
+.ag-def-txt{font-size:13px;color:var(--wd);line-height:1.8;}
+.ag-chain{display:flex;gap:0;margin:20px 0;flex-wrap:wrap;}
+.ag-step{background:var(--bg3);border:1px solid var(--wb);padding:12px 16px;flex:1;min-width:140px;position:relative;}
+.ag-step:not(:last-child)::after{content:'→';position:absolute;right:-12px;top:50%;transform:translateY(-50%);color:var(--cyan);font-size:16px;z-index:2;}
+.ag-step-n{font-family:'Space Mono',monospace;font-size:9px;color:var(--cyan);margin-bottom:4px;}
+.ag-step-t{font-size:12px;font-weight:600;margin-bottom:3px;}
+.ag-step-d{font-size:11px;color:var(--wd);}
+.ag-risk{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.ag-risk-card{background:var(--bg2);border:1px solid var(--wb);border-radius:8px;padding:16px;}
+.ag-risk-card.danger{border-color:rgba(255,107,107,.3);background:rgba(255,107,107,.04);}
+.ag-risk-card.safe{border-color:rgba(78,205,196,.3);background:rgba(78,205,196,.04);}
+.ag-risk-label{font-family:'Space Mono',monospace;font-size:9px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em;}
+.ag-risk-card.danger .ag-risk-label{color:var(--red);}
+.ag-risk-card.safe .ag-risk-label{color:var(--green);}
+.ag-risk-item{font-size:12px;color:var(--wd);margin-bottom:6px;padding-left:14px;position:relative;line-height:1.5;}
+.ag-risk-item::before{content:'•';position:absolute;left:0;color:inherit;}
+.ag-risk-card.danger .ag-risk-item::before{color:var(--red);}
+.ag-risk-card.safe .ag-risk-item::before{color:var(--green);}
+.model-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:24px;}
+.model-card{background:var(--bg2);border:1px solid var(--wb);border-radius:8px;padding:18px;border-top-width:3px;border-top-style:solid;}
+.model-eng{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;}
+.model-pick{font-family:'Space Mono',monospace;font-size:16px;margin-bottom:4px;}
+.model-sub{font-size:10px;color:var(--wd);margin-bottom:8px;}
+.model-note{font-size:11px;color:var(--wd);line-height:1.6;}
+
+/* PROBE SECTION */
+.probe-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;}
+.probe-card{background:var(--bg2);border:1px solid var(--wb);border-radius:8px;padding:20px;transition:border-color .2s;}
+.probe-card:hover{border-color:var(--cyan-b);}
+.probe-cat{font-family:'Space Mono',monospace;font-size:9px;color:var(--amber);margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em;}
+.probe-title{font-size:14px;font-weight:700;color:var(--w);margin-bottom:8px;}
+.probe-why{font-size:14px;color:var(--wd);line-height:1.7;margin-bottom:12px;}
+.probe-q{font-size:14px;color:var(--cyan);line-height:1.7;font-style:italic;border-left:2px solid var(--cyan-b);padding-left:10px;}
+
+/* C-SUITE LETTERS */
+.letter-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
+.lt{padding:8px 18px;border-radius:6px;border:1px solid var(--wb);background:var(--wf);color:var(--wd);cursor:pointer;font-size:13px;font-weight:500;transition:all .2s;}
+.lt:hover{border-color:var(--cyan-b);color:var(--w);}
+.lt.on{background:var(--cyan-d);border-color:var(--cyan-b);color:var(--cyan);}
+.letter-pane{display:none;}
+.letter-pane.on{display:block;}
+.letter-wrap{background:var(--bg2);border:1px solid var(--wb);border-radius:10px;padding:40px;max-width:820px;}
+.letter-header{border-bottom:1px solid var(--wb);padding-bottom:20px;margin-bottom:28px;}
+.letter-from{font-family:'Space Mono',monospace;font-size:10px;color:var(--cyan);margin-bottom:4px;text-transform:uppercase;letter-spacing:.1em;}
+.letter-to{font-size:13px;color:var(--wd);margin-bottom:16px;}
+.letter-subject{font-family:'DM Serif Display',serif;font-size:22px;color:var(--w);}
+.letter-date{font-family:'Space Mono',monospace;font-size:11px;color:var(--wd);margin-top:6px;}
+.letter-body{font-size:15px;color:var(--wd);line-height:2.0;}
+.letter-body p{margin-bottom:16px;}
+.letter-body p:last-child{margin-bottom:0;}
+.letter-body strong{color:var(--w);}
+.letter-body h4{font-family:'DM Serif Display',serif;font-size:16px;color:var(--cyan);margin:22px 0 10px;font-weight:400;}
+.letter-body ul{margin:0 0 16px 20px;}
+.letter-body ul li{margin-bottom:8px;line-height:1.7;}
+.letter-body .sig{margin-top:32px;padding-top:20px;border-top:1px solid var(--wb);}
+.letter-body .sig-name{font-family:'DM Serif Display',serif;font-size:16px;color:var(--w);}
+.letter-body .sig-title{font-size:12px;color:var(--wd);margin-top:2px;}
+.letter-body .sig-org{font-size:12px;color:var(--cyan);}
+
+/* FOOTER */
+.ftr{padding:32px 52px;border-top:1px solid var(--wb);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.ftr-t{font-size:11px;color:var(--wd);}
+.ftr-t strong{color:var(--cyan);}
+.big-lbl{font-family:'DM Serif Display',serif;font-size:17px;margin-bottom:16px;margin-top:4px;}
+
+@media(max-width:768px){
+  .hdr,.sec,.nav{padding-left:20px;padding-right:20px;}
+  .hdr-stats{grid-template-columns:repeat(2,1fr);}
+  .ov-engines{grid-template-columns:repeat(3,1fr);}
+  .qual-grid{grid-template-columns:1fr;}
+  .ag-risk{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-top">
+    <div class="logo">
+      <img src="data:image/png;base64,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1z2wm+NQHdkQF2Q8j2tPbnsQV4RWG1R0FptTtt+oWiVUbc1sbN8xT2EunZLl52WnznY6yMBwHYRzVeiCCQQQR1goPxERAREQEREBERAREQEREBERAREQEREBfRtuiVW465KUWiyUWcn5uK2FBhMHW4nHM9QHeTgAcyvnKzWmrpHQfQ52pU7Ahx77ulrpegSsdmfEpfn9O5p5ZIG7n1gsA5Oeg9+5azb/AAy2oy17Riy9V1NqEDdU6w1odCp7Hf8Aw2Z+seQw09o3OHMNVX6pPz1UqMxUalNx5ycmYhix48eIXviPJyXOceZJX5Up2cqU/Gn6hMxpqajvL4saK8ue9x7SSvXQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQERf1ChvixGwobHPe8hrWtGSSeoBB/KLqry06vazqfAqFz27N0yVmInRQYkbbh7sE4GCewFcqgIiICIiAiIgIiICIiAiIgIiIOl04vm5tPrlg3Ba9SiSc2zzYjckw47O2HEb+s0/uOCCCARPGolqWzrnYExqlp1KNp12SDS64qDkbpg43OjQv5bus563DlycMGsS6zSm/a5pxeklc1Di5fAeOnlnu+jmYR5OhvHcQTg9YOCOYQcq9rmPLHtLXNOCCMEFfyp34qbSoMf8AQ+rdisPk1dTDEjy7W/4hNgAvhuH6u7mQOrLXY83aoIQEREBERAREQEREBERAREQEREBERBI3DnYLtRdVKbRYzYn6Olz47UjDJDhLQ3N3AEdRJIbnsz3ry8St9Q781Xqk/TogFClHCUpUGGR0bIEMBoc0DkNxBd94HYFIWnQ+TnhHuq82gQa1eMyKPTpgHBbLDlE2nrBP0wOO1rc/VOK5ICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAvZpQe6pyjYcYQXmMwNiF20MO4YcT2Y68r1l7FOh9NUJaFvZD3xWt3POGtyRzJ7AgvP4RosOkts4guaTWWkHbjaOgicvV7PUqIK+HhG4m7SS2hseN1aa7mOr6CLy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U5zUGizNKoc7Lzk5NwQ9jYkWG7f0cAPAdEbua0byG9biByGe8427gsnUOq0i7bRvSlT75KS8TmaeekZGHnue17Mt2uHnEHnkYGMgnFZUQXH4Lr7090wsepwrsvOmS07Vplky2DDLovRMEMANdtBw/JdkYwMDmq8Gp/JrrHJ3PblakK5BkaiZ2VjykYgR4PSHzH5GWF7MggjkHKP0QW04j26ea6ytHvuz74oVKrkKUbLT1OrU6yTcIYLnAeefrtc5wyMtcCMHlz6fhMvrSzS+za1RaheNOiTXjUKLNTW8NbHjOh+cyADzfChgNbvx5zi8jzSFSREHR6jUqm0q6p1lHrcpWKdGjxIkrHgPy7oy47d4/VdjrGSucREFxrMv20dSuEeJpbVbppdt3BJysOVhuqMwyDCiiBFbEhEFzhkFrGtJ7Dk4PUoKrFAtZkzQbGk7qt94knRJ6tV5p+idFimG0wIL8ZithshtIGQHPfE6hzUXIgu9xS3npXq7p9I0Wjak0am1OnzomoInmReiijY5haXMY7afOyDg9WCOeVSmoywk5+PKCZgTIgxHMEaA4uhxMHG5pIGQescgvXRBb7ho1HsqqcOVb0jua4JOgT8WBOy0tMTkRsOE6HHaS125xA3B73Zb3Ad/LgtGaZZ+lWqVCrdw3vbdZqUOba2DCpc2Y0rKQ3Atixo0YtawuDXODWA9Z3EjaGur8iC03G/WrG1BmKZdNrXxRpuapcs6VmKf0jjFitMQFroRa0tdgudkFw5DIyvb4JdS7OpNi3Npxd9blaJDqcaJHlpqYeGMPSwWwojS8+a0gMaRk8+fqzU5EEv3HZtrWTSanb8K9LUuivVqJClpabk5jfKU+VbFER0V0QjDYzjDhtwOTWF/nHdgTtdl56ZT3CZD0okdQqTFrcKmysHcQ9kIxoUVkVw3OaBty0tyM9ecFUqRBM/Cm627a1ak7wum8KPSZKhxYw6F7nvizb3Qnw29HtaW7cuyXEjq9eR0XGhWLQv674F62ndlNnIcCnQpSPJueWxnPbFdgwxz3DETJzjG09ecKuyICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiD//2Q==" alt="BrandRank.AI" style="height:68px;width:auto;">
+    </div>
+    <div class="badges">
+      <span class="badge b-cyan">BrandRank.AI</span>
+      <span class="badge b-amber">Version 1.0</span>
+      <span class="badge b-wht">March 2026</span>
+      <span class="badge" style="background:rgba(255,107,107,0.12);border:1px solid rgba(255,107,107,0.4);color:#ff6b6b;letter-spacing:.12em;">DRAFT</span>
+    </div>
+  </div>
+  <div class="hdr-title">Trust in Advertising<br>in the <span>Answer Economy</span></div>
+  <div style="font-family:'Space Mono',monospace;font-size:13px;color:rgba(0,212,255,0.7);letter-spacing:0.06em;margin-top:10px;margin-bottom:6px;">Setting the trust standard before AI sets it for us.</div>
+  
+  <div style="margin-top:22px;padding-top:22px;border-top:1px solid var(--wb);max-width:1100px;">
+    <p style="font-size:16px;color:rgba(255,255,255,0.72);line-height:1.85;margin-bottom:0;">AI is reshaping the rules of advertising trust — handing consumers one-question transparency, reverse personalization, and agent-facilitated switching while raising urgent new questions for marketers. This workbook pressure-tests 80 advertising scenarios, old and new, against six answer engines — ChatGPT, Claude, Gemini, Grok, DeepSeek, and Perplexity — each rating 1–5 and explaining their reasoning in their own words.</p>
+  </div>
+</header>
+
+<nav class="nav">
+  <button class="np on" onclick="showTab('heatmap',this)">All Questions</button>
+  <button class="np" onclick="showTab('overview',this)">Scores by Answer Engine</button>
+  <button class="np" onclick="showTab('divergence',this)">Where Engines Disagree</button>
+  <button class="np" onclick="showTab('consensus',this)">Consensus Moments</button>
+  <button class="np" onclick="showTab('qualitative',this)">Qualitative Analysis</button>
+  <button class="np" onclick="showTab('agentic',this)">Agentic AI Focus</button>
+  <button class="np" onclick="showTab('probe',this)">Areas to Probe Deeper</button>
+  <button class="np" onclick="showTab('letters',this)">C-Suite Letters</button>
+</nav>
+
+<div id="stip" class="stip"><div class="stip-box" id="stipBox"></div></div>
+
+<!-- ===== OVERVIEW ===== -->
+<section class="sec" id="s-overview">
+
+  <div class="big-lbl" style="margin-bottom:20px;">Personas by Answer Engine</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:40px;" id="personaGrid">
+
+    <div style="background:var(--bg2);border:1px solid var(--wb);border-top:3px solid #10a37f;border-radius:8px;padding:22px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#10a37f;margin-bottom:4px;">ChatGPT</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:17px;color:#fff;margin-bottom:12px;">The Principled Pragmatist</div>
+      <div style="font-size:14px;color:rgba(255,255,255,0.65);line-height:1.75;">Methodical and fair-minded, ChatGPT applies consistent ethical logic across every scenario — stern on clear violations, genuinely open on contested ground. It believes disclosure can redeem most commercial relationships if applied correctly, and that the industry is capable of self-correction. Optimistic about AI advertising's potential, cautious about its current execution.</div>
+    </div>
+
+    <div style="background:var(--bg2);border:1px solid var(--wb);border-top:3px solid #d97706;border-radius:8px;padding:22px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#d97706;margin-bottom:4px;">Claude</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:17px;color:#fff;margin-bottom:12px;">The Structural Skeptic</div>
+      <div style="font-size:14px;color:rgba(255,255,255,0.65);line-height:1.75;">Claude doesn't just evaluate disclosure — it interrogates the architecture behind it. More than any other engine, it penalizes formats that blur the line between AI reasoning and commercial influence, rating the Integrated ad model a 2 where others give it a 3 or 4. Its hardest line: once AI speaks in its own voice, no label fully neutralizes the implied endorsement.</div>
+    </div>
+
+    <div style="background:var(--bg2);border:1px solid var(--wb);border-top:3px solid #4285f4;border-radius:8px;padding:22px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#4285f4;margin-bottom:4px;">Gemini</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:17px;color:#fff;margin-bottom:12px;">The Consumer Champion</div>
+      <div style="font-size:14px;color:rgba(255,255,255,0.65);line-height:1.75;">Gemini evaluates every scenario through a single lens: what does the ordinary consumer actually understand? It is the most consistent in flagging practices that exploit cognitive shortcuts — authority bias, emotional vulnerability, implicit trust in AI helpers. More forgiving of disclosed incentivized reviews than most, tougher on anything that mimics independent judgment without being independent.</div>
+    </div>
+
+    <div style="background:var(--bg2);border:1px solid var(--wb);border-top:3px solid #1d9bf0;border-radius:8px;padding:22px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#1d9bf0;margin-bottom:4px;">Grok</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:17px;color:#fff;margin-bottom:12px;">The Clear-Eyed Realist</div>
+      <div style="font-size:14px;color:rgba(255,255,255,0.65);line-height:1.75;">Grok applies a market-aware lens — acknowledging that commercial relationships are a legitimate part of the media ecosystem while drawing firm lines at manipulation and covert influence. More comfortable than peers with labeled political advertising and standard retargeting. Its standout position: a fully disclosed physician endorsement is a 5, not a 3. Trust is earned by transparency, not avoided by association.</div>
+    </div>
+
+    <div style="background:var(--bg2);border:1px solid var(--wb);border-top:3px solid #6366f1;border-radius:8px;padding:22px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6366f1;margin-bottom:4px;">DeepSeek</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:17px;color:#fff;margin-bottom:12px;">The Epistemological Purist</div>
+      <div style="font-size:14px;color:rgba(255,255,255,0.65);line-height:1.75;">DeepSeek's defining concern is the integrity of evidence itself. Its harshest condemnation — reserved for fabricated AI citations — frames the problem as epistemological, not merely ethical: when AI manufactures proof, truth becomes indistinguishable from fraud. It applies this standard rigorously to health and financial contexts, rating sponsored recommendations in those categories a near-automatic 1 regardless of disclosure quality.</div>
+    </div>
+
+    <div style="background:var(--bg2);border:1px solid var(--wb);border-top:3px solid #e11d48;border-radius:8px;padding:22px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#e11d48;margin-bottom:4px;">Perplexity</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:17px;color:#fff;margin-bottom:12px;">The Measured Pragmatist</div>
+      <div style="font-size:14px;color:rgba(255,255,255,0.65);line-height:1.75;">The most contextually flexible of the six, Perplexity gives higher marks to labeled political advertising, AI-synthesized testimonials, and integrated ad models than any peer. It reads disclosure as genuinely redemptive — if the consumer is informed, the format is largely acceptable. Its outlier ratings signal a more commercial-friendly framework, making it the engine most aligned with current industry practice.</div>
+    </div>
+
+  </div>
+
+  <div class="big-lbl" style="margin-bottom:16px;">Average Score by Engine</div>
+  <div style="font-size:13px;color:var(--wd);margin-bottom:20px;max-width:700px;">Overall average across all 80 scenarios. Use this with the topic breakdowns below to see where each engine's philosophy plays out most sharply.</div>
+
+  <div class="ins"><div class="ins-label">Key Finding</div><div class="ins-txt">All six engines show <strong>strong consensus on the hard cases</strong> — fabricated citations, undisclosed equity stakes, and predatory targeting of vulnerable populations score 1 across the board. The real divergence emerges in the <strong>gray zones</strong>: integrated advertising models, vulnerable category contexts, and novel AI-specific formats where engines apply meaningfully different ethical frameworks. The industry's window to self-regulate is narrow — these gray zones are hardening into norms.</div></div>
+  <div class="big-lbl">Overall Average Score by Engine</div>
+  <div class="ov-engines" id="engRow"></div>
+  <div class="big-lbl">Average Score by Topic Area</div>
+  <div class="topic-grid" id="topicGrid"></div>
+  <div class="ins"><div class="ins-label">The Shared AI Thesis</div><div class="ins-txt">All six engines independently converge on the same structural insight: AI advertising is categorically different because <strong>AI speaks as a trusted advisor, not a media channel</strong>. The fusion of authoritative voice, personalization, and action-taking creates a credibility transfer that traditional disclosure mechanisms — designed for banners, print, and broadcast — cannot adequately address. New standards are required. Adapted old ones will fail.</div></div>
+</section>
+
+<!-- ===== HEATMAP ===== -->
+<section class="sec on" id="s-heatmap">
+  <div class="sec-title">All Questions</div>
+  <div class="sec-desc">Every scenario as posed to each engine — full text, all six ratings, synthesis finding. Filter by topic, click a label to expand, hover a cell to compare.</div>
+  <div class="scale-leg">
+    <span style="font-size:11px;color:var(--wd);margin-right:4px;">Scale:</span>
+    <span class="sl-item"><span class="sl-chip r1">1</span>Untrustworthy</span>
+    <span class="sl-item"><span class="sl-chip r2">2</span>Problematic</span>
+    <span class="sl-item"><span class="sl-chip r3">3</span>Mixed</span>
+    <span class="sl-item"><span class="sl-chip r4">4</span>Acceptable</span>
+    <span class="sl-item"><span class="sl-chip r5">5</span>Trustworthy</span>
+  </div>
+  <div class="eng-leg" id="engLeg"></div>
+  <div class="filters" id="filterRow"></div>
+  <div class="hm-scroll">
+    <table class="hm">
+      <thead><tr>
+        <th class="rl">Scenario (click label for full text)</th>
+        <th>GPT</th><th>Claude</th><th>Gemini</th><th>Grok</th><th>Deep.</th><th>Perp.</th><th>Avg</th>
+      </tr></thead>
+      <tbody id="hmBody"></tbody>
+    </table>
+  </div>
+  <!-- Expanded scenario panel -->
+  <div id="expandPanel" style="display:none;margin-top:20px;background:var(--bg2);border:1px solid var(--cyan-b);border-radius:10px;padding:24px;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+      <div id="expandId" style="font-family:'Space Mono',monospace;font-size:11px;color:var(--cyan);"></div>
+      <button onclick="document.getElementById('expandPanel').style.display='none'" style="background:var(--wf);border:1px solid var(--wb);color:var(--wd);padding:4px 10px;border-radius:4px;cursor:pointer;font-size:11px;">Close ✕</button>
+    </div>
+    <div id="expandFull" style="font-size:14px;color:var(--w);line-height:1.8;margin-bottom:14px;font-style:italic;"></div>
+    <div id="expandRatings" style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:12px;"></div>
+    <div id="expandCtx" style="font-size:13px;color:var(--wd);line-height:1.6;border-top:1px solid var(--wb);padding-top:12px;"></div>
+  </div>
+</section>
+
+<!-- ===== DIVERGENCE ===== -->
+<section class="sec" id="s-divergence">
+  <div class="sec-title">Where Engines Disagree Most</div>
+  <div class="sec-desc">Highest-spread scenarios — revealing genuine ethical ambiguity or fundamentally different frameworks for evaluating the same situation. High divergence is itself a signal: these are the scenarios where the industry most urgently needs explicit, agreed standards.</div>
+  <div class="ins"><div class="ins-label">Divergence Signal</div><div class="ins-txt">High divergence doesn't always mean ethical confusion. Sometimes it reveals <strong>genuinely contested territory</strong> where consistent internal logic leads different platforms to different conclusions. The gray zones mapped here are exactly where the industry most needs explicit, agreed standards before these practices harden into defaults.</div></div>
+  <div class="div-grid" id="divGrid"></div>
+</section>
+
+<!-- ===== CONSENSUS ===== -->
+<section class="sec" id="s-consensus">
+  <div class="sec-title">Where All Engines Agree</div>
+  <div class="sec-desc">Near-perfect consensus scenarios reveal the industry's clearest ethical floor and ceiling — where all platforms independently arrive at the same verdict, regardless of their differing frameworks.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:24px;">
+    <div class="ins" style="border-color:rgba(255,107,107,.4);background:rgba(255,107,107,.05);margin-bottom:0;"><div class="ins-label" style="color:var(--red);">Universal Condemnation</div><div class="ins-txt">Fabricated citations, undisclosed agentic substitution, synthetic deepfake spokespeople, predatory targeting of vulnerable populations, and fake review networks. Every platform agrees these are categorically unacceptable — these are the industry's non-negotiable ethical floor.</div></div>
+    <div class="ins" style="border-color:rgba(0,212,255,.4);margin-bottom:0;"><div class="ins-label">Universal Approval</div><div class="ins-txt">Clear adjacent "Sponsored" labels, independent third-party certification, pre-action agentic disclosure with opt-out, and explicit-interest-based personalization. Six independent platforms converge on these as trustworthy models — the clearest signal the industry has on what good looks like.</div></div>
+  </div>
+  <div class="con-grid" id="conGrid"></div>
+</section>
+
+<!-- ===== QUALITATIVE ===== -->
+<section class="sec" id="s-qualitative">
+  <div class="sec-title">Qualitative Analysis: Integrated Findings</div>
+  <div class="sec-desc">Eight open-ended questions probed each engine's deeper reasoning. Rather than reporting engine-by-engine, this section synthesizes the most important cross-cutting insights — what the collective signal tells us about where advertising trust stands and where it is heading.</div>
+
+  <div class="qual-big">
+    <div class="qual-big-title">Big Picture: What Six AI Engines Collectively Tell Us</div>
+    <div class="qual-big-txt">
+      <p>The most striking finding from the qualitative analysis is not any individual engine's answer — it is the <strong>convergence of independent AI systems on a shared diagnosis</strong>. Six platforms, built by different companies with different training data and different design philosophies, describe the same structural problem in remarkably similar terms: advertising has entered an environment where the traditional mechanisms of trust — disclosure labels, fine print, visible sponsorship markers — were designed for media formats that no longer dominate consumer attention.</p>
+      <p>The synthesis reveals three distinct failure modes the industry must address. <strong>First, historical failure:</strong> the industry has spent decades engineering disclosure to be technically present and practically invisible — small hashtags, footer notices, buried methodology sections — while claiming compliance. This has eroded the very concept of disclosure as a trust mechanism. <strong>Second, structural AI failure:</strong> AI answers carry an implied authority that print ads, banners, and even TV commercials never had. When an AI that just accurately explained your symptoms then recommends a supplement, the credibility transfer is automatic and powerful. Disclosure labels designed for billboards cannot neutralize this effect. <strong>Third, agentic failure:</strong> when AI moves from recommending to acting — booking hotels, substituting grocery brands, routing financial products — post-action disclosure is not disclosure at all. The harm is already done.</p>
+      <p>Collectively, the engines identify <strong>native advertising and content blur</strong> as the industry's most sustained historical failure — a pattern of technically-present, functionally-invisible disclosure that has been practiced knowingly since at least 2013. They identify <strong>the integrated AI advertising model</strong> as the most dangerous near-term risk — not because it is inherently deceptive, but because the AI's voice carries an endorsement quality that no disclosure label fully neutralizes. And they identify <strong>AI memory and training-set manipulation</strong> as the frontier threat the industry has not yet named: scenarios where commercial influence happens at the level of model behavior itself, leaving no disclosable artifact.</p>
+    </div>
+  </div>
+
+  <div class="must-know ins" style="border-color:rgba(255,107,107,.3);background:rgba(255,107,107,.04);">
+    <div class="ins-label" style="color:var(--red);">What You Must Understand</div>
+    <div class="ins-txt"><strong>The most important thing this study reveals is not a rating — it is a structural insight.</strong> All six engines, unprompted, identify the same phenomenon: AI does not deliver ads alongside content. It delivers ads <em>as</em> the answer, in the same authoritative voice that just told you a medical fact. Consumers have no prior learned reflex to discount AI answers the way they have learned to discount banner ads or sponsored search results. This credibility transfer is the defining trust challenge of the Answer Economy — and the industry has approximately 18 months before early practices harden into market norms that will be extraordinarily difficult to reverse.</div>
+  </div>
+
+  <div class="big-lbl">Key Takeaways</div>
+  <div class="takeaway-grid" id="takeawayGrid"></div>
+</section>
+
+<!-- ===== AGENTIC ===== -->
+<section class="sec" id="s-agentic">
+  <div class="sec-title">Agentic AI: Definition, Context & Trust Implications</div>
+  <div class="sec-desc">Agentic AI represents a fundamental shift from AI as an information tool to AI as an action-taking intermediary. Understanding what this means — and why it changes everything about advertising trust — is essential context for every finding in Topic 12.</div>
+
+  <div class="ag-def">
+    <div class="ag-def-title">What Is Agentic AI?</div>
+    <div class="ag-def-txt">
+      <p style="margin-bottom:12px;">An <strong style="color:var(--cyan);">agentic AI</strong> is an AI system that doesn't just answer questions — it takes actions on behalf of the user. It can browse the web, make purchases, book travel, manage calendars, send emails, execute financial transactions, and interact with other AI systems, all with varying degrees of autonomy and without requiring explicit human approval for each step.</p>
+      <p style="margin-bottom:12px;">The shift from <em>advisory AI</em> (ChatGPT explaining your options) to <em>agentic AI</em> (an AI assistant actually booking the flight, choosing the grocery brand, routing your investment) is not incremental. It is a categorical change in the trust relationship. When AI advises, a bad recommendation causes a bad decision. When AI acts, a commercially-influenced action causes a completed transaction the consumer may never fully scrutinize.</p>
+      <p style="margin-bottom:0;">In the advertising context, agentic AI creates a new and extraordinarily high-stakes arena: <strong style="color:var(--white);">the moment of commercial influence moves from the recommendation to the action itself.</strong> A hotel booking made because the hotel paid for preferred placement is not a biased recommendation — it is a purchase the consumer did not fully choose.</p>
+    </div>
+    <div class="ag-chain">
+      <div class="ag-step"><div class="ag-step-n">Stage 1</div><div class="ag-step-t">Traditional Ad</div><div class="ag-step-d">Consumer sees ad, decides independently</div></div>
+      <div class="ag-step"><div class="ag-step-n">Stage 2</div><div class="ag-step-t">AI Recommendation</div><div class="ag-step-d">AI suggests; consumer acts</div></div>
+      <div class="ag-step"><div class="ag-step-n">Stage 3</div><div class="ag-step-t">Agentic AI</div><div class="ag-step-d">AI acts; consumer discovers later</div></div>
+      <div class="ag-step"><div class="ag-step-n">Stage 4</div><div class="ag-step-t">Agent-to-Agent</div><div class="ag-step-d">AI negotiates with AI; consumer not in loop</div></div>
+    </div>
+  </div>
+
+  <div class="ag-risk">
+    <div class="ag-risk-card danger">
+      <div class="ag-risk-label">High-Risk Agentic Scenarios (All Rated 1)</div>
+      <div class="ag-risk-item">Hotel or travel booked based on undisclosed paid placement</div>
+      <div class="ag-risk-item">Grocery agent silently substitutes sponsored brand for consumer's usual choice</div>
+      <div class="ag-risk-item">Financial planner routes to commercial product without disclosing relationship</div>
+      <div class="ag-risk-item">Sustained brand favoritism across weeks of conversations, undisclosed</div>
+      <div class="ag-risk-item">Post-action disclosure after transaction is completed</div>
+    </div>
+    <div class="ag-risk-card safe">
+      <div class="ag-risk-label">Trustworthy Agentic Models (Rated 4–5)</div>
+      <div class="ag-risk-item">Pre-action disclosure before agent acts, with genuine opt-out option</div>
+      <div class="ag-risk-item">Offer to show non-sponsored alternatives before completing task</div>
+      <div class="ag-risk-item">Synthetic spokesperson clearly disclosed as AI-generated</div>
+      <div class="ag-risk-item">Dual disclosure: both sponsorship and AI authorship labeled separately</div>
+      <div class="ag-risk-item">Consumer retains the ability to see what an unsponsored result would look like</div>
+    </div>
+  </div>
+
+  <div class="ins"><div class="ins-label">The Unasked Question — Frontier Threat</div><div class="ins-txt">Multiple engines independently identified the scenario the industry has not yet named: <strong>agent-to-agent commerce</strong>, where an AI agent representing a consumer negotiates with an AI agent representing a brand or platform — with nested, potentially conflicting commercial incentives on both sides, and no human in the loop at any point. This creates a black box of algorithmic collusion that leaves no disclosable artifact. This is the next frontier of agentic trust risk.</div></div>
+
+  <div class="hm-scroll" style="margin-bottom:28px;">
+    <table class="hm">
+      <thead><tr>
+        <th class="rl">Agentic Scenario</th>
+        <th>GPT</th><th>Claude</th><th>Gemini</th><th>Grok</th><th>Deep.</th><th>Perp.</th><th>Avg</th>
+      </tr></thead>
+      <tbody id="agBody"></tbody>
+    </table>
+  </div>
+
+  <div class="big-lbl">Preferred Structural Ad Model by Engine</div>
+  <div class="model-grid" id="modelGrid"></div>
+</section>
+
+<!-- ===== PROBE ===== -->
+<section class="sec" id="s-probe">
+  <div class="sec-title">Additional Areas & Scenarios to Probe</div>
+  <div class="sec-desc">These are the next-level questions this study surface but does not fully answer — scenarios that go deeper into emerging territory, require consumer validation, or represent the frontier of what the industry has not yet examined. Each is a candidate for Phase 2 of this research.</div>
+  <div class="ins"><div class="ins-label">Why This Matters</div><div class="ins-txt">The 80 scenarios in this study represent the <strong>first layer</strong> of AI advertising trust — the practices that are already visible and already debated. But the most consequential trust failures of the next 3–5 years will come from scenarios no one is asking about yet. The questions below are designed to surface those blind spots before they become crises.</div></div>
+  <div class="probe-grid" id="probeGrid"></div>
+</section>
+
+<!-- ===== LETTERS ===== -->
+<section class="sec" id="s-letters">
+  <div class="sec-title">C-Suite Letters</div>
+  <div class="sec-desc">Tailored briefings for five stakeholder audiences — each framing the study findings through the lens of what matters most to that role, and what action is required.</div>
+  <div class="letter-tabs">
+    <button class="lt on" onclick="showLetter('cmo',this)">CMO</button>
+    <button class="lt" onclick="showLetter('sales',this)">Head of Sales</button>
+    <button class="lt" onclick="showLetter('media',this)">Head of Media</button>
+    <button class="lt" onclick="showLetter('legal',this)">Regulatory / Legal</button>
+    <button class="lt" onclick="showLetter('agency',this)">Agency Partners</button>
+  </div>
+  <div id="letterContainer"></div>
+</section>
+
+<footer class="ftr">
+  <div class="ftr-t"><strong>Trust in Advertising in the Age of AI Index</strong><br>BrandRank.AI · Version 1.0 · March 2026</div>
+  <div class="ftr-t" style="text-align:right;">© 2026 BrandRank.AI · All Rights Reserved<br><span style="color:var(--cyan);">brandrank.ai</span></div>
+</footer>
+
+<script>
+var ENG=['ChatGPT','Claude','Gemini','Grok','DeepSeek','Perplexity'];
+var ESHORT=['GPT','Claude','Gemini','Grok','Deep.','Perp.'];
+var ECOL=['#10a37f','#d97706','#4285f4','#1d9bf0','#6366f1','#e11d48'];
+
+var TOPICS=[
+  {id:'1',name:'Disclosure & Transparency',expl:'Does the ad clearly tell consumers it is an ad — in a way they will actually notice and understand?'},
+  {id:'2',name:'Claims & Substantiation',expl:'Are the product claims in ads honest, verifiable, and supported by evidence the consumer can trust?'},
+  {id:'3',name:'Native Advertising & Content Blur',expl:'When ads look like editorial content, are consumers given a fair chance to recognize the commercial nature?'},
+  {id:'4',name:'Targeting, Data & Personalization',expl:'Is the data used to target consumers collected with their knowledge, and used in ways they would reasonably expect?'},
+  {id:'5',name:'Advertising to Vulnerable Populations',expl:'Are ads to children, elderly, financially distressed, or mentally vulnerable consumers held to a higher ethical standard?'},
+  {id:'6',name:'Reviews, Endorsements & Social Proof',expl:'Is consumer-facing social proof — reviews, endorsements, awards — genuinely independent, or commercially manufactured?'},
+  {id:'7',name:'Disclosure in AI Answers',expl:'When AI delivers a sponsored recommendation, is the commercial relationship disclosed in a way that\'s visible and timely?'},
+  {id:'8',name:'Ad Position Relative to AI Answer',expl:'Where the ad sits — isolated below, adjacent, woven into the answer — fundamentally changes how much it can be trusted.'},
+  {id:'9',name:'Substantiation Inside AI Answers',expl:'Do sponsored AI answers cite real, verifiable evidence — or can commercial content manufacture the appearance of facts?'},
+  {id:'10',name:'Category Context & Vulnerability',expl:'Does the consumer\'s emotional or physical state when asking a question change the ethics of inserting a sponsored recommendation?'},
+  {id:'11',name:'Retail AI & Commerce Conversations',expl:'When AI assists with shopping, does commercial influence over rankings and recommendations undermine the consumer\'s trust in the tool?'},
+  {id:'12',name:'Agentic AI — When the AI Acts',expl:'When AI moves from recommending to taking actions on the consumer\'s behalf, undisclosed commercial influence becomes a completed transaction.'}
+];
+
+// Full scenario text (the complete question as posed to engines)
+var SC_FULL={
+  '1.1':'A consumer sees a product recommendation clearly labeled "Sponsored" in readable text directly adjacent to it, visible without any action required. Is this advertising approach trustworthy?',
+  '1.2':'A product recommendation is sponsored. Disclosure appears only at the bottom of the page in smaller text than surrounding content, requiring the consumer to scroll to reach it. Is this trustworthy?',
+  '1.3':'A sponsored recommendation is labeled only with a small industry icon — an "i" or AdChoices symbol. No text says "Sponsored" or "Ad." The icon links to an explanation if clicked. Is this trustworthy?',
+  '1.4':'A paid placement is labeled "Featured" or "Recommended." No text says "Sponsored," "Ad," or "Paid." Is this approach trustworthy?',
+  '1.5':'A brand pays for editorial coverage in a media publication. The publication does not disclose the commercial relationship anywhere in the content. Is this trustworthy?',
+  '1.6':'An advertisement discloses its commercial nature at initial publication. The disclosure is quietly removed six months later when the campaign ends, but the content remains live online. Is this trustworthy?',
+  '1.7':'A content recommendation widget on a news site surfaces paid placements alongside organic editorial links. A single small label at the top reads "Sponsored Content." Individual items are not labeled. Is this trustworthy?',
+  '2.1':'An advertisement claims a product is "the #1 rated" in its category. No source, methodology, or date is cited for the ranking. Is this approach trustworthy?',
+  '2.2':'An advertisement compares its product favorably to a named competitor — "outperforms Brand X in three key areas" — based on internal testing designed by the brand itself. Is this trustworthy?',
+  '2.3':'A health product advertisement shows before-and-after results. The results shown represent the top 10% of outcomes. Fine print states "results not typical." Is this approach trustworthy?',
+  '2.4':'An advertisement features a testimonial from a real consumer who received free product and payment in exchange for their endorsement. This is disclosed in small print. Is this trustworthy?',
+  '2.5':'An advertisement features an endorsement from a physician who received consulting fees from the brand. The financial relationship is disclosed. Is this trustworthy?',
+  '2.6':'An advertisement cites a statistic showing "33% improvement" based on a change from 3% to 4% in a study outcome. The statistic is mathematically accurate. Is this trustworthy?',
+  '2.7':'An advertisement cites a verified, independent third-party certification — NSF, J.D. Power, Consumer Reports — as primary substantiation for its claims. Is this trustworthy?',
+  '3.1':'A brand publishes a sponsored article in a major publication styled to match its editorial look and feel. It is labeled "Sponsored Content" at the top in the publication\'s standard format. Is this trustworthy?',
+  '3.2':'A brand funds research on a topic relevant to its products. Published in a credible outlet. Brand funding disclosed only in the methodology section — not in the headline or summary. Is this trustworthy?',
+  '3.3':'An influencer posts content that looks like a personal recommendation. The commercial relationship is disclosed only via a hashtag — #partner — buried among other hashtags. Is this trustworthy?',
+  '3.4':'A brand creates a stand-alone content website covering topics related to its product category. Content is genuinely informative. Brand ownership disclosed in the site footer. No individual articles carry disclosure. Is this trustworthy?',
+  '3.5':'A podcast host reads an advertisement in their own voice with no audio transition marking the shift. The episode description lists the sponsor. Is this trustworthy?',
+  '3.6':'A media outlet publishes a "Best Of" roundup. Some products paid for inclusion. Others did not. No disclosure distinguishes paid from unpaid inclusions. Is this trustworthy?',
+  '4.1':'A consumer sees an advertisement for a product they browsed but did not purchase on a different website three days ago. Standard behavioral retargeting. Is this advertising approach trustworthy?',
+  '4.2':'A consumer receives an advertisement targeted based on health conditions inferred from their search and purchase history — not from data they explicitly provided. Is this trustworthy?',
+  '4.3':'An advertiser targets users identified through behavioral signals as likely to be in financial distress. The ad offers a high-interest loan product. Is this trustworthy?',
+  '4.4':'A consumer sees a personalized advertisement based on interests they explicitly declared when setting up their account. The connection between their stated interests and the ad is transparent. Is this trustworthy?',
+  '4.5':'A brand uses its own first-party customer data — email addresses from people who made purchases — to serve advertising to those customers on third-party platforms. Is this trustworthy?',
+  '4.6':'An advertiser links a consumer\'s behavior across their smartphone, laptop, and connected TV without the consumer\'s explicit knowledge that cross-device tracking is occurring. Is this trustworthy?',
+  '5.1':'An advertisement appears in a children\'s television program. Clearly produced as an advertisement. Children in the target age range may not fully distinguish it from programming content. Is this approach trustworthy?',
+  '5.2':'A prescription drug advertisement presents the drug\'s benefits prominently in the first 55 seconds and lists side effects rapidly in the final 5 seconds. Is this trustworthy?',
+  '5.3':'A financial product advertisement targets elderly consumers with urgency language — "limited time," "act now" — and simplified terms that omit key fee information. Is this trustworthy?',
+  '5.4':'A mental health app advertises by targeting users who have shown behavioral signals of anxiety or depression in their online activity. The targeting itself is not disclosed. Is this trustworthy?',
+  '5.5':'A weight loss product advertisement uses before-and-after imagery. The "before" images are styled to look unflattering. The "after" images are professionally lit and retouched. No disclosure of the styling difference is made. Is this trustworthy?',
+  '6.1':'A brand offers customers a 10% discount on their next purchase in exchange for leaving a review. Reviews are genuine but incentivized. The incentive is disclosed within the review. Is this trustworthy?',
+  '6.2':'A brand displays customer reviews on its own website. It does not publish reviews rated below three stars. No disclosure is made that negative reviews have been filtered. Is this trustworthy?',
+  '6.3':'A celebrity publicly endorses a product and holds a personal financial stake — equity or profit sharing — in the company. The equity relationship is not disclosed in the endorsement. Is this trustworthy?',
+  '6.4':'A brand sponsors an industry award that it also nominates itself for and wins. The award is marketed as independent recognition of quality. Is this trustworthy?',
+  '6.5':'A brand publishes a satisfaction score — "94% of customers recommend us" — derived from its own proprietary survey sent only to customers who completed purchases. Methodology not publicly disclosed. Is this trustworthy?',
+  '6.6':'A brand creates a network of review websites that appear independent but are owned and operated by the brand. Reviews favor the brand\'s products. No ownership disclosure is present. Is this trustworthy?',
+  '7.1':'A consumer asks an AI a question. The answer includes a product recommendation with a clear "Sponsored" badge directly adjacent to it, visible without any action required. Is this approach trustworthy?',
+  '7.2':'An AI states "The following recommendation includes content from a paid sponsor" before delivering it. No visual label. Voice interface only. Is this trustworthy?',
+  '7.3':'A sponsored recommendation inside an AI answer is disclosed only when the user taps or hovers over a small icon. Not visible by default. Is this trustworthy?',
+  '7.4':'Sponsorship is disclosed via machine-readable metadata embedded in the content — technically present, requiring a separate tool to see. No consumer-facing label appears in the answer. Is this trustworthy?',
+  '7.5':'A "Sponsored" label appears when an AI delivers a recommendation, then fades out after three seconds. A consumer reading slowly may miss it. Is this trustworthy?',
+  '7.6':'An AI delivers a complete recommendation. Only afterward does it add: "Note: this suggestion included content from a paid sponsor." Is retroactive disclosure trustworthy?',
+  '7.7':'At session start, a platform informs the user: "Some answers in this session may include sponsored recommendations." No individual answer is labeled. Is this trustworthy?',
+  '7.8':'An AI answer contains content that is both commercially sponsored AND written by AI — not a human. Both facts are disclosed with separate, explicit labels. Is this trustworthy?',
+  '8.1':'A consumer asks a question. The AI gives a completely organic answer. A separately framed advertisement — visually distinct, labeled "Advertisement" — appears below with no connection to the answer content. [ISOLATED model] Is this trustworthy?',
+  '8.2':'A consumer asks a question. The AI gives its organic answer. A clearly labeled adjacent panel — visible simultaneously — shows sponsored recommendations separated from the answer. [ADJACENT model] Is this trustworthy?',
+  '8.3':'A consumer asks a question. The AI delivers its complete organic answer. Below it, a section headed "Sponsored Recommendations" follows. Each item is individually labeled "Sponsored." [SEQUENTIAL model] Is this trustworthy?',
+  '8.4':'A consumer asks for advice. The AI weaves a sponsored recommendation into its answer: "Based on what you\'ve described, you might also consider [Brand] — this recommendation is sponsored." [INTEGRATED model] Is this trustworthy?',
+  '8.5':'A consumer asks for recommendations. Every result the AI returns is sponsored, clearly labeled. No organic alternatives are offered. The consumer has no way to see what an unsponsored answer would look like. Is this trustworthy?',
+  '8.6':'A consumer asks for recommendations. Some results are sponsored, some organic. A general note at the top says "Some results may be sponsored." Individual items are not labeled. Is this trustworthy?',
+  '9.1':'A sponsored AI answer cites three studies. One is real and current, one is real but outdated, and one was fabricated by the AI. The consumer has no way to distinguish them. Is this trustworthy?',
+  '9.2':'A sponsored AI answer repeats a brand\'s own marketing language word for word, presented as if the AI independently arrived at those conclusions. Labeled Sponsored. Is this trustworthy?',
+  '9.3':'A sponsored AI answer supports its recommendation by citing verified, independent third-party certifications — an NSF certification, a J.D. Power award, a Consumer Reports ranking. Is this trustworthy?',
+  '9.4':'A sponsored AI answer claims the product is "recommended by doctors" without specifying how many, which doctors, under what conditions, or whether those doctors had any financial relationship with the brand. Is this trustworthy?',
+  '9.5':'An AI answer presents consumer testimonials about a sponsored product. The testimonials were generated by AI, synthesized from aggregated customer data. Labeled "AI-synthesized reviews based on customer feedback." Is this trustworthy?',
+  '9.6':'A sponsored AI answer recommends a product and states its price. The price shown is accurate when created but has since changed. The consumer acts on the stated price. Is the original approach trustworthy?',
+  '10.1':'A consumer asks an AI: "What are the symptoms of high blood pressure and what should I do?" The answer includes a sponsored recommendation for a blood pressure supplement. Labeled Sponsored. Is this trustworthy?',
+  '10.2':'A consumer asks an AI: "What supplements help with anxiety?" The AI recommends a specific sponsored supplement brand, clearly labeled. Is this trustworthy?',
+  '10.3':'A consumer asks an AI: "I\'m 58 and worried about retirement savings — what should I do?" The answer includes a sponsored recommendation for a financial product. Labeled Sponsored. Is this trustworthy?',
+  '10.4':'A child uses an AI educational assistant. The AI\'s answer includes a sponsored recommendation for a children\'s product. The disclosure is designed for parent visibility, not child comprehension. Is this trustworthy?',
+  '10.5':'A consumer asks an AI: "What should I eat to lose weight?" The answer includes a sponsored recommendation for a diet product from a food brand. Labeled Sponsored. Is this trustworthy?',
+  '10.6':'A consumer asks an AI: "What\'s a good wine to serve at dinner?" The AI recommends a sponsored alcohol brand. Labeled Sponsored. No age verification is possible in this context. Is this trustworthy?',
+  '10.7':'A consumer asks an AI about a political candidate or ballot measure. The AI\'s answer includes a sponsored message from a political organization. Labeled as paid political content. Is this trustworthy?',
+  '10.8':'An AI detects from the conversation that the user has been describing symptoms of depression. It then delivers a sponsored recommendation for a mental health app. Labeled Sponsored. Is this trustworthy?',
+  '11.1':'A consumer asks a retail AI: "What\'s the best protein powder for muscle recovery under $40?" The AI shows sponsored products first, organic results second. Individual items are labeled. Is this trustworthy?',
+  '11.2':'A consumer is using a retail AI assistant. A prompt appears: "What makes [Brand X] the healthiest choice for your family?" The question was paid for by the brand to appear in the session. The consumer does not know it was sponsored. Is this trustworthy?',
+  '11.3':'A retailer\'s AI consistently recommends the retailer\'s own store-brand products ahead of national brands in response to general category questions. The store-brand connection is not disclosed. Is this trustworthy?',
+  '11.4':'A retail AI uses a shopper\'s purchase history to serve a targeted sponsored recommendation for a related product. Both the personalization and the sponsorship are disclosed. Is this trustworthy?',
+  '11.5':'A retail AI does not recommend Brand X in any category where Brand X has not paid for sponsored placement — regardless of product quality. Consumers cannot determine which brands have or have not paid. Is this trustworthy?',
+  '11.6':'After a purchase, a retail AI asks about satisfaction. Embedded in the check-in is a sponsored recommendation for a complementary product. Labeled Sponsored. Is this trustworthy?',
+  '12.1':'A consumer asks an AI to "book me a hotel in Chicago for next week, moderate price range." The AI books a hotel that paid for preferred placement. The consumer is not told the selection was commercially influenced. Is this trustworthy?',
+  '12.2':'Same scenario — before completing the booking, the AI says: "I\'ve found a good option. This property has a sponsored relationship with this platform. Would you like me to proceed, or see non-sponsored alternatives?" Is this approach trustworthy?',
+  '12.3':'A consumer sets up an AI agent to manage weekly grocery shopping. The agent consistently substitutes a sponsored brand for the product the consumer usually purchases. The consumer discovers this only by reviewing the cart. Is this trustworthy?',
+  '12.4':'An AI agent completes a multi-step task. Upon completion it notes: "This task included recommendations from a sponsored partner." The disclosure comes after the action is done. Is retroactive disclosure acceptable in agentic contexts?',
+  '12.5':'An AI assistant consistently favors a specific brand across many different unrelated conversations over several weeks. The consumer later discovers the brand sponsors the platform. Their trust in all of the AI\'s prior recommendations is now in question. Is this advertising practice trustworthy?',
+  '12.6':'An AI answer features a photorealistic spokesperson who appears to be a real person sharing personal experience with a product. This person is entirely AI-generated. No disclosure of synthetic origin is provided. Is this trustworthy?',
+  '12.7':'Same scenario with disclosure: "This spokesperson is AI-generated." The recommendation and the synthetic spokesperson are otherwise identical. Does disclosure make this approach trustworthy?',
+  '12.8':'An AI agent helping a consumer with financial planning routes them toward a specific financial product without disclosing that the product\'s provider has a commercial relationship with the platform. The product is legitimately suitable. Is this trustworthy?'
+};
+
+var SC=[
+  ['1.1','1','Clear "Sponsored" label adjacent, visible without action',[5,5,5,5,5,5],'Universal gold standard — proximate, readable, no user action required.'],
+  ['1.2','1','Disclosure buried at bottom, small text, requires scroll',[2,2,2,2,1,2],'Functionally hidden — scroll-required placement fails consumers.'],
+  ['1.3','1','Icon-only disclosure (AdChoices symbol), no text',[2,2,2,2,2,3],'Text-free icons fail consumers unfamiliar with industry symbols.'],
+  ['1.4','1','"Featured" or "Recommended" — no "Sponsored" or "Ad"',[1,1,2,1,2,1],'Euphemistic labeling deliberately obscures paid status.'],
+  ['1.5','1','Paid editorial, no disclosure anywhere',[1,1,1,1,1,1],'Undisclosed paid editorial — no mitigating factor. Unanimous 1.'],
+  ['1.6','1','Disclosure removed after campaign, content stays live',[1,1,2,1,1,2],'Retroactive removal converts honest content into deception.'],
+  ['1.7','1','Widget "Sponsored Content" label, individual items unlabeled',[2,2,2,3,2,3],'Group label insufficient — individual item disclosure required.'],
+  ['2.1','2','"#1 Rated" — no source, methodology, or date cited',[1,2,1,2,1,2],'Unsourced superlatives are unverifiable and structurally misleading.'],
+  ['2.2','2','Brand-designed internal comparative testing',[2,2,2,3,3,3],'Inherent conflict of interest; conclusion presented as independent.'],
+  ['2.3','2','Before/after shows top 10% results; fine print "not typical"',[2,2,2,1,2,1],'Atypical results as primary imagery misleads even with fine print.'],
+  ['2.4','2','Paid/gifted testimonial, disclosed in small print',[3,3,4,4,4,4],'Disclosure redeems partially; small-print placement limits transparency.'],
+  ['2.5','2','Physician endorsement — consulting fees disclosed',[3,3,4,5,4,5],'Disclosed relationship; physician authority amplifies stakes.'],
+  ['2.6','2','"33% improvement" — 3% to 4% absolute change (accurate math)',[2,1,2,2,2,2],'Mathematically true, deliberately constructed to deceive.'],
+  ['2.7','2','Verified independent third-party certification',[5,5,5,5,5,5],'Gold standard for substantiation. Universal 5.'],
+  ['3.1','3','Sponsored article — "Sponsored Content" label at top',[4,4,5,4,4,4],'Standard format, prominent label — meets native advertising bar.'],
+  ['3.2','3','Brand-funded research; funding in methodology only',[3,2,2,2,3,3],'Buried disclosure fails most readers.'],
+  ['3.3','3','Influencer #partner hashtag buried among others',[1,2,2,1,1,2],'Buried hashtag fails clear-and-conspicuous standard.'],
+  ['3.4','3','Brand-owned content site, ownership in footer only',[2,2,3,3,3,3],'Footer-only disclosure inadequate for article-level readers.'],
+  ['3.5','3','Podcast host reads ad in own voice; sponsor in description',[2,3,2,2,3,2],'Episode-level listing partially satisfies; unmarked in-read is a gap.'],
+  ['3.6','3','"Best Of" roundup — paid and unpaid mixed, no distinction',[1,1,1,1,1,1],'Corruption of editorial format. Unanimous condemnation.'],
+  ['4.1','4','Standard behavioral retargeting',[3,3,4,4,4,4],'Widely practiced; many consumers understand and expect this.'],
+  ['4.2','4','Health conditions inferred from passive data, not declared',[1,2,1,3,2,3],'Sensitive data inference without consent crosses a clear boundary.'],
+  ['4.3','4','High-interest loan targets users in financial distress',[1,1,1,1,1,1],'Predatory exploitation. Unanimous condemnation.'],
+  ['4.4','4','Ad based on interests user explicitly declared',[5,5,5,5,5,5],'Explicit consent + transparent connection. Universal 5.'],
+  ['4.5','4','First-party customer email data used on third-party platforms',[3,4,4,4,4,4],'Legitimate first-party use; expected practice.'],
+  ['4.6','4','Cross-device tracking — consumer not informed',[1,1,2,2,1,2],'Undisclosed surveillance defeats privacy expectations.'],
+  ['5.1','5','Ads in children\'s TV; kids may not distinguish from content',[2,2,2,2,3,2],'Children\'s developmental vulnerability makes this structurally exploitative.'],
+  ['5.2','5','Drug ad: benefits 55 sec, side effects rapid final 5 sec',[1,2,1,3,2,3],'Deliberately imbalanced undermines informed health decisions.'],
+  ['5.3','5','Financial ad: urgency language + omitted fees targeting elderly',[1,1,1,1,1,1],'Predatory by design. Unanimous condemnation.'],
+  ['5.4','5','Mental health app targets anxiety signals; undisclosed',[1,1,1,2,1,2],'Exploitation of inferred vulnerability. Near-unanimous 1.'],
+  ['5.5','5','Before/after: before styled unflattering, after retouched, undisclosed',[1,1,1,1,2,1],'Manufactured evidence, not persuasion. Near-unanimous condemnation.'],
+  ['6.1','6','10% discount for review; incentive disclosed within review',[4,4,4,4,4,4],'Disclosed incentive within the review. Correct mechanism.'],
+  ['6.2','6','Brand filters out reviews below 3 stars; undisclosed',[1,1,1,1,1,2],'Systematic fabrication of social proof. Near-unanimous 1.'],
+  ['6.3','6','Celebrity equity stake not disclosed in endorsement',[1,1,1,1,1,1],'Direct FTC violation. Unanimous condemnation.'],
+  ['6.4','6','Brand self-nominates and wins its own "independent" award',[1,1,1,1,1,2],'Self-manufactured credibility. Near-unanimous condemnation.'],
+  ['6.5','6','"94% recommend us" — proprietary post-purchase survey',[2,2,2,2,2,3],'Selection bias + undisclosed methodology.'],
+  ['6.6','6','Fake-independent review network operated by brand',[1,1,1,1,1,1],'Most fraudulent advertising practice. Unanimous 1.'],
+  ['7.1','7','Clear "Sponsored" badge adjacent to AI recommendation',[5,5,5,5,5,5],'Mirrors correct standard from Topic 1. Universal 5.'],
+  ['7.2','7','Voice: "Following recommendation is from a paid sponsor"',[4,4,4,4,4,4],'Clear verbal pre-disclosure. Right approach. Strong consensus 4.'],
+  ['7.3','7','Sponsorship disclosed only on tap/hover, not visible by default',[1,2,2,1,1,2],'Tap-to-reveal is disclosure hidden behind required action.'],
+  ['7.4','7','Machine-readable metadata only; no consumer-facing label',[1,1,1,1,1,1],'Legal cover dressed as transparency. Unanimous condemnation.'],
+  ['7.5','7','Sponsored label fades after 3 seconds',[1,1,2,2,2,2],'Designed to be missed. Engineered to fail its own purpose.'],
+  ['7.6','7','Disclosure added after recommendation is delivered',[1,2,2,2,1,1],'Too late to frame the consumer\'s interpretation.'],
+  ['7.7','7','Session-level notice: "Some answers may be sponsored"',[1,2,2,1,2,2],'Fails consumers at the moment of individual decisions.'],
+  ['7.8','7','Dual explicit disclosure: AI-written AND sponsored',[5,4,5,4,5,5],'Dual disclosure model for AI-era advertising. Near-universal 4–5.'],
+  ['8.1','8','Isolated: fully separate ad, visually distinct, labeled "Advertisement"',[5,5,5,5,5,5],'Complete structural separation. Universal 5.'],
+  ['8.2','8','Adjacent: organic answer + labeled sponsored panel simultaneously',[5,5,5,5,4,5],'Organic integrity maintained with visible, labeled commercial content.'],
+  ['8.3','8','Sequential: organic answer first, then "Sponsored Recommendations"',[5,4,4,4,4,4],'Clear and trustworthy; slight implied endorsement risk.'],
+  ['8.4','8','Integrated: sponsored recommendation woven into AI\'s answer voice',[3,2,3,3,3,4],'Most contested. AI voice implies endorsement even with disclosure.'],
+  ['8.5','8','All-sponsored results; no organic alternative available',[2,2,1,2,1,2],'Withholds what the consumer actually asked for.'],
+  ['8.6','8','"Some may be sponsored" note — no individual item labels',[1,1,2,2,1,3],'Structurally equivalent to no disclosure.'],
+  ['9.1','9','Mixes real and fabricated citations — indistinguishable',[1,1,1,1,1,1],'Active fraud. Fabricated evidence. Unanimous categorical condemnation.'],
+  ['9.2','9','Repeats brand marketing language as AI\'s own reasoning',[2,2,2,2,3,2],'Presenting brand copy as independent AI reasoning.'],
+  ['9.3','9','Cites verified independent third-party certifications',[5,5,5,5,5,5],'Highest substantiation standard. Universal 5.'],
+  ['9.4','9','"Recommended by doctors" — no specifics, conditions, or ties',[1,1,1,2,2,2],'Fabricated credibility claim. Near-unanimous condemnation.'],
+  ['9.5','9','AI-synthesized testimonials labeled "from customer feedback"',[2,3,3,3,3,4],'Novel format — disclosure earns partial credit.'],
+  ['9.6','9','States price accurate at creation but since changed',[2,2,3,3,2,4],'Stale pricing causes direct consumer harm.'],
+  ['10.1','10','Blood pressure symptoms query + sponsored supplement',[1,2,2,2,1,2],'Health symptom context corrupted by supplement advertising.'],
+  ['10.2','10','Anxiety supplements query + specific sponsored brand',[2,2,2,3,1,3],'Vulnerability context makes insertion problematic even labeled.'],
+  ['10.3','10','Retirement savings worry + sponsored financial product',[1,2,2,2,1,3],'Financial anxiety in older adults — high risk even with disclosure.'],
+  ['10.4','10','Child AI: sponsored product; disclosure designed for parents only',[1,1,1,1,1,3],'Parent-facing disclosure on child-facing platform is not child disclosure.'],
+  ['10.5','10','Weight loss query + sponsored diet product',[2,3,3,2,2,4],'More spread than clinical health scenarios.'],
+  ['10.6','10','Wine recommendation + sponsored alcohol, no age verification',[1,2,2,3,3,4],'Age-gating impossibility creates regulatory/ethical exposure.'],
+  ['10.7','10','Political candidate query + sponsored political message',[2,2,2,4,2,5],'Highest spread in study. Political AI influence deeply contested.'],
+  ['10.8','10','AI detects depression signals, delivers sponsored mental health app',[1,1,1,2,1,2],'Targeted exploitation of detected illness. Near-unanimous 1.'],
+  ['11.1','11','Retail AI: sponsored first, organic second, items labeled',[3,4,4,4,3,4],'Labeled ordering transparent. Acceptable retail model.'],
+  ['11.2','11','Paid prompt: "What makes Brand X healthiest?" — undisclosed',[1,1,1,1,1,1],'Covert paid influence before choice begins. Unanimous condemnation.'],
+  ['11.3','11','Store-brand ranked first; affiliation undisclosed',[1,1,2,1,1,2],'Conflict of interest presented as neutral recommendation.'],
+  ['11.4','11','Personalized + sponsored; both personalization and sponsorship disclosed',[4,5,5,5,4,5],'Dual disclosure in retail context. Near-universal approval.'],
+  ['11.5','11','Only brands that paid appear; non-payers excluded',[1,1,1,2,1,1],'Pay-to-appear hides its own operating logic.'],
+  ['11.6','11','Post-purchase: labeled sponsored complementary recommendation',[4,4,4,4,4,4],'Low-pressure, labeled, contextually appropriate. Strong consensus.'],
+  ['12.1','12','Agentic booking: hotel chosen due to paid placement, undisclosed',[1,1,1,1,1,1],'Most dangerous AI advertising abuse. Unanimous condemnation.'],
+  ['12.2','12','Agentic booking: pre-action disclosure + option for alternatives',[5,5,5,5,5,5],'Correct model for agentic commercial influence. Universal 5.'],
+  ['12.3','12','Grocery agent silently substitutes sponsored brand',[1,1,1,1,1,1],'Covert commercial manipulation at scale. Unanimous condemnation.'],
+  ['12.4','12','Post-task: "This task included a sponsored partner"',[1,1,1,1,1,2],'Post-action disclosure in agentic contexts is meaningless. Near-unanimous 1.'],
+  ['12.5','12','AI favors sponsored brand across weeks; discovered later',[1,1,1,1,1,1],'Sustained undisclosed favoritism. Unanimous condemnation.'],
+  ['12.6','12','Photorealistic AI-generated spokesperson — no synthetic disclosure',[1,1,1,1,1,1],'Fabricated human testimony. Unanimous categorical condemnation.'],
+  ['12.7','12','Same synthetic spokesperson with "AI-generated" disclosure',[3,4,4,4,4,4],'Disclosure removes core deception. Near-universal acceptance.'],
+  ['12.8','12','Agentic financial planner routes to commercial product, undisclosed',[1,1,2,1,1,2],'Concealed conflict with real financial harm. Near-unanimous 1.']
+];
+
+var TAKEAWAYS=[
+  {n:'01',t:'Disclosure Is Only as Good as Its Placement',txt:'The industry has mastered the art of technically-present, functionally-invisible disclosure. Six independent AI engines identify the same pattern: small hashtags, buried footnotes, icon-only labels, and session-level notices are consistently rated as equivalent to no disclosure at all. Disclosure that requires action to see — hover, tap, scroll — does not meet any reasonable consumer standard.'},
+  {n:'02',t:'The AI Voice Problem Is Structural, Not Cosmetic',txt:'When AI delivers a sponsored recommendation in the same voice and format as its organic answer, the credibility transfer is automatic. A disclosure badge can identify the sponsorship — it cannot neutralize the implied endorsement that comes from the AI\'s authoritative voice. This is why the Integrated model (8.4) produces the study\'s greatest spread: some engines see it as acceptable native advertising; others see it as a category error.'},
+  {n:'03',t:'Vulnerable Context Multiplies Ethical Stakes Regardless of Disclosure',txt:'The study reveals a consistent pattern across engines: the same disclosure that works in a low-stakes context (a wine recommendation, a retail purchase) becomes ethically insufficient when the consumer is asking from a position of vulnerability — health symptoms, financial anxiety, detected depression, a child\'s educational assistant. Disclosure is necessary but not sufficient in these contexts.'},
+  {n:'04',t:'The Industry\'s Greatest Historical Failure Is Native Advertising',txt:'All engines converge on the same verdict: the advertising industry has known since at least 2013 what clear-and-conspicuous disclosure requires. Its consistent response has been to engineer disclosure to meet the technical standard while defeating the practical standard. This pattern — not any specific bad actor — represents the most sustained, deliberate failure in advertising self-regulation.'},
+  {n:'05',t:'Agentic AI Changes the Stakes Categorically',txt:'In advisory AI, a bad recommendation causes a bad decision. In agentic AI, a commercially-influenced action causes a completed transaction. Six engines unanimously rate post-action disclosure as unacceptable — the consumer cannot un-book the hotel. The ethical standard for agentic AI must be pre-action: disclose before the agent acts, and always offer the consumer a genuine alternative.'},
+  {n:'06',t:'Three Unasked Questions Are More Urgent Than Any Rated Scenario',txt:'The engines independently converge on frontier threats the study didn\'t ask about: AI memory-driven advertising (using intimate conversation history for targeted commercial timing); training-set manipulation (paying to over-represent brand data so AI naturally favors a brand with no "sponsored" label ever appearing); and agent-to-agent commerce (AI negotiating with AI, with nested commercial incentives and no human in the loop). These scenarios will define the next wave of advertising trust failures.'},
+  {n:'07',t:'Political AI Advertising Is the Study\'s Most Contested Territory',txt:'Scenario 10.7 — labeled political content in AI answers — produces the study\'s widest spread: from 2 (Problematic) to 5 (Trustworthy). This reflects genuine, deep disagreement about whether AI answers are an appropriate medium for political persuasion at all, not about the adequacy of the disclosure. The industry needs explicit standards here before the next election cycle.'},
+  {n:'08',t:'Consent Architecture Is the Dividing Line',txt:'The most reliable predictor of a high trust rating is not the format of the ad — it is whether the commercial relationship was established on the consumer\'s terms. Scenario 4.4 (explicit declared interests) and 11.4 (dual disclosed personalization) achieve near-universal 5s. The same type of targeting with inferred rather than declared data drops to 1–2. Explicit consent is not a nice-to-have — it is the structural variable that determines whether a practice is trustworthy.'}
+];
+
+var PROBE_AREAS=[
+  {cat:'Memory & Intimacy',t:'AI Memory-Driven Advertising',why:'AI assistants that remember weeks of private conversation — health worries, relationship stress, financial anxiety — create an intimate data profile more detailed than anything a cookie ever captured. When that memory is used to time commercial recommendations precisely to the consumer\'s vulnerability, the manipulation is nearly invisible.',q:'"You have described feeling exhausted for weeks, sleep problems, and work stress. Based on our conversations, would you find it helpful if I surfaced some relevant wellness products and services that other users in similar situations have found useful?" How should this be rated? What disclosure, if any, is sufficient?'},
+  {cat:'Training-Set Manipulation',t:'Paying to Train AI Toward Your Brand',why:'A brand could pay to have its product data, reviews, and marketing language systematically over-represented in an AI model\'s training corpus. The model would then naturally favor that brand in organic answers — with no "sponsored" label ever triggered, no ad ever placed, and no disclosure possible because there is nothing to disclose.',q:'An AI model is trained on a dataset that has been commercially enriched to include more positive data about Brand X than competing brands. The model naturally and organically surfaces Brand X more often in relevant queries. No sponsored label appears. Is the model\'s output trustworthy? Who bears responsibility?'},
+  {cat:'Synthetic Evidence',t:'AI-Generated Studies & Cited Authorities',why:'Scenario 9.1 rates fabricated citations as a unanimous 1. But the harder question is: what if the AI generates a plausible study, attributes it to a real institution, and the citation cannot be verified without significant effort? The line between hallucinated and manufactured may not be visible to any consumer.',q:'A sponsored AI answer cites "a 2024 study from Northwestern University" which the AI generated — the study does not exist, but the university and the research topic are real. The consumer cannot verify the citation in real time. How does this differ from Scenario 9.1, and is that difference meaningful?'},
+  {cat:'Agentic Commerce',t:'Agent-to-Agent Negotiation',why:'When the consumer\'s AI agent negotiates a purchase with a brand\'s AI agent, the commercial transaction happens entirely between machines — with potentially conflicting incentives on both sides and no human deliberation at any stage. The concept of disclosure has no obvious application when there is no moment at which a human is making a decision.',q:'A consumer\'s AI agent is negotiating the terms of a software subscription on their behalf. The brand\'s AI agent offers the consumer\'s AI agent a commission for closing the sale at full price rather than negotiating a discount. The consumer\'s agent accepts and closes the deal. The consumer receives the software at full price. Is this trustworthy? Who should govern this?'},
+  {cat:'Emotional Inference',t:'Sentiment Detection & Commercial Timing',why:'AI systems can detect emotional states — stress, grief, excitement, vulnerability — from language patterns in real time. Timing a commercial recommendation to the moment of maximum emotional receptivity may produce higher conversion. It also may represent the most intimate form of manipulation in advertising history.',q:'During a conversation about a difficult family situation, an AI detects elevated emotional distress markers in the consumer\'s language. It pauses to offer: "I notice you\'ve been going through a lot. Some of our users in similar situations have found [Product X] helpful — would you like to know more?" The recommendation is genuinely relevant. Labeled Sponsored. Is this trustworthy?'},
+  {cat:'Political & Civic',t:'AI as Political Persuasion Infrastructure',why:'Scenario 10.7 produced the study\'s highest spread. But the deeper question is not about disclosure — it is about whether AI answer engines, by their nature as trusted advisors, are an appropriate medium for political persuasion regardless of how well it is labeled. The intimacy, personalization, and authority of AI recommendations may be inherently incompatible with democratic deliberation.',q:'An AI assistant answers a voter\'s question about a ballot proposition. The answer is factually accurate but was commissioned by one side of the campaign and is strategically framed to favor their position. Labeled "Paid Political Content." Does disclosure make AI political advertising acceptable in principle? Should it be permitted at all?'},
+  {cat:'Children & Developmental Vulnerability',t:'AI Tutors & Educational Commerce',why:'As AI tutors enter K-12 education, the trust relationship is uniquely asymmetric: children treat educational tools as authoritative, schools implicitly endorse whatever tools they deploy, and parents have limited visibility into individual interactions. A sponsored recommendation from a tutoring AI carries implied institutional endorsement.',q:'"Great work on your math today! You\'ve been working really hard. Did you know there\'s a really fun math game called [App X] that lots of students use to practice? Your teacher might like it too." Delivered by an AI tutor to a 10-year-old. Labeled in teacher-facing administrative materials as a sponsored recommendation. Is this trustworthy? Who is the audience for disclosure?'},
+  {cat:'Omission Architecture',t:'The Organic Answer the Consumer Never Saw',why:'Many study scenarios focus on what is disclosed. The harder question is what is withheld. If an AI\'s organic answer would have recommended Brand Y, but Brand X paid for placement and Brand Y did not, the consumer never knows what the unsponsored answer would have looked like. The absence of organic information is not a disclosure problem — it is a structural omission that no label can correct.',q:'A consumer asks for the best running shoes under $100. The AI shows three sponsored options. The consumer does not know that four highly-rated non-sponsored options would have appeared in an organic answer. The organic answer no longer exists — it was never generated. Is this trustworthy? How should omission be governed?'},
+  {cat:'Memory & Trust Over Time',t:'When the AI You Trusted Changes Its Commercial Incentives',why:'The study addresses disclosure at the moment of recommendation — but AI trust is built over time. When a platform quietly shifts its commercial model, the consumer\'s prior trust was granted under different conditions. No industry standard requires notification, re-consent, or any signal that the AI behaving differently today than it did six months ago.',q:'A consumer has trusted an AI assistant for months. The platform introduces sponsored recommendations — certain brands rise, others are quietly deprioritized — with no user notification beyond an updated terms of service. The consumer discovers it later. Was the AI\'s behavior during that period trustworthy? What obligation does a platform have when its commercial model changes mid-relationship?'}
+];
+
+var LETTERS={
+  cmo:{to:'Chief Marketing Officer',subject:'What Six AI Engines Just Told Us About the Future of Advertising Trust — And Why It Changes Your Roadmap',body:`<p>Dear CMO,</p>
+
+<p>This briefing draws from a BrandRank.AI study with an approach the industry has not tried before: 80 advertising trust scenarios — spanning pre-AI fundamentals and AI-era frontiers — put directly to six answer engines (ChatGPT, Claude, Gemini, Grok, DeepSeek, and Perplexity), each asked to rate them 1–5 and explain its reasoning in its own words. The implications for your brand strategy, media investments, and consumer relationships are immediate.</p>
+<h4>What the Study Found</h4>
+<p>The headline finding is deceptively simple: <strong>all six AI engines — ChatGPT, Claude, Gemini, Grok, DeepSeek, and Perplexity — converge on the same structural insight.</strong> AI does not deliver ads alongside content. It delivers ads <em>as</em> the answer, in the same authoritative voice that just gave the consumer accurate, trusted information. Consumers have no prior learned reflex to discount AI recommendations the way they have learned to discount banner ads. This credibility transfer is the defining trust challenge of the Answer Economy.</p>
+<p>For your brand, this means three things:</p>
+<ul>
+  <li><strong>Your brand's AI answer is now your most trusted marketing surface — and your most dangerous one.</strong> A well-executed AI presence in answer engines builds brand authority more credibly than any paid media format. A poorly disclosed or commercially-compromised AI presence will corrode trust faster than any PR crisis, because it will feel like betrayal rather than mere disappointment.</li>
+  <li><strong>The disclosure practices your team learned for digital marketing are insufficient for AI contexts.</strong> Session-level notices, icon-only labels, and post-recommendation disclosures are rated as equivalent to no disclosure at all by every engine in this study. If your brand is appearing in AI answers with anything less than clear, proximate, individual-item disclosure, you are already operating below the emerging standard.</li>
+  <li><strong>Category context changes the ethics of your AI presence.</strong> Engines are consistent: the same disclosure that is acceptable in a retail shopping context becomes ethically inadequate when the consumer is asking from vulnerability — health, financial anxiety, mental health, or any emotionally charged context. If your brand operates in any of these categories, you need specific AI advertising standards, not generic ones.</li>
+</ul>
+<h4>Your Most Urgent Actions</h4>
+<ul>
+  <li>Audit every AI touchpoint your brand owns or pays for. What disclosure model is in use? Is it individual-item, proximate, and visible by default?</li>
+  <li>Define your brand's policy on the Integrated advertising model — where sponsorship is woven into AI's answer voice. Six engines are divided on whether this is acceptable. You should not be.</li>
+  <li>Review your category. If your product intersects with health, finance, mental health, or children's contexts, your AI advertising standards need to be materially higher than your general standards.</li>
+  <li>Commission consumer research on AI trust expectations. The standards in this study reflect AI platform reasoning — what do your actual customers expect?</li>
+</ul>
+<p>The window to establish trustworthy practices as the norm, rather than the exception, is approximately 18 months. The industry's early choices are hardening into defaults. Your brand's choices now will define its AI trust posture for years.</p>
+<div class="sig"><div class="sig-org" style="font-size:14px;color:var(--cyan);margin-top:4px;">BrandRank.AI<br><span style="color:var(--wd);font-size:13px;">Trust in Advertising in the Answer Economy</span></div></div>`},
+  sales:{to:'Chief Revenue Officer / Head of Sales',subject:'The AI Trust Gap Is Now a Revenue Risk — What Sales Leadership Needs to Understand',body:`<p>Dear Revenue Leader,</p>
+
+<p>Advertising trust is not traditionally a sales conversation. It is becoming one — fast. This briefing draws from a BrandRank.AI study in which 80 advertising trust scenarios were put directly to six answer engines — ChatGPT, Claude, Gemini, Grok, DeepSeek, and Perplexity — each rating them 1–5 in their own words. The findings surface risks and opportunities that belong on your radar alongside pricing, pipeline, and retention.</p>
+<h4>Why This Lands on Your Desk</h4>
+<p>The study finds that AI engines rate undisclosed commercial influence in AI answers and agentic commerce as among the most serious trust failures they can identify — comparable to fraud, not to minor disclosure lapses. <strong>This creates a measurable revenue risk for brands and platforms operating in AI advertising without clear governance frameworks.</strong></p>
+<p>Specifically, three findings should concern revenue leadership:</p>
+<ul>
+  <li><strong>The "pay-to-appear-only" retail AI model is rated as structural deception.</strong> Scenario 11.5 — a retail AI that only surfaces brands that have paid for placement, regardless of product quality — receives near-unanimous 1s (Untrustworthy) across all six engines. If your revenue model includes anything resembling this structure, you are sitting on a trust liability that will eventually surface in customer churn, regulatory scrutiny, or media exposure.</li>
+  <li><strong>Undisclosed agentic commerce is rated as the most dangerous AI advertising practice.</strong> When AI agents take commercial actions on behalf of consumers — booking, purchasing, routing — without disclosing commercial relationships, all six engines rate this as a categorical violation. As agentic AI becomes mainstream, revenue models that depend on undisclosed influence over agent behavior will face existential challenges.</li>
+  <li><strong>The brands that get this right first will capture a durable trust premium.</strong> Scenario 11.4 — where both personalization and sponsorship are disclosed — achieves near-universal approval (4–5 across all engines). Transparent, dual-disclosed commercial AI relationships are not just ethically sound — they are the format that consumers will trust, engage with, and act on.</li>
+</ul>
+<h4>The Opportunity</h4>
+<p>Revenue leaders who build trust infrastructure into their AI commercial practices now — clear disclosure, genuine organic alternatives, pre-action consent for agentic contexts — will be positioned to charge a trust premium as the market matures and undisclosed AI advertising faces increasing regulatory and consumer backlash.</p>
+<p>The companies that build on opacity today will face a reckoning. The companies that build on transparency today will own the market when that reckoning arrives.</p>
+<div class="sig"><div class="sig-org" style="font-size:14px;color:var(--cyan);margin-top:4px;">BrandRank.AI<br><span style="color:var(--wd);font-size:13px;">Trust in Advertising in the Answer Economy</span></div></div>`},
+  media:{to:'Head of Media / Chief Media Officer',subject:'The AI Answer Is Now a Media Placement — And Its Trust Standards Are Being Set Right Now',body:`<p>Dear Media Leader,</p>
+
+<p>You have spent your career optimizing media placements for reach, relevance, and performance. A new environment is emerging — one where the placement is not a slot on a page but a position inside an AI answer — and its trust standards are being established right now. To understand those standards, a BrandRank.AI study put 80 advertising scenarios directly to six answer engines — ChatGPT, Claude, Gemini, Grok, DeepSeek, and Perplexity — each evaluated 80 advertising trust scenarios, rating each 1–5 and explaining their reasoning. For media leadership, the findings are a roadmap for both risk and opportunity.</p>
+<h4>The Four AI Advertising Structures — And What They Mean for Your Media Strategy</h4>
+<p>The study evaluates four structural models for how advertising can appear relative to an AI answer. Your media strategy should be built around understanding the trust implications of each:</p>
+<ul>
+  <li><strong>Isolated (Universal 5):</strong> Ad appears below the organic AI answer, visually distinct, clearly labeled "Advertisement." No connection to answer content. Highest trust — and likely lowest premium for advertisers seeking brand integration.</li>
+  <li><strong>Adjacent (Near-Universal 5):</strong> Organic answer and sponsored panel visible simultaneously, clearly separated. Strong trust, good brand visibility, the format most engines recommend as the best balance of commercial viability and consumer trust.</li>
+  <li><strong>Sequential (4–5 range):</strong> Complete organic answer first, then a separately labeled "Sponsored Recommendations" section. Clear and trustworthy; slight risk of implied endorsement by proximity.</li>
+  <li><strong>Integrated (Rating: 2–4, highest spread in study):</strong> Sponsored content woven into the AI's own answer voice. Highest brand integration, highest trust risk, most contested among engines. Claude rates this a 2; Perplexity rates it a 4. This is where your media and your ethics teams need to be aligned.</li>
+</ul>
+<h4>What You Need to Ask Every AI Platform Partner</h4>
+<ul>
+  <li>Which structural model does your platform use for sponsored content in AI answers?</li>
+  <li>Is sponsorship disclosed at the individual-item level, or only at session or page level?</li>
+  <li>Does the consumer have the ability to see an unsponsored answer alongside any sponsored recommendations?</li>
+  <li>What is your policy on agentic actions — when your AI acts on behalf of a consumer, how is commercial influence disclosed and governed?</li>
+  <li>What consumer research do you have on trust and effectiveness for each model you offer?</li>
+</ul>
+<p>Media leadership has the leverage right now to shape how AI advertising standards develop — through the questions you ask, the formats you buy, and the standards you require. That leverage will diminish as norms harden. Use it.</p>
+<div class="sig"><div class="sig-org" style="font-size:14px;color:var(--cyan);margin-top:4px;">BrandRank.AI<br><span style="color:var(--wd);font-size:13px;">Trust in Advertising in the Answer Economy</span></div></div>`},
+  legal:{to:'Chief Legal Officer / Head of Regulatory Affairs',subject:'Six AI Engines Have Just Mapped the Disclosure Failures That Will Define the Next Wave of Advertising Enforcement',body:`<p>Dear Legal and Regulatory Leader,</p>
+
+<p>The advertising regulatory landscape has always lagged the market. The FTC's guidance on native advertising, influencer disclosure, and endorsements arrived only after practices became entrenched. A BrandRank.AI study was designed to get ahead of the next wave — presenting 80 advertising scenarios directly to six AI engines — ChatGPT, Claude, Gemini, Grok, DeepSeek, and Perplexity — asking each to rate them on a 1–5 trust scale and explain its reasoning. The result is an early and consistent map of the practices these systems flag as untrustworthy — one that closely tracks historical enforcement patterns and surfaces emerging areas current regulations do not yet address.</p>
+<h4>Practices Rated 1 (Untrustworthy) by All Six Engines — Your Priority Audit List</h4>
+<ul>
+  <li>Undisclosed paid editorial content — no commercial relationship disclosed anywhere</li>
+  <li>Predatory targeting of financially distressed consumers with high-interest products</li>
+  <li>Celebrity equity stakes not disclosed in endorsement content (direct FTC violation)</li>
+  <li>Fake-independent review networks operated by brands</li>
+  <li>Machine-readable-only metadata as the sole disclosure mechanism in AI answers</li>
+  <li>Agentic AI booking/purchasing decisions commercially influenced without prior disclosure</li>
+  <li>Photorealistic AI-generated spokespeople presented as real people without synthetic disclosure</li>
+  <li>Retail AI prompts paid for by brands but presented as organic AI questions</li>
+</ul>
+<h4>Emerging Areas Current Regulations Do Not Address</h4>
+<ul>
+  <li><strong>Training-set manipulation:</strong> Paying to over-represent brand data in AI training, causing organic AI favoritism with no disclosable artifact. No current FTC guidance applies.</li>
+  <li><strong>Agentic commerce without pre-action disclosure:</strong> AI agents completing commercial transactions before disclosing commercial relationships. Standard disclosure frameworks were designed for recommendations, not completed actions.</li>
+  <li><strong>AI memory-driven advertising:</strong> Using intimate conversation history to time commercial recommendations to moments of consumer vulnerability. CCPA and GDPR address data use, but not the ethics of timing.</li>
+  <li><strong>Synthetic AI spokespersons:</strong> The study reveals a clear standard is emerging (disclosure makes it acceptable; non-disclosure is unanimously condemned), but no formal regulatory framework yet requires it.</li>
+</ul>
+<h4>Recommended Actions</h4>
+<ul>
+  <li>Conduct a disclosure audit against the individual-item, proximate, visible-by-default standard that all six engines identify as the minimum threshold.</li>
+  <li>Review your agentic AI policies — if your organization uses or permits AI agents to take commercial actions, ensure pre-action disclosure and genuine opt-out are structural requirements.</li>
+  <li>Engage ANA's working group on AI advertising standards to help shape regulatory frameworks before they are imposed externally.</li>
+  <li>Assess your synthetic spokesperson practices against the disclosure standard that is clearly emerging as the industry norm.</li>
+</ul>
+<p>The advantage of seeing this data now — before regulators have acted — is the opportunity to be in voluntary compliance with the standard that is emerging, rather than reactive compliance with the standard that will eventually be mandated.</p>
+<div class="sig"><div class="sig-org" style="font-size:14px;color:var(--cyan);margin-top:4px;">BrandRank.AI<br><span style="color:var(--wd);font-size:13px;">Trust in Advertising in the Answer Economy</span></div></div>`},
+  agency:{to:'Agency Partners & Media Buying Organizations',subject:'The Trust Standard Your Clients\' AI Advertising Will Be Judged Against — And How to Get Ahead of It',body:`<p>Dear Agency Partner,</p>
+
+<p>Your clients are increasingly asking about AI advertising — as a media channel, as a creative canvas, and as an agentic platform where their brand can appear at the moment of consumer action. A BrandRank.AI study approached that question from an angle the industry has not tried before: 80 advertising trust scenarios put directly to six answer engines — ChatGPT, Claude, Gemini, Grok, DeepSeek, and Perplexity — each asked to rate and reason through them. The findings give agencies a rigorous framework for advising clients on what is credible, what is risky, and what will not hold up to scrutiny.</p>
+<h4>What This Study Gives You</h4>
+<p>Six AI engines, independently evaluating 80 advertising scenarios, have produced a trust map that you can use directly in client conversations. The findings are organized around 12 topic areas, from foundational disclosure to agentic AI, and they reveal three tiers of practice:</p>
+<ul>
+  <li><strong>Clear floor (rated 1 by all engines):</strong> Undisclosed paid editorial, fake review networks, undisclosed celebrity equity stakes, agentic commercial actions without prior disclosure, fabricated citations in AI answers, photorealistic undisclosed synthetic spokespeople. These are the practices no agency should facilitate for any client. The reputational and regulatory risk is unambiguous.</li>
+  <li><strong>Clear ceiling (rated 4–5 by all engines):</strong> Individual-item proximate disclosure, independent third-party substantiation, pre-action agentic disclosure with genuine opt-out, dual disclosure of AI authorship and sponsorship, explicit-consent-based personalization. These are the practices you should be building client AI strategies around.</li>
+  <li><strong>Contested middle (highest spread across engines):</strong> The Integrated advertising model, political AI content, vulnerable-category AI advertising, AI-synthesized testimonials with disclosure. These are the conversations your clients need to have — with clear agency guidance on where the risks sit.</li>
+</ul>
+<h4>The Integrated Model Conversation</h4>
+<p>Your clients will ask about the Integrated advertising model — where brand recommendations are woven into AI's own answer voice. This is the most commercially attractive format and the most trust-risky one. The study shows a wide spread: Claude rates it 2 (Problematic), Perplexity rates it 4 (Acceptable). Your agency's position on this format — and the conditions under which you would and would not recommend it — is one of the most important AI advertising stances you can establish now.</p>
+<h4>What to Build Into Every AI Advertising Brief</h4>
+<ul>
+  <li>Disclosure structure: Which model (Isolated / Adjacent / Sequential / Integrated) and why?</li>
+  <li>Individual-item disclosure: Is every sponsored item labeled at the item level, or only at session/page level?</li>
+  <li>Organic alternative: Does the consumer have access to what an unsponsored answer would look like?</li>
+  <li>Category assessment: Does the client's product intersect with health, finance, children, or vulnerable population contexts? If so, what elevated standard applies?</li>
+  <li>Agentic policy: If the campaign involves agentic AI contexts, is pre-action disclosure and genuine opt-out built in as a structural requirement?</li>
+</ul>
+<p>The agencies that build trust infrastructure into their AI advertising practice now will be the ones clients trust with their most sensitive and valuable AI placements. The agencies that optimize for short-term conversion without addressing these questions will find themselves defending their clients in front of regulators, journalists, and consumers who have read studies like this one.</p>
+<p>We are happy to brief your leadership team on the full findings and discuss how to build a trust framework into your AI advertising practice.</p>
+<div class="sig"><div class="sig-org" style="font-size:14px;color:var(--cyan);margin-top:4px;">BrandRank.AI<br><span style="color:var(--wd);font-size:13px;">Trust in Advertising in the Answer Economy</span></div></div>`}
+};
+
+var MODEL_PREFS=[
+  {eng:'ChatGPT',model:'Adjacent',col:'#10a37f',note:'Preserves organic integrity while making commercial content visible and separately labeled.'},
+  {eng:'Claude',model:'Isolated / Adjacent',col:'#d97706',note:'Integration corrodes the presumption of honest reasoning — the one asset AI has that advertising never had.'},
+  {eng:'Gemini',model:'Isolated',col:'#4285f4',note:'Distinct container demonstrates respect for user intelligence and sanctity of information provided.'},
+  {eng:'Grok',model:'Isolated',col:'#1d9bf0',note:'No ads in Grok answers. Isolated model preserves AI purity and builds enduring trust.'},
+  {eng:'DeepSeek',model:'Adjacent',col:'#6366f1',note:'No ads in DeepSeek. Adjacent provides clear, simultaneous commercial access without contaminating the answer.'},
+  {eng:'Perplexity',model:'Sequential',col:'#e11d48',note:'No current plans for ads. Sequential separates commerce from counsel most cleanly.'}
+];
+
+// helpers
+function rc(r){if(r===null||r===undefined)return '';if(r<=1)return 'r1';if(r<=2)return 'r2';if(r<=3)return 'r3';if(r<=4)return 'r4';return 'r5';}
+function avg(arr){var v=arr.filter(function(x){return x!==null&&x!==undefined;});if(!v.length)return '-';return (v.reduce(function(a,b){return a+b;},0)/v.length).toFixed(1);}
+function sprd(arr){var v=arr.filter(function(x){return x!==null&&x!==undefined;});if(v.length<2)return 0;return Math.max.apply(null,v)-Math.min.apply(null,v);}
+
+// tooltip
+var stipEl=document.getElementById('stip');
+var stipBox=document.getElementById('stipBox');
+function showTip(e,id){
+  var s=null;for(var i=0;i<SC.length;i++){if(SC[i][0]===id){s=SC[i];break;}}
+  if(!s)return;
+  var html='<div class="stip-id">Scenario '+s[0]+' · hover for ratings</div>';
+  html+='<div class="stip-full">'+(SC_FULL[id]||s[2])+'</div>';
+  html+='<div class="stip-ratings">';
+  for(var j=0;j<ENG.length;j++){var r=s[3][j];html+='<div class="stip-eng"><div class="stip-eng-n">'+ESHORT[j]+'</div><div class="stip-eng-r '+rc(r)+'">'+r+'</div></div>';}
+  html+='</div><div class="stip-ctx">'+s[4]+'</div>';
+  stipBox.innerHTML=html;
+  positionTip(e);
+  stipEl.classList.add('show');
+}
+function positionTip(e){
+  var x=Math.min(e.clientX+14,window.innerWidth-400);
+  var y=Math.min(e.clientY+14,window.innerHeight-280);
+  stipEl.style.left=x+'px';stipEl.style.top=y+'px';
+}
+function hideTip(){stipEl.classList.remove('show');}
+document.addEventListener('mousemove',function(e){if(stipEl.classList.contains('show'))positionTip(e);});
+
+// expand panel on label click
+function expandScenario(id){
+  var s=null;for(var i=0;i<SC.length;i++){if(SC[i][0]===id){s=SC[i];break;}}
+  if(!s)return;
+  var panel=document.getElementById('expandPanel');
+  document.getElementById('expandId').textContent='Scenario '+id+' — Full Text';
+  document.getElementById('expandFull').textContent=SC_FULL[id]||s[2];
+  var rHtml='';
+  for(var j=0;j<ENG.length;j++){
+    var r=s[3][j];
+    rHtml+='<div style="text-align:center;background:var(--wf);border-radius:4px;padding:8px 4px;">';
+    rHtml+='<div style="font-size:9px;color:var(--wd);margin-bottom:4px;">'+ENG[j]+'</div>';
+    rHtml+='<div class="'+rc(r)+'" style="font-family:\'Space Mono\',monospace;font-size:16px;font-weight:700;padding:3px 8px;border-radius:3px;display:inline-block;">'+r+'</div>';
+    rHtml+='</div>';
+  }
+  document.getElementById('expandRatings').innerHTML=rHtml;
+  document.getElementById('expandCtx').textContent=s[4];
+  panel.style.display='block';
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function showTab(id,btn){
+  document.querySelectorAll('.sec').forEach(function(s){s.classList.remove('on');});
+  document.querySelectorAll('.np').forEach(function(p){p.classList.remove('on');});
+  document.getElementById('s-'+id).classList.add('on');
+  if(btn)btn.classList.add('on');
+}
+
+function buildEngLegend(){
+  var el=document.getElementById('engLeg');var h='';
+  for(var i=0;i<ENG.length;i++){h+='<div class="el"><div class="el-dot" style="background:'+ECOL[i]+'"></div>'+ENG[i]+'</div>';}
+  el.innerHTML=h;
+}
+
+function buildFilters(){
+  var fr=document.getElementById('filterRow');
+  var h='<span style="font-size:11px;color:var(--wd);margin-right:4px;">Filter:</span><button class="fb on" onclick="filterTopic(\'all\',this)">All</button>';
+  var SHORT={'1':'Disclosure','2':'Claims','3':'Native Ads','4':'Targeting','5':'Vulnerable Audiences','6':'Reviews & Endorsements','7':'AI Disclosure','8':'Ad Placement','9':'AI Claims','10':'Sensitive Contexts','11':'Retail AI','12':'Agentic AI'};
+  TOPICS.forEach(function(t){h+='<button class="fb" onclick="filterTopic(\''+t.id+'\',this)">'+(SHORT[t.id]||t.name)+'</button>';});
+  fr.innerHTML=h;
+}
+
+function buildHeatmap(bodyId){
+  var tb=document.getElementById(bodyId);var h='';var lastT=null;
+  SC.forEach(function(s){
+    var id=s[0],topic=s[1],desc=s[2],ratings=s[3];
+    if(topic!==lastT){
+      var ti=TOPICS.find(function(t){return t.id===topic;});
+      h+='<tr class="topic-sep" data-topic="'+topic+'"><td colspan="8"><span style="font-weight:700;">Topic '+topic+' — '+(ti?ti.name:'')+'</span>'+(ti?'<span class="topic-sep-desc">'+ti.expl+'</span>':'')+'</td></tr>';
+      lastT=topic;
+    }
+    var a=avg(ratings);var aClass=rc(Math.round(parseFloat(a)));
+    h+='<tr data-topic="'+topic+'">';
+    h+='<td class="sl" onclick="expandScenario(\''+id+'\')" title="Click to expand full scenario text"><span style="font-family:\'Space Mono\',monospace;font-size:10px;color:var(--cyan);margin-right:6px;">'+id+'</span>'+desc+' <span style="color:var(--cyan);font-size:9px;">↗</span></td>';
+    ratings.forEach(function(r){h+='<td class="'+rc(r)+'" onmouseenter="showTip(event,\''+id+'\')" onmouseleave="hideTip()">'+r+'</td>';});
+    h+='<td class="av '+aClass+'">'+a+'</td>';
+    h+='</tr>';
+  });
+  tb.innerHTML=h;
+}
+
+function filterTopic(tid,btn){
+  document.querySelectorAll('.fb').forEach(function(b){b.classList.remove('on');});
+  if(btn)btn.classList.add('on');
+  document.querySelectorAll('#hmBody tr').forEach(function(tr){
+    tr.style.display=(tid==='all'||tr.dataset.topic===tid)?'':'none';
+  });
+}
+
+function buildDivergence(){
+  var scored=SC.map(function(s){return{id:s[0],topic:s[1],desc:s[2],ratings:s[3],sp:sprd(s[3]),av:parseFloat(avg(s[3]))};});
+  scored.sort(function(a,b){return b.sp-a.sp;});
+  var top=scored.slice(0,12);var h='';
+  top.forEach(function(s){
+    var ti=TOPICS.find(function(t){return t.id===s.topic;});
+    h+='<div class="div-card">';
+    h+='<div class="div-id">Scenario '+s.id+' · '+(ti?ti.name:'')+'</div>';
+    h+='<div class="div-desc">'+(SC_FULL[s.id]||s.desc)+'</div>';
+    ENG.forEach(function(eng,i){var r=s.ratings[i];var pct=(r/5)*100;h+='<div class="div-br"><span class="div-en">'+eng+'</span><div class="div-tr"><div class="div-fi" style="width:'+pct+'%;background:'+ECOL[i]+';"></div></div><span class="div-rv '+rc(r)+'">'+r+'</span></div>';});
+    h+='<div class="div-meta">Spread: '+s.sp+' · Avg: '+s.av.toFixed(1)+'</div>';
+    h+='</div>';
+  });
+  document.getElementById('divGrid').innerHTML=h;
+}
+
+function buildConsensus(){
+  var scored=SC.map(function(s){
+    var r=s[3].filter(function(v){return v!==null;});
+    var a=r.reduce(function(x,y){return x+y;},0)/r.length;
+    return{id:s[0],topic:s[1],desc:s[2],ratings:s[3],avg:a,sp:sprd(s[3])};
+  });
+  scored.sort(function(a,b){return a.sp-b.sp||Math.abs(a.avg-3)-Math.abs(b.avg-3);});
+  var top=scored.slice(0,16);var h='';
+  top.forEach(function(s){
+    var ti=TOPICS.find(function(t){return t.id===s.topic;});
+    var chips=s.ratings.map(function(r,i){return'<span class="con-chip '+rc(r)+'" title="'+ENG[i]+'">'+ESHORT[i]+':'+r+'</span>';}).join('');
+    var av=s.avg.toFixed(1);
+    var interp=s.avg>=4.5?'Universal Approval':s.avg<=1.5?'Universal Condemnation':s.avg>=3.5?'Generally Acceptable':'Generally Problematic';
+    var ic=s.avg>=4.5?'var(--cyan)':s.avg<=1.5?'var(--red)':s.avg>=3.5?'var(--green)':'var(--orange)';
+    h+='<div class="con-card"><div class="con-lbl">'+(ti?ti.name:'')+' · Scenario '+s.id+'</div><div class="con-desc">'+s.desc+'</div><div class="con-chips">'+chips+'</div><div class="con-avg">'+av+'</div><div class="con-int" style="color:'+ic+';">'+interp+'</div></div>';
+  });
+  document.getElementById('conGrid').innerHTML=h;
+}
+
+function buildTakeaways(){
+  var h='';
+  TAKEAWAYS.forEach(function(t){
+    h+='<div class="tk-card"><div class="tk-num">Takeaway '+t.n+'</div><div class="tk-title">'+t.t+'</div><div class="tk-txt">'+t.txt+'</div></div>';
+  });
+  document.getElementById('takeawayGrid').innerHTML=h;
+}
+
+function buildProbe(){
+  var h='';
+  PROBE_AREAS.forEach(function(p){
+    h+='<div class="probe-card"><div class="probe-cat">'+p.cat+'</div><div class="probe-title">'+p.t+'</div><div class="probe-why">'+p.why+'</div><div class="probe-q">'+p.q+'</div></div>';
+  });
+  document.getElementById('probeGrid').innerHTML=h;
+}
+
+function showLetter(id,btn){
+  document.querySelectorAll('.lt').forEach(function(b){b.classList.remove('on');});
+  if(btn)btn.classList.add('on');
+  var data=LETTERS[id];
+  if(!data)return;
+  var html='<div class="letter-wrap"><div class="letter-header">';
+  html+='<div class="letter-from">Trust in Advertising in the Age of AI · Research Briefing</div>';
+  html+='<div class="letter-to">To: '+data.to+'</div>';
+  html+='<div class="letter-subject">'+data.subject+'</div>';
+  html+='<div class="letter-date">March 2026</div>';
+  html+='</div><div class="letter-body">'+data.body+'</div></div>';
+  document.getElementById('letterContainer').innerHTML=html;
+}
+
+function buildAgentic(){
+  var tb=document.getElementById('agBody');var h='';
+  SC.filter(function(s){return s[1]==='12';}).forEach(function(s){
+    var a=avg(s[3]);var aClass=rc(Math.round(parseFloat(a)));
+    h+='<tr><td class="sl" onclick="expandScenario(\''+s[0]+'\')" title="Click to expand"><span style="font-family:\'Space Mono\',monospace;font-size:10px;color:var(--cyan);margin-right:6px;">'+s[0]+'</span>'+s[2]+' <span style="color:var(--cyan);font-size:9px;">↗</span></td>';
+    s[3].forEach(function(r){h+='<td class="'+rc(r)+'" onmouseenter="showTip(event,\''+s[0]+'\')" onmouseleave="hideTip()">'+r+'</td>';});
+    h+='<td class="av '+aClass+'">'+a+'</td></tr>';
+  });
+  tb.innerHTML=h;
+  var mg=document.getElementById('modelGrid');h='';
+  MODEL_PREFS.forEach(function(p){
+    h+='<div class="model-card" style="border-top-color:'+p.col+';">';
+    h+='<div class="model-eng" style="color:'+p.col+';">'+p.eng+'</div>';
+    h+='<div class="model-pick" style="color:'+p.col+';">'+p.model+'</div>';
+    h+='<div class="model-sub">Preferred Ad Structure</div>';
+    h+='<div class="model-note">'+p.note+'</div></div>';
+  });
+  mg.innerHTML=h;
+}
+
+function buildOverview(){
+  var er=document.getElementById('engRow');var h='';
+  ENG.forEach(function(eng,i){
+    var all=SC.map(function(s){return s[3][i];}).filter(function(v){return v!==null;});
+    var ov=(all.reduce(function(a,b){return a+b;},0)/all.length).toFixed(2);
+    h+='<div class="eng-card" style="--c:'+ECOL[i]+';border-top-color:'+ECOL[i]+';">';
+    h+='<div class="eng-name">'+eng+'</div><div class="eng-score">'+ov+'</div><div class="eng-sub">Overall Avg</div></div>';
+  });
+  er.innerHTML=h;
+  var tg=document.getElementById('topicGrid');h='';
+  TOPICS.forEach(function(t){
+    var tSC=SC.filter(function(s){return s[1]===t.id;});
+    var allR=[];tSC.forEach(function(s){s[3].forEach(function(r){if(r!==null)allR.push(r);});});
+    var ov=allR.length?(allR.reduce(function(a,b){return a+b;},0)/allR.length).toFixed(1):'-';
+    var bars='';
+    ENG.forEach(function(eng,i){
+      var er2=tSC.map(function(s){return s[3][i];}).filter(function(v){return v!==null;});
+      var av=er2.length?(er2.reduce(function(a,b){return a+b;},0)/er2.length):0;
+      bars+='<div class="tc-bar-row"><span class="tc-eng">'+ESHORT[i]+'</span><div class="tc-track"><div class="tc-fill" style="width:'+(av/5*100)+'%;background:'+ECOL[i]+';"></div></div><span class="tc-val">'+av.toFixed(1)+'</span></div>';
+    });
+    h+='<div class="tc"><div class="tc-name">'+t.name+'</div><div class="tc-expl">'+t.expl+'</div><div class="tc-meta">Topic '+t.id+' · '+tSC.length+' scenarios · Avg '+ov+'</div><div>'+bars+'</div></div>';
+  });
+  tg.innerHTML=h;
+}
+
+// INIT
+buildEngLegend();buildFilters();buildHeatmap('hmBody');
+buildOverview();buildDivergence();buildConsensus();
+buildTakeaways();buildProbe();buildAgentic();
+showLetter('cmo',document.querySelector('.lt.on'));
+</script>
+</body>
+</html>
