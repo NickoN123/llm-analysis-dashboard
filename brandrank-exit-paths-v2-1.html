@@ -29,9 +29,9 @@
   .legend-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
 
   /* ASSET SUMMARY */
-  .asset-summary { padding:24px 40px 22px; border-bottom:1px solid var(--navy-border); background:rgba(0,212,255,0.02); }
+  .asset-summary { padding:32px 40px 28px; border-bottom:1px solid var(--navy-border); background:rgba(0,212,255,0.02); }
   .asset-eyebrow { font-size:10px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--cyan); margin-bottom:10px; }
-  .asset-headline { font-family:'DM Serif Display',serif; font-size:26px; font-weight:400; color:var(--white); line-height:1.25; margin-bottom:8px; }
+  .asset-headline { font-family:'DM Serif Display',serif; font-size:clamp(36px,5vw,64px); font-weight:400; color:var(--white); line-height:1.1; margin-bottom:8px; }
   .asset-headline em { font-style:italic; color:var(--cyan); }
   .asset-sub { font-size:12.5px; color:var(--muted); font-weight:300; line-height:1.65; max-width:820px; }
 
@@ -188,6 +188,83 @@
   .footer-note { font-size:10px; color:var(--navy-border); letter-spacing:1px; text-transform:uppercase; }
 
   @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ── TAB SYSTEM ───────────────────────────── */
+  .tab-nav { display:flex; gap:0; border-bottom:1px solid var(--navy-border); background:var(--navy); padding:0 40px; }
+  .tab-btn { display:flex; align-items:center; gap:9px; padding:0 28px; height:54px; font-size:14px; font-weight:500;
+    letter-spacing:0.2px; color:var(--muted); border:none; background:none; cursor:pointer;
+    position:relative; transition:color 0.2s; white-space:nowrap; }
+  .tab-btn::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px;
+    background:var(--cyan); transform:scaleX(0); transition:transform 0.25s ease; border-radius:2px 2px 0 0; }
+  .tab-btn.active { color:var(--white); }
+  .tab-btn.active::after { transform:scaleX(1); }
+  .tab-btn:hover:not(.active) { color:#a0b4cc; }
+  .tab-num { font-size:10px; font-weight:700; letter-spacing:1px; color:var(--cyan); opacity:0.6; }
+  .tab-btn.active .tab-num { opacity:1; }
+  .tab-panel { display:none; }
+  .tab-panel.active { display:block; }
+
+  /* ── EXEC VIEW ────────────────────────────── */
+  .exec-page { padding:48px 80px 80px; max-width:920px; margin:0 auto; }
+  .exec-page-header { margin-bottom:52px; padding-bottom:28px; border-bottom:1px solid var(--navy-border); }
+  .exec-kicker { font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--cyan); margin-bottom:12px; }
+  .exec-title { font-family:'DM Serif Display',serif; font-size:clamp(30px,4vw,48px); font-weight:400; color:var(--white); line-height:1.15; margin-bottom:12px; }
+  .exec-title em { font-style:italic; color:var(--cyan); }
+  .exec-intro { font-size:15px; color:#8898bb; font-weight:300; line-height:1.75; max-width:680px; }
+
+  .exec-section { margin-bottom:52px; }
+  .exec-section-label { font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--cyan); display:flex; align-items:center; gap:12px; margin-bottom:24px; }
+  .exec-section-label::after { content:''; flex:1; height:1px; background:var(--navy-border); }
+
+  .exec-big { font-family:'DM Serif Display',serif; font-size:clamp(20px,2.5vw,30px); color:var(--white); line-height:1.25; margin-bottom:12px; font-weight:400; }
+  .exec-big em { font-style:italic; color:var(--cyan); }
+  .exec-para { font-size:14px; color:#8898bb; font-weight:300; line-height:1.8; margin-bottom:16px; max-width:680px; }
+
+  .exec-acquirer-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:12px; margin-top:4px; }
+  .exec-acquirer-card { background:var(--navy-card); border:1px solid var(--navy-border); border-radius:10px; padding:18px 20px; position:relative; overflow:hidden; transition:border-color 0.2s; }
+  .exec-acquirer-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
+  .exec-acquirer-card:hover { border-color:rgba(0,212,255,0.25); }
+  .eac-label { font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+  .eac-name { font-size:14px; font-weight:600; color:var(--white); margin-bottom:6px; }
+  .eac-examples { font-size:10.5px; color:rgba(0,212,255,0.6); font-weight:400; margin-bottom:8px; }
+  .eac-why { font-size:11.5px; color:#8898bb; font-weight:300; line-height:1.55; }
+  .eac-signal { display:inline-block; font-size:9px; font-weight:600; letter-spacing:1px; text-transform:uppercase; padding:2px 8px; border-radius:12px; margin-top:10px; }
+
+  .exec-thesis-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:4px; }
+  .exec-thesis-card { background:var(--navy-card); border:1px solid var(--navy-border); border-radius:10px; padding:22px 24px; }
+  .etc-num { font-family:'DM Serif Display',serif; font-size:36px; color:var(--navy-border); line-height:1; margin-bottom:10px; }
+  .etc-title { font-size:13px; font-weight:600; color:var(--white); margin-bottom:7px; }
+  .etc-body { font-size:12px; color:#8898bb; font-weight:300; line-height:1.6; }
+
+  .exec-tag { display:inline-flex; align-items:center; gap:6px; font-size:10px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; padding:4px 12px; border-radius:20px; margin-bottom:16px; }
+  .exec-tag-blue  { background:rgba(0,212,255,0.1);   color:var(--cyan);  border:1px solid rgba(0,212,255,0.25); }
+  .exec-tag-green { background:rgba(34,211,160,0.1);  color:var(--green); border:1px solid rgba(34,211,160,0.25); }
+  .exec-tag-gold  { background:rgba(245,200,66,0.1);  color:var(--gold);  border:1px solid rgba(245,200,66,0.25); }
+
+  /* ── ACTIVE CONVERSATIONS ─────────────────── */
+  .active-wrap { padding:32px 40px 56px; }
+  .active-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:16px; margin-top:20px; }
+  .active-card { background:var(--navy-card); border:1px solid var(--navy-border); border-radius:10px; padding:22px 24px;
+    position:relative; overflow:hidden; transition:border-color 0.25s; animation:fadeUp 0.4s ease both; }
+  .active-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
+  .active-card:hover { border-color:rgba(0,212,255,0.3); }
+  .active-card.status-active::before   { background:linear-gradient(90deg,var(--green),transparent); }
+  .active-card.status-warm::before     { background:linear-gradient(90deg,var(--gold),transparent); }
+  .active-card.status-exploring::before{ background:linear-gradient(90deg,var(--cyan),transparent); }
+  .active-status { display:inline-flex; align-items:center; gap:5px; font-size:9px; font-weight:600;
+    letter-spacing:1.5px; text-transform:uppercase; padding:3px 9px; border-radius:20px; margin-bottom:12px; }
+  .active-status .sdot { width:5px; height:5px; border-radius:50%; flex-shrink:0; }
+  .s-active    { background:rgba(34,211,160,0.12); color:var(--green);  border:1px solid rgba(34,211,160,0.3); }
+  .s-active .sdot    { background:var(--green); box-shadow:0 0 4px var(--green); }
+  .s-warm      { background:rgba(245,200,66,0.10); color:var(--gold);   border:1px solid rgba(245,200,66,0.3); }
+  .s-warm .sdot      { background:var(--gold); }
+  .s-exploring { background:rgba(0,212,255,0.10); color:var(--cyan);    border:1px solid rgba(0,212,255,0.25); }
+  .s-exploring .sdot { background:var(--cyan); }
+  .active-name { font-family:'DM Serif Display',serif; font-size:18px; font-weight:400; color:var(--white); margin-bottom:3px; }
+  .active-category { font-size:10px; color:var(--muted); font-weight:400; letter-spacing:0.5px; margin-bottom:14px; }
+  .active-section-label { font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--cyan); opacity:0.6; margin-bottom:5px; margin-top:12px; }
+  .active-text { font-size:12px; color:#8898bb; font-weight:300; line-height:1.6; }
+  .active-divider { height:1px; background:var(--navy-border); margin:12px 0; }
 </style>
 </head>
 <body>
@@ -201,29 +278,27 @@
 <div class="top-bar">
   <div class="brand">brandrank.ai <span>— Strategic Optionality · Confidential</span></div>
   <div style="display:flex;align-items:center;gap:20px;">
-    <div class="legend">
-      <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Actionable Now</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--sky)"></div>Retail Media</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>Strategic Build</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--teal)"></div>Consultancies</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--pink)"></div>Experience</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>Media &amp; Ad</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--violet)"></div>Research &amp; Analyst</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--rose)"></div>LLM Platforms</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--fuchsia)"></div>Risk &amp; Data</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--lime)"></div>Vertical</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--orange)"></div>Long Horizon</div>
-    </div>
-    <div class="confidential">March 2026</div>
+    <div class="confidential">April 2026</div>
   </div>
 </div>
 
 <!-- ASSET SUMMARY -->
 <div class="asset-summary">
-  <div class="asset-eyebrow">BrandRank.AI — Confidential · March 2026</div>
-  <div class="asset-headline">"Strategic Optionality" — <em>A structured view of who buys, why they buy, and when to move</em></div>
-  <div class="asset-sub">BrandRank partners with the world's top brands to strengthen trust and purchase intent by uncovering vulnerabilities, purchase-driving insights, and growth opportunities across AI answer engines. As a SaaS platform, we track all major answer engines to improve visibility, ensure content is AI-ready, and rigorously measure brand claims and instructional accuracy. <span style="color:rgba(0,212,255,0.5);font-style:italic;">Hover or click any company name for a brief profile.</span></div>
+  <div class="asset-eyebrow">BrandRank.AI — Confidential · April 2026</div>
+  <div class="asset-headline">BrandRank's <em>Roadmap to Exit</em></div>
+  <div class="asset-sub">Who buys, why they buy, when to move, what's been discussed already. <span style="color:rgba(0,212,255,0.5);font-style:italic;">Hover or click any company name for a brief profile.</span></div>
 </div>
+
+<!-- TAB NAV -->
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab(0)"><span class="tab-num">01</span> Full Matrix</button>
+  <button class="tab-btn" onclick="switchTab(1)"><span class="tab-num">02</span> Executive Summary</button>
+  <button class="tab-btn" onclick="switchTab(2)"><span class="tab-num">03</span> Engagement / Conversations Underway</button>
+  <button class="tab-btn" onclick="switchTab(3)"><span class="tab-num">04</span> Gartner Assessment of BrandRank</button>
+</div>
+
+<!-- ══ PANEL 0: FULL MATRIX ══════════════════════════════════════════════ -->
+<div class="tab-panel active" id="panel-matrix">
 
 <!-- FILTER BAR -->
 <div class="filter-bar">
@@ -264,8 +339,8 @@
             <span class="co" data-name="Kantar" data-desc="WPP-owned data, insights, and consulting company. World's leading marketing data and analytics business. Tracks brand equity in 60+ countries via BrandZ — the world's largest brand equity database, covering 21,000+ brands.">Kantar</span>
           </div>
         </div>
-        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">AI answer engines are displacing survey-based brand tracking. They need a real-time, AI-native data layer — or they become irrelevant to CMOs. BrandRank is the fastest path to that capability.</div></div>
-        <div class="card-col"><div class="col-heading">What We Must Show</div><div class="col-body">Longitudinal data depth; client stickiness at Nestlé / Kenvue level; proof that brand tracking in AI engines outperforms legacy survey methodology</div></div>
+        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">AI answer engines are increasingly shaping brand perception in ways that traditional survey-based tracking doesn't capture. There's a growing need for real-time, AI-native measurement alongside legacy methodologies — and the capability BrandRank has built around continuous engine monitoring and longitudinal benchmarking maps directly to the gap these firms are looking to fill.</div></div>
+        <div class="card-col"><div class="col-heading">What We Must Show</div><div class="col-body">Longitudinal data depth; continued client stickiness at major enterprise accounts; proof that brand tracking in AI engines outperforms legacy survey methodology</div></div>
         <div class="val-cell"><div class="val-heading">Valuation Signal</div><div class="val-range"><span class="val-number">4–6×</span><span class="val-suffix">ARR</span></div><div class="val-basis">Data asset + distribution premium. Sequence partnership first.</div></div>
       </div>
       <div class="card-expand"><div class="expand-inner">
@@ -288,7 +363,7 @@
             <span class="co" data-name="Conductor" data-desc="Enterprise SEO and content intelligence platform focused on organic marketing for large brands. Spun out from WeWork in 2018. Helps brands understand content performance, search intent, and organic channel ROI.">Conductor</span>
           </div>
         </div>
-        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">Their core search-based business is under existential threat from AI answer engines. BrandRank is the only platform covering the AI layer they're missing. Acquiring is faster than building — and they know it.</div></div>
+        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">Search-based platforms are navigating real pressure as AI answer engines shift how people find information. Adding AI answer engine visibility to their measurement suite is a natural strategic extension — and the infrastructure BrandRank has built, including engine tracking, hallucination detection, and content readiness scoring, could meaningfully accelerate that roadmap rather than requiring a build-from-scratch effort.</div></div>
         <div class="card-col"><div class="col-heading">What We Must Show</div><div class="col-body">Head-to-head differentiation vs. their current offering; client wins from their target accounts; Gartner inclusion as category validation; clean tech stack integration story</div></div>
         <div class="val-cell"><div class="val-heading">Valuation Signal</div><div class="val-range"><span class="val-number">5–8×</span><span class="val-suffix">ARR</span></div><div class="val-basis">Defensive premium. Fear of competitor closing accelerates price.</div></div>
       </div>
@@ -310,7 +385,7 @@
             <span class="co" data-name="Otterly" data-desc="AI search monitoring tool tracking brand mentions across AI answer engines. Early-stage startup focused on helping marketers understand and optimize brand visibility in AI-generated responses.">Otterly</span>
           </div>
         </div>
-        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">Category fragmentation benefits no one. A combined entity creates a dominant data moat and builds a platform large enough to attract institutional capital — or force a premium exit from a larger buyer.</div></div>
+        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">Category fragmentation tends to slow enterprise adoption and dilute investor confidence. A combined entity could create a more compelling data and capability story — one with deeper coverage, stronger client density, and a platform large enough to attract the next round of institutional capital or command more attention from strategic acquirers.</div></div>
         <div class="card-col"><div class="col-heading">What We Must Show</div><div class="col-body">Complementary capabilities with minimal overlap; shared category vision; willingness to negotiate equity + cash; governance model both teams accept</div></div>
         <div class="val-cell"><div class="val-heading">Valuation Signal</div><div class="val-range"><span class="val-number">Equity</span><span class="val-suffix">+ Cash</span></div><div class="val-basis">Combined entity sets up a much larger exit 18–24 months post-merger.</div></div>
       </div>
@@ -346,7 +421,7 @@
             <span class="co" data-name="Kroger" data-desc="America's largest supermarket chain. Revenue $150B+. Parent of 84.51° and Kroger Precision Marketing. Building AI-powered shopping tools where brand accuracy in AI responses is a direct commercial concern for CPG advertiser relationships.">Kroger</span>
           </div>
         </div>
-        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">Amazon's Rufus, Walmart's AI shopping tools, and Kroger's emerging AI interfaces are all answering brand and product questions at the moment of purchase intent — with no systematic tool to vet accuracy before it reaches shoppers. Hallucinated product claims damage CPG advertiser relationships and create liability. Walmart in particular sees strategic value in a platform that systematically audits what AI says about brands. BrandRank is the only company with live, multi-retailer AI brand accuracy data at enterprise scale.</div></div>
+        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">Amazon's Rufus, Walmart's AI shopping tools, and Kroger's emerging AI interfaces are answering brand and product questions at the moment of purchase intent — and there's growing pressure on these networks to ensure those AI responses are accurate before they reach shoppers at scale. The capability to systematically monitor and flag AI brand inaccuracies across retail platforms is an area where BrandRank's infrastructure and enterprise track record creates a potentially compelling fit. Walmart in particular has signaled interest in tools that help vet product and brand claims in AI-driven shopping experiences.</div></div>
         <div class="card-col"><div class="col-heading">What We Must Show</div><div class="col-body">Live Rufus and Walmart AI hallucination rate data with named CPG examples; quantified impact on purchase intent from AI inaccuracy; client overlap with their CPG brand rosters (P&G, Nestlé, Kenvue); pre-purchase AI journey connecting BrandRank visibility data to in-store conversion</div></div>
         <div class="val-cell"><div class="val-heading">Valuation Signal</div><div class="val-range"><span class="val-number">8–14×</span><span class="val-suffix">ARR</span></div><div class="val-basis">Infrastructure premium protecting billions in CPG ad revenue. Three potential acquirers = built-in competitive tension.</div></div>
       </div>
@@ -380,7 +455,7 @@
             <span class="co" data-name="Google" data-desc="World's largest digital advertising company. Owns Search, YouTube, and Chrome. Faces existential pressure from AI answer engines. Strong incentive to own brand measurement infrastructure as the search landscape fundamentally shifts.">Google</span>
           </div>
         </div>
-        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">AI answer engine visibility is the next frontier in MarTech — and none of these platforms have a credible measurement layer for it. BrandRank drops into their existing CMO relationships as a premium data module with measurable ROI.</div></div>
+        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">AI answer engine visibility is becoming a priority question for CMOs — and the major MarTech platforms are actively looking for ways to extend their measurement coverage into this space. The capability BrandRank has built around multi-engine tracking, content readiness scoring, and brand accuracy benchmarking could integrate naturally into these platforms' existing enterprise relationships and data architectures.</div></div>
         <div class="card-col"><div class="col-heading">What We Must Show</div><div class="col-body">Strong Fortune 500 client density; API-ready data architecture; demonstrated retention; competitive tension between at least two bidders running in parallel</div></div>
         <div class="val-cell"><div class="val-heading">Valuation Signal</div><div class="val-range"><span class="val-number">10–15×</span><span class="val-suffix">ARR</span></div><div class="val-basis">Highest headline valuation of all paths. Strategic premium at scale.</div></div>
       </div>
@@ -405,7 +480,7 @@
             <span class="co" data-name="Dentsu" data-desc="Japan-based global advertising and marketing group. Fifth-largest agency network by revenue. Strong in data-driven marketing through Dentsu Data Studios and Merkle acquisition. Deep enterprise relationships across Asia-Pacific and growing in North America.">Dentsu</span>
           </div>
         </div>
-        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">Holding companies are losing measurement authority to AI platforms. BrandRank gives them a proprietary intelligence layer to sell alongside media and creative — turning AI visibility into a billable managed service with data defensibility.</div></div>
+        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">Holding companies are under growing pressure to demonstrate measurement authority in channels beyond paid and earned media. AI answer engine visibility is becoming a question CMOs bring to their agency relationships — and the ability to offer structured data and insights in this space could strengthen both client retention and new business positioning. Beyond measurement, answer analytics may offer a stronger catalyst for enterprise orchestration than most adjacencies: answer share is inherently multi-functional, touching content strategy, SEO, paid media, brand health, and competitive intelligence simultaneously — making it a natural hub capability for agencies looking to deepen client integration.</div></div>
         <div class="card-col"><div class="col-heading">What We Must Show</div><div class="col-body">CMO-level demand signals; ANA partnership as proof of industry credibility; a consultative services model that scales inside their client base; sustained revenue traction</div></div>
         <div class="val-cell"><div class="val-heading">Valuation Signal</div><div class="val-range"><span class="val-number">6–10×</span><span class="val-suffix">ARR</span></div><div class="val-basis">Distribution synergy valued highly. Publicis already circling.</div></div>
       </div>
@@ -429,7 +504,7 @@
             <span class="co" data-name="Cheq" data-desc="Cybersecurity company focused on go-to-market security — blocking invalid traffic and fake audiences in marketing funnels. Growing into broader AI safety for marketing. Serves enterprise advertisers globally.">Cheq</span>
           </div>
         </div>
-        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">Brand safety in AI-generated answers is the next frontier beyond ad adjacency. DoubleVerify and IAS built empires on digital ad verification — hallucination detection is the same problem, one layer up. BrandRank is the only platform with live enterprise data proving it.</div></div>
+        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">Verification platforms have built successful businesses around ensuring that what appears next to a brand — or on behalf of a brand — is accurate and safe. AI-generated answers represent a natural extension of that same challenge: brands increasingly need confidence that what AI systems say about them is factually grounded. The hallucination detection and brand accuracy monitoring capabilities BrandRank has developed map well to the brand safety logic these firms have already commercialized.</div></div>
         <div class="card-col"><div class="col-heading">What We Must Show</div><div class="col-body">Hallucination detection as a standalone, quantifiable capability; false attribution case studies from real enterprise clients; API architecture that integrates into their existing verification stack</div></div>
         <div class="val-cell"><div class="val-heading">Valuation Signal</div><div class="val-range"><span class="val-number">8–12×</span><span class="val-suffix">ARR</span></div><div class="val-basis">Verification platforms command tech multiples. Public-company comps support premium.</div></div>
       </div>
@@ -463,7 +538,7 @@
             <span class="co" data-name="Edelman" data-desc="World's largest independent communications and PR firm. Publishes the annual Edelman Trust Barometer — the most-cited global study on institutional trust. Natural strategic partner for BrandRank's brand trust and AI accuracy positioning.">Edelman</span>
           </div>
         </div>
-        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">CMOs are asking strategy firms how AI answer engines are reshaping brand perception — and the firms have no data layer to answer with. BrandRank transforms AI brand visibility from a hot topic into a billable, data-backed practice. BCG is already a client.</div></div>
+        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">CMOs are bringing AI answer engine questions into strategy conversations — asking how these platforms are shaping brand perception and competitive positioning in ways that traditional research doesn't yet capture. The ability to bring structured, longitudinal AI brand data into advisory engagements could meaningfully strengthen the value these firms deliver. BCG is already a BrandRank client, offering a live example of how the capability integrates into strategic work.</div></div>
         <div class="card-col"><div class="col-heading">What We Must Show</div><div class="col-body">C-suite relevance of AI brand visibility data; case studies demonstrating strategic decision impact; a framework — like VVR — that maps to how they structure recommendations; compatibility with their client engagement model</div></div>
         <div class="val-cell"><div class="val-heading">Valuation Signal</div><div class="val-range"><span class="val-number">5–9×</span><span class="val-suffix">ARR</span></div><div class="val-basis">Proprietary data commands consulting premium. Exclusivity provisions are the key lever.</div></div>
       </div>
@@ -488,7 +563,7 @@
             <span class="co" data-name="Capgemini" data-desc="French multinational IT services and consulting company. Revenue $22B+. One of the world's largest technology and business transformation firms. Strong in cloud, data, and AI implementation with deep enterprise relationships across Europe and North America.">Capgemini</span>
           </div>
         </div>
-        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">Deloitte and Accenture are selling AI transformation to every major enterprise — but have no credible measurement layer for brand performance inside AI answer engines. BrandRank fills the gap between AI strategy advice and provable brand outcomes, making their advisory measurable and defensible to CMO clients.</div></div>
+        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">Firms like Deloitte and Accenture are helping enterprises navigate AI transformation — and clients are increasingly asking how AI-powered tools are representing their brands. Adding structured measurement of AI brand performance to their advisory toolkit could bridge a visible gap between AI strategy recommendations and concrete, measurable brand outcomes that CMOs and boards can act on.</div></div>
         <div class="card-col"><div class="col-heading">What We Must Show</div><div class="col-body">Integration story with existing digital audit and brand measurement practices; API architecture compatible with their data infrastructure; client case studies demonstrating measurable brand impact; enterprise-grade security and compliance posture</div></div>
         <div class="val-cell"><div class="val-heading">Valuation Signal</div><div class="val-range"><span class="val-number">5–8×</span><span class="val-suffix">ARR</span></div><div class="val-basis">Immediate access to their Fortune 500 relationships without a sales cycle.</div></div>
       </div>
@@ -521,7 +596,7 @@
             <span class="co" data-name="Sprinklr" data-desc="Unified customer experience management platform. Publicly traded. Manages brand presence across 30+ digital channels including social, messaging, and review sites. AI answer engines are the fastest-growing channel they don't cover.">Sprinklr</span>
           </div>
         </div>
-        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">These platforms measure what customers think about brands across every touchpoint — surveys, social, reviews, support — but have zero coverage of AI answer engines, which now shape brand perception before a customer ever interacts with a company. A Qualtrics client paying for comprehensive brand experience measurement has a growing blind spot: what ChatGPT, Gemini, and Perplexity say about their brand to millions of people daily. BrandRank is exactly the gap in their measurement suite — and the acquirer that closes it first wins the AI era of experience management.</div></div>
+        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">Experience management platforms are built on the idea that brands should understand every signal shaping customer perception. AI answer engines are becoming an influential part of that landscape — shaping opinions before a customer ever directly interacts with a brand. Adding AI answer engine coverage as a signal channel could complement what these platforms already measure well, giving enterprise clients a more complete view of how their brand is represented across both human and AI-generated touchpoints.</div></div>
         <div class="card-col"><div class="col-heading">What We Must Show</div><div class="col-body">Side-by-side proof that AI answer engine sentiment diverges from survey-based brand tracking; case studies where AI misrepresentation preceded measurable brand health decline; API architecture that drops into their existing dashboard as a new signal channel; enterprise clients who use both platforms today</div></div>
         <div class="val-cell"><div class="val-heading">Valuation Signal</div><div class="val-range"><span class="val-number">7–11×</span><span class="val-suffix">ARR</span></div><div class="val-basis">Platform extension premium. Fills a structural gap in their existing product — not a new category, an additive channel.</div></div>
       </div>
@@ -555,7 +630,7 @@
             <span class="co" data-name="Sprout Social" data-desc="Social media management and analytics platform. Publicly traded. Serves 30,000+ customers including enterprise brands. Social listening leadership makes AI answer engine tracking a natural adjacency — the next 'channel' in their coverage universe.">Sprout Social</span>
           </div>
         </div>
-        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">Social listening platforms built empires by tracking what the internet says about brands across Twitter, Facebook, and news. AI answer engines are the next evolution of that same problem — except instead of tracking what users say, you're tracking what AI systems say on behalf of billions of queries. BrandRank is literally the social listening platform for the AI answer era. Their enterprise clients are already asking why AI answer engine coverage isn't in the dashboard they're paying for.</div></div>
+        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">Social listening and earned media platforms have built strong businesses tracking what people say about brands online. AI answer engines represent a related but distinct challenge — what AI systems say about brands on behalf of billions of queries. Extending platform coverage into this space could strengthen the value proposition for enterprise clients who are already asking whether AI-generated brand narratives are consistent with what they're seeing across social and news channels.</div></div>
         <div class="card-col"><div class="col-heading">What We Must Show</div><div class="col-body">Side-by-side comparison of brand sentiment in AI answers vs. social media; case studies where AI narrative diverged meaningfully from social narrative; a clear API integration story for their existing dashboard infrastructure; enterprise clients who use both platforms and see the gap firsthand</div></div>
         <div class="val-cell"><div class="val-heading">Valuation Signal</div><div class="val-range"><span class="val-number">6–9×</span><span class="val-suffix">ARR</span></div><div class="val-basis">Channel extension premium. Positions as the AI answer engine layer of their existing platform — not a new product, a new signal source.</div></div>
       </div>
@@ -577,7 +652,7 @@
             <span class="co" data-name="LiveRamp" data-desc="Data connectivity infrastructure company. Publicly traded. Helps brands connect first-party data across platforms and publishers. Positioning as the identity layer for the next era of marketing. BrandRank's AI visibility data is a natural addition to their data marketplace.">LiveRamp</span>
           </div>
         </div>
-        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">The Trade Desk is building the infrastructure for the next era of advertising — and Jeff Green has been vocal that brand safety is central to that mission. BrandRank closes a specific gap: advertisers spending hundreds of millions on programmatic media need to know whether AI answer engines are simultaneously undermining the brand story they're paying to build. It's the same brand safety logic that made DoubleVerify a category, applied to AI. LiveRamp's data marketplace is a natural distribution channel for BrandRank's AI visibility data as a licensable asset.</div></div>
+        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">Programmatic advertising platforms are increasingly attentive to how AI-generated content environments affect brand safety and media ROI. There's a meaningful question emerging for large advertisers: if AI answer engines are shaping brand perception at scale, does that affect the return on media investment? The capability to connect AI brand accuracy data with advertising performance signals could be a natural complement to what The Trade Desk is building around brand safety. For LiveRamp, AI visibility data is a potentially attractive addition to their data marketplace as a licensable signal.</div></div>
         <div class="card-col"><div class="col-heading">What We Must Show</div><div class="col-body">Quantified relationship between AI answer engine brand accuracy and programmatic advertising ROI; case studies linking AI misrepresentation to media efficiency decline; The Trade Desk advertiser client overlap with BrandRank's enterprise roster; a data licensing model compatible with LiveRamp's marketplace architecture</div></div>
         <div class="val-cell"><div class="val-heading">Valuation Signal</div><div class="val-range"><span class="val-number">8–12×</span><span class="val-suffix">ARR</span></div><div class="val-basis">Brand safety infrastructure premium. The Trade Desk pays for capabilities that protect the integrity of their advertiser relationships.</div></div>
       </div>
@@ -610,7 +685,7 @@
             <span class="co" data-name="IDC" data-desc="International Data Corporation, global market intelligence firm specializing in technology market research, competitive analysis, and forecasting. Owned by IDG. Serves tech vendors and enterprise buyers with quantitative market sizing and vendor assessments.">IDC</span>
           </div>
         </div>
-        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">Gartner named the Answer Engine Visibility category in their inaugural Market Guide — and BrandRank is its defining player. Acquiring BrandRank means owning the live data layer behind the category they just certified. Their entire business model is selling research and benchmarks to enterprises; this is a natural bolt-on to their Technology &amp; Innovation Data division.</div></div>
+        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">Gartner published the inaugural Market Guide for Answer Engine Visibility Tools — a signal that this category has reached the point of enterprise relevance. For a research firm whose business model depends on delivering data-backed intelligence to enterprise clients, the ability to pair category definition with an underlying data asset is a meaningful strategic opportunity. The longitudinal benchmarking infrastructure and Fortune 500 client base BrandRank has built could complement their Technology &amp; Innovation Data division in a natural way.</div></div>
         <div class="card-col"><div class="col-heading">What We Must Show</div><div class="col-body">Depth and rigor of longitudinal benchmarking data; methodology that meets their research standards; Fortune 500 client list that maps to their existing subscriber base; a data product that complements — not competes with — their advisory model</div></div>
         <div class="val-cell"><div class="val-heading">Valuation Signal</div><div class="val-range"><span class="val-number">7–11×</span><span class="val-suffix">ARR</span></div><div class="val-basis">Research firm premium. Category-defining asset commands more than standard data acquisitions.</div></div>
       </div>
@@ -643,7 +718,7 @@
             <span class="co" data-name="Microsoft Advertising" data-desc="Microsoft's advertising platform serving Bing, LinkedIn, and the Microsoft Audience Network. AI-powered search through Bing Chat creates the same brand accuracy risks as Google's AI Overviews — BrandRank's measurement capability is a direct fit.">Microsoft Advertising</span>
           </div>
         </div>
-        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">Microsoft is the biggest gap in this entire matrix. Copilot is embedded in Office, Teams, Word, and Excel — used by hundreds of millions of enterprise employees daily. When Copilot hallucinates brand information inside a corporate workflow, the consequences are more immediate and measurable than consumer search: a procurement manager gets wrong product specs, a sales rep gets wrong competitive claims, a CFO gets wrong company financials. Microsoft has the OpenAI brand accuracy problem but at enterprise scale, with direct business liability. They need BrandRank more urgently than almost anyone on this list.</div></div>
+        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">Copilot is embedded in Office, Teams, Word, and Excel — used by hundreds of millions of enterprise employees daily. As AI assistants become integral to corporate workflows, the accuracy of brand and product information they surface becomes a meaningful operational concern. Inaccurate brand claims in an enterprise workflow setting can create business risk in procurement, sales, and competitive intelligence contexts. The structured measurement and feedback infrastructure BrandRank has developed around brand accuracy across AI platforms could be a useful capability for any enterprise AI system operating at this scale.</div></div>
         <div class="card-col"><div class="col-heading">What We Must Show</div><div class="col-body">Quantified hallucination rates specific to Copilot and Bing AI; enterprise workflow case studies where brand inaccuracy created measurable business risk; a feedback loop architecture that improves Copilot brand accuracy over time; LinkedIn brand accuracy data as a specific hook into Microsoft Advertising</div></div>
         <div class="val-cell"><div class="val-heading">Valuation Signal</div><div class="val-range"><span class="val-number">Mission</span></div><div class="val-basis">Acqui-hire / strategic infrastructure logic. Microsoft pays for capabilities that protect enterprise trust at scale. Data moat + measurement standard = premium pricing.</div></div>
       </div>
@@ -668,7 +743,7 @@
             <span class="co" data-name="Apple" data-desc="Creator of Siri and Apple Intelligence, embedded in every iPhone, Mac, and iPad. Distribution scale is unmatched — brand accuracy in Siri responses affects billions of device interactions daily. Less urgent than Microsoft but the largest consumer distribution footprint of any LLM acquirer.">Apple</span>
           </div>
         </div>
-        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">Every major LLM has a brand accuracy problem — hallucinated product claims, wrong prices, false attributions erode enterprise trust. BrandRank is the only company measuring this at scale with live Fortune 500 data. Acquiring BrandRank gives them a brand accuracy feedback loop to improve model quality, a monetization layer where brands pay for accurate representation, and the enterprise brand safety story needed to close Fortune 500 deals. Perplexity has the most direct incentive — brand accuracy is central to their enterprise value proposition.</div></div>
+        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">AI answer platforms are navigating a growing tension between the breadth of their responses and the accuracy of brand-specific claims. As these platforms pursue enterprise adoption, the ability to demonstrate brand accuracy — and to give brands a structured way to monitor and improve their representation — becomes increasingly relevant. BrandRank's multi-engine tracking infrastructure, hallucination detection capability, and enterprise client base could offer a meaningful fit for platforms looking to strengthen their brand trust and accuracy story.</div></div>
         <div class="card-col"><div class="col-heading">What We Must Show</div><div class="col-body">Quantified hallucination rate data across their specific platform; case studies of brand damage from AI inaccuracy; a clear monetization model for brand accuracy as a paid capability; API architecture compatible with model infrastructure; enterprise client demand for the capability as a product</div></div>
         <div class="val-cell"><div class="val-heading">Valuation Signal</div><div class="val-range"><span class="val-number">Mission</span></div><div class="val-basis">Acqui-hire / infrastructure logic. These buyers pay for data moats and capability gaps — not ARR multiples. Price framed as infrastructure.</div></div>
       </div>
@@ -702,7 +777,7 @@
             <span class="co" data-name="MSCI" data-desc="Global provider of investment decision support tools. Revenue $2.5B+. Leading ESG ratings and index provider. MSCI ESG Research scores companies on governance, social, and environmental factors — AI brand accuracy fits squarely into their governance risk framework.">MSCI</span>
           </div>
         </div>
-        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">AI brand accuracy is increasingly a material risk factor for public companies — and the firms that price risk for institutional investors need to measure it. If ChatGPT or Gemini consistently misrepresents a company's products, safety record, or financial performance, that is a quantifiable reputational risk that belongs in an ESG or brand risk score. S&P Global, Moody's, and MSCI are actively building data products in this direction — BrandRank is the only company with longitudinal, multi-engine AI brand accuracy data that could anchor an "AI Brand Risk Score" as a new investable signal.</div></div>
+        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">AI-generated misrepresentation of a company's products, financial performance, or safety record is increasingly being discussed as a reputational and governance risk. Firms that build risk scores for institutional investors are actively exploring how to quantify this exposure. Longitudinal, multi-engine AI brand accuracy data — the kind BrandRank tracks — could serve as a meaningful underlying signal for an "AI Brand Risk Score" that complements existing ESG and reputational risk frameworks.</div></div>
         <div class="card-col"><div class="col-heading">What We Must Show</div><div class="col-body">Correlation between AI answer engine brand accuracy and measurable stock performance or brand health metrics; a prototype "AI Brand Risk Score" built on BrandRank data; methodology white paper meeting their research standards; Fortune 500 client case studies where AI misrepresentation had quantifiable business impact</div></div>
         <div class="val-cell"><div class="val-heading">Valuation Signal</div><div class="val-range"><span class="val-number">6–10×</span><span class="val-suffix">ARR</span></div><div class="val-basis">Data-as-risk-signal premium. Financial data firms pay for signals that can be packaged as investable intelligence at institutional scale.</div></div>
       </div>
@@ -735,7 +810,7 @@
             <span class="co" data-name="Definitive Healthcare" data-desc="Healthcare commercial intelligence platform. Publicly traded. Provides data on healthcare providers, facilities, and claims. Pharma clients using their platform have a direct need to understand what AI answer engines say about their drugs and medical devices.">Definitive Healthcare</span>
           </div>
         </div>
-        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">Brand accuracy in AI answer engines is especially critical in healthcare and pharma — hallucinated drug claims, wrong dosage information, or false safety profiles create not just reputational damage but direct legal liability and potential FDA regulatory action. When ChatGPT or Gemini hallucinates a drug's approved uses or contraindications, a pharma brand's problem is not a marketing issue — it's a compliance and patient safety issue. IQVIA is the world's largest healthcare data company; BrandRank's AI brand accuracy capability applied to pharma is a vertical-specific product with significantly higher value and urgency than the general market.</div></div>
+        <div class="card-col"><div class="col-heading">Why They Need BrandRank</div><div class="col-body">In healthcare and pharma, the stakes around brand accuracy in AI-generated content are particularly high — inaccurate drug claims, dosage information, or safety profiles carry regulatory and legal implications that extend well beyond reputational concern. Healthcare data firms serving pharma clients are well-positioned to recognize how AI answer engine monitoring could integrate into existing brand tracking, pharmacovigilance, and compliance workflows. The capability BrandRank has built around brand accuracy measurement is especially well-suited to environments where the consequences of AI inaccuracy are concrete and measurable.</div></div>
         <div class="card-col"><div class="col-heading">What We Must Show</div><div class="col-body">Pharma-specific hallucination case studies (drug claims, indications, safety information); a regulatory risk framework mapping AI inaccuracy to FDA compliance exposure; enterprise pharma client demand for AI brand accuracy monitoring as a compliance function; methodology compatible with their existing pharmacovigilance and brand tracking infrastructure</div></div>
         <div class="val-cell"><div class="val-heading">Valuation Signal</div><div class="val-range"><span class="val-number">9–14×</span><span class="val-suffix">ARR</span></div><div class="val-basis">Vertical premium for compliance-critical capability. Pharma pays more for risk mitigation than marketing intelligence — this is both.</div></div>
       </div>
@@ -766,7 +841,7 @@
             <span class="co" data-name="Public Markets" data-desc="No publicly traded company currently owns the AI answer engine visibility category. BrandRank at scale would be the first pure-play Answer Economy infrastructure company — a compelling public market narrative for institutional investors seeking exposure to the AI brand safety category.">Public Markets</span>
           </div>
         </div>
-        <div class="card-col"><div class="col-heading">Why the Market Needs BrandRank</div><div class="col-body">No publicly traded company owns the AI answer engine visibility category. BrandRank at scale is the defining infrastructure for brand presence in the next era of search — a new measurement category with recurring, defensible SaaS revenue and a clear public market narrative.</div></div>
+        <div class="card-col"><div class="col-heading">Why the Market Needs BrandRank</div><div class="col-body">No publicly traded company has yet established a clear position in the AI answer engine visibility category. At sufficient scale, BrandRank's recurring SaaS model, multi-engine data infrastructure, and enterprise client base could support a compelling public market narrative — particularly as institutional investors look for ways to invest in the measurement and accountability layer of the AI answer economy.</div></div>
         <div class="card-col"><div class="col-heading">What We Must Show</div><div class="col-body">Institutional Series A/B closed; CFO hire; audited financials; Board composition ready for public markets; strong net revenue retention; 3–5 year growth story with category expansion thesis</div></div>
         <div class="val-cell"><div class="val-heading">Valuation Signal</div><div class="val-range"><span class="val-number">15–25×</span><span class="val-suffix">ARR</span></div><div class="val-basis">Maximum ceiling of all paths. Secondary liquidity available at institutional raise stages.</div></div>
       </div>
@@ -784,7 +859,7 @@
 
 <div class="page-footer">
   <div class="footer-brand"><strong>brandrank.ai</strong> — prompting your brand truth℠</div>
-  <div class="footer-note">Confidential · Do Not Distribute · March 2026</div>
+  <div class="footer-note">Confidential · Do Not Distribute · April 2026</div>
 </div>
 
 <script>
@@ -860,5 +935,812 @@
     hideTooltip();
   });
 </script>
-</body>
-</html>
+<!-- ══ M&A SYNERGY MAP ════════════════════════════════════════════════ -->
+<div id="mapSection" style="border-top:1px solid #1e2d47; background:#0a0e1a; padding:48px 40px 64px; position:relative;">
+  <div style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#00d4ff;margin-bottom:6px;">Strategic Landscape</div>
+  <div style="font-family:'DM Serif Display',serif;font-size:22px;color:#f0f4ff;margin-bottom:4px;">M&amp;A Synergy Map</div>
+  <div style="font-size:12px;color:#6b7fa3;font-weight:300;margin-bottom:32px;">Hover any category to explore the strategic fit — categories of acquirers and partners across the Answer Economy</div>
+  <div style="position:relative;width:100%;display:flex;justify-content:center;">
+    <div style="position:relative;max-width:900px;width:100%;">
+      <canvas id="marketMap" style="width:100%;display:block;"></canvas>
+      <!-- Map tooltip -->
+      <div id="mapTooltip" style="
+        position:fixed; z-index:9999; visibility:hidden; opacity:0;
+        background:#0d1628; border:1px solid rgba(0,212,255,0.45);
+        border-radius:8px; padding:13px 15px; width:280px;
+        box-shadow:0 8px 32px rgba(0,0,0,0.6);
+        transition:opacity 0.15s ease; pointer-events:none; top:0; left:0;
+      ">
+        <div id="mapTTName" style="font-size:11px;font-weight:600;color:#00d4ff;letter-spacing:0.3px;margin-bottom:5px;"></div>
+        <div id="mapTTSub"  style="font-size:10px;color:#38bdf8;font-weight:400;margin-bottom:7px;letter-spacing:0.2px;"></div>
+        <div id="mapTTBody" style="font-size:11px;color:#8898bb;font-weight:300;line-height:1.55;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const canvas  = document.getElementById('marketMap');
+  const mapTip  = document.getElementById('mapTooltip');
+  const tipName = document.getElementById('mapTTName');
+  const tipSub  = document.getElementById('mapTTSub');
+  const tipBody = document.getElementById('mapTTBody');
+  const dpr     = window.devicePixelRatio || 1;
+
+  const categories = [
+    { label:'Market Research',    sub:'Circana · Burke · Nielsen · Kantar',       color:'#22d3a0', angle:-90,
+      why:'AI answer engines are increasingly shaping brand perception in ways that traditional survey tracking doesn\'t capture. The longitudinal benchmarking and continuous engine monitoring BrandRank has built maps directly to the gap these firms are looking to fill.' },
+    { label:'Retail Media',       sub:'Amazon · Walmart · Kroger / 84.51°',       color:'#38bdf8', angle:-35,
+      why:'Retail AI shopping tools are answering brand questions at the moment of purchase intent. The capability to systematically monitor AI brand accuracy across retail platforms creates a compelling fit — especially as CPG advertisers ask harder questions about AI-driven brand representation.' },
+    { label:'SEO & Analytics',    sub:'BrightEdge · SEMrush · Similarweb',        color:'#22d3a0', angle:-148,
+      why:'Search-based platforms are navigating real pressure as AI answer engines shift how people find information. BrandRank\'s infrastructure could meaningfully accelerate their AI measurement roadmap rather than requiring a build-from-scratch effort.' },
+    { label:'Scale Platforms',    sub:'Salesforce · Adobe · HubSpot · Google',    color:'#f5c842', angle:15,
+      why:'AI answer engine visibility is becoming a CMO priority question. The multi-engine tracking, content readiness scoring, and brand accuracy benchmarking BrandRank has built could integrate naturally into these platforms\' existing enterprise relationships.' },
+    { label:'Agency Holding Cos', sub:'Publicis · WPP · IPG · Dentsu',            color:'#f5c842', angle:62,
+      why:'Answer analytics may offer a stronger catalyst for enterprise orchestration than most adjacencies. Answer share is inherently multi-functional — touching content strategy, SEO, paid media, brand health, and competitive intelligence simultaneously.' },
+    { label:'Tech Verification',  sub:'DoubleVerify · IAS · NewsGuard',           color:'#f5c842', angle:-170,
+      why:'Brands increasingly need confidence that what AI systems say about them is factually grounded. The hallucination detection and brand accuracy monitoring capabilities BrandRank has developed map well to the brand safety logic these verification firms have already commercialized.' },
+    { label:'Consultancies',      sub:'McKinsey · BCG · Accenture · Deloitte',    color:'#2dd4bf', angle:108,
+      why:'CMOs are bringing AI answer engine questions into strategy conversations. The ability to bring structured, longitudinal AI brand data into advisory engagements could meaningfully strengthen the value these firms deliver. BCG is already a BrandRank client.' },
+    { label:'Experience Platforms', sub:'Qualtrics · Medallia · Sprinklr',        color:'#f472b6', angle:152,
+      why:'Experience management platforms cover brand perception across every touchpoint — except AI answer engines, which now shape opinions before a customer directly interacts with a brand. Adding AI answer engine coverage as a signal channel could give enterprise clients a more complete picture.' },
+    { label:'Media & Ad Intel',   sub:'Meltwater · Trade Desk · LiveRamp',        color:'#60a5fa', angle:-62,
+      why:'Social listening and programmatic platforms are asking whether AI-generated brand narratives affect media ROI. Extending platform coverage into AI answer engine signals strengthens the value proposition for enterprise clients already using these tools.' },
+    { label:'Research & Analyst', sub:'Gartner · Forrester · IDC',                color:'#818cf8', angle:198,
+      why:'Gartner published the inaugural Market Guide for Answer Engine Visibility Tools. For a research firm whose business depends on delivering data-backed intelligence, pairing category definition with an underlying data asset is a meaningful strategic opportunity.' },
+    { label:'LLM Platforms',      sub:'OpenAI · Microsoft · Perplexity · Anthropic', color:'#fb7185', angle:-112,
+      why:'AI answer platforms are navigating a tension between response breadth and brand-specific accuracy. As these platforms pursue enterprise adoption, the ability to demonstrate brand accuracy and give brands a structured way to monitor their representation becomes increasingly relevant.' },
+    { label:'Risk & Data',        sub:'S&P Global · Moody\'s · MSCI',             color:'#e879f9', angle:244,
+      why:'AI-generated misrepresentation of a company\'s products or safety record is increasingly discussed as a reputational and governance risk. Longitudinal, multi-engine AI brand accuracy data could serve as a meaningful signal for an "AI Brand Risk Score" complementing existing ESG frameworks.' },
+    { label:'Healthcare / Vertical', sub:'IQVIA · Symphony Health',               color:'#a3e635', angle:290,
+      why:'In healthcare and pharma the stakes around AI brand accuracy are especially high — inaccurate drug claims or safety profiles carry regulatory and legal implications. The capability BrandRank has built is particularly well-suited to environments where consequences of AI inaccuracy are concrete and measurable.' },
+  ];
+
+  let nodesCache = [];
+  let hoveredNode = null;
+  let W = 0, H = 0;
+
+  function draw() {
+    const container = canvas.parentElement;
+    W = Math.min(container.offsetWidth, 900);
+
+    // Node size and sub-label height — compute first so orbit can account for them
+    const nodeR  = Math.floor(W * 0.052);          // circle radius
+    const subFs  = Math.max(Math.floor(W * 0.009), 8); // sub-label font
+    const subH   = subFs * 2.4;                    // approx sub-label height below circle
+    const labFs  = Math.max(Math.floor(W * 0.012), 10);
+
+    // Safe orbit: center to node center must leave nodeR + subH + padding on every side
+    const margin = nodeR + subH + 10;
+    const cx0 = W / 2, cy0 = W / 2;               // canvas is SQUARE
+    H = W;                                          // square canvas = all directions equal
+
+    // Max orbit that keeps every node fully inside
+    const safeOrbit = Math.floor(cx0 - margin);
+
+    canvas.style.width  = W + 'px';
+    canvas.style.height = H + 'px';
+    canvas.width  = W * dpr;
+    canvas.height = H * dpr;
+
+    const ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+
+    const cx = W / 2, cy = H / 2;
+
+    // Pre-compute node positions
+    nodesCache = categories.map(c => {
+      const rad = (c.angle * Math.PI) / 180;
+      return { ...c, x: cx + Math.cos(rad) * safeOrbit, y: cy + Math.sin(rad) * safeOrbit };
+    });
+
+    // Background
+    ctx.fillStyle = '#0a0e1a';
+    ctx.fillRect(0, 0, W, H);
+
+    // Center glow
+    const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, safeOrbit * 0.55);
+    glow.addColorStop(0, 'rgba(0,212,255,0.08)');
+    glow.addColorStop(1, 'rgba(0,212,255,0)');
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, W, H);
+
+    // Single orbit ring
+    ctx.beginPath();
+    ctx.arc(cx, cy, safeOrbit, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(30,45,71,0.9)';
+    ctx.lineWidth   = 1;
+    ctx.setLineDash([4, 7]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Connector lines
+    nodesCache.forEach(n => {
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(n.x, n.y);
+      const g = ctx.createLinearGradient(cx, cy, n.x, n.y);
+      g.addColorStop(0,   'rgba(0,212,255,0.4)');
+      g.addColorStop(0.6, n.color + '44');
+      g.addColorStop(1,   n.color + '18');
+      ctx.strokeStyle = g;
+      ctx.lineWidth   = 1;
+      ctx.stroke();
+    });
+
+    // Category nodes
+    nodesCache.forEach(n => {
+      const hot = hoveredNode && hoveredNode.label === n.label;
+
+      // Outer glow
+      const ng = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, nodeR * 1.7);
+      ng.addColorStop(0, n.color + (hot ? '28' : '14'));
+      ng.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = ng;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, nodeR * 1.7, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Circle
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, nodeR, 0, Math.PI * 2);
+      ctx.fillStyle = hot ? '#141c2e' : '#111827';
+      ctx.fill();
+      ctx.strokeStyle = hot ? n.color : n.color + '90';
+      ctx.lineWidth   = hot ? 2 : 1.5;
+      ctx.stroke();
+
+      // Label (2-line)
+      ctx.fillStyle    = hot ? '#ffffff' : '#f0f4ff';
+      ctx.font         = `600 ${labFs}px 'DM Sans',sans-serif`;
+      ctx.textAlign    = 'center';
+      ctx.textBaseline = 'middle';
+      const words = n.label.split(' ');
+      const lh    = labFs * 1.3;
+      const mid   = Math.ceil(words.length / 2);
+      const l1    = words.slice(0, mid).join(' ');
+      const l2    = words.slice(mid).join(' ');
+      if (l2) {
+        ctx.fillText(l1, n.x, n.y - lh * 0.45);
+        ctx.fillText(l2, n.x, n.y + lh * 0.55);
+      } else {
+        ctx.fillText(l1, n.x, n.y - subFs * 0.4);
+      }
+
+      // Sub-label
+      ctx.fillStyle = n.color + (hot ? 'ff' : 'bb');
+      ctx.font      = `300 ${subFs}px 'DM Sans',sans-serif`;
+      ctx.fillText(n.sub, n.x, n.y + nodeR + subFs * 1.35);
+    });
+
+    // Center node
+    const cr = Math.floor(W * 0.082);
+    const cg = ctx.createRadialGradient(cx, cy, 0, cx, cy, cr * 2.3);
+    cg.addColorStop(0, 'rgba(0,212,255,0.2)');
+    cg.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = cg;
+    ctx.beginPath();
+    ctx.arc(cx, cy, cr * 2.3, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, cr, 0, Math.PI * 2);
+    ctx.fillStyle = '#0d1628';
+    ctx.fill();
+    ctx.strokeStyle = '#00d4ff';
+    ctx.lineWidth   = 2;
+    ctx.stroke();
+
+    const cfs = Math.max(Math.floor(W * 0.017), 12);
+    ctx.fillStyle    = '#00d4ff';
+    ctx.font         = `700 ${cfs}px 'DM Sans',sans-serif`;
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('BrandRank.AI', cx, cy - cfs * 0.65);
+    ctx.fillStyle = '#6b7fa3';
+    ctx.font      = `300 ${Math.max(Math.floor(W * 0.011), 9)}px 'DM Sans',sans-serif`;
+    ctx.fillText('Answer Economy Platform', cx, cy + cfs * 0.8);
+  }
+
+  function getNodeAt(mx, my) {
+    const nodeR = Math.floor(W * 0.052);
+    return nodesCache.find(n => {
+      const dx = mx - n.x, dy = my - n.y;
+      return Math.sqrt(dx * dx + dy * dy) <= nodeR;
+    }) || null;
+  }
+
+  function showMapTooltip(node, clientX, clientY) {
+    tipName.textContent = node.label;
+    tipSub.textContent  = node.sub;
+    tipBody.textContent = node.why;
+    mapTip.style.visibility = 'visible';
+    mapTip.style.opacity    = '1';
+    positionMapTooltip(clientX, clientY);
+  }
+
+  function positionMapTooltip(cx, cy) {
+    const tw = 280, pad = 10;
+    const th = mapTip.offsetHeight;
+    let left = cx + 16;
+    let top  = cy - th / 2;
+    if (left + tw > window.innerWidth  - pad) left = cx - tw - 16;
+    if (top < pad)                            top  = pad;
+    if (top + th > window.innerHeight  - pad) top  = window.innerHeight - th - pad;
+    mapTip.style.left = left + 'px';
+    mapTip.style.top  = top  + 'px';
+  }
+
+  function hideMapTooltip() {
+    mapTip.style.opacity    = '0';
+    mapTip.style.visibility = 'hidden';
+  }
+
+  canvas.addEventListener('mousemove', e => {
+    const rect  = canvas.getBoundingClientRect();
+    const scaleX = W / rect.width;
+    const scaleY = H / rect.height;
+    const mx = (e.clientX - rect.left) * scaleX;
+    const my = (e.clientY - rect.top)  * scaleY;
+    const node = getNodeAt(mx, my);
+    if (node !== hoveredNode) {
+      hoveredNode = node;
+      draw();
+      if (node) { showMapTooltip(node, e.clientX, e.clientY); canvas.style.cursor = 'pointer'; }
+      else       { hideMapTooltip(); canvas.style.cursor = 'default'; }
+    } else if (node) {
+      positionMapTooltip(e.clientX, e.clientY);
+    }
+  });
+
+  canvas.addEventListener('mouseleave', () => {
+    hoveredNode = null; draw(); hideMapTooltip(); canvas.style.cursor = 'default';
+  });
+
+  draw();
+  window.addEventListener('resize', () => { hoveredNode = null; hideMapTooltip(); draw(); });
+})();
+</script>
+
+</div><!-- /mapSection -->
+</div><!-- /panel-matrix -->
+
+<!-- ══ PANEL 1: EXECUTIVE VIEW ═══════════════════════════════════════════ -->
+<div class="tab-panel" id="panel-exec">
+<div class="exec-page">
+
+  <!-- HEADER -->
+  <div class="exec-page-header">
+    <div class="exec-kicker">BrandRank.AI · Strategic Exit Overview · Confidential · April 2026</div>
+    <div class="exec-title">BrandRank's <em>Roadmap to Exit</em></div>
+    <div class="exec-intro">Who buys, why they buy, when to move, and what's been discussed already. What follows is a structured view of the exit landscape — the acquirer categories, their strategic rationale, and where active conversations stand.</div>
+  </div>
+
+  <!-- SECTION 1: THE ASSET -->
+  <div class="exec-section">
+    <div class="exec-section-label">The Asset</div>
+    <div class="exec-big">A two-year head start in a category<br>that <em>Gartner just named.</em></div>
+    <div class="exec-para">BrandRank tracks what AI answer engines — ChatGPT, Gemini, Claude, Perplexity, Grok, Meta AI — say about brands, every day, at enterprise scale. The platform covers brand visibility, vulnerability detection, hallucination identification, and content readiness across the world's most influential AI systems.</div>
+    <div class="exec-para">Included in Gartner's inaugural Market Guide for Answer Engine Visibility Tools. Strategic partnership with the ANA. Joint trust research with the Better Business Bureau. The Answer Economy published by Wiley. Active enterprise client base spanning CPG, healthcare, finance, and retail.</div>
+    <div class="exec-para">Two years of longitudinal data, purpose-built infrastructure, and an enterprise client base that validates the category — represent a head start that is measurable, documented, and not easily replicated.</div>
+  </div>
+
+  <!-- SECTION 2: THE EXIT THESIS -->
+  <div class="exec-section">
+    <div class="exec-section-label">The Exit Thesis</div>
+    <div class="exec-big">This isn't a single-buyer story.<br><em>Ten categories of strategic acquirer</em> see the value.</div>
+    <div class="exec-para">What makes BrandRank's exit optionality unusual is the breadth of buyer categories with legitimate strategic rationale. The capability BrandRank has built sits at the intersection of brand measurement, AI safety, data intelligence, and enterprise marketing — which means it is relevant to an unusually wide range of strategic acquirers, each with a different but compelling motivation.</div>
+
+    <div class="exec-acquirer-grid">
+
+      <div class="exec-acquirer-card" style="--accent:#22d3a0">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#22d3a0,transparent)"></div>
+        <div class="eac-label" style="color:#22d3a0">Actionable Now</div>
+        <div class="eac-name">Market Research Firms</div>
+        <div class="eac-examples">Circana · Burke · Nielsen · Kantar</div>
+        <div class="eac-why">Survey-based brand tracking is losing relevance to CMOs as AI shapes perception before any purchase decision. Acquiring AI answer engine measurement capability is the fastest path to staying relevant — and active conversations are already underway.</div>
+        <div class="eac-signal" style="background:rgba(34,211,160,0.1);color:#22d3a0;border:1px solid rgba(34,211,160,0.3)">4–6× ARR</div>
+      </div>
+
+      <div class="exec-acquirer-card">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#38bdf8,transparent)"></div>
+        <div class="eac-label" style="color:#38bdf8">Actionable Now</div>
+        <div class="eac-name">Retail Media Networks</div>
+        <div class="eac-examples">Amazon · Walmart · Kroger / 84.51°</div>
+        <div class="eac-why">Rufus, Walmart's AI tools, and Kroger's emerging interfaces answer brand questions at the moment of purchase intent. A systematic tool to vet AI brand accuracy protects billions in CPG ad revenue. Three potential acquirers in one category creates built-in competitive tension.</div>
+        <div class="eac-signal" style="background:rgba(56,189,248,0.1);color:#38bdf8;border:1px solid rgba(56,189,248,0.3)">8–14× ARR</div>
+      </div>
+
+      <div class="exec-acquirer-card">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#f5c842,transparent)"></div>
+        <div class="eac-label" style="color:#f5c842">Strategic Build</div>
+        <div class="eac-name">Scale Platforms</div>
+        <div class="eac-examples">Salesforce · Adobe · HubSpot · Google</div>
+        <div class="eac-why">AI answer engine visibility is becoming a CMO priority these platforms cannot currently address. BrandRank's infrastructure could integrate into their existing enterprise relationships as a premium data module — unlocking the highest headline valuation of any path.</div>
+        <div class="eac-signal" style="background:rgba(245,200,66,0.1);color:#f5c842;border:1px solid rgba(245,200,66,0.3)">10–15× ARR</div>
+      </div>
+
+      <div class="exec-acquirer-card">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#f5c842,transparent)"></div>
+        <div class="eac-label" style="color:#f5c842">Strategic Build</div>
+        <div class="eac-name">Agency Holding Cos</div>
+        <div class="eac-examples">Publicis · WPP · IPG · Dentsu</div>
+        <div class="eac-why">Answer share is inherently multi-functional — touching SEO, content, paid media, brand health, and competitive intelligence simultaneously. This makes it a stronger hub capability for enterprise orchestration than most adjacencies. Publicis is already in conversation.</div>
+        <div class="eac-signal" style="background:rgba(245,200,66,0.1);color:#f5c842;border:1px solid rgba(245,200,66,0.3)">6–10× ARR</div>
+      </div>
+
+      <div class="exec-acquirer-card">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#f5c842,transparent)"></div>
+        <div class="eac-label" style="color:#f5c842">Strategic Build</div>
+        <div class="eac-name">Tech Verification</div>
+        <div class="eac-examples">DoubleVerify · IAS · NewsGuard</div>
+        <div class="eac-why">Brand safety in AI-generated answers is the next frontier beyond ad adjacency. The hallucination detection and brand accuracy monitoring capabilities BrandRank has developed map directly to the brand safety logic these firms have already commercialized at scale.</div>
+        <div class="eac-signal" style="background:rgba(245,200,66,0.1);color:#f5c842;border:1px solid rgba(245,200,66,0.3)">8–12× ARR</div>
+      </div>
+
+      <div class="exec-acquirer-card">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#2dd4bf,transparent)"></div>
+        <div class="eac-label" style="color:#2dd4bf">Consultancies</div>
+        <div class="eac-name">Strategy &amp; Digital Firms</div>
+        <div class="eac-examples">McKinsey · BCG · Accenture · Deloitte</div>
+        <div class="eac-why">CMOs are asking these firms how AI answer engines are reshaping brand perception — and the firms have no data layer to answer with. BCG is already a BrandRank client. Proprietary data is the scarcest asset in strategy consulting; exclusivity provisions are the key lever.</div>
+        <div class="eac-signal" style="background:rgba(45,212,191,0.1);color:#2dd4bf;border:1px solid rgba(45,212,191,0.3)">5–9× ARR</div>
+      </div>
+
+      <div class="exec-acquirer-card">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#f472b6,transparent)"></div>
+        <div class="eac-label" style="color:#f472b6">Experience</div>
+        <div class="eac-name">Experience Platforms</div>
+        <div class="eac-examples">Qualtrics · Medallia · Sprinklr</div>
+        <div class="eac-why">These platforms measure brand experience across every touchpoint except AI answer engines — which now shape perception before any direct customer interaction. Adding AI answer engine coverage fills a structural gap their enterprise clients are already noticing.</div>
+        <div class="eac-signal" style="background:rgba(244,114,182,0.1);color:#f472b6;border:1px solid rgba(244,114,182,0.3)">7–11× ARR</div>
+      </div>
+
+      <div class="exec-acquirer-card">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#818cf8,transparent)"></div>
+        <div class="eac-label" style="color:#818cf8">Research &amp; Analyst</div>
+        <div class="eac-name">Gartner / Forrester / IDC</div>
+        <div class="eac-examples">Gartner · Forrester · IDC</div>
+        <div class="eac-why">Gartner named the Answer Engine Visibility category in their inaugural Market Guide. Acquiring BrandRank means owning the live data layer behind a category they just certified. Walking away means a competitor inherits the space they defined — a risk they take seriously.</div>
+        <div class="eac-signal" style="background:rgba(129,140,248,0.1);color:#818cf8;border:1px solid rgba(129,140,248,0.3)">7–11× ARR</div>
+      </div>
+
+      <div class="exec-acquirer-card">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#fb7185,transparent)"></div>
+        <div class="eac-label" style="color:#fb7185">LLM Platforms</div>
+        <div class="eac-name">Microsoft · OpenAI · Perplexity</div>
+        <div class="eac-examples">Microsoft Copilot · OpenAI · Perplexity · Anthropic</div>
+        <div class="eac-why">Every major LLM platform has a brand accuracy problem. Microsoft's Copilot operates at enterprise scale inside corporate workflows — inaccurate brand claims create measurable business liability. BrandRank's measurement infrastructure and feedback loop capability addresses a need these platforms have not yet solved.</div>
+        <div class="eac-signal" style="background:rgba(251,113,133,0.1);color:#fb7185;border:1px solid rgba(251,113,133,0.3)">Mission / Strategic</div>
+      </div>
+
+      <div class="exec-acquirer-card">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#e879f9,transparent)"></div>
+        <div class="eac-label" style="color:#e879f9">Risk &amp; Data</div>
+        <div class="eac-name">Financial Data &amp; Risk Firms</div>
+        <div class="eac-examples">S&amp;P Global · Moody's · MSCI · Morningstar</div>
+        <div class="eac-why">AI-generated misrepresentation of a company's products or performance is increasingly discussed as a material reputational risk. Longitudinal AI brand accuracy data could anchor a new "AI Brand Risk Score" — a potentially significant new data product for institutional investors.</div>
+        <div class="eac-signal" style="background:rgba(232,121,249,0.1);color:#e879f9;border:1px solid rgba(232,121,249,0.3)">6–10× ARR</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 3: WHY NOW -->
+  <div class="exec-section">
+    <div class="exec-section-label">Timing</div>
+    <div class="exec-big">The category window is open.<br><em>It will not stay open indefinitely.</em></div>
+
+    <div class="exec-thesis-row">
+      <div class="exec-thesis-card">
+        <div class="etc-num">01</div>
+        <div class="etc-title">Gartner just named the category</div>
+        <div class="etc-body">Inclusion in an inaugural Gartner Market Guide is the clearest signal that a category has reached enterprise legitimacy. It creates urgency for potential partners who are not yet in the space — and positions BrandRank as the reference point every acquirer will cite in their internal business case.</div>
+      </div>
+      <div class="exec-thesis-card">
+        <div class="etc-num">02</div>
+        <div class="etc-title">Longitudinal data compounds daily</div>
+        <div class="etc-body">Two years of daily multi-engine brand tracking is a data asset that can't be replicated quickly. Every day that passes, BrandRank's longitudinal dataset grows wider and deeper — increasing the cost and time required for any acquirer to build a comparable capability from scratch.</div>
+      </div>
+      <div class="exec-thesis-card">
+        <div class="etc-num">03</div>
+        <div class="etc-title">Competitive tension is building</div>
+        <div class="etc-body">Multiple acquirer categories are becoming aware of each other's interest. Conversations are active across market research, agency holding companies, retail media, and verification platforms simultaneously — which means the natural competitive tension that drives valuation is already forming.</div>
+      </div>
+      <div class="exec-thesis-card">
+        <div class="etc-num">04</div>
+        <div class="etc-title">The answer economy is accelerating</div>
+        <div class="etc-body">AI answer engines are not a trend — they are replacing search as the primary way people and enterprises find information. The brands, agencies, and platforms that don't have a measurement and management strategy for this shift will be materially disadvantaged. The urgency is not hypothetical.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: STRUCTURE -->
+  <div class="exec-section">
+    <div class="exec-section-label">Transaction Structure</div>
+    <div class="exec-big">We are pursuing the <em>right conversation,</em><br>not the fastest one.</div>
+    <div class="exec-para">Active conversations are underway across several of the categories above. The preferred approach is partnership-first where it makes strategic sense — allowing both parties to validate the data asset and commercial fit before a formal transaction. Full acquisition with defined founder roles and operational autonomy provisions is the preferred outcome where the strategic fit is strong.</div>
+    <div class="exec-para">Deal structures under active consideration include data licensing and co-development, strategic investment with commercial partnership, and full acquisition. Valuation multiples range from 4–6× ARR for data-oriented market research partners to 10–15× for platform acquirers at scale, with retail media and pharma verticals commanding infrastructure premiums.</div>
+    <div class="exec-para" style="color:rgba(0,212,255,0.7);font-style:italic;font-size:13px;">For the full acquirer-by-acquirer analysis including deal structure notes, leverage points, and founder role frameworks, see the Full Matrix tab.</div>
+  </div>
+
+</div><!-- /exec-page -->
+</div><!-- /panel-exec -->
+
+<!-- ══ PANEL 2: ACTIVE CONVERSATIONS ═════════════════════════════════════ -->
+<div class="tab-panel" id="panel-active">
+  <div class="active-wrap">
+    <div style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);display:flex;align-items:center;gap:12px;margin-bottom:6px;">Engagement / Conversations Underway<span style="flex:1;height:1px;background:var(--navy-border);display:inline-block;margin-left:12px;"></span></div>
+    <div style="font-size:12.5px;color:var(--muted);font-weight:300;margin-bottom:28px;max-width:700px;">Companies with whom BrandRank has initiated strategic dialogue. Confidential — do not circulate.</div>
+
+    <div class="active-grid">
+
+      <div class="active-card status-active" style="animation-delay:0.03s">
+        <div class="active-status s-active"><div class="sdot"></div>Active Discussion</div>
+        <div class="active-name">Circana</div>
+        <div class="active-category">Consumer Intelligence · Global</div>
+        <div class="active-section-label">Company</div>
+        <div class="active-text">Formed from the 2022 merger of IRI and NPD Group, Circana is a leading consumer intelligence firm tracking purchase behavior across retail, food service, and media. Serving major CPG, retail, and technology companies, Circana provides point-of-sale and panel data covering billions of consumer transactions annually.</div>
+        <div class="active-divider"></div>
+        <div class="active-section-label">Strategic Fit</div>
+        <div class="active-text">Circana's CPG client base and purchase intelligence are directly complementary to BrandRank's AI brand tracking. A partnership could bridge what brands measure in-store with what AI answer engines say pre-purchase — creating a more complete view of brand influence across the entire consumer journey.</div>
+        <div class="active-divider"></div>
+        <div class="active-section-label">Voice from the Room</div>
+        <div class="active-text" style="font-style:italic; color:#a0b8cc; padding:12px 14px; border-left:2px solid rgba(0,212,255,0.35); background:rgba(0,212,255,0.04); border-radius:0 6px 6px 0; line-height:1.65;">"I had our PE and M&amp;A team do a quick review of the space and your business. We love the space you are in, what you are doing, how you are thinking."
+          <div style="margin-top:8px; font-size:10px; font-weight:600; letter-spacing:0.5px; color:var(--cyan); font-style:normal;">— Stuart Aitken, CEO, Circana</div>
+        </div>
+      </div>
+
+      <div class="active-card status-active" style="animation-delay:0.06s">
+        <div class="active-status s-active"><div class="sdot"></div>Active Discussion</div>
+        <div class="active-name">Burke, Inc.</div>
+        <div class="active-category">Market Research · Cincinnati, OH</div>
+        <div class="active-section-label">Company</div>
+        <div class="active-text">Founded in 1931, Burke is one of the most respected full-service market research firms in the United States. Specializing in brand equity tracking, customer experience measurement, and strategic insights, Burke is known for rigorous methodology and long-term Fortune 500 client relationships built on proprietary research.</div>
+        <div class="active-divider"></div>
+        <div class="active-section-label">Strategic Fit</div>
+        <div class="active-text">Burke's brand tracking expertise is deeply complementary to BrandRank's AI answer engine measurement. A partnership could allow Burke to extend its brand equity tracking into AI channels — adding a real-time, AI-native data layer to a methodology their enterprise clients already trust.</div>
+        <div class="active-divider"></div>
+        <div class="active-section-label">Voice from the Room</div>
+        <div class="active-text" style="font-style:italic; color:#a0b8cc; padding:12px 14px; border-left:2px solid rgba(0,212,255,0.35); background:rgba(0,212,255,0.04); border-radius:0 6px 6px 0; line-height:1.65;">"This is the beginning of something very exciting and I'm so happy we can partner together. We will make quick work together."
+          <div style="margin-top:8px; font-size:10px; font-weight:600; letter-spacing:0.5px; color:var(--cyan); font-style:normal;">— Tara Marotti, CEO, Burke, Inc.</div>
+        </div>
+      </div>
+
+      <div class="active-card status-active" style="animation-delay:0.09s">
+        <div class="active-status s-active"><div class="sdot"></div>Active Discussion</div>
+        <div class="active-name">Publicis Groupe</div>
+        <div class="active-category">Agency Holding Company · Global</div>
+        <div class="active-section-label">Company</div>
+        <div class="active-text">Publicis is the world's third-largest communications group by revenue, owning Leo Burnett, Saatchi &amp; Saatchi, and Epsilon — its proprietary data platform. Publicis has made aggressive investments in data-driven marketing and AI capabilities, positioning itself as the most technology-forward of the major holding companies globally.</div>
+        <div class="active-divider"></div>
+        <div class="active-section-label">Strategic Fit</div>
+        <div class="active-text">Publicis's Epsilon data platform and deep CMO relationships create a natural distribution channel for BrandRank's AI visibility intelligence. Answer analytics could strengthen Publicis's ability to demonstrate measurable brand outcomes across AI channels — a growing client priority their existing offerings don't yet address.</div>
+      </div>
+
+      <div class="active-card status-warm" style="animation-delay:0.12s">
+        <div class="active-status s-warm"><div class="sdot"></div>Initiated</div>
+        <div class="active-name">DoubleVerify</div>
+        <div class="active-category">Digital Ad Verification · Publicly Traded (DV)</div>
+        <div class="active-section-label">Company</div>
+        <div class="active-text">DoubleVerify is a leading digital media measurement and ad verification platform serving 2,000+ global advertisers. Publicly traded, the company ensures brand safety, viewability, and ad fraud prevention across digital environments — built on the principle that brands deserve accurate and trusted content environments.</div>
+        <div class="active-divider"></div>
+        <div class="active-section-label">Strategic Fit</div>
+        <div class="active-text">AI answer engines represent a natural extension of the brand safety challenge DoubleVerify has commercialized. The capability to monitor and flag inaccurate brand representation in AI-generated content maps well to their existing verification logic — extending brand safety from ad environments into the AI answer layer.</div>
+      </div>
+
+      <div class="active-card status-warm" style="animation-delay:0.15s">
+        <div class="active-status s-warm"><div class="sdot"></div>Initiated</div>
+        <div class="active-name">SEMrush</div>
+        <div class="active-category">Digital Marketing Intelligence · Publicly Traded (SEMR)</div>
+        <div class="active-section-label">Company</div>
+        <div class="active-text">SEMrush is a leading digital marketing platform serving 10M+ marketing professionals globally. Known for keyword tracking, SEO analysis, and competitive research, SEMrush is a go-to tool for enterprise marketing teams managing organic search visibility across complex, competitive digital landscapes worldwide.</div>
+        <div class="active-divider"></div>
+        <div class="active-section-label">Strategic Fit</div>
+        <div class="active-text">As AI answer engines increasingly displace traditional search, SEMrush faces a structural gap in its core product. BrandRank's multi-engine AI visibility tracking could extend SEMrush's measurement coverage into the AI layer — allowing enterprise clients to manage brand presence across both search and AI answer environments seamlessly.</div>
+      </div>
+
+      <div class="active-card status-warm" style="animation-delay:0.18s">
+        <div class="active-status s-warm"><div class="sdot"></div>Initiated</div>
+        <div class="active-name">Dentsu</div>
+        <div class="active-category">Agency Holding Company · Global</div>
+        <div class="active-section-label">Company</div>
+        <div class="active-text">Dentsu is Japan's largest and the world's fifth-largest advertising group. Through its Merkle acquisition and Dentsu Data Studios, the company has built strong data-driven marketing capabilities, with growing enterprise ambitions in AI-powered marketing intelligence across Asia-Pacific and North America.</div>
+        <div class="active-divider"></div>
+        <div class="active-section-label">Strategic Fit</div>
+        <div class="active-text">Dentsu's data marketing infrastructure and enterprise client relationships create a compelling channel for BrandRank's AI visibility intelligence. Answer share tracking is inherently multi-functional — touching SEO, content, paid media, and brand health — making it a strong hub capability for deeper AI-era client integration.</div>
+      </div>
+
+      <div class="active-card status-exploring" style="animation-delay:0.21s">
+        <div class="active-status s-exploring"><div class="sdot"></div>Exploring</div>
+        <div class="active-name">IAC / Interactive Corp</div>
+        <div class="active-category">Digital Media &amp; Technology Conglomerate</div>
+        <div class="active-section-label">Company</div>
+        <div class="active-text">IAC is a diversified digital media and technology company with a portfolio including Dotdash Meredith, Angi, and Investopedia. Known for identifying emerging digital categories early and scaling them into leaders, IAC has a long history of building, acquiring, and spinning off internet businesses at scale.</div>
+        <div class="active-divider"></div>
+        <div class="active-section-label">Strategic Fit</div>
+        <div class="active-text">IAC's content brands face direct exposure to AI answer engine disruption — consumers increasingly get answers from AI rather than visiting their properties. BrandRank's measurement capability and Answer Economy framework could inform IAC's AI strategy across its portfolio while hedging against AI-driven content disintermediation.</div>
+      </div>
+
+      <div class="active-card status-warm" style="animation-delay:0.24s">
+        <div class="active-status s-warm"><div class="sdot"></div>Ongoing Discussion</div>
+        <div class="active-name">Kroger / 84.51°</div>
+        <div class="active-category">Retail Media &amp; Consumer Intelligence · Cincinnati, OH</div>
+        <div class="active-section-label">Company</div>
+        <div class="active-text">84.51° is Kroger's data science subsidiary, named for Cincinnati's longitude, analyzing purchase behavior of 60M+ households via Kroger loyalty data. It sells shopper intelligence to CPG brands and powers Kroger Precision Marketing — one of North America's fastest-growing retail media networks.</div>
+        <div class="active-divider"></div>
+        <div class="active-section-label">Strategic Fit</div>
+        <div class="active-text">84.51° tracks what consumers buy; BrandRank tracks what AI says about brands before they buy. The data assets are directly complementary, the CPG client rosters nearly identical, and both companies are headquartered in Cincinnati. A joint product could create a pre-purchase-to-purchase attribution loop no competitor can replicate.</div>
+      </div>
+
+    </div>
+  </div>
+</div><!-- /panel-active -->
+
+<!-- ══ PANEL 3: GARTNER ASSESSMENT ═══════════════════════════════════════ -->
+<div class="tab-panel" id="panel-gartner">
+<div class="exec-page">
+
+  <!-- HEADER -->
+  <div class="exec-page-header">
+    <div class="exec-kicker">Gartner Market Guide for Answer Engine Visibility Tools · March 2026 · G00841100</div>
+    <div class="exec-title">Gartner Assessment <em>of BrandRank</em></div>
+    <div class="exec-intro">Gartner published its inaugural Market Guide for Answer Engine Visibility Tools in March 2026 — naming BrandRank AI as one of 14 Representative Vendors globally. Everything on this page is drawn directly from the report. Where we offer our own analysis or interpretation, it is clearly labeled as such.</div>
+  </div>
+
+  <!-- SECTION 1: WHAT GARTNER SAID ABOUT BRANDRANK -->
+  <div class="exec-section">
+    <div class="exec-section-label">What Gartner Said About BrandRank</div>
+    <div class="exec-big">Named. Profiled. <em>Cited for capabilities<br>that Gartner defined as mandatory.</em></div>
+    <div class="exec-para">BrandRank AI was selected by Gartner as one of 14 Representative Vendors — the only Ohio-based company in the guide. Selection was based on client interest, market presence, and prior Gartner research. Below is the vendor definition and key capabilities cited directly from the report.</div>
+
+    <div style="background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.2); border-radius:10px; padding:24px 28px; border-left:3px solid var(--cyan); margin-bottom:16px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:10px;">Gartner's BrandRank Definition — Direct Quote from Report</div>
+      <div style="font-size:14px;color:var(--white);font-style:italic;line-height:1.75;font-family:'DM Serif Display',serif;font-weight:400;">"BrandRank is a SaaS platform that helps brands maintain continuous visibility into their position within GenAI and optimize performance. The platform enables users to track critical prompts and monitor overall performance with real-time scores across three pillars — visibility, vulnerability, and content readiness."</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:10px;letter-spacing:0.5px;">— Gartner Market Guide, March 2026 · Vendor Profile: BrandRank</div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:4px;">
+
+      <div style="background:var(--navy-card); border:1px solid var(--navy-border); border-radius:10px; padding:18px 20px;">
+        <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:8px;">Gartner-Cited Capability</div>
+        <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:6px;">Vulnerability Detection</div>
+        <div style="font-size:11.5px;color:#8898bb;font-weight:300;line-height:1.55;font-style:italic;">"Detects misinformation within LLMs, flagging hallucinations and trust gaps while helping users identify and rectify negative sentiment or misalignment through ongoing monitoring and confidence scoring."</div>
+      </div>
+
+      <div style="background:var(--navy-card); border:1px solid var(--navy-border); border-radius:10px; padding:18px 20px;">
+        <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:8px;">Gartner-Cited Capability</div>
+        <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:6px;">Competitive Analysis Beyond Mentions</div>
+        <div style="font-size:11.5px;color:#8898bb;font-weight:300;line-height:1.55;font-style:italic;">"Benchmarks beyond mentions and visibility to include trust readiness, engagement, vulnerability, and content readiness, giving a broader view of performance relative to competitors."</div>
+      </div>
+
+      <div style="background:var(--navy-card); border:1px solid var(--navy-border); border-radius:10px; padding:18px 20px;">
+        <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:8px;">Gartner-Cited Capability</div>
+        <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:6px;">Prompts Insight</div>
+        <div style="font-size:11.5px;color:#8898bb;font-weight:300;line-height:1.55;font-style:italic;">"Provides insight into targeted prompts across seven answer engines, with scoring to indicate search term and overall performance. Prompts span category, brand-critical, competitive, and emerging queries."</div>
+      </div>
+
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px;">
+      <div style="background:var(--navy-card); border:1px solid var(--navy-border); border-radius:10px; padding:18px 20px;">
+        <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:8px;">Gartner-Named Example Clients</div>
+        <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:6px;">Nestlé · P&amp;G · PepsiCo · Fifth Third Bank · Bitdefender</div>
+        <div style="font-size:11.5px;color:#8898bb;font-weight:300;line-height:1.55;">These are the example customers cited by Gartner in BrandRank's vendor profile — a Fortune 500-concentrated client base spanning CPG, financial services, and cybersecurity.</div>
+      </div>
+      <div style="background:var(--navy-card); border:1px solid var(--navy-border); border-radius:10px; padding:18px 20px;">
+        <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:8px;">Gartner-Cited Future Investment Areas</div>
+        <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:6px;">Data Integrity · Verticals · AI Commerce</div>
+        <div style="font-size:11.5px;color:#8898bb;font-weight:300;line-height:1.55;">Gartner cites BrandRank's roadmap investment in "anti-hallucination systems, enhanced testing, and longitudinal tracking"; "vertical-specific prompt libraries — CPG, financial services, healthcare, cybersecurity"; and "AI Commerce Performance Analytics."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: MANDATORY FEATURES -->
+  <div class="exec-section">
+    <div class="exec-section-label">Mandatory Features — BrandRank Alignment</div>
+    <div class="exec-big">Gartner set the bar.<br><em>BrandRank built it first.</em></div>
+    <div class="exec-para">Gartner defines two mandatory features for any vendor to qualify as a legitimate answer engine visibility tool. BrandRank's platform was built around both — predating the Gartner definition by two years. The capability descriptions below are Gartner's own words from the report.</div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:4px;">
+
+      <div style="background:rgba(34,211,160,0.05); border:1px solid rgba(34,211,160,0.2); border-radius:10px; padding:22px 24px;">
+        <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:10px;">Mandatory Feature #1 — Gartner's Definition</div>
+        <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:8px;">Hallucination / Misinformation Detection</div>
+        <div style="font-size:12px;color:#8898bb;font-weight:300;line-height:1.6;font-style:italic;border-left:2px solid rgba(34,211,160,0.4);padding-left:12px;margin-bottom:12px;">"Proactively identify instances where answer engines fabricate or misrepresent product capabilities or company data to inform corrective content strategies."</div>
+        <div style="font-size:12px;color:var(--green);font-weight:500;">✓ BrandRank: Gartner's vendor profile explicitly cites BrandRank's Vulnerability Detection module as a core capability meeting this requirement — flagging hallucinations and trust gaps with confidence scoring.</div>
+      </div>
+
+      <div style="background:rgba(34,211,160,0.05); border:1px solid rgba(34,211,160,0.2); border-radius:10px; padding:22px 24px;">
+        <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:10px;">Mandatory Feature #2 — Gartner's Definition</div>
+        <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:8px;">Multiplatform Coverage</div>
+        <div style="font-size:12px;color:#8898bb;font-weight:300;line-height:1.6;font-style:italic;border-left:2px solid rgba(34,211,160,0.4);padding-left:12px;margin-bottom:12px;">"Covers all major AI models — ChatGPT, Gemini, Perplexity, Claude, Copilot — and continually updates the platform list as new entrants emerge."</div>
+        <div style="font-size:12px;color:var(--green);font-weight:500;">✓ BrandRank: Gartner's vendor profile cites Prompts Insight across "seven answer engines" — meeting and exceeding the mandatory multiplatform coverage requirement.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 3: DIFFERENTIATION — WHAT GARTNER SHOWS VS. OUR ANALYSIS -->
+  <div class="exec-section">
+    <div class="exec-section-label">Competitive Position — From Gartner Data</div>
+    <div class="exec-big">What the vendor landscape<br><em>reveals about BrandRank's position.</em></div>
+    <div class="exec-para">The differentiators below are drawn from Gartner's vendor profiles across all 14 representative vendors. Where a claim comes directly from the report, it is quoted. Where it reflects our own reading of the comparative data, it is labeled as our analysis.</div>
+
+    <div class="exec-acquirer-grid" style="margin-top:4px;">
+
+      <div class="exec-acquirer-card">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),transparent)"></div>
+        <div class="eac-label" style="color:var(--green);">Gartner-Confirmed</div>
+        <div class="eac-name">Three-Pillar VVR Architecture</div>
+        <div class="eac-why">Gartner directly defines BrandRank around three pillars: "visibility, vulnerability, and content readiness." The vulnerability pillar — covering hallucination detection, trust gaps, and confidence scoring — is cited as a distinct capability in BrandRank's profile that is not framed as a primary pillar in other vendor profiles reviewed.</div>
+      </div>
+
+      <div class="exec-acquirer-card">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),transparent)"></div>
+        <div class="eac-label" style="color:var(--green);">Gartner-Confirmed</div>
+        <div class="eac-name">Competitive Analysis Beyond Mentions</div>
+        <div class="eac-why">Gartner directly quotes this as a BrandRank differentiator: "benchmarks beyond mentions and visibility to include trust readiness, engagement, vulnerability, and content readiness." This is Gartner's own language describing a capability that distinguishes BrandRank's approach to competitive intelligence.</div>
+      </div>
+
+      <div class="exec-acquirer-card">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),transparent)"></div>
+        <div class="eac-label" style="color:var(--green);">Gartner-Confirmed</div>
+        <div class="eac-name">Fortune 500 CPG Client Base</div>
+        <div class="eac-why">Gartner's BrandRank vendor profile lists Nestlé, P&G, PepsiCo, Fifth Third Bank, and Bitdefender as example customers. Reviewing the other 13 vendor profiles, this is among the most enterprise-concentrated client lists in the guide — particularly in the CPG vertical.</div>
+      </div>
+
+      <div class="exec-acquirer-card">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),transparent)"></div>
+        <div class="eac-label" style="color:var(--green);">Gartner-Confirmed</div>
+        <div class="eac-name">Vertical-Specific Prompt Library Roadmap</div>
+        <div class="eac-why">Gartner directly cites BrandRank's future investment in "vertical-specific prompt libraries and benchmarking models (e.g., CPG, financial services, healthcare, cybersecurity)" — a roadmap investment that addresses the enterprise segments most relevant to BrandRank's acquirer base.</div>
+      </div>
+
+      <div class="exec-acquirer-card">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent)"></div>
+        <div class="eac-label" style="color:var(--gold);">Our Analysis of Gartner Data</div>
+        <div class="eac-name">Most Trust-Oriented Architecture in the Field</div>
+        <div class="eac-why">Reviewing all 14 vendor profiles, BrandRank is the only vendor whose platform definition centers on "trust" and "vulnerability" as structural pillars. Most competitors are framed around content optimization, citation tracking, or SEO visibility. This is our reading of comparative profiles — Gartner does not state this directly.</div>
+      </div>
+
+      <div class="exec-acquirer-card">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent)"></div>
+        <div class="eac-label" style="color:var(--gold);">Our Analysis of Gartner Data</div>
+        <div class="eac-name">AI Commerce as a Differentiated Roadmap Investment</div>
+        <div class="eac-why">Gartner cites BrandRank's "AI Commerce Performance Analytics" roadmap investment. Reviewing the other 13 vendor profiles, this specific retail AI commerce tracking angle is not cited as a future investment area for any other vendor in the representative list — though Gartner does not make this comparison explicitly.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 4: FIELD TABLE -->
+  <div class="exec-section">
+    <div class="exec-section-label">The Competitive Field — Per Gartner's Vendor Table</div>
+    <div class="exec-big">A fragmented market of 14 vendors.<br><em>BrandRank's position within it.</em></div>
+    <div class="exec-para">Gartner notes the market is "still relatively fragmented, with a mix of established SEO platforms adding AEO features and specialized startups." The clusters below reflect our reading of Gartner's vendor profiles — the descriptions of each cluster are our analysis, not Gartner's language.</div>
+
+    <div style="overflow-x:auto; margin-top:4px;">
+      <table style="width:100%;border-collapse:collapse;">
+        <thead>
+          <tr style="background:rgba(0,212,255,0.05);border-bottom:2px solid rgba(0,212,255,0.2);">
+            <th style="text-align:left;padding:12px 16px;font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);border-right:1px solid var(--navy-border);">Cluster (Our Analysis)</th>
+            <th style="text-align:left;padding:12px 16px;font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);border-right:1px solid var(--navy-border);">Vendors per Gartner</th>
+            <th style="text-align:left;padding:12px 16px;font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);border-right:1px solid var(--navy-border);">Primary Focus per Gartner Profiles</th>
+            <th style="text-align:left;padding:12px 16px;font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);">Contrast with BrandRank</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:rgba(0,212,255,0.05);border-bottom:1px solid rgba(0,212,255,0.2);">
+            <td style="padding:14px 16px;font-size:12px;color:var(--cyan);font-weight:600;border-right:1px solid rgba(0,212,255,0.2);">BrandRank ★</td>
+            <td style="padding:14px 16px;font-size:11.5px;color:var(--cyan);font-weight:500;border-right:1px solid rgba(0,212,255,0.2);">BrandRank AI (Ohio, 2024)</td>
+            <td style="padding:14px 16px;font-size:11.5px;color:var(--cyan);font-weight:400;border-right:1px solid rgba(0,212,255,0.2);">Visibility + Vulnerability + Content Readiness; hallucination/trust detection; enterprise CPG client base</td>
+            <td style="padding:14px 16px;font-size:11.5px;color:var(--green);font-weight:400;">Trust and vulnerability are structural pillars, not add-on features. Only vendor with these three pillars defined by Gartner as the platform architecture.</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--navy-border);">
+            <td style="padding:14px 16px;font-size:12px;color:var(--white);font-weight:500;border-right:1px solid var(--navy-border);">SEO Incumbents</td>
+            <td style="padding:14px 16px;font-size:11.5px;color:#8898bb;font-weight:300;border-right:1px solid var(--navy-border);">BrightEdge · Semrush · Conductor · Siteimprove</td>
+            <td style="padding:14px 16px;font-size:11.5px;color:#8898bb;font-weight:300;border-right:1px solid var(--navy-border);">AI Catalyst, AI Optimization, content performance — SEO-heritage platforms adding AEO capabilities</td>
+            <td style="padding:14px 16px;font-size:11.5px;color:var(--muted);font-weight:300;">Gartner profiles focus on content optimization and schema; vulnerability/hallucination detection not cited as a structural feature</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--navy-border);">
+            <td style="padding:14px 16px;font-size:12px;color:var(--white);font-weight:500;border-right:1px solid var(--navy-border);">Content/Workflow Startups</td>
+            <td style="padding:14px 16px;font-size:11.5px;color:#8898bb;font-weight:300;border-right:1px solid var(--navy-border);">AirOps · Scrunch · Profound · Evertune</td>
+            <td style="padding:14px 16px;font-size:11.5px;color:#8898bb;font-weight:300;border-right:1px solid var(--navy-border);">Content engineering, citation optimization, workflow automation, unaided/aided awareness tracking</td>
+            <td style="padding:14px 16px;font-size:11.5px;color:var(--muted);font-weight:300;">Gartner profiles center on content creation and optimization workflows; trust/vulnerability architecture not cited</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--navy-border);">
+            <td style="padding:14px 16px;font-size:12px;color:var(--white);font-weight:500;border-right:1px solid var(--navy-border);">Measurement/Analytics</td>
+            <td style="padding:14px 16px;font-size:11.5px;color:#8898bb;font-weight:300;border-right:1px solid var(--navy-border);">Otterly · Peec AI · IQRush · Bluefish AI</td>
+            <td style="padding:14px 16px;font-size:11.5px;color:#8898bb;font-weight:300;border-right:1px solid var(--navy-border);">Citation tracking, visibility dashboards, shopping intelligence, predictive modeling</td>
+            <td style="padding:14px 16px;font-size:11.5px;color:var(--muted);font-weight:300;">Earlier-stage platforms; Gartner profiles show narrower scope; enterprise client examples less prominent</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--navy-border);">
+            <td style="padding:14px 16px;font-size:12px;color:var(--white);font-weight:500;border-right:1px solid var(--navy-border);">Platform Giants</td>
+            <td style="padding:14px 16px;font-size:11.5px;color:#8898bb;font-weight:300;border-right:1px solid var(--navy-border);">Adobe (LLM Optimizer, acquiring Semrush)</td>
+            <td style="padding:14px 16px;font-size:11.5px;color:#8898bb;font-weight:300;border-right:1px solid var(--navy-border);">AI search visibility integrated into MarTech suite; website optimization; one-click recommendations</td>
+            <td style="padding:14px 16px;font-size:11.5px;color:var(--muted);font-weight:300;">Broad platform with AEO as one capability among many; Gartner profile does not cite vulnerability detection</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 5: MARKET STATS -->
+  <div class="exec-section">
+    <div class="exec-section-label">Gartner Validates the Space</div>
+    <div class="exec-big">The market isn't emerging.<br><em>It's already a baseline requirement.</em></div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:4px;">
+
+      <div style="background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.2); border-radius:10px; padding:22px 24px; border-left:3px solid var(--cyan);">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:10px;">Direct Quote</div>
+        <div style="font-size:15px;color:var(--white);font-style:italic;line-height:1.6;font-family:'DM Serif Display',serif;font-weight:400;">"Integrate answer engine visibility tools, a non-negotiable component of your martech strategy."</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:10px;">— Gartner Market Guide, March 2026</div>
+      </div>
+
+      <div style="background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.2); border-radius:10px; padding:22px 24px; border-left:3px solid var(--cyan);">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:10px;">Direct Quote</div>
+        <div style="font-size:15px;color:var(--white);font-style:italic;line-height:1.6;font-family:'DM Serif Display',serif;font-weight:400;">"Invest in technologies that maintain, audit, and optimize your brand's presence across answer engines, ensuring your organization meets the new baseline for market visibility."</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:10px;">— Gartner Market Guide, March 2026</div>
+      </div>
+
+      <div style="background:var(--navy-card); border:1px solid var(--navy-border); border-radius:10px; padding:22px 24px;">
+        <div style="font-family:'DM Serif Display',serif;font-size:32px;color:var(--cyan);line-height:1;margin-bottom:8px;">9%</div>
+        <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:5px;">of buyers now discover software using GenAI</div>
+        <div style="font-size:12px;color:var(--muted);font-weight:300;line-height:1.55;">Nearly on par with the 8% who rely on conventional search engines. Source: 2025 Gartner Business Buyer Survey, 3,068 respondents.</div>
+      </div>
+
+      <div style="background:var(--navy-card); border:1px solid var(--navy-border); border-radius:10px; padding:22px 24px;">
+        <div style="font-family:'DM Serif Display',serif;font-size:32px;color:var(--cyan);line-height:1;margin-bottom:8px;">32%</div>
+        <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:5px;">of buyers use GenAI during the purchasing process</div>
+        <div style="font-size:12px;color:var(--muted);font-weight:300;line-height:1.55;">11% identify AI as their most valuable resource in the buying journey. CMOs are allocating 22.8% of digital budgets to SEM and SEO — the channel AI answer engines are now disrupting.</div>
+      </div>
+
+      <div style="background:var(--navy-card); border:1px solid var(--navy-border); border-radius:10px; padding:22px 24px;">
+        <div style="font-family:'DM Serif Display',serif;font-size:32px;color:var(--cyan);line-height:1;margin-bottom:8px;">$729M</div>
+        <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:5px;">Projected market size by 2031</div>
+        <div style="font-size:12px;color:var(--muted);font-weight:300;line-height:1.55;">The global AEO tools market was valued at $481M in 2024, growing at 5.7% CAGR through 2031. Source: Market Monitor Global, cited in Gartner report.</div>
+      </div>
+
+      <div style="background:var(--navy-card); border:1px solid var(--navy-border); border-radius:10px; padding:22px 24px;">
+        <div style="font-family:'DM Serif Display',serif;font-size:32px;color:var(--cyan);line-height:1;margin-bottom:8px;">14</div>
+        <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:5px;">Representative Vendors globally</div>
+        <div style="font-size:12px;color:var(--muted);font-weight:300;line-height:1.55;">BrandRank AI is one of 14 vendors selected by Gartner. Selection based on client interest, market presence, and prior Gartner research. Only Ohio-based company in the guide.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 6: CONSOLIDATION -->
+  <div class="exec-section">
+    <div class="exec-section-label">What Gartner Says About Consolidation</div>
+    <div class="exec-big">The market is heading toward<br><em>acquisition and consolidation.</em></div>
+    <div style="background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.2); border-radius:10px; padding:24px 28px; border-left:3px solid var(--cyan); margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:10px;">Direct Quote from the Report</div>
+      <div style="font-size:14px;color:var(--white);font-style:italic;line-height:1.7;font-family:'DM Serif Display',serif;font-weight:400;">"The market is likely to consolidate as leading platforms expand their offerings and acquire niche players, resulting in more comprehensive solutions that seamlessly integrate with existing SEO, content management, and analytics workflows."</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:10px;">— Gartner Market Guide for Answer Engine Visibility Tools, March 2026</div>
+    </div>
+    <div class="exec-para">Gartner explicitly forecasts that this market will be shaped by acquisition — not organic growth from incumbents. The acquirers are the SEO platforms, MarTech suites, and enterprise data companies already in our exit matrix. BrandRank is positioned to be the acquisition target that defines the category for the buyer that moves first.</div>
+    <div style="background:rgba(34,211,160,0.05); border:1px solid rgba(34,211,160,0.2); border-radius:10px; padding:20px 24px; margin-top:4px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;">Our Synthesis — Not a Gartner Quote</div>
+      <div style="font-size:14px;color:var(--white);font-weight:300;line-height:1.65;">BrandRank is one of 14 vendors in a Gartner-certified category that the world's largest data, research, and marketing firms are actively evaluating. We have been building for two years, have a Fortune 500 client base that Gartner named, and have the capabilities Gartner defined as mandatory. The consolidation Gartner predicts creates the window our exit thesis depends on.</div>
+    </div>
+  </div>
+
+</div><!-- /exec-page -->
+</div><!-- /panel-gartner -->
+
+<script>
+  const tabBtns   = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tab-panel');
+
+  function switchTab(idx) {
+    tabBtns.forEach((b,i)   => b.classList.toggle('active', i === idx));
+    tabPanels.forEach((p,i) => p.classList.toggle('active', i === idx));
+    window.scrollTo(0, 0);
+  }
+</script>
+
+</body></html>
