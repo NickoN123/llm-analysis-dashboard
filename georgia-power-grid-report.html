@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrandRank.AI — The Grid Report: Georgia Power AI Trust Index Q2 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --bg2: #1a1f35;
+    --cyan: #00d4ff;
+    --cyan-dim: rgba(0,212,255,0.15);
+    --cyan-border: rgba(0,212,255,0.3);
+    --white: #ffffff;
+    --white-dim: rgba(255,255,255,0.6);
+    --white-faint: rgba(255,255,255,0.05);
+    --white-border: rgba(255,255,255,0.08);
+    --green: #4ecdc4;
+    --yellow: #ffd93d;
+    --red: #ff6b6b;
+    --orange: #ff9f43;
+    --purple: #a29bfe;
+    --gp-gold: #f5c842;
+    --gp-red: #e8392e;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--white); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; opacity: 0.4; }
+  .wrapper { position: relative; z-index: 1; }
+
+  .header { padding: 60px 60px 40px; border-bottom: 1px solid var(--white-border); background: linear-gradient(180deg, rgba(245,200,66,0.05) 0%, transparent 100%); }
+  .header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; }
+  .date-badge { font-family: 'Space Mono', monospace; font-size: 13px; color: var(--gp-gold); letter-spacing: 0.18em; text-transform: uppercase; border: 1px solid rgba(245,200,66,0.5); padding: 5px 14px; background: rgba(245,200,66,0.08); }
+  .brandrank-badge { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--cyan); letter-spacing: 0.15em; text-transform: uppercase; }
+  .tagline-pre { font-family: 'Space Mono', monospace; font-size: 13px; color: var(--cyan); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 14px; }
+  .main-title { font-family: 'DM Serif Display', serif; font-size: 72px; font-weight: 400; line-height: 1.05; color: var(--white); margin-bottom: 16px; letter-spacing: -0.02em; }
+  .main-title span.gold { color: var(--gp-gold); font-style: italic; }
+  .main-title span.cyan { color: var(--cyan); font-style: italic; }
+  .subtitle { font-size: 18px; color: var(--white-dim); font-weight: 300; max-width: 720px; line-height: 1.6; }
+
+  .nav-pills { display: flex; gap: 8px; margin-top: 32px; flex-wrap: wrap; }
+  .nav-pill { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; padding: 8px 16px; border: 1px solid var(--white-border); background: transparent; color: var(--white); font-weight: 700; cursor: pointer; transition: all 0.2s; }
+  .nav-pill:hover, .nav-pill.active { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-dim); }
+
+  .section { padding: 60px 60px; }
+  .section-label { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cyan); margin-bottom: 12px; }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: 42px; font-weight: 400; color: var(--white); margin-bottom: 8px; letter-spacing: -0.01em; }
+  .section-desc { font-size: 16px; color: var(--white-dim); margin-bottom: 36px; max-width: 740px; line-height: 1.6; }
+
+  .consensus-band { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 48px; }
+  .cons-card { background: var(--white-faint); border: 1px solid var(--white-border); padding: 18px; text-align: center; }
+  .cons-num { font-family: 'DM Serif Display', serif; font-size: 48px; line-height: 1; margin-bottom: 4px; }
+  .cons-label { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--white-dim); letter-spacing: 0.12em; text-transform: uppercase; }
+
+  .score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px; }
+  .score-card { background: var(--white-faint); border: 1px solid var(--white-border); padding: 22px 18px; position: relative; overflow: hidden; transition: all 0.25s; }
+  .score-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; transition: opacity 0.25s; opacity: 0; }
+  .score-card:hover { border-color: var(--cyan-border); background: rgba(0,212,255,0.04); }
+  .score-card:hover::before { opacity: 1; }
+  .score-card.chatgpt::before { background: linear-gradient(90deg,#10a37f,transparent); }
+  .score-card.chatgpt:hover { border-color: rgba(16,163,127,0.4); }
+  .score-card.claude-card::before { background: linear-gradient(90deg,#cc785c,transparent); }
+  .score-card.claude-card:hover { border-color: rgba(204,120,92,0.4); }
+  .score-card.gemini::before { background: linear-gradient(90deg,#4285f4,transparent); }
+  .score-card.gemini:hover { border-color: rgba(66,133,244,0.4); }
+  .score-card.grok::before { background: linear-gradient(90deg,#ffffff,transparent); }
+  .score-card.grok:hover { border-color: rgba(255,255,255,0.2); }
+  .score-card.perplexity::before { background: linear-gradient(90deg,#20b2aa,transparent); }
+  .score-card.perplexity:hover { border-color: rgba(32,178,170,0.4); }
+  .score-card.meta::before { background: linear-gradient(90deg,#0082fb,transparent); }
+  .score-card.meta:hover { border-color: rgba(0,130,251,0.4); }
+  .engine-tag { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; display: inline-block; border: 1px solid; margin-bottom: 14px; }
+  .engine-tag.chatgpt { color: #10a37f; border-color: rgba(16,163,127,0.4); background: rgba(16,163,127,0.08); }
+  .engine-tag.claude-card { color: #cc785c; border-color: rgba(204,120,92,0.4); background: rgba(204,120,92,0.08); }
+  .engine-tag.gemini { color: #4285f4; border-color: rgba(66,133,244,0.4); background: rgba(66,133,244,0.08); }
+  .engine-tag.grok { color: #ffffff; border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); }
+  .engine-tag.perplexity { color: #20b2aa; border-color: rgba(32,178,170,0.4); background: rgba(32,178,170,0.08); }
+  .engine-tag.meta { color: #0082fb; border-color: rgba(0,130,251,0.4); background: rgba(0,130,251,0.08); }
+  .score-big { font-family: 'DM Serif Display', serif; font-size: 56px; line-height: 1; margin-bottom: 6px; }
+  .score-label { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--white-dim); letter-spacing: 0.1em; text-transform: uppercase; }
+  .score-sub { font-size: 13px; color: var(--white-dim); margin-top: 8px; line-height: 1.4; }
+
+  .pillar-tabs { display: flex; gap: 4px; margin-bottom: 24px; flex-wrap: wrap; }
+  .pillar-tab { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 7px 14px; border: 1px solid var(--white-border); background: transparent; color: var(--white); font-weight: 700; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+  .pillar-tab:hover { border-color: rgba(255,255,255,0.5); }
+  .pillar-tab.active { border-color: var(--gp-gold); color: var(--gp-gold); background: rgba(245,200,66,0.08); }
+
+  .table-container { overflow-x: auto; border: 1px solid var(--white-border); background: rgba(10,14,26,0.8); }
+  .index-table { width: 100%; border-collapse: collapse; min-width: 1050px; }
+  .index-table thead tr { background: linear-gradient(90deg, rgba(245,200,66,0.06), transparent); border-bottom: 1px solid rgba(245,200,66,0.3); }
+  .index-table thead th { padding: 14px 10px; text-align: left; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 400; white-space: nowrap; background: #0a0e1a; }
+  .index-table thead th:first-child { color: var(--white); font-weight: 700; width: 300px; }
+  .index-table thead th:not(:first-child) { color: var(--gp-gold); text-align: center; }
+  .index-table tbody tr { border-bottom: 1px solid var(--white-border); transition: background 0.15s; }
+  .index-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+  .index-table tbody tr.pillar-header { background: rgba(245,200,66,0.05); border-top: 1px solid rgba(245,200,66,0.25); }
+  .pillar-header td { padding: 12px 14px; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gp-gold); font-weight: 700; }
+  .q-cell { padding: 12px 10px; font-size: 13px; color: var(--white); font-weight: 500; line-height: 1.4; vertical-align: middle; }
+  .q-num { font-family: 'Space Mono', monospace; font-size: 11px; color: rgba(245,200,66,0.5); display: inline-block; margin-right: 5px; min-width: 20px; }
+
+  .score-cell { padding: 10px 6px; text-align: center; vertical-align: middle; position: relative; }
+  .score-badge { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; border: 1.5px solid; transition: all 0.2s; cursor: default; }
+  .score-badge:hover { transform: scale(1.15); z-index: 10; position: relative; }
+  .s-high { background: rgba(78,205,196,0.12); color: #4ecdc4; border-color: rgba(78,205,196,0.5); }
+  .s-mid-high { background: rgba(0,212,255,0.1); color: var(--cyan); border-color: var(--cyan-border); }
+  .s-mid { background: rgba(255,217,61,0.1); color: var(--yellow); border-color: rgba(255,217,61,0.4); }
+  .s-low { background: rgba(255,107,107,0.1); color: var(--red); border-color: rgba(255,107,107,0.4); }
+  .avg-cell { padding: 10px 6px; text-align: center; vertical-align: middle; }
+  .avg-badge { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; border: 2px solid; }
+
+  .score-cell .tooltip-box { visibility: hidden; opacity: 0; pointer-events: none; position: absolute; z-index: 999; top: calc(100% + 4px); left: 50%; transform: translateX(-50%); background: #0d1525; border: 1px solid rgba(245,200,66,0.35); padding: 12px 14px; width: 230px; box-shadow: 0 8px 32px rgba(0,0,0,0.6); transition: opacity 0.18s ease; }
+  .score-cell:hover .tooltip-box { visibility: visible; opacity: 1; }
+  .tooltip-engine { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--gp-gold); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 5px; }
+  .tooltip-text { font-size: 13px; color: var(--white-dim); line-height: 1.55; }
+
+  .radar-section { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 48px; }
+  .pillar-bars { background: var(--white-faint); border: 1px solid var(--white-border); padding: 28px; }
+  .pillar-bar-row { margin-bottom: 20px; }
+  .pillar-bar-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .pillar-bar-name { font-size: 14px; font-weight: 600; }
+  .pillar-bar-score { font-family: 'Space Mono', monospace; font-size: 13px; color: var(--cyan); }
+  .pillar-bar-track { height: 8px; background: var(--white-border); position: relative; }
+  .pillar-bar-fill { height: 100%; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); }
+
+  .qual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .qual-card { background: var(--white-faint); border: 1px solid var(--white-border); padding: 24px; transition: all 0.25s; position: relative; overflow: hidden; }
+  .qual-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--gp-gold), transparent); opacity: 0; transition: opacity 0.25s; }
+  .qual-card:hover { border-color: rgba(245,200,66,0.3); background: rgba(245,200,66,0.03); }
+  .qual-card:hover::before { opacity: 1; }
+  .qual-q { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--gp-gold); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; }
+  .qual-resp { border-left: 2px solid; padding: 10px 14px; margin-bottom: 8px; }
+  .qual-engine-name { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+  .qual-text { font-size: 13px; color: var(--white-dim); line-height: 1.55; }
+
+  .engine-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .engine-card { background: var(--white-faint); border: 1px solid var(--white-border); padding: 24px; position: relative; overflow: hidden; transition: all 0.25s; }
+  .engine-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; transition: opacity 0.25s; opacity: 0; }
+  .engine-card:hover { border-color: var(--cyan-border); background: rgba(0,212,255,0.03); }
+  .engine-card:hover::before { opacity: 1; }
+  .engine-card.chatgpt::before { background: linear-gradient(90deg,#10a37f,transparent); }
+  .engine-card.chatgpt:hover { border-color: rgba(16,163,127,0.4); }
+  .engine-card.claude-card::before { background: linear-gradient(90deg,#cc785c,transparent); }
+  .engine-card.claude-card:hover { border-color: rgba(204,120,92,0.4); }
+  .engine-card.gemini::before { background: linear-gradient(90deg,#4285f4,transparent); }
+  .engine-card.gemini:hover { border-color: rgba(66,133,244,0.4); }
+  .engine-card.grok::before { background: linear-gradient(90deg,#ffffff,transparent); }
+  .engine-card.grok:hover { border-color: rgba(255,255,255,0.2); }
+  .engine-card.perplexity::before { background: linear-gradient(90deg,#20b2aa,transparent); }
+  .engine-card.perplexity:hover { border-color: rgba(32,178,170,0.4); }
+  .engine-card.meta::before { background: linear-gradient(90deg,#0082fb,transparent); }
+  .engine-card.meta:hover { border-color: rgba(0,130,251,0.4); }
+  .engine-logo { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 14px; padding: 5px 12px; display: inline-block; border: 1px solid; }
+  .engine-logo.chatgpt { color: #10a37f; border-color: rgba(16,163,127,0.4); background: rgba(16,163,127,0.08); }
+  .engine-logo.claude-card { color: #cc785c; border-color: rgba(204,120,92,0.4); background: rgba(204,120,92,0.08); }
+  .engine-logo.gemini { color: #4285f4; border-color: rgba(66,133,244,0.4); background: rgba(66,133,244,0.08); }
+  .engine-logo.grok { color: #ffffff; border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); }
+  .engine-logo.perplexity { color: #20b2aa; border-color: rgba(32,178,170,0.4); background: rgba(32,178,170,0.08); }
+  .engine-logo.meta { color: #0082fb; border-color: rgba(0,130,251,0.4); background: rgba(0,130,251,0.08); }
+  .engine-name { font-family: 'DM Serif Display', serif; font-size: 26px; color: var(--white); margin-bottom: 6px; }
+  .engine-avg { font-family: 'Space Mono', monospace; font-size: 42px; font-weight: 700; margin-bottom: 4px; }
+  .engine-tone { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); margin-bottom: 10px; }
+  .engine-desc { font-size: 14px; color: var(--white-dim); line-height: 1.65; margin-bottom: 14px; }
+  .engine-strengths { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .strength-tag { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.08em; padding: 4px 10px; border: 1px solid; text-transform: uppercase; }
+  .st-green { border-color: var(--green); color: var(--green); }
+  .st-yellow { border-color: var(--yellow); color: var(--yellow); }
+  .st-red { border-color: var(--red); color: var(--red); }
+  .st-cyan { border-color: var(--cyan); color: var(--cyan); }
+
+  .signal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px; }
+  .signal-card { background: var(--white-faint); border: 1px solid var(--white-border); padding: 24px; transition: all 0.25s; }
+  .signal-card:hover { border-color: rgba(245,200,66,0.3); }
+  .signal-num { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--gp-gold); letter-spacing: 0.15em; margin-bottom: 10px; }
+  .signal-theme { font-family: 'DM Serif Display', serif; font-size: 24px; color: var(--white); margin-bottom: 10px; line-height: 1.25; }
+  .signal-body { font-size: 15px; color: var(--white-dim); line-height: 1.65; }
+
+  .search-bar { background: var(--white-faint); border: 1px solid var(--white-border); color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 15px; padding: 10px 16px; width: 320px; outline: none; transition: border-color 0.2s; margin-bottom: 16px; }
+  .search-bar:focus { border-color: rgba(245,200,66,0.4); }
+  .search-bar::placeholder { color: rgba(255,255,255,0.3); }
+
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+  .divider { border: none; border-top: 1px solid var(--white-border); margin: 0 60px; }
+  .footer { padding: 40px 60px; border-top: 1px solid var(--white-border); display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 14px; color: var(--cyan); letter-spacing: 0.1em; }
+  .footer-note { font-size: 14px; color: rgba(255,255,255,0.25); }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+<!-- HEADER -->
+<div class="header">
+  <div style="margin-bottom:32px;">
+    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAGPA+MDASIAAhEBAxEB/8QAHQABAQACAgMBAAAAAAAAAAAAAAgBBwYJAwQFAv/EAGAQAAEDAgMDBA0GCQcJBQcFAAEAAgMEBQYHEQgSIRMxQVEUFxgiWGFxdZGTs9HUCTI3OFaBFSM2UnahsbK0FkJicnN0giQzNYSSosHCwzRVg6PwQ1RjhZWkxCUnSFPh/8QAGQEBAAMBAQAAAAAAAAAAAAAAAAECAwQF/8QALBEBAAIBAwQCAQUBAAIDAAAAAAECEQMSURMhMTIEQSIzQlJhcYFDkRQjwf/aAAwDAQACEQMRAD8AldERek5RERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAX6j+cvystOhBQl5URFLMREQEREBERSCysIgyiIgIiIkRERAiIpBERARFlARYWUBERAREQEREBERAREQEREBERAREQEREQLKLCDKIiAiIgIiICIiIFlYRAWVhZQEWFlAREQEREBERAREQEREBERSCIigEREBERAREQEREBERACIiAiIgIiICBECAshYPFZCAg5k0QICJ92qIh6iIio3EREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERB5WHVoWV+Izx0X7UqT5EREQIiICIsqQWFlEBERARERIiIpBERECIsoMLKwsoCLCygIiICIiAiIgIiICIiAiIgIiICIiIEREGUREBERAREQEREBERECIsoMLKIgwsoiAiIgIiICIiAiIpBERQCIiAiIgIiICIgQEREBERAREQEREBERAREQEREGURAgHRPKhQIg0HWETQ9SIPUREVG4iIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiIAOh1XmB1Gq8K/cZ46JCLQ/aIilQREQERZUgiwsoCIiAiIpSIiKECIikFlYRA6VlYWUGFlYWUBERAREQEREBERAREQEREBERAREQFlYRECysLKAiIgIiICIiAiIiBERBlERAREQEREBERAREQERFIIiKAREQEREBERAREQEREBERAREQEREBERACIEKAEWVhARZCxzIMp+xERAPKiehFI9RERZtxERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREHlYdR41leJp0Oq8oOo1CmFJjAiIiBZRFIwsosIMoiICIiAiIpBERAWVhEGVhZRAREQEREBERAREQEREBERAREQEREBEREMosIgLKIgIiICIiAiIiBERBlYREBZREBERAREQEREAoiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIieNARE6UGQsLKIA8qJqiIPuRZ/wDXOikemiIs24iIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAv0x2h8S/KIPMOKLxsdpwPMvIpUmMCyiKUCLCygIiICIiAiIpBERAREQFlYWUGFlEQEREBERAREQEREBERAREQEREBERECIsoCIiAiIgIiICIiAiIiBZRYQZREQEREBERAREQEREBERAREQERFIIiKAREQEREBERAREQEREBERATpREBERARFlAREQEQ86eJEH3fqRNPEikeoiIs24iIgIiICLLGue4MY0uc46AAaklb7wRkhasO4dgx5nVc/wFZHN36e0sJFbWO52sLeduo47o77Q8SzQkVtaK+UxGWpcC4IxVje6Nt2F7LVXGXeAe6NukcWvS9571o8pW7Ytn/BGC6dtXm9mZQ22QND3W62nfmPiBILj90f3r5WP9omubav5KZU2qLBmG4mljHQNDaqXXndvD5hPWNXdO8tE1M81TUSVFTNJNNI4ufJI4uc4nnJJ4kqv5W/pbtCiXZh7OGFvxOGsrqzEEjOHZNzfwkPXo8u/dHkXj7pi3UR3bFk/hCgYPm6xhx/3WNU7InTr9o3So/us799gsKeqf707rK/fYHCnqn+9TgidKvBvlR/dZX77A4U9U/3p3WV++wOFPVP96nBE6VeDfKj+6yv32Bwp6p/vTusr99gcKeqf71OCJ0q8G+VH91lfvsDhT1T/endZX77A4U9U/3qcETpV4N8qP7rK/fYHCnqn+9O6yv32Bwp6p/vU4InSrwb5Uf3WV++wOFPVP8AendZX77A4U9U/wB6nBE6VeDfKj+6yv32Bwp6p/vTusr99gcKeqf71OCJ0q8G+VH91lfvsDhT1T/endZX77A4U9U/3qcETpV4N8qP7rK/fYHCnqn+9O6yv32Bwp6p/vU4InSrwb5Uf3WV++wOFPVP96d1lfvsDhT1T/epwROlXg3yo/usr99gcKeqf707rK/fYHCnqn+9TgidKvBvlR/dZX77A4U9U/3oNrO/dOAsKerf71OCJ0q8G6VJDawvx5sB4V9U/wB6z3V9++weFfVP96m1riF5QQRqFMaVOFZvaPtRndX377B4V9U/3rPdX377B4V9U/3qc0U9KnCN9uVGd1ffvsHhX1T/AHp3V9++weFfVv8AepzROlTg6luVGd1ffvsHhX1b/endX377B4V9U/3qc0TpU4N9uVGd1ffvsHhX1T/endX377B4V9W/3qc0U9KnB1LcqM7q+/fYPCvqn+9O6vv32Dwr6p/vU5onSpwdS3KjO6vv32Dwr6p/vTur799g8K+rf71OiwnSpwdSyjO6vv32Dwr6p/vTur799g8K+qf71OiJ0qcHUtyovur799g8K+rf707q+/fYPCvqn+9ToidKnB1LcqL7q+/f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brJI8brTI9++49WugGgCkZji08F5mODhwUdOJrtlWbTE5hzPN2fB9wxhW3nB9xuE9LcamWpkp6ukETqYudvbocHO3xqXaHQaADn51vDJ7OvBFXkvPlhmLU1drjFJJRRV0ELpQ+F2u6dGglr266cxBAHjCl5Fa2nFoxKkXmJy2ndqzLvDdpqcL4SxHX3T8NSMiu1+ltpj5Gka8PEMMJcHEl7WucSRruNA6VuHAWd2UWFMp48vA/E1bS9iz089V2FGx0hmLi9wHKHd+edBx00HOpLRJ04tHdMXmPDkDrfhP+VnYYxHXmw6a9n/AIM/Hc2unI8pprrw139OnxKmsY565Q4kyrmy+kOJ6akfRxUsdSKKNz4+T3dx5HKDXi0ajhrx5lIqJbTi2M/RF5jw9q8Q0NPc54bZWyV1G12kNRJByLpB1lmrt3yaleqiK6giIgIiICIiAiIgBERAREQERAgdCIEQFnoWOlZHMgIgREA69U+9YX6UjCz0LCz5UBEQoMelFn7wiD00RFm3EREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBASDqERB545A7gedfteqvLHJ0O9KtEqWrw8qIilQREQEREBERAREQEREBERAREQEREBERAREQFkIECAnDo4ogQPuRE46c/BSgWVhZQOnih60RBg+XRE1PRoiD1ERFm3EREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQeSOQt4HmXmHFeqv3G8t4dCmJVtXh50WAQRqOZZVmYiIgIiICIiAiIgIiICIiAhREBERATREQEQcUQZ6UQlYCIZ6UCIFIIOZEQZRECAixp/60RB6iIizbiIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiD9RvLT4l5wQRqOZesv1G8tPiUxKtq5ewiwCCNQsqzMREQEREBEKICBEQE6ERAREQEREAJzos9CDCysdKygFE50RAERFIz0LCDXROGqAs9KLCDKJ6UQemiIs24iIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiIP3G/dPiXnB1HBeqvJE/Q6HmKmJVtXLzIiKzMREQEREBERAREQEREBAhRARCiAiFZQAEKwFkogCfqQFZ0KkYHjWVgLKBzJqiIH3Isog/9k=" alt="BrandRank.AI — Prompting Your Brand Truth" style="height:110px;width:auto;display:block;">
+  </div>
+  <div class="tagline-pre">The Grid Report &nbsp;·&nbsp; Q2 2026</div>
+  <div class="main-title">Georgia Power —<br><span class="gold">Powered</span> or <span class="cyan">Perceived?</span></div>
+  <div class="subtitle">In this <strong style="color:var(--white);">Brand Alignment</strong> analysis, we examine the degree to which six major AI answer engines align with Georgia Power's stated claims around <em>affordability</em>, <em>safety</em>, <em>reliability</em>, and <em>customer experience</em> — revealing where perception tracks reality, and where the gap demands attention.</div>
+  <div class="nav-pills">
+    <button class="nav-pill active" onclick="showSection('exec-section')">⚡ Executive Summary</button>
+    <button class="nav-pill" onclick="showSection('index-section')">📊 Full Statement Index</button>
+    <button class="nav-pill" onclick="showSection('pillar-section')">🏗️ Pillar Analysis</button>
+    <button class="nav-pill" onclick="showSection('engines-section')">🤖 Engine Personas</button>
+    <button class="nav-pill" onclick="showSection('qual-section')">💬 Qualitative Signals</button>
+    <button class="nav-pill" onclick="showSection('signal-section')">🎯 Risk & Signal Map</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════ EXEC SUMMARY ══════════════════════════ -->
+<div id="exec-section" class="section fade-in">
+  <div class="section-label">Executive Summary</div>
+  <div class="section-title">Six Engines. One Clear Pattern.</div>
+  <div class="section-desc">Across 20 brand statements rated by ChatGPT, Claude, Gemini, Grok, Perplexity, and Meta/Llama, a unified picture emerges: Georgia Power is <em>perceived</em> as a strong operator but a questioned afforder. Safety and restoration earn near-universal praise. Affordability earns near-universal skepticism. The perception gap — not the performance gap — is the brand's defining challenge in the Answer Economy.</div>
+
+  <div class="consensus-band">
+    <div class="cons-card">
+      <div class="cons-num" style="color:var(--green);">8.0</div>
+      <div class="cons-label">Avg — Reliability</div>
+    </div>
+    <div class="cons-card">
+      <div class="cons-num" style="color:var(--red);">6.6</div>
+      <div class="cons-label">Avg — Affordability</div>
+    </div>
+    <div class="cons-card">
+      <div class="cons-num" style="color:var(--cyan);">8.6</div>
+      <div class="cons-label">Avg — Safety</div>
+    </div>
+    <div class="cons-card">
+      <div class="cons-num" style="color:var(--yellow);">7.6</div>
+      <div class="cons-label">Avg — Customer Exp</div>
+    </div>
+  </div>
+
+  <div class="section-label">Engine Composite Scores — 20-Statement Average</div>
+  <div class="score-grid">
+    <div class="score-card chatgpt">
+      <div class="engine-tag chatgpt">ChatGPT</div>
+      <div class="score-big" style="color:#10a37f;">8.0</div>
+      <div class="score-label">Composite Avg</div>
+      <div class="score-sub">Balanced and constructive. Flags affordability tension but validates core operations and programs.</div>
+    </div>
+    <div class="score-card claude-card">
+      <div class="engine-tag claude-card">Claude</div>
+      <div class="score-big" style="color:#cc785c;">6.8</div>
+      <div class="score-label">Composite Avg</div>
+      <div class="score-sub">Most critical engine. Vogtle cost overruns weighted heavily; affordability rated 5/10 twice.</div>
+    </div>
+    <div class="score-card gemini">
+      <div class="engine-tag gemini">Gemini</div>
+      <div class="score-big" style="color:#4285f4;">8.1</div>
+      <div class="score-label">Composite Avg</div>
+      <div class="score-sub">Most generous rater. Frames Georgia Power within regulated utility norms; high marks for operational standards.</div>
+    </div>
+    <div class="score-card grok">
+      <div class="engine-tag grok">Grok</div>
+      <div class="score-big" style="color:#e0e0e0;">8.2</div>
+      <div class="score-label">Composite Avg</div>
+      <div class="score-sub">Metric-oriented. SAIDI/SAIFI data drives reliability scores upward; minimal penalty on affordability.</div>
+    </div>
+    <div class="score-card perplexity">
+      <div class="engine-tag perplexity">Perplexity</div>
+      <div class="score-big" style="color:#20b2aa;">7.5</div>
+      <div class="score-label">Composite Avg</div>
+      <div class="score-sub">Citation-heavy. Efficiency programs score highest (9/10); risk of outdated program details.</div>
+    </div>
+    <div class="score-card meta">
+      <div class="engine-tag meta">Meta / Llama</div>
+      <div class="score-big" style="color:#0082fb;">7.7</div>
+      <div class="score-label">Composite Avg</div>
+      <div class="score-sub">Operationally confident. Strongest grid scores of any engine; softest on qualitative depth.</div>
+    </div>
+  </div>
+
+  <!-- Key finding from Meta addition -->
+  <div style="background:rgba(0,130,251,0.05);border:1px solid rgba(0,130,251,0.3);padding:24px 28px;margin-bottom:40px;">
+    <div style="font-family:'Space Mono',monospace;font-size:12px;color:#0082fb;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">New Engine Signal — Meta / Llama</div>
+    <div style="font-size:15px;color:var(--white-dim);line-height:1.7;">Meta/Llama adds an important new data point: it is the only engine to rate <em>all four</em> grid investment statements at 8 or 9, making it Georgia Power's most favorable engine on infrastructure claims. However, its qualitative responses are notably more concise and surface-level than the other five engines — suggesting it reflects the brand's operational story without deeply interrogating the customer experience narrative. This combination produces a high composite score (7.8) with relatively low analytical friction.</div>
+  </div>
+
+  <!-- Four archetypes -->
+  <div class="section-label">The Four AI Perception Archetypes</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:40px;">
+    <div style="background:rgba(78,205,196,0.05);border-left:3px solid var(--green);padding:22px 24px;">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px;">
+        <div style="font-weight:700;font-size:20px;color:var(--green);">Safety & Restoration</div>
+        <div style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(78,205,196,0.6);letter-spacing:0.1em;text-transform:uppercase;">6/6 Engine Consensus</div>
+      </div>
+      <div style="font-size:15px;color:var(--white-dim);line-height:1.7;">All six engines — now including Meta/Llama — agree on Georgia Power's safety culture and restoration commitment. Statements on emergency preparedness and active outage response score 8–10 across every engine with no exceptions. This is Georgia Power's deepest and most durable AI authority signal.</div>
+    </div>
+    <div style="background:rgba(255,107,107,0.05);border-left:3px solid var(--red);padding:22px 24px;">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px;">
+        <div style="font-weight:700;font-size:20px;color:var(--red);">Affordability</div>
+        <div style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,107,107,0.6);letter-spacing:0.1em;text-transform:uppercase;">6/6 Skepticism</div>
+      </div>
+      <div style="font-size:15px;color:var(--white-dim);line-height:1.7;">Meta/Llama confirms the affordability vulnerability — rating "affordable electricity" at 5/10 and noting rate increases and "external factors." Even the most operationally favorable engine cannot endorse the affordability narrative at face value. This 6/6 skepticism consensus is the study's defining finding.</div>
+    </div>
+    <div style="background:rgba(0,212,255,0.05);border-left:3px solid var(--cyan);padding:22px 24px;">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px;">
+        <div style="font-weight:700;font-size:20px;color:var(--cyan);">Grid Modernization</div>
+        <div style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(0,212,255,0.6);letter-spacing:0.1em;text-transform:uppercase;">Strongest Cross-Engine Signal</div>
+      </div>
+      <div style="font-size:15px;color:var(--white-dim);line-height:1.7;">Meta/Llama's high grid scores (8–9/10 across all four statements) push the cross-engine grid average to its highest level in the study. All six engines recognize Georgia Power's capital investment and infrastructure programs. This is where a structured content amplification strategy would have the fastest payoff.</div>
+    </div>
+    <div style="background:rgba(255,217,61,0.05);border-left:3px solid var(--yellow);padding:22px 24px;">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px;">
+        <div style="font-weight:700;font-size:20px;color:var(--yellow);">Customer Programs</div>
+        <div style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,217,61,0.6);letter-spacing:0.1em;text-transform:uppercase;">Well Known, Poorly Detailed</div>
+      </div>
+      <div style="font-size:15px;color:var(--white-dim);line-height:1.7;">Meta/Llama rates efficiency programs at 8/10 but offers minimal detail — "energy efficiency and demand response programs available." This is representative of the broader pattern: engines know programs exist but cannot describe eligibility, enrollment, or specific outcomes that would actually help customers in need.</div>
+    </div>
+  </div>
+
+  <!-- Strategic Imperatives -->
+  <div class="section-label">Three Strategic Imperatives — Updated with 6-Engine Consensus</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:32px;">
+    <div style="background:var(--bg2);border:1px solid var(--white-border);padding:22px;">
+      <div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--green);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;">01 — Lock In Safety Leadership</div>
+      <div style="font-size:15px;color:var(--white-dim);line-height:1.65;">Six engines speak with one voice on safety and restoration. This is rare consensus. Georgia Power should publish AI-structured content — safety protocols, restoration timelines, emergency preparedness documents — formatted specifically for AI retrieval to deepen encoding before competitors can close the gap.</div>
+    </div>
+    <div style="background:var(--bg2);border:1px solid var(--white-border);padding:22px;">
+      <div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--red);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;">02 — Reframe the Affordability Narrative</div>
+      <div style="font-size:15px;color:var(--white-dim);line-height:1.65;">Six-engine skepticism on affordability is a structural content problem, not just a PR problem. A dedicated "Vogtle Economics" module — long-run rate trajectory, fuel-cost avoidance, surcharge timeline — must be published in AI-indexable format before the current narrative compounds further into training data.</div>
+    </div>
+    <div style="background:var(--bg2);border:1px solid var(--white-border);padding:22px;">
+      <div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;">03 — Depth-ify Program Content</div>
+      <div style="font-size:15px;color:var(--white-dim);line-height:1.65;">Every engine knows programs exist. No engine can explain them in detail. Meta/Llama's concise responses highlight exactly this gap. Structured, per-program content pages with eligibility criteria, income thresholds, and enrollment links will transform generic awareness into actionable AI guidance.</div>
+    </div>
+  </div>
+
+  <div style="background:rgba(0,212,255,0.04);border:1px solid var(--cyan-border);padding:28px 32px;display:flex;align-items:flex-start;gap:28px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:280px;">
+      <div style="font-family:'Space Mono',monospace;font-size:12px;color:var(--cyan);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">Design for Claude™ — Methodology Note</div>
+      <div style="font-size:15px;color:var(--white-dim);line-height:1.7;">Claude (Anthropic) remains the most rigorous engine in this study — penalizing vague affordability claims, surfacing Vogtle context unprompted, and flagging billing complexity as a customer trust risk. With Meta/Llama added, Claude is now the lowest-scoring engine at 6.8, standing 1.3 points below the 6-engine average of 8.1. Brands that earn Claude's approval tend to score consistently across all engines. Georgia Power's 6.8 Claude score remains the study's most honest performance signal and its clearest improvement opportunity.</div>
+    </div>
+    <div style="flex-shrink:0;text-align:right;">
+      <div style="font-family:'Space Mono',monospace;font-size:13px;color:var(--white-dim);">120 answer slots</div>
+      <div style="font-family:'Space Mono',monospace;font-size:13px;color:var(--white-dim);">6 engines × 20 statements</div>
+      <div style="font-family:'Space Mono',monospace;font-size:14px;color:var(--cyan);margin-top:8px;font-weight:700;">Q2 2026</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ══════════════════════════ INDEX TABLE ══════════════════════════ -->
+<div id="index-section" class="section fade-in" style="display:none;">
+  <div class="section-label">Full Statement Index</div>
+  <div class="section-title">All 20 Statements × 6 AI Engines</div>
+  <div class="section-desc">Every brand statement rated 1–10. Hover any score cell for the engine's verbatim perspective. Filter by pillar or search by keyword.</div>
+
+  <input class="search-bar" id="stmtSearch" type="text" placeholder="Search statements…" oninput="filterStatements()">
+
+  <div class="pillar-tabs">
+    <button class="pillar-tab active" onclick="filterPillar('all',this)">All Pillars</button>
+    <button class="pillar-tab" onclick="filterPillar('reliability',this)">⚡ Reliability</button>
+    <button class="pillar-tab" onclick="filterPillar('grid',this)">🏗️ Grid Investment</button>
+    <button class="pillar-tab" onclick="filterPillar('affordability',this)">💰 Affordability</button>
+    <button class="pillar-tab" onclick="filterPillar('customer',this)">👤 Customer Experience</button>
+    <button class="pillar-tab" onclick="filterPillar('safety',this)">🛡️ Safety</button>
+  </div>
+
+  <div class="table-container">
+    <table class="index-table">
+      <thead>
+        <tr>
+          <th>Statement</th>
+          <th>ChatGPT</th>
+          <th>Claude</th>
+          <th>Gemini</th>
+          <th>Grok</th>
+          <th>Perplexity</th>
+          <th>Meta</th>
+          <th>Avg</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ══════════════════════════ PILLAR ══════════════════════════ -->
+<div id="pillar-section" class="section fade-in" style="display:none;">
+  <div class="section-label">Pillar Analysis</div>
+  <div class="section-title">Performance Across Five Brand Dimensions</div>
+  <div class="section-desc">With Meta/Llama added, the cross-engine pillar averages shift modestly upward on reliability and grid — Meta's strongest areas — while the affordability gap remains the widest in the study.</div>
+
+  <div class="radar-section">
+    <div class="pillar-bars">
+      <div style="font-family:'Space Mono',monospace;font-size:12px;color:var(--gp-gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:20px;">6-Engine Avg Score by Pillar</div>
+      <div id="pillarBars"></div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;">
+      <canvas id="radarChart" width="380" height="380"></canvas>
+    </div>
+  </div>
+
+  <div class="section-label">Engine-by-Engine Pillar Breakdown</div>
+  <div style="overflow-x:auto;">
+    <table style="width:100%;border-collapse:collapse;min-width:700px;">
+      <thead>
+        <tr style="border-bottom:1px solid rgba(245,200,66,0.3);background:rgba(245,200,66,0.04);">
+          <th style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--gp-gold);padding:14px;text-align:left;background:#0a0e1a;">Engine</th>
+          <th style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--gp-gold);padding:14px;text-align:center;background:#0a0e1a;">Reliability</th>
+          <th style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--gp-gold);padding:14px;text-align:center;background:#0a0e1a;">Grid</th>
+          <th style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--gp-gold);padding:14px;text-align:center;background:#0a0e1a;">Affordability</th>
+          <th style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--gp-gold);padding:14px;text-align:center;background:#0a0e1a;">Customer Exp</th>
+          <th style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--gp-gold);padding:14px;text-align:center;background:#0a0e1a;">Safety</th>
+        </tr>
+      </thead>
+      <tbody id="pillarTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ══════════════════════════ ENGINE PERSONAS ══════════════════════════ -->
+<div id="engines-section" class="section fade-in" style="display:none;">
+  <div class="section-label">Engine Personas</div>
+  <div class="section-title">Six Distinct Lenses on Georgia Power</div>
+  <div class="section-desc">Understanding how each AI engine processes the Georgia Power brand narrative is essential to building an effective content and Answer Economy strategy.</div>
+
+  <div class="engine-grid">
+    <div class="engine-card chatgpt">
+      <div class="engine-logo chatgpt">ChatGPT</div>
+      <div class="engine-name">The Balanced Analyst</div>
+      <div class="engine-avg" style="color:#10a37f;">7.6</div>
+      <div class="engine-tone">Tone: Balanced · Constructive</div>
+      <div class="engine-desc">Provides the most measured assessment — acknowledging operational strengths while noting where affordability and customer experience fall short. Treats rate increases as context, not condemnation. Validates efficiency programs as genuine tools.</div>
+      <div class="engine-strengths">
+        <span class="strength-tag st-green">Reliability ✓</span>
+        <span class="strength-tag st-green">Safety ✓</span>
+        <span class="strength-tag st-yellow">Programs ~</span>
+        <span class="strength-tag st-red">Affordability ✗</span>
+      </div>
+    </div>
+    <div class="engine-card claude-card">
+      <div class="engine-logo claude-card">Claude</div>
+      <div class="engine-name">The Accountability Lens</div>
+      <div class="engine-avg" style="color:#cc785c;">6.8</div>
+      <div class="engine-tone">Tone: Critical · Evidence-driven</div>
+      <div class="engine-desc">Most rigorous engine in the study. Vogtle cost overruns surfaced unprompted; billing complexity flagged as customer confusion risk. Reliability and safety earn full credit, but Claude penalizes any gap between stated commitments and observable customer outcomes. Lowest composite score; highest analytical value.</div>
+      <div class="engine-strengths">
+        <span class="strength-tag st-green">Safety ✓</span>
+        <span class="strength-tag st-yellow">Grid ~</span>
+        <span class="strength-tag st-red">Affordability ✗</span>
+        <span class="strength-tag st-red">Billing Clarity ✗</span>
+      </div>
+    </div>
+    <div class="engine-card gemini">
+      <div class="engine-logo gemini">Gemini</div>
+      <div class="engine-name">The Utility Advocate</div>
+      <div class="engine-avg" style="color:#4285f4;">8.1</div>
+      <div class="engine-tone">Tone: Generous · Industry-normative</div>
+      <div class="engine-desc">Frames Georgia Power within regulated utility norms, giving high marks for behaviors that are "standard operational practice." Contextualizes Vogtle rate increases as infrastructure-driven rather than corporate mismanagement — a meaningful framing difference from Claude.</div>
+      <div class="engine-strengths">
+        <span class="strength-tag st-green">Reliability ✓</span>
+        <span class="strength-tag st-green">Grid ✓</span>
+        <span class="strength-tag st-green">Safety ✓</span>
+        <span class="strength-tag st-red">Affordability ✗</span>
+      </div>
+    </div>
+    <div class="engine-card grok">
+      <div class="engine-logo grok">Grok</div>
+      <div class="engine-name">The Data Validator</div>
+      <div class="engine-avg" style="color:#e0e0e0;">8.2</div>
+      <div class="engine-tone">Tone: Metric-oriented · Optimistic</div>
+      <div class="engine-desc">Highest composite score among the original five engines. Leans heavily on SAIDI/SAIFI metrics, outage map data, and publicly cited reliability improvements. Affordability acknowledged as variable but not penalized as harshly as in Claude. Most favorable engine for performance-driven claims.</div>
+      <div class="engine-strengths">
+        <span class="strength-tag st-green">Reliability ✓</span>
+        <span class="strength-tag st-green">Restoration ✓</span>
+        <span class="strength-tag st-green">Grid ✓</span>
+        <span class="strength-tag st-yellow">Affordability ~</span>
+      </div>
+    </div>
+    <div class="engine-card perplexity">
+      <div class="engine-logo perplexity">Perplexity</div>
+      <div class="engine-name">The Source Aggregator</div>
+      <div class="engine-avg" style="color:#20b2aa;">7.6</div>
+      <div class="engine-tone">Tone: Citation-heavy · Program-aware</div>
+      <div class="engine-desc">Citation-based architecture makes it highly responsive to formal program documentation — efficiency programs score 9/10. Risk: may retrieve outdated program details or miss nuanced eligibility context, creating issues when customers use it for real-time decision support.</div>
+      <div class="engine-strengths">
+        <span class="strength-tag st-green">Programs ✓</span>
+        <span class="strength-tag st-green">Safety ✓</span>
+        <span class="strength-tag st-yellow">Reliability ~</span>
+        <span class="strength-tag st-red">Rate Plans ✗</span>
+      </div>
+    </div>
+    <div class="engine-card meta">
+      <div class="engine-logo meta">Meta / Llama</div>
+      <div class="engine-name">The Operational Confirmer</div>
+      <div class="engine-avg" style="color:#0082fb;">7.8</div>
+      <div class="engine-tone">Tone: Confident · Surface-level</div>
+      <div class="engine-desc">New to this study. Meta/Llama provides the highest grid investment scores (all 8–9) and consistent high marks for operational practices. However, its qualitative responses are notably concise and lack the analytical depth of other engines — confirming brand narratives without interrogating them. High scores; low friction; limited insight generation.</div>
+      <div class="engine-strengths">
+        <span class="strength-tag st-green">Grid ✓</span>
+        <span class="strength-tag st-green">Safety ✓</span>
+        <span class="strength-tag st-yellow">Customer Exp ~</span>
+        <span class="strength-tag st-red">Affordability ✗</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ══════════════════════════ QUALITATIVE ══════════════════════════ -->
+<div id="qual-section" class="section fade-in" style="display:none;">
+  <div class="section-label">Qualitative Signals</div>
+  <div class="section-title">What Six AI Engines Say in Their Own Words</div>
+  <div class="section-desc">Open-ended questions reveal the underlying frameworks each engine uses — and where Meta/Llama's more surface-level responses contrast with the deeper analytical posture of Claude and Gemini.</div>
+
+  <div class="qual-grid">
+    <div class="qual-card">
+      <div class="qual-q">Q1 — Accuracy of Core Commitments</div>
+      <div class="qual-resp" style="border-color:#10a37f;background:rgba(16,163,127,0.05);">
+        <div class="qual-engine-name" style="color:#10a37f;">ChatGPT</div>
+        <div class="qual-text">AI usually reflects reliability and safety fairly well. Affordability is less accurately represented — rates, fuel costs, and customer frustration create conflicting narratives that AI may flatten or oversimplify.</div>
+      </div>
+      <div class="qual-resp" style="border-color:#cc785c;background:rgba(204,120,92,0.05);">
+        <div class="qual-engine-name" style="color:#cc785c;">Claude</div>
+        <div class="qual-text">Generally accurate on reliability and safety. Affordability is where accuracy degrades most — AI may echo corporate messaging without surfacing rate increase history or Vogtle cost pass-throughs that materially affect customer bills.</div>
+      </div>
+      <div class="qual-resp" style="border-color:#4285f4;background:rgba(66,133,244,0.05);">
+        <div class="qual-engine-name" style="color:#4285f4;">Gemini</div>
+        <div class="qual-text">AI accurately reflects reliability and safety commitments, citing grid investments. However, AI often challenges "affordability" claims by heavily referencing recent rate hikes from Plant Vogtle, providing a more critical view than official marketing.</div>
+      </div>
+      <div class="qual-resp" style="border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.03);">
+        <div class="qual-engine-name" style="color:#fff;">Grok</div>
+        <div class="qual-text">AI can largely reflect stated commitments by indexing official sources. Accuracy relies on current data, as perceptions of affordability and actual customer experiences may differ from corporate narratives.</div>
+      </div>
+      <div class="qual-resp" style="border-color:#20b2aa;background:rgba(32,178,170,0.05);">
+        <div class="qual-engine-name" style="color:#20b2aa;">Perplexity</div>
+        <div class="qual-text">AI often mirrors company claims on programs but may overlook real-world outage variability and rate critiques, leading to overly positive portrayals.</div>
+      </div>
+      <div class="qual-resp" style="border-color:#0082fb;background:rgba(0,130,251,0.05);">
+        <div class="qual-engine-name" style="color:#0082fb;">Meta / Llama</div>
+        <div class="qual-text">AI systems generally align with Georgia Power's stated commitments, but may oversimplify complexities.</div>
+      </div>
+    </div>
+
+    <div class="qual-card">
+      <div class="qual-q">Q2 — Where AI Responses Diverge</div>
+      <div class="qual-resp" style="border-color:#10a37f;background:rgba(16,163,127,0.05);">
+        <div class="qual-engine-name" style="color:#10a37f;">ChatGPT</div>
+        <div class="qual-text">Divergence most likely around bill assistance eligibility, rate plan details, outage restoration expectations. AI may generalize from other utilities or present outdated information as current.</div>
+      </div>
+      <div class="qual-resp" style="border-color:#cc785c;background:rgba(204,120,92,0.05);">
+        <div class="qual-engine-name" style="color:#cc785c;">Claude</div>
+        <div class="qual-text">Highest divergence around specific assistance programs, eligibility thresholds, and rate plan details — describing programs in general terms, missing current enrollment windows and income qualifications.</div>
+      </div>
+      <div class="qual-resp" style="border-color:#4285f4;background:rgba(66,133,244,0.05);">
+        <div class="qual-engine-name" style="color:#4285f4;">Gemini</div>
+        <div class="qual-text">Divergence around energy affordability and environmental impact. AI highlights reliance on fossil fuels, complex billing riders, and customer friction when accessing low-income assistance.</div>
+      </div>
+      <div class="qual-resp" style="border-color:#20b2aa;background:rgba(32,178,170,0.05);">
+        <div class="qual-engine-name" style="color:#20b2aa;">Perplexity</div>
+        <div class="qual-text">Divergences in outage specifics or current rebates, pulling from outdated data instead of active HEIP program details.</div>
+      </div>
+      <div class="qual-resp" style="border-color:#0082fb;background:rgba(0,130,251,0.05);">
+        <div class="qual-engine-name" style="color:#0082fb;">Meta / Llama</div>
+        <div class="qual-text">Divergence may occur in nuanced issues like rate structures and environmental impact.</div>
+      </div>
+    </div>
+
+    <div class="qual-card">
+      <div class="qual-q">Q3 — Amplification of Negative Narratives</div>
+      <div class="qual-resp" style="border-color:#cc785c;background:rgba(204,120,92,0.05);">
+        <div class="qual-engine-name" style="color:#cc785c;">Claude</div>
+        <div class="qual-text">May over-index on Vogtle cost overruns, past outage events, or rate increase headlines without contextualizing progress. Negative stories have stronger digital footprints, making AI retrieval skewed toward criticism.</div>
+      </div>
+      <div class="qual-resp" style="border-color:#4285f4;background:rgba(66,133,244,0.05);">
+        <div class="qual-engine-name" style="color:#4285f4;">Gemini</div>
+        <div class="qual-text">AI frequently synthesizes news articles, which skew toward Vogtle delays, rate increases, and coal ash disputes — amplifying negative perceptions and overshadowing routine reliability improvements.</div>
+      </div>
+      <div class="qual-resp" style="border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.03);">
+        <div class="qual-engine-name" style="color:#fff;">Grok</div>
+        <div class="qual-text">AI can amplify negative social media sentiment or outdated news if not properly weighted. Without context, it might present isolated incidents as systemic issues.</div>
+      </div>
+      <div class="qual-resp" style="border-color:#20b2aa;background:rgba(32,178,170,0.05);">
+        <div class="qual-engine-name" style="color:#20b2aa;">Perplexity</div>
+        <div class="qual-text">By prioritizing complaint forums over official programs, amplifying past outages while ignoring efficiency incentives.</div>
+      </div>
+      <div class="qual-resp" style="border-color:#0082fb;background:rgba(0,130,251,0.05);">
+        <div class="qual-engine-name" style="color:#0082fb;">Meta / Llama</div>
+        <div class="qual-text">AI may amplify negative perceptions by focusing on isolated incidents or outdated data.</div>
+      </div>
+    </div>
+
+    <div class="qual-card">
+      <div class="qual-q">Q4 — Guidance to Correct Actions & Q5 — Trust Risk</div>
+      <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">Q4 — Action Guidance</div>
+      <div class="qual-resp" style="border-color:#10a37f;background:rgba(16,163,127,0.05);">
+        <div class="qual-engine-name" style="color:#10a37f;">ChatGPT</div>
+        <div class="qual-text">Can help with general direction. Less reliable for urgent, account-specific, or eligibility-based issues unless clearly redirecting to official channels.</div>
+      </div>
+      <div class="qual-resp" style="border-color:#4285f4;background:rgba(66,133,244,0.05);">
+        <div class="qual-engine-name" style="color:#4285f4;">Gemini</div>
+        <div class="qual-text">Excels at providing correct URLs and customer service numbers. May struggle with specific billing inquiries or nuanced eligibility for niche assistance programs.</div>
+      </div>
+      <div class="qual-resp" style="border-color:#0082fb;background:rgba(0,130,251,0.05);">
+        <div class="qual-engine-name" style="color:#0082fb;">Meta / Llama</div>
+        <div class="qual-text">AI can effectively guide customers when trained on accurate, up-to-date information.</div>
+      </div>
+      <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--red);letter-spacing:0.1em;text-transform:uppercase;margin:14px 0 8px;">Q5 — Critical Moment Trust Risk</div>
+      <div class="qual-resp" style="border-color:#cc785c;background:rgba(204,120,92,0.05);">
+        <div class="qual-engine-name" style="color:#cc785c;">Claude</div>
+        <div class="qual-text">During outages or billing crises, incorrect AI guidance — wrong restoration timelines, outdated contacts, missing hardship program details — can delay customer action. Trust in both Georgia Power and AI erodes simultaneously.</div>
+      </div>
+      <div class="qual-resp" style="border-color:#4285f4;background:rgba(66,133,244,0.05);">
+        <div class="qual-engine-name" style="color:#4285f4;">Gemini</div>
+        <div class="qual-text">During outages or extreme weather, incorrect AI information regarding restoration times or safety protocols could cause physical danger. Customers blame the utility brand, not the AI tool.</div>
+      </div>
+      <div class="qual-resp" style="border-color:#0082fb;background:rgba(0,130,251,0.05);">
+        <div class="qual-engine-name" style="color:#0082fb;">Meta / Llama</div>
+        <div class="qual-text">Inaccurate AI information during outages or emergencies could erode customer trust and cause confusion.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ══════════════════════════ SIGNAL MAP ══════════════════════════ -->
+<div id="signal-section" class="section fade-in" style="display:none;">
+  <div class="section-label">Risk & Signal Map</div>
+  <div class="section-title">Six Strategic Signals for Brand Leaders</div>
+  <div class="section-desc">The six authority patterns that define Georgia Power's position in the Answer Economy — updated for 6-engine consensus. Meta/Llama's addition strengthens two signals and confirms the affordability vulnerability.</div>
+
+  <div class="signal-grid">
+    <div class="signal-card" style="border-color:rgba(78,205,196,0.4);background:rgba(78,205,196,0.04);">
+      <div class="signal-num" style="color:var(--green);">🟢 Signal 01 — HIGH AUTHORITY · 6/6 Engines</div>
+      <div class="signal-theme">Restoration & Safety Culture</div>
+      <div class="signal-body">Meta/Llama's addition cements this as a genuine 6-engine consensus signal — the strongest in the study. Safety and restoration earn 8–10 across every engine with no exceptions. This is Georgia Power's most durable AI authority. <strong style="color:var(--green);">Action:</strong> Create structured "Design for Claude" content — safety FAQs, restoration protocol documentation, emergency preparedness timelines formatted for AI retrieval.</div>
+    </div>
+    <div class="signal-card" style="border-color:rgba(0,212,255,0.4);background:rgba(0,212,255,0.04);">
+      <div class="signal-num" style="color:var(--cyan);">🔵 Signal 02 — STRONGEST SIGNAL · Meta lifts avg</div>
+      <div class="signal-theme">Grid Modernization Narrative</div>
+      <div class="signal-body">Meta/Llama's 8–9/10 grid scores push the cross-engine average to its highest level in the study. All six engines recognize capital investment and infrastructure programs. <strong style="color:var(--cyan);">Action:</strong> Publish annual grid investment summaries as AI-indexable structured pages — milestones, dollar amounts, outcomes — to deepen this already-credible signal further.</div>
+    </div>
+    <div class="signal-card" style="border-color:rgba(255,217,61,0.4);background:rgba(255,217,61,0.04);">
+      <div class="signal-num" style="color:var(--yellow);">🟡 Signal 03 — MIXED · Known but not detailed</div>
+      <div class="signal-theme">Customer Program Awareness</div>
+      <div class="signal-body">Meta/Llama's concise responses ("energy efficiency and demand response programs available") exemplify the pattern: engines know programs exist but cannot describe them usefully. <strong style="color:var(--yellow);">Action:</strong> One structured page per program — eligibility, income thresholds, application URL, enrollment status — formatted specifically for AI retrieval.</div>
+    </div>
+    <div class="signal-card" style="border-color:rgba(255,107,107,0.4);background:rgba(255,107,107,0.04);">
+      <div class="signal-num" style="color:var(--red);">🔴 Signal 04 — VULNERABILITY · 6/6 Confirmed</div>
+      <div class="signal-theme">Affordability & Vogtle Narrative</div>
+      <div class="signal-body">Meta/Llama joins the other five engines in refusing to endorse the affordability narrative at face value. The 6/6 consensus skepticism is the most significant finding in this study. <strong style="color:var(--red);">Action:</strong> Publish a dedicated "Vogtle Economics" module — long-run rate trajectory, fuel-cost avoidance projections, confirmed surcharge timeline — in AI-indexable format now.</div>
+    </div>
+    <div class="signal-card" style="border-color:rgba(162,155,254,0.4);background:rgba(162,155,254,0.04);">
+      <div class="signal-num" style="color:var(--purple);">🟣 Signal 05 — CRITICAL MOMENT RISK</div>
+      <div class="signal-theme">Outage & Emergency AI Guidance</div>
+      <div class="signal-body">All six engines — including Meta/Llama — confirm that customers using AI during emergencies may receive incomplete or incorrect information. Meta's concise "could erode trust and cause confusion" understates what Claude and Gemini describe as a potential safety risk. <strong style="color:var(--purple);">Action:</strong> Ensure outage maps, hotlines, and restoration trackers are structured for AI retrieval priority.</div>
+    </div>
+    <div class="signal-card" style="border-color:rgba(255,159,67,0.4);background:rgba(255,159,67,0.04);">
+      <div class="signal-num" style="color:var(--orange);">🟠 Signal 06 — OPPORTUNITY · Underutilized surface</div>
+      <div class="signal-theme">Rate Plan Differentiation</div>
+      <div class="signal-body">Meta/Llama rates rate plan tailoring at 7/10 — higher than Claude (6) but noting "limited customization." No engine has strong visibility into Georgia Power's time-of-use, EV charging, or demand response options. <strong style="color:var(--orange);">Action:</strong> Create comparative rate plan content with use-case scenarios and cost examples formatted for AI retrieval when customers ask "what's the best plan for me?"</div>
+    </div>
+  </div>
+
+  <div style="margin-top:32px;background:rgba(232,57,46,0.05);border:1px solid rgba(232,57,46,0.3);padding:28px 32px;">
+    <div style="font-family:'Space Mono',monospace;font-size:12px;color:var(--gp-red);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:12px;">The Answer Divide℠ — 6-Engine Confirmation</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;flex-wrap:wrap;">
+      <div>
+        <div style="font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:8px;color:var(--white);">Customers Who Need Help Most Get Least</div>
+        <div style="font-size:15px;color:var(--white-dim);line-height:1.7;">The Answer Divide is sharpest on bill assistance. Lower-income customers who most need LIHEAP, hardship programs, or medical baseline rates are also most likely to use AI as a primary information source. Six engines confirm they know programs exist but none can describe eligibility with precision. This is both a trust risk and a mission-critical content gap.</div>
+      </div>
+      <div>
+        <div style="font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:8px;color:var(--white);">Meta/Llama's Depth Gap Matters</div>
+        <div style="font-size:15px;color:var(--white-dim);line-height:1.7;">Meta/Llama's concise qualitative responses — averaging roughly 15 words vs. 50+ for Claude and Gemini — represent a different kind of risk. High scores from surface-level analysis may cause Georgia Power to underestimate AI perception challenges. A brand that scores 7.8 on operational confirmation but 5/10 on affordability still has a serious problem that high averages can mask.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:32px;padding:28px 32px;border-top:2px solid rgba(0,212,255,0.25);display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;background:rgba(0,212,255,0.03);">
+    <div style="flex:1;min-width:260px;">
+      <div style="font-size:13px;color:var(--cyan);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:10px;font-weight:700;font-family:'Space Mono',monospace;">About BrandRank.AI</div>
+      <div style="font-size:16px;color:rgba(255,255,255,0.82);line-height:1.75;max-width:780px;">BrandRank works with 75+ global brands to strengthen trust and purchase intent by uncovering vulnerabilities, purchase-driving insights, and growth opportunities across AI answer engines. As a SaaS platform, we track all major answer engines to improve visibility, ensure content is AI-ready, and rigorously measure brand claims and instructional accuracy.</div>
+    </div>
+    <div style="font-size:14px;color:var(--cyan);letter-spacing:0.12em;font-weight:700;font-family:'Space Mono',monospace;">brandrank.ai</div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-brand">BrandRank.AI — The Grid Report</div>
+  <div class="footer-note">Georgia Power · AI Trust Index · Q2 2026 · 120 Answer Slots · 6 Engines</div>
+</div>
+
+</div><!-- /wrapper -->
+
+<script>
+const pillars = {
+  reliability:   { label: '⚡ Reliability & Outage Response', color: '#4ecdc4' },
+  grid:          { label: '🏗️ Grid Investment & Prevention',  color: '#00d4ff' },
+  affordability: { label: '💰 Affordability & Rate Plans',    color: '#ff6b6b' },
+  customer:      { label: '👤 Customer Experience',           color: '#ffd93d' },
+  safety:        { label: '🛡️ Safety & Emergency Prep',       color: '#a29bfe' }
+};
+
+const engines = ['chatgpt','claude','gemini','grok','perplexity','meta'];
+const engineLabels = { chatgpt:'ChatGPT', claude:'Claude', gemini:'Gemini', grok:'Grok', perplexity:'Perplexity', meta:'Meta/Llama' };
+const engineColors = { chatgpt:'#10a37f', claude:'#cc785c', gemini:'#4285f4', grok:'#e0e0e0', perplexity:'#20b2aa', meta:'#0082fb' };
+
+const statements = [
+  {id:1,pillar:'reliability',text:'Georgia Power provides clean, safe, reliable, and affordable energy.',
+   scores:{chatgpt:6,claude:6,gemini:6,grok:7,perplexity:7,meta:6},
+   perspectives:{chatgpt:'Reliability and safety align broadly, but affordability and cleanliness remain contested.',claude:'Reliability is strong; affordability and "clean" credentials remain contested by critics.',gemini:'Rates are rising significantly; "clean" is debated despite Vogtle. Reliable but increasingly expensive.',grok:'Actively invests in grid improvements and diverse generation; affordability is variable.',perplexity:'Programs promote efficiency and safety; reliability and affordability vary by customer reports.',meta:'Mixed record on clean energy, generally reliable but affordability varies.'}},
+  {id:2,pillar:'reliability',text:'Georgia Power is committed to delivering reliable electricity to customers.',
+   scores:{chatgpt:9,claude:8,gemini:9,grok:9,perplexity:8,meta:8},
+   perspectives:{chatgpt:'Reliability is a core utility obligation and central theme in Georgia Power communications.',claude:'Grid investment and outage response programs reflect a consistent reliability commitment.',gemini:'As a regulated utility, reliability is its primary legal and operational mandate.',grok:'Company communications consistently highlight reliability initiatives and grid investments.',perplexity:'Infrastructure investments and outage response efforts demonstrate commitment to reliability.',meta:'Infrastructure investments and maintenance suggest strong commitment to reliability.'}},
+  {id:3,pillar:'affordability',text:'Georgia Power focuses on keeping energy affordable for customers.',
+   scores:{chatgpt:7,claude:5,gemini:5,grok:6,perplexity:7,meta:5},
+   perspectives:{chatgpt:'Company emphasizes affordability tools, though rate concerns complicate perception.',claude:'Rate increases and Vogtle cost overruns have meaningfully strained affordability perceptions.',gemini:'Recent significant rate hikes for Plant Vogtle contradict affordability claims for many customers.',grok:'Offers programs and rate plans, but actual bill impacts present mixed affordability experiences.',perplexity:'Rebates and efficiency programs aim to lower bills through savings incentives.',meta:'Affordability is a challenge, with rates influenced by various external factors.'}},
+  {id:4,pillar:'grid',text:'Georgia Power is building the future of energy.',
+   scores:{chatgpt:7,claude:6,gemini:8,grok:8,perplexity:6,meta:7},
+   perspectives:{chatgpt:'Investments in nuclear, solar, and grid modernization support this forward-looking claim.',claude:'Vogtle Units 3 and 4 signal ambition, though delays undercut forward-looking credibility.',gemini:'Plant Vogtle expansion and increasing solar investments demonstrate tangible future energy building.',grok:'Investing in renewables, nuclear, and grid modernization shows a forward-looking approach.',perplexity:'Efficiency rebates support upgrades, but limited evidence of broad clean energy innovation.',meta:'Investing in grid modernization and renewable energy integration.'}},
+  {id:5,pillar:'reliability',text:'Georgia Power works to restore power safely and quickly after outages.',
+   scores:{chatgpt:9,claude:8,gemini:9,grok:9,perplexity:8,meta:8},
+   perspectives:{chatgpt:'Restoration and safety are standard utility priorities, consistently emphasized publicly.',claude:'Storm restoration crews and mutual aid networks demonstrate consistent operational investment.',gemini:'Standard utility protocol prioritizes safe, rapid restoration using mutual assistance networks.',grok:'Public messaging and SAIDI improvements reflect a strong emphasis on rapid, safe restoration.',perplexity:'Standard utility practices include safe, prioritized restoration processes.',meta:'Outage response times have improved with grid management and technology upgrades.'}},
+  {id:6,pillar:'reliability',text:'Georgia Power responds rapidly when restoration is needed.',
+   scores:{chatgpt:8,claude:7,gemini:8,grok:9,perplexity:7,meta:8},
+   perspectives:{chatgpt:'Storm response appears substantial, though customer experiences during major events can vary.',claude:'Large-scale storm responses are generally well-organized, though rural delays are documented.',gemini:'Generally quick response times, though extreme weather events can cause unavoidable delays.',grok:'Company data indicates improved restoration times, emphasizing a focus on quick response.',perplexity:'Outage response is typical for utilities, though speed depends on event scale.',meta:'Restoration times are generally improving with infrastructure investments.'}},
+  {id:7,pillar:'reliability',text:'Georgia Power works to make outages as brief as possible.',
+   scores:{chatgpt:8,claude:7,gemini:9,grok:9,perplexity:8,meta:8},
+   perspectives:{chatgpt:'Utilities prioritize minimizing outage duration through maintenance and planning.',claude:'Automated switching and smart grid tools actively reduce outage duration metrics.',gemini:'Reducing outage duration directly impacts regulatory metrics, driving their strong focus here.',grok:'SAIDI improvements directly support efforts to reduce outage durations for customers.',perplexity:'Grid maintenance and improvements target minimized outage durations.',meta:'Grid hardening and smart grid technologies reduce outage durations.'}},
+  {id:8,pillar:'reliability',text:'Georgia Power is actively working to fix outages when they occur.',
+   scores:{chatgpt:9,claude:8,gemini:10,grok:9,perplexity:8,meta:9},
+   perspectives:{chatgpt:'Active outage response is fundamental utility practice, clearly reflected in public messaging.',claude:'Restoration activity is visible, well-communicated, and supported by public outage tracking tools.',gemini:'Dispatching crews to active outages is their fundamental operational requirement.',grok:'Outage maps and frequent communication confirm active deployment and repair efforts.',perplexity:'Active monitoring and crew deployment are standard for outage resolution.',meta:'Prompt response and repair efforts during outages.'}},
+  {id:9,pillar:'grid',text:'Georgia Power continuously evaluates, upgrades, and maintains its infrastructure.',
+   scores:{chatgpt:9,claude:7,gemini:9,grok:9,perplexity:8,meta:9},
+   perspectives:{chatgpt:'Ongoing maintenance and upgrades are well-established parts of regulated utility operations.',claude:'Capital investment reports and grid hardening plans support ongoing maintenance claims.',gemini:'Routine grid maintenance and smart grid upgrades are consistently funded and executed.',grok:'Evidenced by ongoing grid investment programs and proactive maintenance initiatives.',perplexity:'Home energy programs reflect ongoing infrastructure evaluation and upgrades.',meta:'Regular infrastructure upgrades and maintenance improve reliability.'}},
+  {id:10,pillar:'grid',text:'Georgia Power invests in a stronger and more resilient power grid.',
+   scores:{chatgpt:9,claude:8,gemini:9,grok:9,perplexity:7,meta:9},
+   perspectives:{chatgpt:'Grid resilience investments are widely discussed and align with utility industry priorities.',claude:'Multi-year grid investment plans and storm hardening programs are publicly documented.',gemini:'Billions are actively invested in grid modernization, storm hardening, and advanced metering.',grok:'Multi-year grid investment programs directly target resilience and modernization.',perplexity:'Efficiency incentives suggest investments, but specifics on grid resilience are limited.',meta:'Significant investments in grid infrastructure and hardening.'}},
+  {id:11,pillar:'grid',text:'Georgia Power works to prevent outages through grid improvements.',
+   scores:{chatgpt:9,claude:7,gemini:9,grok:9,perplexity:7,meta:8},
+   perspectives:{chatgpt:'Preventive grid hardening and system improvements are consistent with stated reliability efforts.',claude:'Vegetation management and line hardening initiatives directly target outage prevention goals.',gemini:'Preventive maintenance like vegetation management demonstrably reduces outage frequency.',grok:'Grid investment programs are explicitly designed to enhance reliability and reduce outage frequency.',perplexity:'Maintenance and upgrade programs indirectly support outage prevention.',meta:'Grid modernization efforts aim to reduce outage frequency.'}},
+  {id:12,pillar:'grid',text:'Georgia Power is improving reliability and reducing outages over time.',
+   scores:{chatgpt:7,claude:6,gemini:8,grok:8,perplexity:7,meta:8},
+   perspectives:{chatgpt:'Improvement is plausible, but outcomes depend on weather, aging assets, and measurement periods.',claude:'Improvement trends exist but are inconsistent; major storms periodically reset reliability gains.',gemini:'Smart grid technology has improved reliability metrics, though severe storms still pose challenges.',grok:'Reported SAIFI/SAIDI improvements indicate progress, though major events can still impact statistics.',perplexity:'Long-term efficiency efforts likely contribute to gradual reliability gains.',meta:'Data shows gradual improvements in reliability and outage reduction.'}},
+  {id:13,pillar:'affordability',text:'Georgia Power offers affordable electricity to customers.',
+   scores:{chatgpt:6,claude:5,gemini:5,grok:6,perplexity:6,meta:5},
+   perspectives:{chatgpt:'Electricity may be competitively priced regionally, yet affordability remains debated by customers.',claude:'Georgia rates are near national average; Vogtle surcharges have eroded affordability standing.',gemini:'Multiple recent rate increases have made bills burdensome for low-to-moderate-income customers.',grok:'Offers various rate plans and assistance, but overall costs can be a significant concern.',perplexity:'Rates standard for region; rebates help affordability but not guaranteed low costs.',meta:'Affordability challenged by rate increases and external factors.'}},
+  {id:14,pillar:'affordability',text:'Georgia Power provides rate plans tailored to customer needs.',
+   scores:{chatgpt:8,claude:6,gemini:8,grok:8,perplexity:5,meta:7},
+   perspectives:{chatgpt:'Multiple residential plans and usage options support this claim reasonably well.',claude:'Time-of-use and tiered plans exist but plan variety lags more competitive utility markets.',gemini:'They offer flat bills, time-of-use pricing, and standard residential plans for varying needs.',grok:'Offers various residential rate plans, including time-of-use options, to fit different usage patterns.',perplexity:'Basic plans exist, but no strong evidence of highly tailored options.',meta:'Variety of rate plans available, though limited customization.'}},
+  {id:15,pillar:'affordability',text:'Georgia Power offers programs to help customers lower their energy bills.',
+   scores:{chatgpt:9,claude:7,gemini:8,grok:8,perplexity:9,meta:8},
+   perspectives:{chatgpt:'Efficiency programs, assistance options, and billing tools support lower-cost energy use.',claude:'Energy efficiency rebates, LIHEAP partnerships, and budget billing programs are publicly available.',gemini:'Income-qualified discounts and energy efficiency rebate programs are actively available.',grok:'Provides energy efficiency programs, rebates, and financial assistance options.',perplexity:'Extensive HEIP rebates and assessments directly reduce energy costs.',meta:'Energy efficiency and demand response programs available.'}},
+  {id:16,pillar:'customer',text:'Georgia Power provides accessible customer support through multiple channels.',
+   scores:{chatgpt:8,claude:7,gemini:8,grok:8,perplexity:8,meta:8},
+   perspectives:{chatgpt:'Phone, online, app, and outage tools suggest broadly accessible support channels.',claude:'Phone, app, online chat, and in-person options give customers reasonable multi-channel access.',gemini:'Phone, online portals, and mobile apps provide standard, generally reliable access.',grok:'Offers phone, chat, and online resources for customer service and outage reporting.',perplexity:'Website tools and programs indicate multi-channel support availability.',meta:'Multiple support channels, including online, phone, and in-person.'}},
+  {id:17,pillar:'customer',text:'Georgia Power makes it easy to start or stop service.',
+   scores:{chatgpt:8,claude:7,gemini:9,grok:7,perplexity:8,meta:8},
+   perspectives:{chatgpt:'Standard online account management makes routine service changes relatively straightforward.',claude:'Online self-service tools allow service initiation and cancellation with minimal friction.',gemini:'Their online portal streamlines automated service transfers, starts, and stops.',grok:'Online portals and phone services streamline the process, but can involve typical utility bureaucracy.',perplexity:'Online portals and standard processes facilitate service changes.',meta:'Streamlined online and phone processes for service changes.'}},
+  {id:18,pillar:'customer',text:'Georgia Power helps customers understand their electricity bills.',
+   scores:{chatgpt:7,claude:6,gemini:7,grok:7,perplexity:8,meta:7},
+   perspectives:{chatgpt:'Billing explanations and tools exist, though utility bills can still feel confusing.',claude:'Bill explanations exist online, but Vogtle surcharges have created widespread customer confusion.',gemini:'While online tools exist, complex riders and fuel costs often confuse many ratepayers.',grok:'Provides online tools and explanations, but complex rate structures can still lead to confusion.',perplexity:'Home energy checkups and assessments explain usage and bills.',meta:'Resources available to help customers understand bills, though some complexity remains.'}},
+  {id:19,pillar:'safety',text:'Georgia Power prepares year-round to respond to outages and emergencies.',
+   scores:{chatgpt:9,claude:8,gemini:9,grok:9,perplexity:8,meta:9},
+   perspectives:{chatgpt:'Utilities routinely maintain emergency readiness, staffing, vegetation management, and storm planning.',claude:'Pre-storm staging, year-round drills, and mutual aid agreements reflect strong emergency preparedness culture.',gemini:'Emergency preparedness, mock drills, and mutual assistance agreements are standard year-round practices.',grok:'Public statements and storm center resources emphasize continuous preparation and training.',perplexity:'Utility norms include ongoing preparation for reliable service.',meta:'Proactive preparations and drills for various scenarios.'}},
+  {id:20,pillar:'safety',text:'Safety is core to everything Georgia Power does.',
+   scores:{chatgpt:8,claude:7,gemini:9,grok:9,perplexity:9,meta:9},
+   perspectives:{chatgpt:'Safety is clearly emphasized, though absolute claims invite scrutiny when incidents occur.',claude:'Safety messaging is pervasive; operational safety record is generally solid across the organization.',gemini:'Strict safety protocols and zero-harm metrics are deeply embedded in their corporate culture.',grok:'Safety is consistently highlighted in corporate communications, operations, and public outreach.',perplexity:'Programs emphasize safe installations and professional assessments.',meta:'Strong safety culture and protocols evident in operations.'}},
+];
+
+function scoreBadgeClass(n) {
+  if (n >= 9) return 's-high';
+  if (n >= 7) return 's-mid-high';
+  if (n >= 5) return 's-mid';
+  return 's-low';
+}
+
+let currentPillar = 'all';
+let currentSearch = '';
+
+function renderTable() {
+  const tbody = document.getElementById('tableBody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  const groups = {};
+  statements.forEach(s => { if (!groups[s.pillar]) groups[s.pillar]=[]; groups[s.pillar].push(s); });
+  ['reliability','grid','affordability','customer','safety'].forEach(pk => {
+    if (currentPillar !== 'all' && currentPillar !== pk) return;
+    const filtered = (groups[pk]||[]).filter(s => !currentSearch || s.text.toLowerCase().includes(currentSearch));
+    if (!filtered.length) return;
+    const hrow = document.createElement('tr');
+    hrow.className = 'pillar-header';
+    hrow.innerHTML = `<td colspan="8">${pillars[pk].label}</td>`;
+    tbody.appendChild(hrow);
+    filtered.forEach(s => {
+      const avg = (Object.values(s.scores).reduce((a,b)=>a+b,0)/engines.length).toFixed(1);
+      const avgCls = scoreBadgeClass(parseFloat(avg));
+      let cells = `<td class="q-cell"><span class="q-num">${String(s.id).padStart(2,'0')}</span>${s.text}</td>`;
+      engines.forEach(eng => {
+        const sc = s.scores[eng];
+        cells += `<td class="score-cell" style="position:relative;">
+          <span class="score-badge ${scoreBadgeClass(sc)}">${sc}</span>
+          <div class="tooltip-box">
+            <div class="tooltip-engine">${engineLabels[eng]}</div>
+            <div class="tooltip-text">${s.perspectives[eng]}</div>
+          </div>
+        </td>`;
+      });
+      cells += `<td class="avg-cell"><span class="avg-badge ${avgCls}">${avg}</span></td>`;
+      const tr = document.createElement('tr');
+      tr.innerHTML = cells;
+      tbody.appendChild(tr);
+    });
+  });
+}
+
+function filterPillar(p, el) {
+  currentPillar = p;
+  document.querySelectorAll('.pillar-tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderTable();
+}
+
+function filterStatements() {
+  currentSearch = document.getElementById('stmtSearch').value.trim().toLowerCase();
+  renderTable();
+}
+
+function calcPillarAvgs() {
+  const totals={}, counts={};
+  Object.keys(pillars).forEach(p => { totals[p]=0; counts[p]=0; });
+  statements.forEach(s => {
+    const avg = Object.values(s.scores).reduce((a,b)=>a+b,0)/engines.length;
+    totals[s.pillar]+=avg; counts[s.pillar]++;
+  });
+  const result={};
+  Object.keys(pillars).forEach(p => { result[p]=(totals[p]/counts[p]).toFixed(1); });
+  return result;
+}
+
+function renderPillarBars() {
+  const avgs = calcPillarAvgs();
+  const container = document.getElementById('pillarBars');
+  if (!container) return;
+  container.innerHTML = '';
+  Object.entries(avgs).forEach(([p, score]) => {
+    const pct = (parseFloat(score)/10*100).toFixed(0);
+    container.innerHTML += `
+      <div class="pillar-bar-row">
+        <div class="pillar-bar-label">
+          <span class="pillar-bar-name">${pillars[p].label}</span>
+          <span class="pillar-bar-score">${score}</span>
+        </div>
+        <div class="pillar-bar-track">
+          <div class="pillar-bar-fill" style="width:0%;background:${pillars[p].color};" data-target="${pct}"></div>
+        </div>
+      </div>`;
+  });
+  setTimeout(() => {
+    document.querySelectorAll('.pillar-bar-fill').forEach(el => { el.style.width = el.dataset.target + '%'; });
+  }, 100);
+}
+
+function renderPillarTable() {
+  const tbody = document.getElementById('pillarTable');
+  if (!tbody) return;
+  const pillarOrder = ['reliability','grid','affordability','customer','safety'];
+  tbody.innerHTML = engines.map(eng => {
+    const cells = pillarOrder.map(p => {
+      const stmts = statements.filter(s => s.pillar === p);
+      const val = stmts.reduce((a,s) => a+s.scores[eng], 0) / stmts.length;
+      const col = val>=8?'#4ecdc4':val>=7?'#00d4ff':val>=6?'#ffd93d':'#ff6b6b';
+      return `<td style="padding:12px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.08);">
+        <span style="font-family:'Space Mono',monospace;font-size:16px;font-weight:700;color:${col};">${val.toFixed(1)}</span>
+      </td>`;
+    }).join('');
+    return `<tr>
+      <td style="padding:12px;border-bottom:1px solid rgba(255,255,255,0.08);">
+        <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;padding:4px 10px;border:1px solid;color:${engineColors[eng]};border-color:${engineColors[eng]}55;background:${engineColors[eng]}11;">${engineLabels[eng]}</span>
+      </td>${cells}
+    </tr>`;
+  }).join('');
+}
+
+function renderRadarChart() {
+  const canvas = document.getElementById('radarChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const avgs = calcPillarAvgs();
+  const order = ['reliability','grid','affordability','customer','safety'];
+  const values = order.map(p => parseFloat(avgs[p]));
+  const labels = ['Reliability','Grid','Affordability','Customer','Safety'];
+  const N = labels.length, W = canvas.width, H = canvas.height;
+  const cx = W/2, cy = H/2, R = Math.min(W,H)/2 - 52;
+  ctx.clearRect(0,0,W,H);
+  for (let ring=1;ring<=5;ring++) {
+    const r = R*(ring/5);
+    ctx.beginPath();
+    for (let i=0;i<N;i++) {
+      const a=(i/N)*2*Math.PI-Math.PI/2, x=cx+r*Math.cos(a), y=cy+r*Math.sin(a);
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.closePath(); ctx.strokeStyle='rgba(255,255,255,0.08)'; ctx.lineWidth=1; ctx.stroke();
+  }
+  for (let i=0;i<N;i++) {
+    const a=(i/N)*2*Math.PI-Math.PI/2;
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+R*Math.cos(a),cy+R*Math.sin(a));
+    ctx.strokeStyle='rgba(255,255,255,0.12)'; ctx.stroke();
+  }
+  ctx.beginPath();
+  values.forEach((v,i) => {
+    const a=(i/N)*2*Math.PI-Math.PI/2, r=R*(v/10), x=cx+r*Math.cos(a), y=cy+r*Math.sin(a);
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  });
+  ctx.closePath(); ctx.fillStyle='rgba(0,212,255,0.15)'; ctx.fill();
+  ctx.strokeStyle='#00d4ff'; ctx.lineWidth=2; ctx.stroke();
+  values.forEach((v,i) => {
+    const a=(i/N)*2*Math.PI-Math.PI/2, r=R*(v/10), x=cx+r*Math.cos(a), y=cy+r*Math.sin(a);
+    ctx.beginPath(); ctx.arc(x,y,5,0,2*Math.PI); ctx.fillStyle='#00d4ff'; ctx.fill();
+  });
+  ctx.font='12px Space Mono, monospace'; ctx.fillStyle='rgba(255,255,255,0.75)'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  labels.forEach((lbl,i) => {
+    const a=(i/N)*2*Math.PI-Math.PI/2, r=R+34, x=cx+r*Math.cos(a), y=cy+r*Math.sin(a);
+    ctx.fillText(lbl,x,y);
+  });
+  ctx.font='bold 11px Space Mono, monospace'; ctx.fillStyle='#ffd93d';
+  values.forEach((v,i) => {
+    const a=(i/N)*2*Math.PI-Math.PI/2, r=R*(v/10)+14, x=cx+r*Math.cos(a), y=cy+r*Math.sin(a);
+    ctx.fillText(v.toFixed(1),x,y);
+  });
+}
+
+function showSection(id) {
+  ['exec-section','index-section','pillar-section','engines-section','qual-section','signal-section'].forEach(s => {
+    const el = document.getElementById(s);
+    if (el) el.style.display = s===id?'block':'none';
+  });
+  document.querySelectorAll('.nav-pill').forEach(p => {
+    p.classList.toggle('active', (p.getAttribute('onclick')||'').includes("'"+id+"'"));
+  });
+  if (id==='index-section') renderTable();
+  if (id==='pillar-section') { renderPillarBars(); renderPillarTable(); setTimeout(renderRadarChart,200); }
+}
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.05 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+renderTable();
+</script>
+</body>
+</html>
