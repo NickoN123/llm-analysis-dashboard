@@ -1,0 +1,2017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Earned Media Sourcing: Health — BrandRank.AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:     #020202;
+  --bg2:    #090909;
+  --bg3:    #101010;
+  --bg4:    #181818;
+  --cyan:   #00d4ff;
+  --cyan10: rgba(0,212,255,0.1);
+  --cyan25: rgba(0,212,255,0.25);
+  --white:  #f0f0f0;
+  --muted:  #bbb;
+  --muted2: #999;
+  --border: rgba(255,255,255,0.06);
+  --borderhi: rgba(255,255,255,0.13);
+  --edu:    #00e5a0;
+  --val:    #00d4ff;
+  --aware:  #ff6b2b;
+  --auth:   #c77dff;
+  --disc:   #60b8ff;
+  --gold:   #ffd600;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{
+  background:var(--bg);
+  color:var(--white);
+  font-family:'DM Sans',sans-serif;
+  font-weight:300;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ─── HEADER ─────────────────────────────────────────── */
+.header{
+  padding:20px 36px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  flex-wrap:wrap;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-shrink:0;
+}
+.brand-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 10px var(--cyan);
+  animation:blink 2.5s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.brand-name{
+  font-family:'DM Mono',monospace;
+  font-size:10.5px;
+  letter-spacing:3.5px;
+  text-transform:uppercase;
+  color:var(--cyan);
+}
+.hc{text-align:center;flex:1}
+.htitle{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:34px;
+  font-weight:800;
+  letter-spacing:.5px;
+  line-height:1;
+}
+.htitle em{color:var(--cyan);font-style:normal}
+.hsub{
+  font-size:10.5px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.7);
+  margin-top:5px;
+}
+.hcount{
+  font-family:'DM Mono',monospace;
+  font-size:10px;
+  color:rgba(255,255,255,.8);
+  text-align:right;
+  flex-shrink:0;
+}
+.hcount strong{color:var(--cyan);font-size:28px;display:block;line-height:1;font-family:'Barlow Condensed',sans-serif;font-weight:700}
+
+/* ─── GOAL BAR ───────────────────────────────────────── */
+.goal-bar{
+  padding:13px 36px;
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.bar-label{
+  font-size:9.5px;
+  letter-spacing:3.5px;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.75);
+  font-weight:600;
+  flex-shrink:0;
+  margin-right:6px;
+}
+.goal-chip{
+  background:var(--bg3);
+  border:1px solid var(--borderhi);
+  border-radius:5px;
+  color:rgba(255,255,255,.85);
+  cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  font-size:12px;
+  font-weight:600;
+  padding:6px 14px;
+  transition:all .18s;
+  white-space:nowrap;
+}
+.goal-chip:hover{color:var(--white);border-color:rgba(255,255,255,.2)}
+.goal-chip.active{
+  background:rgba(255,214,0,.08);
+  border-color:rgba(255,214,0,.55);
+  color:var(--gold);
+  box-shadow:0 0 12px rgba(255,214,0,.1);
+}
+
+/* ─── PICKS STRIP ───────────────────────────────────── */
+.picks-strip{
+  padding:0 36px;
+  min-height:44px;
+  background:rgba(255,214,0,.03);
+  border-bottom:1px solid rgba(255,214,0,.12);
+  display:none;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.picks-strip.on{display:flex}
+.picks-title{
+  font-size:9.5px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--gold);
+  flex-shrink:0;
+}
+.ptag{
+  background:rgba(255,214,0,.06);
+  border:1px solid rgba(255,214,0,.25);
+  border-radius:20px;
+  color:rgba(255,214,0,.9);
+  font-size:11.5px;
+  font-weight:500;
+  padding:4px 12px;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.ptag-num{
+  background:var(--gold);
+  color:#000;
+  border-radius:50%;
+  width:15px;height:15px;
+  font-size:8.5px;
+  font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.picks-note{
+  font-size:11px;
+  color:rgba(255,255,255,.7);
+  font-style:italic;
+  margin-left:4px;
+  font-weight:400;
+}
+
+/* ─── FILTER BAR ─────────────────────────────────────── */
+.filter-bar{
+  padding:10px 36px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:7px;flex-wrap:wrap;
+}
+.chip{
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:20px;
+  color:rgba(255,255,255,.8);
+  cursor:pointer;
+  font-size:11px;
+  font-weight:600;
+  padding:4px 13px;
+  transition:all .18s;
+  white-space:nowrap;
+}
+.chip:hover{color:var(--white);border-color:var(--borderhi)}
+.chip[data-uc="all"].active    {background:rgba(0,212,255,.1);border-color:var(--cyan);color:var(--cyan)}
+.chip[data-uc="Education"].active {background:rgba(0,229,160,.1);border-color:var(--edu);color:var(--edu)}
+.chip[data-uc="Validation"].active{background:rgba(0,212,255,.1);border-color:var(--val);color:var(--val)}
+.chip[data-uc="Awareness"].active {background:rgba(255,107,43,.1);border-color:var(--aware);color:var(--aware)}
+.chip[data-uc="Authority"].active {background:rgba(199,125,255,.1);border-color:var(--auth);color:var(--auth)}
+
+/* ─── MATRIX LAYOUT ──────────────────────────────────── */
+.matrix-wrap{
+  padding:28px 36px 10px;
+  display:flex;
+  gap:14px;
+}
+.y-wrap{
+  width:28px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.y-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;
+  letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--cyan);
+  transform:rotate(-90deg);
+  white-space:nowrap;
+  text-shadow:0 0 10px rgba(0,212,255,.4);
+}
+.matrix-col{flex:1;min-width:0}
+.matrix-box{
+  position:relative;
+  width:100%;
+  height:660px;
+  border:1px solid rgba(0,212,255,.18);
+  border-radius:10px;
+  overflow:hidden;
+  background:
+    radial-gradient(ellipse at 80% 18%, rgba(0,229,160,.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 16% 14%, rgba(199,125,255,.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 90%, rgba(0,212,255,.02) 0%, transparent 40%),
+    var(--bg);
+  box-shadow:
+    inset 0 0 80px rgba(0,212,255,.03),
+    0 20px 60px rgba(0,0,0,.5);
+}
+
+/* quadrant zones */
+.qzone{position:absolute;pointer-events:none}
+.qzone.tl{top:0;left:0;width:50%;height:50%;background:radial-gradient(circle at 25% 25%, rgba(199,125,255,.04) 0%,transparent 65%)}
+.qzone.tr{top:0;right:0;width:50%;height:50%;background:radial-gradient(circle at 75% 25%, rgba(0,229,160,.05) 0%,transparent 65%)}
+.qzone.bl{bottom:0;left:0;width:50%;height:50%;background:radial-gradient(circle at 25% 75%, rgba(255,107,43,.03) 0%,transparent 65%)}
+.qzone.br{bottom:0;right:0;width:50%;height:50%}
+
+/* dividers */
+.qdv,.qdh{position:absolute;pointer-events:none;z-index:1}
+.qdv{top:0;left:50%;width:1px;height:100%;background:linear-gradient(to bottom,transparent 0%,rgba(255,255,255,.07) 25%,rgba(255,255,255,.13) 50%,rgba(255,255,255,.07) 75%,transparent 100%)}
+.qdh{left:0;top:50%;width:100%;height:1px;background:linear-gradient(to right,transparent 0%,rgba(255,255,255,.07) 25%,rgba(255,255,255,.13) 50%,rgba(255,255,255,.07) 75%,transparent 100%)}
+
+/* quadrant labels */
+.qlbl{
+  position:absolute;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10.5px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+  line-height:1.35;
+  padding:6px 10px;border-radius:5px;
+  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(10px);
+  pointer-events:none;z-index:5;
+}
+.qlbl.tl{top:10px;left:10px;color:#c77dff;border:1px solid rgba(199,125,255,.2)}
+.qlbl.tr{top:10px;right:10px;color:#00e5a0;border:1px solid rgba(0,229,160,.2)}
+.qlbl.bl{bottom:10px;left:10px;color:#ff6b6b;border:1px solid rgba(255,107,107,.2)}
+.qlbl.br{bottom:10px;right:10px;color:#ffd93d;border:1px solid rgba(255,217,61,.2)}
+
+/* ─── PUBLICATION NODES ──────────────────────────────── */
+.pub-node{
+  position:absolute;
+  border-radius:50%;
+  cursor:pointer;
+  transform:translate(-50%,-50%);
+  transition:transform .22s cubic-bezier(.4,0,.2,1), opacity .22s, z-index 0s;
+  z-index:10;
+}
+.pub-node:hover{transform:translate(-50%,-50%) scale(1.2);z-index:30}
+.pub-node.dimmed{opacity:.18}
+.pub-node.selected .nring{border-width:2.5px;box-shadow:0 0 24px var(--col), 0 0 8px var(--col)}
+
+.nring{
+  width:100%;height:100%;
+  border-radius:50%;
+  border:2px solid var(--col,#fff);
+  background:var(--col-bg,rgba(255,255,255,.06));
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 0 16px var(--col-glow, rgba(255,255,255,.1));
+  transition:all .22s;
+  position:relative;
+}
+.pub-node:hover .nring{
+  border-width:2.5px;
+  box-shadow:0 0 28px var(--col), 0 0 50px var(--col-glow);
+}
+
+.nabbr{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:700;
+  letter-spacing:.5px;
+  line-height:1.15;
+  text-align:center;
+  pointer-events:none;
+  padding:0 3px;
+  color:#fff;
+}
+.nscore{
+  font-family:'DM Mono',monospace;
+  font-size:7.5px;
+  color:rgba(255,255,255,.85);
+  font-weight:500;
+  margin-top:1px;
+  pointer-events:none;
+}
+
+/* Tooltip */
+.ntip{
+  position:absolute;
+  bottom:calc(100% + 10px);
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(5,5,5,.97);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:8px;
+  padding:9px 13px;
+  white-space:nowrap;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .15s;
+  z-index:60;
+  backdrop-filter:blur(16px);
+  box-shadow:0 4px 20px rgba(0,0,0,.5);
+}
+.pub-node:hover .ntip{opacity:1}
+.tip-name{font-weight:600;font-size:13px;margin-bottom:3px}
+.tip-stats{
+  font-family:'DM Mono',monospace;
+  font-size:10px;
+  color:rgba(255,255,255,.7);
+  display:flex;gap:10px;
+}
+.tip-stats b{color:var(--white)}
+
+/* Goal pick ring pulse */
+@keyframes gpulse{
+  0%,100%{box-shadow:0 0 0 3px rgba(255,214,0,.4), 0 0 24px rgba(255,214,0,.25)}
+  50%{box-shadow:0 0 0 6px rgba(255,214,0,.55), 0 0 40px rgba(255,214,0,.35)}
+}
+.pub-node.goal-pick .nring{
+  border-color:var(--gold) !important;
+  animation:gpulse 2s ease-in-out infinite;
+}
+
+/* ─── X AXIS LABEL ───────────────────────────────────── */
+.x-label{
+  text-align:center;
+  margin-top:10px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;
+  letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--cyan);
+  text-shadow:0 0 8px rgba(0,212,255,.3);
+}
+
+/* ─── LEGEND ─────────────────────────────────────────── */
+.legend{
+  padding:14px 36px 22px;
+  display:flex;
+  align-items:center;
+  gap:20px;
+  flex-wrap:wrap;
+  border-top:1px solid var(--border);
+}
+.leg-title{
+  font-size:9.5px;
+  letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,255,255,.75);
+  font-weight:700;
+  flex-shrink:0;
+}
+.leg-item{
+  display:flex;align-items:center;gap:7px;
+  font-size:12px;color:rgba(255,255,255,.9);
+  font-weight:500;
+}
+.leg-dot{
+  width:11px;height:11px;border-radius:50%;
+  border:2px solid;flex-shrink:0;
+}
+.leg-divider{width:1px;height:16px;background:var(--border);flex-shrink:0}
+
+/* ─── INFO PANEL ─────────────────────────────────────── */
+.info-panel{
+  position:fixed;
+  top:50%;right:-470px;
+  transform:translateY(-50%);
+  width:440px;
+  max-height:92vh;
+  background:rgba(6,6,6,.98);
+  border:1px solid rgba(0,212,255,.22);
+  border-radius:14px;
+  overflow-y:auto;
+  transition:right .35s cubic-bezier(.4,0,.2,1);
+  z-index:1000;
+  box-shadow:-20px 0 60px rgba(0,0,0,.7), 0 0 0 1px rgba(0,0,0,1), 0 0 50px rgba(0,212,255,.05);
+}
+.info-panel.open{right:18px}
+
+.phead{
+  padding:20px 22px 14px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.pclose{
+  position:absolute;top:14px;right:14px;
+  background:var(--bg3);
+  border:1px solid var(--borderhi);
+  border-radius:50%;
+  color:rgba(255,255,255,.7);
+  cursor:pointer;
+  width:26px;height:26px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;
+  transition:all .18s;
+}
+.pclose:hover{color:var(--white);border-color:rgba(255,255,255,.4)}
+
+.pname{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:28px;font-weight:800;
+  letter-spacing:.5px;
+  line-height:1;
+  margin-bottom:5px;
+}
+.purl{
+  font-family:'DM Mono',monospace;
+  font-size:11px;
+  color:rgba(255,255,255,.6);
+  text-decoration:none;
+  transition:color .18s;
+}
+.purl:hover{color:var(--cyan)}
+.pbadges{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}
+.pbadge{
+  font-size:9.5px;font-weight:600;
+  letter-spacing:.8px;text-transform:uppercase;
+  padding:4px 10px;border-radius:3px;
+}
+.pbadge-pri{
+  background:rgba(0,229,160,.1);
+  color:#00e5a0;
+  border:1px solid rgba(0,229,160,.22);
+}
+.pbadge-pri.med{
+  background:rgba(255,214,0,.07);
+  color:var(--gold);
+  border-color:rgba(255,214,0,.2);
+}
+.pbadge-uc{border:1px solid;}
+
+/* score cards */
+.pscores{
+  padding:14px 22px;
+  display:grid;grid-template-columns:1fr 1fr;gap:9px;
+  border-bottom:1px solid var(--border);
+}
+.psc{
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:11px;
+  text-align:center;
+}
+.psc-val{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:28px;font-weight:700;
+  line-height:1;margin-bottom:4px;
+}
+.psc-lbl{
+  font-family:'DM Mono',monospace;
+  font-size:8.5px;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,.7);
+  font-weight:600;
+}
+
+/* tabs */
+.ptabs{display:flex;border-bottom:1px solid var(--border)}
+.ptab{
+  flex:1;background:none;border:none;
+  border-bottom:2px solid transparent;
+  color:rgba(255,255,255,.6);
+  cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  font-size:11.5px;font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;
+  padding:12px 8px;
+  transition:all .18s;
+}
+.ptab:hover{color:var(--white)}
+.ptab.active{color:var(--cyan);border-bottom-color:var(--cyan)}
+
+.ptcontent{padding:18px 22px}
+.pts{margin-bottom:16px}
+.pts-lbl{
+  font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,255,255,.65);
+  font-weight:600;
+  margin-bottom:5px;
+}
+.pts-val{font-size:13px;line-height:1.65;color:#fff;font-weight:300}
+
+.signal-tags{display:flex;gap:6px;flex-wrap:wrap}
+.stag{
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:3px;
+  font-size:10.5px;color:rgba(255,255,255,.9);
+  font-weight:500;
+  padding:3px 9px;
+}
+
+.planner-note{
+  background:rgba(0,212,255,.04);
+  border:1px solid rgba(0,212,255,.13);
+  border-radius:8px;
+  padding:13px 13px 13px 34px;
+  font-size:12.5px;
+  font-style:italic;
+  line-height:1.65;
+  color:rgba(255,255,255,.9);
+  position:relative;
+}
+.planner-note::before{
+  content:'📌';
+  position:absolute;
+  top:13px;left:11px;
+  font-style:normal;
+  font-size:13px;
+}
+
+.access-row{
+  background:var(--bg3);
+  border:1px solid var(--borderhi);
+  border-radius:8px;
+  padding:13px 14px;
+  font-size:12.5px;color:#fff;
+  font-weight:500;
+  display:flex;align-items:center;gap:10px;
+}
+.access-icon{color:var(--cyan);flex-shrink:0;font-size:16px}
+
+.pfoot{padding:0 22px 22px}
+.visit-btn{
+  display:block;
+  background:rgba(0,212,255,.07);
+  border:1px solid rgba(0,212,255,.28);
+  border-radius:8px;
+  color:var(--cyan);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:15px;font-weight:700;
+  letter-spacing:2.5px;text-transform:uppercase;
+  padding:13px;text-align:center;
+  text-decoration:none;
+  transition:all .2s;
+}
+.visit-btn:hover{
+  background:rgba(0,212,255,.14);
+  border-color:var(--cyan);
+  box-shadow:0 0 22px rgba(0,212,255,.15);
+}
+
+/* ─── SOURCE LIST ────────────────────────────────────────── */
+.srclist-wrap{ padding:0 36px 60px;margin-top:4px; }
+.srclist-head{ display:flex;align-items:baseline;gap:16px;padding:20px 0 14px;border-top:1px solid var(--border); }
+.srclist-title{ font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;letter-spacing:.5px;color:#fff; }
+.srclist-sub{ font-size:11px;color:rgba(255,255,255,.45); }
+.srclist{ display:flex;flex-direction:column;gap:5px; }
+.src-row{
+  display:flex;align-items:center;gap:14px;
+  padding:12px 16px;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;cursor:pointer;min-width:0;
+  transition:border-color .18s,background .18s,transform .15s;
+}
+.src-row:hover{ border-color:rgba(255,255,255,.16);background:var(--bg3);transform:translateX(3px); }
+.src-row.active{ border-color:var(--col,#fff);background:var(--col-bg,rgba(255,255,255,.04)); }
+.src-rank{ font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,.25);width:20px;flex-shrink:0;text-align:right; }
+.src-dot{ width:10px;height:10px;border-radius:50%;border:2px solid var(--col,#fff);flex-shrink:0; }
+.src-info{ flex:0 0 180px;min-width:0; }
+.src-name{ font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.src-url{ font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,.28);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.src-desc{ flex:1;min-width:0;font-size:11.5px;line-height:1.45;color:rgba(255,255,255,.6);overflow:hidden;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical; }
+.src-uc{ flex:0 0 auto;font-size:9.5px;font-weight:600;letter-spacing:.4px;padding:3px 9px;border-radius:3px;border:1px solid;white-space:nowrap; }
+.src-bars{ flex:0 0 130px;display:flex;flex-direction:column;gap:4px; }
+.src-bar-row{ display:flex;align-items:center;gap:5px; }
+.src-bar-lbl{ font-family:'DM Mono',monospace;font-size:7.5px;text-transform:uppercase;color:rgba(255,255,255,.3);width:18px;flex-shrink:0; }
+.src-bar-track{ flex:1;height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden; }
+.src-bar-fill{ height:100%;border-radius:2px; }
+.src-bar-num{ font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,.4);width:20px;text-align:right;flex-shrink:0; }
+.src-score-block{ flex:0 0 48px;text-align:center; }
+.src-score-val{ font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;line-height:1; }
+.src-score-lbl{ font-family:'DM Mono',monospace;font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3); }
+.src-speed{ flex:0 0 48px;text-align:center; }
+.src-speed-icon{ font-size:13px;line-height:1; }
+.src-speed-lbl{ font-family:'DM Mono',monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:2px; }
+
+/* ─── HELP BUTTON ────────────────────────────────────────── */
+.help-btn{
+  background:rgba(255,214,0,.07);
+  border:1px solid rgba(255,214,0,.3);
+  border-radius:6px;
+  color:var(--gold);
+  cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  font-size:11.5px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+  padding:8px 16px;
+  transition:all .18s;
+  display:flex;align-items:center;gap:7px;
+  flex-shrink:0;
+}
+.help-btn:hover{background:rgba(255,214,0,.14);border-color:var(--gold);box-shadow:0 0 16px rgba(255,214,0,.12)}
+.help-btn svg{flex-shrink:0}
+
+/* ─── HELP MODAL ─────────────────────────────────────────── */
+.modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(12px);
+  z-index:2000;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+  opacity:0;pointer-events:none;
+  transition:opacity .25s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{
+  background:#0c0c0c;
+  border:1px solid rgba(255,214,0,.2);
+  border-radius:16px;
+  max-width:720px;width:100%;
+  max-height:88vh;overflow-y:auto;
+  box-shadow:0 30px 80px rgba(0,0,0,.7),0 0 0 1px rgba(0,0,0,1);
+  transform:translateY(16px);
+  transition:transform .25s;
+}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-head{
+  padding:26px 28px 18px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
+  position:sticky;top:0;background:#0c0c0c;z-index:2;border-radius:16px 16px 0 0;
+}
+.modal-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:26px;font-weight:800;letter-spacing:.5px;
+}
+.modal-title em{color:var(--gold);font-style:normal}
+.modal-sub{font-size:12px;color:rgba(255,255,255,.6);margin-top:4px}
+.modal-close{
+  background:var(--bg3);border:1px solid var(--borderhi);
+  border-radius:50%;color:rgba(255,255,255,.7);cursor:pointer;
+  width:30px;height:30px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+  transition:all .18s;margin-top:2px;
+}
+.modal-close:hover{color:#fff;border-color:rgba(255,255,255,.3)}
+.modal-body{padding:24px 28px 30px}
+.modal-section{margin-bottom:26px}
+.modal-section:last-child{margin-bottom:0}
+.msec-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px;
+  padding-bottom:7px;border-bottom:1px solid rgba(255,214,0,.12);
+}
+.msec-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mcard{
+  background:var(--bg3);border:1px solid var(--borderhi);
+  border-radius:8px;padding:13px 14px;
+}
+.mcard-title{font-size:12px;font-weight:700;color:#fff;margin-bottom:4px}
+.mcard-text{font-size:11.5px;line-height:1.6;color:rgba(255,255,255,.75)}
+.mcard.full{grid-column:1/-1}
+.mcard.accent{border-color:rgba(0,212,255,.2);background:rgba(0,212,255,.04)}
+.mcard.gold{border-color:rgba(255,214,0,.2);background:rgba(255,214,0,.04)}
+
+.step-list{list-style:none;display:flex;flex-direction:column;gap:9px}
+.step-list li{
+  display:flex;align-items:flex-start;gap:11px;
+  font-size:12.5px;line-height:1.6;color:rgba(255,255,255,.85);
+}
+.step-num{
+  background:var(--cyan);color:#000;
+  border-radius:50%;width:20px;height:20px;
+  font-family:'DM Mono',monospace;font-size:10px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:2px;
+}
+
+.quad-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.qcard{
+  border-radius:7px;padding:11px 12px;
+  border:1px solid;
+}
+.qcard-name{font-size:12px;font-weight:700;margin-bottom:3px}
+.qcard-desc{font-size:11px;line-height:1.55;opacity:.8}
+
+/* ─── SEARCH BAR ─────────────────────────────────────────── */
+.search-wrap{
+  position:relative;
+  flex-shrink:0;
+}
+.search-wrap svg{
+  position:absolute;left:10px;top:50%;transform:translateY(-50%);
+  pointer-events:none;color:rgba(255,255,255,.4);
+}
+#search-input{
+  background:var(--bg3);
+  border:1px solid var(--borderhi);
+  border-radius:20px;
+  color:#fff;
+  font-family:'DM Sans',sans-serif;
+  font-size:12px;font-weight:400;
+  outline:none;
+  padding:5px 14px 5px 32px;
+  transition:border-color .18s,width .25s;
+  width:180px;
+}
+#search-input::placeholder{color:rgba(255,255,255,.4)}
+#search-input:focus{border-color:rgba(0,212,255,.45);width:230px}
+.search-clear{
+  position:absolute;right:9px;top:50%;transform:translateY(-50%);
+  background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;
+  font-size:14px;line-height:1;display:none;transition:color .15s;
+}
+.search-clear:hover{color:#fff}
+.search-clear.on{display:block}
+
+/* ─── NODE FULL-NAME LABEL ───────────────────────────────── */
+.nlabel{
+  position:absolute;
+  top:calc(100% + 5px);
+  left:50%;transform:translateX(-50%);
+  background:rgba(0,0,0,.92);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:4px;
+  color:#fff;
+  font-family:'DM Sans',sans-serif;
+  font-size:10px;font-weight:600;
+  letter-spacing:.2px;
+  padding:3px 8px;
+  white-space:nowrap;
+  pointer-events:none;
+  z-index:25;
+  opacity:0;
+  transition:opacity .15s;
+}
+.pub-node:hover .nlabel{opacity:1}
+.pub-node.selected .nlabel{opacity:1;border-color:var(--col);color:var(--col)}
+/* always-visible search highlight label */
+.pub-node.search-match .nlabel{
+  opacity:1;
+  border-color:var(--gold);
+  color:var(--gold);
+  background:rgba(0,0,0,.95);
+}
+.pub-node.search-dim{opacity:.12 !important}
+
+/* ─── WELCOME CARD ───────────────────────────────────────── */
+.welcome-card{
+  position:fixed;
+  top:50%;right:18px;
+  transform:translateY(-50%);
+  width:300px;
+  background:#0c0c0c;
+  border:1px solid rgba(0,212,255,.18);
+  border-radius:14px;
+  padding:26px 22px;
+  z-index:999;
+  box-shadow:-10px 0 40px rgba(0,0,0,.5);
+  transition:opacity .3s,transform .3s;
+}
+.welcome-card.hidden{opacity:0;pointer-events:none;transform:translateY(-50%) translateX(30px)}
+.wc-icon{font-size:26px;margin-bottom:12px}
+.wc-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:20px;font-weight:800;letter-spacing:.5px;
+  margin-bottom:8px;color:#fff;
+}
+.wc-title em{color:var(--cyan);font-style:normal}
+.wc-text{font-size:12px;line-height:1.7;color:rgba(255,255,255,.75);margin-bottom:16px}
+.wc-steps{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.wc-steps li{
+  display:flex;align-items:flex-start;gap:9px;
+  font-size:11.5px;line-height:1.5;color:rgba(255,255,255,.85);
+}
+.wc-step-num{
+  background:var(--cyan);color:#000;border-radius:50%;
+  width:17px;height:17px;
+  font-family:'DM Mono',monospace;font-size:9px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  margin-top:1px;
+}
+.wc-hint{
+  background:rgba(255,214,0,.05);
+  border:1px solid rgba(255,214,0,.18);
+  border-radius:7px;padding:10px 12px;
+  font-size:11px;line-height:1.6;color:rgba(255,214,0,.9);
+  font-style:italic;
+}
+
+/* ─── COMPARE MODE ───────────────────────────────────────── */
+.compare-btn{
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--borderhi);
+  border-radius:8px;
+  color:rgba(255,255,255,.75);
+  cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  font-size:11px;font-weight:600;
+  letter-spacing:1px;text-transform:uppercase;
+  padding:10px;text-align:center;
+  transition:all .2s;
+  margin-top:10px;
+  width:100%;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+}
+.compare-btn:hover{background:rgba(255,255,255,.09);color:#fff;border-color:rgba(255,255,255,.25)}
+.compare-btn.active{
+  background:rgba(0,229,160,.07);
+  border-color:rgba(0,229,160,.3);
+  color:#00e5a0;
+}
+.compare-banner{
+  padding:10px 22px;
+  background:rgba(0,229,160,.05);
+  border-bottom:1px solid rgba(0,229,160,.15);
+  font-size:12px;color:rgba(0,229,160,.9);
+  display:none;align-items:center;gap:8px;
+}
+.compare-banner.on{display:flex}
+.compare-banner strong{color:#00e5a0}
+.compare-banner button{
+  margin-left:auto;background:none;border:1px solid rgba(0,229,160,.3);
+  border-radius:4px;color:rgba(0,229,160,.8);cursor:pointer;
+  font-size:10.5px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;
+  padding:3px 9px;transition:all .15s;
+}
+.compare-banner button:hover{background:rgba(0,229,160,.1);color:#00e5a0}
+
+/* compare split panel */
+.compare-panel{
+  position:fixed;
+  top:50%;right:-900px;
+  transform:translateY(-50%);
+  width:860px;
+  max-height:88vh;
+  background:#0a0a0a;
+  border:1px solid rgba(0,229,160,.2);
+  border-radius:14px;
+  overflow:hidden;
+  z-index:1100;
+  box-shadow:-20px 0 60px rgba(0,0,0,.7);
+  transition:right .35s cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;
+}
+.compare-panel.open{right:18px}
+.compare-panel-head{
+  padding:16px 22px;
+  background:#0c0c0c;
+  border-bottom:1px solid rgba(0,229,160,.15);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.cp-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:17px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+  color:#00e5a0;
+}
+.cp-close{
+  background:var(--bg3);border:1px solid var(--borderhi);border-radius:50%;
+  color:rgba(255,255,255,.7);cursor:pointer;
+  width:26px;height:26px;display:flex;align-items:center;justify-content:center;
+  font-size:15px;transition:all .18s;
+}
+.cp-close:hover{color:#fff;border-color:rgba(255,255,255,.3)}
+.compare-cols{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:0;
+  overflow-y:auto;
+  flex:1;
+}
+.compare-col{
+  padding:20px;
+  border-right:1px solid var(--border);
+}
+.compare-col:last-child{border-right:none}
+.cname{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:22px;font-weight:800;margin-bottom:4px;
+}
+.cscores-row{display:flex;gap:8px;margin:10px 0 14px}
+.cscore{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:6px;padding:9px 12px;text-align:center;flex:1;
+}
+.cscore-val{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:22px;font-weight:700;line-height:1;margin-bottom:3px;
+}
+.cscore-lbl{
+  font-family:'DM Mono',monospace;
+  font-size:7.5px;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,.5);
+}
+.crow{margin-bottom:12px}
+.crow-lbl{
+  font-family:'DM Mono',monospace;
+  font-size:8.5px;letter-spacing:2.5px;text-transform:uppercase;
+  color:rgba(255,255,255,.55);margin-bottom:4px;font-weight:600;
+}
+.crow-val{font-size:12px;line-height:1.6;color:#fff}
+.crow-tags{display:flex;gap:5px;flex-wrap:wrap}
+.crow-tag{
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+  border-radius:3px;font-size:10px;color:rgba(255,255,255,.85);padding:2px 8px;
+}
+.cwin{
+  display:inline-block;
+  background:rgba(0,229,160,.1);border:1px solid rgba(0,229,160,.25);
+  border-radius:3px;color:#00e5a0;font-size:9.5px;font-weight:700;
+  letter-spacing:.5px;text-transform:uppercase;padding:2px 7px;margin-left:6px;
+  vertical-align:middle;
+}
+
+/* ─── QUADRANT INTRO PULSE ───────────────────────────────── */
+@keyframes quadpulse{
+  0%{box-shadow:inset 0 0 0 0 rgba(0,229,160,.0),inset 0 0 0 0 rgba(0,229,160,.0)}
+  30%{box-shadow:inset 0 0 40px 8px rgba(0,229,160,.14),inset 0 0 80px 0 rgba(0,229,160,.07)}
+  70%{box-shadow:inset 0 0 40px 8px rgba(0,229,160,.14),inset 0 0 80px 0 rgba(0,229,160,.07)}
+  100%{box-shadow:inset 0 0 0 0 rgba(0,229,160,.0)}
+}
+.qzone.tr.pulse{animation:quadpulse 2.4s ease forwards}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="brand">
+    <div class="brand-dot"></div>
+    <span class="brand-name">BrandRank.AI</span>
+  </div>
+  <div class="hc">
+    <h1 class="htitle">Earned Media Sourcing <em>Health</em></h1>
+    <p class="hsub">Answer Impact × Barriers to Entry — Health Edition</p>
+    <p style="font-size:11.5px;color:rgba(255,255,255,.7);margin-top:7px;line-height:1.6;max-width:580px;margin-left:auto;margin-right:auto">
+      Maps 24 health publications by their ability to influence AI-generated answers and how easy they are to access. Select a <strong style="color:var(--gold)">Campaign Goal</strong> to highlight top picks · <strong style="color:var(--cyan)">Click any circle</strong> for a full intelligence brief · Use <strong style="color:#fff">Search</strong> or <strong style="color:#fff">filters</strong> to narrow focus
+    </p>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;flex-shrink:0">
+    <div class="hcount">
+      <strong>24</strong>
+      Health Publications Mapped
+    </div>
+    <button class="help-btn" onclick="openHelp()">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      How to Use
+    </button>
+  </div>
+</div>
+
+<!-- HELP MODAL -->
+<div class="modal-overlay" id="help-modal" onclick="handleModalClick(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title">How to Use <em>Earned Media Sourcing: Health</em></div>
+        <div class="modal-sub">A quick guide for brand managers, PR strategists, and media planners</div>
+      </div>
+      <button class="modal-close" onclick="closeHelp()">×</button>
+    </div>
+    <div class="modal-body">
+
+      <div class="modal-section">
+        <div class="msec-title">What You're Looking At</div>
+        <div class="msec-grid">
+          <div class="mcard accent">
+            <div class="mcard-title">↑ Y-Axis: Answer Impact</div>
+            <div class="mcard-text">How strongly this publication influences what AI engines (ChatGPT, Gemini, Claude, Perplexity) say about health brands and topics. Higher = more AI citation authority.</div>
+          </div>
+          <div class="mcard accent">
+            <div class="mcard-title">→ X-Axis: Accessibility</div>
+            <div class="mcard-text">How easy it is to get coverage or place content — factoring in editorial barriers, paid options, and relationship requirements. Right = easier to access.</div>
+          </div>
+          <div class="mcard full">
+            <div class="mcard-title">⬤ Node Size = Answer Impact Score</div>
+            <div class="mcard-text">Larger circles have higher AI citation scores. The number inside each node is a weighted priority score (Impact 65% + Accessibility 35%). Score 70+ = High Priority. Color = Use Case category.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <div class="msec-title">The Four Quadrants</div>
+        <div class="quad-grid">
+          <div class="qcard" style="border-color:rgba(0,229,160,.25);background:rgba(0,229,160,.04)">
+            <div class="qcard-name" style="color:#00e5a0">★ Prime Targets (top-right)</div>
+            <div class="qcard-desc" style="color:rgba(255,255,255,.8)">High impact + low barriers. Start here. Best ROI for most health brands — Healthline, WebMD, Verywell Health cluster here.</div>
+          </div>
+          <div class="qcard" style="border-color:rgba(199,125,255,.25);background:rgba(199,125,255,.04)">
+            <div class="qcard-name" style="color:#c77dff">Build Relationships (top-left)</div>
+            <div class="qcard-desc" style="color:rgba(255,255,255,.8)">High impact + high barriers. Worth the long-term investment. Mayo, Harvard, NYT live here. Play the 12–18 month game.</div>
+          </div>
+          <div class="qcard" style="border-color:rgba(255,217,61,.25);background:rgba(255,217,61,.04)">
+            <div class="qcard-name" style="color:#ffd93d">Quick Wins (bottom-right)</div>
+            <div class="qcard-desc" style="color:rgba(255,255,255,.8)">Lower impact + accessible. Good for volume and supporting narratives. Well+Good, MBG, and Verywell Fit sit here.</div>
+          </div>
+          <div class="qcard" style="border-color:rgba(255,107,107,.25);background:rgba(255,107,107,.04)">
+            <div class="qcard-name" style="color:#ff6b6b">Avoid (bottom-left)</div>
+            <div class="qcard-desc" style="color:rgba(255,255,255,.8)">Low impact + high barriers. Poor use of resources unless you have a very specific reason. Redirect budget elsewhere.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <div class="msec-title">Step-by-Step Guide</div>
+        <ul class="step-list">
+          <li><span class="step-num">1</span><span><strong>Pick a Campaign Goal</strong> — Select a goal chip (AI Answer Coverage, Brand Validation, etc.) in the yellow bar. Your top recommended publications will pulse gold on the matrix.</span></li>
+          <li><span class="step-num">2</span><span><strong>Filter by Use Case</strong> — Use the colored chips (Education, Validation, Awareness, Authority) to isolate publication types relevant to your strategy.</span></li>
+          <li><span class="step-num">3</span><span><strong>Search by name</strong> — Type a publication name in the search bar to instantly highlight it on the matrix with a gold ring.</span></li>
+          <li><span class="step-num">4</span><span><strong>Click any node</strong> to open the intelligence brief — full description, audience, AI signal types, activation strategy, and contact path.</span></li>
+          <li><span class="step-num">5</span><span><strong>Compare two publications</strong> — After opening a brief, click "Compare with Another" to select a second publication and view them side by side.</span></li>
+          <li><span class="step-num">6</span><span><strong>Use the three tabs</strong> inside each brief — Intelligence (what it is), Strategy (how to activate), Contact (how to get in).</span></li>
+        </ul>
+      </div>
+
+      <div class="modal-section">
+        <div class="msec-title">Score Explained</div>
+        <div class="mcard gold full">
+          <div class="mcard-title">Priority Score Formula</div>
+          <div class="mcard-text" style="margin-top:6px">
+            <strong style="color:var(--gold)">Score = (Answer Impact × 0.65) + (Accessibility × 0.35)</strong><br><br>
+            Answer Impact is weighted more heavily because the primary goal is influencing what AI engines say — not just getting coverage. A 70+ score signals a high-priority publication that delivers strong ROI. A 55–69 score is medium priority — solid supporting role. Below 55 is opportunistic only.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- COMPARE PANEL -->
+<div class="compare-panel" id="compare-panel">
+  <div class="compare-panel-head">
+    <span class="cp-title">⇄ Side-by-Side Comparison</span>
+    <button class="cp-close" onclick="closeCompare()">×</button>
+  </div>
+  <div class="compare-cols" id="compare-cols"></div>
+</div>
+
+<!-- GOAL BAR -->
+<div class="goal-bar">
+  <span class="bar-label">Campaign Goal</span>
+  <button class="goal-chip" data-goal="ai">AI Answer Coverage</button>
+  <button class="goal-chip" data-goal="education">Condition Education</button>
+  <button class="goal-chip" data-goal="validation">Brand Validation</button>
+  <button class="goal-chip" data-goal="awareness">Mainstream Awareness</button>
+  <button class="goal-chip" data-goal="leadership">Thought Leadership</button>
+  <button class="goal-chip" data-goal="wellness">Wellness Positioning</button>
+</div>
+
+<!-- PICKS STRIP -->
+<div class="picks-strip" id="picks-strip">
+  <span class="picks-title">★ Top Picks</span>
+  <div id="picks-tags" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+  <span class="picks-note" id="picks-note"></span>
+</div>
+
+<!-- COMPARE BANNER -->
+<div class="compare-banner" id="compare-banner">
+  <span>⇄ Compare mode active — click a second publication on the matrix</span>
+  <button onclick="cancelCompare()">Cancel</button>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <span class="bar-label" style="font-size:9.5px">Use Case</span>
+  <button class="chip active" data-uc="all">All</button>
+  <button class="chip" data-uc="Education">Education</button>
+  <button class="chip" data-uc="Validation">Validation</button>
+  <button class="chip" data-uc="Awareness">Awareness</button>
+  <button class="chip" data-uc="Authority">Authority</button>
+  <div style="margin-left:auto">
+    <div class="search-wrap">
+      <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="search-input" placeholder="Search publications…" autocomplete="off">
+      <button class="search-clear" id="search-clear" onclick="clearSearch()">×</button>
+    </div>
+  </div>
+</div>
+
+<!-- MATRIX -->
+<div class="matrix-wrap">
+  <div class="y-wrap">
+    <span class="y-label">↑ High Answer Impact</span>
+  </div>
+  <div class="matrix-col">
+    <div class="matrix-box" id="matrix">
+      <div class="qzone tl"></div>
+      <div class="qzone tr"></div>
+      <div class="qzone bl"></div>
+      <div class="qzone br"></div>
+      <div class="qdv"></div>
+      <div class="qdh"></div>
+      <div class="qlbl tl">Build<br>Relationships</div>
+      <div class="qlbl tr">★ Prime<br>Targets</div>
+      <div class="qlbl bl">Avoid</div>
+      <div class="qlbl br">Quick<br>Wins</div>
+    </div>
+    <div class="x-label">High Barriers of Entry ←——→ Low Barriers of Entry</div>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <span class="leg-title">Use Case</span>
+  <div class="leg-item"><div class="leg-dot" style="border-color:#00e5a0"></div>Education</div>
+  <div class="leg-item"><div class="leg-dot" style="border-color:#00d4ff"></div>Validation</div>
+  <div class="leg-item"><div class="leg-dot" style="border-color:#ff6b2b"></div>Awareness</div>
+  <div class="leg-item"><div class="leg-dot" style="border-color:#c77dff"></div>Authority / Clinical</div>
+  <div class="leg-item"><div class="leg-dot" style="border-color:#60b8ff"></div>Discovery + Wellness</div>
+  <div class="leg-divider"></div>
+  <span class="leg-title">Size = Answer Impact Score</span>
+  <div class="leg-divider"></div>
+  <span class="leg-title">★ = Campaign Top Pick</span>
+</div>
+
+<!-- SOURCE LIST -->
+<div class="srclist-wrap">
+  <div class="srclist-head">
+    <div class="srclist-title">All 24 Sources</div>
+    <div class="srclist-sub">Sorted by Priority Score — click any row to open its full brief</div>
+  </div>
+  <div class="srclist" id="srclist"></div>
+</div>
+
+<!-- INFO PANEL -->
+<div class="info-panel" id="info-panel">
+  <div class="phead">
+    <button class="pclose" onclick="closePanel()">×</button>
+    <div class="pname" id="p-name"></div>
+    <a class="purl" id="p-url" href="#" target="_blank"></a>
+    <div class="pbadges" id="p-badges"></div>
+  </div>
+  <div class="pscores" id="p-scores"></div>
+  <div class="ptabs">
+    <button class="ptab active" onclick="switchTab('intel',this)">Intelligence</button>
+    <button class="ptab" onclick="switchTab('strategy',this)">Strategy</button>
+    <button class="ptab" onclick="switchTab('contact',this)">Contact</button>
+  </div>
+  <div class="ptcontent" id="p-content"></div>
+  <div class="pfoot" id="p-foot"></div>
+  <div style="padding:0 22px 22px">
+    <button class="compare-btn" id="compare-trigger" onclick="startCompare()">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3"/><path d="M16 3h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
+      Compare with Another Publication
+    </button>
+  </div>
+</div>
+
+<script>
+// ─── DATA ──────────────────────────────────────────────────────────────────
+const PUBS = [
+  {
+    id:1, name:"New York Times", abbr:"NYT",
+    lx:14, ty:7, size:60,
+    url:"https://www.nytimes.com",
+    influence:95, access:18,
+    usecase:"Authority", col:"#c77dff",
+    audience:"High-trust, educated readers",
+    mechanism:"Institutional journalism",
+    activation:"PR only — no paid placement",
+    speed:"Slow",
+    signals:["Health policy","Medical breakthroughs","Institutional authority","Research coverage"],
+    desc:"The New York Times produces in-depth health and science reporting with rigorous editorial standards. Coverage consistently sets the agenda for broader media narratives. Its authority in AI training data is second to none in health journalism — a single placement can reframe brand perception across multiple AI answer engines.",
+    strategy:"Build long-term relationships with health and science reporters. Pitch only landmark studies, major public health moments, or executive voices tied to broad societal narratives. Position brand representatives as expert commentators on policy, not product.",
+    note:"Prestige over scale. One NYT placement outweighs dozens of trade hits in AI answer influence. Patience required — relationships take 6–18 months to develop.",
+    contact:"NYT advertising / PR to health desk directly"
+  },
+  {
+    id:2, name:"NBC News", abbr:"NBC",
+    lx:26, ty:18, size:54,
+    url:"https://www.nbcnews.com",
+    influence:85, access:28,
+    usecase:"Awareness", col:"#ff6b2b",
+    audience:"Broad mainstream consumers",
+    mechanism:"Mass editorial amplification",
+    activation:"PR, sponsorship, expert placement",
+    speed:"Slow",
+    signals:["Health news","Consumer alerts","Major health events","Mainstream wellness"],
+    desc:"NBC News delivers health and lifestyle reporting that reaches mass audiences through digital and broadcast platforms. Journalist and medical contributor relationships drive mainstream awareness at a scale unmatched by niche health media. A health story on NBC often triggers coverage cascades across the broader media ecosystem.",
+    strategy:"Develop compelling broadcast-worthy health stories with a strong news hook. Work with NBCUniversal integration teams for sponsored content programs. Cultivate relationships with medical contributors and TODAY show producers for expert commentary opportunities.",
+    note:"Requires strong news hook. Mass reach when it lands — but editorial standards are high and lead times are long. Best for major brand moments, not ongoing presence.",
+    contact:"NBCUniversal press office / media relations"
+  },
+  {
+    id:3, name:"WebMD", abbr:"WebMD",
+    lx:67, ty:6, size:58,
+    url:"https://www.webmd.com",
+    influence:92, access:68,
+    usecase:"Education + Validation", col:"#00d4ff",
+    audience:"General health consumers; self-diagnosis",
+    mechanism:"Clinical authority + SEO dominance",
+    activation:"Advertising, sponsorship, branded health content",
+    speed:"Medium",
+    signals:["Symptom queries","Condition explainers","Treatment comparisons","Drug information"],
+    desc:"WebMD is the most recognized digital health destination in the US, combining condition explainers, symptom checkers, and treatment guidance reviewed by healthcare professionals. Its combination of brand familiarity, clinical credibility, and SEO footprint makes it a dominant reference point in both search engines and AI-generated health answers. AI engines frequently cite WebMD as a foundational source.",
+    strategy:"Leverage WebMD's advertising and sponsorship infrastructure to create medically accurate brand content that integrates with condition and symptom pages. Sponsored Health Centers are a powerful vehicle. Focus on condition-adjacent placements rather than pure product promotion.",
+    note:"Familiarity is WebMD's superpower — consumers and AI engines trust it by default. Symptom-based query pages drive disproportionate AI citation value. Critical for any brand with a health or wellness positioning.",
+    contact:"WebMD Health advertising team / WebMD Media"
+  },
+  {
+    id:4, name:"Healthline", abbr:"Hlthline",
+    lx:78, ty:12, size:56,
+    url:"https://www.healthline.com",
+    influence:88, access:74,
+    usecase:"Education", col:"#00e5a0",
+    audience:"Health seekers; active problem-solvers",
+    mechanism:"Medical review + SEO authority",
+    activation:"Branded content, content partnerships, expert placement",
+    speed:"Medium",
+    signals:["Health education","Wellness guides","Clinical summaries","Condition comparisons"],
+    desc:"Healthline produces medically reviewed health content by journalists and clinicians, combining SEO reach with expert validation. It is consistently one of the top-cited sources in AI-generated health responses. Its accessible clinical voice bridges technical medical knowledge with consumer-friendly explanation — exactly the format AI engines prefer to surface.",
+    strategy:"Partner through Healthline's branded content programs. Provide medically accurate content and expert sources for condition-specific articles. Target symptom-based and condition management query content — these pages receive the highest AI citation rates. Healthline Media also owns Medical News Today and several other health properties.",
+    note:"Own symptom-based queries here. Healthline is a prime target — high AI citation rate with accessible branded content options. Essential for health and wellness brands.",
+    contact:"Healthline Media / Healthline branded content team"
+  },
+  {
+    id:5, name:"Forbes", abbr:"Forbes",
+    lx:63, ty:21, size:52,
+    url:"https://www.forbes.com",
+    influence:78, access:60,
+    usecase:"Thought Leadership", col:"#c77dff",
+    audience:"Business readers + health-conscious professionals",
+    mechanism:"Contributor model + SEO reach",
+    activation:"Forbes Councils, contributed articles, PR to health vertical",
+    speed:"Medium",
+    signals:["Health business","Wellness innovation","Executive health","Health tech"],
+    desc:"Forbes covers health innovation, wellness business, and leadership through staff journalism and a contributor model. Its hybrid publishing approach allows brand executives to participate through Forbes Councils and contributed articles, generating content that surfaces consistently in AI-generated answers about health industry trends and wellness brand credibility.",
+    strategy:"Utilize Forbes contributor network or Councils to place executive thought leadership. Pitch health innovation angles, wellness business stories, and executive perspectives to Forbes Health vertical staff reporters. Contributed content is a legitimate, accessible entry point compared to peer tier-1 outlets.",
+    note:"Contributor network lowers barrier to entry versus peer tier-1 outlets. Excellent for positioning health executives as category authorities. AI engines treat Forbes health content as high-authority.",
+    contact:"Forbes media / Forbes Councils programs / Forbes Health vertical"
+  },
+  {
+    id:6, name:"Medical News Today", abbr:"MNT",
+    lx:74, ty:20, size:52,
+    url:"https://www.medicalnewstoday.com",
+    influence:80, access:70,
+    usecase:"Education", col:"#00e5a0",
+    audience:"Health researchers and informed consumers",
+    mechanism:"Clinical research summaries + long-tail SEO",
+    activation:"Paid content, expert sourcing, PR",
+    speed:"Medium",
+    signals:["Clinical research","Condition summaries","Long-tail health queries","Research translation"],
+    desc:"Medical News Today publishes evidence-based articles reviewed by medical professionals, focusing on making clinical research accessible. Its SEO footprint across long-tail health queries makes it one of the most frequently cited sources in AI-generated health answers. Owned by Healthline Media, it reaches health researchers and informed consumers actively seeking clinical context.",
+    strategy:"Provide expert sources and data for research-based articles. Sponsor clinical research summary content aligned with brand claims. Target long-tail condition queries where AI engines consistently pull MNT content. Works well as a companion strategy to a Healthline partnership.",
+    note:"Excellent for long-tail search and AI citation. Clinical research framing is highly credible with AI engines. Pairs naturally with broader Healthline Media strategy.",
+    contact:"Healthline Media / Medical News Today editorial"
+  },
+  {
+    id:7, name:"U.S. News Health", abbr:"US News",
+    lx:55, ty:27, size:50,
+    url:"https://health.usnews.com",
+    influence:75, access:58,
+    usecase:"Education", col:"#00e5a0",
+    audience:"Health decision-makers and care navigators",
+    mechanism:"Rankings + expert-reviewed explainers",
+    activation:"Paid content, PR, expert commentary placement",
+    speed:"Medium",
+    signals:["Best-of rankings","Care decisions","Provider comparisons","Condition management"],
+    desc:"U.S. News Health produces rankings, explainers, and service journalism reviewed by experts, helping consumers navigate complex care decisions. Its trusted ranking methodology — similar to its college rankings — creates high-authority content that AI engines regularly surface. Strong for brands seeking to appear in condition-treatment or best-product recommendation contexts.",
+    strategy:"Target rankings and 'Best' health product/service lists for primary positioning. Provide data-driven insights and expert commentary for explainer content. Paid content partnerships available through U.S. News advertising.",
+    note:"Rankings influence AI trust signals. High value for condition-specific queries and product comparison content. A placement in a U.S. News health ranking can generate sustained AI citation value.",
+    contact:"U.S. News & World Report advertising"
+  },
+  {
+    id:8, name:"Today.com", abbr:"Today",
+    lx:44, ty:33, size:50,
+    url:"https://www.today.com",
+    influence:70, access:45,
+    usecase:"Awareness", col:"#ff6b2b",
+    audience:"Mainstream families and caregivers",
+    mechanism:"TV broadcast + digital content integration",
+    activation:"PR, NBCUniversal integrations, sponsored segments",
+    speed:"Medium",
+    signals:["Family health","Mainstream wellness","Lifestyle health","Morning show health"],
+    desc:"Today.com combines the broadcast authority of the TODAY show with digital editorial content across health, lifestyle, and family topics. On-air medical experts translate complex health information into relatable, actionable advice for mainstream audiences. A TODAY show health segment drives multi-channel amplification including digital, social, and AI answer surfaces.",
+    strategy:"Develop broadcast-worthy health stories tied to human interest or major wellness trends. Work with NBCUniversal integration teams for sponsored wellness segments. Broadcast tie-ins significantly amplify digital content reach. Expert placement alongside TODAY show medical contributors is a key activation path.",
+    note:"Broadcast tie-ins are the multiplier — a sponsored segment generates digital content, social sharing, and AI-indexed articles simultaneously. Strong for mainstream family health narratives.",
+    contact:"NBCUniversal / TODAY show producer relations"
+  },
+  {
+    id:9, name:"Good Housekeeping", abbr:"Good HK",
+    lx:51, ty:39, size:48,
+    url:"https://www.goodhousekeeping.com",
+    influence:68, access:51,
+    usecase:"Validation", col:"#00d4ff",
+    audience:"Families and primary household decision-makers",
+    mechanism:"Institute testing + editorial trust",
+    activation:"GHI testing programs, PR, paid content",
+    speed:"Medium",
+    signals:["Product validation","Family safety","Tested recommendations","Household health"],
+    desc:"Good Housekeeping is backed by the Good Housekeeping Institute, where scientists and editors conduct rigorous product testing. The GHI Seal carries real consumer trust weight and is consistently cited in AI responses about product validation. Its blend of editorial credibility and lab validation makes it a unique authority bridge between consumer lifestyle media and clinical-style endorsement.",
+    strategy:"Pursue Good Housekeeping Institute testing programs for product validation — the GHI Seal generates sustained AI citation value. Earned PR placements in 'Best Of' editorial lists carry high trust signals. Hearst editorial team is accessible through standard PR pitching.",
+    note:"GHI Seal carries disproportionate AI trust weight. Lab testing drives authority in a way editorial alone cannot. Essential for health, household, and personal care brands seeking validation credentials.",
+    contact:"Hearst / Good Housekeeping advertising and PR"
+  },
+  {
+    id:10, name:"Health.com", abbr:"Health",
+    lx:66, ty:30, size:50,
+    url:"https://www.health.com",
+    influence:72, access:65,
+    usecase:"Education", col:"#00e5a0",
+    audience:"General health and wellness consumers",
+    mechanism:"Broad SEO + medically reviewed editorial",
+    activation:"Dotdash Meredith branded content, PR",
+    speed:"Medium",
+    signals:["General wellness","Nutrition","Condition management","Lifestyle health"],
+    desc:"Health.com delivers broad wellness, condition, nutrition, and lifestyle content reviewed by medical professionals. Its combination of high search visibility and accessible editorial scope makes it a widely referenced resource in everyday health queries. Owned by Dotdash Meredith, it operates within a large digital health content ecosystem with multiple activation paths.",
+    strategy:"Work with Dotdash Meredith's branded content team for sponsored health content programs. Target broad wellness, nutrition, and condition management topics where brand expertise can add genuine editorial value. Accessible PR entry point for product and wellness service pitches.",
+    note:"Broad editorial scope enables flexible storytelling across health categories. Strong search visibility translates directly to AI answer citation. A solid anchor publication for mid-funnel health education.",
+    contact:"Dotdash Meredith / Health.com advertising"
+  },
+  {
+    id:11, name:"Everyday Health", abbr:"Ev. Health",
+    lx:80, ty:37, size:48,
+    url:"https://www.everydayhealth.com",
+    influence:65, access:77,
+    usecase:"Education", col:"#00e5a0",
+    audience:"Health-conscious and chronically ill consumers",
+    mechanism:"Condition management SEO + expert review",
+    activation:"Paid content, sponsored programs, PR",
+    speed:"Medium",
+    signals:["Chronic conditions","Ongoing management","Lifestyle guidance","Medication information"],
+    desc:"Everyday Health delivers condition management articles, tools, and expert insights focused on living well with ongoing health challenges. Its strong SEO presence across chronic condition queries and lifestyle guidance makes it a consistent source for AI answers about managing specific health conditions. Accessible activation options make it a high-ROI entry for health brands.",
+    strategy:"Submit branded content through Everyday Health Group's content programs. Target chronic condition pages and ongoing health management content — the highest-volume queries on the platform. Strong ROI for pharmaceutical, wellness device, and health service brands.",
+    note:"Highest accessibility score in the health education tier. Strong for chronic condition narratives — a content category AI engines consistently mine for patient guidance answers.",
+    contact:"Everyday Health Group / Ziff Davis Health"
+  },
+  {
+    id:12, name:"Women's Health", abbr:"Women's H",
+    lx:61, ty:43, size:47,
+    url:"https://www.womenshealthmag.com",
+    influence:60, access:63,
+    usecase:"Validation", col:"#00d4ff",
+    audience:"Women focused on fitness and wellness",
+    mechanism:"Expert editorial + credible voice",
+    activation:"PR, paid content, Hearst programs",
+    speed:"Medium",
+    signals:["Fitness","Women's wellness","Nutrition","Mental health","Preventative care"],
+    desc:"Women's Health covers fitness, nutrition, mental health, and lifestyle topics with journalist and expert-reviewed content. It resonates with audiences seeking actionable wellness advice grounded in credibility. Its fitness and preventative health angles outperform pure beauty coverage, and its editorial team is accessible through standard PR pitching for brands with genuinely relevant health stories.",
+    strategy:"Pitch fitness, preventative health, and mental wellness stories that align with Women's Health editorial focus. Expert quote placement is a highly accessible activation. Hearst paid content programs provide direct placement options for brand messages.",
+    note:"Preventative and fitness angles perform best. Credible and actionable combination is unique in lifestyle health media. Strong AI citation value for women's wellness queries.",
+    contact:"Hearst / Women's Health advertising and PR"
+  },
+  {
+    id:13, name:"Prevention", abbr:"Prev.",
+    lx:72, ty:45, size:46,
+    url:"https://www.prevention.com",
+    influence:58, access:70,
+    usecase:"Education", col:"#00e5a0",
+    audience:"Older health-focused consumers (50+)",
+    mechanism:"Preventative health editorial + SEO",
+    activation:"PR, paid content, Hearst programs",
+    speed:"Medium",
+    signals:["Aging well","Disease prevention","Healthy lifestyle","Longevity","Chronic prevention"],
+    desc:"Prevention focuses on long-term wellbeing, healthy aging, and disease prevention with journalist and expert-reviewed content. Its preventative health frame makes it influential for audiences over 50 seeking evidence-based guidance on maintaining health. Strong SEO presence in longevity and prevention queries generates consistent AI citation value in health maintenance contexts.",
+    strategy:"Develop preventative health and healthy aging narratives that genuinely align with brand positioning. PR and sponsored content are both available through Hearst. Works particularly well for brands in wellness, nutrition, fitness, and chronic disease prevention categories.",
+    note:"Preventative framing resonates strongly — and AI engines increasingly surface prevention-focused content in health queries. Loyal, high-intent audience with strong purchase behavior in health categories.",
+    contact:"Hearst / Prevention advertising and PR"
+  },
+  {
+    id:14, name:"SELF", abbr:"SELF",
+    lx:54, ty:50, size:46,
+    url:"https://www.self.com",
+    influence:55, access:68,
+    usecase:"Discovery + Validation", col:"#60b8ff",
+    audience:"Holistic wellness-focused consumers",
+    mechanism:"Science-backed editorial + expert voice",
+    activation:"Condé Nast brand solutions, PR",
+    speed:"Medium",
+    signals:["Mental health","Holistic wellness","Physical + emotional health","Fitness","Body positivity"],
+    desc:"SELF blends science-backed health guidance with relatable storytelling on fitness, mental health, and personal care. Its integration of physical and mental wellness content makes it uniquely positioned for the modern wellness conversation. Condé Nast brand solutions provide direct access for sponsored content programs, and SELF's editorial voice is trusted across its highly engaged audience.",
+    strategy:"Work with Condé Nast brand solutions for sponsored wellness content. Mental health integration is SELF's key differentiator — stories that connect physical and emotional wellbeing outperform single-dimension health pitches. Strong for brands with a holistic, science-grounded wellness story.",
+    note:"Mental + physical health integration is the key editorial differentiator. AI engines increasingly cite SELF for holistic wellness queries. Access through Condé Nast is straightforward.",
+    contact:"Condé Nast brand solutions / SELF advertising"
+  },
+  {
+    id:15, name:"Mayo Clinic", abbr:"Mayo",
+    lx:8, ty:3, size:68,
+    url:"https://www.mayoclinic.org",
+    influence:99, access:8,
+    usecase:"Authority", col:"#c77dff",
+    audience:"Patients, caregivers, and clinicians seeking definitive guidance",
+    mechanism:"Clinical institution authority — gold-standard AI training source",
+    activation:"No paid placement. Thought leadership only via research partnerships or expert sourcing",
+    speed:"Slow",
+    signals:["Condition definitions","Treatment protocols","Symptom diagnosis","Drug interactions","Clinical guidance"],
+    desc:"Mayo Clinic is the single highest-authority source in AI-generated health answers. Its combination of institutional credibility, clinical accuracy, and decades of indexed content makes it the primary reference point AI engines use when answering condition, symptom, and treatment questions. A brand associated with Mayo Clinic — through research citation, expert collaboration, or co-published content — inherits enormous AI trust weight.",
+    strategy:"There is no direct paid path. The only viable routes are: (1) co-authored research with Mayo clinicians, (2) brand studies cited in Mayo-adjacent academic content, (3) executive participation in Mayo symposia, or (4) PR to generate third-party coverage that references Mayo research alongside your brand. Long game — but irreplaceable for clinical credibility.",
+    note:"The highest Answer Impact score on this matrix. No other health source approaches Mayo's AI citation frequency for condition and treatment queries. One legitimate association with Mayo content can generate sustained AI answer authority across years.",
+    contact:"Mayo Clinic research partnerships / Media relations — no advertising path exists"
+  },
+  {
+    id:16, name:"Cleveland Clinic", abbr:"Cleveland",
+    lx:13, ty:8, size:65,
+    url:"https://health.clevelandclinic.org",
+    influence:97, access:12,
+    usecase:"Authority", col:"#c77dff",
+    audience:"Patients and health consumers seeking clinical answers",
+    mechanism:"Clinical institutional authority + Health Essentials content platform",
+    activation:"Research partnerships, expert sourcing, PR — no direct paid placement",
+    speed:"Slow",
+    signals:["Clinical condition explainers","Treatment comparisons","Specialist guidance","Patient education","Drug information"],
+    desc:"Cleveland Clinic's Health Essentials platform is one of the most aggressively SEO-optimized clinical content destinations in health media — and AI engines treat it as near-equivalent to peer-reviewed sources. Unlike Mayo, Cleveland Clinic has a more accessible content operation and is more open to expert sourcing and media engagement. Its articles surface constantly in AI answers for condition management and treatment comparison queries.",
+    strategy:"Pursue expert sourcing relationships with Cleveland Clinic specialists in relevant categories. PR pitches to Health Essentials editorial team are more accessible than Mayo. Research partnerships and co-authored clinical content are the highest-value paths. Any brand claim validated by a Cleveland Clinic expert carries significant AI citation weight.",
+    note:"Slightly more accessible than Mayo with a more active content operation. Health Essentials articles are AI answer workhorses — they surface relentlessly across condition and treatment queries. Build a relationship before you need one.",
+    contact:"Cleveland Clinic media relations / Health Essentials editorial"
+  },
+  {
+    id:17, name:"Harvard Health", abbr:"Harvard",
+    lx:19, ty:11, size:63,
+    url:"https://www.health.harvard.edu",
+    influence:96, access:16,
+    usecase:"Authority", col:"#c77dff",
+    audience:"Educated health consumers and professionals seeking evidence-based guidance",
+    mechanism:"Academic institutional authority + consumer health publishing",
+    activation:"Harvard Health Publishing partnerships, expert sourcing, research citation",
+    speed:"Slow",
+    signals:["Evidence-based medicine","Research translation","Academic health authority","Clinical guidance","Longevity"],
+    desc:"Harvard Health Publishing bridges Harvard Medical School's academic authority with accessible consumer health content. AI engines weight Harvard Health content at near-peer-reviewed levels — the Harvard brand creates an automatic trust halo that few consumer health publications can match. Its content dominates long-form health research queries and authoritative condition explainers across all major AI platforms.",
+    strategy:"Pursue co-publishing or research citation opportunities through Harvard Health Publishing's partner programs. Expert sourcing from HMS faculty is accessible through media relations. Brand research that aligns with Harvard's published positions carries significant citation value. Harvard Health sponsorship programs exist for brands with genuinely relevant, evidence-based health stories.",
+    note:"The academic halo is the highest-value trust signal in health media. AI engines treat Harvard Health content as near-definitive. Any brand association — through citation, expert quote, or co-published research — generates sustained AI answer authority.",
+    contact:"Harvard Health Publishing partner programs / HMS media relations"
+  },
+  {
+    id:18, name:"Verywell Health", abbr:"Verywell H",
+    lx:82, ty:16, size:56,
+    url:"https://www.verywellhealth.com",
+    influence:84, access:80,
+    usecase:"Education", col:"#00e5a0",
+    audience:"Patients and caregivers managing specific conditions",
+    mechanism:"Condition-specific SEO + medically reviewed depth content",
+    activation:"Dotdash Meredith branded content, sponsored health hubs, PR",
+    speed:"Medium",
+    signals:["Condition management","Patient guidance","Treatment options","Drug information","Caregiver resources"],
+    desc:"Verywell Health is the condition-management depth leader in consumer health media. Its medically reviewed articles go deeper into specific conditions than most consumer publications, making them a primary AI reference for condition management queries. Owned by Dotdash Meredith, it sits within a powerful health content network alongside Health.com, with strong branded content infrastructure and accessible activation paths.",
+    strategy:"Leverage Dotdash Meredith's branded content and sponsored health hub programs. Target condition-specific pages in your brand's therapeutic or wellness area — these pages receive the highest AI citation rates on the platform. Works exceptionally well alongside a Health.com partnership for broader category coverage.",
+    note:"Condition management is Verywell Health's superpower — and AI engines know it. High accessibility plus high influence makes this a rare Prime Target for health brands. An underutilized asset relative to its actual AI citation frequency.",
+    contact:"Dotdash Meredith / Verywell Health branded content team"
+  },
+  {
+    id:19, name:"Verywell Mind", abbr:"Verywell M",
+    lx:77, ty:26, size:52,
+    url:"https://www.verywellmind.com",
+    influence:79, access:78,
+    usecase:"Education", col:"#00e5a0",
+    audience:"Mental health seekers and individuals managing psychological conditions",
+    mechanism:"Mental health SEO authority + clinically reviewed content",
+    activation:"Dotdash Meredith branded content, expert sourcing, PR",
+    speed:"Medium",
+    signals:["Mental health conditions","Anxiety","Depression","Therapy guidance","Psychological wellness","Stress management"],
+    desc:"Verywell Mind is the dominant consumer mental health content destination online, and one of the most cited sources in AI answers about psychological conditions, therapy, and emotional wellness. As mental health has become a mainstream consumer conversation, Verywell Mind's authority has expanded — AI engines regularly surface its content ahead of clinical institutions for accessible mental health queries.",
+    strategy:"Work with Dotdash Meredith's branded content programs to develop mental health education content. Expert sourcing from Verywell Mind's clinical advisory board adds credibility to brand mental health messaging. Strong for brands with genuine mental wellness positioning — supplements, digital health tools, wellness apps.",
+    note:"Mental health is the fastest-growing query category in consumer health AI answers. Verywell Mind is the category leader. Any brand with a mental wellness dimension should have a presence strategy here.",
+    contact:"Dotdash Meredith / Verywell Mind branded content"
+  },
+  {
+    id:20, name:"Verywell Fit", abbr:"Verywell F",
+    lx:85, ty:34, size:49,
+    url:"https://www.verywellfit.com",
+    influence:66, access:83,
+    usecase:"Education", col:"#00e5a0",
+    audience:"Fitness-focused consumers seeking nutrition and exercise guidance",
+    mechanism:"Fitness and nutrition SEO + medically reviewed content",
+    activation:"Dotdash Meredith branded content, PR, expert sourcing",
+    speed:"Medium",
+    signals:["Fitness guidance","Nutrition information","Exercise science","Weight management","Sports nutrition"],
+    desc:"Verywell Fit covers fitness, nutrition, and exercise science with medically reviewed content, making it a high-authority AI reference for fitness and nutrition queries. Its SEO footprint across calorie, exercise, and nutrition questions generates consistent AI citation. As part of the Verywell network within Dotdash Meredith, it offers bundled activation opportunities alongside Verywell Health and Verywell Mind.",
+    strategy:"Bundle Verywell Fit activation with broader Dotdash Meredith Verywell network strategy for efficiency. Target nutrition, supplement, and fitness product placements. Medically reviewed content placements carry AI citation weight that generic fitness media cannot match.",
+    note:"Most accessible of the Verywell trio. High-value for nutrition, supplement, and active lifestyle brands. Bundle with Verywell Health and Verywell Mind for a comprehensive Dotdash Meredith health media strategy.",
+    contact:"Dotdash Meredith / Verywell Fit branded content"
+  },
+  {
+    id:21, name:"Men's Health", abbr:"Men's H",
+    lx:57, ty:55, size:47,
+    url:"https://www.menshealth.com",
+    influence:54, access:66,
+    usecase:"Validation", col:"#00d4ff",
+    audience:"Men focused on fitness, health, and lifestyle",
+    mechanism:"Expert editorial + fitness authority + affiliate commerce",
+    activation:"Hearst branded content, PR, affiliate placement",
+    speed:"Medium",
+    signals:["Men's fitness","Male health","Nutrition for men","Mental health for men","Product validation"],
+    desc:"Men's Health is the leading men's wellness publication, covering fitness, nutrition, mental health, and lifestyle with expert-reviewed content. It fills a critical gap in the health media matrix — it is the primary source for male-audience health queries in AI answers, covering everything from supplement guidance to mental health for men. Its editorial credibility and affiliate commerce infrastructure make it a strong validation platform.",
+    strategy:"Pitch fitness, nutrition, and men's health stories with genuine editorial relevance. Hearst branded content programs provide direct activation paths. Supplement, fitness, and personal care brands with a male audience have few better options in health media for AI answer visibility.",
+    note:"The only meaningful male-audience health publication in this matrix — and a genuine gap for brands with male consumer targets. AI engines surface Men's Health consistently for male-specific health and fitness queries.",
+    contact:"Hearst / Men's Health advertising and PR"
+  },
+  {
+    id:22, name:"Well+Good", abbr:"Well+G",
+    lx:71, ty:57, size:45,
+    url:"https://www.wellandgood.com",
+    influence:50, access:72,
+    usecase:"Discovery + Validation", col:"#60b8ff",
+    audience:"Wellness-forward consumers and early adopters",
+    mechanism:"Trend-forward wellness editorial + expert sourcing",
+    activation:"Branded content, PR, editorial partnerships",
+    speed:"Medium",
+    signals:["Wellness trends","Holistic health","Functional wellness","Supplement culture","Mindfulness"],
+    desc:"Well+Good is the leading digital wellness media brand for trend-aware consumers who treat health as a lifestyle identity. Its editorial team actively discovers and amplifies emerging wellness trends before they reach mainstream media — making it a valuable early-signal publication for brands entering wellness conversations. AI engines cite Well+Good for holistic wellness, functional health, and emerging trend queries.",
+    strategy:"Pitch emerging wellness trends, new ingredient stories, and innovative brand approaches that align with Well+Good's forward-leaning editorial voice. Expert sourcing from functional medicine practitioners is a key access point. Works best for brands with a genuine wellness philosophy rather than traditional pharmaceutical-style health claims.",
+    note:"The wellness culture bellwether — what surfaces in Well+Good today appears in mainstream health media in 6–18 months. Early placement here seeds AI answers in emerging wellness categories before they become competitive.",
+    contact:"Well+Good editorial / branded content partnerships"
+  },
+  {
+    id:23, name:"Mindbodygreen", abbr:"MBG",
+    lx:79, ty:61, size:44,
+    url:"https://www.mindbodygreen.com",
+    influence:46, access:76,
+    usecase:"Discovery + Validation", col:"#60b8ff",
+    audience:"Holistic health and integrative wellness consumers",
+    mechanism:"Functional wellness editorial + expert network + courses",
+    activation:"Branded content, sponsored articles, expert placement, podcast",
+    speed:"Medium",
+    signals:["Functional medicine","Integrative wellness","Supplements","Gut health","Mental wellness","Holistic nutrition"],
+    desc:"Mindbodygreen (MBG) is the premier destination for integrative and functional wellness content, featuring a network of functional medicine practitioners and holistic health experts. Its editorial approach validates wellness trends through expert sourcing, giving brands in functional nutrition, supplements, and holistic health a credible platform to build AI-visible authority. MBG's podcast and course content extends its influence into AI-indexed audio and educational formats.",
+    strategy:"Work with MBG's branded content and sponsored article programs. Expert placement through MBG's functional medicine practitioner network is a key differentiator. Podcast sponsorship reaches a highly engaged, purchase-ready wellness audience and generates AI-indexed content in emerging wellness categories.",
+    note:"The functional medicine and integrative wellness authority. For supplement, adaptogen, gut health, and holistic wellness brands, MBG is more relevant than WebMD. Its expert network gives brands clinical-adjacent credibility without the access barriers of institutional medicine.",
+    contact:"Mindbodygreen branded content and partnerships team"
+  },
+  {
+    id:24, name:"Consumer Reports", abbr:"Con. Rep.",
+    lx:33, ty:28, size:52,
+    url:"https://www.consumerreports.org",
+    influence:76, access:30,
+    usecase:"Validation", col:"#00d4ff",
+    audience:"Skeptical, research-driven consumers seeking independent validation",
+    mechanism:"Independent testing authority — no advertising, no paid placement",
+    activation:"PR only — product testing submissions, expert commentary, research citation",
+    speed:"Slow",
+    signals:["Independent product testing","Safety validation","Health product comparisons","Consumer protection","Drug safety"],
+    desc:"Consumer Reports carries unique AI trust weight precisely because it accepts no advertising — its independence is the credibility mechanism. AI engines treat Consumer Reports health and product content as among the most authoritative validation signals available, because the publication has no financial incentive to favor any brand. A positive Consumer Reports mention is worth more in AI answer authority than almost any paid placement.",
+    strategy:"There is no paid path — and that is the point. Submit products for testing through Consumer Reports' standard process. Ensure product claims are bulletproof before doing so. Generate PR that references Consumer Reports' published standards or positions. Expert commentary to CR journalists is the most accessible earned path.",
+    note:"Independence is the superpower. AI engines specifically weight Consumer Reports content highly because of its no-advertising policy — the same policy that makes it inaccessible to paid activation. Earn it, don't buy it. A single positive mention generates sustained AI validation authority.",
+    contact:"Consumer Reports media relations — no advertising accepted"
+  }
+];
+
+// ─── GOAL CONFIG ────────────────────────────────────────────────────────────
+const GOALS = {
+  ai:         { label:"AI Answer Coverage",  picks:[15,16,17,3,4,6],    note:"Highest AI citation frequency — clinical institutions + dominant health platforms" },
+  education:  { label:"Condition Education", picks:[4,3,6,18,19,11],    note:"Dominant sources for condition-specific, symptom, and mental health queries" },
+  validation: { label:"Brand Validation",    picks:[24,15,9,12,23],     note:"Strongest independent and expert-backed validation signals for consumer trust" },
+  awareness:  { label:"Mainstream Awareness",picks:[2,8,1,9,21],        note:"Broadest reach across mainstream and male health audiences" },
+  leadership: { label:"Thought Leadership",  picks:[17,15,5,1,7],       note:"Highest authority for health executive and innovation positioning" },
+  wellness:   { label:"Wellness Positioning",picks:[22,23,19,14,20],    note:"Leading platforms for holistic, functional, and integrative wellness narratives" }
+};
+
+// ─── STATE ──────────────────────────────────────────────────────────────────
+let state = { uc: 'all', goal: null, selected: null, activeTab: 'intel', search: '', comparing: false, compareA: null, compareB: null };
+let currentPub = null;
+
+// ─── COLOR HELPERS ───────────────────────────────────────────────────────────
+function colBg(col)   { return col + '18'; }
+function colGlow(col) { return col + '55'; }
+
+function ucMatch(pub, filter) {
+  if (filter === 'all') return true;
+  return pub.usecase.toLowerCase().includes(filter.toLowerCase());
+}
+
+// ─── PRIORITY SCORE ─────────────────────────────────────────────────────────
+function score(pub) {
+  return Math.round(pub.influence * 0.65 + pub.access * 0.35);
+}
+function scoreLabel(s) {
+  return s >= 70 ? 'High Priority' : s >= 55 ? 'Medium Priority' : 'Low Priority';
+}
+
+// ─── RENDER NODES ───────────────────────────────────────────────────────────
+function renderMatrix() {
+  const matrix = document.getElementById('matrix');
+  matrix.querySelectorAll('.pub-node').forEach(n => n.remove());
+
+  const goalPicks = state.goal ? GOALS[state.goal].picks : [];
+  const q = state.search.trim().toLowerCase();
+
+  PUBS.forEach(pub => {
+    const node = document.createElement('div');
+    node.className = 'pub-node';
+
+    const visibleUC = ucMatch(pub, state.uc);
+    const matchesSearch = q ? pub.name.toLowerCase().includes(q) || pub.abbr.toLowerCase().includes(q) : false;
+
+    if (q) {
+      if (matchesSearch) node.classList.add('search-match');
+      else node.classList.add('search-dim');
+    } else if (!visibleUC) {
+      node.classList.add('dimmed');
+    }
+
+    if (state.selected === pub.id) node.classList.add('selected');
+
+    const isGoalPick = goalPicks.includes(pub.id);
+    if (isGoalPick && !q) node.classList.add('goal-pick');
+
+    node.style.left = pub.lx + '%';
+    node.style.top  = pub.ty + '%';
+    node.style.width  = pub.size + 'px';
+    node.style.height = pub.size + 'px';
+    node.style.setProperty('--col',      pub.col);
+    node.style.setProperty('--col-bg',   colBg(pub.col));
+    node.style.setProperty('--col-glow', colGlow(pub.col));
+
+    const s = score(pub);
+
+    node.innerHTML = `
+      <div class="nring">
+        <div class="nabbr">${pub.abbr}</div>
+        <div class="nscore">${s}</div>
+      </div>
+      <div class="nlabel">${pub.name}</div>
+      <div class="ntip">
+        <div class="tip-name">${pub.name}</div>
+        <div class="tip-stats">
+          <span>Impact <b>${pub.influence}</b></span>
+          <span>Access <b>${pub.access}</b></span>
+          <span>Score <b>${s}</b></span>
+        </div>
+      </div>`;
+
+    node.addEventListener('click', () => {
+      if (state.comparing && state.compareA && state.compareA.id !== pub.id) {
+        state.compareB = pub;
+        cancelCompare();
+        showCompare();
+      } else {
+        openPanel(pub);
+      }
+    });
+    matrix.appendChild(node);
+  });
+}
+
+// ─── OPEN PANEL ─────────────────────────────────────────────────────────────
+function openPanel(pub) {
+  currentPub = pub;
+  state.selected = pub.id;
+  state.compareA = pub;
+  renderMatrix();
+
+
+  document.querySelectorAll('.src-row').forEach(r => r.classList.remove('active'));
+  const listRow = document.getElementById(`list-row-${pub.id}`);
+  if (listRow) listRow.classList.add('active');
+
+  const panel = document.getElementById('info-panel');
+  const s = score(pub);
+  const isHigh = s >= 70;
+
+  document.getElementById('p-name').textContent = pub.name;
+  const urlEl = document.getElementById('p-url');
+  urlEl.textContent = pub.url.replace('https://', '');
+  urlEl.href = pub.url;
+
+  document.getElementById('p-badges').innerHTML = `
+    <span class="pbadge pbadge-pri ${isHigh ? '' : 'med'}">${scoreLabel(s)} · ${s}</span>
+    <span class="pbadge pbadge-uc" style="background:${pub.col}1a;color:${pub.col};border-color:${pub.col}44">${pub.usecase}</span>`;
+
+  document.getElementById('p-scores').innerHTML = `
+    <div class="psc">
+      <div class="psc-val" style="color:${pub.col}">${pub.influence}</div>
+      <div class="psc-lbl">Answer Impact</div>
+    </div>
+    <div class="psc">
+      <div class="psc-val" style="color:#00e5a0">${pub.access}</div>
+      <div class="psc-lbl">Accessibility</div>
+    </div>`;
+
+  state.activeTab = 'intel';
+  document.querySelectorAll('.ptab').forEach((t,i) => t.classList.toggle('active', i === 0));
+  renderTab();
+
+  // reset compare button
+  const cb = document.getElementById('compare-trigger');
+  cb.classList.remove('active');
+  cb.innerHTML = `<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3"/><path d="M16 3h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3"/><line x1="12" y1="3" x2="12" y2="21"/></svg> Compare with Another Publication`;
+
+  panel.classList.add('open');
+}
+
+function closePanel() {
+  document.getElementById('info-panel').classList.remove('open');
+  document.querySelectorAll('.src-row').forEach(r => r.classList.remove('active'));
+  state.selected = null;
+  state.compareA = null;
+  state.comparing = false;
+  document.getElementById('compare-banner').classList.remove('on');
+  renderMatrix();
+}
+
+// ─── TABS ───────────────────────────────────────────────────────────────────
+function switchTab(tab, el) {
+  state.activeTab = tab;
+  document.querySelectorAll('.ptab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderTab();
+}
+
+function renderTab() {
+  const pub = currentPub;
+  if (!pub) return;
+  const content = document.getElementById('p-content');
+  const foot    = document.getElementById('p-foot');
+
+  if (state.activeTab === 'intel') {
+    content.innerHTML = `
+      <div class="pts">
+        <div class="pts-lbl">Description</div>
+        <div class="pts-val">${pub.desc}</div>
+      </div>
+      <div class="pts">
+        <div class="pts-lbl">Audience</div>
+        <div class="pts-val">${pub.audience}</div>
+      </div>
+      <div class="pts">
+        <div class="pts-lbl">Answer Influence Mechanism</div>
+        <div class="pts-val">${pub.mechanism}</div>
+      </div>
+      <div class="pts">
+        <div class="pts-lbl">AI Answer Signal Types</div>
+        <div class="signal-tags">
+          ${pub.signals.map(s => `<span class="stag">${s}</span>`).join('')}
+        </div>
+      </div>`;
+
+  } else if (state.activeTab === 'strategy') {
+    content.innerHTML = `
+      <div class="pts">
+        <div class="pts-lbl">Activation Options</div>
+        <div class="pts-val">${pub.activation}</div>
+      </div>
+      <div class="pts">
+        <div class="pts-lbl">Speed to Impact</div>
+        <div class="pts-val">${pub.speed}</div>
+      </div>
+      <div class="pts">
+        <div class="pts-lbl">Recommended Strategy</div>
+        <div class="pts-val">${pub.strategy}</div>
+      </div>
+      <div class="pts">
+        <div class="pts-lbl">Planner Note</div>
+        <div class="planner-note">${pub.note}</div>
+      </div>`;
+
+  } else if (state.activeTab === 'contact') {
+    content.innerHTML = `
+      <div class="pts">
+        <div class="pts-lbl">Contact / Access Path</div>
+        <div class="access-row">
+          <span class="access-icon">→</span>
+          <span>${pub.contact}</span>
+        </div>
+      </div>
+      <div class="pts" style="margin-top:8px">
+        <div class="pts-lbl">BrandRank Recommendation</div>
+        <div class="pts-val" style="background:${pub.col}0d;border:1px solid ${pub.col}22;border-radius:8px;padding:13px;font-size:12.5px;line-height:1.7;color:#fff">
+          ${getInvestRec(score(pub), pub)}
+        </div>
+      </div>`;
+  }
+
+  foot.innerHTML = `<a class="visit-btn" href="${pub.url}" target="_blank">Visit ${pub.name} →</a>`;
+}
+
+function getInvestRec(s, pub) {
+  if (s >= 70) return `<strong style="color:#00e5a0">HIGH PRIORITY:</strong> Allocate significant resources here. ${pub.name} offers strong AI citation ROI with ${pub.access >= 60 ? 'manageable' : 'investable'} barriers to entry. Treat as a core pillar of your health media strategy.`;
+  return `<strong style="color:${pub.col}">MEDIUM PRIORITY:</strong> Include in secondary campaigns. ${pub.name} is a solid supporting publication with good ROI at the right content angle. Budget 20–30% of health media resources here.`;
+}
+
+// ─── COMPARE MODE ────────────────────────────────────────────────────────────
+function startCompare() {
+  if (!state.compareA) return;
+  state.comparing = true;
+  document.getElementById('compare-banner').classList.add('on');
+  const cb = document.getElementById('compare-trigger');
+  cb.classList.add('active');
+  cb.textContent = '← Click a publication on the matrix…';
+}
+
+function cancelCompare() {
+  state.comparing = false;
+  document.getElementById('compare-banner').classList.remove('on');
+  const cb = document.getElementById('compare-trigger');
+  cb.classList.remove('active');
+  cb.innerHTML = `<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3"/><path d="M16 3h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3"/><line x1="12" y1="3" x2="12" y2="21"/></svg> Compare with Another Publication`;
+}
+
+function showCompare() {
+  const a = state.compareA, b = state.compareB;
+  if (!a || !b) return;
+
+  document.getElementById('info-panel').classList.remove('open');
+
+  const cols = document.getElementById('compare-cols');
+  cols.innerHTML = [a, b].map((pub, idx) => {
+    const s = score(pub);
+    const other = idx === 0 ? b : a;
+    const sOther = score(other);
+    const winScore = s > sOther ? '<span class="cwin">Higher Score</span>' : '';
+    const winImpact = pub.influence > other.influence ? '<span class="cwin">Higher Impact</span>' : '';
+    const winAccess = pub.access > other.access ? '<span class="cwin">More Accessible</span>' : '';
+
+    return `
+    <div class="compare-col">
+      <div class="cname" style="color:${pub.col}">${pub.name}</div>
+      <a href="${pub.url}" target="_blank" style="font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,.5);text-decoration:none">${pub.url.replace('https://','')}</a>
+      <div class="cscores-row">
+        <div class="cscore">
+          <div class="cscore-val" style="color:${pub.col}">${pub.influence}${winImpact}</div>
+          <div class="cscore-lbl">Answer Impact</div>
+        </div>
+        <div class="cscore">
+          <div class="cscore-val" style="color:#00e5a0">${pub.access}${winAccess}</div>
+          <div class="cscore-lbl">Accessibility</div>
+        </div>
+        <div class="cscore">
+          <div class="cscore-val" style="color:#fff">${s}${winScore}</div>
+          <div class="cscore-lbl">Priority Score</div>
+        </div>
+      </div>
+      <div class="crow"><div class="crow-lbl">Use Case</div><div class="crow-val">${pub.usecase}</div></div>
+      <div class="crow"><div class="crow-lbl">Audience</div><div class="crow-val">${pub.audience}</div></div>
+      <div class="crow"><div class="crow-lbl">Activation</div><div class="crow-val">${pub.activation}</div></div>
+      <div class="crow"><div class="crow-lbl">Speed to Impact</div><div class="crow-val">${pub.speed}</div></div>
+      <div class="crow"><div class="crow-lbl">AI Signal Types</div><div class="crow-tags">${pub.signals.map(s=>`<span class="crow-tag">${s}</span>`).join('')}</div></div>
+      <div class="crow"><div class="crow-lbl">Planner Note</div><div class="crow-val" style="font-style:italic;color:rgba(255,255,255,.85)">${pub.note}</div></div>
+      <div class="crow"><div class="crow-lbl">Contact</div><div class="crow-val">${pub.contact}</div></div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('compare-panel').classList.add('open');
+  state.selected = null;
+  renderMatrix();
+}
+
+function closeCompare() {
+  document.getElementById('compare-panel').classList.remove('open');
+  state.compareB = null;
+}
+
+// ─── HELP MODAL ──────────────────────────────────────────────────────────────
+function openHelp() {
+  document.getElementById('help-modal').classList.add('open');
+}
+function closeHelp() {
+  document.getElementById('help-modal').classList.remove('open');
+}
+function handleModalClick(e) {
+  if (e.target === document.getElementById('help-modal')) closeHelp();
+}
+
+// ─── SEARCH ─────────────────────────────────────────────────────────────────
+document.getElementById('search-input').addEventListener('input', function() {
+  state.search = this.value;
+  document.getElementById('search-clear').classList.toggle('on', this.value.length > 0);
+  renderMatrix();
+});
+
+function clearSearch() {
+  document.getElementById('search-input').value = '';
+  state.search = '';
+  document.getElementById('search-clear').classList.remove('on');
+  renderMatrix();
+}
+
+// ─── GOAL CHIPS ─────────────────────────────────────────────────────────────
+document.querySelectorAll('.goal-chip').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const g = btn.dataset.goal;
+    if (state.goal === g) {
+      state.goal = null;
+      btn.classList.remove('active');
+      document.getElementById('picks-strip').classList.remove('on');
+    } else {
+      state.goal = g;
+      document.querySelectorAll('.goal-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderPicks();
+    }
+    renderMatrix();
+  });
+});
+
+function renderPicks() {
+  const g = GOALS[state.goal];
+  const strip = document.getElementById('picks-strip');
+  const tags  = document.getElementById('picks-tags');
+  document.getElementById('picks-note').textContent = g.note;
+  tags.innerHTML = g.picks.slice(0,5).map((id, i) => {
+    const pub = PUBS.find(p => p.id === id);
+    return `<div class="ptag"><span class="ptag-num">${i+1}</span>${pub.name}</div>`;
+  }).join('');
+  strip.classList.add('on');
+}
+
+// ─── UC FILTER CHIPS ────────────────────────────────────────────────────────
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    state.uc = chip.dataset.uc;
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    renderMatrix();
+  });
+});
+
+// ─── KEYBOARD ────────────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeHelp();
+    closeCompare();
+    if (state.comparing) cancelCompare();
+  }
+});
+
+// ─── SOURCE LIST ─────────────────────────────────────────────────────────────
+function ucColor(uc) {
+  const u = uc.toLowerCase();
+  if (u.includes('education'))  return '#00e5a0';
+  if (u.includes('validation')) return '#00d4ff';
+  if (u.includes('awareness'))  return '#ff6b2b';
+  if (u.includes('authority') || u.includes('thought')) return '#c77dff';
+  return '#60b8ff';
+}
+
+function renderList() {
+  const sorted = [...PUBS].sort((a,b) => score(b) - score(a));
+  const list = document.getElementById('srclist');
+  list.innerHTML = sorted.map((pub, i) => {
+    const s = score(pub);
+    const col = pub.col;
+    const ucc = ucColor(pub.usecase);
+    return `
+    <div class="src-row" id="list-row-${pub.id}"
+         style="--col:${col};--col-bg:${col}10"
+         onclick="openPanel(PUBS.find(p=>p.id===${pub.id})); scrollToTop()">
+      <div class="src-rank">${i+1}</div>
+      <div class="src-dot" style="--col:${col}"></div>
+      <div class="src-info">
+        <div class="src-name">${pub.name}</div>
+        <div class="src-url">${pub.url.replace('https://','')}</div>
+      </div>
+      <div class="src-desc">${pub.desc}</div>
+      <span class="src-uc" style="color:${ucc};border-color:${ucc}44;background:${ucc}10">${pub.usecase}</span>
+      <div class="src-bars">
+        <div class="src-bar-row">
+          <span class="src-bar-lbl">AI</span>
+          <div class="src-bar-track"><div class="src-bar-fill" style="width:${pub.influence}%;background:${col}"></div></div>
+          <span class="src-bar-num">${pub.influence}</span>
+        </div>
+        <div class="src-bar-row">
+          <span class="src-bar-lbl">Acc</span>
+          <div class="src-bar-track"><div class="src-bar-fill" style="width:${pub.access}%;background:#00e5a0"></div></div>
+          <span class="src-bar-num">${pub.access}</span>
+        </div>
+      </div>
+      <div class="src-score-block">
+        <div class="src-score-val" style="color:${s>=70?'#00e5a0':s>=55?'#ffd600':'#ff6b6b'}">${s}</div>
+        <div class="src-score-lbl">Score</div>
+      </div>
+      <div class="src-speed">
+        <div class="src-speed-icon">${pub.speed === 'Slow' ? '🟠' : '🟢'}</div>
+        <div class="src-speed-lbl">${pub.speed}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function scrollToTop() {
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// ─── INIT ───────────────────────────────────────────────────────────────────
+renderMatrix();
+renderList();
+
+// Intro pulse on Prime Targets quadrant after short delay
+setTimeout(() => {
+  const tr = document.querySelector('.qzone.tr');
+  tr.classList.add('pulse');
+  setTimeout(() => tr.classList.remove('pulse'), 2800);
+}, 900);
+</script>
+</body>
+</html>
