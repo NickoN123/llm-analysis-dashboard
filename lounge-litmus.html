@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="description" content="How well do you really know premium air travel? 15 questions from the inaugural Airline Lounge Experience Index by BrandRank.AI."/>
+
+
+
+
+  <title>The Lounge Litmus</title>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    :root {
+      --navy: #08080f;
+      --cyan: #00d4ff;
+      --gold: #ffd93d;
+      --green: #4ecdc4;
+      --red: #ff6b6b;
+      --orange: #ff9f43;
+      --dim: rgba(255,255,255,0.55);
+      --border: rgba(0,212,255,0.2);
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    html, body {
+      background: var(--navy);
+      color: #fff;
+      font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overscroll-behavior: none;
+    }
+
+    #app {
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── LOGO BAR ── */
+    .logo-bar {
+      background: var(--navy);
+      border-bottom: 1px solid rgba(0,212,255,0.15);
+      padding: calc(12px + var(--safe-top)) 20px 12px;
+      display: flex; align-items: center; gap: 10px;
+      flex-shrink: 0;
+    }
+    .logo-pill {
+      background: #111; border: 1.5px solid rgba(255,255,255,0.85);
+      border-radius: 11px; padding: 5px 11px 5px 13px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .logo-text { font-size: 16px; font-weight: 800; color: #fff; letter-spacing: -0.03em; font-family: Georgia, serif; line-height: 1; }
+    .logo-div { width: 1.5px; height: 17px; background: rgba(255,255,255,0.7); margin: 0 2px; }
+    .logo-arr { width:0; height:0; border-top:5px solid transparent; border-bottom:5px solid transparent; border-left:9px solid #fff; margin-left:1px; }
+    .logo-tag { font-size: 10px; color: rgba(255,255,255,0.35); font-style: italic; letter-spacing: 0.02em; }
+
+    /* ── SCREENS ── */
+    .screen { display: none; flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+    .screen.active { display: block; }
+
+    /* ── INTRO ── */
+    #intro { padding: 22px 20px calc(32px + var(--safe-bottom)); }
+
+    .headline-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .icon-tile { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; flex-shrink: 0; background: rgba(0,212,255,0.10); border-radius: 7px; }
+    .quiz-title { font-size: clamp(30px, 8vw, 38px); font-weight: 900; line-height: 1.0; letter-spacing: -0.03em; color: #fff; white-space: nowrap; }
+    .quiz-title em { color: var(--cyan); font-style: normal; }
+
+    .tagline { font-size: 15px; color: rgba(255,255,255,0.65); font-style: italic; margin-bottom: 5px; line-height: 1.4; }
+    .quiz-subtitle { font-size: 10px; color: rgba(255,255,255,0.35); letter-spacing: 0.15em; text-transform: uppercase; font-family: monospace; margin-bottom: 18px; }
+    .quiz-subtitle span { color: var(--gold); }
+
+    .index-callout { background: rgba(0,212,255,0.05); border: 1px solid var(--border); border-radius: 4px; padding: 11px 13px; display: flex; align-items: flex-start; gap: 10px; margin-bottom: 18px; }
+    .ic-label { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cyan); font-family: monospace; margin-bottom: 3px; }
+    .ic-body { font-size: 12px; color: var(--dim); line-height: 1.5; }
+    .ic-body strong { color: rgba(255,255,255,0.88); font-weight: 600; }
+
+    .tier-label { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(0,212,255,0.55); font-family: monospace; margin-bottom: 8px; }
+    .tier-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 0; }
+    .tier-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); padding: 10px 11px; border-radius: 5px; display: flex; align-items: flex-start; gap: 9px; }
+    .tier-card.full { grid-column: 1/-1; }
+    .tier-card.danger { border-color: rgba(255,107,107,0.25); background: rgba(255,107,107,0.05); }
+    .t-name { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 1px; }
+    .t-range { font-size: 10px; color: rgba(255,255,255,0.3); font-family: monospace; }
+    .t-passport { font-size: 9px; color: rgba(255,255,255,0.35); margin-top: 2px; font-style: italic; }
+    .t-passport.hot { color: rgba(255,107,107,0.7); }
+
+    .btn-section { margin-top: 20px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.08); }
+    .btn-start {
+      display: block; width: 100%;
+      background: #ffffff; color: #000;
+      border: none; font-size: 19px; font-weight: 900;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 20px 0; cursor: pointer; border-radius: 5px;
+      outline: 3px solid rgba(255,255,255,0.3); outline-offset: 3px;
+      touch-action: manipulation;
+      -webkit-user-select: none; user-select: none;
+    }
+    .btn-start:active { opacity: 0.85; transform: scale(0.99); }
+
+    .powered { text-align: center; font-size: 10px; color: rgba(255,255,255,0.18); font-family: monospace; letter-spacing: 0.08em; margin-top: 14px; }
+
+    /* ── QUIZ BAR ── */
+    .quiz-bar { background: rgba(0,212,255,0.05); border-bottom: 1px solid rgba(0,212,255,0.15); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; position: sticky; top: 0; z-index: 10; }
+    .qb-l { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cyan); font-family: monospace; }
+    .qb-r { font-size: 12px; color: var(--gold); font-family: monospace; font-weight: 700; }
+    .prog-track { height: 3px; background: rgba(255,255,255,0.05); flex-shrink: 0; }
+    .prog-fill { height: 3px; background: var(--cyan); transition: width 0.4s ease; }
+
+    /* ── QUESTION BODY ── */
+    #quiz { padding-bottom: calc(20px + var(--safe-bottom)); }
+    .q-body { padding: 20px; }
+    .q-cat { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(0,212,255,0.65); font-family: monospace; margin-bottom: 6px; }
+    .tf-chip { display: inline-block; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(255,217,61,0.3); padding: 3px 9px; margin-bottom: 9px; font-family: monospace; background: rgba(255,217,61,0.06); border-radius: 2px; }
+    .q-text { font-size: 17px; font-weight: 700; line-height: 1.4; margin-bottom: 20px; color: #fff; }
+    .opts { display: flex; flex-direction: column; gap: 10px; }
+
+    .opt {
+      background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.09);
+      color: #fff; text-align: left; padding: 16px 16px;
+      font-size: 15px; line-height: 1.35; cursor: pointer;
+      transition: all 0.16s; border-radius: 6px; width: 100%;
+      font-weight: 500; min-height: 52px;
+      touch-action: manipulation;
+      -webkit-user-select: none; user-select: none;
+    }
+    .opt:active { border-color: var(--cyan); background: rgba(0,212,255,0.07); }
+    .opt.correct { border-color: var(--green); background: rgba(78,205,196,0.15); }
+    .opt.wrong { border-color: var(--red); background: rgba(255,107,107,0.1); color: rgba(255,255,255,0.4); }
+    .opt.show-right { border-color: var(--green); background: rgba(78,205,196,0.07); }
+    .opt:disabled { cursor: default; }
+
+    .feedback { margin-top: 14px; padding: 13px 14px; background: rgba(0,212,255,0.04); border-left: 2px solid rgba(0,212,255,0.45); font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.65; display: none; border-radius: 0 4px 4px 0; }
+    .feedback.show { display: block; }
+    .fb-v { font-family: monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; }
+    .fb-v.ok { color: var(--green); }
+    .fb-v.fail { color: var(--red); }
+
+    .btn-next {
+      display: none; margin-top: 16px; width: 100%;
+      background: transparent; border: 1px solid var(--cyan);
+      color: var(--cyan); font-size: 13px; letter-spacing: 0.12em;
+      text-transform: uppercase; padding: 15px;
+      cursor: pointer; font-family: monospace; border-radius: 4px;
+      min-height: 52px; touch-action: manipulation;
+    }
+    .btn-next:active { background: rgba(0,212,255,0.1); }
+    .btn-next.show { display: block; }
+
+    /* ── RESULTS ── */
+    #results { padding: 24px 20px calc(44px + var(--safe-bottom)); }
+    .r-eyebrow { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(0,212,255,0.55); font-family: monospace; margin-bottom: 18px; }
+    .r-tier-row { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+    .r-tier-name { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; color: #fff; }
+    .r-passport-label { display: inline-block; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; padding: 3px 10px; border-radius: 2px; font-family: monospace; margin-bottom: 10px; margin-left: 2px; }
+    .r-tagline { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.65; margin-bottom: 22px; }
+
+    .score-panel { background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.2); padding: 20px; margin-bottom: 14px; text-align: center; border-radius: 6px; }
+    .score-big { font-size: 52px; font-weight: 800; color: var(--cyan); font-family: monospace; line-height: 1; }
+    .score-den { font-size: 20px; color: rgba(255,255,255,0.35); }
+    .score-meta { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.3); font-family: monospace; margin-top: 4px; }
+    .score-pct { font-size: 30px; font-weight: 800; margin-top: 10px; font-family: monospace; }
+
+    .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+    .stat-box { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); padding: 12px; border-radius: 5px; }
+    .stat-lbl { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.3); font-family: monospace; margin-bottom: 4px; }
+    .stat-val { font-size: 22px; font-weight: 800; color: var(--cyan); font-family: monospace; }
+    .stat-sub { font-size: 10px; color: rgba(255,255,255,0.28); margin-top: 2px; }
+
+    .insight-panel { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); padding: 14px 16px; margin-bottom: 20px; border-radius: 5px; }
+    .ins-lbl { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--cyan); font-family: monospace; margin-bottom: 7px; }
+    .ins-body { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.65; }
+
+    .share-row { display: flex; gap: 10px; margin-bottom: 14px; }
+    .btn-share {
+      flex: 1; background: rgba(0,212,255,0.1); border: 1px solid var(--border);
+      color: var(--cyan); font-size: 12px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 14px 10px; cursor: pointer; border-radius: 4px;
+      font-family: monospace; min-height: 48px;
+      touch-action: manipulation;
+    }
+    .btn-share:active { background: rgba(0,212,255,0.2); }
+    .share-confirm { font-size: 11px; color: var(--green); font-family: monospace; text-align: center; height: 16px; margin-bottom: 10px; }
+
+    .btn-retry {
+      display: block; width: 100%; background: #ffffff; color: #000;
+      border: none; font-size: 17px; font-weight: 900;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 20px 0; cursor: pointer; border-radius: 4px;
+      outline: 3px solid rgba(255,255,255,0.25); outline-offset: 3px;
+      touch-action: manipulation; min-height: 60px;
+    }
+    .btn-retry:active { opacity: 0.85; }
+
+    /* ── INDEX CTA ── */
+    .index-cta {
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, rgba(0,212,255,0.08) 0%, rgba(255,217,61,0.06) 100%);
+      border: 1px solid rgba(0,212,255,0.35);
+      border-radius: 6px;
+      padding: 18px 16px;
+      text-decoration: none;
+      display: block;
+      position: relative;
+      overflow: hidden;
+      touch-action: manipulation;
+    }
+    .index-cta::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, #00d4ff, #ffd93d, #00d4ff);
+    }
+    .index-cta:active { opacity: 0.88; }
+    .index-cta-eyebrow {
+      font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold); font-family: monospace; margin-bottom: 6px;
+    }
+    .index-cta-headline {
+      font-size: 16px; font-weight: 800; color: #fff;
+      line-height: 1.25; margin-bottom: 6px; letter-spacing: -0.01em;
+    }
+    .index-cta-headline em { color: var(--cyan); font-style: normal; }
+    .index-cta-sub {
+      font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    .index-cta-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--cyan); color: #000;
+      font-size: 11px; font-weight: 900; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 9px 16px; border-radius: 3px;
+    }
+    .index-cta-btn svg { flex-shrink: 0; }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- LOGO BAR (persistent) -->
+  <div class="logo-bar">
+    <div class="logo-pill">
+      <span class="logo-text">brandrank.ai</span>
+      <div class="logo-div"></div>
+      <div class="logo-arr"></div>
+    </div>
+    <span class="logo-tag">prompting your brand truth<sup style="font-size:7px">SM</sup></span>
+  </div>
+
+  <!-- ══ INTRO SCREEN ══ -->
+  <div id="intro" class="screen active">
+    <div style="height:6px"></div>
+
+    <div class="headline-row">
+      <!-- Martini glass -->
+      <div class="icon-tile">
+        <svg width="24" height="26" viewBox="0 0 24 26" fill="none">
+          <path d="M2 2 L12 17 L22 2 Z" stroke="#00d4ff" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+          <line x1="12" y1="17" x2="12" y2="23" stroke="#00d4ff" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="7" y1="23" x2="17" y2="23" stroke="#00d4ff" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="18" y1="6" x2="21" y2="3" stroke="#00d4ff" stroke-width="1.3" stroke-linecap="round"/>
+          <circle cx="22" cy="2" r="1.8" fill="#00d4ff"/>
+        </svg>
+      </div>
+      <div class="quiz-title">The Lounge <em>Litmus.</em></div>
+      <!-- Plane silhouette -->
+      <div class="icon-tile">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <path d="M3 14 Q8 12 14 12 L22 13.5 Q24 14 22 14.5 L14 16 Q8 16 3 14 Z" fill="#00d4ff"/>
+          <path d="M22 13.5 L26 14 L22 14.5 Z" fill="#00d4ff"/>
+          <path d="M10 13 L7 6 L16 12.5 Z" fill="#00d4ff"/>
+          <path d="M10 15 L7 22 L16 15.5 Z" fill="#00d4ff"/>
+          <path d="M5 13 L4 9 L7 12.5 Z" fill="#00d4ff"/>
+          <path d="M5 15 L4 19 L7 15.5 Z" fill="#00d4ff"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="tagline">How well do you really know premium air travel?</div>
+    <div class="quiz-subtitle"><span>Inaugural 2026 Edition</span> &nbsp;·&nbsp; Airline Lounge Experience Index</div>
+
+    <div class="index-callout">
+      <div style="flex-shrink:0;margin-top:2px">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <rect x="2" y="3" width="16" height="13" rx="1.5" stroke="#00d4ff" stroke-width="1.3" fill="none"/>
+          <line x1="2" y1="7" x2="18" y2="7" stroke="#00d4ff" stroke-width="1"/>
+          <line x1="6" y1="3" x2="6" y2="1" stroke="#00d4ff" stroke-width="1.3" stroke-linecap="round"/>
+          <line x1="14" y1="3" x2="14" y2="1" stroke="#00d4ff" stroke-width="1.3" stroke-linecap="round"/>
+          <line x1="5" y1="11" x2="9" y2="11" stroke="#00d4ff" stroke-width="1" stroke-linecap="round"/>
+          <line x1="5" y1="13.5" x2="8" y2="13.5" stroke="#00d4ff" stroke-width="1" stroke-linecap="round"/>
+          <line x1="11" y1="11" x2="15" y2="11" stroke="#00d4ff" stroke-width="1" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="ic-label">About This Test</div>
+        <div class="ic-body">15 questions from the inaugural <strong>Airline Lounge Experience Index</strong> — the first-ever AI consensus study ranking premium lounges across ChatGPT, Gemini, Claude, Perplexity, Grok, DeepSeek &amp; Meta AI.</div>
+      </div>
+    </div>
+
+    <div class="tier-label">Your possible verdict</div>
+    <div class="tier-grid">
+      <div class="tier-card">
+        <div style="flex-shrink:0;margin-top:1px"><svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M3 11 L11 4 L19 11 L14 11 L14 18 L8 18 L8 11 Z" stroke="white" stroke-width="1.4" fill="none" stroke-linejoin="round"/></svg></div>
+        <div><div class="t-name">High Flier</div><div class="t-range">13–15 correct</div><div class="t-passport">Elite Global Passport</div></div>
+      </div>
+      <div class="tier-card">
+        <div style="flex-shrink:0;margin-top:1px"><svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M4 5 L11 16 L18 5 Z" stroke="white" stroke-width="1.4" fill="none" stroke-linejoin="round"/><line x1="11" y1="16" x2="11" y2="20" stroke="white" stroke-width="1.4" stroke-linecap="round"/><line x1="7" y1="20" x2="15" y2="20" stroke="white" stroke-width="1.4" stroke-linecap="round"/><line x1="16" y1="8" x2="18" y2="6" stroke="white" stroke-width="1.1" stroke-linecap="round"/><circle cx="19" cy="5" r="1.3" fill="white"/></svg></div>
+        <div><div class="t-name">Club Connoisseur</div><div class="t-range">10–12 correct</div><div class="t-passport">Business Class Frequent</div></div>
+      </div>
+      <div class="tier-card">
+        <div style="flex-shrink:0;margin-top:1px"><svg width="20" height="20" viewBox="0 0 22 22" fill="none"><rect x="3" y="7" width="16" height="9" rx="1.5" stroke="white" stroke-width="1.4" fill="none"/><line x1="13" y1="7" x2="13" y2="16" stroke="white" stroke-width="1" stroke-dasharray="1.5 2"/><line x1="5" y1="10" x2="11" y2="10" stroke="white" stroke-width="1" stroke-linecap="round"/><line x1="5" y1="13" x2="9" y2="13" stroke="white" stroke-width="1" stroke-linecap="round"/></svg></div>
+        <div><div class="t-name">Gate Hopper</div><div class="t-range">7–9 correct</div><div class="t-passport">Occasional Premium Traveler</div></div>
+      </div>
+      <div class="tier-card">
+        <div style="flex-shrink:0;margin-top:1px"><svg width="20" height="20" viewBox="0 0 22 22" fill="none"><rect x="4" y="9" width="14" height="10" rx="1.5" stroke="white" stroke-width="1.4" fill="none"/><path d="M8 9 L8 7 Q8 5 11 5 Q14 5 14 7 L14 9" stroke="white" stroke-width="1.4" fill="none"/><line x1="4" y1="14" x2="18" y2="14" stroke="white" stroke-width="1" stroke-linecap="round"/></svg></div>
+        <div><div class="t-name">Checked Bag</div><div class="t-range">4–6 correct</div><div class="t-passport">Economy Explorer</div></div>
+      </div>
+      <div class="tier-card">
+        <div style="flex-shrink:0;margin-top:1px"><svg width="20" height="20" viewBox="0 0 22 22" fill="none"><rect x="5" y="8" width="12" height="8" rx="1.5" stroke="white" stroke-width="1.4" fill="none"/><path d="M5 11 Q5 8 8 8" stroke="white" stroke-width="1.4" fill="none"/><path d="M17 11 Q17 8 14 8" stroke="white" stroke-width="1.4" fill="none"/><line x1="5" y1="16" x2="5" y2="19" stroke="white" stroke-width="1.4" stroke-linecap="round"/><line x1="17" y1="16" x2="17" y2="19" stroke="white" stroke-width="1.4" stroke-linecap="round"/><line x1="10" y1="4" x2="13" y2="7" stroke="rgba(255,107,107,0.85)" stroke-width="1.3" stroke-linecap="round"/><line x1="13" y1="4" x2="10" y2="7" stroke="rgba(255,107,107,0.85)" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+        <div><div class="t-name">Middle Seat Mortal</div><div class="t-range">1–3 correct</div><div class="t-passport">Lounge Access: Pending</div></div>
+      </div>
+      <div class="tier-card danger">
+        <div style="flex-shrink:0;margin-top:1px"><svg width="20" height="20" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8" stroke="rgba(255,107,107,0.75)" stroke-width="1.4" fill="none"/><line x1="11" y1="7" x2="11" y2="12" stroke="rgba(255,107,107,0.8)" stroke-width="1.8" stroke-linecap="round"/><circle cx="11" cy="15.5" r="1.1" fill="rgba(255,107,107,0.8)"/></svg></div>
+        <div><div class="t-name" style="color:rgba(255,120,120,0.95)">Confused at the Kiosk</div><div class="t-range">0 correct</div><div class="t-passport hot">Did you try scanning your grocery rewards card?</div></div>
+      </div>
+    </div>
+
+    <div class="btn-section">
+      <button class="btn-start" onclick="startQuiz()">TAKE THE LITMUS TEST →</button>
+      <div class="powered">Powered by BrandRank.AI · brandrank.ai</div>
+    </div>
+  </div>
+
+  <!-- ══ QUIZ SCREEN ══ -->
+  <div id="quiz" class="screen">
+    <div class="quiz-bar">
+      <span class="qb-l" id="q-ctr">Q1 / 15</span>
+      <span class="qb-r" id="score-live">0 pts</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="prog" style="width:6%"></div></div>
+    <div class="q-body">
+      <div class="q-cat" id="q-cat"></div>
+      <div id="tf-chip" class="tf-chip" style="display:none">True / False</div>
+      <div class="q-text" id="q-text"></div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback">
+        <div class="fb-v" id="fb-v"></div>
+        <div id="fb-txt"></div>
+      </div>
+      <button class="btn-next" id="btn-next" onclick="nextQ()">Next →</button>
+    </div>
+  </div>
+
+  <!-- ══ RESULTS SCREEN ══ -->
+  <div id="results" class="screen">
+    <div class="r-eyebrow">The Lounge Litmus · Your Verdict</div>
+    <div class="r-tier-row">
+      <div id="r-svg"></div>
+      <div class="r-tier-name" id="r-name"></div>
+    </div>
+    <div class="r-passport-label" id="r-passport"></div>
+    <p class="r-tagline" id="r-tag"></p>
+
+    <div class="score-panel">
+      <div><span class="score-big" id="r-num"></span><span class="score-den"> / 15</span></div>
+      <div class="score-meta">Questions Correct · Airline Lounge Experience Index</div>
+      <div class="score-pct" id="r-pct"></div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-lbl">Multiple Choice</div><div class="stat-val" id="r-mc"></div><div class="stat-sub">of 10</div></div>
+      <div class="stat-box"><div class="stat-lbl">True / False</div><div class="stat-val" id="r-tf"></div><div class="stat-sub">of 5</div></div>
+    </div>
+
+    <div class="insight-panel">
+      <div class="ins-lbl">Index Signal</div>
+      <div class="ins-body" id="r-ins"></div>
+    </div>
+
+    <div class="share-row">
+      <button class="btn-share" onclick="shareResult()">📤 Share Result</button>
+      <button class="btn-share" onclick="copyLink()">🔗 Copy Link</button>
+    </div>
+    <div class="share-confirm" id="share-confirm"></div>
+
+    <!-- INDEX CTA -->
+    <a class="index-cta" href="https://brandrankai-dashboard-index.com/airline-lounge-index-2.html" target="_blank" rel="noopener">
+      <div class="index-cta-eyebrow">✦ Now go deeper</div>
+      <div class="index-cta-headline">You took the test.<br><em>Read the full Index.</em></div>
+      <div class="index-cta-sub">The complete Airline Lounge Experience Index — every ranking, every engine signal, every data point behind these questions. Get smarter on the brands AI is building (and burning) in premium air travel.</div>
+      <div class="index-cta-btn">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M1 6 H10 M7 3 L10 6 L7 9" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Explore the Full Index
+      </div>
+    </a>
+
+    <button class="btn-retry" onclick="resetQuiz()">RETAKE THE LITMUS →</button>
+    <div class="powered" style="margin-top:16px;">BrandRank.AI · Inaugural Airline Lounge Experience Index · 2026</div>
+  </div>
+
+</div><!-- /app -->
+
+<script>
+const QS=[
+  {type:'mc',cat:'SERVICE QUALITY',q:'Which airline gets the highest service quality score — a near-perfect 97% — across all AI engines?',opts:['Qatar Airways','Emirates','Singapore Airlines','Delta Sky Club'],a:2,ex:'Singapore Airlines scored 97% in Service Quality — the highest single dimension score in the entire index. Engines consistently praised staff for anticipating guest needs before being asked.'},
+  {type:'mc',cat:'OVERCROWDING',q:'Which word did DeepSeek use to describe what overcrowding does to a premium lounge brand?',opts:['"Disappointment"','"Betrayal"','"Failure"','"Negligence"'],a:1,ex:'DeepSeek\'s "betrayal" was the harshest language in the study. Claude called it "the brand trust killer." Gemini said it "destroys the illusion of exclusivity." All 7 engines flagged overcrowding unprompted — the strongest consensus signal in the entire index.'},
+  {type:'mc',cat:'CULINARY EXCELLENCE',q:'Which lounge is famous for menus curated by chef Alain Ducasse — the most "fine dining" pick in the index?',opts:['Qatar Al Mourjan','Singapore SilverKris','Air France La Première','Emirates First Class'],a:2,ex:'Air France La Première — Alain Ducasse-curated menus. Multiple engines called it "an unforgettable gastronomic journey." It\'s the top fine-dining pick, though Singapore leads on overall culinary consistency.'},
+  {type:'mc',cat:'BEST AIRPORT',q:'Which airport does the index crown as home to the single best lounge experience in the world?',opts:['Dubai (DXB)','Singapore Changi (SIN)','Doha Hamad (DOH)','London Heathrow (LHR)'],a:2,ex:'Doha Hamad (DOH) — home to Qatar\'s Al Mourjan and Al Safwa — is the consensus top airport for lounge quality globally. AI engines consistently rate its scale, design, dining, and sleeping facilities above all rivals.'},
+  {type:'tf',cat:'CREDIT CARD VS. AIRLINE',q:'TRUE or FALSE: Amex Centurion accumulated more AI "wins" in the index than any single airline.',opts:['True','False'],a:0,ex:'True. Amex Centurion racked up ~52 AI wins — more than Delta, Qatar, or Singapore individually. On design, exclusivity, and dining, the index found that the best lounge experience may no longer be airline-branded at all.'},
+  {type:'mc',cat:'SPA & WELLNESS',q:'Which lounge is best known for offering a full spa — nap rooms, showers, and massage — as standard?',opts:['Delta Sky Club','Turkish Airlines Lounge IST','United Polaris','Amex Centurion'],a:1,ex:'Turkish Airlines\' Istanbul lounge is famous for its full spa: nap rooms, massage services, a tea garden, golf simulator, and cinema. It\'s the most complete wellness offering of any lounge in the study.'},
+  {type:'mc',cat:'ENGINE INTELLIGENCE',q:'The index found Claude tends to favor which airline when asked "best lounge overall" — revealing a domestic vs. global AI bias?',opts:['Qatar Airways','Singapore Airlines','Delta Sky Club','British Airways'],a:2,ex:'Claude and Grok show a measurable U.S.-domestic orientation — consistently naming Delta over Qatar or Singapore for "best overall." ChatGPT and Gemini are more globally calibrated. Same question, different engine, different answer.'},
+  {type:'tf',cat:'OVERCROWDING',q:'TRUE or FALSE: Overcrowding was the most consistent finding across all 7 engines — cited unprompted by every single one.',opts:['True','False'],a:0,ex:'True — and it\'s the strongest consensus signal in the entire index, stronger than any winner consensus. Every engine flagged it independently in open-ended responses. The index frames it as a brand trust issue, not just an operations problem.'},
+  {type:'mc',cat:'BEST AIRPORT',q:'Which U.S. airport has the strongest lounge consensus — with 6 out of 6 engines agreeing on the same winner?',opts:['JFK New York','LAX Los Angeles','ATL Atlanta','ORD Chicago'],a:2,ex:'Atlanta (ATL) is the rare case of full 6/6 consensus — all engines named Delta Sky Club. It\'s Delta\'s home hub and the busiest airport in the world, making it the clearest domestic lounge benchmark in the index.'},
+  {type:'tf',cat:'SERVICE QUALITY',q:'TRUE or FALSE: Qatar Airways outscores Singapore Airlines on human service quality — staff warmth and attentiveness.',opts:['True','False'],a:1,ex:'False. Qatar owns physical luxury — design, architecture, atmosphere. Singapore owns human service. Engines describe this as the "service-luxury fault line." No carrier currently leads both simultaneously.'},
+  {type:'mc',cat:'CREDIT CARD VS. AIRLINE',q:'What does the index say is the biggest strategic threat to airline loyalty from credit card lounges?',opts:['Lower prices','Better Wi-Fi','AI routing travelers away from airline brands','More locations'],a:2,ex:'The index warns that if AI keeps recommending Amex Centurion over airline lounges, it could redirect high-value travelers away from airline loyalty ecosystems — undermining the premium cabin pricing that sustains the whole model.'},
+  {type:'mc',cat:'ENGINE INTELLIGENCE',q:'How does DeepSeek\'s critique style differ from ChatGPT\'s in the index?',opts:['DeepSeek focuses on price; ChatGPT on design','DeepSeek uses sharp moral language; ChatGPT is more balanced','DeepSeek prefers U.S. carriers; ChatGPT prefers Asian','DeepSeek avoids criticism; ChatGPT is direct'],a:1,ex:'DeepSeek uses sharp, moralistic language — "betrayal," "broken promise." ChatGPT tends toward balanced pros/cons. Gemini leans architectural. Claude is brand-analytical. Each engine has a distinct critical voice.'},
+  {type:'mc',cat:'CULINARY EXCELLENCE',q:'Which airline is almost never mentioned for food quality — despite dining being the #1 premium differentiator?',opts:['United Airlines','American Airlines','JetBlue','Lufthansa'],a:1,ex:'American Airlines drew near-zero culinary citations across all 7 engines. The index calls this the biggest brand upgrade opportunity in U.S. aviation — genuine culinary investment would deliver outsized AI perception gains.'},
+  {type:'tf',cat:'SPA & WELLNESS',q:'TRUE or FALSE: The index identifies wellness — sleep pods, quiet zones, recovery spaces — as the most underdeveloped dimension across all premium lounges.',opts:['True','False'],a:0,ex:'True. Multiple engines independently flagged wellness as the biggest unmet opportunity. ChatGPT, Gemini, and Perplexity all cited it. The lounge that genuinely restores — not just entertains — will command the highest loyalty premium.'},
+  {type:'mc',cat:'BRAND PERCEPTION',q:'Which lounge scores high on BOTH consistency AND extraordinary factor — the only one in the "Best of Both" quadrant?',opts:['Delta Sky Club','Qatar Al Mourjan','Amex Centurion','Singapore Airlines SilverKris'],a:3,ex:'Singapore Airlines is the only lounge in the "Best of Both" quadrant. Delta scores high consistency but low extraordinary. Qatar scores extraordinary but lower consistency. Singapore alone delivers both.'}
+];
+
+const TIERS=[
+  {min:13,svg:'<svg width="44" height="44" viewBox="0 0 44 44" fill="none"><path d="M6 22 L22 8 L38 22 L28 22 L28 36 L16 36 L16 22 Z" stroke="white" stroke-width="2" fill="none" stroke-linejoin="round"/></svg>',name:'High Flier',passport:'Elite Global Passport',pc:'rgba(0,212,255,0.15)',pb:'rgba(0,212,255,0.4)',pt:'#00d4ff',tag:'You\'re essentially a BrandRank analyst. You know your DeepSeek from your Claude, your Al Mourjan from your SilverKris, and you\'ve probably complained about overcrowding in a lounge newsletter.',c:'#00d4ff'},
+  {min:10,svg:'<svg width="44" height="44" viewBox="0 0 44 44" fill="none"><path d="M8 10 L22 32 L36 10 Z" stroke="white" stroke-width="2" fill="none" stroke-linejoin="round"/><line x1="22" y1="32" x2="22" y2="40" stroke="white" stroke-width="2" stroke-linecap="round"/><line x1="14" y1="40" x2="30" y2="40" stroke="white" stroke-width="2" stroke-linecap="round"/><line x1="32" y1="16" x2="36" y2="11" stroke="white" stroke-width="1.5" stroke-linecap="round"/><circle cx="37" cy="9" r="2.5" fill="white"/></svg>',name:'Club Connoisseur',passport:'Business Class Frequent Flyer',pc:'rgba(78,205,196,0.12)',pb:'rgba(78,205,196,0.4)',pt:'#4ecdc4',tag:'Strong frequent-flyer energy. You know your Singapore from your Qatar, your Centurion from your Priority Pass. A few engine-level nuances slipped by — but you\'d hold your own in any lounge debate.',c:'#4ecdc4'},
+  {min:7,svg:'<svg width="44" height="44" viewBox="0 0 44 44" fill="none"><rect x="5" y="15" width="34" height="15" rx="2" stroke="white" stroke-width="2" fill="none"/><line x1="28" y1="15" x2="28" y2="30" stroke="white" stroke-width="1.3" stroke-dasharray="2.5 2.5"/><line x1="10" y1="20" x2="24" y2="20" stroke="white" stroke-width="1.3" stroke-linecap="round"/><line x1="10" y1="25" x2="18" y2="25" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg>',name:'Gate Hopper',passport:'Occasional Premium Traveler',pc:'rgba(255,217,61,0.1)',pb:'rgba(255,217,61,0.35)',pt:'#ffd93d',tag:'You know the big names but the nuances slipped through. Time to book a Doha connection, try the spa, and do some field research.',c:'#ffd93d'},
+  {min:4,svg:'<svg width="44" height="44" viewBox="0 0 44 44" fill="none"><rect x="7" y="18" width="30" height="20" rx="2" stroke="white" stroke-width="2" fill="none"/><path d="M15 18 L15 13 Q15 9 22 9 Q29 9 29 13 L29 18" stroke="white" stroke-width="2" fill="none"/><line x1="7" y1="27" x2="37" y2="27" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg>',name:'Checked Bag',passport:'Economy Explorer',pc:'rgba(255,159,67,0.1)',pb:'rgba(255,159,67,0.35)',pt:'#ff9f43',tag:'You\'ve been in an airport, possibly even a lounge. The AI consensus data is new territory. Start with Delta Sky Club and work your way up to Doha.',c:'#ff9f43'},
+  {min:1,svg:'<svg width="44" height="44" viewBox="0 0 44 44" fill="none"><rect x="9" y="17" width="26" height="15" rx="2" stroke="white" stroke-width="2" fill="none"/><path d="M9 22 Q9 17 15 17" stroke="white" stroke-width="2" fill="none"/><path d="M35 22 Q35 17 29 17" stroke="white" stroke-width="2" fill="none"/><line x1="11" y1="32" x2="10" y2="38" stroke="white" stroke-width="2" stroke-linecap="round"/><line x1="33" y1="32" x2="34" y2="38" stroke="white" stroke-width="2" stroke-linecap="round"/><line x1="18" y1="8" x2="23" y2="14" stroke="rgba(255,107,107,0.9)" stroke-width="1.8" stroke-linecap="round"/><line x1="23" y1="8" x2="18" y2="14" stroke="rgba(255,107,107,0.9)" stroke-width="1.8" stroke-linecap="round"/></svg>',name:'Middle Seat Mortal',passport:'Lounge Access: Pending',pc:'rgba(255,107,107,0.1)',pb:'rgba(255,107,107,0.35)',pt:'#ff6b6b',tag:'No judgment — most people haven\'t mapped AI perception across 21 lounges and 7 engines. Now you have the data. That\'s worth a complimentary upgrade.',c:'#ff6b6b'},
+  {min:0,svg:'<svg width="44" height="44" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="16" stroke="rgba(255,107,107,0.7)" stroke-width="2" fill="none"/><line x1="22" y1="13" x2="22" y2="24" stroke="rgba(255,107,107,0.8)" stroke-width="2.5" stroke-linecap="round"/><circle cx="22" cy="29" r="2" fill="rgba(255,107,107,0.8)"/></svg>',name:'Confused at the Kiosk',passport:'Did you try scanning your grocery rewards card?',pc:'rgba(255,107,107,0.1)',pb:'rgba(255,107,107,0.4)',pt:'#ff6b6b',tag:'A perfect zero. Impressive in its own way. You may have thought "Al Mourjan" was a Moroccan restaurant. The good news: you just absorbed more lounge intelligence than most frequent flyers encounter all year.',c:'#ff6b6b'}
+];
+
+const INSIGHTS=[
+  'Overcrowding is the index\'s #1 consensus signal — every engine flagged it unprompted. DeepSeek called it a brand "betrayal." Claude called it "the brand trust killer." It\'s an operations problem masquerading as a strategic choice.',
+  'Singapore Airlines is the only lounge brand in the "Best of Both" quadrant — scoring high on both consistency AND extraordinary factor. Qatar owns luxury. Delta owns reliability. Singapore owns both.',
+  'Amex Centurion accumulated ~52 AI wins — more than any airline. The index\'s most disruptive finding: the best lounge in AI perception may no longer be airline-branded.',
+  'Claude and Grok consistently favor Delta when asked "best overall lounge." ChatGPT and Gemini favor Qatar or Singapore. The same question yields a different answer depending on which AI you ask.',
+  'Turkish Airlines\' Istanbul lounge has the most complete wellness offering — nap rooms, massage, tea garden, golf simulator, cinema. It\'s the most underrated lounge in the entire study.'
+];
+
+let cur=0,score=0,mcC=0,tfC=0,answered=false,shuffled=[],lastTier=null;
+
+function sh(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function startQuiz(){
+  shuffled=sh(QS);cur=0;score=0;mcC=0;tfC=0;
+  show('quiz');render();
+}
+
+function render(){
+  answered=false;
+  const q=shuffled[cur];
+  document.getElementById('q-ctr').textContent='Q'+(cur+1)+' / 15';
+  document.getElementById('score-live').textContent=score+' pts';
+  document.getElementById('prog').style.width=((cur/15)*100)+'%';
+  document.getElementById('q-cat').textContent=q.cat;
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('tf-chip').style.display=q.type==='tf'?'inline-block':'none';
+  document.getElementById('feedback').classList.remove('show');
+  document.getElementById('btn-next').classList.remove('show');
+  const ol=document.getElementById('opts');
+  ol.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.className='opt';b.textContent=o;
+    b.setAttribute('aria-label',o);
+    b.onclick=()=>pick(i);
+    ol.appendChild(b);
+  });
+}
+
+function pick(idx){
+  if(answered)return;answered=true;
+  const q=shuffled[cur];
+  const btns=document.querySelectorAll('.opt');
+  const ok=idx===q.a;
+  if(ok){score++;if(q.type==='mc')mcC++;else tfC++;}
+  btns[idx].classList.add(ok?'correct':'wrong');
+  if(!ok)btns[q.a].classList.add('show-right');
+  btns.forEach(b=>b.disabled=true);
+  document.getElementById('fb-txt').textContent=q.ex;
+  const fv=document.getElementById('fb-v');
+  fv.textContent=ok?'✓ Correct':'✗ Not quite';
+  fv.className='fb-v '+(ok?'ok':'fail');
+  document.getElementById('feedback').classList.add('show');
+  document.getElementById('score-live').textContent=score+' pts';
+  const bn=document.getElementById('btn-next');
+  bn.textContent=cur<14?'Next Question →':'See My Results →';
+  bn.classList.add('show');
+}
+
+function nextQ(){
+  cur++;
+  if(cur>=15){showResults();return;}
+  render();
+  // scroll question into view
+  document.getElementById('quiz').scrollTo({top:0,behavior:'smooth'});
+}
+
+function showResults(){
+  show('results');
+  const pct=Math.round((score/15)*100);
+  lastTier=TIERS.find(t=>score>=t.min);
+  document.getElementById('r-svg').innerHTML=lastTier.svg;
+  document.getElementById('r-name').textContent=lastTier.name;
+  const pp=document.getElementById('r-passport');
+  pp.textContent=lastTier.passport;
+  pp.style.background=lastTier.pc;
+  pp.style.border='1px solid '+lastTier.pb;
+  pp.style.color=lastTier.pt;
+  document.getElementById('r-tag').textContent=lastTier.tag;
+  document.getElementById('r-num').textContent=score;
+  document.getElementById('r-pct').textContent=pct+'%';
+  document.getElementById('r-pct').style.color=lastTier.c;
+  document.getElementById('r-mc').textContent=mcC;
+  document.getElementById('r-tf').textContent=tfC;
+  document.getElementById('r-ins').textContent=INSIGHTS[Math.floor(Math.random()*INSIGHTS.length)];
+}
+
+function resetQuiz(){show('intro');}
+
+function shareResult(){
+  const text=`I just took The Lounge Litmus by BrandRank.AI and scored ${score}/15 — "${lastTier?lastTier.name:''}". How well do you really know premium air travel? 🍸✈️`;
+  if(navigator.share){
+    navigator.share({title:'The Lounge Litmus',text:text,url:window.location.href})
+      .catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(text+'\n'+window.location.href)
+      .then(()=>flashConfirm('Result copied to clipboard!'))
+      .catch(()=>flashConfirm('Share not supported — try Copy Link'));
+  }
+}
+
+function copyLink(){
+  navigator.clipboard.writeText(window.location.href)
+    .then(()=>flashConfirm('Link copied to clipboard!'))
+    .catch(()=>flashConfirm('Could not copy — please copy the URL manually'));
+}
+
+function flashConfirm(msg){
+  const el=document.getElementById('share-confirm');
+  el.textContent=msg;
+  setTimeout(()=>el.textContent='',3000);
+}
+
+// ── PWA SERVICE WORKER ──
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  });
+}
+</script>
+</body>
+</html>
